@@ -54,8 +54,8 @@ of truth for external state.
   `Stage`, `Current`, `Evidence`, `Next`, and `Blocker`.
 - `CHANGELOG.md` is completed history, `TODO.md` is open actions, `ISSUES.md` is
   known problems, and `IDEAS.md` is uncommitted options. Do not mix their roles.
-- Use the bundled `GOAL_TEMPLATE.md` for long-running work. If unavailable,
-  ask instead of inventing a format.
+- For long-running work, use `GOAL_TEMPLATE.md` beside the resolved source of
+  this `AGENTS.md`. If unavailable, ask instead of inventing a format.
 
 ## Handoff
 
@@ -65,5 +65,7 @@ committed, pushed, deployed, published, and live-verified when relevant.
 
 ## Recent Changes
 
+- 2026-08-21: Removed redundant per-harness Goal-template links; the global
+  rules now resolve the bundled template beside their canonical source.
 - 2026-08-21: Published the harness-neutral global rules and shared Goal
   contract.

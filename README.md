@@ -27,12 +27,14 @@ AGENTSMD_DIR="$(pwd -P)"
 Before linking, move any existing target file to a timestamped backup. Do not
 overwrite an existing file or symlink without inspecting it.
 
+Only `AGENTS.md` needs a harness link. Its Goal rule resolves that link to this
+clone and reads the adjacent `GOAL_TEMPLATE.md` on demand.
+
 ### Codex
 
 ```sh
 mkdir -p "$HOME/.codex"
 ln -s "$AGENTSMD_DIR/AGENTS.md" "$HOME/.codex/AGENTS.md"
-ln -s "$AGENTSMD_DIR/GOAL_TEMPLATE.md" "$HOME/.codex/GOAL_TEMPLATE.md"
 ```
 
 Codex officially reads global guidance from `AGENTS.md` in `CODEX_HOME`, which
@@ -44,17 +46,17 @@ TUI session.
 ```sh
 mkdir -p "$HOME/.grok"
 ln -s "$AGENTSMD_DIR/AGENTS.md" "$HOME/.grok/AGENTS.md"
-ln -s "$AGENTSMD_DIR/GOAL_TEMPLATE.md" "$HOME/.grok/GOAL_TEMPLATE.md"
 ```
 
 Verified with Grok Build CLI 1.0.5. Grok loads the global `AGENTS.md`
-automatically. It reads `GOAL_TEMPLATE.md` on demand when the Goal rule applies.
+automatically. The Goal rule locates the adjacent template on demand.
 
 ### Other harnesses
 
-Configure `AGENTS.md` as global instructions and make `GOAL_TEMPLATE.md`
-available beside them. The Goal files remain useful even without a native Goal
-feature because Git stores the approved contract and current status.
+Configure the cloned `AGENTS.md` as global instructions and keep
+`GOAL_TEMPLATE.md` beside its canonical source. The Goal files remain useful
+even without a native Goal feature because Git stores the approved contract and
+current status.
 
 ## Customize
 
