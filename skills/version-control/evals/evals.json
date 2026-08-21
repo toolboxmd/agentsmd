@@ -1,0 +1,23 @@
+{
+  "skill_name": "version-control",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Fix one incorrect install command in README.md, commit the completed correction, and hand it off.",
+      "expected_output": "Runs doctor, classifies the completed docs correction as patch, previews and applies prepare, commits all version files together, runs release-check, and reports release states separately.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Add a backward-compatible opt-in timeout setting to a plugin, update its docs, and make the final commit.",
+      "expected_output": "Uses the version workflow and selects minor because the deliverable adds a backward-compatible capability, while delegating mirror edits to versionctl.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Audit why version-check CI failed and explain the evidence. Do not edit, commit, or push anything.",
+      "expected_output": "Treats the task as strictly read-only, does not prepare a bump or modify files, and reports the diagnosis only.",
+      "files": []
+    }
+  ]
+}

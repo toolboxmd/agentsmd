@@ -1,0 +1,54 @@
+name: Version check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "**"
+  workflow_call:
+    inputs:
+      base:
+        description: Optional exact base ref for the version transition
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out exact candidate
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.13"
+
+      - name: Run versionctl unit and fixture validator
+        run: python -m unittest discover -s tools/versionctl/tests -p 'test_*.py'
+
+      - name: Validate version transition from exact base
+        env:
+          INPUT_BASE: ${{ inputs.base }}
+          PULL_REQUEST_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE: ${{ github.event.before }}
+        run: |
+          base="${INPUT_BASE:-${PULL_REQUEST_BASE:-${PUSH_BASE:-}}}"
+          if [ -z "$base" ] || printf '%s' "$base" | grep -Eq '^0+$'; then
+            if git rev-parse HEAD^ >/dev/null 2>&1; then
+              base=$(git rev-parse HEAD^)
+            else
+              tools/versionctl/bin/versionctl doctor
+              exit 0
+            fi
+          fi
+          tools/versionctl/bin/versionctl doctor --ci --base "$base"
+
+      - name: Validate committed release identity
+        run: tools/versionctl/bin/versionctl release-check --sha "$GITHUB_SHA"

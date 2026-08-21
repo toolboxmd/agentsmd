@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "cases": [
+    {
+      "id": "docs-only",
+      "expectation": "A documentation deliverable requires and can prepare a patch transition."
+    },
+    {
+      "id": "node",
+      "expectation": "A package.json JSON Pointer mirror follows the canonical version."
+    },
+    {
+      "id": "python",
+      "expectation": "A pyproject.toml field mirror follows the canonical version without reformatting the document."
+    },
+    {
+      "id": "plugin",
+      "expectation": "A nested plugin manifest mirror follows the canonical version."
+    },
+    {
+      "id": "dirty-tree",
+      "expectation": "release-check rejects any dirty working tree."
+    },
+    {
+      "id": "stale-mirror",
+      "expectation": "doctor rejects a mirror that differs from VERSION."
+    },
+    {
+      "id": "reused-tag",
+      "expectation": "release-check rejects a version tag that identifies different content."
+    },
+    {
+      "id": "skipped-version",
+      "expectation": "CI mode rejects a version that skips the next valid SemVer transition."
+    },
+    {
+      "id": "post-release-channel-drift",
+      "expectation": "release-check rejects a proposed distribution SHA that is not exact HEAD."
+    },
+    {
+      "id": "bot-created-tag",
+      "expectation": "An existing annotated tag on exact HEAD validates without requiring a second workflow."
+    },
+    {
+      "id": "remote-enrichment-failure",
+      "expectation": "Core doctor and release validation make no GitHub API request."
+    },
+    {
+      "id": "monorepo-adjacent",
+      "expectation": "Nested package mirrors share the one repository version without component orchestration."
+    }
+  ]
+}

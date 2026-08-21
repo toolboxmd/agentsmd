@@ -1,0 +1,28 @@
+{
+  "name": "agentsmd",
+  "version": "0.1.0",
+  "description": "Portable agent rules and deterministic repository version control.",
+  "author": {
+    "name": "lukaszmaj",
+    "url": "https://github.com/toolboxmd"
+  },
+  "homepage": "https://github.com/toolboxmd/agentsmd#readme",
+  "repository": "https://github.com/toolboxmd/agentsmd",
+  "license": "MIT",
+  "keywords": ["agents", "git", "semver", "version-control"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "AgentsMD Version Control",
+    "shortDescription": "Keep repository versions and releases consistent.",
+    "longDescription": "Apply the version-control skill and bundled versionctl CLI to keep SemVer, changelogs, commits, tags, and releases consistent.",
+    "developerName": "toolbox.md",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Write"],
+    "websiteURL": "https://github.com/toolboxmd/agentsmd",
+    "defaultPrompt": [
+      "Check this repository's version state.",
+      "Prepare the correct version for this change.",
+      "Install repository version-control hooks."
+    ]
+  }
+}

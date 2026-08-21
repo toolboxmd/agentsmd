@@ -1,0 +1,25 @@
+{
+  "skill_name": "version-control",
+  "queries": [
+    {"query": "Implement the parser fix in src/parser.py and commit it.", "should_trigger": true},
+    {"query": "Correct the outdated README install example.", "should_trigger": true},
+    {"query": "Update AGENTS.md with our new review rule and finish the commit.", "should_trigger": true},
+    {"query": "Create a project skill for database migrations.", "should_trigger": true},
+    {"query": "Add a backwards-compatible command to the plugin.", "should_trigger": true},
+    {"query": "Tune the tracked system prompt and hand off the result.", "should_trigger": true},
+    {"query": "Change the default in config.json and commit the deliverable.", "should_trigger": true},
+    {"query": "Refresh the checked-in dataset and its schema notes.", "should_trigger": true},
+    {"query": "Remove the deprecated public API and prepare the release commit.", "should_trigger": true},
+    {"query": "Make an intentional WIP checkpoint for these staged files.", "should_trigger": true},
+    {"query": "Inspect git status and tell me what is dirty. Do not edit.", "should_trigger": false},
+    {"query": "Review this diff and leave it unchanged.", "should_trigger": false},
+    {"query": "Explain the difference between SemVer minor and patch.", "should_trigger": false},
+    {"query": "Read package.json and report its current version only.", "should_trigger": false},
+    {"query": "Diagnose the failing hook, but do not implement a fix.", "should_trigger": false},
+    {"query": "Show the last ten Git commits.", "should_trigger": false},
+    {"query": "What tag points at HEAD right now?", "should_trigger": false},
+    {"query": "Summarize the release workflow without changing it.", "should_trigger": false},
+    {"query": "Write a temporary note outside the Git repository.", "should_trigger": false},
+    {"query": "Check whether VERSION and package.json currently agree.", "should_trigger": false}
+  ]
+}

@@ -1,2 +1,9 @@
 # Local design drafts
 /PLAN-version-control.md
+
+# Python development state
+__pycache__/
+*.py[cod]
+.coverage
+.pytest_cache/
+/skills/version-control-workspace/

@@ -1,0 +1,112 @@
+name: Version release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - VERSION
+
+concurrency:
+  group: version-release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out exact release commit
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.13"
+
+      - name: Read policy authorization
+        id: policy
+        run: |
+          enabled=$(python -c 'import json; print(str(json.load(open(".version-policy.json"))["githubReleasePolicy"] == "on-version-commit").lower())')
+          printf 'enabled=%s\n' "$enabled" >> "$GITHUB_OUTPUT"
+
+      - name: Run release validator
+        if: steps.policy.outputs.enabled == 'true'
+        run: python -m unittest discover -s tools/versionctl/tests -p 'test_*.py'
+
+      - name: Recheck exact release state before write
+        if: steps.policy.outputs.enabled == 'true'
+        id: candidate
+        run: |
+          tools/versionctl/bin/versionctl release-check --sha "$GITHUB_SHA" --json > "$RUNNER_TEMP/release.json"
+          python - "$RUNNER_TEMP/release.json" "$RUNNER_TEMP/release-notes.md" "$GITHUB_OUTPUT" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          report_path, notes_path, output_path = map(pathlib.Path, sys.argv[1:])
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          notes_path.write_text(report["changelogEntry"], encoding="utf-8")
+          with output_path.open("a", encoding="utf-8") as output:
+              output.write(f"version={report['version']}\n")
+              output.write(f"tag={report['tag']}\n")
+              output.write(f"sha={report['sha']}\n")
+          PY
+
+      - name: Verify remote tag is unused
+        if: steps.policy.outputs.enabled == 'true'
+        env:
+          TAG: ${{ steps.candidate.outputs.tag }}
+        run: |
+          set +e
+          git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null 2>&1
+          result=$?
+          set -e
+          case "$result" in
+            2) ;;
+            0) echo "Tag already exists: $TAG" >&2; exit 19 ;;
+            *) echo "Could not verify remote tag state" >&2; exit "$result" ;;
+          esac
+
+      - name: Create annotated tag on exact SHA
+        if: steps.policy.outputs.enabled == 'true'
+        env:
+          TAG: ${{ steps.candidate.outputs.tag }}
+          RELEASE_SHA: ${{ steps.candidate.outputs.sha }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" "$RELEASE_SHA" -m "Release $TAG"
+          git push origin "refs/tags/$TAG"
+
+      - name: Create matching GitHub Release
+        if: steps.policy.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.candidate.outputs.tag }}
+        run: |
+          gh release create "$TAG" \
+            --verify-tag \
+            --title "$TAG" \
+            --notes-file "$RUNNER_TEMP/release-notes.md"
+
+      - name: Report exact release identity
+        if: steps.policy.outputs.enabled == 'true'
+        env:
+          VERSION: ${{ steps.candidate.outputs.version }}
+          TAG: ${{ steps.candidate.outputs.tag }}
+          RELEASE_SHA: ${{ steps.candidate.outputs.sha }}
+        run: |
+          release_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/${TAG}"
+          {
+            printf '### Version release\n\n'
+            printf -- '- Version: `%s`\n' "$VERSION"
+            printf -- '- Commit: `%s`\n' "$RELEASE_SHA"
+            printf -- '- Annotated tag: `%s`\n' "$TAG"
+            printf -- '- GitHub Release: %s\n' "$release_url"
+            printf -- '- Registry publication: not performed\n'
+            printf -- '- Deployment: not performed\n'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -35,6 +35,19 @@ of truth for external state.
 - Verify the final artifact when an intermediate build is insufficient. If no
   cheap relevant check exists, run none and say so.
 
+## Versioning
+
+- Every Git repository has a SemVer version. Every completed deliverable change
+  to tracked content must bump it before commit; intermediate and WIP commits
+  are exempt.
+- Use the highest impact in scope: `major` for incompatible behavior, `minor`
+  for a backward-compatible capability, otherwise `patch`.
+- For repository changes, use the `version-control` skill and keep the
+  canonical version, mirrors, changelog, commit, tag, and release consistent.
+- Never distribute a newer commit under an older version. Report version,
+  commit, tag, push, release, publication, deployment, installation, and live
+  verification as separate states.
+
 ## External actions and secrets
 
 - Before external changes, confirm live state and target. Preview when possible
@@ -65,6 +78,10 @@ committed, pushed, deployed, published, and live-verified when relevant.
 
 ## Recent Changes
 
+- 2026-08-21: Packaged the version-control skill and CLI as the `agentsmd`
+  plugin, with Claude-compatible metadata kept separate from host verification.
+- 2026-08-21: Added repository SemVer rules and the shared `version-control`
+  skill and CLI contract.
 - 2026-08-21: Removed redundant per-harness Goal-template links; the global
   rules now resolve the bundled template beside their canonical source.
 - 2026-08-21: Published the harness-neutral global rules and shared Goal

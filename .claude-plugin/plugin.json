@@ -1,0 +1,10 @@
+{
+  "name": "agentsmd",
+  "version": "0.1.0",
+  "description": "Portable agent rules and deterministic repository version control.",
+  "author": {
+    "name": "lukaszmaj"
+  },
+  "repository": "https://github.com/toolboxmd/agentsmd",
+  "license": "MIT"
+}

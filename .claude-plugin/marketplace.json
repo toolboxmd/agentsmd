@@ -1,0 +1,16 @@
+{
+  "name": "agentsmd-local",
+  "owner": {
+    "name": "lukaszmaj"
+  },
+  "metadata": {
+    "description": "Local-directory marketplace exposing the agentsmd plugin from this repository."
+  },
+  "plugins": [
+    {
+      "name": "agentsmd",
+      "description": "Portable agent rules and deterministic repository version control.",
+      "source": "./"
+    }
+  ]
+}

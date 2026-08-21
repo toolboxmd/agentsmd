@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+launcher_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+package_root=$(CDPATH= cd -- "$launcher_dir/.." && pwd -P)
+
+if [ -n "${PYTHONPATH:-}" ]; then
+  export PYTHONPATH="$package_root/src:$PYTHONPATH"
+else
+  export PYTHONPATH="$package_root/src"
+fi
+
+exec python3 -m versionctl "$@"

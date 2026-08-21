@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "bumpPolicy": "every-deliverable",
+  "versionSource": "VERSION",
+  "tagPattern": "v{version}",
+  "tagPolicy": "every-version",
+  "githubReleasePolicy": "on-version-commit",
+  "distributionPolicy": "released-tags-only",
+  "publishPolicy": "manual",
+  "releaseBranch": "main",
+  "wipPrefixes": [
+    "wip:"
+  ],
+  "mirrors": [
+    {
+      "path": ".codex-plugin/plugin.json",
+      "pointer": "/version"
+    },
+    {
+      "path": ".claude-plugin/plugin.json",
+      "pointer": "/version"
+    },
+    {
+      "path": "tools/versionctl/pyproject.toml",
+      "pointer": "/project/version"
+    }
+  ]
+}

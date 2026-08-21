@@ -1,0 +1,7 @@
+interface:
+  display_name: "Version Control"
+  short_description: "Keep repository versions and releases consistent"
+  default_prompt: "Use $version-control to prepare the correct version for this repository change."
+
+policy:
+  allow_implicit_invocation: true
