@@ -1,83 +1,146 @@
 # Global Agent Rules
 
-Opinionated, speed-first defaults. Closer project instructions take precedence.
+Opinionated, issue-first, speed-first defaults. Closer project instructions take
+precedence.
 
 Never use em dashes.
 
-Git is the source of truth for repository state; the live system is the source
-of truth for external state.
+Git is the source of truth for repository state. The live system is the source
+of truth for external state. The configured issue tracker owns active intent.
 
 ## Work
 
 - Do the requested work and the minimum needed to make it function.
-- Do not turn audits, diagnoses, explanations, or reviews into implementation
-  unless asked.
-- Make reasonable, reversible assumptions that do not change scope or risk.
-  Ask only for decisions that materially affect the result.
-- Do not add speculative cleanup, hardening, refactors, or adjacent features.
-- Dirty trees and broad diffs are not blockers. Preserve user work. Stop only
-  for unsafe overlap, a moving HEAD, or a material decision.
-- Use one writer per branch and file set. Delegate only independent work.
+- Keep audits, diagnoses, explanations, and reviews read-only unless the user
+  asks for implementation.
+- Make reversible assumptions within scope. Ask only when a decision changes
+  scope, risk, authority, or the user-visible result.
+- Preserve dirty and untracked user work. Stop for unsafe overlap, a moving
+  base, or a material decision.
+- Keep each branch and file set under one writer. Parallelize only independent
+  work.
+- Keep the diff focused on the source issue. Leave adjacent cleanup for a
+  separate issue.
 
-## Git and checks
+## Delivery
 
-- Inspect status, branch, and HEAD. Work on the current branch. Do not create
-  branches, worktrees, PRs, or reviews unless asked.
-- Fetch only when current remote state matters. Do not routinely pull, merge,
-  rebase, stash, reset, or discard work.
-- Keep diffs focused. Prefer scoped formatters. If a required formatter expands
-  the diff, inspect, continue, and report unless user work is at risk.
-- Make small commits and commit useful work before handoff. Push only to a
-  known non-deploying remote; otherwise ask.
-- Tests are not the default deliverable. Run at most one cheapest existing
-  happy-path check. Do not create test infrastructure or run broad suites unless
-  asked or required by project rules.
-- Verify the final artifact when an intermediate build is insufficient. If no
-  cheap relevant check exists, run none and say so.
+- Orient: inspect status, branch, HEAD, remotes, and the requested work before
+  changing tracked files.
+- Tracker: before tracker reads or writes, read
+  `docs/agents/issue-tracker.md` when present.
+- Domain: before changing terminology or a locked decision, read `CONTEXT.md`
+  and the relevant ADRs when present.
+- Issue-first: requested tracked implementation in a GitHub-backed repository
+  uses an existing or new GitHub issue, one task branch, and one PR unless the
+  user says `local-only` or closer project rules choose another workflow.
+- Search before creating an issue. Reuse a matching open issue.
+- An issue is ready when its outcome, acceptance criteria, non-goals, blockers,
+  and required proof are explicit.
+- Read-only work, throwaway spikes, WIP checkpoints, and explicitly local
+  microfixes stay off the issue-to-PR lane.
+
+Choose the smallest lane that fits:
+
+- Clear: implement the ready issue directly.
+- Shape: use `grill-with-docs` when bounded work still has unresolved
+  terminology or user-owned decisions.
+- Specify: use `to-spec`, then `to-tickets`, when understood work spans
+  multiple sessions.
+- Wayfind: use `wayfinder` only when a large effort still has a foggy decision
+  path before it can be specified.
+
+Matt workflow skills are human-controlled. Use them when the user names one or
+asks to follow this workflow. Stop at their approval gates.
+
+Implement one vertical ticket in one fresh context. A vertical ticket delivers
+a narrow, complete, independently provable outcome.
+
+A PR is ready when every acceptance criterion is satisfied, required proof is
+current, the final diff passed self-review, and the version transition is
+committed. A blocked issue ends in a blocker handoff, not a ready-PR claim.
+
+## Git and proof
+
+- Resolve the intended base branch instead of assuming `main`.
+- Fetch when current base or PR state matters. Avoid routine pull, merge,
+  rebase, stash, reset, or discard operations.
+- Understand local and remote divergence before branching. Include or omit
+  unpublished commits deliberately.
+- Create or reuse one task branch for the implementation issue. Use the current
+  branch when it is already the correct task branch.
+- Use a normal branch by default. Use a worktree when the user or closer
+  project workflow selects additional isolation.
+- Keep commits useful and reviewable.
+- Loop on the smallest relevant checks while implementing.
+- Proof comes from the issue, project instructions, selected skill, and risk.
+- Use TDD for bug reproductions and high-risk behavioral seams. Otherwise prove
+  behavior at the highest practical seam.
+- When `implement` is selected, follow its stronger TDD, suite, review, and
+  commit requirements.
+- Self-review the complete diff against the issue, project rules, scope,
+  secrets, generated files, and unrelated changes.
+- Verify the final artifact when a build, unit test, fake harness, or HTTP
+  response cannot prove the required behavior.
+- PR: before opening or updating a PR, read `CONTRIBUTING.md` when present.
 
 ## Versioning
 
-- Every Git repository has a SemVer version. Every completed deliverable change
-  to tracked content must bump it before commit; intermediate and WIP commits
-  are exempt.
-- Use the highest impact in scope: `major` for incompatible behavior, `minor`
-  for a backward-compatible capability, otherwise `patch`.
-- For repository changes, use the `version-control` skill and keep the
-  canonical version, mirrors, changelog, commit, tag, and release consistent.
-- Never distribute a newer commit under an older version. Report version,
-  commit, tag, push, release, publication, deployment, installation, and live
-  verification as separate states.
+- Every completed tracked deliverable has one SemVer transition before commit.
+  Read-only work and explicit WIP checkpoints are exempt.
+- Use `major` for incompatible behavior, `minor` for a backward-compatible
+  capability, and `patch` otherwise.
+- Use the `version-control` skill for the canonical version, mirrors, changelog,
+  commit, tag, and release contract.
+- Preserve missing-policy boundaries. Adopt versioning only as its own
+  authorized change.
+- Report version, commit, push, PR, merge, tag, release, publication,
+  deployment, installation, and live verification as separate states.
 
-## External actions and secrets
+## External actions and human gates
 
-- Before external changes, confirm live state and target. Preview when possible
-  and verify the result. Accepted or queued is not completed.
-- Ask before production impact, publication, credential or access changes,
-  irreversible migrations, destructive deletion outside the repository,
-  billing, money movement, or merge.
-- Do not read, expose, or commit secrets or private data unless required.
+- A requested GitHub implementation authorizes source-issue updates,
+  task-branch pushes, and opening or updating its PR unless the user says
+  `local-only`.
+- Confirm the live target before an external mutation and verify the resulting
+  state.
+- Merge, auto-merge, release, publication, deployment, installation,
+  production impact, credentials, access, billing, money movement, destructive
+  deletion outside the repository, and irreversible migration are human gates.
+- Keep secrets, private data, and unrelated personal information out of
+  commits, issues, PRs, logs, and screenshots.
 
-## Project files
+## Project truth
 
-- Keep architecture, commands, pitfalls, checks, and deployment rules in the
-  project `AGENTS.md`. Prefer a `CLAUDE.md` symlink when both names are needed.
-- Every project `AGENTS.md` keeps its five newest meaningful dated changes, or
-  all entries until five exist. Older history belongs in `CHANGELOG.md`.
+- `AGENTS.md` owns stable operating rules and context pointers.
+- Issues own active intent, acceptance criteria, blockers, and implementation
+  evidence.
+- Code, tests, and configuration own implementation truth.
+- `README.md` serves users. `CONTEXT.md` is a glossary. ADRs preserve costly,
+  surprising, hard-to-reverse decisions. `CHANGELOG.md` records released
+  outcomes.
 - `STATUS.md` is an optional current snapshot containing only `Verified`,
   `Stage`, `Current`, `Evidence`, `Next`, and `Blocker`.
-- `CHANGELOG.md` is completed history, `TODO.md` is open actions, `ISSUES.md` is
-  known problems, and `IDEAS.md` is uncommitted options. Do not mix their roles.
-- For long-running work, use `GOAL_TEMPLATE.md` beside the resolved source of
-  this `AGENTS.md`. If unavailable, ask instead of inventing a format.
+- `TODO.md` is immediate local action. `ISSUES.md`, when intentionally present,
+  is a local known-problem ledger. `IDEAS.md` is optional future work. None
+  duplicates the configured tracker.
+- Every project `AGENTS.md` keeps its five newest meaningful dated changes, or
+  all entries until five exist. Older completed history belongs in
+  `CHANGELOG.md`.
+- Use `GOAL_TEMPLATE.md` only when tracker state does not provide the required
+  continuation contract.
 
 ## Handoff
 
-Report changes, branch and HEAD, commit and push state, the one check or none,
-unchecked areas, and any decision or wait. Distinguish implemented, tested,
-committed, pushed, deployed, published, and live-verified when relevant.
+Report the source issue, branch and HEAD, delivered outcome, proof, version,
+commit, push, PR, unchecked areas, decisions, and blockers.
+
+Distinguish implemented, proved, committed, pushed, PR-opened, approved, merged,
+released, published, deployed, installed, and live-verified.
 
 ## Recent Changes
 
+- 2026-08-26: Added the compact issue-first delivery contract and size-gated
+  routing to Matt Pocock's workflow skills.
 - 2026-08-21: Packaged the version-control skill and CLI as the `agentsmd`
   plugin, with Claude-compatible metadata kept separate from host verification.
 - 2026-08-21: Added repository SemVer rules and the shared `version-control`
