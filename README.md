@@ -12,8 +12,8 @@ repository version discipline across supported agent harnesses.
 - `VERSION`: canonical SemVer identity for this repository.
 - `.version-policy.json`: version, mirror, tag, release, and publication policy.
 - `CHANGELOG.md`: one dated entry for each completed repository version.
-- `.codex-plugin/`: installable Codex plugin identity and presentation metadata.
-- `.claude-plugin/`: prepared Claude Code plugin and local marketplace metadata.
+- `.codex-plugin/`, `.claude-plugin/`, `.grok-plugin/`: plugin identity on
+  Codex, Claude Code, and Grok Build. Install from marketplace toolboxmd.
 - `skills/version-control/`: semantic-impact workflow for coding agents.
 - `bin/versionctl`: plugin-relative entry point for the bundled CLI.
 - `tools/versionctl/`: dependency-free Python CLI for deterministic version
@@ -45,12 +45,11 @@ repositories can use the same mechanics implementation.
 
 ### Codex
 
-The `agentsmd@toolboxmd` plugin bundles the `version-control` skill and CLI for
-Codex. If the shared ToolboxMD marketplace is not configured yet, add its root,
-then install the plugin:
+The `agentsmd@toolboxmd` plugin bundles the `version-control` skill and CLI.
+Add marketplace toolboxmd, then install this plugin:
 
 ```sh
-codex plugin marketplace add "$(dirname "$AGENTSMD_DIR")"
+codex plugin marketplace add toolboxmd/marketplace
 codex plugin add agentsmd@toolboxmd
 ```
 
@@ -85,16 +84,21 @@ Ensure `$HOME/.local/bin` is on `PATH` for coding-agent shells.
 
 ### Claude Code compatibility
 
-The repository includes a Claude Code manifest and local marketplace catalog
-that reuse `skills/version-control/` and the bundled CLI. The namespaced skill
-is `/agentsmd:version-control`. These files are prepared for compatibility but
-were not installed or tested as part of the initial Codex-only validation.
+Add extraKnownMarketplaces `toolboxmd` pointing at `toolboxmd/marketplace`,
+then enable `agentsmd@toolboxmd`. If you previously used `agentsmd-local`,
+rename it. The namespaced skill is `/agentsmd:version-control`.
 
-As with Codex, the plugin does not install global instructions. Configure the
-canonical `AGENTS.md` or a `CLAUDE.md` link separately when global policy is
-desired.
+The plugin does not install global instructions. Configure the canonical
+`AGENTS.md` or a `CLAUDE.md` link separately when global policy is desired.
 
 ### Grok Build CLI
+
+```sh
+grok plugin marketplace add toolboxmd/marketplace
+grok plugin install agentsmd --trust
+```
+
+Global `AGENTS.md` is still a separate link if you want it in every session:
 
 ```sh
 mkdir -p "$HOME/.grok"
