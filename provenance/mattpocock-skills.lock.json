@@ -1,0 +1,40 @@
+{
+  "source": {
+    "repo": "mattpocock/skills",
+    "url": "https://github.com/mattpocock/skills/tree/main/skills",
+    "ref": "6654f6b60cd9d5be8b54c6fafe44346dabeb3b76"
+  },
+  "installedAt": "2026-08-26",
+  "destination": ".agents/skills",
+  "categories": {
+    "engineering": [
+      "ask-matt",
+      "code-review",
+      "codebase-design",
+      "diagnosing-bugs",
+      "domain-modeling",
+      "grill-with-docs",
+      "implement",
+      "improve-codebase-architecture",
+      "prototype",
+      "research",
+      "resolving-merge-conflicts",
+      "setup-matt-pocock-skills",
+      "tdd",
+      "to-spec",
+      "to-tickets",
+      "triage",
+      "wayfinder",
+      "wizard"
+    ],
+    "productivity": [
+      "grill-me",
+      "grilling",
+      "handoff",
+      "teach",
+      "to-questionnaire",
+      "wait-what",
+      "writing-for-agents"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "repo": "toolboxmd/use-grok",
+    "url": "https://github.com/toolboxmd/use-grok",
+    "ref": "a8ae6ab3c862de836ca576276a221610e3fe274c",
+    "path": "skills/use-grok"
+  },
+  "license": "Apache-2.0",
+  "files": {
+    "SKILL.md": "sha256:a07708fabb34d92b1c3f5f3efeaa03d383bc0f1cb4aa09f7f838c3c570f41a8c",
+    "agents/openai.yaml": "sha256:4a754f952f42112b48a02a007805e56e1c05a11104d08eba6df3d339469ff0d5",
+    "references/grok-cli.md": "sha256:9c63d9467c9f1c09caee145f8c927f5e0ae101e4f1cd431286fab7efb6018010"
+  }
+}

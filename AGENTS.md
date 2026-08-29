@@ -13,15 +13,15 @@ external state.
 
 - Use clear technical English. Prefer short sentences, active voice, concrete
   verbs, and one stable term per concept.
-- Use the repository's defined terms from `CONTEXT.md`. Follow
-  `CONTEXT-MAP.md` when present. Give enough local context to prevent ambiguity
-  without repeating shared context.
+- Use the repository's defined terms from `GLOSSARY.md`. Follow
+  `GLOSSARY-MAP.md` when present. Give enough local context to prevent
+  ambiguity without repeating shared context.
 - Keep the tone natural and match the user.
 - Re-pitch: when the user signals that the previous answer did not land,
   including `wait, what?`, a standalone `what?` or `huh?`, or
   `what do you mean?`, stop and explain the same point again before continuing.
-  Add the missing context, use short ASD-STE100-style technical English, and
-  reuse the project's defined terms from `CONTEXT.md` or `CONTEXT-MAP.md`.
+  Add the missing context, use clear technical English, and reuse the project's
+  defined terms from `GLOSSARY.md` or `GLOSSARY-MAP.md`.
 
 ### Response economy
 
@@ -64,18 +64,21 @@ external state.
 - Keep the diff focused on the Issue. Leave adjacent cleanup for a separate
   Issue.
 
-## Domain language
+## Project language
 
 - Before work that names or changes project concepts, read the root
-  `CONTEXT.md` when present. If a root `CONTEXT-MAP.md` exists, read it and the
-  relevant context's `CONTEXT.md`.
+  `GLOSSARY.md` when present. If a root `GLOSSARY-MAP.md` exists, read it and
+  the relevant domain's `GLOSSARY.md`.
 - When requested work establishes or changes a project-specific term, update
-  the appropriate `CONTEXT.md` in the same change. Create a root `CONTEXT.md`
-  lazily when the first project-specific term is agreed.
-- Keep `CONTEXT.md` glossary-only. Record canonical terms, short definitions,
+  the appropriate `GLOSSARY.md` in the same change. Create a root
+  `GLOSSARY.md` lazily when the first project-specific term is agreed.
+- Keep `GLOSSARY.md` glossary-only. Record canonical terms, short definitions,
   and avoided synonyms. Keep implementation details and plans elsewhere.
-- Use a root `CONTEXT-MAP.md` only when multiple distinct domain contexts need
+- Use a root `GLOSSARY-MAP.md` only when multiple distinct domains need
   separate language.
+- During migration, legacy `CONTEXT.md` and `CONTEXT-MAP.md` files are
+  read-only fallbacks when the new names are absent. Identify the migration
+  and write only the new filenames.
 - Read the relevant ADRs before changing a locked decision.
 
 ## Delivery
@@ -102,8 +105,9 @@ Choose the smallest lane that fits:
   decision path. Once the path is clear, continue through `to-spec` and
   `to-tickets`.
 
-Matt workflow skills are human-controlled. Use them when the user names one or
-asks to follow that workflow. Stop at their approval gates.
+AgentsMD workflow Skills are human-controlled. Use them when the user names
+one or asks to follow that workflow. Stop at their approval gates. Their
+ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
 
 Normal implementation uses one ready Issue, one task branch, and one PR.
 Selected workflows may define a different structure when dependencies require
@@ -190,7 +194,7 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
 - GitHub Issues records active intent, acceptance criteria, blockers, and
   implementation proof.
 - Code, tests, and configuration own implementation truth.
-- `README.md` serves users. `CONTEXT.md` owns project language. ADRs preserve
+- `README.md` serves users. `GLOSSARY.md` owns project language. ADRs preserve
   costly, surprising, hard-to-reverse decisions. `CHANGELOG.md` records
   released outcomes.
 - `STATUS.md` is an optional current snapshot containing only `Verified`,

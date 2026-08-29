@@ -1,31 +1,84 @@
 # agentsmd
 
-A small, opinionated, speed-first policy pack for coding agents. It keeps the
-same global working agreements, long-running Goal contract, and deterministic
-repository version discipline across supported agent harnesses.
+AgentsMD is the ToolboxMD source of truth for a portable agent operating
+contract, an approved workflow Skill Catalogue, and deterministic repository
+version control. The installable plugin exposes the same owned workflow suite
+to Codex, Claude Code, and Grok Build.
 
-## Files
+Project instructions remain closer to the code and take precedence over the
+global baseline. This matches the discovery model documented for
+[Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
+
+## Package contents
 
 - `AGENTS.md`: portable global working agreements.
-- `GOAL_TEMPLATE.md`: harness-neutral `GOAL.md` and `STATUS.md` contract for
-  work that must continue across sessions.
-- `VERSION`: canonical SemVer identity for this repository.
-- `.version-policy.json`: version, mirror, tag, release, and publication policy.
-- `CHANGELOG.md`: one dated entry for each completed repository version.
-- `.codex-plugin/`, `.claude-plugin/`, `.grok-plugin/`: plugin identity on
-  Codex, Claude Code, and Grok Build. Install from marketplace toolboxmd.
-- `skills/version-control/`: semantic-impact workflow for coding agents.
-- `bin/versionctl`: plugin-relative entry point for the bundled CLI.
-- `tools/versionctl/`: dependency-free Python CLI for deterministic version
-  mechanics and commit-hook enforcement.
+- `GLOSSARY.md`: canonical AgentsMD project language.
+- `SKILL_CATALOGUE.md`: authoritative ownership, lifecycle, provenance,
+  licence, and adaptation inventory.
+- `THIRD_PARTY_NOTICES.md` and `LICENSES/`: redistributed-source notices.
+- `skills/`: only the Active Skills in the catalogue.
+- `GOAL_TEMPLATE.md`: harness-neutral continuation contract when GitHub Issue
+  state is insufficient.
+- `VERSION`, `.version-policy.json`, and `CHANGELOG.md`: canonical release
+  identity and history.
+- `.codex-plugin/`, `.claude-plugin/`, and `.grok-plugin/`: host package
+  identity for the ToolboxMD Plugin Registry.
+- `bin/versionctl` and `tools/versionctl/`: the plugin entry point and
+  dependency-free version mechanics.
 - `.github/workflows/`: read-only transition validation and policy-authorized
   exact-SHA GitHub Release automation.
 
-Project-level instructions remain closer to the code and take precedence over
-the global baseline. This matches the discovery model documented for
-[Codex AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
+## Skill Catalogue
 
-## Install
+The [AgentsMD Skill Catalogue](SKILL_CATALOGUE.md) is the only authoritative
+inventory for this package. The initial Active set is:
+
+- AgentsMD-native: `version-control`.
+- ToolboxMD-native: `use-grok`.
+- Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
+  `domain-modeling`, `to-spec`, `to-tickets`, `wayfinder`, and
+  `writing-for-agents`.
+
+The catalogue records exact source revisions, current ownership, origin,
+licence, lifecycle, and local adaptation. Matt-derived material retains its
+MIT notice. `use-grok` retains its Apache-2.0 licence and separate source
+history. Deferred, retired, and upstream-reference Skills are documented but
+remain outside active plugin discovery.
+
+The workflow Skills are human-controlled. `grilling`, `to-spec`,
+`to-tickets`, and `wayfinder` run only when the user selects that workflow and
+stop at their documented approval gates. `use-grok` runs only after the user
+explicitly asks to consult Grok.
+
+## Registry boundaries
+
+Product Registry, Plugin Registry, and Skill Catalogue are separate ownership
+surfaces:
+
+- [`toolbox.md`](https://github.com/toolboxmd/toolbox.md) is the Product
+  Registry and Discovery Portal for the complete ToolboxMD portfolio.
+- [`toolboxmd/marketplace`](https://github.com/toolboxmd/marketplace) is the
+  Plugin Registry and distribution channel for installable plugins.
+- The [Skill Catalogue](SKILL_CATALOGUE.md) owns only AgentsMD Skill discovery
+  and lifecycle.
+
+Karpathy Wiki, ContextMD, Building Agent Skills, GitPix, OpenBot, and other
+independent ToolboxMD products keep separate product and release lifecycles.
+They are not AgentsMD leaf Skills.
+
+## Glossary convention
+
+`GLOSSARY.md` owns canonical project language for one domain.
+`GLOSSARY-MAP.md` routes agents only when several distinct domains need
+separate glossaries. A missing glossary is valid. Create one lazily when the
+first project-specific term is agreed.
+
+Legacy `CONTEXT.md` and `CONTEXT-MAP.md` files are read-only migration
+fallbacks when the new files are absent. Active AgentsMD Skills never create
+or update the legacy names. ContextMD remains the reserved name for the future
+ToolboxMD Agent Knowledge and Learning System.
+
+## Install boundary
 
 Clone the repository wherever you keep shared tools:
 
@@ -35,86 +88,88 @@ cd agentsmd
 AGENTSMD_DIR="$(pwd -P)"
 ```
 
-Before linking, move any existing target file to a timestamped backup. Do not
-overwrite an existing file or symlink without inspecting it.
+The plugin installs the Active Skill set and bundled CLI entry point. It does
+not make this repository's `AGENTS.md` global, put `versionctl` on a normal
+terminal `PATH`, remove old global Skills, or change another plugin.
 
-Link `AGENTS.md` and the `version-control` skill into each harness. The Goal
-rule resolves the global rules link to this clone and reads the adjacent
-`GOAL_TEMPLATE.md` on demand. Install or link `versionctl` once so adopted
-repositories can use the same mechanics implementation.
+Before migration, inspect every existing Skill with the same name. Hosts may
+show duplicate Skill names instead of merging them. Keep the old installation
+until the replacement release is installed and Live Verified, then remove or
+disable the old copy only with explicit authorization. Never overwrite a
+global instruction file or symlink without inspecting and backing it up.
+
+After installing or updating the plugin, start a fresh session. Existing
+sessions retain the Skill inventory and instruction chain loaded at startup.
 
 ### Codex
 
-The `agentsmd@toolboxmd` plugin bundles the `version-control` skill and CLI.
-Add marketplace toolboxmd, then install this plugin:
+Add the ToolboxMD marketplace and install the plugin:
 
 ```sh
 codex plugin marketplace add toolboxmd/marketplace
 codex plugin add agentsmd@toolboxmd
 ```
 
-Start a new Codex session after installation. Invoke the bundled skill with
-`$version-control`; its description also allows implicit invocation for tracked
-repository changes.
+In a fresh session, type `$` or use `/skills` to select a bundled Skill. Plugin
+Skills use the AgentsMD namespace, for example `$agentsmd:to-spec` and
+`$agentsmd:version-control`. A Skill may also activate implicitly when its
+description allows that behavior.
 
-Plugin installation does not make this repository's `AGENTS.md` global and
-does not put `versionctl` on the PATH of ordinary terminal sessions. Keep the
-global rules and stable CLI links below when those behaviors are required.
+Codex reads global guidance from `AGENTS.md` in `CODEX_HOME`, which defaults
+to `~/.codex`. Configure that separately when you want the AgentsMD contract in
+every repository:
 
 ```sh
 mkdir -p "$HOME/.codex"
 ln -s "$AGENTSMD_DIR/AGENTS.md" "$HOME/.codex/AGENTS.md"
 ```
 
-Codex officially reads global guidance from `AGENTS.md` in `CODEX_HOME`, which
-defaults to `~/.codex`. It rebuilds the instruction chain on each new run or
-TUI session.
-
-Link the skill and CLI without copying their implementations:
+Do not also link the packaged Skills into `$HOME/.agents/skills`; that creates
+duplicate active copies. Link only the standalone CLI when ordinary terminal
+sessions require it:
 
 ```sh
-mkdir -p "$HOME/.codex/skills" "$HOME/.local/bin"
-ln -s "$AGENTSMD_DIR/skills/version-control" \
-  "$HOME/.codex/skills/version-control"
+mkdir -p "$HOME/.local/bin"
 ln -s "$AGENTSMD_DIR/tools/versionctl/bin/versionctl" \
   "$HOME/.local/bin/versionctl"
 ```
 
 Ensure `$HOME/.local/bin` is on `PATH` for coding-agent shells.
 
-### Claude Code compatibility
+### Claude Code
 
-Add extraKnownMarketplaces `toolboxmd` pointing at `toolboxmd/marketplace`,
-then enable `agentsmd@toolboxmd`. If you previously used `agentsmd-local`,
-rename it. The namespaced skill is `/agentsmd:version-control`.
+Add the `toolboxmd/marketplace` repository as the `toolboxmd` marketplace,
+then install and enable `agentsmd@toolboxmd`. In a fresh session, select the
+namespaced command, for example `/agentsmd:to-spec` or
+`/agentsmd:version-control`.
 
 The plugin does not install global instructions. Configure the canonical
 `AGENTS.md` or a `CLAUDE.md` link separately when global policy is desired.
 
-### Grok Build CLI
+### Grok Build
 
 ```sh
 grok plugin marketplace add toolboxmd/marketplace
 grok plugin install agentsmd --trust
 ```
 
-Global `AGENTS.md` is still a separate link if you want it in every session:
+Start a fresh session and select the AgentsMD Skill from the host's Skill
+surface. Global `AGENTS.md` remains a separate installation:
 
 ```sh
 mkdir -p "$HOME/.grok"
 ln -s "$AGENTSMD_DIR/AGENTS.md" "$HOME/.grok/AGENTS.md"
 ```
 
-Verified with Grok Build CLI 1.0.5. Grok loads the global `AGENTS.md`
-automatically. The Goal rule locates the adjacent template on demand.
+`use-grok` still requires an authenticated Grok Build CLI and explicit user
+invocation. Authentication, quota, and credit use are separate Human Gates.
 
 ### Other harnesses
 
-Configure the cloned `AGENTS.md` as global instructions, expose
-`skills/version-control/` through the harness skill discovery path, and keep
-`GOAL_TEMPLATE.md` beside its canonical source. The Goal files remain useful
-even without a native Goal feature because Git stores the approved contract and
-current status.
+Configure the cloned `AGENTS.md` as global instructions, expose only the
+Active `skills/` directories through the harness Skill discovery path, and
+keep `GOAL_TEMPLATE.md` beside its canonical source. Do not expose the same
+Skill through both the plugin and a global directory.
 
 ## Version an adopted repository
 

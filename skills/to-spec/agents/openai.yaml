@@ -1,0 +1,5 @@
+interface:
+  display_name: "To Spec"
+  short_description: "Publish a conversation as a parent GitHub Issue"
+policy:
+  allow_implicit_invocation: false

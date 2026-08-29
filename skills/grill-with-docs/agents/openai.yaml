@@ -1,0 +1,5 @@
+interface:
+  display_name: "Grill with Docs"
+  short_description: "Grill a design and record durable language"
+policy:
+  allow_implicit_invocation: false
