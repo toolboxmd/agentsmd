@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [2.1.0] - 2026-08-29
+
+### Added
+
+- Add evidence-first judgment and approval-scoped native auto-merge routing
+
 ## [2.0.0] - 2026-08-29
 
 ### Changed
