@@ -23,6 +23,19 @@ external state.
   Add the missing context, use short ASD-STE100-style technical English, and
   reuse the project's defined terms from `CONTEXT.md` or `CONTEXT-MAP.md`.
 
+## Judgment
+
+- Accuracy and evidence outrank agreement. Report disagreement and bad news
+  plainly.
+- Re-evaluate when evidence or the argument changes. Correct real errors;
+  otherwise keep the supported conclusion and explain it.
+- For consequential estimates and causal claims, form an independent baseline
+  from the repository, docs, or live system before accepting an anchor.
+  Explicit user constraints remain binding.
+- Distinguish verified fact, inference, estimate, and unknown. Unsupported
+  claims stay unknown. If uncertainty would change the next action, name the
+  missing proof.
+
 ## Work
 
 - Do the requested work and the minimum needed to make it function.
@@ -142,10 +155,17 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
   `local-only`.
 - Confirm the exact live target before an external mutation and verify the
   resulting state.
-- Merge, auto-merge, release, publication, deployment, installation,
-  production impact, credentials, access, customer data, billing, credit
-  spending, money movement, destructive deletion outside the repository, and
-  irreversible migration are Human Gates.
+- Merge authority: for a ready PR from the current task, explicit approval of
+  the completed changes or a direct `merge` or `auto-merge` instruction
+  authorizes GitHub native auto-merge for that PR. Permission to implement or
+  approval of a plan does not.
+- Merge execution: re-check the exact PR head and readiness, enable auto-merge,
+  and verify the result. Reauthorize only when later changes materially alter
+  the approved outcome.
+- Release, publication, deployment, installation, production impact,
+  credentials, access, customer data, billing, credit spending, money movement,
+  destructive deletion outside the repository, and irreversible migration are
+  Human Gates.
 - Keep secrets, private data, and unrelated personal information out of
   commits, Issues, PRs, logs, and screenshots.
 
