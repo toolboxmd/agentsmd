@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [2.4.0] - 2026-08-29
+
+### Added
+
+- Add closed-loop reduction and fast-feedback guidance for agent work
+
 ## [2.3.0] - 2026-08-29
 
 ### Added

@@ -69,27 +69,7 @@ external state.
 
 ## Work
 
-- Apply this order in short, closed loops until required proof passes or a
-  blocker requires handoff. Keep each loop to the smallest meaningful
-  integrated change or experiment and the fastest available check that can
-  falsify the current assumption. Inspect the result, correct the model and
-  implementation, expose bad news immediately, then repeat:
-  1. Establish the useful outcome. Challenge inherited requirements,
-     assumptions, and ownership before accepting the proposed path. The user's
-     stated outcome, explicit constraints, governing instructions, and Human
-     Gates remain binding.
-  2. Reject or delete in-scope Git-backed code, tests, configuration,
-     abstractions, dependencies, scope, artifacts, process, and ceremony that
-     do not serve the current outcome, even if they might later be useful.
-     Rely on committed Git history for later recovery. Restore only when
-     evidence shows the removed work is required for the current outcome.
-     Addback maps the tested boundary and is a normal cost of learning, not
-     proof that deletion was wrong. Keep a test only when it provides distinct
-     proof of required behavior.
-  3. Simplify only what survives deletion.
-  4. After the path is sound, shorten iteration time and attack the current
-     constraint.
-  5. Automate only a necessary, stable, proven, recurring loop.
+- Do the requested work and the minimum needed to make it function.
 - Keep audits, diagnoses, explanations, and reviews read-only unless the user
   asks for implementation.
 - Make reversible assumptions within scope. Ask only when a decision changes
@@ -169,10 +149,9 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
 ## Proof
 
 - Proof comes from the Issue, project instructions, selected skill, and risk.
-- Use TDD for bug reproductions and high-risk behavioral seams. Prove required
-  behavior at the required seam. When none is specified, use the highest
-  practical real seam. A broad suite does not replace a more direct required
-  seam.
+- Loop on the smallest relevant checks while implementing.
+- Use TDD for bug reproductions and high-risk behavioral seams. Otherwise prove
+  behavior at the highest practical seam.
 - When `implement` is selected, follow its stronger TDD, suite, review, and
   commit requirements.
 - Self-review the complete diff against the Issue, project rules, scope,
