@@ -11,17 +11,29 @@ external state.
 
 ## Communication
 
-- Use clear technical English. Lead with the outcome. Prefer short sentences,
-  active voice, concrete verbs, and one stable term per concept.
+- Use clear technical English. Prefer short sentences, active voice, concrete
+  verbs, and one stable term per concept.
 - Use the repository's defined terms from `CONTEXT.md`. Follow
-  `CONTEXT-MAP.md` when present. Give enough context for each answer to stand
-  alone.
+  `CONTEXT-MAP.md` when present. Give enough local context to prevent ambiguity
+  without repeating shared context.
 - Keep the tone natural and match the user.
 - Re-pitch: when the user signals that the previous answer did not land,
   including `wait, what?`, a standalone `what?` or `huh?`, or
   `what do you mean?`, stop and explain the same point again before continuing.
   Add the missing context, use short ASD-STE100-style technical English, and
   reuse the project's defined terms from `CONTEXT.md` or `CONTEXT-MAP.md`.
+
+### Response economy
+
+- Be concise. Lead with the outcome; keep decision-critical evidence, caveats,
+  and established next actions. Drop filler, repeated summaries, generic
+  reassurance, decorative formatting, optional background, and routine process
+  recaps.
+- Compress phrasing, not meaning. Preserve negation, uncertainty, exceptions,
+  exact numbers, units, commands, identifiers, exact errors, ownership,
+  permissions, and delivery states.
+- Expand for risk, permission gates, ambiguity, ordering, an unfamiliar
+  audience, or when asked.
 
 ## Judgment
 

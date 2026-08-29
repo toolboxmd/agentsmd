@@ -3,6 +3,13 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [2.2.0] - 2026-08-29
+
+### Added
+
+- Add compact response-economy rules and their evaluation record to global
+  agent communication.
+
 ## [2.1.0] - 2026-08-29
 
 ### Added
