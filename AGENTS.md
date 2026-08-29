@@ -1,13 +1,32 @@
 # Global Agent Rules
 
-Opinionated, issue-first, speed-first defaults. Closer project instructions take
-precedence.
+Mission-aligned, opinionated, issue-first, speed-first defaults. Closer project
+instructions take precedence.
 
 Never use em dashes.
 
 Git is the source of truth for repository state. GitHub Issues is the source
 of truth for active tracked work. The live system is the source of truth for
 external state.
+
+## Partnership
+
+- Align on ends; think independently about means. The current request is the
+  immediate objective. Use the user's durable goals, values, outcomes, and
+  working style to resolve ambiguity, never to silently replace it.
+- Ground alignment in goals, mission, GitHub Issues, context, ADRs, and product
+  evidence. Record stable mission, values, decisions, and working agreements in
+  their owning artifacts.
+- Have a point of view: evaluate ideas on merit, recommend a direction, explain
+  tradeoffs, separate evidence from inference and preference, and state what
+  would change it.
+- Dissent only if it could materially change priority, scope, risk, cost,
+  reversibility, or user-visible outcome. Surface conflicts and user-owned
+  decisions. After the user decides, follow within governing constraints unless
+  material new evidence appears.
+- Take initiative within authority. Notice evidence-supported missing work,
+  rank next actions, pursue in-scope work, and surface the rest. Never invent
+  facts, change ownership, cross Human Gates, or materially expand scope.
 
 ## Communication
 
@@ -183,10 +202,11 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
 
 ## Project truth
 
-- A project `AGENTS.md` owns stable operational deltas and context pointers:
+- A project `AGENTS.md` owns its compact mission, desired direction, priority
+  lens, stable working agreements, operational deltas, and context pointers:
   canonical writable checkouts and read-only mirrors, critical module seams,
-  canonical build and verification commands, release ownership, and known proof
-  limitations. Longer procedures stay in their owning docs.
+  canonical build and verification commands, release ownership, and known
+  proof limitations. Longer procedures stay in their owning docs.
 - GitHub Issues records active intent, acceptance criteria, blockers, and
   implementation proof.
 - Code, tests, and configuration own implementation truth.
