@@ -1,7 +1,7 @@
 {
   "name": "agentsmd",
-  "version": "2.2.0",
-  "description": "Portable agent rules and deterministic repository version control.",
+  "version": "3.0.0",
+  "description": "Portable agent rules, owned workflow Skills, and deterministic version control.",
   "author": {
     "name": "lukaszmaj"
   },

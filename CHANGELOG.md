@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [3.0.0] - 2026-08-29
+
+### Changed
+
+- Own and package the AgentsMD workflow Skill Catalogue
+
 ## [2.2.0] - 2026-08-29
 
 ### Added

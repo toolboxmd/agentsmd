@@ -1,0 +1,6 @@
+interface:
+  display_name: "Use Grok"
+  short_description: "Consult the local Grok Build CLI"
+
+policy:
+  allow_implicit_invocation: true

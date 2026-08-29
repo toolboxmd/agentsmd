@@ -1,7 +1,7 @@
 {
   "name": "agentsmd",
-  "version": "2.2.0",
-  "description": "Portable agent rules and deterministic repository version control.",
+  "version": "3.0.0",
+  "description": "Portable agent rules, owned workflow Skills, and deterministic version control.",
   "author": {
     "name": "lukaszmaj",
     "url": "https://github.com/toolboxmd"
@@ -13,13 +13,15 @@
     "agents",
     "git",
     "semver",
-    "version-control"
+    "skills",
+    "version-control",
+    "workflow"
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "AgentsMD Version Control",
-    "shortDescription": "Keep repository versions and releases consistent.",
-    "longDescription": "Apply the version-control skill and bundled versionctl CLI to keep SemVer, changelogs, commits, tags, and releases consistent.",
+    "displayName": "AgentsMD Workflow Suite",
+    "shortDescription": "Use portable agent rules and owned workflow Skills.",
+    "longDescription": "Shape, specify, split, and prove GitHub work with the AgentsMD Skill Catalogue, explicit Grok delegation, and deterministic version control.",
     "developerName": "toolbox.md",
     "category": "Developer Tools",
     "capabilities": [
@@ -28,9 +30,11 @@
     ],
     "websiteURL": "https://github.com/toolboxmd/agentsmd",
     "defaultPrompt": [
-      "Check this repository's version state.",
+      "Stress-test this plan before implementation.",
+      "Turn this approved conversation into GitHub Issues.",
+      "Ask Grok to review this implementation.",
       "Prepare the correct version for this change.",
-      "Install repository version-control hooks."
+      "Check this repository's version state."
     ]
   }
 }
