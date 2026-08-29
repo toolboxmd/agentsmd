@@ -17,11 +17,8 @@ external state.
   `CONTEXT-MAP.md` when present. Give enough context for each answer to stand
   alone.
 - Keep the tone natural and match the user.
-- Re-pitch: when the user signals that the previous answer did not land,
-  including `wait, what?`, a standalone `what?` or `huh?`, or
-  `what do you mean?`, stop and explain the same point again before continuing.
-  Add the missing context, use short ASD-STE100-style technical English, and
-  reuse the project's defined terms from `CONTEXT.md` or `CONTEXT-MAP.md`.
+- When the user invokes `wait-what`, use that skill to re-pitch the previous
+  answer with more context.
 
 ## Work
 
@@ -30,10 +27,8 @@ external state.
   asks for implementation.
 - Make reversible assumptions within scope. Ask only when a decision changes
   scope, risk, authority, or the user-visible result.
-- Treat dirty, untracked, and unrecognized changes as user-owned. Do not modify
-  or stage them. Continue only while your file set and proof remain independent.
-  Stop for unsafe overlap, a moving base, or a material decision, and report
-  unrelated changes separately in the handoff.
+- Preserve dirty and untracked user work. Stop for unsafe overlap, a moving
+  base, or a material decision.
 - Keep each branch and file set under one writer. Parallelize only independent
   work.
 - Keep the diff focused on the Issue. Leave adjacent cleanup for a separate
@@ -134,6 +129,8 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
   commit, tag, and release contract.
 - Preserve missing-policy boundaries. Adopt versioning only as its own
   authorized change.
+- Report version, commit, push, PR, merge, tag, release, publication,
+  deployment, installation, and Live Verification as separate states.
 
 ## Human gates
 
@@ -151,10 +148,7 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
 
 ## Project truth
 
-- A project `AGENTS.md` owns stable operational deltas and context pointers:
-  canonical writable checkouts and read-only mirrors, critical module seams,
-  canonical build and verification commands, release ownership, and known proof
-  limitations. Longer procedures stay in their owning docs.
+- `AGENTS.md` owns stable operating rules and context pointers.
 - GitHub Issues records active intent, acceptance criteria, blockers, and
   implementation proof.
 - Code, tests, and configuration own implementation truth.
@@ -182,3 +176,17 @@ integrations exercised, and observed result.
 
 Distinguish implemented, proved, committed, pushed, PR-opened, approved, merged,
 released, published, deployed, installed, and live-verified.
+
+## Recent Changes
+
+- 2026-08-29: Simplified delivery around GitHub Issues and added clear
+  technical English, lazy domain glossaries, and strict real-path Live
+  Verification.
+- 2026-08-26: Added the compact issue-first delivery contract and size-gated
+  routing to Matt Pocock's workflow skills.
+- 2026-08-21: Packaged the version-control skill and CLI as the `agentsmd`
+  plugin, with Claude-compatible metadata kept separate from host verification.
+- 2026-08-21: Added repository SemVer rules and the shared `version-control`
+  skill and CLI contract.
+- 2026-08-21: Removed redundant per-harness Goal-template links; the global
+  rules now resolve the bundled template beside their canonical source.
