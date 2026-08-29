@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [2.0.0] - 2026-08-29
+
+### Changed
+
+- Simplify the global agent contract and make explanation recovery self-contained
+
 ## [1.1.0] - 2026-08-27
 
 ### Added
