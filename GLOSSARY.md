@@ -5,6 +5,28 @@ The ToolboxMD project that owns the portable agent operating contract and its
 installable workflow plugin.
 _Avoid_: Matt Skill pack, global prompt repository
 
+**Project Direction**:
+The coherent repository-root triad of `VISION.md`, `MISSION.md`, and
+`OBJECTIVE.md` that owns the project's confirmed long-range destination,
+present purpose, and single current outcome.
+_Avoid_: North Star, strategy bundle, project brief
+
+**Vision**:
+The aspirational long-range destination the project wants to make real, not
+the current work. It may be directional rather than measurable and is recorded
+in root `VISION.md`.
+_Avoid_: long-term Objective, roadmap
+
+**Mission**:
+The present-tense reason the project exists, the problem it solves, and what it
+does to move toward the Vision. It is recorded in root `MISSION.md`.
+_Avoid_: Vision, Objective, company slogan
+
+**Objective**:
+The single current outcome the project must accomplish now, with a recognizable
+completion condition. It is recorded in root `OBJECTIVE.md`.
+_Avoid_: Current Goal, task list, backlog
+
 **Skill**:
 An Agent Skills-compatible package that gives an agent a reusable procedure or
 reference behind a named invocation boundary.

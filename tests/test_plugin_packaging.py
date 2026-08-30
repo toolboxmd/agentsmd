@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import unittest
 from pathlib import Path
 
@@ -15,6 +16,7 @@ ACTIVE_SKILLS = {
     "domain-modeling",
     "grill-with-docs",
     "grilling",
+    "project-direction",
     "to-spec",
     "to-tickets",
     "use-grok",
@@ -70,6 +72,25 @@ def frontmatter(relative: str) -> str:
 
 
 class PluginPackagingTests(unittest.TestCase):
+    def test_project_direction_hooks_cover_supported_reload_boundaries(self) -> None:
+        hook_config = json.loads((ROOT / "hooks/hooks.json").read_text())
+        hooks = hook_config["hooks"]
+        self.assertEqual(
+            hooks["SessionStart"][0]["matcher"],
+            "^(startup|resume|clear|compact)$",
+        )
+        self.assertNotIn("matcher", hooks["UserPromptSubmit"][0])
+        self.assertNotIn("matcher", hooks["SubagentStart"][0])
+        for event in ("SessionStart", "UserPromptSubmit", "SubagentStart"):
+            with self.subTest(event=event):
+                handler = hooks[event][0]["hooks"][0]
+                self.assertEqual(handler["type"], "command")
+                self.assertEqual(
+                    handler["command"],
+                    '"${CLAUDE_PLUGIN_ROOT}/bin/project-direction" hook',
+                )
+                self.assertEqual(handler["additionalContextLimit"], 6000)
+
     def test_three_host_identity(self) -> None:
         manifests = {
             "codex": json.loads((ROOT / ".codex-plugin/plugin.json").read_text()),
@@ -107,6 +128,10 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_complete_supporting_resources_are_packaged(self) -> None:
         expected = {
+            "skills/project-direction/references/file-contracts.md",
+            "skills/project-direction/templates/MISSION.md",
+            "skills/project-direction/templates/OBJECTIVE.md",
+            "skills/project-direction/templates/VISION.md",
             "skills/domain-modeling/ADR-FORMAT.md",
             "skills/domain-modeling/GLOSSARY-FORMAT.md",
             "skills/use-grok/references/grok-cli.md",
@@ -116,6 +141,12 @@ class PluginPackagingTests(unittest.TestCase):
         }
         missing = [relative for relative in expected if not (ROOT / relative).is_file()]
         self.assertEqual(missing, [])
+
+    def test_project_direction_runtime_files_are_packaged_and_executable(self) -> None:
+        for relative in ("bin/project-direction", "hooks/hooks.json"):
+            with self.subTest(relative=relative):
+                self.assertTrue((ROOT / relative).is_file())
+        self.assertTrue(os.access(ROOT / "bin/project-direction", os.X_OK))
 
     def test_matt_adaptations_declare_origin_and_licence(self) -> None:
         for name in MATT_ADAPTATIONS:
@@ -152,6 +183,18 @@ class PluginPackagingTests(unittest.TestCase):
         self.assertIn("6654f6b60cd9d5be8b54c6fafe44346dabeb3b76", catalogue)
         self.assertIn("a8ae6ab3c862de836ca576276a221610e3fe274c", catalogue)
 
+    def test_catalogue_owns_project_direction_as_native_active_skill(self) -> None:
+        catalogue = read_text("SKILL_CATALOGUE.md")
+        row = next(
+            line
+            for line in catalogue.splitlines()
+            if line.startswith("| `project-direction`")
+        )
+        self.assertIn("AgentsMD-native; this release commit", row)
+        self.assertIn("Active", row)
+        self.assertIn("MIT", row)
+        self.assertIn("Vision, Mission, and Objective", row)
+
     def test_every_catalogue_row_resolves_an_exact_source_revision(self) -> None:
         catalogue = read_text("SKILL_CATALOGUE.md")
         rows = {
@@ -162,7 +205,7 @@ class PluginPackagingTests(unittest.TestCase):
         for name in ACTIVE_SKILLS | MATT_SKILLS:
             with self.subTest(skill=name):
                 row = rows[name]
-                if name == "version-control":
+                if name in {"project-direction", "version-control"}:
                     self.assertIn("this release commit", row)
                 elif name == "use-grok":
                     self.assertIn("use-grok pin", row)
