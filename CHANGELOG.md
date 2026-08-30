@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [3.2.0] - 2026-08-30
+
+### Added
+
+- Add ordered reduction Algorithm and source-checked guidance
+
 ## [3.1.0] - 2026-08-30
 
 ### Added
