@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [4.0.2] - 2026-08-30
+
+### Changed
+
+- Document Caveman Learn output-limit pilot
+
 ## [4.0.1] - 2026-08-30
 
 ### Changed
