@@ -102,6 +102,17 @@ class PluginPackagingTests(unittest.TestCase):
             self.assertEqual(manifest["version"], VERSION, label)
             self.assertIn("workflow", manifest["description"].lower(), label)
 
+    def test_codex_default_prompts_respect_host_limit(self) -> None:
+        manifest = json.loads((ROOT / ".codex-plugin/plugin.json").read_text())
+        prompts = manifest["interface"]["defaultPrompt"]
+        self.assertIsInstance(prompts, list)
+        self.assertGreaterEqual(len(prompts), 1)
+        self.assertLessEqual(len(prompts), 3)
+        for prompt in prompts:
+            with self.subTest(prompt=prompt):
+                self.assertIsInstance(prompt, str)
+                self.assertLessEqual(len(prompt), 128)
+
     def test_not_a_local_marketplace(self) -> None:
         for rel in (
             ".claude-plugin/marketplace.json",
