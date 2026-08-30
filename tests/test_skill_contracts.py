@@ -36,6 +36,27 @@ class SkillContractTests(unittest.TestCase):
         ):
             self.assertIn(required, agents)
 
+    def test_global_contract_runs_the_algorithm_in_order(self) -> None:
+        agents = read_text("AGENTS.md")
+        normalized = " ".join(agents.split())
+        stages = (
+            "Question every requirement.",
+            "Delete the unnecessary part or process.",
+            "Simplify or optimize only what survives deletion.",
+            "Accelerate cycle time through the active constraint.",
+            "Automate last.",
+        )
+        positions = [normalized.index(stage) for stage in stages]
+        self.assertEqual(positions, sorted(positions))
+        for required in (
+            "The fixed order is binding",
+            "Addback maps the boundary; it is not a quota.",
+            "Run the Algorithm inside a closed evidence loop.",
+            "the fastest check that can falsify the current assumption",
+            "feedback, not final Proof",
+        ):
+            self.assertIn(required, normalized)
+
     def test_domain_modeling_owns_lazy_glossary_behavior(self) -> None:
         skill = read_text("skills/domain-modeling/SKILL.md")
         self.assertIn("`GLOSSARY.md`", skill)
