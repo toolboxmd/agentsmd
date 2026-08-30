@@ -1,0 +1,7 @@
+interface:
+  display_name: "Project Direction"
+  short_description: "Define and maintain Vision, Mission, and Objective"
+  default_prompt: "Use $project-direction to establish or review this repository's Project Direction."
+
+policy:
+  allow_implicit_invocation: true

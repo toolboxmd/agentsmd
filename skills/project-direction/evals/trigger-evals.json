@@ -1,0 +1,25 @@
+{
+  "skill_name": "project-direction",
+  "queries": [
+    {"query": "Create VISION.md, MISSION.md, and OBJECTIVE.md for this repository.", "should_trigger": true},
+    {"query": "The Project Direction loader says MISSION.md is missing.", "should_trigger": true},
+    {"query": "Our Objective is complete. Help define the next one.", "should_trigger": true},
+    {"query": "Review whether our Mission still matches our Vision.", "should_trigger": true},
+    {"query": "Update the project Vision after our strategy change.", "should_trigger": true},
+    {"query": "OBJECTIVE.md has TODO placeholders. Repair it.", "should_trigger": true},
+    {"query": "The direction files contradict one another.", "should_trigger": true},
+    {"query": "We abandoned the current Objective and need to reprioritize.", "should_trigger": true},
+    {"query": "The loader rejected an oversized VISION.md.", "should_trigger": true},
+    {"query": "Define Project Direction before we start coding.", "should_trigger": true},
+    {"query": "Read the existing direction files and summarize them.", "should_trigger": false},
+    {"query": "Implement the ready parser Issue.", "should_trigger": false},
+    {"query": "Explain what a mission statement is in general.", "should_trigger": false},
+    {"query": "Show git status without changing anything.", "should_trigger": false},
+    {"query": "Review this pull request against its Issue.", "should_trigger": false},
+    {"query": "Write a product specification for the approved Objective.", "should_trigger": false},
+    {"query": "Run the test suite and report failures.", "should_trigger": false},
+    {"query": "List the current GitHub Issues.", "should_trigger": false},
+    {"query": "Fix one typo in README.md.", "should_trigger": false},
+    {"query": "Read VISION.md before answering this design question.", "should_trigger": false}
+  ]
+}

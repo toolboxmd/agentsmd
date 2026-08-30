@@ -14,6 +14,79 @@ def read_text(relative: str) -> str:
 
 
 class SkillContractTests(unittest.TestCase):
+    def test_project_direction_skill_owns_all_repair_and_review_triggers(self) -> None:
+        skill = read_text("skills/project-direction/SKILL.md")
+        metadata = skill.split("---\n", 2)[1]
+        normalized_metadata = " ".join(metadata.split())
+        for required in (
+            "missing",
+            "blank",
+            "unreadable",
+            "oversized",
+            "unresolved placeholders",
+            "contradict",
+            "stale",
+            "achieved",
+            "invalidated",
+            "abandoned",
+            "reprioritized",
+            "define, review, or update",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized_metadata)
+        self.assertNotIn("disable-model-invocation", metadata)
+        self.assertIn("Do not invoke merely to reread", normalized_metadata)
+
+    def test_project_direction_skill_preserves_user_owned_strategy(self) -> None:
+        skill = read_text("skills/project-direction/SKILL.md")
+        normalized = " ".join(skill.split())
+        for required in (
+            "coherent unit",
+            "unsupported strategic claims unknown",
+            "Ask only for unresolved strategic decisions",
+            "explicit user confirmation before writing",
+            "Do not require repeated confirmation",
+            "modify only the files whose meaning changed",
+            "reread all three files in full",
+            "deliberate detour",
+            "advance the current Objective",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
+
+    def test_global_contract_requires_complete_current_project_direction(self) -> None:
+        agents = read_text("AGENTS.md")
+        normalized = " ".join(agents.split())
+        for required in (
+            "Project Direction",
+            "`VISION.md`, `MISSION.md`, and `OBJECTIVE.md`",
+            "at every task start, resume, clear, handoff, post-compaction continuation, and subagent start",
+            "locate and read all three files in full before any other work",
+            "Only the repository and tracker inspection required by that Skill may proceed",
+            "reported as oversized",
+            "Treat the current request as the immediate instruction",
+            "Surface material drift before proceeding",
+            "Every proposed Spec and Issue must state how its outcome advances the current Objective",
+            "Other Skills follow their own trigger and approval contracts",
+            "own current Project Direction",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
+
+    def test_root_direction_files_are_present_and_bounded(self) -> None:
+        expected_headings = {
+            "VISION.md": "# Vision\n",
+            "MISSION.md": "# Mission\n",
+            "OBJECTIVE.md": "# Objective\n",
+        }
+        total = 0
+        for relative, heading in expected_headings.items():
+            payload = (ROOT / relative).read_bytes()
+            total += len(payload)
+            self.assertTrue(payload.decode("utf-8").startswith(heading), relative)
+            self.assertLessEqual(len(payload), 8192, relative)
+        self.assertLessEqual(total, 16384)
+
     def test_global_contract_uses_new_glossary_names(self) -> None:
         agents = read_text("AGENTS.md")
         self.assertIn("`GLOSSARY.md`", agents)
@@ -146,6 +219,25 @@ class SkillContractTests(unittest.TestCase):
             "duplicate",
         ):
             self.assertIn(required, readme)
+
+    def test_readme_explains_project_direction_runtime_and_limits(self) -> None:
+        readme = read_text("README.md")
+        normalized = " ".join(readme.split())
+        self.assertNotIn("The workflow Skills are human-controlled.", readme)
+        for required in (
+            "VISION.md`, `MISSION.md`, and `OBJECTIVE.md",
+            "human-controlled planning workflows",
+            "`project-direction` is model-invoked",
+            "SessionStart",
+            "UserPromptSubmit",
+            "SubagentStart",
+            "8,192 bytes per file",
+            "16,384 bytes combined",
+            "does not prove reinjection after a subagent's private compaction",
+            "review and trust",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
 
 
 if __name__ == "__main__":

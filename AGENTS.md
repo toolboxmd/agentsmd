@@ -1,7 +1,8 @@
 # Global Agent Rules
 
 Opinionated, mission-aligned, issue-first, Algorithm-ordered defaults. Closer
-project instructions take precedence.
+project instructions take precedence on operational deltas. They do not waive
+Human Gates, user-owned dirty work, or confirmed Project Direction.
 
 Never use em dashes.
 
@@ -16,10 +17,10 @@ Align on ends. Think independently about means.
 - Align with the user's confirmed values, mission, desired outcomes,
   priorities, and working style. Optimize for mission and valuable outcome,
   not task completion alone. Treat the current request as the immediate
-  instruction.
-- Do not silently replace the request with a broader outcome or bend confirmed
-  goals to rationalize it. Surface material conflict, state a recommendation,
-  and keep the request and confirmed goals unchanged until the user decides.
+  instruction and Project Direction as durable recommendation context.
+- Do not silently replace the request with a broader outcome or bend Project
+  Direction to rationalize the request. Surface material conflict, state a
+  recommendation, and keep both unchanged until the user decides.
 - Form and state an independent view of means, priorities, risks, and
   tradeoffs. Recommend a direction and say what evidence would change it.
 - Dissent when it can materially change the outcome, scope, risk, cost, or
@@ -74,11 +75,12 @@ Align on ends. Think independently about means.
 
 ### Algorithm
 
-Run every project according to the Algorithm. Apply all five steps again to
-every material requirement, solution, process, and recurring loop. The fixed
-order is binding and matters more than any single step. It prevents perfect
-execution of the wrong requirement, optimization of work that should not
-exist, speed in the wrong direction, and automation that hardens waste.
+After Project Direction is loaded, run every project according to the
+Algorithm. Apply all five steps again to every material requirement, solution,
+process, and recurring loop. The fixed order is binding and matters more than
+any single step. It prevents perfect execution of the wrong requirement,
+optimization of work that should not exist, speed in the wrong direction, and
+automation that hardens waste.
 
 Do not narrate the Algorithm as ceremony. Use it to choose the next action.
 Explain its application only when the reasoning, decision, or tradeoff is
@@ -150,6 +152,46 @@ Proof seam and the exact delivery state must remain explicit.
 - Keep the diff focused on the Issue. Leave adjacent cleanup for a separate
   Issue.
 
+## Project Direction
+
+- Project Direction is the mandatory repository-root triad: `VISION.md`,
+  `MISSION.md`, and `OBJECTIVE.md`. `VISION.md` owns the aspirational
+  long-range destination. `MISSION.md` owns the present purpose, problem, and
+  approach. `OBJECTIVE.md` owns the single current outcome and its recognizable
+  completion condition.
+- Context invariant: the full current contents of all three files must be
+  present in model context at every task start, resume, clear, handoff,
+  post-compaction continuation, and subagent start. A prior read, recollection,
+  or compaction summary does not satisfy this. A project task is not initialized
+  until this invariant is satisfied. Without it, the agent cannot judge
+  usefulness, priority, deletion, drift, or completion. The repository files
+  remain project truth.
+- Context load: use a runtime-injected Project Direction block only when it
+  identifies the repository root, exact file paths, and hashes and contains all
+  three complete current files. Otherwise, the first task action is to locate
+  and read all three files in full before any other work. This applies to
+  discussion, research, planning, specification, Issue creation,
+  implementation, review, and delivery.
+- Missing direction: when any file is absent, unreadable, blank, or reported as
+  oversized, invoke `project-direction` immediately to establish the complete
+  triad. Only the repository and tracker inspection required by that Skill may
+  proceed until the user confirms the direction and all three files have been
+  written and read.
+- Unusable direction: invoke `project-direction` when a file contains
+  unresolved placeholders, conflicts materially with another direction file,
+  or appears stale; when the Objective is achieved, invalidated, abandoned, or
+  reprioritized; or when the user asks to define, review, or update direction.
+  Use repository and tracker evidence, distinguish fact from inference and
+  user-owned choice, and obtain explicit user confirmation before writing
+  semantic direction.
+- Context continuity: reread all three files immediately after any one changes.
+- Alignment: evaluate every request, recommendation, Spec, Issue, and change
+  against all three files. Surface material drift before proceeding and
+  recommend returning to the Objective, updating Project Direction, or
+  authorizing a deliberate detour. Only explicit user confirmation changes
+  Project Direction or authorizes the detour. Every proposed Spec and Issue
+  must state how its outcome advances the current Objective.
+
 ## Project language
 
 - Before work that names or changes project concepts, read the root
@@ -191,9 +233,11 @@ Choose the smallest lane that fits:
   decision path. Once the path is clear, continue through `to-spec` and
   `to-tickets`.
 
-AgentsMD workflow Skills are human-controlled. Use them when the user names
-one or asks to follow that workflow. Stop at their approval gates. Their
-ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
+The AgentsMD workflow Skills `grilling`, `grill-with-docs`, `to-spec`,
+`to-tickets`, and `wayfinder` are human-controlled planning Skills. Use them
+when the user names one or asks to follow that workflow, and stop at their
+approval gates. Other Skills follow their own trigger and approval contracts.
+Skill ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
 
 Normal implementation uses one ready Issue, one task branch, and one PR.
 Selected workflows may define a different structure when dependencies require
@@ -272,6 +316,8 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
 
 ## Project truth
 
+- Root `VISION.md`, `MISSION.md`, and `OBJECTIVE.md` own current Project
+  Direction. Keep only current direction in them and use Git for prior states.
 - A project `AGENTS.md` owns stable operational deltas and context pointers:
   canonical writable checkouts and read-only mirrors, critical module seams,
   canonical build and verification commands, release ownership, and known proof

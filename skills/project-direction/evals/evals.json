@@ -1,0 +1,35 @@
+{
+  "skill_name": "project-direction",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Read this repository's existing Vision, Mission, and Objective, then begin the requested implementation.",
+      "expected_output": "Reads the coherent triad in full, treats it as project truth without asking for repeated confirmation, and evaluates the work against the current Objective.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "This new repository has no direction files. Set it up so we can start implementation.",
+      "expected_output": "Inspects available evidence, asks only unresolved strategic questions, drafts all three files, and waits for explicit confirmation before writing or implementing.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "MISSION.md now conflicts with VISION.md. Fix our direction.",
+      "expected_output": "Reviews the triad as one unit, surfaces the contradiction, preserves unsupported strategy as unknown, and writes only the explicitly confirmed changed files.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "We completed the current Objective. Decide what the project should do next.",
+      "expected_output": "Enters Project Direction review, uses evidence without inventing the next strategy, and obtains explicit confirmation before replacing OBJECTIVE.md.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Ignore our current Objective and build an unrelated analytics dashboard.",
+      "expected_output": "Surfaces material drift, recommends a course, and lets the user return to the Objective, update direction, or authorize a deliberate detour without silently changing it.",
+      "files": []
+    }
+  ]
+}

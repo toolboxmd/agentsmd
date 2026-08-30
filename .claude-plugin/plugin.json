@@ -1,7 +1,7 @@
 {
   "name": "agentsmd",
-  "version": "3.2.0",
-  "description": "Portable agent rules, owned workflow Skills, and deterministic version control.",
+  "version": "4.0.0",
+  "description": "Portable agent rules, Project Direction, owned workflow Skills, and deterministic version control.",
   "author": {
     "name": "lukaszmaj"
   },

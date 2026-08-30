@@ -1,0 +1,42 @@
+{
+  "description": "Load complete Project Direction at supported task lifecycle boundaries.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/project-direction\" hook",
+            "statusMessage": "Loading Project Direction",
+            "additionalContextLimit": 6000
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/project-direction\" hook",
+            "statusMessage": "Checking Project Direction",
+            "additionalContextLimit": 6000
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/project-direction\" hook",
+            "statusMessage": "Loading Project Direction for subagent",
+            "additionalContextLimit": 6000
+          }
+        ]
+      }
+    ]
+  }
+}
