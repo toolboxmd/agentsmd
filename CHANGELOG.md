@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [3.1.0] - 2026-08-30
+
+### Added
+
+- Add mission-aligned independent partnership
+
 ## [3.0.0] - 2026-08-29
 
 ### Changed
