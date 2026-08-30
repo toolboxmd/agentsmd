@@ -1,6 +1,6 @@
 {
   "name": "agentsmd",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Portable agent rules, Project Direction, owned workflow Skills, and deterministic version control.",
   "author": {
     "name": "lukaszmaj",
@@ -31,11 +31,8 @@
     "websiteURL": "https://github.com/toolboxmd/agentsmd",
     "defaultPrompt": [
       "Establish or review this repository's Project Direction.",
-      "Stress-test this plan before implementation.",
-      "Turn this approved conversation into GitHub Issues.",
-      "Ask Grok to review this implementation.",
-      "Prepare the correct version for this change.",
-      "Check this repository's version state."
+      "Shape this work, then split it into ready GitHub Issues.",
+      "Review this implementation and prepare its correct release version."
     ]
   }
 }

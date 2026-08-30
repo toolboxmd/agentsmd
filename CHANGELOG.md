@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [4.0.1] - 2026-08-30
+
+### Changed
+
+- Keep Codex default prompts within supported limit
+
 ## [4.0.0] - 2026-08-30
 
 ### Changed
