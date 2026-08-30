@@ -24,6 +24,18 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("ASD-STE100-style", agents)
         self.assertIn("AgentsMD workflow Skills", agents)
 
+    def test_global_contract_defines_independent_partnership(self) -> None:
+        agents = read_text("AGENTS.md")
+        for required in (
+            "Align on ends. Think independently about means.",
+            "Optimize for mission and valuable outcome",
+            "Form and state an independent view",
+            "Dissent when it can materially change",
+            "Use initiative within authority",
+            "lead with it",
+        ):
+            self.assertIn(required, agents)
+
     def test_domain_modeling_owns_lazy_glossary_behavior(self) -> None:
         skill = read_text("skills/domain-modeling/SKILL.md")
         self.assertIn("`GLOSSARY.md`", skill)
