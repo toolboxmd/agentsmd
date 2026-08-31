@@ -30,13 +30,16 @@ open Issues for the same outcome before proposing a new one.
 
 ### 2. Orient to the repository
 
-Read the relevant `GLOSSARY.md`, `GLOSSARY-MAP.md`, ADRs, instructions,
+If this conversation has not already established the current state of the
+codebase, explore the relevant implementation and tests before drafting. Read
+the relevant `GLOSSARY.md`, `GLOSSARY-MAP.md`, ADRs, instructions,
 implementation seams, and existing proof. Legacy glossary files are read-only
 migration fallbacks when the new names are absent.
 
-Prefer one high public testing seam. Add a seam only when existing behavior
-cannot prove the outcome. Present the proposed seam and any remaining
-user-owned decision before publishing.
+Prefer an existing testing seam. Choose the highest public seam that can prove
+the outcome. Introduce as few new seams as possible, ideally one, and only when
+existing behavior cannot prove the outcome. Confirm the proposed seam with the
+user and present any remaining user-owned decision before publishing.
 
 ### 3. Draft the parent Issue
 
@@ -89,11 +92,13 @@ The proposed solution from the user's perspective.
 
 ## Implementation decisions
 
-- Approved module, interface, data, or integration decisions.
+- Approved modules and interfaces, technical clarifications, architectural
+  decisions, schema or API contracts, and specific interactions.
 
 ## Testing decisions
 
-- Public behavior to prove, chosen seam, and relevant prior art.
+- The external behavior to prove, modules exercised at the chosen public seam,
+  and relevant prior test art.
 
 ## Non-goals
 

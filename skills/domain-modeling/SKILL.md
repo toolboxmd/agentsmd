@@ -16,17 +16,46 @@ stress-test relationships with concrete scenarios, and write each resolved
 term when it crystallizes. Merely reading an existing glossary is normal
 project orientation and does not invoke this Skill.
 
-## Resolve the glossary
+## Repository structure
 
-Prefer the new names:
+Most repositories have one domain. Keep its glossary at the root and its
+shared architectural decisions under `docs/adr/`:
 
-- One domain uses a root `GLOSSARY.md`.
-- Multiple distinct domains use a root `GLOSSARY-MAP.md` that routes to each
-  domain's `GLOSSARY.md`.
+```text
+/
+|-- GLOSSARY.md
+|-- docs/
+|   `-- adr/
+|       |-- 0001-event-sourced-orders.md
+|       `-- 0002-postgres-for-write-model.md
+`-- src/
+```
+
+When a repository has multiple distinct domains, use a root
+`GLOSSARY-MAP.md` to route to each domain's glossary:
+
+```text
+/
+|-- GLOSSARY-MAP.md
+|-- docs/
+|   `-- adr/                         # system-wide decisions
+`-- src/
+    |-- ordering/
+    |   |-- GLOSSARY.md
+    |   `-- docs/adr/                # domain-specific decisions
+    `-- billing/
+        |-- GLOSSARY.md
+        `-- docs/adr/
+```
+
+The map is an index, not another glossary. Root `docs/adr/` records decisions
+that span domains. A domain's own `docs/adr/` records decisions specific to
+that domain.
 
 Create files lazily. A missing glossary is valid. Create `GLOSSARY.md` only
 when the first project-specific term is resolved. Create `GLOSSARY-MAP.md`
-only when multiple domains require separate language.
+only when multiple domains require separate language. Create `docs/adr/` only
+when the first qualifying ADR is needed.
 
 During migration, a missing new file may use legacy `CONTEXT.md` or
 `CONTEXT-MAP.md` as a read-only fallback. Identify that migration explicitly.

@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [5.0.1] - 2026-08-31
+
+### Changed
+
+- Restore adapted skill guidance from pinned upstream behavior
+
 ## [5.0.0] - 2026-08-31
 
 ### Changed
