@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/toolboxmd/marketplace/v0.3.0/schemas/project-record-v1.schema.json",
+  "id": "agentsmd",
+  "kind": "agent-module",
+  "outcome": "Align agent work with mission and Project Direction, then shape, deliver, and prove valuable outcomes through owned workflows.",
+  "factSources": {
+    "version": "VERSION",
+    "delivery": {
+      "codex": ".codex-plugin/plugin.json",
+      "claude-code": ".claude-plugin/plugin.json",
+      "grok-build": ".grok-plugin/plugin.json"
+    },
+    "skills": [
+      "skills/domain-modeling/SKILL.md",
+      "skills/grill-with-docs/SKILL.md",
+      "skills/grilling/SKILL.md",
+      "skills/project-direction/SKILL.md",
+      "skills/to-spec/SKILL.md",
+      "skills/to-tickets/SKILL.md",
+      "skills/use-grok/SKILL.md",
+      "skills/version-control/SKILL.md",
+      "skills/wayfinder/SKILL.md",
+      "skills/writing-for-agents/SKILL.md"
+    ],
+    "documentation": [
+      "README.md",
+      "SKILL_CATALOGUE.md"
+    ],
+    "requirements": [
+      "AGENTS.md",
+      ".version-policy.json"
+    ],
+    "proof": [
+      "tests/test_plugin_packaging.py",
+      "tests/test_project_direction_loader.py",
+      "tests/test_skill_contracts.py"
+    ]
+  }
+}

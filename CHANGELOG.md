@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [5.1.0] - 2026-08-31
+
+### Added
+
+- Publish the first Marketplace Project Record
+
 ## [5.0.1] - 2026-08-31
 
 ### Changed

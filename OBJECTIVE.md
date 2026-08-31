@@ -1,24 +1,24 @@
 # Objective
 
-Deliver Project Direction as one complete, installable AgentsMD capability and
-nothing else.
+Release the first conforming AgentsMD Project Record through the ToolboxMD
+Marketplace v1 contract.
 
 The Objective is complete when:
 
-- `VISION.md`, `MISSION.md`, and `OBJECTIVE.md` have concise contracts and are
-  required as current project truth.
-- The model-invoked `project-direction` Skill initializes, reviews, and updates
-  the coherent triad without inventing or silently replacing user direction.
-- The plugin injects the complete current triad at supported task lifecycle
-  boundaries and reports missing, invalid, or oversized direction without
-  partial loading.
-- The AgentsMD plugin packages the Skill, loader, hooks, templates, metadata,
-  catalogue entry, and focused tests as one exact artifact.
-- With-Skill, blind-baseline, fresh-repository, post-compaction, and subagent
-  acceptance prove the documented behavior and limitation boundaries.
-- The exact versioned artifact is merged, released, installed in an isolated
-  acceptance environment, and Live Verified without changing unrelated host
-  state.
+- `.toolboxmd/project.json` identifies AgentsMD as an Agent Module and states
+  its outcome without duplicating facts owned by released source files.
+- The record points to `VERSION`, native Codex, Claude Code, and Grok Build
+  manifests, Skill metadata owners, documentation, requirements, and proof
+  definitions in the same Git tree.
+- Contract and package tests prove the record is minimal, internally
+  consistent, and included in every supported AgentsMD artifact.
+- AgentsMD completes the appropriate minor SemVer transition with synchronized
+  mirrors and changelog.
+- The exact tagged release validates against the immutable Marketplace v0.3.0
+  Project Record v1 schema and proves one version, one Git tree, one record
+  digest, and consistent native manifests.
 
-Unrelated AgentsMD capabilities and broad rollout to other project repositories
-are outside this Objective.
+Changing Algorithm semantics, modifying existing releases, adding Marketplace
+ingestion, Cursor packaging, provider submissions, toolbox.md pages, bootstrap
+installation, and Agent Search Optimization benchmarking are outside this
+Objective.
