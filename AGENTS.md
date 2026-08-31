@@ -302,8 +302,7 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
   resulting state.
 - Merge authority: for a ready PR from the current task, explicit approval of
   the completed changes or a direct `merge` or `auto-merge` instruction
-  authorizes GitHub native auto-merge for that PR. Permission to implement or
-  approval of a plan does not.
+  authorizes GitHub native auto-merge for that PR.
 - Merge execution: re-check the exact PR head and readiness, enable auto-merge,
   and verify the result. Reauthorize only when later changes materially alter
   the approved outcome.
