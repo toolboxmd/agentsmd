@@ -132,10 +132,17 @@ class SkillContractTests(unittest.TestCase):
 
     def test_domain_modeling_owns_lazy_glossary_behavior(self) -> None:
         skill = read_text("skills/domain-modeling/SKILL.md")
-        self.assertIn("`GLOSSARY.md`", skill)
-        self.assertIn("`GLOSSARY-MAP.md`", skill)
-        self.assertIn("read-only fallback", skill)
-        self.assertIn("create files lazily", skill.lower())
+        for required in (
+            "`GLOSSARY.md`",
+            "`GLOSSARY-MAP.md`",
+            "read-only fallback",
+            "Create files lazily",
+            "|-- GLOSSARY.md",
+            "|-- GLOSSARY-MAP.md",
+            "system-wide decisions",
+            "domain-specific decisions",
+        ):
+            self.assertIn(required, skill)
         self.assertNotIn("[CONTEXT-FORMAT.md]", skill)
         self.assertFalse((ROOT / "skills/domain-modeling/CONTEXT-FORMAT.md").exists())
 
@@ -148,15 +155,24 @@ class SkillContractTests(unittest.TestCase):
 
     def test_to_spec_publishes_a_ready_github_parent_issue(self) -> None:
         skill = read_text("skills/to-spec/SKILL.md")
+        normalized = " ".join(skill.split())
         for required in (
             "GitHub parent Issue",
+            "current state of the codebase",
+            "Prefer an existing testing seam",
+            "highest public seam",
+            "ideally one",
+            "Confirm the proposed seam",
             "## Outcome",
             "## Acceptance criteria",
             "## Non-goals",
             "## Blockers",
             "## Required proof",
+            "technical clarifications",
+            "schema or API contracts",
+            "external behavior",
         ):
-            self.assertIn(required, skill)
+            self.assertIn(required, normalized)
         for forbidden in (
             "setup-matt-pocock-skills",
             "ready-for-agent",
