@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [5.0.0] - 2026-08-31
+
+### Changed
+
+- Remove explicit merge prohibition for scoped-authority experiment
+
 ## [4.0.3] - 2026-08-30
 
 ### Changed
