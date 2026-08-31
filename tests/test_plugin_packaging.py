@@ -25,6 +25,10 @@ ACTIVE_SKILLS = {
     "writing-for-agents",
 }
 
+PROJECT_RECORD_SKILLS = [
+    f"skills/{name}/SKILL.md" for name in sorted(ACTIVE_SKILLS)
+]
+
 MATT_ADAPTATIONS = {
     "domain-modeling",
     "grill-with-docs",
@@ -72,6 +76,51 @@ def frontmatter(relative: str) -> str:
 
 
 class PluginPackagingTests(unittest.TestCase):
+    def test_project_record_is_minimal_and_points_to_released_fact_owners(
+        self,
+    ) -> None:
+        record = json.loads((ROOT / ".toolboxmd/project.json").read_text())
+        self.assertEqual(
+            list(record),
+            ["$schema", "id", "kind", "outcome", "factSources"],
+        )
+        self.assertEqual(
+            record["$schema"],
+            "https://raw.githubusercontent.com/toolboxmd/marketplace/"
+            "v0.3.0/schemas/project-record-v1.schema.json",
+        )
+        self.assertEqual(record["id"], "agentsmd")
+        self.assertEqual(record["kind"], "agent-module")
+        self.assertTrue(record["outcome"].strip())
+
+        sources = record["factSources"]
+        self.assertEqual(
+            sources,
+            {
+                "version": "VERSION",
+                "delivery": {
+                    "codex": ".codex-plugin/plugin.json",
+                    "claude-code": ".claude-plugin/plugin.json",
+                    "grok-build": ".grok-plugin/plugin.json",
+                },
+                "skills": PROJECT_RECORD_SKILLS,
+                "documentation": ["README.md", "SKILL_CATALOGUE.md"],
+                "requirements": ["AGENTS.md", ".version-policy.json"],
+                "proof": [
+                    "tests/test_plugin_packaging.py",
+                    "tests/test_project_direction_loader.py",
+                    "tests/test_skill_contracts.py",
+                ],
+            },
+        )
+        referenced = [sources["version"], *sources["delivery"].values()]
+        for field in ("skills", "documentation", "requirements", "proof"):
+            referenced.extend(sources[field])
+        self.assertEqual(len(referenced), len(set(referenced)))
+        for relative in referenced:
+            with self.subTest(relative=relative):
+                self.assertTrue((ROOT / relative).is_file())
+
     def test_project_direction_hooks_cover_supported_reload_boundaries(self) -> None:
         hook_config = json.loads((ROOT / "hooks/hooks.json").read_text())
         hooks = hook_config["hooks"]
