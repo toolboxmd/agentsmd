@@ -11,6 +11,9 @@
     {"query": "We abandoned the current Objective and need to reprioritize.", "should_trigger": true},
     {"query": "The loader rejected an oversized VISION.md.", "should_trigger": true},
     {"query": "Define Project Direction before we start coding.", "should_trigger": true},
+    {"query": "OBJECTIVE.md only says to merge Issue #116 and close PR #136. Review it.", "should_trigger": true},
+    {"query": "Our Vision only lists this quarter's release. Make it genuinely visionary.", "should_trigger": true},
+    {"query": "Our Mission is an abstract future slogan with no present strategy.", "should_trigger": true},
     {"query": "Read the existing direction files and summarize them.", "should_trigger": false},
     {"query": "Implement the ready parser Issue.", "should_trigger": false},
     {"query": "Explain what a mission statement is in general.", "should_trigger": false},
@@ -20,6 +23,7 @@
     {"query": "Run the test suite and report failures.", "should_trigger": false},
     {"query": "List the current GitHub Issues.", "should_trigger": false},
     {"query": "Fix one typo in README.md.", "should_trigger": false},
-    {"query": "Read VISION.md before answering this design question.", "should_trigger": false}
+    {"query": "Read VISION.md before answering this design question.", "should_trigger": false},
+    {"query": "Implement the next Issue that contributes to our confirmed milestone-level Objective.", "should_trigger": false}
   ]
 }

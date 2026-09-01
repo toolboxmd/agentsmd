@@ -8,24 +8,28 @@ _Avoid_: Matt Skill pack, global prompt repository
 **Project Direction**:
 The coherent repository-root triad of `VISION.md`, `MISSION.md`, and
 `OBJECTIVE.md` that owns the project's confirmed long-range destination,
-present purpose, and single current outcome.
+present purpose, and single current milestone-level outcome.
 _Avoid_: North Star, strategy bundle, project brief
 
 **Vision**:
-The aspirational long-range destination the project wants to make real, not
-the current work. It may be directional rather than measurable and is recorded
-in root `VISION.md`.
+The grand and visionary aspirational long-range destination the project wants
+to make real, not the current work. It expands ambition and may be directional
+rather than measurable. It is recorded in root `VISION.md`.
 _Avoid_: long-term Objective, roadmap
 
 **Mission**:
-The present-tense reason the project exists, the problem it solves, and what it
-does to move toward the Vision. It is recorded in root `MISSION.md`.
+The strategic present-tense reason the project exists, the problem it solves,
+and its approach to moving toward the Vision, grounded in what the project does
+now. It is recorded in root `MISSION.md`.
 _Avoid_: Vision, Objective, company slogan
 
 **Objective**:
-The single current outcome the project must accomplish now, with a recognizable
-completion condition. It is recorded in root `OBJECTIVE.md`.
-_Avoid_: Current Goal, task list, backlog
+The single current milestone-level outcome the project must accomplish now,
+with a recognizable completion condition. It is narrower than the Mission but
+broader than an individual request, task, Issue, commit, or PR. It normally
+organizes and survives several contributing Issues and is recorded in root
+`OBJECTIVE.md`.
+_Avoid_: Current Goal, task outcome, task list, backlog
 
 **Skill**:
 An Agent Skills-compatible package that gives an agent a reusable procedure or

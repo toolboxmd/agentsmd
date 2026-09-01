@@ -1,3 +1,4 @@
 # Vision
 
-<Describe the aspirational long-range destination, not the current work.>
+<Describe a grand and visionary future that expands ambition beyond the current
+work while expressing a meaningful destination.>

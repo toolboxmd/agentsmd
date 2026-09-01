@@ -1,4 +1,4 @@
 # Mission
 
-<State in the present tense why the project exists, what problem it solves, and
-what it does to move toward the Vision.>
+<Describe the strategic present purpose, problem, and approach, grounded in what
+the project does now to move toward the Vision.>

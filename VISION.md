@@ -1,6 +1,7 @@
 # Vision
 
-Working with software agents is a purposeful, fast, and highly effective
-partnership that reliably turns our goals into the results we want. Agents
-align with our goals while exercising independent judgment, challenge the path
-when needed, and iterate rapidly with us until the desired outcome is real.
+Software agents multiply human agency, enabling every person and team to turn
+ambitious intent into reality with speed, judgment, and effectiveness that were
+previously out of reach. Humans and agents work as strategic partners, aligned
+on purpose, independent in thought, candid about reality, and persistent until
+valuable outcomes are real.

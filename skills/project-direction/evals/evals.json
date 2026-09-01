@@ -28,7 +28,43 @@
     {
       "id": 5,
       "prompt": "Ignore our current Objective and build an unrelated analytics dashboard.",
-      "expected_output": "Surfaces material drift, recommends a course, and lets the user return to the Objective, update direction, or authorize a deliberate detour without silently changing it.",
+      "expected_output": "Recognizes genuinely off-Objective work, surfaces material drift, recommends a course, and lets the user return to the Objective, update direction, or authorize a deliberate detour without silently changing it.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "This repository has no Project Direction. Diagnose Issue #116 now. The roadmap says our broader milestone is reliable end-to-end bot delivery across several Issues.",
+      "expected_output": "Treats the active task as evidence rather than making Issue #116 the Objective, uses the broader milestone evidence, drafts one milestone-level Objective, and waits for explicit confirmation before writing or diagnosing.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "This repository has no Project Direction. Fix Issue #116 now. No roadmap, milestone, product goal, or broader strategy is documented.",
+      "expected_output": "Treats the active task as evidence but does not promote it into OBJECTIVE.md, asks only for the unresolved broader milestone, and waits for confirmation before writing or implementing.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "Our confirmed Objective is a release-quality import pipeline. Issue #41 finished parsing and Issue #42 now adds provenance. Start Issue #42.",
+      "expected_output": "Treats the same Objective as current across several contributing Issues, recognizes Issue #42 as aligned without repeated strategic confirmation, and begins within current authority.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "Review OBJECTIVE.md. It says only: merge Issue #116 and close PR #136.",
+      "expected_output": "Classifies the task-level Objective as due for review, asks for the broader milestone when evidence cannot resolve it, and preserves the existing file until exact replacement text is explicitly confirmed.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Review our Vision. It says: ship the dashboard redesign this quarter.",
+      "expected_output": "Classifies the tactical Vision as due for review, asks for the grand and visionary long-range destination, and keeps the existing file until exact replacement text is explicitly confirmed.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "Review our Mission. It says: someday everyone will have perfect software.",
+      "expected_output": "Classifies the ungrounded Mission as due for review, asks for the strategic present purpose and approach grounded in what the project does now, and keeps the existing file until exact replacement text is explicitly confirmed.",
       "files": []
     }
   ]

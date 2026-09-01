@@ -31,7 +31,7 @@ AgentsMD adaptation automatically.
 
 | Skill | Current owner | Origin and source identity | Lifecycle | Licence | AgentsMD adaptation |
 | --- | --- | --- | --- | --- | --- |
-| `project-direction` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Establishes and maintains confirmed Vision, Mission, and Objective; deterministic hooks reload the complete triad at supported lifecycle boundaries. |
+| `project-direction` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Establishes and maintains confirmed Vision, Mission, and Objective with milestone-level scope; deterministic hooks reload the complete triad at supported lifecycle boundaries. |
 | `version-control` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Canonical SemVer, mirror, changelog, commit, tag, and release contract. |
 | `use-grok` | ToolboxMD / AgentsMD | ToolboxMD-native `toolboxmd/use-grok`, use-grok pin, `skills/use-grok` | Active | [Apache-2.0](LICENSES/use-grok-Apache-2.0.txt) | Bundled unchanged. Explicit user invocation and real Grok Build behavior remain intact. |
 | `grilling` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/productivity/grilling` | Active | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Package ownership and provenance metadata only. Exhaustive frontier behavior is unchanged. |

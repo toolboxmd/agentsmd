@@ -1,24 +1,22 @@
 # Objective
 
-Release the first conforming AgentsMD Project Record through the ToolboxMD
-Marketplace v1 contract.
+Make Project Direction a stable milestone-level operating frame for ordinary
+multi-Issue work.
 
 The Objective is complete when:
 
-- `.toolboxmd/project.json` identifies AgentsMD as an Agent Module and states
-  its outcome without duplicating facts owned by released source files.
-- The record points to `VERSION`, native Codex, Claude Code, and Grok Build
-  manifests, Skill metadata owners, documentation, requirements, and proof
-  definitions in the same Git tree.
-- Contract and package tests prove the record is minimal, internally
-  consistent, and included in every supported AgentsMD artifact.
-- AgentsMD completes the appropriate minor SemVer transition with synchronized
-  mirrors and changelog.
-- The exact tagged release validates against the immutable Marketplace v0.3.0
-  Project Record v1 schema and proves one version, one Git tree, one record
-  digest, and consistent native manifests.
+- AgentsMD defines an Objective consistently as narrower than the Mission but
+  broader than an individual request, task, Issue, commit, or PR.
+- Missing-direction initialization treats the active request as evidence rather
+  than automatically promoting it into the Objective.
+- One coherent Objective remains current across several contributing tasks
+  without repeated confirmation, while genuinely off-Objective work still
+  triggers drift handling.
+- Focused evaluations and exact-artifact acceptance prove the corrected
+  behavior, including the observed OpenBot task-to-Objective regression.
+- The exact versioned AgentsMD artifact is merged, released, installed in an
+  isolated acceptance environment, and Live Verified.
 
-Changing Algorithm semantics, modifying existing releases, adding Marketplace
-ingestion, Cursor packaging, provider submissions, toolbox.md pages, bootstrap
-installation, and Agent Search Optimization benchmarking are outside this
-Objective.
+Specify-workflow continuation, Algorithm routing, model-routing benchmarks,
+persistent host automation, and unrelated product implementation are outside
+this Objective.

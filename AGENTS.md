@@ -155,10 +155,12 @@ Proof seam and the exact delivery state must remain explicit.
 ## Project Direction
 
 - Project Direction is the mandatory repository-root triad: `VISION.md`,
-  `MISSION.md`, and `OBJECTIVE.md`. `VISION.md` owns the aspirational
-  long-range destination. `MISSION.md` owns the present purpose, problem, and
-  approach. `OBJECTIVE.md` owns the single current outcome and its recognizable
-  completion condition.
+  `MISSION.md`, and `OBJECTIVE.md`. `VISION.md` owns the grand and visionary
+  aspirational long-range destination. `MISSION.md` owns the strategic present
+  purpose, problem, and approach, grounded in what the project does now.
+  `OBJECTIVE.md` owns one current milestone-level outcome and its recognizable
+  completion condition. It is narrower than the Mission but broader than an
+  individual request, task, Issue, commit, or PR.
 - Context invariant: the full current contents of all three files must be
   present in model context at every task start, resume, clear, handoff,
   post-compaction continuation, and subagent start. A prior read, recollection,
@@ -179,18 +181,21 @@ Proof seam and the exact delivery state must remain explicit.
   written and read.
 - Unusable direction: invoke `project-direction` when a file contains
   unresolved placeholders, conflicts materially with another direction file,
-  or appears stale; when the Objective is achieved, invalidated, abandoned, or
-  reprioritized; or when the user asks to define, review, or update direction.
-  Use repository and tracker evidence, distinguish fact from inference and
-  user-owned choice, and obtain explicit user confirmation before writing
-  semantic direction.
+  appears stale, reduces Vision to current work, leaves Mission ungrounded in
+  present strategy, or merely restates one task, Issue, commit, or PR; when the
+  Objective is achieved, invalidated, abandoned, or reprioritized; or when the
+  user asks to define, review, or update direction. Use repository and tracker
+  evidence, distinguish fact from inference and user-owned choice, and obtain
+  explicit user confirmation before writing semantic direction.
 - Context continuity: reread all three files immediately after any one changes.
 - Alignment: evaluate every request, recommendation, Spec, Issue, and change
   against all three files. Surface material drift before proceeding and
   recommend returning to the Objective, updating Project Direction, or
   authorizing a deliberate detour. Only explicit user confirmation changes
-  Project Direction or authorizes the detour. Every proposed Spec and Issue
-  must state how its outcome advances the current Objective.
+  Project Direction or authorizes the detour. Treat ordinary work as
+  contributing when its outcome advances the Objective even when the Objective
+  does not name its task or Issue. Every proposed Spec and Issue must state how
+  its outcome advances the current Objective.
 
 ## Project language
 
