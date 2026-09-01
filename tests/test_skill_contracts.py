@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -53,6 +54,84 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
+
+    def test_objective_is_milestone_level_across_public_contract(self) -> None:
+        for relative in (
+            "AGENTS.md",
+            "GLOSSARY.md",
+            "README.md",
+            "skills/project-direction/SKILL.md",
+            "skills/project-direction/references/file-contracts.md",
+        ):
+            normalized = " ".join(read_text(relative).split())
+            with self.subTest(relative=relative):
+                self.assertIn("milestone-level", normalized)
+                self.assertIn("narrower than the Mission", normalized)
+                self.assertIn(
+                    "broader than an individual request, task, Issue, commit, or PR",
+                    normalized,
+                )
+
+        template = " ".join(
+            read_text("skills/project-direction/templates/OBJECTIVE.md").split()
+        )
+        self.assertIn("milestone-level outcome", template)
+        self.assertIn("not one task's delivery state", template)
+
+    def test_project_direction_evals_cover_task_to_objective_regression(self) -> None:
+        payload = json.loads(
+            read_text("skills/project-direction/evals/evals.json")
+        )
+        cases = " ".join(
+            f"{case['prompt']} {case['expected_output']}"
+            for case in payload["evals"]
+        )
+        for required in (
+            "active task as evidence",
+            "broader milestone",
+            "several contributing Issues",
+            "task-level Objective",
+            "genuinely off-Objective",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, cases)
+
+    def test_vision_and_mission_have_distinct_directional_roles(self) -> None:
+        for relative in (
+            "AGENTS.md",
+            "GLOSSARY.md",
+            "README.md",
+            "skills/project-direction/SKILL.md",
+            "skills/project-direction/references/file-contracts.md",
+        ):
+            normalized = " ".join(read_text(relative).split())
+            with self.subTest(relative=relative):
+                self.assertIn("grand and visionary", normalized)
+                self.assertIn("strategic", normalized)
+                self.assertIn("grounded in what the project does now", normalized)
+
+        vision_template = " ".join(
+            read_text("skills/project-direction/templates/VISION.md").split()
+        )
+        mission_template = " ".join(
+            read_text("skills/project-direction/templates/MISSION.md").split()
+        )
+        self.assertIn("grand and visionary future", vision_template)
+        self.assertIn("strategic present purpose", mission_template)
+        self.assertIn("grounded in what the project does now", mission_template)
+
+    def test_project_direction_evals_cover_vision_and_mission_quality(
+        self,
+    ) -> None:
+        payload = json.loads(
+            read_text("skills/project-direction/evals/evals.json")
+        )
+        cases = " ".join(
+            f"{case['prompt']} {case['expected_output']}"
+            for case in payload["evals"]
+        )
+        self.assertIn("tactical Vision", cases)
+        self.assertIn("ungrounded Mission", cases)
 
     def test_global_contract_requires_complete_current_project_direction(self) -> None:
         agents = read_text("AGENTS.md")

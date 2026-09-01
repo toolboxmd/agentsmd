@@ -92,11 +92,13 @@ ToolboxMD Agent Knowledge and Learning System.
 Every project repository governed by the AgentsMD contract requires root
 `VISION.md`, `MISSION.md`, and `OBJECTIVE.md`:
 
-- Vision is the aspirational long-range destination, not the current work.
-- Mission states in the present tense why the project exists, what problem it
-  solves, and what it does to move toward the Vision.
-- Objective is the single current outcome, with a recognizable completion
-  condition.
+- Vision is the grand and visionary aspirational long-range destination that
+  expands ambition beyond the current work.
+- Mission states the strategic present purpose, problem, and approach, grounded
+  in what the project does now to move toward the Vision.
+- Objective is the single current milestone-level outcome, narrower than the
+  Mission but broader than an individual request, task, Issue, commit, or PR,
+  with a recognizable completion condition.
 
 The global contract requires the complete current triad in model context before
 project discussion, research, planning, specification, implementation, review,
@@ -104,7 +106,10 @@ or delivery. A coherent triad remains project truth without repeated user
 confirmation. The model-invoked `project-direction` Skill initializes or
 repairs it from repository, tracker, ADR, glossary, product, and user evidence.
 The Skill asks only unresolved strategic questions, shows exact drafts, and
-waits for explicit user confirmation before writing.
+waits for explicit user confirmation before writing. It treats the active task
+as evidence rather than the default Objective, keeps a coherent milestone-level
+Objective current across contributing work, and reviews a task-level Objective
+instead of letting ordinary requests churn project direction.
 
 For Codex, the plugin registers three deterministic lifecycle hooks:
 
