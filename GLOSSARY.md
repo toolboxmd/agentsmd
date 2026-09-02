@@ -90,3 +90,9 @@ _Avoid_: glossary, context file
 ContextMD's structured representation of entities, relationships,
 observations, provenance, and learned experience.
 _Avoid_: glossary, project documentation
+
+**Persistent Host Automation**:
+Agent-created or agent-maintained host services, scheduled jobs, checks, and
+recovery automation that operate beyond the current task. It excludes
+project-local build tooling and one-off diagnostics.
+_Avoid_: machine runbook, persistent script

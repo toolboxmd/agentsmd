@@ -72,6 +72,10 @@ Align on ends. Think independently about means.
 
 - Do the requested work and the minimum needed to make its useful outcome
   function.
+- Persistent Host Automation: before creating or changing a host service,
+  scheduled job, or associated health or recovery automation intended to
+  persist beyond the current task, read
+  `docs/adr/0001-persistent-host-automation.md`.
 
 ### Algorithm
 
