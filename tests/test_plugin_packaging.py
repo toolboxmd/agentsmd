@@ -108,10 +108,17 @@ class PluginPackagingTests(unittest.TestCase):
                     "grok-build": ".grok-plugin/plugin.json",
                 },
                 "skills": PROJECT_RECORD_SKILLS,
-                "documentation": ["README.md", "SKILL_CATALOGUE.md"],
+                "documentation": [
+                    "README.md",
+                    "SKILL_CATALOGUE.md",
+                    "docs/adr/0001-persistent-host-automation.md",
+                ],
                 "requirements": ["AGENTS.md", ".version-policy.json"],
                 "proof": [
+                    "tests/fixtures/persistent_host_automation_cases.json",
+                    "tests/persistent_host_automation_validator.py",
                     "tests/test_global_instructions.py",
+                    "tests/test_persistent_host_automation_contract.py",
                     "tests/test_plugin_packaging.py",
                     "tests/test_project_direction_loader.py",
                     "tests/test_skill_contracts.py",

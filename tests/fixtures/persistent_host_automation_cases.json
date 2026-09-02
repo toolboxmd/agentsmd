@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "plan_defaults": {
+    "ownership": {
+      "closer_project_repository": "repository://closer-operations",
+      "user_selected_repository": "repository://user-operations",
+      "resolved_repository": "repository://closer-operations",
+      "creates_new_operational_surface": false,
+      "user_confirmed_new_surface": false
+    },
+    "external_mutation": {
+      "requested": false,
+      "human_gate_authorized": false
+    },
+    "secrets": [],
+    "reported_states": {
+      "issue": "tracked",
+      "branch": "created",
+      "implementation": "planned",
+      "commit": "not committed",
+      "push": "not pushed",
+      "pr": "not opened",
+      "merge": "not merged",
+      "release": "not released",
+      "installation": "not installed",
+      "deployment": "not deployed",
+      "restart": "not restarted",
+      "live_verification": "not live verified"
+    }
+  },
+  "artifact_defaults": {
+    "runtime_model": "controlled-copy",
+    "checkout_writable": false,
+    "privileged": false,
+    "owner": "mapped-owner",
+    "group": "mapped-group",
+    "mode": "mapped-mode",
+    "source_validation": "repository-defined validation",
+    "restart_scope": "affected-service-only",
+    "health_proof": "live-public-health-seam",
+    "drift_check": "sha256-or-semantic-comparison",
+    "rollback_guidance": "restore-prior-deployed-identity-and-recheck-health"
+  },
+  "cases": [
+    {
+      "id": "privileged-boot-service",
+      "plan": {
+        "scope": "persistent-host-automation",
+        "artifacts": [
+          {
+            "artifact_kind": "service",
+            "canonical_source": "repository://closer-operations/service",
+            "runtime_destination": "runtime://privileged-service",
+            "privileged": true,
+            "owner": "platform-required-privileged-owner"
+          }
+        ]
+      }
+    },
+    {
+      "id": "user-scheduled-service",
+      "plan": {
+        "scope": "persistent-host-automation",
+        "artifacts": [
+          {
+            "artifact_kind": "scheduled-service",
+            "canonical_source": "repository://closer-operations/scheduled-service",
+            "runtime_destination": "runtime://user-scheduled-service",
+            "owner": "mapped-user-owner"
+          }
+        ]
+      }
+    },
+    {
+      "id": "service-health-and-recovery",
+      "plan": {
+        "scope": "persistent-host-automation",
+        "artifacts": [
+          {
+            "artifact_kind": "health-check",
+            "canonical_source": "repository://closer-operations/service-health",
+            "runtime_destination": "runtime://service-health",
+            "associated_service_source": "repository://closer-operations/service"
+          }
+        ]
+      }
+    },
+    {
+      "id": "project-local-or-one-off",
+      "plan": {
+        "scope": "outside-boundary",
+        "outside_reason": "project-local-or-one-off",
+        "outside_action": "keep-in-owning-project"
+      }
+    },
+    {
+      "id": "secret-bearing-service",
+      "plan": {
+        "scope": "persistent-host-automation",
+        "artifacts": [
+          {
+            "artifact_kind": "service",
+            "canonical_source": "repository://closer-operations/secret-service",
+            "runtime_destination": "runtime://secret-service"
+          }
+        ],
+        "secrets": [
+          {
+            "name": "SERVICE_CREDENTIAL",
+            "purpose": "authenticate the service to its dependency",
+            "required_permissions": "mapped-runtime-access",
+            "protected_runtime_location": "protected-runtime://service-credential",
+            "template_reference": "repository://closer-operations/service.template"
+          }
+        ]
+      }
+    },
+    {
+      "id": "unrelated-symlink-architecture",
+      "plan": {
+        "scope": "outside-boundary",
+        "outside_reason": "unrelated-symlink-architecture",
+        "outside_action": "preserve-owning-architecture"
+      }
+    }
+  ]
+}
