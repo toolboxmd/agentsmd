@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {"type": "string", "enum": ["ACCEPT", "REJECT"]},
+    "definition_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "package_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "reviews": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "axis": {"type": "string", "enum": ["standards", "spec", "security"]},
+          "reviewer": {"type": "string", "minLength": 1},
+          "status": {"type": "string", "enum": ["PASS", "FAIL"]},
+          "findings": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "summary": {"type": "string", "minLength": 1}
+        },
+        "required": ["axis", "reviewer", "status", "findings", "summary"]
+      }
+    },
+    "summary": {"type": "string", "minLength": 1}
+  },
+  "required": ["status", "definition_sha256", "package_sha256", "reviews", "summary"]
+}

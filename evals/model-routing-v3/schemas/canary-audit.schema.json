@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {"type": "string", "enum": ["ACCEPT", "REJECT"]},
+    "definition_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "package_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "canary_result_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "canary_artifact_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "auditor": {"type": "string", "minLength": 1},
+    "independent_of_candidate_and_controller": {"const": true},
+    "findings": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "summary": {"type": "string"}
+  },
+  "required": [
+    "status",
+    "definition_sha256",
+    "package_sha256",
+    "canary_result_sha256",
+    "canary_artifact_sha256",
+    "auditor",
+    "independent_of_candidate_and_controller",
+    "findings",
+    "summary"
+  ]
+}

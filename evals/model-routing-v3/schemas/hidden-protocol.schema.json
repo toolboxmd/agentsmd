@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://toolbox.md/agentsmd/model-routing-v3/hidden-protocol.schema.json",
+  "title": "Model routing v3 hidden verifier RPC frame",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/response"
+    },
+    {
+      "$ref": "#/$defs/event"
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nonce",
+        "task",
+        "candidate_manifest_sha256",
+        "driver_sha256",
+        "worker_sha256",
+        "deadline_unix_ms"
+      ],
+      "properties": {
+        "nonce": {
+          "$ref": "#/$defs/sha256"
+        },
+        "task": {
+          "enum": [
+            "use-grok",
+            "karpathy-pointer",
+            "openbot-acp"
+          ]
+        },
+        "candidate_manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "driver_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "worker_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "deadline_unix_ms": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "base": {
+      "type": "object",
+      "required": [
+        "protocol_version",
+        "binding",
+        "kind",
+        "sequence"
+      ],
+      "properties": {
+        "protocol_version": {
+          "const": 1
+        },
+        "binding": {
+          "$ref": "#/$defs/binding"
+        },
+        "kind": {
+          "enum": [
+            "request",
+            "response",
+            "event"
+          ]
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "request": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_version",
+            "binding",
+            "kind",
+            "sequence",
+            "request_id",
+            "operation",
+            "payload"
+          ],
+          "properties": {
+            "protocol_version": {},
+            "binding": {},
+            "kind": {
+              "const": "request"
+            },
+            "sequence": {},
+            "request_id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "payload": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    },
+    "response": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_version",
+            "binding",
+            "kind",
+            "sequence",
+            "request_id",
+            "ok",
+            "result",
+            "error"
+          ],
+          "properties": {
+            "protocol_version": {},
+            "binding": {},
+            "kind": {
+              "const": "response"
+            },
+            "sequence": {},
+            "request_id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "ok": {
+              "type": "boolean"
+            },
+            "result": {},
+            "error": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "event": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "protocol_version",
+            "binding",
+            "kind",
+            "sequence",
+            "request_id",
+            "name",
+            "payload"
+          ],
+          "properties": {
+            "protocol_version": {},
+            "binding": {},
+            "kind": {
+              "const": "event"
+            },
+            "sequence": {},
+            "request_id": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "payload": {
+              "type": "object"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-01T15:05:19Z",
+  "issue": "https://github.com/toolboxmd/agentsmd/issues/33",
+  "recommendation": "REPLICATE",
+  "decision_ready": false,
+  "objective_achieved": false,
+  "routing_policy_change_supported": false,
+  "official_state_root": "/Users/lukaszmaj/.codex/routing-benchmark-v3/run-20260901-v3-02",
+  "executed_identity": {
+    "definition_sha256": "e0e211a8ca46fca4c60b877cfc45cbcb5372ca1c746d256010f7ffd40541739b",
+    "package_sha256": "b78bd8cfb1fb7ed59a4a1bcb0d78b38000ec27585a86ed073dbadd2df1a295c8",
+    "package_review_sha256": "e307a1cb8f1b71a3a4e5b1e9e30839869eb5393db60c35dc442e844baa84335e",
+    "preflight_receipt_sha256": "70281d72100c045f723b355e13318e8f48ca9b980242328c27dedcb052cadb80",
+    "fixtures_receipt_sha256": "5ec02966b0846f40e6ccdec1c6fbabec771fef81f2c20dd780da35813a4b4854",
+    "state_sha256": "aad3ab51b223dfc148aea195b8cd9b4d3f810f85af4d9951696705f224a45bb2"
+  },
+  "preparation_attempt": {
+    "state_root": "/Users/lukaszmaj/.codex/routing-benchmark-v3/run-20260901-v3",
+    "status": "FAILED_BEFORE_RECEIPT",
+    "model_calls": 0,
+    "cause": "split preflight selected a newly added answer path absent from the baseline"
+  },
+  "preflight": {
+    "status": "PASS",
+    "no_model_calls": true,
+    "native_status": "PASS",
+    "split_separation_status": "PASS",
+    "controller_binding_matched": true,
+    "telemetry_compatibility_status": "PASS",
+    "quota_compatibility_status": "PASS",
+    "numeric_quota_ceiling": null,
+    "reset_redemption_used": false,
+    "fixtures": {
+      "use-grok": {
+        "complexity": "low",
+        "sha256": "a72146a0e9b12492f844b2453fb4c397b26a997fd3b1c94159fab356922d5f6d",
+        "baseline": {"public": "FAIL", "hidden": "FAIL"},
+        "known_good": {"public": "PASS", "hidden": "PASS"}
+      },
+      "karpathy-pointer": {
+        "complexity": "medium",
+        "sha256": "bd4a1a1156c3d584350851b5ea1c88079cbbb98b7825304f7db7800ae8561d04",
+        "baseline": {"public": "FAIL", "hidden": "FAIL"},
+        "known_good": {"public": "PASS", "hidden": "PASS"}
+      },
+      "openbot-acp": {
+        "complexity": "hard",
+        "sha256": "d2f0b5addd5a31a493588a1e829852793d93e55272cd0385449a68873bf1196c",
+        "baseline": {"public": "FAIL", "hidden": "FAIL"},
+        "known_good": {"public": "PASS", "hidden": "PASS"}
+      }
+    }
+  },
+  "canary": {
+    "cell_id": "use-grok--terra-high",
+    "model": "gpt-5.6-terra",
+    "effort": "high",
+    "provider": "openai",
+    "codex_cli_version": "0.149.1",
+    "permission_profile": "routing_candidate",
+    "terminal_status": "CONTROLLER_ERROR",
+    "controller_elapsed_seconds": 9.390127792,
+    "provider_http_status": 400,
+    "provider_error_code": "invalid_json_schema",
+    "provider_error_parameter": "text.format.schema",
+    "provider_error": "Invalid schema for response_format 'codex_output_schema': In context=('properties', 'changed_paths'), 'uniqueItems' is not permitted.",
+    "provider_disposition": "REJECTED_DURING_RESPONSE_SCHEMA_VALIDATION_BEFORE_INFERENCE",
+    "result_sha256": "1dacb7c015dd1555fe6f889cffe8b42b556bc669a436e00019675440d30ee2f7",
+    "reservation_sha256": "2c9e22f1a0b4878261b9b0c829c584e2cf173b3249a039b726298520a7a2a74d",
+    "exec_jsonl_sha256": "02bf6806dafa2bdce13ec8c7a545888f616b2adf64b3607f6584ca0c4ee8bdaa",
+    "rollout_jsonl_sha256": "4267b39a18e303ca7acc61f87cc2294fab918e7ec4f3ea2c3c11e6e3660496e8",
+    "implementation_receipt": null,
+    "artifact": null,
+    "verification": null,
+    "review": null,
+    "last_agent_message": null,
+    "token_count": null,
+    "secondary_notice": "Code Mode is unavailable because code-mode host is disabled.",
+    "secondary_notice_was_terminal_cause": false,
+    "candidate_manifest_before_sha256": "68f28e6c73aff432652ef707c8932f7ebeb692176963c4937bde7377cf521932",
+    "candidate_manifest_after_sha256": "68f28e6c73aff432652ef707c8932f7ebeb692176963c4937bde7377cf521932"
+  },
+  "execution_counts": {
+    "provider_requests": 1,
+    "completed_model_inferences": 0,
+    "accepted_cells": 0,
+    "spark_model_calls": 0,
+    "other_comparison_cell_calls": 0,
+    "luna_review_calls": 0,
+    "grok_evaluator_calls": 0,
+    "retries": 0,
+    "repairs": 0,
+    "replacement_cells": 0
+  },
+  "terminal_state": {
+    "stopped": true,
+    "stop_reason": "CONTROLLER_ERROR",
+    "active_cell": null,
+    "terminal_cell_count": 1,
+    "next_cell_ordinal": null,
+    "run_order": [
+      "use-grok--terra-high",
+      "use-grok--spark-high",
+      "openbot-acp--sol-high",
+      "openbot-acp--sol-max",
+      "karpathy-pointer--sol-high",
+      "karpathy-pointer--terra-high",
+      "karpathy-pointer--sol-max"
+    ]
+  },
+  "postmortem_package": {
+    "definition_sha256": "e0e211a8ca46fca4c60b877cfc45cbcb5372ca1c746d256010f7ffd40541739b",
+    "package_sha256": "c9aee354a95cc152b558b5044e79e2eac1a6ef10eb310e5a9dde207476f215b7",
+    "implementation_schema_sha256": "4f26f18bf27a342d0c376424175ad7f77558f1fa94759b811b360391968dc2f9",
+    "review_schema_sha256": "3e486756d55862961049b59303a7b76ef875c192a6ee85329176939535f37601",
+    "observed_keyword_removed": "uniqueItems",
+    "semantic_uniqueness_enforced_in_controller": true,
+    "strict_schema_allowlist_checked_before_fixture_work": true,
+    "strict_schema_rechecked_before_each_codex_stage": true,
+    "codex_stage_retention_allowlist": [
+      "exec.jsonl",
+      "last-message.json",
+      "rollout.jsonl",
+      "stderr.txt"
+    ],
+    "fresh_runtime_roots_removed_on_every_exit": true,
+    "retained_auth_material_scan": true,
+    "complete_no_follow_session_scan": true,
+    "session_entry_scan_bound": 100000,
+    "unsafe_rollout_overrides_provider_failure": true,
+    "terminal_retained_artifact_binding": ["relative_path", "bytes", "sha256"],
+    "generic_and_timeout_failure_evidence_persisted": true,
+    "luna_generic_and_timeout_failure_evidence_persisted": true,
+    "grok_auth_source_max_bytes": 4194304,
+    "evaluator_run_retention_allowlist": [
+      "after-usage.json",
+      "before-usage.json",
+      "result.json",
+      "run-receipt.json",
+      "stderr.raw",
+      "stdout.raw"
+    ],
+    "evaluator_run_auth_material_scan": true,
+    "evaluator_terminal_retained_artifact_binding": ["relative_path", "bytes", "sha256"],
+    "private_file_nonblocking_descriptor_validation": true,
+    "evaluator_success_complete_binding_reconciliation": true,
+    "evaluator_preflight_partial_output_cleanup": true,
+    "historical_state_root_sanitized": false,
+    "live_provider_acceptance_proven": false,
+    "focused_controller_tests": {"passed": 49, "failed": 0},
+    "full_v3_tests": {"passed": 174, "failed": 0},
+    "frozen_v2_tests": {"passed": 38, "failed": 0}
+  },
+  "source_worktree_pre_post_audit": {
+    "receipt_bound": false,
+    "use-grok": {
+      "head": "625abafeabd32ecbb2108c37ed716ce7ff493f10",
+      "status": [" M wiki/.ingest-runs.jsonl"]
+    },
+    "karpathy-wiki": {
+      "head": "993356b4f2002972d21d626c33639432a4ad2212",
+      "status": ["?? .wiki-config", "?? CONTEXT.md", "?? docs/adr/", "?? wiki/"]
+    },
+    "openbot-pr-116": {
+      "head": "94af08e7a4dc571593dba5dc694ca12aebb3c65e",
+      "status": []
+    }
+  },
+  "limitations": [
+    "No implementation completed, so fixture difficulty did not empirically discriminate models.",
+    "No accepted cell exists, so time, token, quota movement, quality, and cost cannot be compared.",
+    "The postmortem allowlist prevents the observed schema defect but is not live provider acceptance proof.",
+    "The executed terminal state root predates retention hardening and still contains disposable Codex runtime trees; it remains sensitive and unmodified pending separate cleanup authority.",
+    "The nonterminal Code Mode notice remains an observation for the next canary.",
+    "A new scored run is a separately authorized experiment, not a retry of this terminal state root."
+  ]
+}

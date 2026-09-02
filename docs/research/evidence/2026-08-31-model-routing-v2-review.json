@@ -1,0 +1,60 @@
+{
+  "schema_version": 2,
+  "decision": "ACCEPT",
+  "definition_sha256": "ed5b9589eced9ba8420efcaec9f6f5d21b445a242d4944aab63213a3deb07cac",
+  "package_sha256": "c5e75781469cb4ef0ddb4e2a5b9706aa409e69327e0b4ff21c3cc83aa5dfda94",
+  "reviewed_at": "2026-08-31T22:54:39Z",
+  "reviews": [
+    {
+      "axis": "standards",
+      "reviewer_id": "root/final_staged_standards",
+      "decision": "PASS",
+      "evidence": "Standards review PASS for package SHA-256 c5e75781469cb4ef0ddb4e2a5b9706aa409e69327e0b4ff21c3cc83aa5dfda94 and definition byte SHA-256 ed5b9589eced9ba8420efcaec9f6f5d21b445a242d4944aab63213a3deb07cac. The final diff deletes the quadratic archive post-pass, preserves both conflict-order checks, binds extraction identity, and gives each verifier only an exact container-private snapshot created through no-follow stable file copies. Focused rebind and host-mutation tests cover the new seams; no P1, P2, or P3 standards finding remained.",
+      "evidence_sha256": "19bb857a18630bbbd84aa0a3fab418f768e17eb07a4b786e230f42fe99132532"
+    },
+    {
+      "axis": "spec",
+      "reviewer_id": "root/final_staged_spec",
+      "decision": "PASS",
+      "evidence": "Specification review PASS for package SHA-256 c5e75781469cb4ef0ddb4e2a5b9706aa409e69327e0b4ff21c3cc83aa5dfda94 and definition byte SHA-256 ed5b9589eced9ba8420efcaec9f6f5d21b445a242d4944aab63213a3deb07cac. The sole-canary, independent-audit, inclusive 600-second timeout, actual-duration, no-retry-or-replacement, disabled-repair, unconfirmed-quota, unproven-boundary, and zero-spend contract is unchanged. Source and verifier evidence remain fail-closed through descriptor, pathname, manifest, and private-snapshot binding; no P1, P2, or P3 specification finding remained.",
+      "evidence_sha256": "e652da19ab020fd5e086c18209d40e17cbaeee1f8b04e29ef39a588f95e7180c"
+    },
+    {
+      "axis": "security",
+      "reviewer_id": "root/v2_security_review_2",
+      "decision": "PASS",
+      "evidence": "Security review PASS for package SHA-256 c5e75781469cb4ef0ddb4e2a5b9706aa409e69327e0b4ff21c3cc83aa5dfda94 and definition byte SHA-256 ed5b9589eced9ba8420efcaec9f6f5d21b445a242d4944aab63213a3deb07cac. The trusted container entrypoint copies the mounted workspace into private tmpfs using no-follow nonblocking single-link reads, stable source identity, exclusive writes, exact snapshot manifest binding, and original-basename preservation before invoking the verifier. Host pre/post binding, extraction identity, both archive conflict orders, ABA, and post-snapshot host mutation were reviewed; no P1, P2, or P3 security finding remained.",
+      "evidence_sha256": "134691d816b50fb28c92cf3897da561ec6d7e30fcb1de18685c9b152067bb46b"
+    }
+  ],
+  "findings": [
+    {
+      "id": "SPEC-P2-001",
+      "axis": "spec",
+      "priority": "P2",
+      "status": "resolved",
+      "summary": "The post-canary audit did not explicitly require an independent auditor.",
+      "resolution": "The definition, README, and exact contract test now require an ACCEPT audit bound to exact canary evidence, with an auditor distinct from the candidate, implementation controller, and boundary issuer.",
+      "resolution_evidence_sha256": "b91e84f4f1dd35ecc73c2d327a4722f16cd0115e8bbde9a89de9b692647aedc5"
+    },
+    {
+      "id": "STANDARDS-P2-002",
+      "axis": "standards",
+      "priority": "P2",
+      "status": "resolved",
+      "summary": "Archive validation repeated a redundant quadratic path-conflict scan.",
+      "resolution": "The redundant quadratic archive post-pass was deleted, both file-before-child and child-before-file conflicts are tested, and the trusted verifier path now uses one descriptor-bound extraction manifest plus exact container-private snapshot binding.",
+      "resolution_evidence_sha256": "36b908011831d13d2205424cbe018211888301dfcfc1258aa2d6ae9f0fe4e7fa"
+    },
+    {
+      "id": "SECURITY-P2-003",
+      "axis": "security",
+      "priority": "P2",
+      "status": "resolved",
+      "summary": "A rebound or mutated host workspace could diverge from the verifier evidence.",
+      "resolution": "Extraction now rejects destination-path identity changes, host checks bind exact workspace identity and manifest before and after Docker, and the container entrypoint copies the actual mounted tree into private tmpfs with no-follow stable reads, exact manifest verification, and post-snapshot mutation coverage before running the verifier.",
+      "resolution_evidence_sha256": "653f9adbac049089464f25f04a8a4d0548446a7a371e154269d63b389b34452c"
+    }
+  ],
+  "summary": "Three independent read-only review axes accepted the exact readiness-only package after resolving canary-auditor independence, quadratic archive validation, and verifier workspace-binding findings. This decision accepts zero-spend readiness evidence only and does not authorize a benchmark call."
+}

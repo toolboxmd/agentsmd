@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {"type": "string", "enum": ["completed", "blocked"]},
+    "summary": {"type": "string"},
+    "changed_paths": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "public_verifier": {
+      "type": "string",
+      "enum": ["passed", "failed", "not_run"]
+    },
+    "blocker": {"type": ["string", "null"]}
+  },
+  "required": [
+    "status",
+    "summary",
+    "changed_paths",
+    "public_verifier",
+    "blocker"
+  ]
+}

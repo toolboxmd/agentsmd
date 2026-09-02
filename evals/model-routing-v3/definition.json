@@ -1,0 +1,468 @@
+{
+  "schema_version": 3,
+  "definition_id": "agentsmd-issue-33-model-routing-v3",
+  "issue": "https://github.com/toolboxmd/agentsmd/issues/33",
+  "purpose": "Measure whether the lowest-load reliable predeclared route preserves accepted quality on representative ToolboxMD work.",
+  "frozen_v2_dependency": {
+    "path": "../model-routing-v2",
+    "tree_manifest_sha256": "c5e75781469cb4ef0ddb4e2a5b9706aa409e69327e0b4ff21c3cc83aa5dfda94"
+  },
+  "tasks": {
+    "use-grok": {
+      "complexity": "low",
+      "workspace_name": "use-grok",
+      "source_argument": "use_grok_repo",
+      "base_commit": "f1317a03b0c3f1b3d7668e164c7c68275b7d44bc",
+      "base_tree": "bcdb05223d6054e36eb43cb9b256d6a37bc4ec2d",
+      "historical_source_commit": "a8ae6ab3c862de836ca576276a221610e3fe274c",
+      "historical_source_tree": "e98d5a0b6fbfb4bf1aadd20b7569f22b7f421902",
+      "known_good": {
+        "kind": "v2_patch",
+        "path": "../model-routing-v2/known-good/use-grok.patch"
+      },
+      "export_excludes": [],
+      "packet": "packets/use-grok",
+      "public_verifier_source": "../model-routing-v2/verifiers/public/use_grok_three_host.py",
+      "public_command": [
+        "/usr/bin/python3",
+        "-B",
+        ".benchmark/public/use_grok_three_host.py",
+        "--workspace",
+        "."
+      ],
+      "hidden_verifier": {
+        "kind": "split_driver_worker",
+        "task": "use-grok",
+        "driver": "verifiers/hidden/v2_split_driver.py",
+        "worker": "verifiers/workers/v2_command_worker.py",
+        "protocol": "split_verifier.py",
+        "frozen_hidden_source": "../model-routing-v2/verifiers/hidden.py",
+        "separate_driver_worker_runtimes": true,
+        "candidate_execution_is_worker_only": true,
+        "component_hashes_bound_in_receipt": true
+      },
+      "allowed_paths": [
+        ".claude-plugin/plugin.json",
+        ".codex-plugin/plugin.json",
+        ".grok-plugin/plugin.json",
+        "CHANGELOG.md",
+        "README.md",
+        "VERSION",
+        "tests/use-grok.test.py"
+      ]
+    },
+    "karpathy-pointer": {
+      "complexity": "medium",
+      "workspace_name": "karpathy-wiki",
+      "source_argument": "karpathy_repo",
+      "base_commit": "2f585431ca3730aed56e1e76835ffd6b3821770f",
+      "base_tree": "c2acffca25755cdc58d6fa8c94fd0e8c5d7783c2",
+      "historical_source_commit": "8fcc539312dc5bb54dd53dc04b5c7a093acef0b6",
+      "historical_source_tree": "59833ceda6be5f26f751396db0138072dd86ed91",
+      "known_good": {
+        "kind": "v2_patch",
+        "path": "../model-routing-v2/known-good/karpathy-pointer.patch"
+      },
+      "export_excludes": [
+        "CLAUDE.md"
+      ],
+      "packet": "packets/karpathy-pointer",
+      "public_verifier_source": "../model-routing-v2/verifiers/public/karpathy_pointer_smoke.py",
+      "public_command": [
+        "/usr/bin/python3",
+        "-B",
+        ".benchmark/public/karpathy_pointer_smoke.py",
+        "--workspace",
+        "."
+      ],
+      "hidden_verifier": {
+        "kind": "split_driver_worker",
+        "task": "karpathy-pointer",
+        "driver": "verifiers/hidden/v2_split_driver.py",
+        "worker": "verifiers/workers/v2_command_worker.py",
+        "protocol": "split_verifier.py",
+        "frozen_hidden_source": "../model-routing-v2/verifiers/hidden.py",
+        "separate_driver_worker_runtimes": true,
+        "candidate_execution_is_worker_only": true,
+        "component_hashes_bound_in_receipt": true
+      },
+      "allowed_paths": [
+        "scripts/wiki-build-index.py",
+        "scripts/wiki-discover.py",
+        "tests/unit/test-build-index.sh"
+      ]
+    },
+    "openbot-acp": {
+      "complexity": "hard",
+      "workspace_name": "openbot",
+      "source_argument": "openbot_repo",
+      "base_commit": "b3816cc185bd7564028226d63b8d4e97ad525379",
+      "base_tree": "1ee4a662dfb8e177a357873dbd5f23a8cf6781c3",
+      "historical_source_commit": "c4626b1b40a1aa33845bd0e2f09d8dbdad6208f2",
+      "historical_source_tree": "3cd6eb4d73c45849079772b473b02e76edc6395a",
+      "known_good": {
+        "kind": "historical_file",
+        "path": "daemon/src/acp.ts"
+      },
+      "export_excludes": [],
+      "packet": "packets/openbot-acp",
+      "public_verifier_source": "verifiers/public/openbot_acp_public.test.ts",
+      "public_command": [
+        "node",
+        "--import",
+        "./node_modules/tsx/dist/loader.mjs",
+        "--test",
+        ".benchmark/public/openbot_acp_public.test.ts"
+      ],
+      "hidden_verifier": {
+        "kind": "split_driver_worker",
+        "task": "openbot-acp",
+        "driver": "verifiers/hidden/openbot_acp_hidden_driver.test.ts",
+        "worker": "verifiers/workers/openbot_acp_worker.mjs",
+        "relay": "verifiers/workers/openbot_agent_relay.mjs",
+        "protocol": "split_verifier.py",
+        "separate_driver_worker_runtimes": true,
+        "candidate_execution_is_worker_only": true,
+        "component_hashes_bound_in_receipt": true
+      },
+      "allowed_paths": [
+        "daemon/src/acp.ts"
+      ]
+    }
+  },
+  "cells": {
+    "use-grok--terra-high": {
+      "task": "use-grok",
+      "model": "gpt-5.6-terra",
+      "effort": "high",
+      "canary": true
+    },
+    "use-grok--spark-high": {
+      "task": "use-grok",
+      "model": "gpt-5.3-codex-spark",
+      "effort": "high",
+      "canary": false
+    },
+    "karpathy-pointer--terra-high": {
+      "task": "karpathy-pointer",
+      "model": "gpt-5.6-terra",
+      "effort": "high",
+      "canary": false
+    },
+    "karpathy-pointer--sol-high": {
+      "task": "karpathy-pointer",
+      "model": "gpt-5.6-sol",
+      "effort": "high",
+      "canary": false
+    },
+    "karpathy-pointer--sol-max": {
+      "task": "karpathy-pointer",
+      "model": "gpt-5.6-sol",
+      "effort": "max",
+      "canary": false
+    },
+    "openbot-acp--sol-high": {
+      "task": "openbot-acp",
+      "model": "gpt-5.6-sol",
+      "effort": "high",
+      "canary": false
+    },
+    "openbot-acp--sol-max": {
+      "task": "openbot-acp",
+      "model": "gpt-5.6-sol",
+      "effort": "max",
+      "canary": false
+    }
+  },
+  "lifecycle": {
+    "canary": "use-grok--terra-high",
+    "remaining_order_seed": "agentsmd-issue-33-v3-order-2026-09-01",
+    "run_order": [
+      "use-grok--terra-high",
+      "use-grok--spark-high",
+      "openbot-acp--sol-high",
+      "openbot-acp--sol-max",
+      "karpathy-pointer--sol-high",
+      "karpathy-pointer--terra-high",
+      "karpathy-pointer--sol-max"
+    ],
+    "inclusive_cell_deadline_seconds": 600,
+    "automatic_retry": false,
+    "automatic_repair": false,
+    "rereview": false,
+    "stop_on_anomaly": true,
+    "remaining_cells_require_accepted_canary_audit": true
+  },
+  "reviewer": {
+    "model": "gpt-5.6-luna",
+    "effort": "max",
+    "read_only": true,
+    "schema": "schemas/review.schema.json"
+  },
+  "evaluator": {
+    "provider": "grok-build-cli",
+    "model": "grok-4.6",
+    "effort": "xhigh",
+    "inclusive_deadline_seconds": 600,
+    "anonymous": true,
+    "one_call_only": true,
+    "no_retry_follow_up_or_repair": true,
+    "input_source": "immutable_artifact_snapshots",
+    "shuffle_seed_recorded_at_bundle_creation": true,
+    "private_mapping_outside_evaluator_workspace": true,
+    "account_quota_observer": "unavailable_in_grok_cli_1.0.13",
+    "account_quota_before_status": "UNAVAILABLE",
+    "account_quota_after_status": "UNAVAILABLE",
+    "usage_evidence": "raw_envelope_plus_before_after_unavailable_receipts",
+    "raw_response_envelope_retained": true,
+    "usage_classification": "experiment_overhead",
+    "usage_is_routing_cell_metric": false,
+    "boundary": {
+      "prompt_source": "fixed_instructions_plus_exact_canonical_bundle_bytes_and_sha256",
+      "prompt_max_bytes": 4194304,
+      "standalone_bundle_retained": true,
+      "outer_sandbox_executable": "/usr/bin/sandbox-exec",
+      "launchd_coalition_outer_supervision": true,
+      "tool_free_argv": [
+        "--no-leader",
+        "--sandbox",
+        "off",
+        "--no-auto-update",
+        "--tools",
+        "todo_write",
+        "--deny",
+        "*",
+        "--max-turns",
+        "1",
+        "--disable-web-search",
+        "--no-subagents",
+        "--no-plan"
+      ],
+      "replacement_environment_only": true,
+      "fresh_home_grok_home_tmpdir_and_xdg": true,
+      "updater_memory_subagents_workflows_web_telemetry_trace_mixpanel_feedback_and_external_otel_disabled": true,
+      "explicit_grok_auth_source_cli_argument_required": true,
+      "auth_copy": "absolute_owner_0600_regular_single_link_nofollow_exclusive_byte_equal",
+      "auth_source_path_content_size_and_digest_absent_from_evidence": true,
+      "transient_auth_removed_after_every_terminal_outcome": true,
+      "seatbelt": {
+        "default_deny": true,
+        "imports_system_sb_and_system_network": true,
+        "exact_executable_map_and_read": true,
+        "exact_prompt_bundle_schema_reads": true,
+        "writes_only_fresh_home_tmp_and_xdg_runtime": true,
+        "self_process_info_only": true,
+        "process_fork_or_process_star": false
+      },
+      "network": {
+        "outbound_mdns_responder": true,
+        "outbound_remote_tcp_443": true,
+        "localhost_denied": true,
+        "inbound_denied": true,
+        "other_ports_denied": true,
+        "other_unix_sockets_denied": false,
+        "unix_syslog_socket_denial_sampled": true,
+        "provider_hostname_attribution_claim": false
+      },
+      "no_model_preflight": {
+        "same_file_and_network_policy_projection": true,
+        "bundle_prompt_schema_positive_reads": true,
+        "private_mapping_attempts_sources_memory_direct_and_symlink_denied": true,
+        "localhost_ipv4_ipv6_non_443_and_syslog_socket_denials": true,
+        "accepted_denial_errnos": [1, 13],
+        "sandboxed_pinned_grok_version": true
+      },
+      "single_cli_invocation_may_internally_refresh_or_retry_http": true
+    },
+    "schema": "schemas/evaluator.schema.json"
+  },
+  "quota": {
+    "numeric_ceiling": null,
+    "before_after_observation_required": true,
+    "account_level_only": true,
+    "missing_observation_blocks_decision_ready_claim": true,
+    "reset_redemption_authorized": false
+  },
+  "local_boundary": {
+    "status": "REQUIRES_NO_MODEL_PREFLIGHT",
+    "trusted": [
+      "local_user",
+      "controller",
+      "pinned_codex_client",
+      "pinned_codexbar_observer",
+      "pinned_grok_cli",
+      "macos",
+      "seatbelt",
+      "same_user_local_docker_desktop_daemon"
+    ],
+    "not_claimed": [
+      "malicious_local_operator",
+      "administrator_or_kernel_compromise",
+      "compromised_codex_client",
+      "falsified_controller_evidence",
+      "intentional_same_user_broker_escape"
+    ],
+    "candidate_is_not_hostile_code": true,
+    "same_user_broker_escape_is_outside_threat_model": true,
+    "known_broker_paths_observed_best_effort": [
+      "/bin/launchctl",
+      "/usr/bin/open",
+      "/usr/bin/osascript"
+    ],
+    "candidate_command_network": false,
+    "candidate_has_git_metadata": false,
+    "candidate_can_read_hidden_verifier": false,
+    "candidate_can_read_auth_target": false,
+    "hidden_driver_can_import_candidate": false,
+    "hidden_worker_can_read_driver_material": false,
+    "hidden_verifier_transport": {
+      "kind": "separate_inherited_read_write_pipes",
+      "socketpair_shared_between_peers": false,
+      "canonical_jsonl_mediator": true
+    },
+    "low_medium_public_verifier_runtime": {
+      "tasks": [
+        "use-grok",
+        "karpathy-pointer"
+      ],
+      "verifier_role": "public_only",
+      "kind": "pinned_frozen_v2_docker_container",
+      "image_identity_source": "frozen_v2_definition.offline_verifier_runtime.image_id",
+      "daemon_authority": "trusted_same_user_local_docker_desktop",
+      "independently_administered": false,
+      "network": "none",
+      "read_only_root": true,
+      "read_only_bind_mounts": true,
+      "capabilities": "all_dropped",
+      "no_new_privileges": true,
+      "user": "65534:65534",
+      "resource_limits_required": true,
+      "private_tmpfs": true,
+      "launchd_coalition_supervised": false,
+      "hidden_verification_uses_this_runtime": false
+    },
+    "openbot_signal_authority": {
+      "trusted_hidden_driver": {
+        "seatbelt_rule": "(allow signal)",
+        "exact_source_signal_numbers": [
+          0
+        ],
+        "purpose": "pid_and_process_group_absence_observation",
+        "sends_nonzero_cleanup_signal": false,
+        "can_import_candidate_code": false
+      },
+      "candidate_importing_worker": {
+        "seatbelt_rule": "(allow signal (target same-sandbox))",
+        "purpose": "manage_same_invocation_descendants_including_reparented_acp_process_groups",
+        "unrestricted_same_user_signal_authority": false
+      },
+      "no_model_preflight": {
+        "unrelated_control_uses_separate_sandbox_exec_invocation": true,
+        "unrelated_control_uses_identical_worker_profile": true,
+        "driver_signal_zero_pid_and_pgid_observation": "required_success",
+        "worker_unrelated_pid_and_pgid_observation": "required_eperm_or_eacces",
+        "unrelated_control_must_remain_alive": true,
+        "worker_inherited_descendant_group_cleanup": "required_exact_esrch"
+      },
+      "hostile_candidate_containment_claimed": false
+    },
+    "legacy_bash_heredoc_temp_exception": {
+      "tasks": [
+        "use-grok",
+        "karpathy-pointer"
+      ],
+      "exact_path_pattern": "/private/var/tmp/sh-thd-[0-9]+",
+      "before_after_name_sets_must_match": true,
+      "openbot_worker_uses_exception": false,
+      "general_temporary_file_access": false
+    },
+    "process_identity": {
+      "launchd_scope": "launchd_resource_and_jetsam_coalition",
+      "low_medium_public_verifier_scope": "trusted_docker_daemon_container_name"
+    },
+    "terminal_process_proof": {
+      "launchd_scope": "service_absent_resource_reaped_jetsam_absent_no_members",
+      "low_medium_public_verifier_scope": "docker_cli_receipt_plus_final_named_container_remove_attempt"
+    },
+    "marker_identity_used": false
+  },
+  "telemetry": {
+    "execution_events": "codex_exec_jsonl_terminal_turn_completed",
+    "route_identity": "fresh_isolated_codex_rollout_turn_context",
+    "model_provider": "openai",
+    "router_log": "diagnostic_only_not_authoritative",
+    "reasoning_output_is_subset_of_output": true,
+    "cache_write_reported_separately": true
+  },
+  "artifact_contract": {
+    "implementation_receipt_one_shot": true,
+    "baseline_snapshot_copied_before_implementation": true,
+    "snapshot_before_verification_or_review": true,
+    "verification_and_review_read_snapshot_only": true,
+    "review_range_built_only_from_baseline_and_artifact_snapshots": true,
+    "review_range_contains_sorted_exact_paths_metadata_and_regular_file_base64": true,
+    "review_workspace_contains_identical_controller_owned_range_overlay": true,
+    "luna_response_echoes_artifact_and_review_range_sha256": true,
+    "collection_rebuilds_and_revalidates_review_range_from_snapshots": true,
+    "artifact_manifest_bound_to_before_after_and_snapshot_trees": true,
+    "result_and_collection_receipts_one_shot": true
+  },
+  "terminal_statuses": [
+    "ACCEPTED",
+    "BOUNDARY_FAILURE",
+    "CONTROLLER_ERROR",
+    "IMPLEMENTATION_FAILED",
+    "PROVIDER_UNAVAILABLE",
+    "QUOTA_EXHAUSTED",
+    "TELEMETRY_FAILURE",
+    "TIMEOUT",
+    "UNSAFE_SCOPE",
+    "UNSAFE_TELEMETRY",
+    "VERIFICATION_FAILED",
+    "REVIEW_BLOCKED"
+  ],
+  "pinned_runtime": {
+    "controller_python_version": "3.14.7",
+    "controller_python_sha256": "d8f1d508de5acfd500f20d1949528375ff4a1f470efb267f00d1770941cdeee3",
+    "split_python_version": "Python 3.9.6",
+    "split_python_sha256": "5c5950c62eee5fd227a67e4bdfcde81c9add59799bba0949635f3d5ba9661c26",
+    "split_python_executable": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3",
+    "codex_cli_version": "0.149.1",
+    "codex_launcher_sha256": "134063e133f0b4244fa3b251acf973d4fe4b4aeeacbdc135211bf480f59f1477",
+    "codex_native_sha256": "f0d8762236594359b60cfbe17f4c7e945a3ce8d1c91e74778838c968d250fb6c",
+    "node_version": "v22.23.1",
+    "node_sha256": "2e3f1286a7eb3736346ed1803e458a0ff909e2b2d5bc746144dcb76970e9b99d",
+    "openssl_config_sha256": "87d46eaa3376f42435f09976bd866461d4661753470423aa785f0942916db3fa",
+    "codexbar_version": "CodexBar 0.56.1",
+    "codexbar_sha256": "eaec173e1693c1a8054d5dcd5e14bad4194188ba2ac082565af311c5b7c7bbe6",
+    "codexbar_executable": "/Applications/CodexBar.app/Contents/Helpers/CodexBarCLI",
+    "grok_cli_version": "grok 1.0.13 (5e9a58528b76) [stable]",
+    "grok_isolated_cli_version": "grok 1.0.13 (5e9a58528b76)",
+    "grok_executable_sha256": "8669e0fdadceec25b8c159c355f427ffbd82583525d774b6ab1522197ea83b80",
+    "grok_executable": "/Users/lukaszmaj/.grok/downloads/grok-1.0.13-macos-aarch64",
+    "tsx_tree_sha256": "bcba5f10cac66b66650fc675bc6e43de13e5bde05f461a747d05d442e73e4b75",
+    "esbuild_tree_sha256": "99148e605964f96a706eba8720f73d50ac38d4dc89366de3c4dd05995aa0f98d",
+    "esbuild_darwin_arm64_tree_sha256": "d4ac9d444750f8bb05bde80acfde5f9764f1e68de4fabec11e1641308d41d4f0"
+  },
+  "execution_surface": {
+    "run_all_command": false,
+    "canary_only_before_audit": true,
+    "frozen_canary_is_terra_high_not_spark": true,
+    "process_supervision": "launchd_coalition_except_low_medium_public_verifier_docker_path",
+    "launchd_coalition_scope": [
+      "candidate_model_stages",
+      "split_hidden_verifier_peers",
+      "openbot_public_verifier",
+      "luna_reviewer",
+      "grok_evaluator"
+    ],
+    "docker_scope": [
+      "use-grok_public_verifier",
+      "karpathy-pointer_public_verifier"
+    ],
+    "artifact_inputs": "immutable_snapshot_only",
+    "receipts": "canonical_one_shot_hash_bound",
+    "source_repositories_read_only": true,
+    "global_routing_contract_mutation": false
+  }
+}

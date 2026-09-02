@@ -1,0 +1,199 @@
+{
+  "schema_version": 2,
+  "definition_id": "agentsmd-issue-33-model-routing-v2",
+  "purpose": "Compare one fixed small-model assignment with Sol high and Sol max controls on two real bounded tasks without lowering accepted quality.",
+  "project_alignment": {
+    "kind": "authorized_detour",
+    "canonical_objective_unchanged": true,
+    "issue": "https://github.com/toolboxmd/agentsmd/issues/33"
+  },
+  "tasks": {
+    "use-grok": {
+      "workspace_name": "use-grok",
+      "base_commit": "f1317a03b0c3f1b3d7668e164c7c68275b7d44bc",
+      "base_tree": "bcdb05223d6054e36eb43cb9b256d6a37bc4ec2d",
+      "historical_source_commit": "a8ae6ab3c862de836ca576276a221610e3fe274c",
+      "historical_source_tree": "e98d5a0b6fbfb4bf1aadd20b7569f22b7f421902",
+      "known_good_patch": "known-good/use-grok.patch",
+      "export_excludes": [],
+      "task_packet": "packets/use-grok/TASK.md",
+      "public_verifier": "verifiers/public/use_grok_three_host.py",
+      "hidden_verifier": "verifiers/hidden.py",
+      "allowed_paths": [
+        ".claude-plugin/plugin.json",
+        ".codex-plugin/plugin.json",
+        ".grok-plugin/plugin.json",
+        "CHANGELOG.md",
+        "README.md",
+        "VERSION",
+        "tests/use-grok.test.py"
+      ]
+    },
+    "karpathy-pointer": {
+      "workspace_name": "karpathy-wiki",
+      "base_commit": "2f585431ca3730aed56e1e76835ffd6b3821770f",
+      "base_tree": "c2acffca25755cdc58d6fa8c94fd0e8c5d7783c2",
+      "historical_source_commit": "8fcc539312dc5bb54dd53dc04b5c7a093acef0b6",
+      "historical_source_tree": "59833ceda6be5f26f751396db0138072dd86ed91",
+      "known_good_patch": "known-good/karpathy-pointer.patch",
+      "export_excludes": [
+        "CLAUDE.md"
+      ],
+      "task_packet": "packets/karpathy-pointer/TASK.md",
+      "public_verifier": "verifiers/public/karpathy_pointer_smoke.py",
+      "hidden_verifier": "verifiers/hidden.py",
+      "allowed_paths": [
+        "scripts/wiki-build-index.py",
+        "scripts/wiki-discover.py",
+        "tests/unit/test-build-index.sh"
+      ]
+    }
+  },
+  "routes": {
+    "adaptive": {
+      "meaning": "fixed_predeclared_assignment_not_dynamic_routing",
+      "use-grok": {
+        "model": "gpt-5.3-codex-spark",
+        "effort": "high"
+      },
+      "karpathy-pointer": {
+        "model": "gpt-5.6-terra",
+        "effort": "high"
+      }
+    },
+    "sol-high": {
+      "meaning": "direct_control",
+      "use-grok": {
+        "model": "gpt-5.6-sol",
+        "effort": "high"
+      },
+      "karpathy-pointer": {
+        "model": "gpt-5.6-sol",
+        "effort": "high"
+      }
+    },
+    "sol-max": {
+      "meaning": "direct_control",
+      "use-grok": {
+        "model": "gpt-5.6-sol",
+        "effort": "max"
+      },
+      "karpathy-pointer": {
+        "model": "gpt-5.6-sol",
+        "effort": "max"
+      }
+    }
+  },
+  "reviewer": {
+    "model": "gpt-5.6-luna",
+    "effort": "max",
+    "read_only": true,
+    "required_after_trusted_proof": true,
+    "repair_calls": 0,
+    "rereview_calls": 0
+  },
+  "lifecycle": {
+    "canary": "use-grok--adaptive",
+    "run_order": [
+      "use-grok--adaptive",
+      "karpathy-pointer--sol-high",
+      "use-grok--sol-max",
+      "karpathy-pointer--adaptive",
+      "use-grok--sol-high",
+      "karpathy-pointer--sol-max"
+    ],
+    "stop_on_first_anomaly": true,
+    "automatic_retry": false,
+    "automatic_repair": false,
+    "remaining_cells_require": {
+      "decision": "ACCEPT",
+      "audit_kind": "independent",
+      "auditor_must_differ_from": [
+        "candidate",
+        "implementation_controller",
+        "boundary_issuer"
+      ],
+      "exact_canary_evidence_bound": true
+    },
+    "model_stage_timeout": {
+      "maximum_seconds": 600,
+      "applies_to": [
+        "implementation",
+        "initial_review",
+        "repair",
+        "rereview"
+      ],
+      "clock": "trusted_controller_monotonic",
+      "terminal_duration_field": "actual_terminal_duration_seconds",
+      "terminal_duration_required_for_every_terminal_outcome": true,
+      "reaching_maximum_is_timeout": true,
+      "timeout_action": "STOP_CELL",
+      "timeout_triggers_automatic_retry": false,
+      "timeout_triggers_replacement_run": false
+    },
+    "evaluator_after_all_cells_only": {
+      "model": "grok",
+      "effort": "xhigh",
+      "anonymous": true
+    }
+  },
+  "quota_guard": {
+    "max_used_basis_points": null,
+    "required_windows": [
+      "general_weekly",
+      "model_specific_when_reported"
+    ],
+    "source": "user_authorized_exact_ceiling_required"
+  },
+  "external_boundary": {
+    "status": "UNPROVEN",
+    "accepted_adapter": null,
+    "trusted_issuer_public_key_sha256": null,
+    "receipt_sha256": null,
+    "required_properties": [
+      "fresh_pinned_linux_controller",
+      "separate_no_network_candidate_namespace",
+      "separate_no_network_verifier_namespace",
+      "provider_only_controller_egress",
+      "no_candidate_access_to_auth_or_controller_state",
+      "no_candidate_access_to_hidden_verifier",
+      "non_root_no_capabilities_no_host_sockets",
+      "definition_bound_signed_probe_receipt"
+    ]
+  },
+  "adversarial_review": {
+    "required": true,
+    "artifact": "../../docs/research/evidence/2026-08-31-model-routing-v2-review.json",
+    "decision_required": "ACCEPT",
+    "unresolved_priorities_must_be_empty": [
+      "P1",
+      "P2"
+    ]
+  },
+  "execution_surface": {
+    "model_runner_in_this_package": false,
+    "run_all_command": false,
+    "paid_execution_authorized": false
+  },
+  "offline_verifier_runtime": {
+    "kind": "docker",
+    "image_id": "sha256:d970fbcd021f4004583c9e7dfdba5c1e7f80d380f02eb392fbd319947c29a39c",
+    "platform": "linux/amd64",
+    "network": "none",
+    "read_only_root": true,
+    "non_root": true,
+    "capabilities": "none",
+    "no_new_privileges": true,
+    "pids_limit": 64,
+    "memory_mebibytes": 512,
+    "cpus": 1
+  },
+  "telemetry_contract": {
+    "terminal_protocol_event_required": true,
+    "exact_usage_required": true,
+    "correlated_session_request_router_ids_required": true,
+    "one_terminal_router_event_required": true,
+    "quota_before_after_required": true,
+    "missing_or_normalized_usage_rejected": true
+  }
+}

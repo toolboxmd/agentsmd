@@ -1,0 +1,38 @@
+diff --git a/scripts/wiki-build-index.py b/scripts/wiki-build-index.py
+index d9f09dd..83342d2 100755
+--- a/scripts/wiki-build-index.py
++++ b/scripts/wiki-build-index.py
+@@ -58,14 +58,18 @@ def _discover(wiki_root: Path) -> dict:
+ 
+ 
+ def _read_frontmatter(page: Path) -> dict:
+-    text = page.read_text()
++    try:
++        text = page.read_text(encoding="utf-8")
++    except (OSError, UnicodeDecodeError):
++        return {}
+     fm = extract_frontmatter(text)
+     if fm is None:
+         return {}
+     try:
+-        return parse_yaml(fm)
++        parsed = parse_yaml(fm)
+     except ValueError:
+         return {}
++    return parsed if isinstance(parsed, dict) else {}
+ 
+ 
+ def _quality(fm: dict) -> str:
+@@ -114,7 +118,10 @@ def _description(fm: dict, page: Path) -> str:
+         compact = _truncate_description(summary)
+         if compact and not compact.startswith("#"):
+             return compact
+-    text = page.read_text()
++    try:
++        text = page.read_text(encoding="utf-8")
++    except (OSError, UnicodeDecodeError):
++        return ""
+     end = text.find("\n---\n", 4)
+     if end < 0:
+         return ""
+

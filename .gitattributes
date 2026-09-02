@@ -1,0 +1,7 @@
+# Unified-diff fixtures require a prefix on otherwise blank context lines.
+evals/model-routing-v2/known-good/karpathy-pointer.patch whitespace=-blank-at-eol,-blank-at-eof
+evals/model-routing-v2/known-good/use-grok.patch whitespace=-blank-at-eol,-blank-at-eof
+
+# Frozen task-packet identity includes the reviewed terminal blank line.
+evals/model-routing-v2/packets/karpathy-pointer/TASK.md whitespace=-blank-at-eof
+evals/model-routing-v2/packets/use-grok/TASK.md whitespace=-blank-at-eof

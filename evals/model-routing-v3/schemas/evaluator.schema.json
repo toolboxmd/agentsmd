@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "status": {"type": "string", "enum": ["completed", "blocked"]},
+    "tasks": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "task_alias": {"type": "string"},
+          "preferred_variant": {"type": "string"},
+          "ranking": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 3,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "variant": {"type": "string"},
+                "rank": {"type": "integer", "minimum": 1, "maximum": 3},
+                "correctness": {"type": "integer", "minimum": 0, "maximum": 5},
+                "regression_safety": {"type": "integer", "minimum": 0, "maximum": 5},
+                "scope_discipline": {"type": "integer", "minimum": 0, "maximum": 5},
+                "maintainability": {"type": "integer", "minimum": 0, "maximum": 5},
+                "test_quality": {"type": "integer", "minimum": 0, "maximum": 5},
+                "blocking_findings": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                },
+                "summary": {"type": "string"}
+              },
+              "required": [
+                "variant",
+                "rank",
+                "correctness",
+                "regression_safety",
+                "scope_discipline",
+                "maintainability",
+                "test_quality",
+                "blocking_findings",
+                "summary"
+              ]
+            }
+          },
+          "rationale": {"type": "string"}
+        },
+        "required": ["task_alias", "preferred_variant", "ranking", "rationale"]
+      }
+    },
+    "cross_task_observations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "blocker": {"type": ["string", "null"]}
+  },
+  "required": ["status", "tasks", "cross_task_observations", "blocker"]
+}
