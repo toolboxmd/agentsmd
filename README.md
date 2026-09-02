@@ -42,8 +42,8 @@ inventory for this package. The initial Active set is:
 - AgentsMD-native: `project-direction` and `version-control`.
 - ToolboxMD-native: `use-grok`.
 - Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
-  `domain-modeling`, `to-spec`, `to-tickets`, `wayfinder`, and
-  `writing-for-agents`.
+  `domain-modeling`, `prototype`, `research`, `to-spec`, `to-tickets`,
+  `wayfinder`, and `writing-for-agents`.
 
 The catalogue records exact source revisions, current ownership, origin,
 licence, lifecycle, and local adaptation. Matt-derived material retains its
@@ -54,7 +54,10 @@ remain outside active plugin discovery.
 The AgentsMD workflow Skills `grilling`, `grill-with-docs`, `to-spec`,
 `to-tickets`, and `wayfinder` are human-controlled planning workflows. They run
 only when the user selects that workflow and stop at their documented approval
-gates. `use-grok` runs only after the user explicitly asks to consult Grok.
+gates. When a session works a typed Wayfinder Decision Issue, it automatically
+uses `research`, `prototype`, or `grilling` as recorded by that Issue; HITL
+work still waits for the required human judgment. `use-grok` runs only after
+the user explicitly asks to consult Grok.
 `project-direction` is model-invoked when the triad is missing, unusable, stale,
 contradictory, completed, or explicitly due for review. It requires user
 confirmation before writing strategic direction.

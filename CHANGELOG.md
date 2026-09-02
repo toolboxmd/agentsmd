@@ -3,6 +3,16 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [6.1.0] - 2026-09-02
+
+### Added
+
+- Add typed Prototype and Research workflows
+
+### Changed
+
+- Restore Wayfinder decision-fog semantics
+
 ## [6.0.0] - 2026-09-01
 
 ### Changed

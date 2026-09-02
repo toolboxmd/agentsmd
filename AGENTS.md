@@ -234,9 +234,9 @@ Choose the smallest lane that fits:
 - Specify: use `to-spec`, then `to-tickets`, when understood work spans
   multiple sessions. Publish the approved breakdown as GitHub Issues with
   blocking relationships, then implement each Issue in a fresh context.
-- Wayfind: use `wayfinder` only when a large effort still has an unclear
-  decision path. Once the path is clear, continue through `to-spec` and
-  `to-tickets`.
+- Wayfind: use `wayfinder` when unresolved dependent decisions prevent a
+  reliable spec, regardless of predicted effort size. Once the path is clear,
+  continue through `to-spec` and `to-tickets`.
 
 The AgentsMD workflow Skills `grilling`, `grill-with-docs`, `to-spec`,
 `to-tickets`, and `wayfinder` are human-controlled planning Skills. Use them

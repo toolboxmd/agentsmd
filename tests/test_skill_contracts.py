@@ -283,19 +283,78 @@ class SkillContractTests(unittest.TestCase):
 
     def test_wayfinder_maps_only_the_visible_github_frontier(self) -> None:
         skill = read_text("skills/wayfinder/SKILL.md")
+        normalized = " ".join(skill.split())
         for required in (
             "owning GitHub repository",
+            "persistent decision fog",
+            "regardless of predicted session length",
+            "## Plan, don't do",
+            "## Refer by name",
+            "## Question",
+            "## Type",
+            "## Decision Issue types",
+            "Research (AFK)",
+            "Prototype (HITL)",
+            "Grilling (HITL)",
+            "Task (HITL or AFK)",
+            "Invoke the bundled `research` Skill",
+            "Invoke the bundled `prototype` Skill",
+            "without asking the human to select a workflow",
+            "breadth-first",
             "visible decision frontier",
             "native blocking",
+            "assigning it",
+            "agent never stands in for the human",
+            "close it",
             "stop when the route is clear",
         ):
-            self.assertIn(required, skill)
+            self.assertIn(required, normalized)
         for forbidden in (
             "setup-matt-pocock-skills",
             "local-markdown",
             "Fire the research subagents",
+            "100K",
+            "more than one agent session can hold",
         ):
             self.assertNotIn(forbidden, skill)
+
+        agents = read_text("AGENTS.md")
+        normalized_agents = " ".join(agents.split())
+        self.assertIn(
+            "unresolved dependent decisions prevent a reliable spec",
+            normalized_agents,
+        )
+        self.assertNotIn(
+            "use `wayfinder` only when a large effort still has an unclear",
+            normalized_agents,
+        )
+
+    def test_prototype_answers_a_typed_decision_issue(self) -> None:
+        skill = " ".join(read_text("skills/prototype/SKILL.md").split())
+        for required in (
+            "Prototype Decision Issue",
+            "without asking the human to select it",
+            "[LOGIC.md](LOGIC.md)",
+            "[UI.md](UI.md)",
+            "runnable smoke check",
+            "human verdict",
+            "owning GitHub Issue",
+            "throwaway branch",
+        ):
+            self.assertIn(required, skill)
+
+    def test_research_answers_a_typed_decision_issue(self) -> None:
+        skill = " ".join(read_text("skills/research/SKILL.md").split())
+        for required in (
+            "Research Decision Issue",
+            "without asking the human to select it",
+            "primary sources",
+            "facts from inference",
+            "single Markdown file",
+            "owning GitHub Issue",
+            "background agent",
+        ):
+            self.assertIn(required, skill)
 
     def test_grilling_keeps_the_exhaustive_frontier(self) -> None:
         skill = read_text("skills/grilling/SKILL.md")
