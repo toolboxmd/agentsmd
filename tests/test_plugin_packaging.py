@@ -111,6 +111,7 @@ class PluginPackagingTests(unittest.TestCase):
                 "documentation": ["README.md", "SKILL_CATALOGUE.md"],
                 "requirements": ["AGENTS.md", ".version-policy.json"],
                 "proof": [
+                    "tests/test_global_instructions.py",
                     "tests/test_plugin_packaging.py",
                     "tests/test_project_direction_loader.py",
                     "tests/test_skill_contracts.py",
@@ -209,11 +210,20 @@ class PluginPackagingTests(unittest.TestCase):
         missing = [relative for relative in expected if not (ROOT / relative).is_file()]
         self.assertEqual(missing, [])
 
-    def test_project_direction_runtime_files_are_packaged_and_executable(self) -> None:
-        for relative in ("bin/project-direction", "hooks/hooks.json"):
+    def test_runtime_files_are_packaged_and_executable(self) -> None:
+        for relative in (
+            "bin/agentsmd-global-instructions",
+            "bin/project-direction",
+            "hooks/hooks.json",
+        ):
             with self.subTest(relative=relative):
                 self.assertTrue((ROOT / relative).is_file())
-        self.assertTrue(os.access(ROOT / "bin/project-direction", os.X_OK))
+        for relative in (
+            "bin/agentsmd-global-instructions",
+            "bin/project-direction",
+        ):
+            with self.subTest(executable=relative):
+                self.assertTrue(os.access(ROOT / relative, os.X_OK))
 
     def test_matt_adaptations_declare_origin_and_licence(self) -> None:
         for name in MATT_ADAPTATIONS:
