@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [6.1.1] - 2026-09-02
+
+### Changed
+
+- Establish reliable delivery Objective and proof ownership
+
 ## [6.1.0] - 2026-09-02
 
 ### Added
