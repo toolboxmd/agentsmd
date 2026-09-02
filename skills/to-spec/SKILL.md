@@ -1,7 +1,6 @@
 ---
 name: to-spec
-description: Turn the current conversation into an approved parent GitHub Issue without reopening settled decisions.
-disable-model-invocation: true
+description: Run the complete Specify workflow when understood work spans multiple sessions or Wayfinder clears a route, through an approved parent Issue and verified implementation ticket publication.
 license: MIT
 compatibility: Requires a GitHub repository and authenticated GitHub access.
 metadata:
@@ -9,12 +8,27 @@ metadata:
   origin: mattpocock/skills
   origin-skill: skills/engineering/to-spec
   source-revision: 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76
+  workflow: specify
+  workflow-stage: parent-spec
+  default-completion: verified-ticket-publication
+  parent-publication-approval: required
+  next-skill: to-tickets
+  parent-only-opt-out: supported
+  implementation-authority-source: full-current-request
+  invocation: model
 ---
 
 # To Spec
 
 Synthesize the current conversation and repository understanding into a ready
-GitHub parent Issue. Do not restart the interview or reopen settled decisions.
+GitHub parent Issue, then continue the complete Specify workflow through
+verified ticket publication by default. Do not restart the interview or reopen
+settled decisions.
+
+An explicit Parent Spec only request opts out after verified parent Issue
+publication. Otherwise this Skill composes into `to-tickets` automatically.
+Evaluate that opt-out and later implementation authority from the full current
+request, not from the Skill invocation alone.
 
 ## Process
 
@@ -54,8 +68,10 @@ records an approved decision more precisely than prose.
 ### 4. Approval gate
 
 Show the complete draft or a precise change summary for an existing Issue.
-Publish only after the user approves the outcome, scope, testing seam, and
-remaining blockers.
+Retain approval before parent Issue publication: publish only after the user
+approves the outcome, scope, testing seam, and remaining blockers. When the user
+rejects or revises the draft, update it and repeat this gate until the user
+approves it or stops the workflow.
 
 ### 5. Publish and verify
 
@@ -65,7 +81,13 @@ explicit outcome, acceptance criteria, non-goals, blockers, and required
 proof.
 
 Re-fetch the published body and comments. Report the Issue number and URL.
-Stop after publication unless the user selected another workflow.
+
+If the full current request explicitly requested Parent Spec only, stop after
+this verified publication. Otherwise continue the selected workflow.
+After verified parent Issue publication, invoke the bundled `to-tickets` Skill
+without another routing prompt. Pass it the verified parent Issue and preserve
+the full current request so it can apply the existing authority without asking
+again.
 
 ## Parent Issue template
 

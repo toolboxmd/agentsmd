@@ -14,6 +14,59 @@ def read_text(relative: str) -> str:
     return (ROOT / relative).read_text(encoding="utf-8")
 
 
+def scalar(value: str) -> str | bool | int:
+    if value == "true":
+        return True
+    if value == "false":
+        return False
+    if value.isdigit():
+        return int(value)
+    return value.strip('"')
+
+
+def frontmatter_fields(relative: str) -> dict[str, str | bool | int]:
+    metadata = read_text(relative).split("---\n", 2)[1]
+    fields = {}
+    for line in metadata.splitlines():
+        if not line or line.startswith(" ") or ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        if value.strip():
+            fields[key] = scalar(value.strip())
+    return fields
+
+
+def frontmatter_metadata(relative: str) -> dict[str, str | bool | int]:
+    metadata = read_text(relative).split("---\n", 2)[1]
+    fields = {}
+    in_metadata = False
+    for line in metadata.splitlines():
+        if line == "metadata:":
+            in_metadata = True
+            continue
+        if in_metadata and not line.startswith("  "):
+            break
+        if in_metadata and line.startswith("  ") and ":" in line:
+            key, value = line.strip().split(":", 1)
+            fields[key] = scalar(value.strip())
+    return fields
+
+
+def nested_yaml_value(
+    relative: str, section: str, key: str
+) -> str | bool | int:
+    in_section = False
+    for line in read_text(relative).splitlines():
+        if line == f"{section}:":
+            in_section = True
+            continue
+        if in_section and not line.startswith("  "):
+            break
+        if in_section and line.startswith(f"  {key}:"):
+            return scalar(line.split(":", 1)[1].strip())
+    raise KeyError(f"{relative}: {section}.{key}")
+
+
 class SkillContractTests(unittest.TestCase):
     def test_project_direction_skill_owns_all_repair_and_review_triggers(self) -> None:
         skill = read_text("skills/project-direction/SKILL.md")
@@ -422,6 +475,164 @@ class SkillContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, skill)
 
+    def test_specify_workflow_metadata_matches_state_contract(self) -> None:
+        contract = json.loads(
+            read_text("tests/fixtures/specify_workflow_cases.json")
+        )["contract"]
+        spec = frontmatter_metadata("skills/to-spec/SKILL.md")
+        tickets = frontmatter_metadata("skills/to-tickets/SKILL.md")
+
+        self.assertEqual(spec["workflow"], contract["workflow"])
+        self.assertEqual(
+            spec["default-completion"], contract["default_completion"]
+        )
+        self.assertEqual(
+            spec["parent-publication-approval"],
+            contract["parent_publication_approval"],
+        )
+        self.assertEqual(spec["next-skill"], "to-tickets")
+        self.assertEqual(spec["invocation"], contract["entry_invocation"])
+        self.assertEqual(
+            spec["parent-only-opt-out"], contract["parent_only_opt_out"]
+        )
+        self.assertEqual(
+            spec["implementation-authority-source"],
+            contract["implementation_authority_source"],
+        )
+        self.assertEqual(tickets["workflow"], contract["workflow"])
+        self.assertEqual(
+            tickets["default-completion"], contract["default_completion"]
+        )
+        self.assertEqual(
+            tickets["ticket-publication-approval"],
+            contract["ticket_publication_approval"],
+        )
+        self.assertEqual(tickets["invocation"], contract["entry_invocation"])
+        self.assertEqual(
+            tickets["implementation-target"], contract["implementation_target"]
+        )
+        self.assertEqual(
+            tickets["implementation-context"],
+            contract["implementation_context"],
+        )
+        self.assertEqual(
+            tickets["implementation-authority-source"],
+            contract["implementation_authority_source"],
+        )
+        self.assertEqual(
+            tickets["missing-authority-prompt-limit"],
+            contract["missing_authority_prompt_limit"],
+        )
+
+        spec_fields = frontmatter_fields("skills/to-spec/SKILL.md")
+        tickets_fields = frontmatter_fields("skills/to-tickets/SKILL.md")
+        self.assertEqual(spec_fields["name"], contract["entry_skill"])
+        self.assertNotIn("disable-model-invocation", spec_fields)
+        self.assertNotIn("disable-model-invocation", tickets_fields)
+        self.assertTrue(
+            nested_yaml_value(
+                "skills/to-spec/agents/openai.yaml",
+                "policy",
+                "allow_implicit_invocation",
+            )
+        )
+        self.assertTrue(
+            nested_yaml_value(
+                "skills/to-tickets/agents/openai.yaml",
+                "policy",
+                "allow_implicit_invocation",
+            )
+        )
+
+    def test_specify_workflow_state_fixture_covers_every_decision_branch(
+        self,
+    ) -> None:
+        payload = json.loads(
+            read_text("tests/fixtures/specify_workflow_cases.json")
+        )
+        self.assertEqual(payload["schema"], 1)
+        contract = payload["contract"]
+        cases = {case["branch"]: case for case in payload["cases"]}
+        self.assertEqual(
+            set(cases),
+            {
+                "planning-only",
+                "pre-authorized-implementation",
+                "explicit-parent-only",
+                "revised-drafts",
+                "rejected-parent-draft",
+                "rejected-ticket-draft",
+            },
+        )
+
+        for branch, case in cases.items():
+            transitions = case["transitions"]
+            with self.subTest(branch=branch):
+                self.assertEqual(transitions[0], "draft-parent")
+                if branch == "rejected-parent-draft":
+                    self.assertNotIn("publish-and-verify-parent", transitions)
+                    continue
+                self.assertLess(
+                    transitions.index("approve-parent"),
+                    transitions.index("publish-and-verify-parent"),
+                )
+                if case["parent_only"]:
+                    self.assertNotIn("draft-tickets", transitions)
+                else:
+                    self.assertLess(
+                        transitions.index("publish-and-verify-parent"),
+                        transitions.index("draft-tickets"),
+                    )
+                    if branch == "rejected-ticket-draft":
+                        self.assertNotIn(
+                            "publish-and-verify-tickets", transitions
+                        )
+                        continue
+                    self.assertLess(
+                        transitions.index("approve-ticket-graph"),
+                        transitions.index("publish-and-verify-tickets"),
+                    )
+
+        planning = cases["planning-only"]
+        self.assertEqual(
+            planning["implementation_authority_prompts"],
+            contract["missing_authority_prompt_limit"],
+        )
+        self.assertTrue(planning["names_first_unblocked_issue"])
+        self.assertFalse(planning["starts_implementation"])
+
+        authorized = cases["pre-authorized-implementation"]
+        self.assertTrue(authorized["implementation_authorized"])
+        self.assertEqual(authorized["implementation_authority_prompts"], 0)
+        self.assertTrue(authorized["starts_implementation"])
+        self.assertTrue(authorized["starts_in_fresh_context"])
+        for case in cases.values():
+            if not case["starts_implementation"]:
+                self.assertFalse(case["starts_in_fresh_context"])
+
+        parent_only = cases["explicit-parent-only"]
+        self.assertEqual(parent_only["terminal_state"], "parent-only-complete")
+        self.assertEqual(parent_only["implementation_authority_prompts"], 0)
+
+        revised = cases["revised-drafts"]["transitions"]
+        for transition in (
+            "revise-parent-draft",
+            "revise-ticket-draft",
+        ):
+            self.assertIn(transition, revised)
+
+        rejected_parent = cases["rejected-parent-draft"]
+        self.assertEqual(
+            rejected_parent["terminal_state"], "parent-draft-rejected"
+        )
+        self.assertEqual(rejected_parent["implementation_authority_prompts"], 0)
+
+        rejected_tickets = cases["rejected-ticket-draft"]
+        self.assertEqual(
+            rejected_tickets["terminal_state"], "ticket-draft-rejected"
+        )
+        self.assertEqual(rejected_tickets["implementation_authority_prompts"], 0)
+
     def test_to_tickets_publishes_github_issues_and_native_edges(self) -> None:
         skill = read_text("skills/to-tickets/SKILL.md")
         for required in (
@@ -446,6 +657,8 @@ class SkillContractTests(unittest.TestCase):
     def test_wayfinder_maps_only_the_visible_github_frontier(self) -> None:
         skill = read_text("skills/wayfinder/SKILL.md")
         normalized = " ".join(skill.split())
+        wayfinder = frontmatter_metadata("skills/wayfinder/SKILL.md")
+        self.assertEqual(wayfinder["handoff-skill"], "to-spec")
         for required in (
             "owning GitHub repository",
             "persistent decision fog",

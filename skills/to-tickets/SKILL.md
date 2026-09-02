@@ -1,7 +1,6 @@
 ---
 name: to-tickets
-description: Break an approved plan or parent Issue into a small graph of complete GitHub Issues with explicit proof and native relationships.
-disable-model-invocation: true
+description: Continue the complete Specify workflow after verified parent Issue publication, or break another approved plan into linked implementation Issues.
 license: MIT
 compatibility: Requires a GitHub repository and authenticated GitHub access.
 metadata:
@@ -9,13 +8,23 @@ metadata:
   origin: mattpocock/skills
   origin-skill: skills/engineering/to-tickets
   source-revision: 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76
+  workflow: specify
+  workflow-stage: ticket-graph
+  default-completion: verified-ticket-publication
+  ticket-publication-approval: required
+  implementation-target: first-unblocked-issue
+  implementation-context: fresh
+  implementation-authority-source: full-current-request
+  missing-authority-prompt-limit: 1
+  invocation: model
 ---
 
 # To Tickets
 
-Turn an approved plan, parent Issue, or conversation into the smallest useful
-graph of implementation GitHub Issues. Each Issue owns one narrow, complete,
-independently provable outcome and fits one fresh context.
+Continue a verified parent Issue into the smallest useful graph of
+implementation GitHub Issues, either when `to-spec` reaches this Skill or when
+the user invokes it for another approved plan. Each Issue owns one narrow,
+complete, independently provable outcome and fits one fresh context.
 
 Tracer-bullet and expand-contract language guides the decomposition. The
 published artifacts are called GitHub Issues.
@@ -68,8 +77,10 @@ Present a numbered breakdown. For every proposed Issue show:
 - **Blocked by**
 - **What it delivers**
 
-Ask whether the granularity, blocking edges, and merge or split choices are
-right. Iterate until the user approves the complete graph.
+Obtain approval of ticket granularity, blocking edges, and publication. Ask
+whether the merge or split choices are right. When the user rejects or revises
+the draft, update it and repeat this gate until the user approves the complete
+graph or stops the workflow.
 
 ### 5. Publish GitHub Issues
 
@@ -87,8 +98,26 @@ After the user approves:
    readiness.
 
 Re-fetch the parent children and every native blocking edge. Report the final
-Issue URLs and graph. Stop unless the user explicitly asks to continue into
-implementation.
+Issue URLs and graph only after you publish and verify the complete graph.
+
+### 6. Continue at the implementation boundary
+
+After verified ticket publication, identify the first unblocked implementation
+Issue. Evaluate implementation authority from the full current request.
+
+- When that request already authorizes implementation, begin the first
+  unblocked implementation Issue in a fresh context without another
+  authorization prompt. Carry the verified graph and the full current request
+  into that handoff.
+- When the request was planning-only or otherwise lacks implementation
+  authority, ask exactly once for authorization and name the first unblocked
+  implementation Issue. Await that authority before changing implementation
+  files.
+
+This boundary keeps planning-only work from silently becoming implementation
+while reusing authority the user already granted. This step is complete when
+implementation has begun in that Issue's fresh context, or exactly one authority
+request naming it is awaiting the user's response.
 
 ## Issue template
 

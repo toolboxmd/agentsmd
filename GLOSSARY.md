@@ -38,6 +38,11 @@ organizes and survives several contributing Issues and is recorded in root
 `OBJECTIVE.md`.
 _Avoid_: Current Goal, task outcome, task list, backlog
 
+**Parent Spec only**:
+An explicit request that runs `to-spec` through verified parent Issue
+publication and opts out before ticket decomposition or implementation.
+_Avoid_: parent-Spec-only, planning-only
+
 **Skill**:
 An Agent Skills-compatible package that gives an agent a reusable procedure or
 reference behind a named invocation boundary.

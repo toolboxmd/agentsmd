@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "contract": {
+    "workflow": "specify",
+    "default_completion": "verified-ticket-publication",
+    "parent_publication_approval": "required",
+    "ticket_publication_approval": "required",
+    "parent_only_opt_out": "supported",
+    "entry_skill": "to-spec",
+    "entry_invocation": "model",
+    "implementation_authority_source": "full-current-request",
+    "implementation_target": "first-unblocked-issue",
+    "implementation_context": "fresh",
+    "missing_authority_prompt_limit": 1
+  },
+  "cases": [
+    {
+      "branch": "planning-only",
+      "implementation_authorized": false,
+      "parent_only": false,
+      "transitions": [
+        "draft-parent",
+        "approve-parent",
+        "publish-and-verify-parent",
+        "draft-tickets",
+        "approve-ticket-graph",
+        "publish-and-verify-tickets",
+        "request-implementation-authority"
+      ],
+      "terminal_state": "awaiting-implementation-authority",
+      "implementation_authority_prompts": 1,
+      "names_first_unblocked_issue": true,
+      "starts_implementation": false,
+      "starts_in_fresh_context": false
+    },
+    {
+      "branch": "pre-authorized-implementation",
+      "implementation_authorized": true,
+      "parent_only": false,
+      "transitions": [
+        "draft-parent",
+        "approve-parent",
+        "publish-and-verify-parent",
+        "draft-tickets",
+        "approve-ticket-graph",
+        "publish-and-verify-tickets",
+        "start-first-unblocked-issue-in-fresh-context"
+      ],
+      "terminal_state": "implementation-started",
+      "implementation_authority_prompts": 0,
+      "names_first_unblocked_issue": true,
+      "starts_implementation": true,
+      "starts_in_fresh_context": true
+    },
+    {
+      "branch": "explicit-parent-only",
+      "implementation_authorized": false,
+      "parent_only": true,
+      "transitions": [
+        "draft-parent",
+        "approve-parent",
+        "publish-and-verify-parent",
+        "complete-parent-only"
+      ],
+      "terminal_state": "parent-only-complete",
+      "implementation_authority_prompts": 0,
+      "names_first_unblocked_issue": false,
+      "starts_implementation": false,
+      "starts_in_fresh_context": false
+    },
+    {
+      "branch": "revised-drafts",
+      "implementation_authorized": false,
+      "parent_only": false,
+      "transitions": [
+        "draft-parent",
+        "revise-parent-draft",
+        "approve-parent",
+        "publish-and-verify-parent",
+        "draft-tickets",
+        "revise-ticket-draft",
+        "approve-ticket-graph",
+        "publish-and-verify-tickets",
+        "request-implementation-authority"
+      ],
+      "terminal_state": "awaiting-implementation-authority",
+      "implementation_authority_prompts": 1,
+      "names_first_unblocked_issue": true,
+      "starts_implementation": false,
+      "starts_in_fresh_context": false
+    },
+    {
+      "branch": "rejected-parent-draft",
+      "implementation_authorized": false,
+      "parent_only": false,
+      "transitions": [
+        "draft-parent",
+        "reject-parent-draft",
+        "stop-without-parent-publication"
+      ],
+      "terminal_state": "parent-draft-rejected",
+      "implementation_authority_prompts": 0,
+      "names_first_unblocked_issue": false,
+      "starts_implementation": false,
+      "starts_in_fresh_context": false
+    },
+    {
+      "branch": "rejected-ticket-draft",
+      "implementation_authorized": false,
+      "parent_only": false,
+      "transitions": [
+        "draft-parent",
+        "approve-parent",
+        "publish-and-verify-parent",
+        "draft-tickets",
+        "reject-ticket-draft",
+        "stop-without-ticket-publication"
+      ],
+      "terminal_state": "ticket-draft-rejected",
+      "implementation_authority_prompts": 0,
+      "names_first_unblocked_issue": false,
+      "starts_implementation": false,
+      "starts_in_fresh_context": false
+    }
+  ]
+}
