@@ -178,6 +178,19 @@ Proof seam and the exact delivery state must remain explicit.
   and read all three files in full before any other work. This applies to
   discussion, research, planning, specification, Issue creation,
   implementation, review, and delivery.
+- Currentness guard: after the complete local triad is loaded and before a
+  repository-dependent conclusion treats it as confirmed-current, resolve the
+  intended base, `HEAD`, configured upstream, and locally known ahead/behind
+  state. Use known remote-tracking information when it is sufficient. Fetch
+  only when current remote state matters and the known information is
+  insufficient; do not make pull routine. When a known upstream is ahead or
+  diverged and changes any Project Direction file relative to `HEAD`, treat a
+  loader status of `potentially_stale` as checkout-scoped direction, reconcile
+  the intended base while preserving user work, and reread all three files
+  before subsequent strategic judgment. Unknown Git metadata limits the
+  currentness claim; it does not suppress the local triad. Loaders and hooks
+  inspect only local Git state and do not access the network or mutate the
+  checkout.
 - Missing direction: when any file is absent, unreadable, blank, or reported as
   oversized, invoke `project-direction` immediately to establish the complete
   triad. Only the repository and tracker inspection required by that Skill may

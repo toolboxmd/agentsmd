@@ -152,6 +152,34 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
 
+    def test_project_direction_currentness_contract_is_consistent(self) -> None:
+        agents = " ".join(read_text("AGENTS.md").split())
+        skill = " ".join(read_text("skills/project-direction/SKILL.md").split())
+        loader = read_text("bin/project-direction")
+
+        for contract in (agents, skill):
+            with self.subTest(contract=contract[:20]):
+                for required in (
+                    "after the complete local triad is loaded",
+                    "intended base",
+                    "`HEAD`",
+                    "configured upstream",
+                    "ahead/behind",
+                    "`potentially_stale`",
+                    "reread all three",
+                ):
+                    self.assertIn(required, contract)
+        for required in (
+            '"status": "potentially_stale"',
+            '"branch"',
+            '"head"',
+            '"upstream"',
+            '"divergence"',
+            '"project_direction_diff"',
+        ):
+            with self.subTest(loader_contract=required):
+                self.assertIn(required, loader)
+
     def test_root_direction_files_are_present_and_bounded(self) -> None:
         expected_headings = {
             "VISION.md": "# Vision\n",
@@ -387,6 +415,11 @@ class SkillContractTests(unittest.TestCase):
             "SubagentStart",
             "8,192 bytes per file",
             "16,384 bytes combined",
+            "intended base",
+            "configured upstream",
+            "ahead/behind",
+            "`potentially_stale`",
+            "without network access or checkout mutation",
             "does not prove reinjection after a subagent's private compaction",
             "review and trust",
         ):

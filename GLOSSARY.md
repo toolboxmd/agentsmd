@@ -11,6 +11,13 @@ The coherent repository-root triad of `VISION.md`, `MISSION.md`, and
 present purpose, and single current milestone-level outcome.
 _Avoid_: North Star, strategy bundle, project brief
 
+**Potentially stale Project Direction**:
+A complete checkout-local Project Direction whose known upstream is ahead or
+diverged and changes at least one direction file relative to `HEAD`. The loader
+reports `potentially_stale`; the triad remains checkout-scoped evidence until
+the intended base is reconciled and all three files are reread.
+_Avoid_: missing Project Direction, invalid Project Direction
+
 **Vision**:
 The grand and visionary aspirational long-range destination the project wants
 to make real, not the current work. It expands ambition and may be directional

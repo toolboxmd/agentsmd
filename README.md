@@ -105,14 +105,26 @@ Every project repository governed by the AgentsMD contract requires root
 
 The global contract requires the complete current triad in model context before
 project discussion, research, planning, specification, implementation, review,
-or delivery. A coherent triad remains project truth without repeated user
-confirmation. The model-invoked `project-direction` Skill initializes or
-repairs it from repository, tracker, ADR, glossary, product, and user evidence.
+or delivery. A coherent triad whose currentness is established remains project
+truth without repeated user confirmation. The model-invoked
+`project-direction` Skill initializes or repairs it from repository, tracker,
+ADR, glossary, product, and user evidence.
 The Skill asks only unresolved strategic questions, shows exact drafts, and
 waits for explicit user confirmation before writing. It treats the active task
 as evidence rather than the default Objective, keeps a coherent milestone-level
 Objective current across contributing work, and reviews a task-level Objective
 instead of letting ordinary requests churn project direction.
+
+After loading the local triad, currentness-sensitive conclusions resolve the
+intended base, `HEAD`, configured upstream, and locally known ahead/behind
+state. The loader exposes that local Git identity without network access or
+checkout mutation. When a known upstream is ahead or diverged and changes a
+Project Direction file relative to `HEAD`, the payload status is
+`potentially_stale`, includes the changed direction filenames, and identifies
+the loaded triad as checkout-scoped. Unrelated upstream changes remain `ready`.
+Missing or unresolved Git state is explicit metadata and never suppresses the
+complete local triad. After reconciliation, all three files must be reread
+before subsequent strategic judgment.
 
 For Codex, the plugin registers three deterministic lifecycle hooks:
 

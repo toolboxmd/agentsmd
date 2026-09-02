@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [6.4.0] - 2026-09-02
+
+### Added
+
+- Add Project Direction currentness guard
+
 ## [6.3.0] - 2026-09-02
 
 ### Added
