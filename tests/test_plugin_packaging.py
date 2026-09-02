@@ -116,9 +116,12 @@ class PluginPackagingTests(unittest.TestCase):
                 ],
                 "requirements": ["AGENTS.md", ".version-policy.json"],
                 "proof": [
+                    "tests/delivery_continuation_validator.py",
+                    "tests/fixtures/delivery_continuation_cases.json",
                     "tests/fixtures/persistent_host_automation_cases.json",
                     "tests/fixtures/specify_workflow_cases.json",
                     "tests/persistent_host_automation_validator.py",
+                    "tests/test_delivery_continuation_contract.py",
                     "tests/test_global_instructions.py",
                     "tests/test_persistent_host_automation_contract.py",
                     "tests/test_plugin_packaging.py",
@@ -203,6 +206,9 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_complete_supporting_resources_are_packaged(self) -> None:
         expected = {
+            "tests/delivery_continuation_validator.py",
+            "tests/fixtures/delivery_continuation_cases.json",
+            "tests/test_delivery_continuation_contract.py",
             "tests/fixtures/specify_workflow_cases.json",
             "skills/algorithm/evals/trigger-evals.json",
             "skills/algorithm/references/marketplace-project-record-regression.md",
