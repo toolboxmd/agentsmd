@@ -232,6 +232,21 @@ class PluginPackagingTests(unittest.TestCase):
             with self.subTest(executable=relative):
                 self.assertTrue(os.access(ROOT / relative, os.X_OK))
 
+    def test_packaged_project_direction_guard_has_matching_contracts(self) -> None:
+        loader = read_text("bin/project-direction")
+        agents = read_text("AGENTS.md")
+        skill = read_text("skills/project-direction/SKILL.md")
+
+        for required in (
+            "potentially_stale",
+            "configured upstream",
+            "ahead/behind",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, loader)
+                self.assertIn(required, agents)
+                self.assertIn(required, skill)
+
     def test_matt_adaptations_declare_origin_and_licence(self) -> None:
         for name in MATT_ADAPTATIONS:
             metadata = frontmatter(f"skills/{name}/SKILL.md")

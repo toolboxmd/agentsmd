@@ -7,9 +7,9 @@ description: >
   appears stale, reduces Vision to current work, leaves Mission without a
   present strategy, or merely restates one task, Issue, commit, or PR; when the
   Objective is achieved, invalidated, abandoned, or reprioritized; when the
-  loader reports uninitialized direction; or when the user asks to define,
-  review, or update Project Direction. Do not invoke merely to reread an
-  existing coherent triad.
+  loader reports uninitialized or `potentially_stale` direction; or when the
+  user asks to define, review, or update Project Direction. Do not invoke
+  merely to reread an existing coherent triad.
 ---
 
 # Project Direction
@@ -27,31 +27,47 @@ as files to copy with placeholders intact.
 ## Workflow
 
 1. Resolve the Git root. Read all existing root `VISION.md`, `MISSION.md`, and
-   `OBJECTIVE.md` files in full. Also read the relevant repository, Issue,
-   roadmap or milestone, product, ADR, glossary, and user evidence. Treat the
-   active request as evidence, not as the default Objective candidate. Keep
-   unsupported strategic claims unknown.
-2. Evaluate the triad as one coherent unit. Classify it as ready, missing,
+   `OBJECTIVE.md` files in full. The complete local triad loads before other
+   project work even when its upstream currentness is unknown.
+2. Apply the currentness guard after the complete local triad is loaded and
+   before a repository-dependent conclusion treats it as confirmed-current,
+   resolving the intended base, `HEAD`, configured upstream, and locally known
+   ahead/behind state. Use known
+   remote-tracking information when sufficient. Fetch only when current remote
+   state matters and that information is insufficient; do not make pull
+   routine. A known upstream that is ahead or diverged and changes a Project
+   Direction file makes loader status `potentially_stale`: identify the triad
+   as checkout-scoped, reconcile the intended base while preserving user work,
+   then reread all three files before subsequent strategic judgment. Explicit
+   unknown Git metadata limits the currentness claim without suppressing the
+   local triad. The loader and hooks inspect only local Git state and do not
+   access the network or mutate the checkout.
+3. Read the relevant repository, Issue, roadmap or milestone, product, ADR,
+   glossary, and user evidence. Treat the active request as evidence, not as
+   the default Objective candidate. Keep unsupported strategic claims unknown.
+4. Evaluate the triad as one coherent unit. Classify it as ready, missing,
    materially unusable, or due for review. An Objective is one current
    milestone-level outcome, narrower than the Mission but broader than an
    individual request, task, Issue, commit, or PR. A coherent existing triad is
-   current project truth. Do not require repeated confirmation merely because a
-   new task started.
-3. Identify only the strategic choices that evidence cannot resolve. Ask only
+   confirmed-current project truth only when currentness is established;
+   otherwise keep it checkout-scoped and qualify repository-dependent
+   conclusions. Do not require repeated confirmation merely because a new task
+   started.
+5. Identify only the strategic choices that evidence cannot resolve. Ask only
    for unresolved strategic decisions. When evidence supports only the active
    task and cannot establish the broader milestone, ask for that strategic
    choice instead of promoting the task into `OBJECTIVE.md`. Do not ask the user
    to restate facts the repository already proves.
-4. Draft the complete proposed meaning before editing. Preserve the distinction
+6. Draft the complete proposed meaning before editing. Preserve the distinction
    between a grand and visionary long-range destination, a strategic present
    purpose grounded in what the project does now, and one current milestone-level
    outcome. Review the triad as a coherent unit, but modify only the files whose
    meaning changed.
-5. Show the exact proposed contents of every affected file. Obtain explicit user
+7. Show the exact proposed contents of every affected file. Obtain explicit user
    confirmation before writing. A prior confirmation of those exact contents is
    sufficient. Silence, approval of a general plan, and permission to inspect
    are not confirmation of strategic direction.
-6. Write only confirmed contents. Never leave unresolved template placeholders.
+8. Write only confirmed contents. Never leave unresolved template placeholders.
    Then reread all three files in full, verify the size contract, and state
    whether the resulting triad is coherent and current.
 
