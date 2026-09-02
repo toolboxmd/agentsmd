@@ -51,13 +51,25 @@ MIT notice. `use-grok` retains its Apache-2.0 licence and separate source
 history. Deferred, retired, and upstream-reference Skills are documented but
 remain outside active plugin discovery.
 
-The AgentsMD workflow Skills `grilling`, `grill-with-docs`, `to-spec`,
-`to-tickets`, and `wayfinder` are human-controlled planning workflows. They run
-only when the user selects that workflow and stop at their documented approval
-gates. When a session works a typed Wayfinder Decision Issue, it automatically
-uses `research`, `prototype`, or `grilling` as recorded by that Issue; HITL
-work still waits for the required human judgment. `use-grok` runs only after
-the user explicitly asks to consult Grok.
+The AgentsMD Skills remain human-controlled planning workflows at their
+documented approval and authority gates.
+Selecting `to-spec` runs the complete Specify workflow through verified ticket
+publication by default. It waits for approval before publishing the parent
+Issue and before publishing the ticket graph, then starts the first unblocked
+Issue only when the full current request already authorizes implementation. A
+planning-only request asks exactly once for that authority, and an explicit
+Parent Spec only request stops after the verified parent. `to-spec` and
+`to-tickets` are model-discoverable so workflow composition does not require
+another routing prompt.
+
+Issue #39 supersedes only the Issue #5 human-routing decision that stopped the
+selected Specify workflow between established stages; all other Issue #5
+outcomes remain unchanged.
+
+When a session works a typed Wayfinder Decision Issue, it automatically uses
+`research`, `prototype`, or `grilling` as recorded by that Issue; HITL work still
+waits for the required human judgment. `use-grok` runs only after the user
+explicitly asks to consult Grok.
 `project-direction` is model-invoked when the triad is missing, unusable, stale,
 contradictory, completed, or explicitly due for review. It requires user
 confirmation before writing strategic direction.

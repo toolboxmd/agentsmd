@@ -9,6 +9,7 @@ metadata:
   origin: mattpocock/skills
   origin-skill: skills/engineering/wayfinder
   source-revision: 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76
+  handoff-skill: to-spec
 ---
 
 # Wayfinder
@@ -16,7 +17,8 @@ metadata:
 Use Wayfinder when persistent decision fog prevents a reliable spec,
 regardless of predicted session length. Even a one-session effort may need a
 map when several dependent questions obscure the route. A large but clear
-effort does not: continue through `to-spec` and `to-tickets` instead.
+effort does not: continue into the complete Specify workflow through `to-spec`
+instead.
 
 Wayfinder finds the route to a destination. It does not implement the
 destination.
@@ -31,7 +33,8 @@ Decision Issue a common direction.
 
 Each Decision Issue resolves a question. It is not a slice of implementation.
 When the next step is clear execution, the map has reached its edge: stop when
-the route is clear and hand it to `to-spec`, then `to-tickets`.
+the route is clear and hand it to `to-spec`, which owns continuation through
+tickets.
 
 Research, a prototype, access, or a human conversation may be necessary to
 resolve a decision. Record that need as the Decision Issue type. Charting
@@ -183,4 +186,4 @@ Resolve at most one non-research Decision Issue per fresh context:
 
 Do not require every imaginable decision to disappear. When the remaining
 route can be stated as a reliable spec, Wayfinder is complete. Continue with
-`to-spec`, then `to-tickets`.
+`to-spec`; that Skill composes the remaining Specify stages.

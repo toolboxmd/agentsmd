@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [7.0.0] - 2026-09-02
+
+### Changed
+
+- Continue Specify workflow through tickets
+
 ## [6.5.0] - 2026-09-02
 
 ### Added
