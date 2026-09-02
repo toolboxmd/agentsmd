@@ -158,7 +158,9 @@ Before migration, inspect every existing Skill with the same name. Hosts may
 show duplicate Skill names instead of merging them. Keep the old installation
 until the replacement release is installed and Live Verified, then remove or
 disable the old copy only with explicit authorization. Never overwrite a
-global instruction file or symlink without inspecting and backing it up.
+global instruction file or symlink without inspecting and backing it up. The
+global-instruction installer enforces that boundary independently from plugin
+installation.
 
 After installing or updating the plugin, start a fresh session. Existing
 sessions retain the Skill inventory and instruction chain loaded at startup.
@@ -183,9 +185,30 @@ to `~/.codex`. Configure that separately when you want the AgentsMD contract in
 every repository:
 
 ```sh
-mkdir -p "$HOME/.codex"
-ln -s "$AGENTSMD_DIR/AGENTS.md" "$HOME/.codex/AGENTS.md"
+./bin/agentsmd-global-instructions inspect
+./bin/agentsmd-global-instructions install \
+  --source "$AGENTSMD_DIR/AGENTS.md"
 ```
+
+`inspect` exits non-zero for a missing target, a broken link, a link into a
+plugin cache, or a pre-existing non-symlink. A first install creates the stable
+link. Replacing any existing target requires explicit `--replace` authority;
+the command first preserves it under `~/.codex/agentsmd-backups/` and then
+verifies the new link and content digest. Re-running the same install is a
+no-op and creates no new backup:
+
+```sh
+./bin/agentsmd-global-instructions install \
+  --source "$AGENTSMD_DIR/AGENTS.md" \
+  --replace
+./bin/agentsmd-global-instructions inspect
+```
+
+The source must be an existing stable `AGENTS.md`, normally from the canonical
+clone. The command rejects sources and targets under any `plugins/cache`
+directory. Use `--target` only to configure an intentional non-default Codex
+home, and `--backup-dir` only when the default adjacent backup directory is not
+appropriate.
 
 Do not also link the packaged Skills into `$HOME/.agents/skills`; that creates
 duplicate active copies. Link only the standalone CLI when ordinary terminal
