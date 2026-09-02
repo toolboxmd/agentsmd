@@ -1,5 +1,5 @@
 interface:
   display_name: "Wayfinder"
-  short_description: "Map a large effort as decision Issues"
+  short_description: "Map decision fog into a clear route"
 policy:
   allow_implicit_invocation: false

@@ -5,9 +5,9 @@ AgentsMD contains original ToolboxMD material under the repository
 
 ## Matt Pocock Skills
 
-The adapted `grilling`, `grill-with-docs`, `domain-modeling`, `to-spec`,
-`to-tickets`, `wayfinder`, and `writing-for-agents` directories derive from
-`mattpocock/skills` commit
+The adapted `grilling`, `grill-with-docs`, `domain-modeling`, `prototype`,
+`research`, `to-spec`, `to-tickets`, `wayfinder`, and `writing-for-agents`
+directories derive from `mattpocock/skills` commit
 `6654f6b60cd9d5be8b54c6fafe44346dabeb3b76`.
 
 Copyright and permission terms are preserved in
