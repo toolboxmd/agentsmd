@@ -11,6 +11,7 @@
       "grok-build": ".grok-plugin/plugin.json"
     },
     "skills": [
+      "skills/algorithm/SKILL.md",
       "skills/domain-modeling/SKILL.md",
       "skills/grill-with-docs/SKILL.md",
       "skills/grilling/SKILL.md",

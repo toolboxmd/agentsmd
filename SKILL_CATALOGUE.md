@@ -31,6 +31,7 @@ AgentsMD adaptation automatically.
 
 | Skill | Current owner | Origin and source identity | Lifecycle | Licence | AgentsMD adaptation |
 | --- | --- | --- | --- | --- | --- |
+| `algorithm` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Runs the fixed five-step Algorithm for material work through an observable closed evidence loop while keeping direct microfixes direct. |
 | `project-direction` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Establishes and maintains confirmed Vision, Mission, and Objective with milestone-level scope; deterministic hooks reload the complete triad and expose locally known upstream currentness. |
 | `version-control` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Canonical SemVer, mirror, changelog, commit, tag, and release contract. |
 | `use-grok` | ToolboxMD / AgentsMD | ToolboxMD-native `toolboxmd/use-grok`, use-grok pin, `skills/use-grok` | Active | [Apache-2.0](LICENSES/use-grok-Apache-2.0.txt) | Bundled unchanged. Explicit user invocation and real Grok Build behavior remain intact. |

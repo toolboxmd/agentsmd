@@ -1,0 +1,35 @@
+{
+  "skill_name": "algorithm",
+  "queries": [
+    {
+      "branch": "material-requirement",
+      "query": "Implement this material requirement and prove the useful outcome.",
+      "should_trigger": true
+    },
+    {
+      "branch": "solution-design",
+      "query": "Design the smallest solution for this approved capability.",
+      "should_trigger": true
+    },
+    {
+      "branch": "process-design",
+      "query": "Create a release process that preserves our authority gates.",
+      "should_trigger": true
+    },
+    {
+      "branch": "recurring-loop-automation",
+      "query": "Automate this recurring reconciliation loop.",
+      "should_trigger": true
+    },
+    {
+      "branch": "direct-microfix",
+      "query": "Fix the one misspelled word in README.md.",
+      "should_trigger": false
+    },
+    {
+      "branch": "read-only-status",
+      "query": "Show the current Git branch and status without changing anything.",
+      "should_trigger": false
+    }
+  ]
+}

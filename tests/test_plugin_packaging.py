@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 ACTIVE_SKILLS = {
+    "algorithm",
     "domain-modeling",
     "grill-with-docs",
     "grilling",
@@ -201,6 +202,8 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_complete_supporting_resources_are_packaged(self) -> None:
         expected = {
+            "skills/algorithm/evals/trigger-evals.json",
+            "skills/algorithm/references/marketplace-project-record-regression.md",
             "skills/project-direction/references/file-contracts.md",
             "skills/project-direction/templates/MISSION.md",
             "skills/project-direction/templates/OBJECTIVE.md",
@@ -294,6 +297,18 @@ class PluginPackagingTests(unittest.TestCase):
         self.assertIn("MIT", row)
         self.assertIn("Vision, Mission, and Objective", row)
 
+    def test_catalogue_owns_algorithm_as_native_active_skill(self) -> None:
+        catalogue = read_text("SKILL_CATALOGUE.md")
+        row = next(
+            line
+            for line in catalogue.splitlines()
+            if line.startswith("| `algorithm`")
+        )
+        self.assertIn("AgentsMD-native; this release commit", row)
+        self.assertIn("Active", row)
+        self.assertIn("MIT", row)
+        self.assertIn("five-step Algorithm", row)
+
     def test_every_catalogue_row_resolves_an_exact_source_revision(self) -> None:
         catalogue = read_text("SKILL_CATALOGUE.md")
         rows = {
@@ -304,7 +319,7 @@ class PluginPackagingTests(unittest.TestCase):
         for name in ACTIVE_SKILLS | MATT_SKILLS:
             with self.subTest(skill=name):
                 row = rows[name]
-                if name in {"project-direction", "version-control"}:
+                if name in {"algorithm", "project-direction", "version-control"}:
                     self.assertIn("this release commit", row)
                 elif name == "use-grok":
                     self.assertIn("use-grok pin", row)
