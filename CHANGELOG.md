@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [6.5.0] - 2026-09-02
+
+### Added
+
+- Add model-invoked Algorithm execution skill
+
 ## [6.4.0] - 2026-09-02
 
 ### Added

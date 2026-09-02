@@ -216,9 +216,27 @@ class SkillContractTests(unittest.TestCase):
         ):
             self.assertIn(required, agents)
 
-    def test_global_contract_runs_the_algorithm_in_order(self) -> None:
+    def test_global_contract_routes_material_algorithm_work(self) -> None:
         agents = read_text("AGENTS.md")
         normalized = " ".join(agents.split())
+        for required in (
+            "After Project Direction is loaded",
+            "invoke the model-invoked `algorithm` Skill",
+            "material requirement",
+            "solution design",
+            "process design",
+            "recurring-loop automation",
+            "small direct microfix",
+            "stays direct",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
+        self.assertNotIn("Question every requirement.", agents)
+        self.assertNotIn("Run the Algorithm inside a closed evidence loop.", agents)
+
+    def test_algorithm_skill_preserves_order_and_completion_contract(self) -> None:
+        skill = read_text("skills/algorithm/SKILL.md")
+        normalized = " ".join(skill.split())
         stages = (
             "Question every requirement.",
             "Delete the unnecessary part or process.",
@@ -228,14 +246,130 @@ class SkillContractTests(unittest.TestCase):
         )
         positions = [normalized.index(stage) for stage in stages]
         self.assertEqual(positions, sorted(positions))
+        evidence_gate = normalized.index("Before step 4")
+        self.assertLess(positions[2], evidence_gate)
+        self.assertLess(evidence_gate, positions[3])
         for required in (
             "The fixed order is binding",
+            "all five steps again for every material requirement, solution, process, and recurring loop",
+            "It prevents perfect execution of the wrong requirement",
+            "Requirements from experts and inherited process need scrutiny",
+            "question the proposed interpretation and path",
+            "Complete this step when outcome, ownership, constraints, "
+            "acceptance, and proof are explicit.",
+            "Test whether the requirement, scope, code, test, dependency, "
+            "artifact, handoff, or ceremony should exist at all.",
+            "Deletion is stronger than cleanup",
+            "Make deletion risk-scaled and reversible.",
+            "Use committed Git history to recover in-scope tracked work.",
+            "Keep uncommitted user work, user data, credentials, legal controls",
+            "Required proof and unique regression tests survive",
+            "Restore work only when evidence proves it is required.",
+            "Complete this step when every survivor has an evidence-linked "
+            "reason to exist.",
             "Addback maps the boundary; it is not a quota.",
+            "Prefer fewer states, narrower interfaces, direct paths, clear ownership",
+            "Simplicity must preserve necessary behavior, error handling, proof, safety",
+            "It is a design result, not a reason to hide complexity that still exists.",
+            "Complete this step when the surviving path is the simplest one "
+            "known to meet the requirement.",
+            "Speed means faster validated learning after the right work and structure",
+            "Use direct source inspection, smaller checks, fewer handoffs, cached work",
+            "Keep proof and single-writer boundaries intact.",
+            "Complete this step when the next unit of effort follows the "
+            "shortest safe feedback path through the current constraint.",
+            "Automation magnifies the process chosen before it.",
+            "Automate only a necessary, stable, proven, recurring semantic loop",
+            "Keep one-off or ambiguous work explicit until evidence makes it repeatable.",
+            "Complete this step when automation preserves the proven semantics "
+            "and exposes failures.",
+            "return to the earliest affected step",
+            "Resolve every earlier step before optimizing, accelerating, or automating.",
             "Run the Algorithm inside a closed evidence loop.",
+            "Start from the useful outcome and inspect the exact source, work, state, or user surface.",
+            "Identify the active constraint.",
+            "Make the smallest meaningful reversible change or experiment",
             "the fastest check that can falsify the current assumption",
+            "inspect the result, correct the model and implementation, expose bad news, and repeat",
+            "Scale failure tolerance to consequence",
             "feedback, not final Proof",
+            "highest practical Proof seam",
+            "exact delivery state must remain explicit",
+            "Human Gates",
+            "Project Direction",
+            "user-owned dirty work",
+            "explicit user constraints",
+            "current material-work artifact or evidence",
+            "questioned requirement and its supporting evidence",
+            "Keep a small direct microfix direct",
+            "Do not narrate the Algorithm as ceremony.",
         ):
-            self.assertIn(required, normalized)
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
+
+    def test_algorithm_is_model_invoked_with_material_branches(self) -> None:
+        skill = read_text("skills/algorithm/SKILL.md")
+        metadata = skill.split("---\n", 2)[1]
+        normalized_metadata = " ".join(metadata.split())
+        self.assertNotIn("disable-model-invocation", metadata)
+        for required in (
+            "material requirements",
+            "solution design",
+            "process design",
+            "recurring-loop automation",
+            "small direct microfixes direct",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized_metadata)
+
+        host_metadata = read_text("skills/algorithm/agents/openai.yaml")
+        self.assertIn("allow_implicit_invocation: true", host_metadata)
+
+    def test_algorithm_trigger_fixture_covers_positive_and_negative_branches(
+        self,
+    ) -> None:
+        payload = json.loads(
+            read_text("skills/algorithm/evals/trigger-evals.json")
+        )
+        self.assertEqual(payload["skill_name"], "algorithm")
+        cases = payload["queries"]
+        branches = {
+            case["branch"]: case["should_trigger"] for case in cases
+        }
+        self.assertEqual(
+            branches,
+            {
+                "material-requirement": True,
+                "solution-design": True,
+                "process-design": True,
+                "recurring-loop-automation": True,
+                "direct-microfix": False,
+                "read-only-status": False,
+            },
+        )
+
+    def test_algorithm_records_real_marketplace_regression(self) -> None:
+        evidence = " ".join(
+            read_text(
+                "skills/algorithm/references/marketplace-project-record-regression.md"
+            ).split()
+        )
+        for required in (
+            "toolboxmd/agentsmd#32",
+            "toolboxmd/marketplace#6",
+            "comprehensive schema",
+            "accepted-record snapshot",
+            "provenance lock",
+            "three-release design",
+            "separate snapshot",
+            "separate lock",
+            "registry state",
+            "duplicated release and manifest facts",
+            "automatic reconciliation",
+            "minimal neutral index over existing released sources",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, evidence)
 
     def test_domain_modeling_owns_lazy_glossary_behavior(self) -> None:
         skill = read_text("skills/domain-modeling/SKILL.md")

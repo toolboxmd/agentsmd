@@ -39,7 +39,7 @@ global baseline. This matches the discovery model documented for
 The [AgentsMD Skill Catalogue](SKILL_CATALOGUE.md) is the only authoritative
 inventory for this package. The initial Active set is:
 
-- AgentsMD-native: `project-direction` and `version-control`.
+- AgentsMD-native: `algorithm`, `project-direction`, and `version-control`.
 - ToolboxMD-native: `use-grok`.
 - Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
   `domain-modeling`, `prototype`, `research`, `to-spec`, `to-tickets`,
@@ -61,6 +61,8 @@ the user explicitly asks to consult Grok.
 `project-direction` is model-invoked when the triad is missing, unusable, stale,
 contradictory, completed, or explicitly due for review. It requires user
 confirmation before writing strategic direction.
+`algorithm` is model-invoked for material requirements, solution and process
+design, and recurring-loop automation. Small direct microfixes remain direct.
 
 ## Registry boundaries
 

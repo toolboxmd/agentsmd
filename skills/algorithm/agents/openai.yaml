@@ -1,0 +1,7 @@
+interface:
+  display_name: "Algorithm"
+  short_description: "Apply the five-step Algorithm to material work"
+  default_prompt: "Use $algorithm to reduce this material work."
+
+policy:
+  allow_implicit_invocation: true
