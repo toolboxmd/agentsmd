@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "contract": {
+    "authoritative_location": "AGENTS.md#Authority and continuation",
+    "start_record_fields": [
+      "intended-base",
+      "branch",
+      "workspace-path",
+      "ownership",
+      "starting-head"
+    ]
+  },
+  "case_defaults": {
+    "work_kind": "mutating",
+    "fresh_workspace": true,
+    "exclusive_branch": true,
+    "selected_ownership_known": true,
+    "existing_state": "none",
+    "reuse_existing": false,
+    "preserved_and_reported": true,
+    "parallel": false,
+    "base_moved": false,
+    "unsafe_overlap": false,
+    "start_record": {
+      "intended-base": "1111111111111111111111111111111111111111",
+      "branch": "feat/52-exclusive-workspaces",
+      "workspace-path": "workspace://issues/52",
+      "ownership": "toolboxmd/example#52",
+      "starting-head": "1111111111111111111111111111111111111111"
+    },
+    "ownership_claims": [
+      {
+        "owner": "toolboxmd/example#52",
+        "branch": "feat/52-exclusive-workspaces",
+        "workspace": "workspace://issues/52",
+        "file-set": "files://authority-and-continuation"
+      }
+    ],
+    "expected_decision": "continue-exclusive"
+  },
+  "cases": [
+    {
+      "id": "mutating"
+    },
+    {
+      "id": "read-only",
+      "work_kind": "read-only",
+      "can_mutate": false,
+      "interferes_with_writer": false,
+      "expected_decision": "share-read-only"
+    },
+    {
+      "id": "independent",
+      "existing_state": "clean",
+      "parallel": true,
+      "independence": "known-independent",
+      "separate_workspaces": true,
+      "ownership_claims": [
+        {
+          "owner": "toolboxmd/example#52",
+          "branch": "feat/52-exclusive-workspaces",
+          "workspace": "workspace://issues/52",
+          "file-set": "files://authority-and-continuation"
+        },
+        {
+          "owner": "toolboxmd/example#53",
+          "branch": "feat/53-stacked-work",
+          "workspace": "workspace://issues/53",
+          "file-set": "files://stacked-delivery"
+        }
+      ]
+    },
+    {
+      "id": "overlapping",
+      "existing_state": "active",
+      "parallel": true,
+      "independence": "known-dependent",
+      "separate_workspaces": true,
+      "ownership_claims": [
+        {
+          "owner": "toolboxmd/example#52",
+          "branch": "feat/52-exclusive-workspaces",
+          "workspace": "workspace://issues/52",
+          "file-set": "files://authority-and-continuation"
+        },
+        {
+          "owner": "toolboxmd/example#54",
+          "branch": "feat/54-overlapping-work",
+          "workspace": "workspace://issues/54",
+          "file-set": "files://authority-and-continuation"
+        }
+      ],
+      "expected_decision": "stop-affected-writer",
+      "unrelated_work_decision": "continue"
+    },
+    {
+      "id": "dirty",
+      "existing_state": "dirty"
+    },
+    {
+      "id": "active",
+      "existing_state": "active"
+    },
+    {
+      "id": "ambiguous",
+      "existing_state": "ambiguous"
+    },
+    {
+      "id": "moving-base",
+      "existing_state": "clean",
+      "base_moved": true,
+      "expected_decision": "stop-affected-writer",
+      "unrelated_work_decision": "continue"
+    }
+  ]
+}

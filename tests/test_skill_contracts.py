@@ -67,6 +67,75 @@ def nested_yaml_value(
     raise KeyError(f"{relative}: {section}.{key}")
 
 
+def workspace_isolation_decision(case: dict[str, object]) -> str:
+    if case["work_kind"] == "read-only":
+        if case.get("can_mutate") or case.get("interferes_with_writer"):
+            return "stop-affected-work"
+        return "share-read-only"
+
+    if not case.get("selected_ownership_known"):
+        return "stop-affected-writer"
+    if case.get("base_moved") or case.get("unsafe_overlap"):
+        return "stop-affected-writer"
+    if not case.get("fresh_workspace") or not case.get("exclusive_branch"):
+        return "stop-affected-writer"
+
+    record = case.get("start_record")
+    required = {
+        "intended-base",
+        "branch",
+        "workspace-path",
+        "ownership",
+        "starting-head",
+    }
+    if not isinstance(record, dict) or set(record) != required:
+        return "stop-affected-writer"
+    if any(not isinstance(value, str) or not value for value in record.values()):
+        return "stop-affected-writer"
+
+    existing_state = case.get("existing_state")
+    if existing_state in {"dirty", "active", "ambiguous"} and (
+        case.get("reuse_existing") or not case.get("preserved_and_reported")
+    ):
+        return "stop-affected-writer"
+
+    if case.get("parallel"):
+        if (
+            case.get("independence") != "known-independent"
+            or not case.get("separate_workspaces")
+        ):
+            return "stop-affected-writer"
+
+    claims = case.get("ownership_claims")
+    if not isinstance(claims, list) or not claims:
+        return "stop-affected-writer"
+    resources = ("branch", "workspace", "file-set")
+    owners_by_resource = {resource: {} for resource in resources}
+    selected_claim_found = False
+    for claim in claims:
+        if not isinstance(claim, dict) or set(claim) != {
+            "owner",
+            *resources,
+        }:
+            return "stop-affected-writer"
+        if any(not isinstance(value, str) or not value for value in claim.values()):
+            return "stop-affected-writer"
+        selected_claim_found |= (
+            claim["owner"] == record["ownership"]
+            and claim["branch"] == record["branch"]
+            and claim["workspace"] == record["workspace-path"]
+        )
+        for resource in resources:
+            owners = owners_by_resource[resource]
+            existing_owner = owners.get(claim[resource])
+            if existing_owner is not None and existing_owner != claim["owner"]:
+                return "stop-affected-writer"
+            owners[claim[resource]] = claim["owner"]
+    if not selected_claim_found:
+        return "stop-affected-writer"
+    return "continue-exclusive"
+
+
 class SkillContractTests(unittest.TestCase):
     def test_project_direction_skill_owns_all_repair_and_review_triggers(self) -> None:
         skill = read_text("skills/project-direction/SKILL.md")
@@ -699,6 +768,142 @@ class SkillContractTests(unittest.TestCase):
         )
         positions = [contract.index(state) for state in states]
         self.assertEqual(positions, sorted(positions))
+
+    def test_mutating_issues_own_exclusive_workspaces(self) -> None:
+        agents = read_text("AGENTS.md")
+        contract = " ".join(
+            agents.split("## Authority and continuation", 1)[1]
+            .split("\n## ", 1)[0]
+            .split()
+        )
+
+        for required in (
+            "Before tracked mutation, give each implementation Issue one fresh "
+            "exclusive branch and workspace",
+            "intended base, branch, workspace path, ownership, and exact "
+            "starting `HEAD`",
+            "canonical checkout as the stable coordination and integration view",
+            "Read-only work may share repository state only when it cannot mutate "
+            "or interfere with a writer",
+            "separate workspaces with disjoint ownership",
+            "A branch, workspace, and file set each has one writer",
+            "Preserve and report dirty, active, or ambiguous state",
+            "unknown ownership or independence",
+            "moving base or unsafe overlap stops only the affected writer",
+            "unrelated independent work continues",
+            "fresh-context and durable-handoff rules in this section",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, contract)
+
+    def test_workspace_isolation_cases_cover_every_selection_branch(
+        self,
+    ) -> None:
+        payload = json.loads(
+            read_text("tests/fixtures/workspace_isolation_cases.json")
+        )
+        cases = {
+            case["id"]: {**payload["case_defaults"], **case}
+            for case in payload["cases"]
+        }
+
+        self.assertEqual(payload["schema"], 1)
+        self.assertEqual(
+            set(cases),
+            {
+                "mutating",
+                "read-only",
+                "independent",
+                "overlapping",
+                "dirty",
+                "active",
+                "ambiguous",
+                "moving-base",
+            },
+        )
+        self.assertEqual(
+            set(payload["contract"]["start_record_fields"]),
+            {
+                "intended-base",
+                "branch",
+                "workspace-path",
+                "ownership",
+                "starting-head",
+            },
+        )
+
+        for case in cases.values():
+            with self.subTest(case=case["id"]):
+                self.assertEqual(
+                    workspace_isolation_decision(case),
+                    case["expected_decision"],
+                )
+
+        for case_id in ("overlapping", "moving-base"):
+            with self.subTest(unrelated_continuation=case_id):
+                self.assertEqual(
+                    cases[case_id]["unrelated_work_decision"], "continue"
+                )
+
+        unsafe_reuse = dict(cases["ambiguous"], reuse_existing=True)
+        self.assertEqual(
+            workspace_isolation_decision(unsafe_reuse),
+            "stop-affected-writer",
+        )
+
+        unknown_independence = dict(
+            cases["independent"], independence="unknown"
+        )
+        self.assertEqual(
+            workspace_isolation_decision(unknown_independence),
+            "stop-affected-writer",
+        )
+
+        unknown_ownership = dict(
+            cases["mutating"], selected_ownership_known=False
+        )
+        self.assertEqual(
+            workspace_isolation_decision(unknown_ownership),
+            "stop-affected-writer",
+        )
+
+        interfering_reader = dict(
+            cases["read-only"], interferes_with_writer=True
+        )
+        self.assertEqual(
+            workspace_isolation_decision(interfering_reader),
+            "stop-affected-work",
+        )
+
+        missing_record = dict(cases["mutating"])
+        del missing_record["start_record"]
+        self.assertEqual(
+            workspace_isolation_decision(missing_record),
+            "stop-affected-writer",
+        )
+
+        missing_claim = dict(cases["mutating"])
+        missing_claim["ownership_claims"] = []
+        self.assertEqual(
+            workspace_isolation_decision(missing_claim),
+            "stop-affected-writer",
+        )
+
+        independent_claims = cases["independent"]["ownership_claims"]
+        self.assertEqual(len(independent_claims), 2)
+        for resource in ("branch", "workspace", "file-set"):
+            duplicate = dict(cases["independent"])
+            duplicate["ownership_claims"] = [
+                dict(claim) for claim in independent_claims
+            ]
+            duplicate["ownership_claims"][1][resource] = (
+                duplicate["ownership_claims"][0][resource]
+            )
+            with self.subTest(duplicate_resource=resource):
+                self.assertEqual(
+                    workspace_isolation_decision(duplicate),
+                    "stop-affected-writer",
+                )
 
     def test_wayfinder_maps_only_the_visible_github_frontier(self) -> None:
         skill = read_text("skills/wayfinder/SKILL.md")

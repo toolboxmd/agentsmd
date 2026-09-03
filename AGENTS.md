@@ -239,6 +239,20 @@ to route established steps again.
   target. Before an external mutation, verify the live target and applicable
   authority. After the mutation, verify the resulting live state before
   reporting success.
+- Before tracked mutation, give each implementation Issue one fresh exclusive
+  branch and workspace. Record the intended base, branch, workspace path,
+  ownership, and exact starting `HEAD`. Keep the canonical checkout as the
+  stable coordination and integration view.
+- Read-only work may share repository state only when it cannot mutate or
+  interfere with a writer. Independent mutating Issues may proceed in parallel
+  only in separate workspaces with disjoint ownership. A branch, workspace,
+  and file set each has one writer at a time.
+- Preserve and report dirty, active, or ambiguous state before selecting a
+  workspace. Select another workspace unless exact ownership and availability
+  are established; cleanliness alone proves neither. Treat unknown ownership
+  or independence as unsafe. A moving base or unsafe overlap stops only the
+  affected writer; unrelated independent work continues. After workspace
+  selection, apply the fresh-context and durable-handoff rules in this section.
 - Repository capability setup starts with `inspection`: inspect the exact
   repository read-only before relying on its delivery capabilities. Record the
   default branch, applicable requirements, native Issue dependencies and
