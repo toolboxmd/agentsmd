@@ -1,6 +1,7 @@
 ---
 name: to-spec
-description: Run the complete Specify workflow when understood work spans multiple sessions or Wayfinder clears a route, through an approved parent Issue and verified implementation ticket publication.
+description: Run the complete Specify workflow through an approved parent Issue and verified implementation ticket publication.
+disable-model-invocation: true
 license: MIT
 compatibility: Requires a GitHub repository and authenticated GitHub access.
 metadata:
@@ -12,10 +13,14 @@ metadata:
   workflow-stage: parent-spec
   default-completion: verified-ticket-publication
   parent-publication-approval: required
-  next-skill: to-tickets
+  ticket-publication-approval: required
+  continuation-stage: ticket-graph
   parent-only-opt-out: supported
+  implementation-target: first-unblocked-issue
+  implementation-context: fresh
   implementation-authority-source: full-current-request
-  invocation: model
+  missing-authority-prompt-limit: 1
+  invocation: user
 ---
 
 # To Spec
@@ -26,9 +31,10 @@ verified ticket publication by default. Do not restart the interview or reopen
 settled decisions.
 
 An explicit Parent Spec only request opts out after verified parent Issue
-publication. Otherwise this Skill composes into `to-tickets` automatically.
-Evaluate that opt-out and later implementation authority from the full current
-request, not from the Skill invocation alone.
+publication. Otherwise this Skill continues directly through the ticket-graph
+stage below. It does not invoke another planning Skill. Evaluate that opt-out
+and later implementation authority from the full current request, not from the
+Skill invocation alone.
 
 ## Process
 
@@ -84,10 +90,46 @@ Re-fetch the published body and comments. Report the Issue number and URL.
 
 If the full current request explicitly requested Parent Spec only, stop after
 this verified publication. Otherwise continue the selected workflow.
-After verified parent Issue publication, invoke the bundled `to-tickets` Skill
-without another routing prompt. Pass it the verified parent Issue and preserve
-the full current request so it can apply the existing authority without asking
-again.
+
+### 6. Draft the implementation ticket graph
+
+Use the verified parent Issue and the full current request as the source. Draft
+the smallest useful graph of implementation Issues. Prefer independently
+provable tracer bullets. Use expand-migrate-contract only when a true wide
+refactor prevents independently green slices.
+
+Every proposed Issue must name its title, blockers, and delivered outcome. Each
+Issue must include the parent reference, acceptance criteria, non-goals, and
+required proof.
+
+### 7. Approve the ticket graph
+
+Obtain approval of ticket granularity, blocking edges, and publication. Ask
+whether the merge or split choices are right. When the user rejects or revises
+the draft, update it and repeat this gate until the user approves the complete
+graph or stops the workflow.
+
+### 8. Publish and verify implementation Issues
+
+After approval, create Issues in dependency order. Add every implementation
+Issue as a native sub-Issue of the parent and add native blocking relationships
+after real Issue identifiers exist. Leave the parent body and state unchanged.
+Do not add an automatic readiness label.
+
+Re-fetch the parent's children and every native blocking edge. Report the final
+Issue URLs and graph only after publication and relationship verification.
+
+### 9. Continue at the implementation boundary
+
+Identify the first unblocked implementation Issue and evaluate implementation
+authority from the full current request.
+
+- When that request already authorizes implementation, begin the Issue in a
+  fresh context without another authorization prompt. Follow Authority and
+  continuation in `AGENTS.md` and seed its minimal durable context packet.
+- When the request was planning-only or otherwise lacks implementation
+  authority, ask exactly once for authorization and name the Issue. Await that
+  authority before changing implementation files.
 
 ## Parent Issue template
 

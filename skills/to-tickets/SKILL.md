@@ -1,6 +1,7 @@
 ---
 name: to-tickets
-description: Continue the complete Specify workflow after verified parent Issue publication, or break another approved plan into linked implementation Issues.
+description: Break an approved plan or parent Issue into linked implementation Issues with explicit proof and native relationships.
+disable-model-invocation: true
 license: MIT
 compatibility: Requires a GitHub repository and authenticated GitHub access.
 metadata:
@@ -16,15 +17,15 @@ metadata:
   implementation-context: fresh
   implementation-authority-source: full-current-request
   missing-authority-prompt-limit: 1
-  invocation: model
+  invocation: user
 ---
 
 # To Tickets
 
-Continue a verified parent Issue into the smallest useful graph of
-implementation GitHub Issues, either when `to-spec` reaches this Skill or when
-the user invokes it for another approved plan. Each Issue owns one narrow,
-complete, independently provable outcome and fits one fresh context.
+Turn an approved plan, parent Issue, or conversation into the smallest useful
+graph of implementation GitHub Issues when the user explicitly selects this
+Skill. Each Issue owns one narrow, complete, independently provable outcome and
+fits one fresh context.
 
 Tracer-bullet and expand-contract language guides the decomposition. The
 published artifacts are called GitHub Issues.
