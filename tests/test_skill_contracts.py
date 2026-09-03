@@ -266,6 +266,135 @@ def review_ready_stack_decision(case: dict[str, object]) -> str:
     return "continue-stacked"
 
 
+TERMINAL_DISPOSITIONS = {
+    "merged",
+    "approved-alternative-delivery",
+    "cancelled",
+    "duplicated",
+    "superseded",
+    "equivalent-conclusive-closure",
+}
+
+TRANSIENT_RESOURCE_TYPES = {
+    "local-branch",
+    "remote-branch",
+    "worktree",
+    "disposable-checkout",
+    "temporary-file",
+    "task-process",
+    "container",
+    "image",
+    "socket",
+    "port",
+    "lock",
+    "pid",
+    "disposable-credential",
+    "test-account",
+    "preview",
+}
+
+
+def terminal_finalization_decision(case: dict[str, object]) -> str:
+    if (
+        not case.get("review-complete")
+        or not case.get("disposition-verified")
+        or case.get("disposition") not in TERMINAL_DISPOSITIONS
+    ):
+        return "do-not-finalize"
+    return "begin-finalization"
+
+
+def resource_finalization_decision(case: dict[str, object]) -> str:
+    if not case.get("finalization-started"):
+        return "do-not-touch"
+    if not case.get("ownership-known") or case.get("ambiguous"):
+        handoff = case.get("reconciliation-handoff")
+        required = {"path", "branch", "head", "files", "reason", "next-action"}
+        if not isinstance(handoff, dict) or set(handoff) != required:
+            return "stop-incomplete-reconciliation-handoff"
+        if any(value in (None, "") for value in handoff.values()):
+            return "stop-incomplete-reconciliation-handoff"
+        if (
+            not isinstance(handoff["files"], list)
+            or not handoff["files"]
+            or re.fullmatch(r"[0-9a-f]{40}", handoff["head"]) is None
+        ):
+            return "stop-incomplete-reconciliation-handoff"
+        return "reconcile"
+
+    preserve_when_true = {
+        "dirty",
+        "active",
+        "unique",
+        "shared",
+        "persistent",
+        "production",
+        "materially-changed",
+        "protected",
+        "gated",
+        "user-owned",
+        "needed-by-remaining-layer",
+    }
+    if any(case.get(field) for field in preserve_when_true):
+        return "preserve"
+    if (
+        not case.get("clean")
+        or not case.get("exact-task-owned")
+        or not case.get("transient")
+        or case.get("resource-type") not in TRANSIENT_RESOURCE_TYPES
+        or case.get("teardown-authority")
+        not in {"explicit", "creation-of-explicitly-disposable"}
+    ):
+        return "preserve"
+    return "remove"
+
+
+def issue_closure_decision(case: dict[str, object]) -> str:
+    kind = case.get("kind")
+    if kind == "complete":
+        return (
+            "close-native-link"
+            if case.get("fully-resolves") and case.get("native-closing-link")
+            else "keep-open-reference"
+        )
+    if kind == "partial":
+        return (
+            "keep-open-reference"
+            if case.get("durable-reference")
+            else "stop-missing-reference"
+        )
+    if kind == "parent":
+        return (
+            "close-parent"
+            if case.get("criteria-satisfied")
+            and case.get("required-children-terminal")
+            else "keep-open-parent"
+        )
+    if kind in {"proof", "experiment"}:
+        return (
+            f"close-{kind}"
+            if case.get("evidence-or-decision-recorded")
+            else f"keep-open-{kind}"
+        )
+    if kind in {"duplicate", "superseded"}:
+        return (
+            f"close-{kind}-link"
+            if case.get("durable-link")
+            else f"keep-open-{kind}"
+        )
+    if kind == "deferred":
+        return "keep-open-deferred"
+    return "keep-open-unknown"
+
+
+def finalization_report(case: dict[str, object]) -> str:
+    if not case.get("outcome-closed"):
+        return "outcome-open"
+    if "reconcile" in case.get("resource-actions", []):
+        return "closed-not-fully-finalized"
+    return "closed-finalized"
+
+
 class SkillContractTests(unittest.TestCase):
     def test_project_direction_skill_owns_all_repair_and_review_triggers(self) -> None:
         skill = read_text("skills/project-direction/SKILL.md")
@@ -1170,6 +1299,219 @@ class SkillContractTests(unittest.TestCase):
             review_ready_stack_decision(incomplete_recovery),
             "stop-incomplete-recovery",
         )
+
+    def test_delivery_finalization_contract_is_concise_and_host_neutral(
+        self,
+    ) -> None:
+        agents = " ".join(read_text("AGENTS.md").split())
+        glossary = " ".join(read_text("GLOSSARY.md").split())
+
+        for required in (
+            "Delivery Finalization starts only after review and a verified "
+            "terminal disposition",
+            "An open pull request or review-ready candidate is not terminal",
+            "Remove only clean, exact, task-owned transient resources that no "
+            "remaining stack layer needs",
+            "Authority to create an explicitly disposable resource includes its "
+            "teardown",
+            "Age or cleanliness alone never proves ownership or removal "
+            "eligibility",
+            "Preserve Issues, pull requests, commits, tags, releases, proof",
+            "persistent, shared, production, materially changed, protected, gated, "
+            "dirty, active, unique, user-owned, or ambiguous resources",
+            "until applicable authority exists",
+            "Repository Reconciliation with its exact path, branch, `HEAD`, files, "
+            "reason, and next action",
+            "closed but not fully finalized",
+            "native closing linkage only for a pull request that fully resolves "
+            "the Issue, and use references for partial work",
+            "Close parents only after their acceptance criteria are satisfied and "
+            "required children are terminal",
+            "Close proof or experiment Issues after recording their evidence or "
+            "decision",
+            "Close duplicate or superseded Issues with a durable link",
+            "keep deferred work open, and never delete Issues",
+            "outcome, review, merge, closure, cleanup, finalization, and behavioral "
+            "Live Verification separately",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, agents)
+
+        self.assertIn("**Delivery Finalization**:", glossary)
+        self.assertIn(
+            "The post-review lifecycle step for a verified terminal outcome",
+            glossary,
+        )
+
+    def test_delivery_finalization_cases_cover_every_required_branch(self) -> None:
+        payload = json.loads(
+            read_text("tests/fixtures/delivery_finalization_cases.json")
+        )
+        terminal_cases = {case["id"]: case for case in payload["terminal-cases"]}
+        resource_cases = {
+            case["id"]: {**payload["resource-defaults"], **case}
+            for case in payload["resource-cases"]
+        }
+        issue_cases = {case["id"]: case for case in payload["issue-cases"]}
+        durable_cases = {
+            case["id"]: case for case in payload["durable-truth-cases"]
+        }
+        reports = {case["id"]: case for case in payload["report-cases"]}
+
+        self.assertEqual(payload["schema"], 1)
+        self.assertEqual(
+            payload["contract"]["separate-reporting-states"],
+            [
+                "outcome",
+                "review",
+                "merge",
+                "closure",
+                "cleanup",
+                "finalization",
+                "behavioral-live-verification",
+            ],
+        )
+        self.assertEqual(
+            set(terminal_cases),
+            {
+                "merged",
+                "approved-alternative-delivery",
+                "cancelled",
+                "duplicated",
+                "superseded",
+                "equivalent-conclusive-closure",
+                "open",
+                "review-ready",
+            },
+        )
+        self.assertFalse(payload["contract"]["real-resource-actions"])
+        for case in terminal_cases.values():
+            with self.subTest(terminal=case["id"]):
+                self.assertEqual(
+                    terminal_finalization_decision(case),
+                    case["expected-decision"],
+                )
+        incomplete_review = dict(
+            terminal_cases["merged"], **{"review-complete": False}
+        )
+        self.assertEqual(
+            terminal_finalization_decision(incomplete_review),
+            "do-not-finalize",
+        )
+        unverified_disposition = dict(
+            terminal_cases["cancelled"], **{"disposition-verified": False}
+        )
+        self.assertEqual(
+            terminal_finalization_decision(unverified_disposition),
+            "do-not-finalize",
+        )
+
+        clean_cases = {
+            case["resource-type"]
+            for case in resource_cases.values()
+            if case["id"].startswith("clean-")
+        }
+        self.assertEqual(clean_cases, TRANSIENT_RESOURCE_TYPES)
+        premature_cleanup = dict(
+            resource_cases["clean-worktree"],
+            **{"finalization-started": False},
+        )
+        self.assertEqual(
+            resource_finalization_decision(premature_cleanup),
+            "do-not-touch",
+        )
+        required_preservation_cases = {
+            "dirty",
+            "active",
+            "unique",
+            "shared",
+            "persistent",
+            "user-owned",
+            "ambiguous",
+            "protected",
+            "materially-changed",
+            "still-needed-stack",
+        }
+        self.assertTrue(required_preservation_cases <= set(resource_cases))
+        for case in resource_cases.values():
+            with self.subTest(resource=case["id"]):
+                decision = resource_finalization_decision(case)
+                self.assertEqual(decision, case["expected-decision"])
+                if decision == "remove":
+                    self.assertEqual(case["before-state"], "present")
+                    self.assertEqual(case["after-state"], "absent")
+                elif decision in {"preserve", "reconcile"}:
+                    self.assertEqual(case["before-state"], case["after-state"])
+
+        ambiguous = resource_cases["ambiguous"]
+        self.assertEqual(
+            set(ambiguous["reconciliation-handoff"]),
+            {"path", "branch", "head", "files", "reason", "next-action"},
+        )
+        incomplete_handoff = dict(ambiguous)
+        incomplete_handoff["reconciliation-handoff"] = {
+            key: value
+            for key, value in ambiguous["reconciliation-handoff"].items()
+            if key != "next-action"
+        }
+        self.assertEqual(
+            resource_finalization_decision(incomplete_handoff),
+            "stop-incomplete-reconciliation-handoff",
+        )
+
+        self.assertEqual(
+            set(issue_cases),
+            {
+                "complete",
+                "partial",
+                "parent",
+                "proof",
+                "experiment",
+                "duplicate",
+                "superseded",
+                "deferred",
+            },
+        )
+        for case in issue_cases.values():
+            with self.subTest(issue=case["id"]):
+                decision = issue_closure_decision(case)
+                self.assertEqual(decision, case["expected-decision"])
+                self.assertNotIn("delete", decision)
+
+        missing_partial_reference = dict(
+            issue_cases["partial"], **{"durable-reference": False}
+        )
+        self.assertEqual(
+            issue_closure_decision(missing_partial_reference),
+            "stop-missing-reference",
+        )
+        parent_not_ready = dict(
+            issue_cases["parent"], **{"required-children-terminal": False}
+        )
+        self.assertEqual(
+            issue_closure_decision(parent_not_ready), "keep-open-parent"
+        )
+        proof_not_recorded = dict(
+            issue_cases["proof"], **{"evidence-or-decision-recorded": False}
+        )
+        self.assertEqual(
+            issue_closure_decision(proof_not_recorded), "keep-open-proof"
+        )
+
+        self.assertEqual(
+            set(durable_cases),
+            {"issue", "pull-request", "commit", "tag", "release", "proof"},
+        )
+        for case in durable_cases.values():
+            with self.subTest(durable_truth=case["id"]):
+                self.assertEqual(case["decision"], "preserve")
+                self.assertEqual(case["before-state"], case["after-state"])
+
+        for case in reports.values():
+            with self.subTest(report=case["id"]):
+                self.assertEqual(
+                    finalization_report(case), case["expected-report"]
+                )
 
     def test_workspace_isolation_cases_cover_every_selection_branch(
         self,

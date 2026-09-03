@@ -1,0 +1,294 @@
+{
+  "schema": 1,
+  "contract": {
+    "authoritative-location": "AGENTS.md#Authority and continuation",
+    "separate-reporting-states": [
+      "outcome",
+      "review",
+      "merge",
+      "closure",
+      "cleanup",
+      "finalization",
+      "behavioral-live-verification"
+    ],
+    "real-resource-actions": false
+  },
+  "terminal-cases": [
+    {
+      "id": "merged",
+      "disposition": "merged",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "begin-finalization"
+    },
+    {
+      "id": "approved-alternative-delivery",
+      "disposition": "approved-alternative-delivery",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "begin-finalization"
+    },
+    {
+      "id": "cancelled",
+      "disposition": "cancelled",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "begin-finalization"
+    },
+    {
+      "id": "duplicated",
+      "disposition": "duplicated",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "begin-finalization"
+    },
+    {
+      "id": "superseded",
+      "disposition": "superseded",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "begin-finalization"
+    },
+    {
+      "id": "equivalent-conclusive-closure",
+      "disposition": "equivalent-conclusive-closure",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "begin-finalization"
+    },
+    {
+      "id": "open",
+      "disposition": "open",
+      "review-complete": false,
+      "disposition-verified": true,
+      "expected-decision": "do-not-finalize"
+    },
+    {
+      "id": "review-ready",
+      "disposition": "review-ready",
+      "review-complete": false,
+      "disposition-verified": true,
+      "expected-decision": "do-not-finalize"
+    }
+  ],
+  "resource-defaults": {
+    "finalization-started": true,
+    "clean": true,
+    "exact-task-owned": true,
+    "ownership-known": true,
+    "transient": true,
+    "teardown-authority": "creation-of-explicitly-disposable",
+    "dirty": false,
+    "active": false,
+    "unique": false,
+    "shared": false,
+    "persistent": false,
+    "production": false,
+    "materially-changed": false,
+    "protected": false,
+    "gated": false,
+    "user-owned": false,
+    "ambiguous": false,
+    "needed-by-remaining-layer": false,
+    "before-state": "present",
+    "after-state": "absent",
+    "expected-decision": "remove"
+  },
+  "resource-cases": [
+    {"id": "clean-local-branch", "resource-type": "local-branch"},
+    {"id": "clean-remote-branch", "resource-type": "remote-branch"},
+    {"id": "clean-worktree", "resource-type": "worktree"},
+    {"id": "clean-disposable-checkout", "resource-type": "disposable-checkout"},
+    {"id": "clean-temporary-file", "resource-type": "temporary-file"},
+    {"id": "clean-task-process", "resource-type": "task-process"},
+    {"id": "clean-container", "resource-type": "container"},
+    {"id": "clean-image", "resource-type": "image"},
+    {"id": "clean-socket", "resource-type": "socket"},
+    {"id": "clean-port", "resource-type": "port"},
+    {"id": "clean-lock", "resource-type": "lock"},
+    {"id": "clean-pid", "resource-type": "pid"},
+    {"id": "clean-disposable-credential", "resource-type": "disposable-credential"},
+    {"id": "clean-test-account", "resource-type": "test-account"},
+    {"id": "clean-preview", "resource-type": "preview"},
+    {
+      "id": "dirty",
+      "resource-type": "worktree",
+      "clean": false,
+      "dirty": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "active",
+      "resource-type": "task-process",
+      "active": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "unique",
+      "resource-type": "temporary-file",
+      "unique": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "shared",
+      "resource-type": "container",
+      "shared": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "persistent",
+      "resource-type": "preview",
+      "persistent": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "user-owned",
+      "resource-type": "local-branch",
+      "user-owned": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "ambiguous",
+      "resource-type": "disposable-checkout",
+      "ownership-known": false,
+      "ambiguous": true,
+      "after-state": "present",
+      "expected-decision": "reconcile",
+      "reconciliation-handoff": {
+        "path": "/workspace/unknown-checkout",
+        "branch": "unknown",
+        "head": "1111111111111111111111111111111111111111",
+        "files": ["unknown"],
+        "reason": "ownership remains ambiguous",
+        "next-action": "classify during Repository Reconciliation"
+      }
+    },
+    {
+      "id": "protected",
+      "resource-type": "remote-branch",
+      "protected": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "materially-changed",
+      "resource-type": "worktree",
+      "materially-changed": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "still-needed-stack",
+      "resource-type": "local-branch",
+      "needed-by-remaining-layer": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "production",
+      "resource-type": "preview",
+      "production": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "gated",
+      "resource-type": "test-account",
+      "gated": true,
+      "after-state": "present",
+      "expected-decision": "preserve"
+    },
+    {
+      "id": "missing-teardown-authority",
+      "resource-type": "container",
+      "teardown-authority": "missing",
+      "after-state": "present",
+      "expected-decision": "preserve"
+    }
+  ],
+  "issue-cases": [
+    {
+      "id": "complete",
+      "kind": "complete",
+      "fully-resolves": true,
+      "native-closing-link": true,
+      "expected-decision": "close-native-link"
+    },
+    {
+      "id": "partial",
+      "kind": "partial",
+      "durable-reference": true,
+      "expected-decision": "keep-open-reference"
+    },
+    {
+      "id": "parent",
+      "kind": "parent",
+      "criteria-satisfied": true,
+      "required-children-terminal": true,
+      "expected-decision": "close-parent"
+    },
+    {
+      "id": "proof",
+      "kind": "proof",
+      "evidence-or-decision-recorded": true,
+      "expected-decision": "close-proof"
+    },
+    {
+      "id": "experiment",
+      "kind": "experiment",
+      "evidence-or-decision-recorded": true,
+      "expected-decision": "close-experiment"
+    },
+    {
+      "id": "duplicate",
+      "kind": "duplicate",
+      "durable-link": "toolboxmd/example#10",
+      "expected-decision": "close-duplicate-link"
+    },
+    {
+      "id": "superseded",
+      "kind": "superseded",
+      "durable-link": "toolboxmd/example#11",
+      "expected-decision": "close-superseded-link"
+    },
+    {
+      "id": "deferred",
+      "kind": "deferred",
+      "expected-decision": "keep-open-deferred"
+    }
+  ],
+  "durable-truth-cases": [
+    {"id": "issue", "decision": "preserve", "before-state": "recorded", "after-state": "recorded"},
+    {"id": "pull-request", "decision": "preserve", "before-state": "recorded", "after-state": "recorded"},
+    {"id": "commit", "decision": "preserve", "before-state": "recorded", "after-state": "recorded"},
+    {"id": "tag", "decision": "preserve", "before-state": "recorded", "after-state": "recorded"},
+    {"id": "release", "decision": "preserve", "before-state": "recorded", "after-state": "recorded"},
+    {"id": "proof", "decision": "preserve", "before-state": "recorded", "after-state": "recorded"}
+  ],
+  "report-cases": [
+    {
+      "id": "fully-finalized",
+      "outcome-closed": true,
+      "resource-actions": ["remove", "preserve"],
+      "expected-report": "closed-finalized"
+    },
+    {
+      "id": "unknown-residue",
+      "outcome-closed": true,
+      "resource-actions": ["remove", "reconcile"],
+      "expected-report": "closed-not-fully-finalized"
+    },
+    {
+      "id": "not-terminal",
+      "outcome-closed": false,
+      "resource-actions": [],
+      "expected-report": "outcome-open"
+    }
+  ]
+}
