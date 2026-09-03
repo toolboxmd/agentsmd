@@ -900,6 +900,11 @@ class SkillContractTests(unittest.TestCase):
         spec = frontmatter_metadata("skills/to-spec/SKILL.md")
         tickets = frontmatter_metadata("skills/to-tickets/SKILL.md")
 
+        self.assertEqual(contract["entry_invocation"], "user")
+        self.assertEqual(contract["continuation_owner"], "to-spec")
+        self.assertEqual(contract["continuation_stage"], "ticket-graph")
+        self.assertEqual(contract["ticket_skill_invocation"], "user")
+
         self.assertEqual(spec["workflow"], contract["workflow"])
         self.assertEqual(
             spec["default-completion"], contract["default_completion"]
@@ -908,7 +913,14 @@ class SkillContractTests(unittest.TestCase):
             spec["parent-publication-approval"],
             contract["parent_publication_approval"],
         )
-        self.assertEqual(spec["next-skill"], "to-tickets")
+        self.assertEqual(
+            spec["ticket-publication-approval"],
+            contract["ticket_publication_approval"],
+        )
+        self.assertEqual(
+            spec["continuation-stage"], contract["continuation_stage"]
+        )
+        self.assertNotIn("next-skill", spec)
         self.assertEqual(spec["invocation"], contract["entry_invocation"])
         self.assertEqual(
             spec["parent-only-opt-out"], contract["parent_only_opt_out"]
@@ -916,6 +928,16 @@ class SkillContractTests(unittest.TestCase):
         self.assertEqual(
             spec["implementation-authority-source"],
             contract["implementation_authority_source"],
+        )
+        self.assertEqual(
+            spec["implementation-target"], contract["implementation_target"]
+        )
+        self.assertEqual(
+            spec["implementation-context"], contract["implementation_context"]
+        )
+        self.assertEqual(
+            spec["missing-authority-prompt-limit"],
+            contract["missing_authority_prompt_limit"],
         )
         self.assertEqual(tickets["workflow"], contract["workflow"])
         self.assertEqual(
@@ -925,7 +947,9 @@ class SkillContractTests(unittest.TestCase):
             tickets["ticket-publication-approval"],
             contract["ticket_publication_approval"],
         )
-        self.assertEqual(tickets["invocation"], contract["entry_invocation"])
+        self.assertEqual(
+            tickets["invocation"], contract["ticket_skill_invocation"]
+        )
         self.assertEqual(
             tickets["implementation-target"], contract["implementation_target"]
         )
@@ -945,16 +969,17 @@ class SkillContractTests(unittest.TestCase):
         spec_fields = frontmatter_fields("skills/to-spec/SKILL.md")
         tickets_fields = frontmatter_fields("skills/to-tickets/SKILL.md")
         self.assertEqual(spec_fields["name"], contract["entry_skill"])
-        self.assertNotIn("disable-model-invocation", spec_fields)
-        self.assertNotIn("disable-model-invocation", tickets_fields)
-        self.assertTrue(
+        self.assertEqual(tickets_fields["name"], contract["ticket_skill"])
+        self.assertTrue(spec_fields["disable-model-invocation"])
+        self.assertTrue(tickets_fields["disable-model-invocation"])
+        self.assertFalse(
             nested_yaml_value(
                 "skills/to-spec/agents/openai.yaml",
                 "policy",
                 "allow_implicit_invocation",
             )
         )
-        self.assertTrue(
+        self.assertFalse(
             nested_yaml_value(
                 "skills/to-tickets/agents/openai.yaml",
                 "policy",
@@ -1853,7 +1878,10 @@ class SkillContractTests(unittest.TestCase):
         skill = read_text("skills/wayfinder/SKILL.md")
         normalized = " ".join(skill.split())
         wayfinder = frontmatter_metadata("skills/wayfinder/SKILL.md")
-        self.assertEqual(wayfinder["handoff-skill"], "to-spec")
+        self.assertNotIn("handoff-skill", wayfinder)
+        self.assertEqual(
+            wayfinder["completion"], "explicit-to-spec-selection"
+        )
         for required in (
             "owning GitHub repository",
             "persistent decision fog",

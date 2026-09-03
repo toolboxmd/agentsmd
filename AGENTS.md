@@ -197,24 +197,22 @@ Choose the smallest lane that fits:
   it selects the complete Specify workflow through verified ticket publication
   by default. Preserve approval before parent Issue publication and approval of
   ticket granularity, blocking edges, and publication. After verified parent
-  Issue publication, continue automatically through `to-tickets` without
-  another routing prompt. Then begin the first unblocked implementation Issue
-  when the full current request already grants implementation authority;
-  otherwise ask exactly once and name that Issue. An explicit Parent Spec only
-  request stops after the verified parent Issue. Preserve the repository
-  workflow's fresh-context boundary when starting implementation.
+  Issue publication, continue directly through the same ticket-graph stage
+  without invoking another planning Skill or asking another routing question.
+  Then begin the first unblocked implementation Issue when the full current
+  request already grants implementation authority; otherwise ask exactly once
+  and name that Issue. An explicit Parent Spec only request stops after the
+  verified parent Issue. Preserve the repository workflow's fresh-context
+  boundary when starting implementation.
 - Wayfind: use `wayfinder` when unresolved dependent decisions prevent a
   reliable spec, regardless of predicted effort size. Once the path is clear,
-  continue into the complete Specify workflow through `to-spec`.
+  stop with the route ready for the user to select `to-spec` explicitly.
 
 The AgentsMD workflow Skills `grilling`, `grill-with-docs`, `to-spec`,
-`to-tickets`, and `wayfinder` preserve their documented human approval gates.
-Invoke a model-discoverable planning Skill when its trigger or an established
-workflow composition reaches it. Honor explicit user selection for user-invoked
-Skills. Continue through an established next stage when the selected workflow
-defines it, and stop only at its approval or authority boundary. Other Skills
-follow their own trigger and approval contracts. Skill ownership and provenance
-live in the AgentsMD `SKILL_CATALOGUE.md`.
+`to-tickets`, and `wayfinder` are human-controlled planning Skills. Use them
+when the user names one or asks to follow that workflow, and stop at their
+approval gates. Other Skills follow their own trigger and approval contracts.
+Skill ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
 
 Normal implementation uses one ready Issue, one task branch, and one PR.
 Selected workflows may define a different structure when dependencies require

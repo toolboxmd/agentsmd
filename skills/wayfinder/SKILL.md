@@ -9,7 +9,7 @@ metadata:
   origin: mattpocock/skills
   origin-skill: skills/engineering/wayfinder
   source-revision: 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76
-  handoff-skill: to-spec
+  completion: explicit-to-spec-selection
 ---
 
 # Wayfinder
@@ -17,8 +17,8 @@ metadata:
 Use Wayfinder when persistent decision fog prevents a reliable spec,
 regardless of predicted session length. Even a one-session effort may need a
 map when several dependent questions obscure the route. A large but clear
-effort does not: continue into the complete Specify workflow through `to-spec`
-instead.
+effort does not: stop and tell the user it is ready for explicit `to-spec`
+selection instead.
 
 Wayfinder finds the route to a destination. It does not implement the
 destination.
@@ -33,8 +33,7 @@ Decision Issue a common direction.
 
 Each Decision Issue resolves a question. It is not a slice of implementation.
 When the next step is clear execution, the map has reached its edge: stop when
-the route is clear and hand it to `to-spec`, which owns continuation through
-tickets.
+the route is clear and present it for explicit `to-spec` selection.
 
 Research, a prototype, access, or a human conversation may be necessary to
 resolve a decision. Record that need as the Decision Issue type. Charting
@@ -157,8 +156,8 @@ discovered to be out of scope, close it and add one descriptive linked line to
 1. Confirm the owning repository.
 2. Establish the destination, then explore breadth-first across the whole
    problem to surface distinct decisions, dependencies, and remaining fog.
-3. If this clears the fog and the route fits a reliable spec, continue with
-   `to-spec`. Do not create a map.
+3. If this clears the fog and the route fits a reliable spec, stop and tell the
+   user it is ready for explicit `to-spec` selection. Do not create a map.
 4. Show the proposed map and visible Decision Issues. Publish only after the
    user approves.
 5. Create the map, then its native child Issues. Add native blocking edges in
@@ -185,5 +184,5 @@ Resolve at most one non-research Decision Issue per fresh context:
 7. Close and classify any Issue exposed as out of scope.
 
 Do not require every imaginable decision to disappear. When the remaining
-route can be stated as a reliable spec, Wayfinder is complete. Continue with
-`to-spec`; that Skill composes the remaining Specify stages.
+route can be stated as a reliable spec, Wayfinder is complete. Present it for
+explicit `to-spec` selection and stop.
