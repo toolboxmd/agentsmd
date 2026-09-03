@@ -120,6 +120,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/fixtures/delivery_continuation_cases.json",
                     "tests/fixtures/persistent_host_automation_cases.json",
                     "tests/fixtures/specify_workflow_cases.json",
+                    "tests/fixtures/workspace_isolation_cases.json",
                     "tests/persistent_host_automation_validator.py",
                     "tests/test_delivery_continuation_contract.py",
                     "tests/test_global_instructions.py",
