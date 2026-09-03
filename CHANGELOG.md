@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.6.0] - 2026-09-03
+
+### Added
+
+- Add portable Delivery System v1 contract and profiles
+
 ## [8.5.1] - 2026-09-03
 
 ### Changed

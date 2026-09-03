@@ -1,0 +1,302 @@
+#!/usr/bin/env python3
+"""Validate and load a ToolboxMD Delivery System v1 Project profile."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path, PurePosixPath
+import re
+import shlex
+import shutil
+import sys
+from typing import Any
+from urllib.parse import urlparse
+
+
+SCHEMA_ID = "https://raw.githubusercontent.com/toolboxmd/agentsmd/v8.6.0/schemas/delivery-v1.schema.json"
+TOP_LEVEL_FIELDS = {"$schema", "schema", "commands", "artifact", "website"}
+REQUIRED_TOP_LEVEL_FIELDS = {"$schema", "schema"}
+COMMAND_FIELDS = {"changedScope", "complete", "release"}
+ARTIFACT_FIELDS = {"build", "output", "digest"}
+WEBSITE_FIELDS = {"repository", "baseUrl", "route"}
+PLACEHOLDERS = {"sha", "version"}
+
+
+class DuplicateKeyError(ValueError):
+    pass
+
+
+def _unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise DuplicateKeyError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _read_profile(path: Path) -> tuple[dict[str, Any] | None, list[str]]:
+    try:
+        value = json.loads(
+            path.read_text(encoding="utf-8"), object_pairs_hook=_unique_object
+        )
+    except FileNotFoundError:
+        return None, [f"delivery profile not found: {path}"]
+    except (OSError, UnicodeError, json.JSONDecodeError, DuplicateKeyError) as error:
+        return None, [str(error)]
+    if not isinstance(value, dict):
+        return None, ["delivery profile must be a JSON object"]
+    return value, []
+
+
+def _unknown_fields(
+    value: dict[str, Any], allowed: set[str], scope: str
+) -> list[str]:
+    return [
+        f"unknown {scope} field: {field}"
+        for field in sorted(set(value) - allowed)
+    ]
+
+
+def _missing_fields(
+    value: dict[str, Any], required: set[str], scope: str
+) -> list[str]:
+    return [
+        f"missing {scope} field: {field}"
+        for field in sorted(required - set(value))
+    ]
+
+
+def _command_executable(command: str, root: Path) -> str | None:
+    try:
+        parts = shlex.split(command)
+    except ValueError:
+        return None
+    if not parts:
+        return None
+    executable = parts[0]
+    if "/" in executable:
+        candidate = Path(executable)
+        if not candidate.is_absolute():
+            candidate = root / candidate
+        if candidate.is_file() and candidate.stat().st_mode & 0o111:
+            return executable
+        return None
+    return executable if shutil.which(executable) else None
+
+
+def _executable_name(command: str) -> str:
+    try:
+        return shlex.split(command)[0]
+    except (ValueError, IndexError):
+        return command
+
+
+def _unsupported_placeholders(value: str, allowed: set[str]) -> list[str]:
+    found = set(re.findall(r"\{([A-Za-z][A-Za-z0-9_-]*)\}", value))
+    return sorted(found - allowed)
+
+
+def _validate_commands(value: Any, root: Path) -> list[str]:
+    if not isinstance(value, dict):
+        return ["commands must be an object"]
+    errors = _unknown_fields(value, COMMAND_FIELDS, "commands")
+    if not value:
+        errors.append("commands must contain at least one command lane")
+    for lane in sorted(COMMAND_FIELDS & set(value)):
+        commands = value[lane]
+        if not isinstance(commands, list) or not commands:
+            errors.append(f"commands.{lane} must be a non-empty array")
+            continue
+        if len(commands) != len({item for item in commands if isinstance(item, str)}):
+            errors.append(f"commands.{lane} must contain unique strings")
+        for command in commands:
+            if not isinstance(command, str) or not command.strip():
+                errors.append(f"commands.{lane} contains a blank or non-string command")
+                continue
+            if any(character in command for character in ("\n", "\r", "\x00")):
+                errors.append(f"commands.{lane} contains a control character")
+                continue
+            executable = _command_executable(command, root)
+            if executable is None:
+                errors.append(
+                    f"command executable not found: {_executable_name(command)}"
+                )
+            for placeholder in _unsupported_placeholders(command, PLACEHOLDERS):
+                errors.append(f"unsupported command placeholder: {placeholder}")
+    release = value.get("release")
+    if isinstance(release, list) and not any(
+        isinstance(command, str) and "{sha}" in command for command in release
+    ):
+        errors.append("commands.release must bind the exact {sha}")
+    return errors
+
+
+def _validate_artifact(value: Any, root: Path) -> list[str]:
+    if not isinstance(value, dict):
+        return ["artifact must be an object"]
+    errors = _unknown_fields(value, ARTIFACT_FIELDS, "artifact")
+    errors.extend(_missing_fields(value, ARTIFACT_FIELDS, "artifact"))
+    build = value.get("build")
+    output = value.get("output")
+    if not isinstance(build, str) or not build.strip():
+        errors.append("artifact.build must be a non-empty string")
+    else:
+        if "{sha}" not in build or "{version}" not in build:
+            errors.append("artifact.build must bind {sha} and {version}")
+        if _command_executable(build, root) is None:
+            errors.append(
+                f"artifact build executable not found: {_executable_name(build)}"
+            )
+        for placeholder in _unsupported_placeholders(build, PLACEHOLDERS):
+            errors.append(
+                f"unsupported artifact build placeholder: {placeholder}"
+            )
+    if not isinstance(output, str):
+        errors.append("artifact.output must be a string")
+    else:
+        path = PurePosixPath(output)
+        if path.is_absolute() or ".." in path.parts or not output.startswith("dist/"):
+            errors.append("artifact.output must be a relative dist/ path")
+        if not re.fullmatch(r"dist/[A-Za-z0-9._{}/-]+", output):
+            errors.append(
+                "artifact.output must match the portable dist/ path contract"
+            )
+        if "{version}" not in output:
+            errors.append("artifact.output must bind {version}")
+        for placeholder in _unsupported_placeholders(output, {"version"}):
+            errors.append(
+                f"unsupported artifact output placeholder: {placeholder}"
+            )
+        if isinstance(build, str) and output not in build:
+            errors.append("artifact.build must write artifact.output")
+    if value.get("digest") != "sha256":
+        errors.append("artifact.digest must be sha256")
+    return errors
+
+
+def _validate_website(value: Any) -> list[str]:
+    if not isinstance(value, dict):
+        return ["website must be an object"]
+    errors = _unknown_fields(value, WEBSITE_FIELDS, "website")
+    errors.extend(_missing_fields(value, WEBSITE_FIELDS, "website"))
+    repository = value.get("repository")
+    if not isinstance(repository, str) or not re.fullmatch(
+        r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repository
+    ):
+        errors.append("website.repository must be an owner/name repository")
+    base_url = value.get("baseUrl")
+    parsed = urlparse(base_url) if isinstance(base_url, str) else None
+    if (
+        parsed is None
+        or parsed.scheme != "https"
+        or not parsed.netloc
+        or parsed.path
+        or parsed.query
+        or parsed.fragment
+    ):
+        errors.append("website.baseUrl must be an HTTPS origin without a path")
+    route = value.get("route")
+    if (
+        not isinstance(route, str)
+        or not re.fullmatch(r"/(?:[A-Za-z0-9._~-]+/?)*", route)
+        or ".." in PurePosixPath(route).parts
+    ):
+        errors.append("website.route must use URL-path segments")
+    return errors
+
+
+def validate(profile: dict[str, Any], root: Path) -> list[str]:
+    errors = _unknown_fields(profile, TOP_LEVEL_FIELDS, "top-level")
+    errors.extend(
+        _missing_fields(profile, REQUIRED_TOP_LEVEL_FIELDS, "top-level")
+    )
+    if not any(field in profile for field in ("commands", "artifact", "website")):
+        errors.append("profile must declare at least one Project-specific delta")
+    if profile.get("$schema") != SCHEMA_ID:
+        errors.append(f"$schema must be {SCHEMA_ID}")
+    if type(profile.get("schema")) is not int or profile["schema"] != 1:
+        errors.append("schema must be 1")
+    if "commands" in profile:
+        errors.extend(_validate_commands(profile["commands"], root))
+    if "artifact" in profile:
+        errors.extend(_validate_artifact(profile["artifact"], root))
+    if "website" in profile:
+        errors.extend(_validate_website(profile["website"]))
+    return errors
+
+
+def _discover_root(start: Path) -> Path | None:
+    current = start.resolve()
+    if current.is_file():
+        current = current.parent
+    for candidate in (current, *current.parents):
+        if (candidate / ".toolboxmd/delivery.json").is_file():
+            return candidate
+    return None
+
+
+def _emit(payload: dict[str, Any], json_output: bool, *, error: bool = False) -> None:
+    if json_output:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return
+    stream = sys.stderr if error else sys.stdout
+    if payload["status"] == "valid":
+        print(
+            f"valid Delivery Profile v{payload['schema']}: {payload['profile']}",
+            file=stream,
+        )
+    else:
+        for message in payload["errors"]:
+            print(message, file=stream)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("command", choices=("load", "validate"))
+    parser.add_argument("--root", type=Path, default=Path.cwd())
+    parser.add_argument("--profile", type=Path)
+    parser.add_argument("--json", action="store_true", dest="json_output")
+    args = parser.parse_args()
+
+    if args.profile is None:
+        root = _discover_root(args.root)
+        if root is None:
+            missing = args.root.resolve() / ".toolboxmd/delivery.json"
+            payload = {
+                "status": "invalid",
+                "errors": [f"delivery profile not found: {missing}"],
+            }
+            _emit(payload, args.json_output, error=True)
+            return 2
+        profile_path = root / ".toolboxmd/delivery.json"
+    else:
+        root = args.root.resolve()
+        if root.is_file():
+            root = root.parent
+        profile_path = args.profile.resolve()
+
+    profile, errors = _read_profile(profile_path)
+    if profile is not None:
+        errors.extend(validate(profile, root))
+    if errors:
+        payload = {"status": "invalid", "errors": errors}
+        _emit(payload, args.json_output, error=True)
+        return 2
+
+    assert profile is not None
+    payload: dict[str, Any] = {
+        "status": "valid",
+        "schema": 1,
+        "root": str(root),
+        "profile": str(profile_path),
+    }
+    if args.command == "load":
+        payload["profileData"] = profile
+    _emit(payload, args.json_output)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://raw.githubusercontent.com/toolboxmd/agentsmd/v8.6.0/schemas/delivery-v1.schema.json",
+  "schema": 1,
+  "commands": {
+    "changedScope": ["python3 -m unittest tests.test_delivery_profile -v"]
+  }
+}

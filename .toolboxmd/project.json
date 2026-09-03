@@ -12,6 +12,7 @@
     },
     "skills": [
       "skills/algorithm/SKILL.md",
+      "skills/delivery-profile/SKILL.md",
       "skills/domain-modeling/SKILL.md",
       "skills/grill-with-docs/SKILL.md",
       "skills/grilling/SKILL.md",
@@ -32,7 +33,9 @@
     ],
     "requirements": [
       "AGENTS.md",
-      ".version-policy.json"
+      ".version-policy.json",
+      ".toolboxmd/delivery.json",
+      "schemas/delivery-v1.schema.json"
     ],
     "proof": [
       "tests/delivery_continuation_validator.py",
@@ -46,6 +49,8 @@
       "tests/persistent_host_automation_validator.py",
       "tests/repository_reconciliation_validator.py",
       "tests/test_delivery_continuation_contract.py",
+      "tests/test_delivery_profile.py",
+      "tests/test_delivery_system_contract.py",
       "tests/test_global_instructions.py",
       "tests/test_persistent_host_automation_contract.py",
       "tests/test_plugin_packaging.py",

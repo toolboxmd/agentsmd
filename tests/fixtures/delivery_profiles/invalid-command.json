@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/toolboxmd/agentsmd/v8.6.0/schemas/delivery-v1.schema.json",
+  "schema": 1,
+  "commands": {
+    "changedScope": ["missing-delivery-command --check"],
+    "complete": ["python3 -m unittest discover -s tests -p 'test_*.py'"],
+    "release": ["tools/versionctl/bin/versionctl release-check --sha {sha}"]
+  },
+  "artifact": {
+    "build": "git archive --format=tar.gz --prefix=example/ --output=dist/example-{version}.tar.gz {sha}",
+    "output": "dist/example-{version}.tar.gz",
+    "digest": "sha256"
+  },
+  "website": {
+    "repository": "toolboxmd/toolbox.md",
+    "baseUrl": "https://toolbox.md",
+    "route": "/example"
+  }
+}

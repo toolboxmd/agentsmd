@@ -29,6 +29,9 @@ global baseline. This matches the discovery model documented for
   identity for the ToolboxMD Plugin Registry.
 - `bin/versionctl` and `tools/versionctl/`: the plugin entry point and
   dependency-free version mechanics.
+- `.toolboxmd/delivery.json`, `schemas/delivery-v1.schema.json`, and
+  `bin/delivery-profile`: Project delivery deltas, their strict schema, and the
+  dependency-free loader.
 - `bin/project-direction` and `hooks/hooks.json`: deterministic Project
   Direction loading and supported lifecycle registration.
 - `.github/workflows/`: read-only transition validation and policy-authorized
@@ -39,7 +42,8 @@ global baseline. This matches the discovery model documented for
 The [AgentsMD Skill Catalogue](SKILL_CATALOGUE.md) is the only authoritative
 inventory for this package. The initial Active set is:
 
-- AgentsMD-native: `algorithm`, `project-direction`, and `version-control`.
+- AgentsMD-native: `algorithm`, `delivery-profile`, `project-direction`, and
+  `version-control`.
 - ToolboxMD-native: `use-grok`.
 - Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
   `domain-modeling`, `prototype`, `research`, `to-spec`, `to-tickets`,
@@ -77,6 +81,8 @@ contradictory, completed, or explicitly due for review. It requires user
 confirmation before writing strategic direction.
 `algorithm` is model-invoked for material requirements, solution and process
 design, and recurring-loop automation. Small direct microfixes remain direct.
+`delivery-profile` is model-invoked when a Project delivery profile exists or
+Project-specific commands, artifacts, or website mapping are being used.
 
 ## Registry boundaries
 
@@ -141,6 +147,37 @@ the loaded triad as checkout-scoped. Unrelated upstream changes remain `ready`.
 Missing or unresolved Git state is explicit metadata and never suppresses the
 complete local triad. After reconciliation, all three files must be reread
 before subsequent strategic judgment.
+
+## Delivery System v1
+
+The portable contract in `AGENTS.md` owns shared lifecycle, execution-mode,
+review, SemVer, CI, artifact, website, and evidence semantics. It reports each
+delivery state separately and keeps fast changed-scope feedback distinct from
+the complete merge and release gates.
+
+A Project may add `.toolboxmd/delivery.json` for only three kinds of real
+difference:
+
+- changed-scope, complete, and exact-SHA release commands;
+- one exact-SHA artifact build, versioned output path, and SHA-256 digest;
+- the website repository, HTTPS origin, and route.
+
+Canonical version remains in `VERSION`; Project identity and discovery remain
+in `.toolboxmd/project.json`; release rules remain in
+`.version-policy.json`; documentation and current delivery evidence remain in
+their normal owners. The strict schema rejects fields that would duplicate
+those facts.
+
+Load and validate a profile from any directory below its Project root:
+
+```sh
+bin/delivery-profile load --root "$PROJECT_ROOT" --json
+```
+
+The AgentsMD profile uses the real repository test suites, exact-SHA
+`release-check`, reproducible plugin archive command, and ToolboxMD website
+mapping. Profile validation resolves each command executable without running
+the delivery commands.
 
 For Codex, the plugin registers three deterministic lifecycle hooks:
 
