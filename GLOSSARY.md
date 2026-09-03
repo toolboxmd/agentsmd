@@ -44,6 +44,12 @@ repositories through the exact operations, candidates, and targets granted by
 the current request or repository policy.
 _Avoid_: standing authority, repository-wide permission
 
+**Review-ready pull request stack**:
+A dependency-ordered set of pull request layers whose exact heads, bases,
+proof, review, revalidation, retarget, and merge states are recorded
+independently. It begins only from a complete exact-SHA predecessor candidate.
+_Avoid_: dependent branch chain, pull request queue
+
 **Parent Spec only**:
 An explicit request that runs `to-spec` through verified parent Issue
 publication and opts out before ticket decomposition or implementation.

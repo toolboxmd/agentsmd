@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "toolboxmd-versionctl"
-version = "8.2.0"
+version = "8.3.0"
 description = "Deterministic repository version mechanics for coding agents"
 readme = "README.md"
 requires-python = ">=3.11"

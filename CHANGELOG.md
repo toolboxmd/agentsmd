@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.3.0] - 2026-09-03
+
+### Added
+
+- Add review-ready pull request stack contract
+
 ## [8.2.0] - 2026-09-03
 
 ### Added

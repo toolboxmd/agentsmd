@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -134,6 +135,135 @@ def workspace_isolation_decision(case: dict[str, object]) -> str:
     if not selected_claim_found:
         return "stop-affected-writer"
     return "continue-exclusive"
+
+
+def review_ready_stack_decision(case: dict[str, object]) -> str:
+    if case["work-kind"] == "independent":
+        if case.get("native-blocked") or case.get("stack-review-blocks-work"):
+            return "stop-invalid-independent-block"
+        return "continue-independent"
+
+    predecessor = case.get("predecessor")
+    if not isinstance(predecessor, dict):
+        return "remain-native-blocked"
+    head = predecessor.get("exact-head")
+    pull_request = predecessor.get("pull-request")
+    if (
+        not case.get("native-blocked")
+        or not predecessor.get("review-ready")
+        or predecessor.get("proof-state") != "passed"
+        or not isinstance(pull_request, str)
+        or not pull_request
+        or not isinstance(head, str)
+        or re.fullmatch(r"[0-9a-f]{40}", head) is None
+    ):
+        if case.get("blocker-cleared"):
+            return "stop-premature-blocker-clear"
+        return "remain-native-blocked"
+
+    record = case.get("transition-record")
+    if not isinstance(record, dict) or set(record) != {
+        "predecessor-pr",
+        "exact-head",
+        "proof-state",
+        "dependency-state",
+    }:
+        if case.get("blocker-cleared"):
+            return "stop-premature-blocker-clear"
+        return "remain-native-blocked"
+    if record != {
+        "predecessor-pr": pull_request,
+        "exact-head": head,
+        "proof-state": "passed",
+        "dependency-state": "native-blocked",
+    }:
+        if case.get("blocker-cleared"):
+            return "stop-premature-blocker-clear"
+        return "remain-native-blocked"
+    if not case.get("blocker-cleared"):
+        return "remain-native-blocked"
+
+    ancestry = case.get("ancestry")
+    expected_mode = (
+        "native-stack"
+        if case.get("native-stacking-available")
+        else "fallback-branch"
+    )
+    if (
+        not isinstance(ancestry, dict)
+        or ancestry.get("mode") != expected_mode
+        or ancestry.get("base") != head
+        or not ancestry.get("verified")
+    ):
+        return "stop-invalid-ancestry"
+
+    review_fix = case.get("review-fix")
+    if review_fix is not None and (
+        not isinstance(review_fix, dict)
+        or review_fix.get("applied-layer")
+        != review_fix.get("earliest-owning-layer")
+    ):
+        return "stop-wrong-fix-layer"
+
+    cascade = case.get("lower-layer-change")
+    if cascade is not None:
+        if not isinstance(cascade, dict):
+            return "stop-stale-dependent"
+        affected = cascade.get("affected-dependents")
+        if (
+            not isinstance(affected, list)
+            or cascade.get("rebased") != affected
+            or cascade.get("revalidated") != affected
+        ):
+            return "stop-stale-dependent"
+
+    merge = case.get("merge")
+    if merge is not None:
+        if not isinstance(merge, dict):
+            return "stop-stale-upper-layer"
+        if merge.get("actual-order") != merge.get("dependency-order"):
+            return "stop-out-of-order-merge"
+        if merge.get("events") != [
+            "merge-layer-1",
+            "automatic-retarget-layer-2",
+            "verify-retarget-layer-2",
+            "mark-layer-2-current",
+            "merge-layer-2",
+        ]:
+            return "stop-stale-upper-layer"
+        if (
+            not merge.get("retarget-verified")
+            or merge.get("upper-current-base") != merge.get("merged-head")
+        ):
+            return "stop-stale-upper-layer"
+
+    recovery = case.get("recovery")
+    if recovery is not None:
+        required = {
+            "issue",
+            "branch",
+            "pull-request",
+            "layers",
+            "exact-heads",
+            "exact-bases",
+            "proof-state",
+            "delivery-states",
+            "blockers",
+            "next-action",
+        }
+        if (
+            not isinstance(recovery, dict)
+            or recovery.get("context") not in {"interruption", "fresh-context"}
+            or recovery.get("recorded-on") != ["issue", "pull-request"]
+            or set(recovery.get("exact-stack-state", {})) != required
+            or any(
+                value in (None, "")
+                for value in recovery.get("exact-stack-state", {}).values()
+            )
+        ):
+            return "stop-incomplete-recovery"
+
+    return "continue-stacked"
 
 
 class SkillContractTests(unittest.TestCase):
@@ -795,6 +925,251 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, contract)
+
+    def test_review_ready_pull_request_stacks_preserve_dependency_truth(
+        self,
+    ) -> None:
+        agents = read_text("AGENTS.md")
+        glossary = " ".join(read_text("GLOSSARY.md").split())
+        contract = " ".join(
+            agents.split("## Authority and continuation", 1)[1]
+            .split("\n## ", 1)[0]
+            .split()
+        )
+
+        for required in (
+            "Keep a dependent Issue natively blocked until its predecessor "
+            "publishes a complete review-ready pull request at an exact SHA",
+            "predecessor pull request, exact head, proof state, and dependency "
+            "state before clearing only that native blocker",
+            "native stacked pull request from that exact predecessor",
+            "ordinary dependent branch with equivalent exact-base, review, "
+            "rebase, revalidation, retarget, and dependency-ordered merge "
+            "invariants",
+            "Independent work remains free",
+            "earliest layer that owns the broken acceptance criterion",
+            "Cascade rebase and revalidation through every affected dependent "
+            "layer",
+            "verify automatic rebase or retarget before treating an upper layer "
+            "as current",
+            "exact stack state across interruption, fresh context, and durable "
+            "handoff",
+            "review-ready, blocker-cleared, stacked, rebased, revalidated, "
+            "retargeted, and merged as separate states",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, contract)
+
+        self.assertIn("**Review-ready pull request stack**:", glossary)
+        self.assertIn(
+            "A dependency-ordered set of pull request layers whose exact heads, "
+            "bases, proof, review, revalidation, retarget, and merge states are "
+            "recorded independently",
+            glossary,
+        )
+
+    def test_review_ready_stack_cases_cover_every_delivery_branch(self) -> None:
+        payload = json.loads(
+            read_text("tests/fixtures/review_ready_stack_cases.json")
+        )
+        cases = {
+            case["id"]: {**payload["case-defaults"], **case}
+            for case in payload["cases"]
+        }
+
+        self.assertEqual(payload["schema"], 1)
+        self.assertEqual(
+            set(cases),
+            {
+                "incomplete-predecessor",
+                "native-transition",
+                "native-stack",
+                "fallback-ancestry",
+                "independent",
+                "lower-layer-fix-cascade",
+                "dependency-order-merge-retarget",
+                "interruption-recovery",
+                "fresh-context-recovery",
+            },
+        )
+        self.assertEqual(
+            payload["contract"]["separate-reporting-states"],
+            [
+                "issue",
+                "branch",
+                "pull-request",
+                "stacked",
+                "review",
+                "review-ready",
+                "blocker-cleared",
+                "rebased",
+                "revalidated",
+                "retargeted",
+                "merged",
+                "behavioral-live-verification",
+            ],
+        )
+
+        for case in cases.values():
+            with self.subTest(case=case["id"]):
+                self.assertEqual(
+                    review_ready_stack_decision(case),
+                    case["expected-decision"],
+                )
+
+        native = cases["native-stack"]
+        fallback = cases["fallback-ancestry"]
+        self.assertEqual(native["ancestry"]["mode"], "native-stack")
+        self.assertEqual(fallback["ancestry"]["mode"], "fallback-branch")
+        self.assertEqual(
+            native["ancestry"]["base"], native["predecessor"]["exact-head"]
+        )
+        self.assertEqual(
+            fallback["ancestry"]["base"],
+            fallback["predecessor"]["exact-head"],
+        )
+
+        mismatched_record = dict(cases["native-transition"])
+        mismatched_record["transition-record"] = dict(
+            mismatched_record["transition-record"],
+            **{"exact-head": "f" * 40},
+        )
+        self.assertEqual(
+            review_ready_stack_decision(mismatched_record),
+            "stop-premature-blocker-clear",
+        )
+
+        premature_clear = dict(cases["incomplete-predecessor"])
+        premature_clear["blocker-cleared"] = True
+        self.assertEqual(
+            review_ready_stack_decision(premature_clear),
+            "stop-premature-blocker-clear",
+        )
+
+        missing_predecessor_pr = dict(cases["native-transition"])
+        missing_predecessor_pr["predecessor"] = dict(
+            missing_predecessor_pr["predecessor"], **{"pull-request": ""}
+        )
+        missing_predecessor_pr["transition-record"] = dict(
+            missing_predecessor_pr["transition-record"],
+            **{"predecessor-pr": ""},
+        )
+        self.assertEqual(
+            review_ready_stack_decision(missing_predecessor_pr),
+            "stop-premature-blocker-clear",
+        )
+
+        missing_native_before_state = dict(cases["native-transition"])
+        missing_native_before_state["native-blocked"] = False
+        self.assertEqual(
+            review_ready_stack_decision(missing_native_before_state),
+            "stop-premature-blocker-clear",
+        )
+
+        unverified_ancestry = dict(cases["fallback-ancestry"])
+        unverified_ancestry["ancestry"] = dict(
+            unverified_ancestry["ancestry"], verified=False
+        )
+        self.assertEqual(
+            review_ready_stack_decision(unverified_ancestry),
+            "stop-invalid-ancestry",
+        )
+
+        fallback_despite_native_support = dict(cases["fallback-ancestry"])
+        fallback_despite_native_support["native-stacking-available"] = True
+        self.assertEqual(
+            review_ready_stack_decision(fallback_despite_native_support),
+            "stop-invalid-ancestry",
+        )
+
+        wrong_fix_layer = dict(cases["lower-layer-fix-cascade"])
+        wrong_fix_layer["review-fix"] = dict(
+            wrong_fix_layer["review-fix"], **{"applied-layer": "layer-2"}
+        )
+        self.assertEqual(
+            review_ready_stack_decision(wrong_fix_layer),
+            "stop-wrong-fix-layer",
+        )
+
+        missing_revalidation = dict(cases["lower-layer-fix-cascade"])
+        missing_revalidation["lower-layer-change"] = dict(
+            missing_revalidation["lower-layer-change"], revalidated=[]
+        )
+        self.assertEqual(
+            review_ready_stack_decision(missing_revalidation),
+            "stop-stale-dependent",
+        )
+
+        wrong_merge_order = dict(cases["dependency-order-merge-retarget"])
+        wrong_merge_order["merge"] = dict(
+            wrong_merge_order["merge"],
+            **{"actual-order": ["layer-2", "layer-1"]},
+        )
+        self.assertEqual(
+            review_ready_stack_decision(wrong_merge_order),
+            "stop-out-of-order-merge",
+        )
+
+        unverified_retarget = dict(cases["dependency-order-merge-retarget"])
+        unverified_retarget["merge"] = dict(
+            unverified_retarget["merge"], **{"retarget-verified": False}
+        )
+        self.assertEqual(
+            review_ready_stack_decision(unverified_retarget),
+            "stop-stale-upper-layer",
+        )
+
+        self.assertEqual(
+            cases["dependency-order-merge-retarget"]["merge"]["events"],
+            [
+                "merge-layer-1",
+                "automatic-retarget-layer-2",
+                "verify-retarget-layer-2",
+                "mark-layer-2-current",
+                "merge-layer-2",
+            ],
+        )
+
+        premature_upper_merge = dict(
+            cases["dependency-order-merge-retarget"]
+        )
+        premature_upper_merge["merge"] = dict(
+            premature_upper_merge["merge"],
+            events=[
+                "merge-layer-1",
+                "merge-layer-2",
+                "automatic-retarget-layer-2",
+                "verify-retarget-layer-2",
+                "mark-layer-2-current",
+            ],
+        )
+        self.assertEqual(
+            review_ready_stack_decision(premature_upper_merge),
+            "stop-stale-upper-layer",
+        )
+
+        for case_id in ("interruption-recovery", "fresh-context-recovery"):
+            with self.subTest(durable_recovery=case_id):
+                self.assertEqual(
+                    cases[case_id]["recovery"]["recorded-on"],
+                    ["issue", "pull-request"],
+                )
+
+        incomplete_recovery = dict(cases["fresh-context-recovery"])
+        incomplete_recovery["recovery"] = {
+            **incomplete_recovery["recovery"],
+            "exact-stack-state": {
+                key: value
+                for key, value in incomplete_recovery["recovery"][
+                    "exact-stack-state"
+                ].items()
+                if key != "next-action"
+            },
+        }
+        self.assertEqual(
+            review_ready_stack_decision(incomplete_recovery),
+            "stop-incomplete-recovery",
+        )
 
     def test_workspace_isolation_cases_cover_every_selection_branch(
         self,

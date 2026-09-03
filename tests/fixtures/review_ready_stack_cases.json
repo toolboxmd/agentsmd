@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "contract": {
+    "authoritative-location": "AGENTS.md#Authority and continuation",
+    "separate-reporting-states": [
+      "issue",
+      "branch",
+      "pull-request",
+      "stacked",
+      "review",
+      "review-ready",
+      "blocker-cleared",
+      "rebased",
+      "revalidated",
+      "retargeted",
+      "merged",
+      "behavioral-live-verification"
+    ]
+  },
+  "case-defaults": {
+    "work-kind": "dependent",
+    "native-blocked": true,
+    "native-stacking-available": true,
+    "predecessor": {
+      "pull-request": "toolboxmd/example#66",
+      "exact-head": "1111111111111111111111111111111111111111",
+      "review-ready": true,
+      "proof-state": "passed"
+    },
+    "transition-record": {
+      "predecessor-pr": "toolboxmd/example#66",
+      "exact-head": "1111111111111111111111111111111111111111",
+      "proof-state": "passed",
+      "dependency-state": "native-blocked"
+    },
+    "blocker-cleared": true,
+    "ancestry": {
+      "mode": "native-stack",
+      "base": "1111111111111111111111111111111111111111",
+      "verified": true
+    },
+    "expected-decision": "continue-stacked"
+  },
+  "cases": [
+    {
+      "id": "incomplete-predecessor",
+      "predecessor": {
+        "pull-request": "toolboxmd/example#66",
+        "exact-head": "1111111111111111111111111111111111111111",
+        "review-ready": false,
+        "proof-state": "pending"
+      },
+      "blocker-cleared": false,
+      "expected-decision": "remain-native-blocked"
+    },
+    {
+      "id": "native-transition"
+    },
+    {
+      "id": "native-stack"
+    },
+    {
+      "id": "fallback-ancestry",
+      "native-stacking-available": false,
+      "ancestry": {
+        "mode": "fallback-branch",
+        "base": "1111111111111111111111111111111111111111",
+        "verified": true
+      }
+    },
+    {
+      "id": "independent",
+      "work-kind": "independent",
+      "native-blocked": false,
+      "stack-review-blocks-work": false,
+      "expected-decision": "continue-independent"
+    },
+    {
+      "id": "lower-layer-fix-cascade",
+      "review-fix": {
+        "broken-acceptance-criterion": "layer-1-criterion",
+        "earliest-owning-layer": "layer-1",
+        "applied-layer": "layer-1"
+      },
+      "lower-layer-change": {
+        "changed-layer": "layer-1",
+        "affected-dependents": [
+          "layer-2",
+          "layer-3"
+        ],
+        "rebased": [
+          "layer-2",
+          "layer-3"
+        ],
+        "revalidated": [
+          "layer-2",
+          "layer-3"
+        ]
+      }
+    },
+    {
+      "id": "dependency-order-merge-retarget",
+      "merge": {
+        "dependency-order": [
+          "layer-1",
+          "layer-2"
+        ],
+        "actual-order": [
+          "layer-1",
+          "layer-2"
+        ],
+        "merged-head": "2222222222222222222222222222222222222222",
+        "upper-current-base": "2222222222222222222222222222222222222222",
+        "retarget-verified": true,
+        "events": [
+          "merge-layer-1",
+          "automatic-retarget-layer-2",
+          "verify-retarget-layer-2",
+          "mark-layer-2-current",
+          "merge-layer-2"
+        ]
+      }
+    },
+    {
+      "id": "interruption-recovery",
+      "recovery": {
+        "context": "interruption",
+        "recorded-on": [
+          "issue",
+          "pull-request"
+        ],
+        "exact-stack-state": {
+          "issue": "toolboxmd/example#53",
+          "branch": "feat/53-review-ready-stack",
+          "pull-request": "toolboxmd/example#67",
+          "layers": [
+            "toolboxmd/example#66",
+            "toolboxmd/example#67"
+          ],
+          "exact-heads": [
+            "1111111111111111111111111111111111111111",
+            "3333333333333333333333333333333333333333"
+          ],
+          "exact-bases": [
+            "0000000000000000000000000000000000000000",
+            "1111111111111111111111111111111111111111"
+          ],
+          "proof-state": "passed",
+          "delivery-states": "review-ready=true; blocker-cleared=true; stacked=true",
+          "blockers": [],
+          "next-action": "resume review"
+        }
+      }
+    },
+    {
+      "id": "fresh-context-recovery",
+      "recovery": {
+        "context": "fresh-context",
+        "recorded-on": [
+          "issue",
+          "pull-request"
+        ],
+        "exact-stack-state": {
+          "issue": "toolboxmd/example#53",
+          "branch": "feat/53-review-ready-stack",
+          "pull-request": "toolboxmd/example#67",
+          "layers": [
+            "toolboxmd/example#66",
+            "toolboxmd/example#67"
+          ],
+          "exact-heads": [
+            "1111111111111111111111111111111111111111",
+            "3333333333333333333333333333333333333333"
+          ],
+          "exact-bases": [
+            "0000000000000000000000000000000000000000",
+            "1111111111111111111111111111111111111111"
+          ],
+          "proof-state": "passed",
+          "delivery-states": "review-ready=true; blocker-cleared=true; stacked=true",
+          "blockers": [],
+          "next-action": "continue review"
+        }
+      }
+    }
+  ]
+}
