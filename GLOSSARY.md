@@ -38,6 +38,12 @@ organizes and survives several contributing Issues and is recorded in root
 `OBJECTIVE.md`.
 _Avoid_: Current Goal, task outcome, task list, backlog
 
+**Delivery Authority**:
+Authorization to deliver an identified outcome or scope in named Issues and
+repositories through the exact operations, candidates, and targets granted by
+the current request or repository policy.
+_Avoid_: standing authority, repository-wide permission
+
 **Parent Spec only**:
 An explicit request that runs `to-spec` through verified parent Issue
 publication and opts out before ticket decomposition or implementation.

@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.0.0] - 2026-09-03
+
+### Changed
+
+- Unify authorized delivery and fresh-context continuation
+
 ## [7.0.0] - 2026-09-02
 
 ### Changed

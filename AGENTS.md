@@ -72,6 +72,7 @@ Align on ends. Think independently about means.
 
 - Do the requested work and the minimum needed to make its useful outcome
   function.
+- Apply Authority and continuation to mutating work and delivery decisions.
 - Persistent Host Automation: before creating or changing a host service,
   scheduled job, or associated health or recovery automation intended to
   persist beyond the current task, read
@@ -177,6 +178,8 @@ solution are already clear stays direct.
 
 - Orient: inspect status, branch, HEAD, remotes, and the requested work before
   changing tracked files.
+- Follow Authority and continuation after orientation establishes the exact
+  scope and current state.
 - GitHub: search for a matching open Issue before creating one.
 - Ownership: create product Issues in the product repository. If no GitHub
   repository clearly owns the work, ask before creating Issues.
@@ -220,6 +223,51 @@ it.
 A PR is ready when every acceptance criterion is satisfied, required proof is
 current, the final diff passed self-review, and the version transition is
 committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
+
+## Authority and continuation
+
+Delivery Authority is authorization from the current request or repository
+policy to deliver an identified outcome or scope in named Issues and
+repositories. Carry it through routine in-scope work without asking the human
+to route established steps again.
+
+- A requested GitHub implementation includes routine Issue updates, an
+  exclusive task branch and workspace, implementation, proof, versioning,
+  commits, push, and opening or updating its PR. Merge, release, publication,
+  distribution, installation, or deployment is included only when the current
+  request or repository policy explicitly authorizes that exact operation and
+  target. Before an external mutation, verify the live target and applicable
+  authority. After the mutation, verify the resulting live state before
+  reporting success.
+- Reauthorization is required only after a material change to the outcome,
+  scope, risk, authority, exact candidate or target, or protected external
+  impact. An explicit stop instruction stops the affected work. Missing
+  authority remains a blocker. Authority for one Issue or repository never
+  extends to unrelated work.
+- Routine reversible architecture is agent-owned. Route product taste,
+  consequential or difficult-to-reverse architecture, Project Direction,
+  credentials, customer data, money, destructive production changes, and
+  authority never granted to the human.
+- Start each unblocked implementation Issue in a fresh context. Seed only the
+  repository, complete Issue, exact base and dependency state, current Project
+  Direction and applicable instructions, relevant durable decisions, and
+  granted authority. Repository and GitHub evidence replace prior transcripts
+  when they are sufficient.
+- The implementation worker leaves a concise durable handoff on the Issue and
+  PR with its branch, exact `HEAD`, proof state, version state, delivery state,
+  blockers, and next action. A coordinator independently verifies current Git
+  and GitHub state from that evidence, then starts the next unblocked Issue in
+  another fresh context without importing the worker transcript.
+- An interrupted task may resume the same Issue when its context remains
+  useful. A resumed or fresh task recovers the current Issue, workspace,
+  branch, `HEAD`, proof state, granted authority, delivery state, blockers, and
+  next action from Git, GitHub, project instructions, and the durable handoff.
+  Do not recreate completed work or request completed approvals again.
+- Keep the contract host-neutral. Tasks, threads, worktrees, and equivalent
+  mechanisms are adapter choices, not global controls. Do not create a
+  persistent orchestration service without later evidence and authority.
+- Report failure, missing authority, and every delivery state truthfully. A
+  failed or unperformed step never becomes a successful delivery claim.
 
 ## Git
 
@@ -269,21 +317,14 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
 
 ## Human gates
 
-- A requested GitHub implementation authorizes updates to its Issue, pushes to
-  its task branch, and opening or updating its PR unless the user says
-  `local-only`.
-- Confirm the exact live target before an external mutation and verify the
-  resulting state.
-- Merge authority: for a ready PR from the current task, explicit approval of
-  the completed changes or a direct `merge` or `auto-merge` instruction
-  authorizes GitHub native auto-merge for that PR.
-- Merge execution: re-check the exact PR head and readiness, enable auto-merge,
-  and verify the result. Reauthorize only when later changes materially alter
-  the approved outcome.
-- Release, publication, deployment, installation, production impact,
-  credentials, access, customer data, billing, credit spending, money movement,
-  destructive deletion outside the repository, and irreversible migration are
-  Human Gates.
+- Apply Authority and continuation before requesting another approval. For an
+  authorized merge, re-check the exact PR head and readiness, use the
+  repository's supported merge path, and verify the result.
+- Release, publication, distribution, deployment, installation, production
+  impact, credentials, access, customer data, billing, credit spending, money
+  movement, destructive deletion outside the repository, and irreversible
+  migration remain Human Gates until Delivery Authority explicitly includes
+  their exact operation and target.
 - Keep secrets, private data, and unrelated personal information out of
   commits, Issues, PRs, logs, and screenshots.
 
@@ -314,8 +355,8 @@ committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
 
 ## Handoff
 
-Report the Issue, branch and HEAD, delivered outcome, proof, version,
-commit, push, PR, unchecked areas, decisions, and blockers.
+Use the durable handoff and recovery fields from Authority and continuation.
+Report the delivered outcome, unchecked areas, decisions, and blockers.
 
 For Live Verification, report the exact artifact, target, public path, real
 integrations exercised, and observed result.

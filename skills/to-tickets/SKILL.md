@@ -107,8 +107,8 @@ Issue. Evaluate implementation authority from the full current request.
 
 - When that request already authorizes implementation, begin the first
   unblocked implementation Issue in a fresh context without another
-  authorization prompt. Carry the verified graph and the full current request
-  into that handoff.
+  authorization prompt. Follow Authority and continuation in `AGENTS.md` and
+  seed its minimal durable context packet instead of the prior conversation.
 - When the request was planning-only or otherwise lacks implementation
   authority, ask exactly once for authorization and name the first unblocked
   implementation Issue. Await that authority before changing implementation
