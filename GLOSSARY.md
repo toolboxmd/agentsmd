@@ -44,6 +44,14 @@ repositories through the exact operations, candidates, and targets granted by
 the current request or repository policy.
 _Avoid_: standing authority, repository-wide permission
 
+**Delivery Finalization**:
+The post-review lifecycle step for a verified terminal outcome that closes
+tracker state truthfully and retires only clean, exact, task-owned transient
+resources no remaining stack layer needs. It preserves durable truth and any
+resource that is persistent, shared, production, materially changed,
+protected, gated, dirty, active, unique, user-owned, or ambiguous.
+_Avoid_: cleanup sweep, Repository Reconciliation
+
 **Review-ready pull request stack**:
 A dependency-ordered set of pull request layers whose exact heads, bases,
 proof, review, revalidation, retarget, and merge states are recorded

@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.4.0] - 2026-09-03
+
+### Added
+
+- Add Delivery Finalization contract and deterministic proof
+
 ## [8.3.0] - 2026-09-03
 
 ### Added

@@ -118,6 +118,7 @@ class PluginPackagingTests(unittest.TestCase):
                 "proof": [
                     "tests/delivery_continuation_validator.py",
                     "tests/fixtures/delivery_continuation_cases.json",
+                    "tests/fixtures/delivery_finalization_cases.json",
                     "tests/fixtures/persistent_host_automation_cases.json",
                     "tests/fixtures/review_ready_stack_cases.json",
                     "tests/fixtures/specify_workflow_cases.json",
@@ -210,6 +211,7 @@ class PluginPackagingTests(unittest.TestCase):
         expected = {
             "tests/delivery_continuation_validator.py",
             "tests/fixtures/delivery_continuation_cases.json",
+            "tests/fixtures/delivery_finalization_cases.json",
             "tests/test_delivery_continuation_contract.py",
             "tests/fixtures/specify_workflow_cases.json",
             "skills/algorithm/evals/trigger-evals.json",

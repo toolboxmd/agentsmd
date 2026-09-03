@@ -267,6 +267,32 @@ to route established steps again.
   Preserve exact stack state across interruption, fresh context, and durable
   handoff. Report review-ready, blocker-cleared, stacked, rebased, revalidated,
   retargeted, and merged as separate states.
+- Delivery Finalization starts only after review and a verified terminal
+  disposition: merge, approved alternative delivery, cancellation,
+  duplication, supersession, or equivalent conclusive closure. An open pull
+  request or review-ready candidate is not terminal.
+- Remove only clean, exact, task-owned transient resources that no remaining
+  stack layer needs: local and remote branches, worktrees, disposable
+  checkouts, temporary files, task processes, containers, images, sockets,
+  ports, locks, PIDs, and explicitly disposable credentials, test accounts,
+  or previews. Authority to create an explicitly disposable resource includes
+  its teardown after the terminal-outcome, ownership, and need checks pass.
+  Age or cleanliness alone never proves ownership or removal eligibility.
+- Preserve Issues, pull requests, commits, tags, releases, proof, and other
+  durable truth. Preserve persistent, shared, production, materially changed,
+  protected, gated, dirty, active, unique, user-owned, or ambiguous resources
+  until applicable authority exists. Transfer unknown residue to Repository
+  Reconciliation with its exact path, branch, `HEAD`, files, reason, and next
+  action; report the outcome closed but not fully finalized while
+  classification remains.
+- Use native closing linkage only for a pull request that fully resolves the
+  Issue, and use references for partial work. Close parents only after their
+  acceptance criteria are satisfied and required children are terminal. Close
+  proof or experiment Issues after recording their evidence or decision. Close
+  duplicate or superseded Issues with a durable link, keep deferred work open,
+  and never delete Issues.
+- Report outcome, review, merge, closure, cleanup, finalization, and behavioral
+  Live Verification separately.
 - Repository capability setup starts with `inspection`: inspect the exact
   repository read-only before relying on its delivery capabilities. Record the
   default branch, applicable requirements, native Issue dependencies and
