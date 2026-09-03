@@ -239,6 +239,25 @@ to route established steps again.
   target. Before an external mutation, verify the live target and applicable
   authority. After the mutation, verify the resulting live state before
   reporting success.
+- Repository capability setup starts with `inspection`: inspect the exact
+  repository read-only before relying on its delivery capabilities. Record the
+  default branch, applicable requirements, native Issue dependencies and
+  dependent work, branch creation and push, closing linkage, the authorized
+  ready-PR merge path, and local and remote branch retirement. Verify each
+  capability from current evidence; report an unsupported capability
+  explicitly.
+- If inspection finds a required gap, record `proposed setup`: one complete
+  setup bundle with the exact current state, proposed settings, expected
+  effect, risks, and rollback path. At `approval`, obtain one scoped user
+  approval before any `settings mutation`, then apply only that bundle without
+  another prompt. Reuse that authority while the exact settings and risk
+  remain unchanged. Require new authority when the settings, target, or risk
+  changes materially.
+- At `verification`, verify every approved mutation and that no unapproved
+  repository setting changed before reporting success. A zero-mutation bundle
+  needs no approval; record it and prove that no repository setting changed.
+  Keep inspection, proposed setup, approval, settings mutation, and
+  verification as separate states.
 - Reauthorization is required only after a material change to the outcome,
   scope, risk, authority, exact candidate or target, or protected external
   impact. An explicit stop instruction stops the affected work. Missing

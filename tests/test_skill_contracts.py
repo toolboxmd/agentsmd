@@ -654,6 +654,52 @@ class SkillContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, skill)
 
+    def test_repository_capability_setup_is_inspected_and_authorized_once(
+        self,
+    ) -> None:
+        agents = read_text("AGENTS.md")
+        contract = " ".join(
+            agents.split("## Authority and continuation", 1)[1]
+            .split("\n## ", 1)[0]
+            .split()
+        )
+
+        for required in (
+            "inspect the exact repository read-only before relying on its delivery capabilities",
+            "default branch",
+            "applicable requirements",
+            "native Issue dependencies and dependent work",
+            "branch creation and push",
+            "closing linkage",
+            "authorized ready-PR merge path",
+            "local and remote branch retirement",
+            "Verify each capability from current evidence",
+            "one complete setup bundle",
+            "exact current state",
+            "proposed settings",
+            "expected effect, risks, and rollback path",
+            "one scoped user approval",
+            "without another prompt",
+            "Reuse that authority while the exact settings and risk remain unchanged",
+            "settings, target, or risk changes materially",
+            "unsupported",
+            "zero-mutation bundle",
+            "no approval",
+            "no repository setting changed",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, contract)
+
+        states = (
+            "inspection",
+            "proposed setup",
+            "approval",
+            "settings mutation",
+            "verification",
+        )
+        positions = [contract.index(state) for state in states]
+        self.assertEqual(positions, sorted(positions))
+
     def test_wayfinder_maps_only_the_visible_github_frontier(self) -> None:
         skill = read_text("skills/wayfinder/SKILL.md")
         normalized = " ".join(skill.split())
