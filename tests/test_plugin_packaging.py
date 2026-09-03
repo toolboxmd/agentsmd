@@ -139,6 +139,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/test_persistent_host_automation_contract.py",
                     "tests/test_plugin_packaging.py",
                     "tests/test_project_direction_loader.py",
+                    "tests/test_release_dispatch_contract.py",
                     "tests/test_repository_reconciliation_contract.py",
                     "tests/test_skill_contracts.py",
                 ],

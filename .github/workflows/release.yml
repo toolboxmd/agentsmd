@@ -93,6 +93,39 @@ jobs:
             --title "$TAG" \
             --notes-file "$RUNNER_TEMP/release-notes.md"
 
+      - name: Mint Marketplace-only Toolybara token
+        if: steps.policy.outputs.enabled == 'true'
+        id: toolybara-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ vars.TOOLYBARA_CLIENT_ID }}
+          private-key: ${{ secrets.TOOLYBARA_PRIVATE_KEY }}
+          owner: toolboxmd
+          repositories: marketplace
+          permission-contents: write
+
+      - name: Dispatch Marketplace reconciliation wake-up
+        if: steps.policy.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ steps.toolybara-token.outputs.token }}
+          RELEASE_TAG: ${{ steps.candidate.outputs.tag }}
+        run: |
+          # Marketplace treats the tag as an untrusted wake hint and resolves its own candidate.
+          payload=$(jq -cn \
+            --arg tag "$RELEASE_TAG" \
+            '{
+              event_type: "agentsmd_release_published",
+              client_payload: {release_tag: $tag}
+            }')
+          if ! gh api \
+            --method POST \
+            "repos/toolboxmd/marketplace/dispatches" \
+            --input - <<<"$payload"
+          then
+            echo "::error title=Marketplace wake-up failed::Could not dispatch agentsmd_release_published to toolboxmd/marketplace"
+            exit 1
+          fi
+
       - name: Report exact release identity
         if: steps.policy.outputs.enabled == 'true'
         env:
@@ -107,6 +140,9 @@ jobs:
             printf -- '- Commit: `%s`\n' "$RELEASE_SHA"
             printf -- '- Annotated tag: `%s`\n' "$TAG"
             printf -- '- GitHub Release: %s\n' "$release_url"
-            printf -- '- Registry publication: not performed\n'
+            printf -- '- Marketplace wake-up: `agentsmd_release_published` dispatched\n'
+            printf -- '- Marketplace promotion: not claimed; receiver validation is independent\n'
+            printf -- '- Distribution: not performed\n'
+            printf -- '- Installation: not performed\n'
             printf -- '- Deployment: not performed\n'
           } >> "$GITHUB_STEP_SUMMARY"
