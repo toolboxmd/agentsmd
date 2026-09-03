@@ -39,15 +39,18 @@
       "tests/fixtures/delivery_continuation_cases.json",
       "tests/fixtures/delivery_finalization_cases.json",
       "tests/fixtures/persistent_host_automation_cases.json",
+      "tests/fixtures/repository_reconciliation_cases.json",
       "tests/fixtures/review_ready_stack_cases.json",
       "tests/fixtures/specify_workflow_cases.json",
       "tests/fixtures/workspace_isolation_cases.json",
       "tests/persistent_host_automation_validator.py",
+      "tests/repository_reconciliation_validator.py",
       "tests/test_delivery_continuation_contract.py",
       "tests/test_global_instructions.py",
       "tests/test_persistent_host_automation_contract.py",
       "tests/test_plugin_packaging.py",
       "tests/test_project_direction_loader.py",
+      "tests/test_repository_reconciliation_contract.py",
       "tests/test_skill_contracts.py"
     ]
   }

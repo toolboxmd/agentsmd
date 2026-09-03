@@ -395,6 +395,96 @@ def finalization_report(case: dict[str, object]) -> str:
     return "closed-finalized"
 
 
+RECONCILIATION_MANIFEST_FIELDS = {
+    "id",
+    "exact-identity",
+    "evidence",
+    "classification",
+    "proposed-action",
+    "reversibility",
+    "reason",
+    "next-action",
+}
+
+RECONCILIATION_PRESERVE_FLAGS = {
+    "unknown",
+    "dirty",
+    "active",
+    "shared",
+    "persistent",
+    "unique",
+    "user-owned",
+    "ambiguous",
+    "protected",
+    "materially-changed",
+}
+
+
+def repository_reconciliation_decision(case: dict[str, object]) -> str:
+    if not case.get("orientation-drift-detected"):
+        return "no-op-no-drift"
+
+    manifest = case.get("manifest")
+    if (
+        not isinstance(manifest, dict)
+        or set(manifest) != RECONCILIATION_MANIFEST_FIELDS
+        or any(value in (None, "") for value in manifest.values())
+    ):
+        return "stop-incomplete-manifest"
+
+    flags = set(case.get("state-flags", []))
+    if flags & RECONCILIATION_PRESERVE_FLAGS:
+        return "preserve"
+
+    classification = manifest["classification"]
+    if classification == "preserve":
+        return "preserve"
+    if classification == "no-op/already-resolved":
+        return "no-op-already-resolved"
+    if classification == "blocked/needs-next-action":
+        return "blocked-needs-next-action"
+    if classification != "proposed-cleanup/change":
+        return "stop-invalid-classification"
+
+    approved_ids = case.get("approved-ids", [])
+    if manifest["id"] not in approved_ids:
+        return (
+            "stop-unapproved-action"
+            if case.get("mutation-attempted")
+            else "await-batch-approval"
+        )
+
+    sequence = case.get("sequence", [])
+    if sequence != [
+        "inspect",
+        "propose",
+        "approve",
+        "recheck",
+        "mutate",
+        "verify",
+    ]:
+        return "stop-invalid-sequence"
+
+    recheck = case.get("immediate-recheck")
+    if (
+        not isinstance(recheck, dict)
+        or recheck.get("exact-identity") != manifest["exact-identity"]
+        or not recheck.get("issue-current")
+        or not recheck.get("pull-request-current")
+        or not recheck.get("resource-current")
+    ):
+        return "preserve-material-change"
+
+    after = case.get("after-verification")
+    if (
+        not isinstance(after, dict)
+        or after.get("target") != manifest["exact-identity"]
+        or after.get("observed-state") != after.get("expected-state")
+    ):
+        return "stop-unverified-after-state"
+    return "reconciled"
+
+
 class SkillContractTests(unittest.TestCase):
     def test_project_direction_skill_owns_all_repair_and_review_triggers(self) -> None:
         skill = read_text("skills/project-direction/SKILL.md")
@@ -1341,6 +1431,143 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn(
             "The post-review lifecycle step for a verified terminal outcome",
             glossary,
+        )
+
+    def test_repository_reconciliation_contract_is_bounded_and_approval_gated(
+        self,
+    ) -> None:
+        agents = " ".join(read_text("AGENTS.md").split())
+        glossary = " ".join(read_text("GLOSSARY.md").split())
+
+        for required in (
+            "Repository Reconciliation is a bounded repair path triggered when "
+            "orientation detects drift",
+            "Refresh exact repository, tracker, settings, workspace, process, "
+            "temporary-resource, dependency, and ownership evidence",
+            "exact identity, evidence, classification, proposed action, "
+            "reversibility, reason, and next action",
+            "one scoped batch approval before mutating legacy resources",
+            "Verify every exact after-state",
+            "Preserve unknown, dirty, active, shared, persistent, unique, "
+            "user-owned, ambiguous, protected, and materially changed state",
+            "inspected, proposed, approved, cleaned, closed, preserved, "
+            "reconciled, released, and Live Verified states separately",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, agents)
+
+        self.assertIn("**Repository Reconciliation**:", glossary)
+        self.assertIn(
+            "A bounded repair path triggered when repository orientation "
+            "detects drift",
+            glossary,
+        )
+
+    def test_repository_reconciliation_cases_fail_closed_and_preserve_state(
+        self,
+    ) -> None:
+        payload = json.loads(
+            read_text("tests/fixtures/repository_reconciliation_cases.json")
+        )
+        cases = {}
+        for item in payload["cases"]:
+            case = {**payload["case-defaults"], **item}
+            case["manifest"] = {
+                **payload["manifest-defaults"],
+                **item.get("manifest", {}),
+            }
+            cases[case["id"]] = case
+
+        self.assertEqual(payload["schema"], 1)
+        self.assertFalse(payload["contract"]["real-resource-actions"])
+        self.assertEqual(
+            payload["contract"]["evidence-scope"],
+            [
+                "repository",
+                "tracker",
+                "settings",
+                "workspace",
+                "process",
+                "temporary-resource",
+                "dependency",
+                "ownership",
+            ],
+        )
+        self.assertEqual(
+            payload["contract"]["separate-reporting-states"],
+            [
+                "inspected",
+                "proposed",
+                "approved",
+                "cleaned",
+                "closed",
+                "preserved",
+                "reconciled",
+                "released",
+                "live-verified",
+            ],
+        )
+        self.assertEqual(
+            set(payload["contract"]["manifest-fields"]),
+            RECONCILIATION_MANIFEST_FIELDS,
+        )
+        self.assertEqual(
+            set(payload["contract"]["preserve-flags"]),
+            RECONCILIATION_PRESERVE_FLAGS,
+        )
+        self.assertEqual(
+            set(cases),
+            {
+                "no-drift",
+                "await-approval",
+                "approved-exact-action",
+                "unapproved-action",
+                "changed-issue-before-mutation",
+                "changed-pull-request-before-mutation",
+                "changed-resource-before-mutation",
+                "unverified-after-state",
+                "already-resolved",
+                "blocked-next-action",
+                "unknown",
+                "dirty",
+                "active",
+                "shared",
+                "persistent",
+                "unique",
+                "user-owned",
+                "ambiguous",
+                "protected",
+                "materially-changed",
+            },
+        )
+        for case in cases.values():
+            with self.subTest(case=case["id"]):
+                self.assertEqual(
+                    repository_reconciliation_decision(case),
+                    case["expected-decision"],
+                )
+
+        approved = cases["approved-exact-action"]
+        self.assertEqual(
+            approved["sequence"],
+            [
+                "inspect",
+                "propose",
+                "approve",
+                "recheck",
+                "mutate",
+                "verify",
+            ],
+        )
+        missing_field = dict(approved)
+        missing_field["manifest"] = {
+            key: value
+            for key, value in approved["manifest"].items()
+            if key != "next-action"
+        }
+        self.assertEqual(
+            repository_reconciliation_decision(missing_field),
+            "stop-incomplete-manifest",
         )
 
     def test_delivery_finalization_cases_cover_every_required_branch(self) -> None:

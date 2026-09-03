@@ -52,6 +52,12 @@ resource that is persistent, shared, production, materially changed,
 protected, gated, dirty, active, unique, user-owned, or ambiguous.
 _Avoid_: cleanup sweep, Repository Reconciliation
 
+**Repository Reconciliation**:
+A bounded repair path triggered when repository orientation detects drift. It
+refreshes exact evidence, resolves only approved legacy changes, and preserves
+durable, unsafe, or ambiguous state with an explicit next action.
+_Avoid_: cleanup sweep, recurring repository audit
+
 **Review-ready pull request stack**:
 A dependency-ordered set of pull request layers whose exact heads, bases,
 proof, review, revalidation, retarget, and merge states are recorded

@@ -1,0 +1,450 @@
+{
+  "schema": 1,
+  "contract": {
+    "authoritative-location": "AGENTS.md#Authority and continuation",
+    "trigger": "orientation-detected-drift",
+    "mode": "bounded-repair",
+    "evidence-scope": [
+      "repository",
+      "tracker",
+      "settings",
+      "workspace",
+      "process",
+      "temporary-resource",
+      "dependency",
+      "ownership"
+    ],
+    "manifest-fields": [
+      "id",
+      "exact-identity",
+      "evidence",
+      "classification",
+      "proposed-action",
+      "reversibility",
+      "reason",
+      "next-action"
+    ],
+    "preflight-observation-fields": [
+      "kind",
+      "exact-target",
+      "state",
+      "timestamp",
+      "result",
+      "source"
+    ],
+    "preflight-max-age-seconds": 60,
+    "retrospective-recovery-proofs": [
+      "authoritative-history-available",
+      "preconditions-held-continuously",
+      "exact-targets-match",
+      "refs-recoverable",
+      "authority-sufficient"
+    ],
+    "escalation-reasons": [
+      "ambiguous-recovery",
+      "unsafe-restoration",
+      "proof-unavailable",
+      "target-mismatch",
+      "authority-expansion",
+      "user-data-risk",
+      "user-owned-decision"
+    ],
+    "preserve-flags": [
+      "unknown",
+      "dirty",
+      "active",
+      "shared",
+      "persistent",
+      "unique",
+      "user-owned",
+      "ambiguous",
+      "protected",
+      "materially-changed"
+    ],
+    "separate-reporting-states": [
+      "inspected",
+      "proposed",
+      "approved",
+      "cleaned",
+      "closed",
+      "preserved",
+      "reconciled",
+      "released",
+      "live-verified"
+    ],
+    "real-resource-actions": false
+  },
+  "manifest-defaults": {
+    "id": "RR-FIXTURE",
+    "exact-identity": "1111111111111111111111111111111111111111",
+    "evidence": "deterministic fixture",
+    "classification": "proposed-cleanup/change",
+    "proposed-action": "remove exact terminal task residue",
+    "reversibility": "restore from retained durable reference",
+    "reason": "clean exact task-owned transient resource is terminal and unneeded",
+    "next-action": "await one scoped batch approval"
+  },
+  "case-defaults": {
+    "orientation-drift-detected": true,
+    "state-flags": [],
+    "approved-ids": [],
+    "mutation-attempted": false,
+    "sequence": [
+      "inspect",
+      "propose",
+      "approve",
+      "recheck",
+      "mutate",
+      "verify"
+    ],
+    "immediate-recheck": {
+      "exact-identity": "1111111111111111111111111111111111111111",
+      "issue-current": true,
+      "pull-request-current": true,
+      "resource-current": true
+    },
+    "after-verification": {
+      "target": "1111111111111111111111111111111111111111",
+      "observed-state": "absent",
+      "expected-state": "absent"
+    }
+  },
+  "workflow-defaults": {
+    "id": "repository-reconciliation-workflow",
+    "approved": true,
+    "target": {
+      "id": "WT-39",
+      "exact-target": "/worktrees/9f8c/agentsmd",
+      "branch": "fix/39-specify-through-tickets",
+      "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+      "issue": "toolboxmd/agentsmd#39",
+      "pull-request": "toolboxmd/agentsmd#63",
+      "expected-states": {
+        "issue": "closed",
+        "pull-request": "merged",
+        "resource": "clean-at-head"
+      }
+    },
+    "preflight": {
+      "status": "missing",
+      "observations": []
+    },
+    "mutation": {
+      "state": "completed",
+      "action": "remove-worktree",
+      "timestamp": "2026-09-03T10:26:13Z",
+      "target": {
+        "id": "WT-39",
+        "exact-target": "/worktrees/9f8c/agentsmd",
+        "branch": "fix/39-specify-through-tickets",
+        "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+        "issue": "toolboxmd/agentsmd#39",
+        "pull-request": "toolboxmd/agentsmd#63",
+        "expected-states": {
+          "issue": "closed",
+          "pull-request": "merged",
+          "resource": "clean-at-head"
+        }
+      }
+    },
+    "approval": {
+      "target": {
+        "id": "WT-39",
+        "exact-target": "/worktrees/9f8c/agentsmd",
+        "branch": "fix/39-specify-through-tickets",
+        "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+        "issue": "toolboxmd/agentsmd#39",
+        "pull-request": "toolboxmd/agentsmd#63",
+        "expected-states": {
+          "issue": "closed",
+          "pull-request": "merged",
+          "resource": "clean-at-head"
+        }
+      },
+      "action": "remove-worktree"
+    },
+    "request": {
+      "target": {
+        "id": "WT-39",
+        "exact-target": "/worktrees/9f8c/agentsmd",
+        "branch": "fix/39-specify-through-tickets",
+        "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+        "issue": "toolboxmd/agentsmd#39",
+        "pull-request": "toolboxmd/agentsmd#63",
+        "expected-states": {
+          "issue": "closed",
+          "pull-request": "merged",
+          "resource": "clean-at-head"
+        }
+      },
+      "action": "remove-worktree",
+      "force": false,
+      "branch-deletion": false
+    },
+    "recovery": {
+      "interval": {
+        "start": "2026-09-03T10:26:00Z",
+        "end": "2026-09-03T10:27:32Z"
+      },
+      "authoritative-history-available": true,
+      "preconditions-held-continuously": true,
+      "exact-targets-match": true,
+      "refs-recoverable": true,
+      "authority-sufficient": true,
+      "violated-precondition": false,
+      "safe-restoration": false,
+      "user-data-risk": false,
+      "user-owned-decision": false,
+      "ambiguous": false
+    }
+  },
+  "workflow-cases": [
+    {
+      "id": "live-preflight-success",
+      "input": {
+        "preflight": {
+          "status": "complete",
+          "observations": [
+            {
+              "kind": "issue",
+              "exact-target": "toolboxmd/agentsmd#39",
+              "state": "closed",
+              "timestamp": "2026-09-03T10:26:10Z",
+              "result": "pass",
+              "source": "live-api"
+            },
+            {
+              "kind": "pull-request",
+              "exact-target": "toolboxmd/agentsmd#63",
+              "state": "merged",
+              "timestamp": "2026-09-03T10:26:11Z",
+              "result": "pass",
+              "source": "live-api"
+            },
+            {
+              "kind": "resource",
+              "exact-target": "/worktrees/9f8c/agentsmd",
+              "state": "clean-at-head",
+              "timestamp": "2026-09-03T10:26:12Z",
+              "result": "pass",
+              "source": "live-system"
+            }
+          ]
+        },
+        "mutation": {
+          "state": "pending"
+        }
+      },
+      "expected": {
+        "decision": "mutate",
+        "mutation-action": "execute-approved-action",
+        "human-gate": false,
+        "evidence-status": "preflight-complete"
+      }
+    },
+    {
+      "id": "live-preflight-failure",
+      "input": {
+        "preflight": {
+          "status": "complete",
+          "observations": [
+            {
+              "kind": "issue",
+              "exact-target": "toolboxmd/agentsmd#39",
+              "state": "open",
+              "timestamp": "2026-09-03T10:26:10Z",
+              "result": "fail",
+              "source": "live-api"
+            },
+            {
+              "kind": "pull-request",
+              "exact-target": "toolboxmd/agentsmd#63",
+              "state": "merged",
+              "timestamp": "2026-09-03T10:26:11Z",
+              "result": "pass",
+              "source": "live-api"
+            },
+            {
+              "kind": "resource",
+              "exact-target": "/worktrees/9f8c/agentsmd",
+              "state": "clean-at-head",
+              "timestamp": "2026-09-03T10:26:12Z",
+              "result": "pass",
+              "source": "live-system"
+            }
+          ]
+        },
+        "mutation": {
+          "state": "pending"
+        }
+      },
+      "expected": {
+        "decision": "preserve",
+        "mutation-action": "none",
+        "human-gate": false,
+        "evidence-status": "preflight-failed"
+      }
+    },
+    {
+      "id": "missed-immediate-evidence",
+      "input": {},
+      "expected": {
+        "decision": "recovered",
+        "mutation-action": "none",
+        "human-gate": false,
+        "user-notification": false,
+        "evidence-status": "retrospective-complete"
+      }
+    },
+    {
+      "id": "retrospective-safe-restoration",
+      "input": {
+        "recovery": {
+          "preconditions-held-continuously": false,
+          "violated-precondition": true,
+          "safe-restoration": true
+        },
+        "restoration": {
+          "state": "completed",
+          "exact-target": "/worktrees/9f8c/agentsmd",
+          "branch": "fix/39-specify-through-tickets",
+          "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+          "conflict": false,
+          "data-loss": false,
+          "timestamp": "2026-09-03T10:27:40Z"
+        }
+      },
+      "expected": {
+        "decision": "restored",
+        "mutation-action": "restore-prior-worktree",
+        "human-gate": false,
+        "user-notification": false,
+        "evidence-status": "restoration-complete"
+      }
+    },
+    {
+      "id": "ambiguous-recovery",
+      "input": {
+        "recovery": {
+          "ambiguous": true
+        }
+      },
+      "expected": {
+        "decision": "escalate",
+        "reason": "ambiguous-recovery",
+        "mutation-action": "none",
+        "human-gate": true,
+        "evidence-status": "recovery-blocked"
+      }
+    },
+    {
+      "id": "unsafe-restoration",
+      "input": {
+        "recovery": {
+          "preconditions-held-continuously": false,
+          "violated-precondition": true,
+          "refs-recoverable": false
+        }
+      },
+      "expected": {
+        "decision": "escalate",
+        "reason": "unsafe-restoration",
+        "mutation-action": "none",
+        "human-gate": true,
+        "evidence-status": "recovery-blocked"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "no-drift",
+      "orientation-drift-detected": false,
+      "expected-decision": "no-op-no-drift"
+    },
+    {
+      "id": "await-approval",
+      "expected-decision": "await-batch-approval"
+    },
+    {
+      "id": "approved-exact-action",
+      "approved-ids": ["RR-FIXTURE"],
+      "expected-decision": "reconciled"
+    },
+    {
+      "id": "unapproved-action",
+      "mutation-attempted": true,
+      "expected-decision": "stop-unapproved-action"
+    },
+    {
+      "id": "changed-issue-before-mutation",
+      "approved-ids": ["RR-FIXTURE"],
+      "immediate-recheck": {
+        "exact-identity": "1111111111111111111111111111111111111111",
+        "issue-current": false,
+        "pull-request-current": true,
+        "resource-current": true
+      },
+      "expected-decision": "preserve-material-change"
+    },
+    {
+      "id": "changed-pull-request-before-mutation",
+      "approved-ids": ["RR-FIXTURE"],
+      "immediate-recheck": {
+        "exact-identity": "1111111111111111111111111111111111111111",
+        "issue-current": true,
+        "pull-request-current": false,
+        "resource-current": true
+      },
+      "expected-decision": "preserve-material-change"
+    },
+    {
+      "id": "changed-resource-before-mutation",
+      "approved-ids": ["RR-FIXTURE"],
+      "immediate-recheck": {
+        "exact-identity": "2222222222222222222222222222222222222222",
+        "issue-current": true,
+        "pull-request-current": true,
+        "resource-current": true
+      },
+      "expected-decision": "preserve-material-change"
+    },
+    {
+      "id": "unverified-after-state",
+      "approved-ids": ["RR-FIXTURE"],
+      "after-verification": {
+        "target": "1111111111111111111111111111111111111111",
+        "observed-state": "present",
+        "expected-state": "absent"
+      },
+      "expected-decision": "stop-unverified-after-state"
+    },
+    {
+      "id": "already-resolved",
+      "manifest": {
+        "classification": "no-op/already-resolved",
+        "proposed-action": "none",
+        "next-action": "retain durable evidence"
+      },
+      "expected-decision": "no-op-already-resolved"
+    },
+    {
+      "id": "blocked-next-action",
+      "manifest": {
+        "classification": "blocked/needs-next-action",
+        "proposed-action": "none",
+        "next-action": "resolve ownership before reconsideration"
+      },
+      "expected-decision": "blocked-needs-next-action"
+    },
+    {"id": "unknown", "state-flags": ["unknown"], "expected-decision": "preserve"},
+    {"id": "dirty", "state-flags": ["dirty"], "expected-decision": "preserve"},
+    {"id": "active", "state-flags": ["active"], "expected-decision": "preserve"},
+    {"id": "shared", "state-flags": ["shared"], "expected-decision": "preserve"},
+    {"id": "persistent", "state-flags": ["persistent"], "expected-decision": "preserve"},
+    {"id": "unique", "state-flags": ["unique"], "expected-decision": "preserve"},
+    {"id": "user-owned", "state-flags": ["user-owned"], "expected-decision": "preserve"},
+    {"id": "ambiguous", "state-flags": ["ambiguous"], "expected-decision": "preserve"},
+    {"id": "protected", "state-flags": ["protected"], "expected-decision": "preserve"},
+    {"id": "materially-changed", "state-flags": ["materially-changed"], "expected-decision": "preserve"}
+  ]
+}
