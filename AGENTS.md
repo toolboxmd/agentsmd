@@ -253,6 +253,20 @@ to route established steps again.
   or independence as unsafe. A moving base or unsafe overlap stops only the
   affected writer; unrelated independent work continues. After workspace
   selection, apply the fresh-context and durable-handoff rules in this section.
+- Keep a dependent Issue natively blocked until its predecessor publishes a
+  complete review-ready pull request at an exact SHA. Record the predecessor
+  pull request, exact head, proof state, and dependency state before clearing
+  only that native blocker. Start a native stacked pull request from that exact
+  predecessor when available. Otherwise use an ordinary dependent branch with
+  equivalent exact-base, review, rebase, revalidation, retarget, and
+  dependency-ordered merge invariants. Independent work remains free.
+- Apply each review fix to the earliest layer that owns the broken acceptance
+  criterion. Cascade rebase and revalidation through every affected dependent
+  layer after a lower-layer change. Merge in dependency order, and verify
+  automatic rebase or retarget before treating an upper layer as current.
+  Preserve exact stack state across interruption, fresh context, and durable
+  handoff. Report review-ready, blocker-cleared, stacked, rebased, revalidated,
+  retargeted, and merged as separate states.
 - Repository capability setup starts with `inspection`: inspect the exact
   repository read-only before relying on its delivery capabilities. Record the
   default branch, applicable requirements, native Issue dependencies and
