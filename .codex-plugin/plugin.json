@@ -1,7 +1,7 @@
 {
   "name": "agentsmd",
-  "version": "8.5.1",
-  "description": "Portable agent rules, Project Direction, owned workflow Skills, and deterministic version control.",
+  "version": "8.6.0",
+  "description": "Portable agent rules, Project Direction, Delivery System profiles, owned workflow Skills, and deterministic version control.",
   "author": {
     "name": "lukaszmaj",
     "url": "https://github.com/toolboxmd"
@@ -20,8 +20,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "AgentsMD Workflow Suite",
-    "shortDescription": "Align agent work with Project Direction and owned workflows.",
-    "longDescription": "Keep Vision, Mission, and Objective in context, then shape, specify, split, and prove GitHub work with the AgentsMD Skill Catalogue, explicit Grok delegation, and deterministic version control.",
+    "shortDescription": "Align direction and deliver through portable workflows.",
+    "longDescription": "Keep Vision, Mission, and Objective in context, then qualify, shape, implement, prove, review, and ship work through the portable Delivery System, owned Skill Catalogue, and deterministic version control.",
     "developerName": "toolbox.md",
     "category": "Developer Tools",
     "capabilities": [

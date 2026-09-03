@@ -44,6 +44,29 @@ repositories through the exact operations, candidates, and targets granted by
 the current request or repository policy.
 _Avoid_: standing authority, repository-wide permission
 
+**Delivery System**:
+The portable AgentsMD contract that carries qualified work through separate
+implementation, Proof, review, merge, release, distribution or deployment,
+installation or activation, loading, Live Verification, and website-current
+states.
+_Avoid_: release pipeline, orchestration engine
+
+**Delivery Profile**:
+The optional root `.toolboxmd/delivery.json` containing only a Project's real
+delivery-command, artifact-build, and website-mapping differences from the
+shared Delivery System.
+_Avoid_: Project Record, release policy, delivery state
+
+**Merge Unit**:
+One independently reviewable and mergeable change, or one dependent stack
+that must ship as a single release identity and SemVer transition.
+_Avoid_: commit, implementation slice
+
+**Implementation Slice**:
+One authored part of a Merge Unit with an exclusive writer and an independent
+exact-SHA review obligation.
+_Avoid_: generated promotion pull request, Merge Unit
+
 **Delivery Finalization**:
 The post-review lifecycle step for a verified terminal outcome that closes
 tracker state truthfully and retires only clean, exact, task-owned transient

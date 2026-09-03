@@ -1,0 +1,26 @@
+{
+  "$schema": "https://raw.githubusercontent.com/toolboxmd/agentsmd/v8.6.0/schemas/delivery-v1.schema.json",
+  "schema": 1,
+  "commands": {
+    "changedScope": [
+      "python3 -m unittest tests.test_delivery_profile tests.test_delivery_system_contract -v"
+    ],
+    "complete": [
+      "python3 -m unittest discover -s tests -p 'test_*.py'",
+      "python3 -m unittest discover -s tools/versionctl/tests -p 'test_*.py'"
+    ],
+    "release": [
+      "tools/versionctl/bin/versionctl release-check --sha {sha}"
+    ]
+  },
+  "artifact": {
+    "build": "mkdir -p dist && git archive --format=tar.gz --prefix=agentsmd/ --output=dist/agentsmd-{version}.tar.gz {sha}",
+    "output": "dist/agentsmd-{version}.tar.gz",
+    "digest": "sha256"
+  },
+  "website": {
+    "repository": "toolboxmd/toolbox.md",
+    "baseUrl": "https://toolbox.md",
+    "route": "/agentsmd"
+  }
+}

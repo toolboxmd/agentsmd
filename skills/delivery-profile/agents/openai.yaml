@@ -1,0 +1,7 @@
+interface:
+  display_name: "Delivery Profile"
+  short_description: "Load Project-specific Delivery System deltas"
+  default_prompt: "Use $delivery-profile to load and validate this Project's delivery profile."
+
+policy:
+  allow_implicit_invocation: true

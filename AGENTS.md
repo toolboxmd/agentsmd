@@ -375,6 +375,62 @@ to route established steps again.
 - Report failure, missing authority, and every delivery state truthfully. A
   failed or unperformed step never becomes a successful delivery claim.
 
+## Delivery System
+
+The Delivery System is the shared lifecycle contract. A root
+`.toolboxmd/delivery.json`, when present, contains only Project-specific deltas
+and must be loaded through the `delivery-profile` Skill after Project Direction
+and repository orientation. The profile never owns canonical version, Project
+Record, release policy, documentation, or current delivery state.
+
+- Report qualified, implemented, proved, reviewed, merged, released,
+  distributed or deployed, installed or activated, loaded, Live Verified, and
+  website-current as separate states. A state is positive only after its own
+  required evidence exists. Qualifying work identifies the owning Issue,
+  outcome, authority, dependencies, acceptance criteria, and Proof before
+  implementation begins.
+- Choose the smallest valid execution mode. **Sequential direct work** serves
+  one merge unit without useful parallelism. **Independent worktree pull
+  requests** serve genuinely independent merge units with exclusive branches,
+  workspaces, and file sets. **Dependent stacked pull requests** serve layers
+  whose predecessor is review-ready at an exact SHA. **Tightly coupled
+  single-writer integration** serves work whose contracts, migrations,
+  generated outputs, release identity, or acceptance build cannot safely
+  separate. Different files alone do not prove independence.
+- Give each authored implementation slice an independent Codex Luna review at
+  maximum reasoning against its exact SHA. A deterministically generated
+  Toolybara promotion pull request uses generated-scope validation instead.
+  Apply a lower-layer review fix in the earliest owning layer, checkpoint every
+  descendant, rebase it onto the corrected exact SHA, and re-prove every
+  affected head without losing later work.
+- Give one complete merge unit or dependent stack exactly one SemVer
+  transition. Classify it from the highest semantic impact in everything that
+  ships. Intermediate stack layers do not carry independent releases.
+- Use GitHub-hosted runners for ordinary CI and release builds. Reserve Rocky
+  for agentic development and genuine macOS proof, Cavallo for human control
+  and acceptance, and Bigbrain for activation, health checks, and rollback of
+  trusted artifacts. Untrusted pull request code does not run on
+  production-connected infrastructure.
+- Use a changed-scope check for fast feedback only. The complete merge gate
+  proves the whole required merge unit. The complete release gate re-proves the
+  exact release SHA and its release identity. Never substitute a fast check for
+  either complete gate.
+- Every deployable artifact is built once from the exact release SHA, assigned
+  an immutable digest, and promoted unchanged through distribution,
+  deployment, installation, and activation. Rebuilding creates a different
+  artifact and requires new proof.
+- Classify website impact for every merge unit as none, generated, narrative,
+  or runtime. `none` requires a recorded reason. A major version requires a
+  complete website review. For minor and patch changes, update affected public
+  capability, setup, compatibility, pricing, screenshots, metadata,
+  documentation, and URLs before website-current becomes true. Record SEO
+  impact and treat URL changes as migrations; the full SEO program remains a
+  separate outcome.
+- Evidence binds the owning Issue, branch, exact base and head SHAs, commands,
+  results, review identity and verdict, version transition, artifact digest,
+  external target, authority, timestamps where state can drift, and each
+  lifecycle state. A summary or earlier run never replaces exact current proof.
+
 ## Git
 
 - Resolve the intended base branch instead of assuming `main`.
@@ -448,11 +504,10 @@ to route established steps again.
 - `README.md` serves users. `GLOSSARY.md` owns project language. ADRs preserve
   costly, surprising, hard-to-reverse decisions. `CHANGELOG.md` records
   released outcomes.
-- `STATUS.md` is an optional current snapshot containing only `Verified`,
-  `Stage`, `Current`, `Evidence`, `Next`, and `Blocker`.
-- `TODO.md` is immediate local action. `ISSUES.md`, when intentionally present,
-  is a local known-problem ledger. `IDEAS.md` is optional future work. None
-  duplicates GitHub Issues.
+- Root `TODO.md`, `ISSUES.md`, `IDEAS.md`, and `STATUS.md`, when present, are
+  legacy input ledgers with no active tracker or project-truth role. Reconcile
+  unique entries into their canonical owners before separately authorized
+  deletion. Do not add new delivery state or tracked intent to them.
 - Every project `AGENTS.md` keeps its five newest meaningful dated changes, or
   all entries until five exist. Older completed history belongs in
   `CHANGELOG.md`.

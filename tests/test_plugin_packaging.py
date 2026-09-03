@@ -14,6 +14,7 @@ VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 ACTIVE_SKILLS = {
     "algorithm",
+    "delivery-profile",
     "domain-modeling",
     "grill-with-docs",
     "grilling",
@@ -114,7 +115,12 @@ class PluginPackagingTests(unittest.TestCase):
                     "SKILL_CATALOGUE.md",
                     "docs/adr/0001-persistent-host-automation.md",
                 ],
-                "requirements": ["AGENTS.md", ".version-policy.json"],
+                "requirements": [
+                    "AGENTS.md",
+                    ".version-policy.json",
+                    ".toolboxmd/delivery.json",
+                    "schemas/delivery-v1.schema.json",
+                ],
                 "proof": [
                     "tests/delivery_continuation_validator.py",
                     "tests/fixtures/delivery_continuation_cases.json",
@@ -127,6 +133,8 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/persistent_host_automation_validator.py",
                     "tests/repository_reconciliation_validator.py",
                     "tests/test_delivery_continuation_contract.py",
+                    "tests/test_delivery_profile.py",
+                    "tests/test_delivery_system_contract.py",
                     "tests/test_global_instructions.py",
                     "tests/test_persistent_host_automation_contract.py",
                     "tests/test_plugin_packaging.py",
@@ -213,6 +221,11 @@ class PluginPackagingTests(unittest.TestCase):
     def test_complete_supporting_resources_are_packaged(self) -> None:
         expected = {
             "tests/delivery_continuation_validator.py",
+            "tests/fixtures/delivery_profiles/valid-minimal.json",
+            "tests/fixtures/delivery_profiles/invalid-artifact.json",
+            "tests/fixtures/delivery_profiles/invalid-canonical-truth.json",
+            "tests/fixtures/delivery_profiles/invalid-command.json",
+            "tests/fixtures/delivery_profiles/invalid-empty.json",
             "tests/fixtures/delivery_continuation_cases.json",
             "tests/fixtures/delivery_finalization_cases.json",
             "tests/fixtures/repository_reconciliation_cases.json",
@@ -222,6 +235,8 @@ class PluginPackagingTests(unittest.TestCase):
             "tests/fixtures/specify_workflow_cases.json",
             "skills/algorithm/evals/trigger-evals.json",
             "skills/algorithm/references/marketplace-project-record-regression.md",
+            ".toolboxmd/delivery.json",
+            "schemas/delivery-v1.schema.json",
             "skills/project-direction/references/file-contracts.md",
             "skills/project-direction/templates/MISSION.md",
             "skills/project-direction/templates/OBJECTIVE.md",
@@ -241,6 +256,7 @@ class PluginPackagingTests(unittest.TestCase):
     def test_runtime_files_are_packaged_and_executable(self) -> None:
         for relative in (
             "bin/agentsmd-global-instructions",
+            "bin/delivery-profile",
             "bin/project-direction",
             "hooks/hooks.json",
         ):
@@ -248,6 +264,7 @@ class PluginPackagingTests(unittest.TestCase):
                 self.assertTrue((ROOT / relative).is_file())
         for relative in (
             "bin/agentsmd-global-instructions",
+            "bin/delivery-profile",
             "bin/project-direction",
         ):
             with self.subTest(executable=relative):
@@ -327,6 +344,18 @@ class PluginPackagingTests(unittest.TestCase):
         self.assertIn("MIT", row)
         self.assertIn("five-step Algorithm", row)
 
+    def test_catalogue_owns_delivery_profile_as_native_active_skill(self) -> None:
+        catalogue = read_text("SKILL_CATALOGUE.md")
+        row = next(
+            line
+            for line in catalogue.splitlines()
+            if line.startswith("| `delivery-profile`")
+        )
+        self.assertIn("AgentsMD-native; this release commit", row)
+        self.assertIn("Active", row)
+        self.assertIn("MIT", row)
+        self.assertIn("Delivery System", row)
+
     def test_every_catalogue_row_resolves_an_exact_source_revision(self) -> None:
         catalogue = read_text("SKILL_CATALOGUE.md")
         rows = {
@@ -337,7 +366,12 @@ class PluginPackagingTests(unittest.TestCase):
         for name in ACTIVE_SKILLS | MATT_SKILLS:
             with self.subTest(skill=name):
                 row = rows[name]
-                if name in {"algorithm", "project-direction", "version-control"}:
+                if name in {
+                    "algorithm",
+                    "delivery-profile",
+                    "project-direction",
+                    "version-control",
+                }:
                     self.assertIn("this release commit", row)
                 elif name == "use-grok":
                     self.assertIn("use-grok pin", row)
@@ -365,6 +399,10 @@ class PluginPackagingTests(unittest.TestCase):
             "Skill Catalogue",
             "Product Registry",
             "Plugin Registry",
+            "Delivery System",
+            "Delivery Profile",
+            "Merge Unit",
+            "Implementation Slice",
         ):
             with self.subTest(term=term):
                 self.assertIn(f"**{term}**", glossary)
