@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.1.0] - 2026-09-03
+
+### Added
+
+- Add repository delivery capability setup contract
+
 ## [8.0.0] - 2026-09-03
 
 ### Changed
