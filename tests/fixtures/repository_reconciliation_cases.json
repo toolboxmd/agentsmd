@@ -33,6 +33,14 @@
       "source"
     ],
     "preflight-max-age-seconds": 60,
+    "approved-operation-fields": [
+      "target",
+      "action",
+      "force",
+      "branch-deletion",
+      "operation-sha256"
+    ],
+    "approval-record-input": "out-of-band-path-and-sha256",
     "retrospective-recovery-proofs": [
       "authoritative-history-available",
       "preconditions-held-continuously",
@@ -111,7 +119,6 @@
   },
   "workflow-defaults": {
     "id": "repository-reconciliation-workflow",
-    "approved": true,
     "target": {
       "id": "WT-39",
       "exact-target": "/worktrees/9f8c/agentsmd",
@@ -132,6 +139,9 @@
     "mutation": {
       "state": "completed",
       "action": "remove-worktree",
+      "force": false,
+      "branch-deletion": false,
+      "approval-sha256": "f685daff0b69e400c4ba94a6c4b80eb7017b199be3bb8a2cb30d77cca500470e",
       "timestamp": "2026-09-03T10:26:13Z",
       "target": {
         "id": "WT-39",
@@ -146,22 +156,6 @@
           "resource": "clean-at-head"
         }
       }
-    },
-    "approval": {
-      "target": {
-        "id": "WT-39",
-        "exact-target": "/worktrees/9f8c/agentsmd",
-        "branch": "fix/39-specify-through-tickets",
-        "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
-        "issue": "toolboxmd/agentsmd#39",
-        "pull-request": "toolboxmd/agentsmd#63",
-        "expected-states": {
-          "issue": "closed",
-          "pull-request": "merged",
-          "resource": "clean-at-head"
-        }
-      },
-      "action": "remove-worktree"
     },
     "request": {
       "target": {
@@ -179,9 +173,27 @@
       },
       "action": "remove-worktree",
       "force": false,
-      "branch-deletion": false
+      "branch-deletion": false,
+      "approval-sha256": "f685daff0b69e400c4ba94a6c4b80eb7017b199be3bb8a2cb30d77cca500470e"
     },
     "recovery": {
+      "target": {
+        "id": "WT-39",
+        "exact-target": "/worktrees/9f8c/agentsmd",
+        "branch": "fix/39-specify-through-tickets",
+        "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+        "issue": "toolboxmd/agentsmd#39",
+        "pull-request": "toolboxmd/agentsmd#63",
+        "expected-states": {
+          "issue": "closed",
+          "pull-request": "merged",
+          "resource": "clean-at-head"
+        }
+      },
+      "action": "remove-worktree",
+      "force": false,
+      "branch-deletion": false,
+      "approval-sha256": "f685daff0b69e400c4ba94a6c4b80eb7017b199be3bb8a2cb30d77cca500470e",
       "interval": {
         "start": "2026-09-03T10:26:00Z",
         "end": "2026-09-03T10:27:32Z"
@@ -306,9 +318,23 @@
         },
         "restoration": {
           "state": "completed",
-          "exact-target": "/worktrees/9f8c/agentsmd",
-          "branch": "fix/39-specify-through-tickets",
-          "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+          "target": {
+            "id": "WT-39",
+            "exact-target": "/worktrees/9f8c/agentsmd",
+            "branch": "fix/39-specify-through-tickets",
+            "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+            "issue": "toolboxmd/agentsmd#39",
+            "pull-request": "toolboxmd/agentsmd#63",
+            "expected-states": {
+              "issue": "closed",
+              "pull-request": "merged",
+              "resource": "clean-at-head"
+            }
+          },
+          "action": "remove-worktree",
+          "force": false,
+          "branch-deletion": false,
+          "approval-sha256": "f685daff0b69e400c4ba94a6c4b80eb7017b199be3bb8a2cb30d77cca500470e",
           "conflict": false,
           "data-loss": false,
           "timestamp": "2026-09-03T10:27:40Z"
