@@ -331,6 +331,8 @@ to route established steps again.
   action, force=false, and branch-deletion=false. Each request and pending
   or completed mutation must repeat and match the approved values and digest
   before execution, recovery, or restoration proceeds.
+  Load that recorded approval from its durable approval evidence separately
+  from mutable execution, recovery, and restoration claims.
   Verify every exact after-state. Preserve unknown, dirty, active, shared,
   persistent, unique, user-owned, ambiguous, protected, and materially changed
   state. Keep historical evidence and deferred or incomplete work truthful; a

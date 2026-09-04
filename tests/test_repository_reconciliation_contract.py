@@ -17,11 +17,26 @@ VALIDATOR = ROOT / "tests/repository_reconciliation_validator.py"
 FIXTURE = ROOT / "tests/fixtures/repository_reconciliation_cases.json"
 
 
-def evaluate(case: dict[str, object]) -> dict[str, object]:
+def recorded_approval() -> dict[str, object]:
+    return copy.deepcopy(json.loads(FIXTURE.read_text())["approved-operation"])
+
+
+def evaluate(
+    case: dict[str, object],
+    approved_operation: dict[str, object] | None = None,
+) -> dict[str, object]:
+    envelope = {
+        "approved-operation": (
+            recorded_approval()
+            if approved_operation is None
+            else approved_operation
+        ),
+        "workflow": case,
+    }
     completed = subprocess.run(
         [sys.executable, str(VALIDATOR), "evaluate"],
         cwd=ROOT,
-        input=json.dumps(case),
+        input=json.dumps(envelope),
         text=True,
         capture_output=True,
         check=False,
@@ -60,8 +75,7 @@ def set_case_value(
     current[path[-1]] = value
 
 
-def approval_sha256(case: dict[str, object]) -> str:
-    approval = case["approval"]
+def approval_sha256(approval: dict[str, object]) -> str:
     operation = {
         field: approval[field]
         for field in ("target", "action", "force", "branch-deletion")
@@ -87,6 +101,10 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                 "branch-deletion",
                 "operation-sha256",
             ],
+        )
+        self.assertEqual(
+            payload["approved-operation"]["operation-sha256"],
+            approval_sha256(payload["approved-operation"]),
         )
         self.assertEqual(
             payload["contract"]["retrospective-recovery-proofs"],
@@ -149,6 +167,9 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
             "target, action, force=false, and branch-deletion=false",
             "Each request and pending or completed mutation must repeat and "
             "match the approved values and digest",
+            "Load that recorded approval from its durable approval evidence "
+            "separately from mutable execution, recovery, and restoration "
+            "claims",
             "recover without notifying the user or requesting another approval",
             "authoritative event history proves every precondition held "
             "continuously",
@@ -229,14 +250,6 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                 self.assertTrue(result["human-gate"])
                 self.assertEqual(result["evidence-status"], "incomplete")
 
-        case = copy.deepcopy(base_case)
-        case["approval"]["action"] = "delete-branch"
-        case["request"]["action"] = "delete-branch"
-        result = evaluate(case)
-        self.assertEqual(result["decision"], "escalate")
-        self.assertEqual(result["reason"], "authority-expansion")
-        self.assertEqual(result["mutation-action"], "none")
-
     def test_recovery_and_self_heal_reuse_exact_approval_and_authority(
         self,
     ) -> None:
@@ -285,16 +298,29 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                 for section in ("target",):
                     case[section]["exact-target"] = "/worktrees/unapproved/agentsmd"
                     case[section]["branch"] = "delete/unapproved"
-                for section in ("approval", "request", "mutation"):
+                for section in ("request", "mutation", "recovery"):
                     case[section]["target"]["exact-target"] = (
                         "/worktrees/unapproved/agentsmd"
                     )
                     case[section]["target"]["branch"] = "delete/unapproved"
                 if case.get("restoration"):
-                    case["restoration"]["exact-target"] = (
+                    case["restoration"]["target"]["exact-target"] = (
                         "/worktrees/unapproved/agentsmd"
                     )
-                    case["restoration"]["branch"] = "delete/unapproved"
+                    case["restoration"]["target"]["branch"] = (
+                        "delete/unapproved"
+                    )
+                expanded_operation = {
+                    "target": copy.deepcopy(case["target"]),
+                    "action": "remove-worktree",
+                    "force": False,
+                    "branch-deletion": False,
+                }
+                expanded_sha = approval_sha256(expanded_operation)
+                for section in ("request", "mutation", "recovery"):
+                    case[section]["approval-sha256"] = expanded_sha
+                if case.get("restoration"):
+                    case["restoration"]["approval-sha256"] = expanded_sha
 
                 result = evaluate(case)
 
@@ -304,18 +330,50 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                 self.assertTrue(result["human-gate"])
                 self.assertEqual(result["evidence-status"], "recovery-blocked")
 
+    def test_recorded_approval_is_strict_and_separate_from_workflow(self) -> None:
+        base_case = workflow_case("missed-immediate-evidence")
+        variants = {
+            "missing": {},
+            "digest-mismatch": {"operation-sha256": "0" * 64},
+            "force": {"force": True},
+            "branch-deletion": {"branch-deletion": True},
+            "action": {"action": "delete-branch"},
+        }
+        for variant, changes in variants.items():
+            with self.subTest(variant=variant):
+                approval = recorded_approval()
+                if changes:
+                    approval.update(changes)
+                    if variant not in {"digest-mismatch"}:
+                        approval["operation-sha256"] = approval_sha256(approval)
+                else:
+                    approval = {}
+
+                result = evaluate(base_case, approval)
+
+                self.assertEqual(result["decision"], "escalate")
+                self.assertEqual(result["reason"], "invalid-or-unapproved-input")
+                self.assertEqual(result["mutation-action"], "none")
+                self.assertTrue(result["human-gate"])
+
+        approval = recorded_approval()
+        approval["target"]["exact-target"] = "/worktrees/newly-approved/agentsmd"
+        approval["operation-sha256"] = approval_sha256(approval)
+        result = evaluate(base_case, approval)
+        self.assertEqual(result["decision"], "escalate")
+        self.assertEqual(result["reason"], "authority-expansion")
+
     def test_recovery_requires_exact_approved_and_executed_operation(self) -> None:
         variants = {
-            "approval-force-missing": (("approval", "force"), None, True),
-            "approval-branch-deletion-missing": (
-                ("approval", "branch-deletion"),
+            "request-approval-sha-missing": (
+                ("request", "approval-sha256"),
                 None,
                 True,
             ),
-            "approval-sha-missing": (
-                ("approval", "operation-sha256"),
-                None,
-                True,
+            "request-approval-sha-mismatch": (
+                ("request", "approval-sha256"),
+                "0" * 64,
+                False,
             ),
             "mutation-force-missing": (("mutation", "force"), None, True),
             "mutation-branch-deletion-missing": (
@@ -328,10 +386,25 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                 None,
                 True,
             ),
-            "approved-force": (("approval", "force"), True, False),
-            "approved-branch-deletion": (
-                ("approval", "branch-deletion"),
+            "recovery-target": (
+                ("recovery", "target", "exact-target"),
+                "/worktrees/unapproved/agentsmd",
+                False,
+            ),
+            "recovery-action": (
+                ("recovery", "action"),
+                "delete-branch",
+                False,
+            ),
+            "recovery-force": (("recovery", "force"), True, False),
+            "recovery-branch-deletion": (
+                ("recovery", "branch-deletion"),
                 True,
+                False,
+            ),
+            "recovery-approval-sha": (
+                ("recovery", "approval-sha256"),
+                "0" * 64,
                 False,
             ),
             "executed-force": (("mutation", "force"), True, False),
@@ -352,10 +425,6 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                         del case[path[0]][path[1]]
                     else:
                         set_case_value(case, path, value)
-                        if path[0] == "approval":
-                            case["approval"]["operation-sha256"] = approval_sha256(
-                                case
-                            )
                     result = evaluate(case)
 
                     self.assertEqual(result["decision"], "escalate")
@@ -363,6 +432,31 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                     self.assertEqual(result["mutation-action"], "none")
                     self.assertTrue(result["human-gate"])
                     self.assertEqual(result["evidence-status"], "recovery-blocked")
+
+    def test_restoration_requires_exact_approved_operation(self) -> None:
+        variants = {
+            "target": (
+                ("target", "exact-target"),
+                "/worktrees/unapproved/agentsmd",
+            ),
+            "branch": (("target", "branch"), "delete/unapproved"),
+            "action": (("action",), "delete-branch"),
+            "force": (("force",), True),
+            "branch-deletion": (("branch-deletion",), True),
+            "approval-sha": (("approval-sha256",), "0" * 64),
+        }
+        for variant, (path, value) in variants.items():
+            with self.subTest(variant=variant):
+                case = workflow_case("retrospective-safe-restoration")
+                set_case_value(case["restoration"], path, value)
+
+                result = evaluate(case)
+
+                self.assertEqual(result["decision"], "escalate")
+                self.assertEqual(result["reason"], "authority-expansion")
+                self.assertEqual(result["mutation-action"], "none")
+                self.assertTrue(result["human-gate"])
+                self.assertEqual(result["evidence-status"], "recovery-blocked")
 
     def test_full_manifest_identity_is_bound_before_live_mutation(self) -> None:
         variants = {
@@ -448,7 +542,7 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
 
     def test_malformed_inputs_return_structured_escalation(self) -> None:
         cases = []
-        for section in ("target", "preflight", "approval", "request", "mutation"):
+        for section in ("target", "preflight", "request", "mutation"):
             case = workflow_case("live-preflight-success")
             case[section] = []
             cases.append((section, case))
@@ -459,7 +553,6 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
 
         empty_identity = workflow_case("live-preflight-success")
         empty_identity["target"]["issue"] = ""
-        empty_identity["approval"]["target"]["issue"] = ""
         empty_identity["request"]["target"]["issue"] = ""
         empty_identity["mutation"]["target"]["issue"] = ""
         empty_identity["preflight"]["observations"][0]["exact-target"] = ""

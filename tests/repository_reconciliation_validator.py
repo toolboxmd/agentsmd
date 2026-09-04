@@ -33,6 +33,7 @@ REQUEST_FIELDS = {
     "action",
     "force",
     "branch-deletion",
+    "approval-sha256",
 }
 MUTATION_FIELDS = {
     "state",
@@ -44,6 +45,11 @@ MUTATION_FIELDS = {
     "target",
 }
 RECOVERY_FIELDS = {
+    "target",
+    "action",
+    "force",
+    "branch-deletion",
+    "approval-sha256",
     "interval",
     "authoritative-history-available",
     "preconditions-held-continuously",
@@ -58,9 +64,11 @@ RECOVERY_FIELDS = {
 }
 RESTORATION_FIELDS = {
     "state",
-    "exact-target",
-    "branch",
-    "head",
+    "target",
+    "action",
+    "force",
+    "branch-deletion",
+    "approval-sha256",
     "conflict",
     "data-loss",
     "timestamp",
@@ -146,16 +154,16 @@ def _valid_approval(approval: dict[str, Any]) -> bool:
 
 def _within_approval(
     target: dict[str, Any],
-    approval: dict[str, Any],
+    approved_operation: dict[str, Any],
     request: dict[str, Any],
     mutation: dict[str, Any],
 ) -> bool:
-    approved_target = approval.get("target")
+    approved_target = approved_operation.get("target")
     requested_target = request.get("target")
     mutation_target = mutation.get("target")
     return (
         _valid_target(target)
-        and _valid_approval(approval)
+        and _valid_approval(approved_operation)
         and set(request) == REQUEST_FIELDS
         and set(mutation) == MUTATION_FIELDS
         and isinstance(approved_target, dict)
@@ -165,16 +173,38 @@ def _within_approval(
         and _valid_target(requested_target)
         and _valid_target(mutation_target)
         and target == approved_target == requested_target == mutation_target
-        and request.get("action") == approval.get("action")
-        and request.get("force") is approval.get("force")
-        and request.get("branch-deletion") is approval.get("branch-deletion")
+        and request.get("action") == approved_operation.get("action")
+        and request.get("force") is approved_operation.get("force")
+        and request.get("branch-deletion")
+        is approved_operation.get("branch-deletion")
+        and request.get("approval-sha256")
+        == approved_operation.get("operation-sha256")
         and mutation.get("state") in {"pending", "completed"}
-        and mutation.get("action") == approval.get("action")
-        and mutation.get("force") is approval.get("force")
-        and mutation.get("branch-deletion") is approval.get("branch-deletion")
+        and mutation.get("action") == approved_operation.get("action")
+        and mutation.get("force") is approved_operation.get("force")
+        and mutation.get("branch-deletion")
+        is approved_operation.get("branch-deletion")
         and mutation.get("approval-sha256")
-        == approval.get("operation-sha256")
+        == approved_operation.get("operation-sha256")
         and _timestamp(mutation.get("timestamp")) is not None
+    )
+
+
+def _operation_record_matches(
+    record: dict[str, Any], approved_operation: dict[str, Any]
+) -> bool:
+    record_target = record.get("target")
+    return (
+        _valid_approval(approved_operation)
+        and isinstance(record_target, dict)
+        and _valid_target(record_target)
+        and record_target == approved_operation.get("target")
+        and record.get("action") == approved_operation.get("action")
+        and record.get("force") is approved_operation.get("force")
+        and record.get("branch-deletion")
+        is approved_operation.get("branch-deletion")
+        and record.get("approval-sha256")
+        == approved_operation.get("operation-sha256")
     )
 
 
@@ -256,7 +286,12 @@ def _recovery_interval(
 
 
 def _recovery_schema_valid(recovery: dict[str, Any]) -> bool:
-    boolean_fields = RECOVERY_FIELDS - {"interval"}
+    boolean_fields = RECOVERY_FIELDS - {
+        "target",
+        "action",
+        "approval-sha256",
+        "interval",
+    }
     return set(recovery) == RECOVERY_FIELDS and all(
         isinstance(recovery.get(field), bool) for field in boolean_fields
     )
@@ -264,7 +299,7 @@ def _recovery_schema_valid(recovery: dict[str, Any]) -> bool:
 
 def _recovery_evidence(
     target: dict[str, Any],
-    approval: dict[str, Any],
+    approved_operation: dict[str, Any],
     recovery: dict[str, Any],
     interval: dict[str, str],
 ) -> dict[str, Any]:
@@ -272,10 +307,10 @@ def _recovery_evidence(
         "omission": "immediate-preflight-evidence-missing",
         "interval": interval,
         "contract-regression": "tests/test_repository_reconciliation_contract.py",
-        "approval-sha256": approval["operation-sha256"],
-        "action": approval["action"],
-        "force": approval["force"],
-        "branch-deletion": approval["branch-deletion"],
+        "approval-sha256": approved_operation["operation-sha256"],
+        "action": approved_operation["action"],
+        "force": approved_operation["force"],
+        "branch-deletion": approved_operation["branch-deletion"],
         "proof": {
             field: recovery[field] for field in RECOVERY_PROOF_FIELDS
         },
@@ -290,7 +325,7 @@ def _recovery_evidence(
 
 def _restoration_valid(
     restoration: dict[str, Any],
-    target: dict[str, Any],
+    approved_operation: dict[str, Any],
     interval: dict[str, str],
 ) -> bool:
     restored_at = _timestamp(restoration.get("timestamp"))
@@ -298,9 +333,7 @@ def _restoration_valid(
     return (
         set(restoration) == RESTORATION_FIELDS
         and restoration.get("state") == "completed"
-        and restoration.get("exact-target") == target.get("exact-target")
-        and restoration.get("branch") == target.get("branch")
-        and restoration.get("head") == target.get("head")
+        and _operation_record_matches(restoration, approved_operation)
         and restoration.get("conflict") is False
         and restoration.get("data-loss") is False
         and restored_at is not None
@@ -311,17 +344,19 @@ def _restoration_valid(
 
 def _restoration_evidence(
     target: dict[str, Any],
-    approval: dict[str, Any],
+    approved_operation: dict[str, Any],
     recovery: dict[str, Any],
     restoration: dict[str, Any],
     interval: dict[str, str],
 ) -> dict[str, Any]:
-    evidence = _recovery_evidence(target, approval, recovery, interval)
+    evidence = _recovery_evidence(
+        target, approved_operation, recovery, interval
+    )
     evidence["proof"]["safe-restoration"] = recovery["safe-restoration"]
     evidence.update(
         {
-            "branch": restoration["branch"],
-            "head": restoration["head"],
+            "branch": restoration["target"]["branch"],
+            "head": restoration["target"]["head"],
             "conflict": restoration["conflict"],
             "data-loss": restoration["data-loss"],
             "state": "restored-at-head",
@@ -332,16 +367,17 @@ def _restoration_evidence(
     return evidence
 
 
-def evaluate(case: Any) -> dict[str, Any]:
+def evaluate(case: Any, approved_operation: Any) -> dict[str, Any]:
     """Return the observable reconciliation result for one workflow input."""
-    if not isinstance(case, dict):
+    if not isinstance(case, dict) or not isinstance(approved_operation, dict):
+        return _escalate("invalid-or-unapproved-input")
+    if not _valid_approval(approved_operation):
         return _escalate("invalid-or-unapproved-input")
     sections: dict[str, dict[str, Any]] = {}
     for name in (
         "target",
         "preflight",
         "mutation",
-        "approval",
         "request",
         "recovery",
         "restoration",
@@ -354,17 +390,16 @@ def evaluate(case: Any) -> dict[str, Any]:
     target = sections["target"]
     preflight = sections["preflight"]
     mutation = sections["mutation"]
-    approval = sections["approval"]
     request = sections["request"]
     recovery = sections["recovery"]
     restoration = sections["restoration"]
-    within_approval = _within_approval(target, approval, request, mutation)
+    within_approval = _within_approval(
+        target, approved_operation, request, mutation
+    )
 
     if mutation.get("state") == "pending":
         if preflight.get("status") != "complete":
             return _escalate("invalid-preflight-evidence")
-        if case.get("approved") is not True:
-            return _escalate("invalid-or-unapproved-input")
         if not within_approval:
             return _escalate("authority-expansion")
         observations = _structured_preflight(target, preflight, mutation)
@@ -399,10 +434,12 @@ def evaluate(case: Any) -> dict[str, Any]:
             return _escalate(
                 "invalid-preflight-evidence", evidence_status="recovery-blocked"
             )
-        if case.get("approved") is not True:
-            return _escalate("invalid-or-unapproved-input")
         if not within_approval:
             return _escalate("authority-expansion", evidence_status="recovery-blocked")
+        if not _operation_record_matches(recovery, approved_operation):
+            return _escalate(
+                "authority-expansion", evidence_status="recovery-blocked"
+            )
         interval = _recovery_interval(recovery, mutation)
         if not _recovery_schema_valid(recovery) or interval is None:
             return _escalate("proof-unavailable", evidence_status="recovery-blocked")
@@ -428,7 +465,7 @@ def evaluate(case: Any) -> dict[str, Any]:
                 reason = "ambiguous-recovery"
             else:
                 evidence = _recovery_evidence(
-                    target, approval, recovery, interval
+                    target, approved_operation, recovery, interval
                 )
                 return {
                     "decision": "recovered",
@@ -440,21 +477,32 @@ def evaluate(case: Any) -> dict[str, Any]:
                 }
 
         if not reason and recovery["violated-precondition"]:
-            if (
-                recovery["safe-restoration"]
-                and _restoration_valid(restoration, target, interval)
-            ):
-                evidence = _restoration_evidence(
-                    target, approval, recovery, restoration, interval
-                )
-                return {
-                    "decision": "restored",
-                    "mutation-action": "restore-prior-worktree",
-                    "human-gate": False,
-                    "user-notification": False,
-                    "evidence-status": "restoration-complete",
-                    "evidence": [evidence],
-                }
+            if recovery["safe-restoration"]:
+                if not _operation_record_matches(
+                    restoration, approved_operation
+                ):
+                    return _escalate(
+                        "authority-expansion",
+                        evidence_status="recovery-blocked",
+                    )
+                if _restoration_valid(
+                    restoration, approved_operation, interval
+                ):
+                    evidence = _restoration_evidence(
+                        target,
+                        approved_operation,
+                        recovery,
+                        restoration,
+                        interval,
+                    )
+                    return {
+                        "decision": "restored",
+                        "mutation-action": "restore-prior-worktree",
+                        "human-gate": False,
+                        "user-notification": False,
+                        "evidence-status": "restoration-complete",
+                        "evidence": [evidence],
+                    }
             reason = "unsafe-restoration"
         if not reason:
             reason = "ambiguous-recovery"
@@ -479,8 +527,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["evaluate"])
     parser.parse_args(argv)
-    case = json.load(sys.stdin)
-    print(json.dumps(evaluate(case), sort_keys=True))
+    payload = json.load(sys.stdin)
+    if not isinstance(payload, dict) or set(payload) != {
+        "approved-operation",
+        "workflow",
+    }:
+        result = _escalate("invalid-or-unapproved-input")
+    else:
+        result = evaluate(
+            payload["workflow"], payload["approved-operation"]
+        )
+    print(json.dumps(result, sort_keys=True))
     return 0
 
 
