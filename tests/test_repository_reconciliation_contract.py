@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -14,11 +16,35 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = ROOT / "tests/repository_reconciliation_validator.py"
 FIXTURE = ROOT / "tests/fixtures/repository_reconciliation_cases.json"
+APPROVAL_FIXTURE = (
+    ROOT / "tests/fixtures/repository_reconciliation_approval.json"
+)
+APPROVAL_RECORD_SHA256 = (
+    "368ca43b8f1c728bd9acaa3225389b21329e0715050b5988c2536cc844154c34"
+)
 
 
-def evaluate(case: dict[str, object]) -> dict[str, object]:
+def recorded_approval() -> dict[str, object]:
+    return copy.deepcopy(
+        json.loads(APPROVAL_FIXTURE.read_text())["operation"]
+    )
+
+
+def evaluate(
+    case: dict[str, object],
+    approval_record: Path = APPROVAL_FIXTURE,
+    approval_record_sha256: str = APPROVAL_RECORD_SHA256,
+) -> dict[str, object]:
     completed = subprocess.run(
-        [sys.executable, str(VALIDATOR), "evaluate"],
+        [
+            sys.executable,
+            str(VALIDATOR),
+            "evaluate",
+            "--approval-record",
+            str(approval_record),
+            "--approval-record-sha256",
+            approval_record_sha256,
+        ],
         cwd=ROOT,
         input=json.dumps(case),
         text=True,
@@ -59,14 +85,55 @@ def set_case_value(
     current[path[-1]] = value
 
 
+def approval_sha256(approval: dict[str, object]) -> str:
+    operation = {
+        field: approval[field]
+        for field in ("target", "action", "force", "branch-deletion")
+    }
+    encoded = json.dumps(
+        operation,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
 class RepositoryReconciliationContractTests(unittest.TestCase):
     def test_fixture_publishes_every_execution_and_recovery_branch(self) -> None:
         payload = json.loads(FIXTURE.read_text())
+        approval_record = json.loads(APPROVAL_FIXTURE.read_text())
+        self.assertEqual(
+            hashlib.sha256(APPROVAL_FIXTURE.read_bytes()).hexdigest(),
+            APPROVAL_RECORD_SHA256,
+        )
+        self.assertEqual(
+            set(approval_record), {"schema", "record-id", "operation"}
+        )
+        self.assertEqual(approval_record["schema"], 1)
+        self.assertEqual(
+            payload["contract"]["approval-record-input"],
+            "out-of-band-path-and-sha256",
+        )
         self.assertEqual(
             payload["contract"]["preflight-observation-fields"],
             ["kind", "exact-target", "state", "timestamp", "result", "source"],
         )
         self.assertEqual(payload["contract"]["preflight-max-age-seconds"], 60)
+        self.assertEqual(
+            payload["contract"]["approved-operation-fields"],
+            [
+                "target",
+                "action",
+                "force",
+                "branch-deletion",
+                "operation-sha256",
+            ],
+        )
+        self.assertEqual(
+            approval_record["operation"]["operation-sha256"],
+            approval_sha256(approval_record["operation"]),
+        )
         self.assertEqual(
             payload["contract"]["retrospective-recovery-proofs"],
             [
@@ -124,6 +191,16 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
             "candidate ID, exact target, branch, commit, owning Issue and pull "
             "request, expected states, action, force flag, and branch-deletion "
             "flag",
+            "approval record carries a canonical SHA-256 over that exact "
+            "target, action, force=false, and branch-deletion=false",
+            "Each request and pending or completed mutation must repeat and "
+            "match the approved values and digest",
+            "Load that recorded approval from its durable approval evidence "
+            "separately from mutable execution, recovery, and restoration "
+            "claims",
+            "Select the durable approval record and its expected byte digest "
+            "outside the mutable workflow input; the workflow cannot supply "
+            "or replace either value",
             "recover without notifying the user or requesting another approval",
             "authoritative event history proves every precondition held "
             "continuously",
@@ -204,14 +281,6 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                 self.assertTrue(result["human-gate"])
                 self.assertEqual(result["evidence-status"], "incomplete")
 
-        case = copy.deepcopy(base_case)
-        case["approval"]["action"] = "delete-branch"
-        case["request"]["action"] = "delete-branch"
-        result = evaluate(case)
-        self.assertEqual(result["decision"], "escalate")
-        self.assertEqual(result["reason"], "authority-expansion")
-        self.assertEqual(result["mutation-action"], "none")
-
     def test_recovery_and_self_heal_reuse_exact_approval_and_authority(
         self,
     ) -> None:
@@ -249,6 +318,225 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                     self.assertEqual(result["reason"], "authority-expansion")
                     self.assertEqual(result["mutation-action"], "none")
                     self.assertTrue(result["human-gate"])
+
+    def test_recovery_rejects_synchronized_authority_substitution(self) -> None:
+        for workflow_id in (
+            "missed-immediate-evidence",
+            "retrospective-safe-restoration",
+        ):
+            with self.subTest(workflow=workflow_id):
+                case = workflow_case(workflow_id)
+                for section in ("target",):
+                    case[section]["exact-target"] = "/worktrees/unapproved/agentsmd"
+                    case[section]["branch"] = "delete/unapproved"
+                for section in ("request", "mutation", "recovery"):
+                    case[section]["target"]["exact-target"] = (
+                        "/worktrees/unapproved/agentsmd"
+                    )
+                    case[section]["target"]["branch"] = "delete/unapproved"
+                if case.get("restoration"):
+                    case["restoration"]["target"]["exact-target"] = (
+                        "/worktrees/unapproved/agentsmd"
+                    )
+                    case["restoration"]["target"]["branch"] = (
+                        "delete/unapproved"
+                    )
+                expanded_operation = {
+                    "target": copy.deepcopy(case["target"]),
+                    "action": "remove-worktree",
+                    "force": False,
+                    "branch-deletion": False,
+                }
+                expanded_sha = approval_sha256(expanded_operation)
+                for section in ("request", "mutation", "recovery"):
+                    case[section]["approval-sha256"] = expanded_sha
+                if case.get("restoration"):
+                    case["restoration"]["approval-sha256"] = expanded_sha
+
+                result = evaluate(case)
+
+                self.assertEqual(result["decision"], "escalate")
+                self.assertEqual(result["reason"], "authority-expansion")
+                self.assertEqual(result["mutation-action"], "none")
+                self.assertTrue(result["human-gate"])
+                self.assertEqual(result["evidence-status"], "recovery-blocked")
+
+                case["approved-operation"] = {
+                    **expanded_operation,
+                    "operation-sha256": expanded_sha,
+                }
+                result = evaluate(case)
+                self.assertEqual(result["decision"], "escalate")
+                self.assertEqual(
+                    result["reason"], "invalid-or-unapproved-input"
+                )
+                self.assertEqual(result["mutation-action"], "none")
+                self.assertTrue(result["human-gate"])
+
+    def test_recorded_approval_is_strict_and_separate_from_workflow(self) -> None:
+        base_case = workflow_case("missed-immediate-evidence")
+        forged_case = copy.deepcopy(base_case)
+        forged_case["approved-operation"] = recorded_approval()
+        result = evaluate(forged_case)
+        self.assertEqual(result["decision"], "escalate")
+        self.assertEqual(result["reason"], "invalid-or-unapproved-input")
+
+        result = evaluate(base_case, approval_record_sha256="0" * 64)
+        self.assertEqual(result["decision"], "escalate")
+        self.assertEqual(result["reason"], "invalid-or-unapproved-input")
+
+        altered = json.loads(APPROVAL_FIXTURE.read_text())
+        altered["operation"]["target"]["exact-target"] = (
+            "/worktrees/newly-approved/agentsmd"
+        )
+        altered["operation"]["operation-sha256"] = approval_sha256(
+            altered["operation"]
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            altered_path = Path(directory) / "approval.json"
+            altered_path.write_text(json.dumps(altered))
+            result = evaluate(base_case, approval_record=altered_path)
+        self.assertEqual(result["decision"], "escalate")
+        self.assertEqual(result["reason"], "invalid-or-unapproved-input")
+        self.assertEqual(result["mutation-action"], "none")
+        self.assertTrue(result["human-gate"])
+
+        malformed_records = {
+            "schema": {**json.loads(APPROVAL_FIXTURE.read_text()), "schema": 2},
+            "boolean-schema": {
+                **json.loads(APPROVAL_FIXTURE.read_text()),
+                "schema": True,
+            },
+            "float-schema": {
+                **json.loads(APPROVAL_FIXTURE.read_text()),
+                "schema": 1.0,
+            },
+            "missing-operation": {"schema": 1, "record-id": "missing"},
+            "unknown-field": {
+                **json.loads(APPROVAL_FIXTURE.read_text()),
+                "narrative": "approved earlier",
+            },
+        }
+        for variant, record in malformed_records.items():
+            with self.subTest(approval_record=variant):
+                with tempfile.TemporaryDirectory() as directory:
+                    malformed_path = Path(directory) / "approval.json"
+                    malformed_path.write_text(json.dumps(record))
+                    record_sha = hashlib.sha256(
+                        malformed_path.read_bytes()
+                    ).hexdigest()
+                    result = evaluate(
+                        base_case,
+                        approval_record=malformed_path,
+                        approval_record_sha256=record_sha,
+                    )
+                self.assertEqual(result["decision"], "escalate")
+                self.assertEqual(
+                    result["reason"], "invalid-or-unapproved-input"
+                )
+
+    def test_operation_digest_is_utf8_canonical(self) -> None:
+        approval = recorded_approval()
+        approval["target"]["exact-target"] = "/worktrees/zażółć/agentsmd"
+        self.assertEqual(
+            approval_sha256(approval),
+            "0c04da17cf870047305bfac0bebf7fed1b16b5e1b1406c226cd751644c0c338d",
+        )
+
+    def test_recovery_requires_exact_approved_and_executed_operation(self) -> None:
+        variants = {
+            "request-approval-sha-missing": (
+                ("request", "approval-sha256"),
+                None,
+                True,
+            ),
+            "request-approval-sha-mismatch": (
+                ("request", "approval-sha256"),
+                "0" * 64,
+                False,
+            ),
+            "mutation-force-missing": (("mutation", "force"), None, True),
+            "mutation-branch-deletion-missing": (
+                ("mutation", "branch-deletion"),
+                None,
+                True,
+            ),
+            "mutation-approval-sha-missing": (
+                ("mutation", "approval-sha256"),
+                None,
+                True,
+            ),
+            "recovery-target": (
+                ("recovery", "target", "exact-target"),
+                "/worktrees/unapproved/agentsmd",
+                False,
+            ),
+            "recovery-action": (
+                ("recovery", "action"),
+                "delete-branch",
+                False,
+            ),
+            "recovery-force": (("recovery", "force"), True, False),
+            "recovery-branch-deletion": (
+                ("recovery", "branch-deletion"),
+                True,
+                False,
+            ),
+            "recovery-approval-sha": (
+                ("recovery", "approval-sha256"),
+                "0" * 64,
+                False,
+            ),
+            "executed-force": (("mutation", "force"), True, False),
+            "executed-branch-deletion": (
+                ("mutation", "branch-deletion"),
+                True,
+                False,
+            ),
+        }
+        for workflow_id in (
+            "missed-immediate-evidence",
+            "retrospective-safe-restoration",
+        ):
+            for variant, (path, value, delete) in variants.items():
+                with self.subTest(workflow=workflow_id, variant=variant):
+                    case = workflow_case(workflow_id)
+                    if delete:
+                        del case[path[0]][path[1]]
+                    else:
+                        set_case_value(case, path, value)
+                    result = evaluate(case)
+
+                    self.assertEqual(result["decision"], "escalate")
+                    self.assertEqual(result["reason"], "authority-expansion")
+                    self.assertEqual(result["mutation-action"], "none")
+                    self.assertTrue(result["human-gate"])
+                    self.assertEqual(result["evidence-status"], "recovery-blocked")
+
+    def test_restoration_requires_exact_approved_operation(self) -> None:
+        variants = {
+            "target": (
+                ("target", "exact-target"),
+                "/worktrees/unapproved/agentsmd",
+            ),
+            "branch": (("target", "branch"), "delete/unapproved"),
+            "action": (("action",), "delete-branch"),
+            "force": (("force",), True),
+            "branch-deletion": (("branch-deletion",), True),
+            "approval-sha": (("approval-sha256",), "0" * 64),
+        }
+        for variant, (path, value) in variants.items():
+            with self.subTest(variant=variant):
+                case = workflow_case("retrospective-safe-restoration")
+                set_case_value(case["restoration"], path, value)
+
+                result = evaluate(case)
+
+                self.assertEqual(result["decision"], "escalate")
+                self.assertEqual(result["reason"], "authority-expansion")
+                self.assertEqual(result["mutation-action"], "none")
+                self.assertTrue(result["human-gate"])
+                self.assertEqual(result["evidence-status"], "recovery-blocked")
 
     def test_full_manifest_identity_is_bound_before_live_mutation(self) -> None:
         variants = {
@@ -334,7 +622,7 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
 
     def test_malformed_inputs_return_structured_escalation(self) -> None:
         cases = []
-        for section in ("target", "preflight", "approval", "request", "mutation"):
+        for section in ("target", "preflight", "request", "mutation"):
             case = workflow_case("live-preflight-success")
             case[section] = []
             cases.append((section, case))
@@ -345,11 +633,21 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
 
         empty_identity = workflow_case("live-preflight-success")
         empty_identity["target"]["issue"] = ""
-        empty_identity["approval"]["target"]["issue"] = ""
         empty_identity["request"]["target"]["issue"] = ""
         empty_identity["mutation"]["target"]["issue"] = ""
         empty_identity["preflight"]["observations"][0]["exact-target"] = ""
         cases.append(("empty-identity", empty_identity))
+
+        for kind, invalid_id in {
+            "empty-workflow-id": "",
+            "boolean-workflow-id": True,
+            "number-workflow-id": 1,
+            "list-workflow-id": [],
+            "object-workflow-id": {},
+        }.items():
+            invalid_workflow_id = workflow_case("live-preflight-success")
+            invalid_workflow_id["id"] = invalid_id
+            cases.append((kind, invalid_workflow_id))
 
         for malformed, case in cases:
             with self.subTest(malformed=malformed):
@@ -380,6 +678,12 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                     "contract-regression": (
                         "tests/test_repository_reconciliation_contract.py"
                     ),
+                    "approval-sha256": (
+                        "f685daff0b69e400c4ba94a6c4b80eb7017b199be3bb8a2cb30d77cca500470e"
+                    ),
+                    "action": "remove-worktree",
+                    "force": False,
+                    "branch-deletion": False,
                     "proof": {
                         "authoritative-history-available": True,
                         "preconditions-held-continuously": True,
@@ -418,6 +722,12 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
                     "contract-regression": (
                         "tests/test_repository_reconciliation_contract.py"
                     ),
+                    "approval-sha256": (
+                        "f685daff0b69e400c4ba94a6c4b80eb7017b199be3bb8a2cb30d77cca500470e"
+                    ),
+                    "action": "remove-worktree",
+                    "force": False,
+                    "branch-deletion": False,
                     "proof": {
                         "authoritative-history-available": True,
                         "preconditions-held-continuously": False,

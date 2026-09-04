@@ -42,6 +42,7 @@
       "tests/fixtures/delivery_continuation_cases.json",
       "tests/fixtures/delivery_finalization_cases.json",
       "tests/fixtures/persistent_host_automation_cases.json",
+      "tests/fixtures/repository_reconciliation_approval.json",
       "tests/fixtures/repository_reconciliation_cases.json",
       "tests/fixtures/review_ready_stack_cases.json",
       "tests/fixtures/specify_workflow_cases.json",

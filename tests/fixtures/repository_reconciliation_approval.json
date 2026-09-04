@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "record-id": "toolboxmd/agentsmd#55:WT-39",
+  "operation": {
+    "target": {
+      "id": "WT-39",
+      "exact-target": "/worktrees/9f8c/agentsmd",
+      "branch": "fix/39-specify-through-tickets",
+      "head": "c9ff447cefb53768f00de1b0ff26e7662be8669f",
+      "issue": "toolboxmd/agentsmd#39",
+      "pull-request": "toolboxmd/agentsmd#63",
+      "expected-states": {
+        "issue": "closed",
+        "pull-request": "merged",
+        "resource": "clean-at-head"
+      }
+    },
+    "action": "remove-worktree",
+    "force": false,
+    "branch-deletion": false,
+    "operation-sha256": "f685daff0b69e400c4ba94a6c4b80eb7017b199be3bb8a2cb30d77cca500470e"
+  }
+}
