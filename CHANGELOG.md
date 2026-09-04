@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.6.2] - 2026-09-04
+
+### Changed
+
+- Bind reconciliation recovery to the exact approved operation
+
 ## [8.6.1] - 2026-09-03
 
 ### Changed

@@ -327,6 +327,10 @@ to route established steps again.
   commit, owning Issue and pull request, expected states, action, force flag,
   and branch-deletion flag. Apply only an approved action whose
   structured observations all match the manifest; otherwise preserve it.
+  The approval record carries a canonical SHA-256 over that exact target,
+  action, force=false, and branch-deletion=false. Each request and pending
+  or completed mutation must repeat and match the approved values and digest
+  before execution, recovery, or restoration proceeds.
   Verify every exact after-state. Preserve unknown, dirty, active, shared,
   persistent, unique, user-owned, ambiguous, protected, and materially changed
   state. Keep historical evidence and deferred or incomplete work truthful; a

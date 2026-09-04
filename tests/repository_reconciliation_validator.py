@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime
+import hashlib
 import json
 import sys
 from typing import Any
@@ -20,14 +21,28 @@ TARGET_FIELDS = {
     "pull-request",
     "expected-states",
 }
-APPROVAL_FIELDS = {"target", "action"}
+APPROVAL_FIELDS = {
+    "target",
+    "action",
+    "force",
+    "branch-deletion",
+    "operation-sha256",
+}
 REQUEST_FIELDS = {
     "target",
     "action",
     "force",
     "branch-deletion",
 }
-MUTATION_FIELDS = {"state", "action", "timestamp", "target"}
+MUTATION_FIELDS = {
+    "state",
+    "action",
+    "force",
+    "branch-deletion",
+    "approval-sha256",
+    "timestamp",
+    "target",
+}
 RECOVERY_FIELDS = {
     "interval",
     "authoritative-history-available",
@@ -105,6 +120,30 @@ def _valid_target(target: dict[str, Any]) -> bool:
     )
 
 
+def _operation_sha256(operation: dict[str, Any]) -> str:
+    encoded = json.dumps(
+        operation, sort_keys=True, separators=(",", ":")
+    ).encode()
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _valid_approval(approval: dict[str, Any]) -> bool:
+    if set(approval) != APPROVAL_FIELDS:
+        return False
+    operation = {
+        field: approval[field]
+        for field in ("target", "action", "force", "branch-deletion")
+    }
+    return (
+        isinstance(approval.get("target"), dict)
+        and _valid_target(approval["target"])
+        and approval.get("action") == "remove-worktree"
+        and approval.get("force") is False
+        and approval.get("branch-deletion") is False
+        and approval.get("operation-sha256") == _operation_sha256(operation)
+    )
+
+
 def _within_approval(
     target: dict[str, Any],
     approval: dict[str, Any],
@@ -116,7 +155,7 @@ def _within_approval(
     mutation_target = mutation.get("target")
     return (
         _valid_target(target)
-        and set(approval) == APPROVAL_FIELDS
+        and _valid_approval(approval)
         and set(request) == REQUEST_FIELDS
         and set(mutation) == MUTATION_FIELDS
         and isinstance(approved_target, dict)
@@ -126,12 +165,15 @@ def _within_approval(
         and _valid_target(requested_target)
         and _valid_target(mutation_target)
         and target == approved_target == requested_target == mutation_target
-        and approval.get("action") == "remove-worktree"
         and request.get("action") == approval.get("action")
-        and request.get("force") is False
-        and request.get("branch-deletion") is False
+        and request.get("force") is approval.get("force")
+        and request.get("branch-deletion") is approval.get("branch-deletion")
         and mutation.get("state") in {"pending", "completed"}
         and mutation.get("action") == approval.get("action")
+        and mutation.get("force") is approval.get("force")
+        and mutation.get("branch-deletion") is approval.get("branch-deletion")
+        and mutation.get("approval-sha256")
+        == approval.get("operation-sha256")
         and _timestamp(mutation.get("timestamp")) is not None
     )
 
@@ -222,6 +264,7 @@ def _recovery_schema_valid(recovery: dict[str, Any]) -> bool:
 
 def _recovery_evidence(
     target: dict[str, Any],
+    approval: dict[str, Any],
     recovery: dict[str, Any],
     interval: dict[str, str],
 ) -> dict[str, Any]:
@@ -229,6 +272,10 @@ def _recovery_evidence(
         "omission": "immediate-preflight-evidence-missing",
         "interval": interval,
         "contract-regression": "tests/test_repository_reconciliation_contract.py",
+        "approval-sha256": approval["operation-sha256"],
+        "action": approval["action"],
+        "force": approval["force"],
+        "branch-deletion": approval["branch-deletion"],
         "proof": {
             field: recovery[field] for field in RECOVERY_PROOF_FIELDS
         },
@@ -264,11 +311,12 @@ def _restoration_valid(
 
 def _restoration_evidence(
     target: dict[str, Any],
+    approval: dict[str, Any],
     recovery: dict[str, Any],
     restoration: dict[str, Any],
     interval: dict[str, str],
 ) -> dict[str, Any]:
-    evidence = _recovery_evidence(target, recovery, interval)
+    evidence = _recovery_evidence(target, approval, recovery, interval)
     evidence["proof"]["safe-restoration"] = recovery["safe-restoration"]
     evidence.update(
         {
@@ -379,7 +427,9 @@ def evaluate(case: Any) -> dict[str, Any]:
             if recovery["violated-precondition"]:
                 reason = "ambiguous-recovery"
             else:
-                evidence = _recovery_evidence(target, recovery, interval)
+                evidence = _recovery_evidence(
+                    target, approval, recovery, interval
+                )
                 return {
                     "decision": "recovered",
                     "mutation-action": "none",
@@ -395,7 +445,7 @@ def evaluate(case: Any) -> dict[str, Any]:
                 and _restoration_valid(restoration, target, interval)
             ):
                 evidence = _restoration_evidence(
-                    target, recovery, restoration, interval
+                    target, approval, recovery, restoration, interval
                 )
                 return {
                     "decision": "restored",
