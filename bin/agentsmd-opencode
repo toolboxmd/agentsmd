@@ -47,7 +47,12 @@ def inspect(target, source):
         return report
     linked = absolute(target.parent / os.readlink(target))
     report.update(link_target=os.readlink(target), owned=linked == source)
-    report["status"] = ("owned-link" if report["owned"] else "divergent-link") if target.is_file() else "broken-link"
+    if not target.exists():
+        report["status"] = "broken-link"
+    elif not target.is_file():
+        report["status"] = "other-path"
+    else:
+        report["status"] = "owned-link" if report["owned"] else "divergent-link"
     if target.is_file():
         report["target_sha256"] = sha(target)
     return report
@@ -118,7 +123,8 @@ def run(args):
     version = subprocess.check_output([args.executable, "--version"], text=True, timeout=15).strip()
     if version != SUPPORTED_VERSION:
         raise ValueError(f"unsupported OpenCode version: {version}; supported: {SUPPORTED_VERSION}")
-    help_text = subprocess.check_output([args.executable, "run", "--help"], text=True, timeout=15)
+    help_text = subprocess.check_output([args.executable, "run", "--help"],
+                                        text=True, stderr=subprocess.STDOUT, timeout=15)
     for flag in ("--model", "--dir", "--format", "--auto"):
         if flag not in help_text:
             raise ValueError(f"required OpenCode interface missing: {flag}")

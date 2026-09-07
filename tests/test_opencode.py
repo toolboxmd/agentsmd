@@ -128,7 +128,20 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(report["before"]["status"], "broken-link")
         self.assertEqual(self.target.resolve(), self.source)
 
-    def prepare_run(self, mode="success"):
+    def test_existing_directory_link_is_not_broken(self):
+        directory = self.root / "user-directory"
+        directory.mkdir()
+        self.target.symlink_to(directory, target_is_directory=True)
+        code, report = self.manage("status")
+        self.assertEqual(code, 2)
+        self.assertEqual(report["status"], "other-path")
+        self.assertFalse(report["owned"])
+        for action in ("install", "update", "uninstall"):
+            self.assertEqual(self.manage(action)[0], 2)
+        self.assertEqual(os.readlink(self.target), str(directory))
+        self.assertTrue(directory.is_dir())
+
+    def prepare_run(self, mode="success", help_stream="stdout"):
         self.repo = self.root / "repo"
         self.repo.mkdir()
         subprocess.run(["git", "init", "-q", str(self.repo)], check=True)
@@ -143,7 +156,7 @@ import json, os, pathlib, sys, time
 if sys.argv[1:] == ['--version']:
     print('1.18.29'); sys.exit()
 if sys.argv[1:] == ['run', '--help']:
-    print('--model --dir --format --auto'); sys.exit()
+    print('--model --dir --format --auto', file=sys.''' + help_stream + '''); sys.exit()
 pathlib.Path('invocation.json').write_text(json.dumps({'argv': sys.argv[1:], 'cwd': os.getcwd()}))
 mode = ''' + repr(mode) + '''
 if mode == 'timeout': time.sleep(30)
@@ -185,6 +198,12 @@ if mode == 'error': print(json.dumps({'type': 'error', 'sessionID': 'ses_fixture
         self.run_args[self.run_args.index("configured")] = "auto"
         self.assertEqual(self.call(*self.run_args)[0], 0)
         self.assertIn("--auto", json.loads((self.repo / "invocation.json").read_text())["argv"])
+
+    def test_run_accepts_supported_help_on_stderr(self):
+        self.prepare_run(help_stream="stderr")
+        code, report = self.call(*self.run_args)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["result"], "candidate")
 
     def test_stale_head_refuses_dispatch(self):
         self.prepare_run()
