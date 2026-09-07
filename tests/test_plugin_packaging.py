@@ -259,6 +259,7 @@ class PluginPackagingTests(unittest.TestCase):
     def test_runtime_files_are_packaged_and_executable(self) -> None:
         for relative in (
             "bin/agentsmd-global-instructions",
+            "bin/agentsmd-opencode",
             "bin/delivery-profile",
             "bin/project-direction",
             "hooks/hooks.json",
@@ -267,6 +268,7 @@ class PluginPackagingTests(unittest.TestCase):
                 self.assertTrue((ROOT / relative).is_file())
         for relative in (
             "bin/agentsmd-global-instructions",
+            "bin/agentsmd-opencode",
             "bin/delivery-profile",
             "bin/project-direction",
         ):
