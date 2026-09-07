@@ -28,10 +28,13 @@ def sha(path):
 
 def source_path(value):
     path = absolute(value)
-    if path.name != "AGENTS.md" or any(
-        path.parts[i:i + 2] == ("plugins", "cache") for i in range(len(path.parts))
-    ):
-        raise ValueError("source must be a stable canonical AGENTS.md outside plugin caches")
+    if path.is_symlink():
+        raise ValueError("source must be a canonical AGENTS.md, not a symlink alias")
+    for candidate in (path, path.resolve()):
+        if candidate.name != "AGENTS.md" or any(
+            candidate.parts[i:i + 2] == ("plugins", "cache") for i in range(len(candidate.parts))
+        ):
+            raise ValueError("source must be a stable canonical AGENTS.md outside plugin caches")
     return path
 
 
@@ -77,7 +80,6 @@ def manage(args):
         return {"action": "uninstalled", "before": before, "after": inspect(target, source)}, 0
     if not source.is_file() or source.is_symlink():
         raise ValueError("installation source must be an existing regular canonical AGENTS.md")
-    source_path(source.resolve())
     if before["status"] == "owned-link":
         return {"action": "unchanged", "before": before, "after": before}, 0
     if os.path.lexists(target):
@@ -193,7 +195,7 @@ def run(args):
                 texts.append(part["text"])
         receipt["session_ids"] = sorted(sessions)
         if receipt["result"] not in ("timeout", "interrupted"):
-            receipt["result"] = "candidate" if receipt["exit_status"] == 0 and sessions and texts and not invalid and not event_error else "failed"
+            receipt["result"] = "candidate" if receipt["exit_status"] == 0 and sessions and any(text.strip() for text in texts) and not invalid and not event_error else "failed"
         (args.output / "result.txt").write_text("\n".join(texts))
     finally:
         receipt["finished_at"] = datetime.now(timezone.utc).isoformat()
@@ -202,6 +204,10 @@ def run(args):
             receipt["worktree_status"] = git(cwd, "status", "--porcelain")
         except subprocess.CalledProcessError:
             receipt["head_after"] = None
+            receipt["worktree_status"] = None
+            receipt["after_state_error"] = "git-state-unavailable"
+            if receipt["result"] == "candidate":
+                receipt["result"] = "failed"
         receipt["evidence"] = {p.name: sha(p) for p in (events, errors, args.output / "result.txt") if p.is_file()}
         (args.output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
     return {"receipt": str(args.output / "receipt.json"), "result": receipt["result"],

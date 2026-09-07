@@ -120,6 +120,19 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.call("install", "--source", alias / "AGENTS.md")[0], 2)
         self.assertFalse(os.path.lexists(self.target))
 
+    def test_status_and_uninstall_reject_source_alias_into_cache(self):
+        cached = self.root / "plugins/cache/release/AGENTS.md"
+        cached.parent.mkdir(parents=True)
+        cached.write_text("cached")
+        alias = self.root / "alias/AGENTS.md"
+        alias.parent.mkdir()
+        alias.symlink_to(cached)
+        self.target.symlink_to(alias)
+        for action in ("status", "uninstall"):
+            self.assertEqual(self.call(action, "--source", alias)[0], 2)
+            self.assertEqual(os.readlink(self.target), str(alias))
+        self.assertEqual(cached.read_text(), "cached")
+
     def test_update_exact_broken_previous_release(self):
         previous = self.root / "removed/AGENTS.md"
         self.target.symlink_to(previous)
@@ -162,8 +175,9 @@ mode = ''' + repr(mode) + '''
 if mode == 'timeout': time.sleep(30)
 if mode == 'failure': sys.exit(7)
 if mode == 'invalid': print('not json'); sys.exit()
-print(json.dumps({'type': 'text', 'sessionID': 'ses_fixture', 'part': {'text': 'Candidate only'}}))
+print(json.dumps({'type': 'text', 'sessionID': 'ses_fixture', 'part': {'text': '   ' if mode == 'blank' else 'Candidate only'}}))
 if mode == 'error': print(json.dumps({'type': 'error', 'sessionID': 'ses_fixture'}))
+if mode == 'missing-git': pathlib.Path('.git').rename('.git-hidden')
 ''')
         fake.chmod(0o755)
         self.output = self.root / "receipt"
@@ -225,6 +239,20 @@ if mode == 'error': print(json.dumps({'type': 'error', 'sessionID': 'ses_fixture
     def test_error_event_refuses_candidate(self):
         self.prepare_run("error")
         self.assertEqual(self.call(*self.run_args)[0], 2)
+
+    def test_blank_result_refuses_candidate(self):
+        self.prepare_run("blank")
+        self.assertEqual(self.call(*self.run_args)[0], 2)
+        self.assertEqual(json.loads((self.output / "receipt.json").read_text())["result"], "failed")
+
+    def test_unavailable_after_state_refuses_candidate(self):
+        self.prepare_run("missing-git")
+        self.assertEqual(self.call(*self.run_args)[0], 2)
+        receipt = json.loads((self.output / "receipt.json").read_text())
+        self.assertEqual(receipt["result"], "failed")
+        self.assertEqual(receipt["exit_status"], 0)
+        self.assertIsNone(receipt["head_after"])
+        self.assertEqual(receipt["after_state_error"], "git-state-unavailable")
 
     def test_timeout_preserves_receipt(self):
         self.prepare_run("timeout")
