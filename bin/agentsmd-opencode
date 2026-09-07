@@ -188,7 +188,7 @@ def run(args):
             except (ValueError, json.JSONDecodeError):
                 invalid = True
                 continue
-            if isinstance(event.get("sessionID"), str):
+            if isinstance(event.get("sessionID"), str) and event["sessionID"].strip():
                 sessions.add(event["sessionID"])
             if event.get("type") == "error":
                 event_error = True

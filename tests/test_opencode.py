@@ -191,7 +191,7 @@ mode = ''' + repr(mode) + '''
 if mode == 'timeout': time.sleep(30)
 if mode == 'failure': sys.exit(7)
 if mode == 'invalid': print('not json'); sys.exit()
-print(json.dumps({'type': 'text', 'sessionID': 'ses_fixture', 'part': {'text': '   ' if mode == 'blank' else 'Candidate only'}}))
+print(json.dumps({'type': 'text', 'sessionID': '' if mode == 'empty-session' else '   ' if mode == 'blank-session' else 'ses_fixture', 'part': {'text': '   ' if mode == 'blank' else 'Candidate only'}}))
 if mode == 'error': print(json.dumps({'type': 'error', 'sessionID': 'ses_fixture'}))
 if mode == 'missing-git': pathlib.Path('.git').rename('.git-hidden')
 ''')
@@ -260,6 +260,20 @@ if mode == 'missing-git': pathlib.Path('.git').rename('.git-hidden')
         self.prepare_run("blank")
         self.assertEqual(self.call(*self.run_args)[0], 2)
         self.assertEqual(json.loads((self.output / "receipt.json").read_text())["result"], "failed")
+
+    def test_empty_session_refuses_candidate(self):
+        self.prepare_run("empty-session")
+        self.assertEqual(self.call(*self.run_args)[0], 2)
+        receipt = json.loads((self.output / "receipt.json").read_text())
+        self.assertEqual(receipt["result"], "failed")
+        self.assertEqual(receipt["session_ids"], [])
+
+    def test_whitespace_session_refuses_candidate(self):
+        self.prepare_run("blank-session")
+        self.assertEqual(self.call(*self.run_args)[0], 2)
+        receipt = json.loads((self.output / "receipt.json").read_text())
+        self.assertEqual(receipt["result"], "failed")
+        self.assertEqual(receipt["session_ids"], [])
 
     def test_unavailable_after_state_refuses_candidate(self):
         self.prepare_run("missing-git")
