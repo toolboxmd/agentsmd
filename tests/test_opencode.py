@@ -154,6 +154,22 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(os.readlink(self.target), str(directory))
         self.assertTrue(directory.is_dir())
 
+    def test_uninstall_rejects_existing_directory_source(self):
+        self.source.unlink()
+        self.source.mkdir()
+        self.target.symlink_to(self.source, target_is_directory=True)
+        self.assertEqual(self.manage("uninstall")[0], 2)
+        self.assertEqual(os.readlink(self.target), str(self.source))
+        self.assertTrue(self.source.is_dir())
+
+    def test_update_rejects_previous_directory_source(self):
+        previous = self.root / "previous/AGENTS.md"
+        previous.mkdir(parents=True)
+        self.target.symlink_to(previous, target_is_directory=True)
+        self.assertEqual(self.manage("update", "--previous-source", previous)[0], 2)
+        self.assertEqual(os.readlink(self.target), str(previous))
+        self.assertTrue(previous.is_dir())
+
     def prepare_run(self, mode="success", help_stream="stdout"):
         self.repo = self.root / "repo"
         self.repo.mkdir()

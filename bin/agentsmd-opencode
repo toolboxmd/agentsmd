@@ -30,6 +30,8 @@ def source_path(value):
     path = absolute(value)
     if path.is_symlink():
         raise ValueError("source must be a canonical AGENTS.md, not a symlink alias")
+    if path.exists() and not path.is_file():
+        raise ValueError("existing canonical source must be a regular AGENTS.md file")
     for candidate in (path, path.resolve()):
         if candidate.name != "AGENTS.md" or any(
             candidate.parts[i:i + 2] == ("plugins", "cache") for i in range(len(candidate.parts))
