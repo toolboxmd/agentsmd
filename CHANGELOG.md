@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.7.0] - 2026-09-07
+
+### Added
+
+- Support OpenCode with owned instruction links and bounded implementation receipts
+
 ## [8.6.2] - 2026-09-04
 
 ### Changed

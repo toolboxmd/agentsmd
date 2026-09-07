@@ -319,6 +319,15 @@ invocation. Authentication, quota, and credit use are separate Human Gates.
 The `project-direction` Skill is packaged, but this release does not claim Grok
 Build lifecycle-hook acceptance.
 
+### OpenCode
+
+OpenCode 1.18.29 is supported through an owned canonical instruction link,
+existing shared `~/.agents/skills` discovery, and a bounded CLI adapter. See
+[OpenCode setup, compatibility and proof](docs/opencode.md) for install,
+status, update, uninstall and exact-model implementation handoffs. The adapter
+preserves user configuration and keeps review and delivery authority with the
+coordinator.
+
 ### Other harnesses
 
 Configure the cloned `AGENTS.md` as global instructions, expose only the

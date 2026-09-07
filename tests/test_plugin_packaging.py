@@ -114,6 +114,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "README.md",
                     "SKILL_CATALOGUE.md",
                     "docs/adr/0001-persistent-host-automation.md",
+                    "docs/opencode.md",
                 ],
                 "requirements": [
                     "AGENTS.md",
@@ -137,6 +138,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/test_delivery_profile.py",
                     "tests/test_delivery_system_contract.py",
                     "tests/test_global_instructions.py",
+                    "tests/test_opencode.py",
                     "tests/test_persistent_host_automation_contract.py",
                     "tests/test_plugin_packaging.py",
                     "tests/test_project_direction_loader.py",
@@ -259,6 +261,7 @@ class PluginPackagingTests(unittest.TestCase):
     def test_runtime_files_are_packaged_and_executable(self) -> None:
         for relative in (
             "bin/agentsmd-global-instructions",
+            "bin/agentsmd-opencode",
             "bin/delivery-profile",
             "bin/project-direction",
             "hooks/hooks.json",
@@ -267,6 +270,7 @@ class PluginPackagingTests(unittest.TestCase):
                 self.assertTrue((ROOT / relative).is_file())
         for relative in (
             "bin/agentsmd-global-instructions",
+            "bin/agentsmd-opencode",
             "bin/delivery-profile",
             "bin/project-direction",
         ):

@@ -1,0 +1,245 @@
+#!/usr/bin/env python3
+"""Owned OpenCode instruction links and bounded, evidence-capturing runs."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import signal
+import subprocess
+import sys
+from datetime import datetime, timezone
+
+
+SUPPORTED_VERSION = "1.18.29"
+
+
+def absolute(value):
+    return Path(os.path.abspath(os.path.expanduser(str(value))))
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def source_path(value):
+    path = absolute(value)
+    if path.is_symlink():
+        raise ValueError("source must be a canonical AGENTS.md, not a symlink alias")
+    if path.exists() and not path.is_file():
+        raise ValueError("existing canonical source must be a regular AGENTS.md file")
+    for candidate in (path, path.resolve()):
+        if candidate.name != "AGENTS.md" or any(
+            candidate.parts[i:i + 2] == ("plugins", "cache") for i in range(len(candidate.parts))
+        ):
+            raise ValueError("source must be a stable canonical AGENTS.md outside plugin caches")
+    return path
+
+
+def inspect(target, source):
+    report = {"target": str(target), "source": str(source), "owned": False,
+              "status": "missing", "source_sha256": sha(source) if source.is_file() else None}
+    if not os.path.lexists(target):
+        return report
+    if not target.is_symlink():
+        report["status"] = "regular-file" if target.is_file() else "other-path"
+        if target.is_file():
+            report["target_sha256"] = sha(target)
+        return report
+    linked = absolute(target.parent / os.readlink(target))
+    report.update(link_target=os.readlink(target), owned=linked == source)
+    if not target.exists():
+        report["status"] = "broken-link"
+    elif not target.is_file():
+        report["status"] = "other-path"
+    else:
+        report["status"] = "owned-link" if report["owned"] else "divergent-link"
+    if target.is_file():
+        report["target_sha256"] = sha(target)
+    return report
+
+
+def manage(args):
+    source = source_path(args.source)
+    config = os.environ.get("XDG_CONFIG_HOME")
+    if config and not Path(config).is_absolute():
+        raise ValueError("XDG_CONFIG_HOME must be absolute")
+    target = (Path(config) if config else Path.home() / ".config") / "opencode/AGENTS.md"
+    target = absolute(target)
+    if source == target or source.resolve() == target.parent.resolve() / target.name:
+        raise ValueError("source and target must differ")
+    before = inspect(target, source)
+    if args.command == "status":
+        return before, 0 if before["status"] == "owned-link" else 2
+    if args.command == "uninstall":
+        if not before["owned"]:
+            raise ValueError("uninstall requires the exact owned link; target preserved")
+        target.unlink()
+        return {"action": "uninstalled", "before": before, "after": inspect(target, source)}, 0
+    if not source.is_file() or source.is_symlink():
+        raise ValueError("installation source must be an existing regular canonical AGENTS.md")
+    if before["status"] == "owned-link":
+        return {"action": "unchanged", "before": before, "after": before}, 0
+    if os.path.lexists(target):
+        previous = source_path(args.previous_source) if args.command == "update" and args.previous_source else source
+        old = inspect(target, previous)
+        if args.command != "update" or not old["owned"]:
+            raise ValueError("existing target is not the exact previous owned link; target preserved")
+        # A link is replaced only after its explicit prior identity was checked.
+        target.unlink()
+        try:
+            target.symlink_to(source)
+        except OSError:
+            target.symlink_to(old["link_target"])
+            raise
+    else:
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.symlink_to(source)
+    after = inspect(target, source)
+    if after["status"] != "owned-link":
+        raise ValueError("post-install verification failed")
+    return {"action": "updated" if args.command == "update" else "installed", "before": before, "after": after}, 0
+
+
+def git(cwd, *args):
+    return subprocess.check_output(["git", "-C", str(cwd), *args], text=True, stderr=subprocess.PIPE).strip()
+
+
+def run(args):
+    cwd = args.cwd.resolve(strict=True)
+    if git(cwd, "rev-parse", "--show-toplevel") != str(cwd):
+        raise ValueError("cwd must be the exact repository root")
+    head = git(cwd, "rev-parse", "HEAD")
+    if head != args.head or not re.fullmatch(r"[0-9a-f]{40}", args.base):
+        raise ValueError("expected HEAD must match; base must be an exact SHA")
+    if git(cwd, "rev-parse", args.base + "^{commit}") != args.base:
+        raise ValueError("base commit is unavailable")
+    if not re.fullmatch(r"https://github\.com/[^/\s]+/[^/\s]+/issues/[1-9][0-9]*", args.issue):
+        raise ValueError("issue must be an exact GitHub Issue URL")
+    if not re.fullmatch(r"[^/\s]+/[^/\s]+", args.model):
+        raise ValueError("model must be an exact provider/model ID")
+    if not 1 <= args.timeout <= 86400:
+        raise ValueError("timeout must be between 1 and 86400 seconds")
+    version = subprocess.check_output([args.executable, "--version"], text=True, timeout=15).strip()
+    if version != SUPPORTED_VERSION:
+        raise ValueError(f"unsupported OpenCode version: {version}; supported: {SUPPORTED_VERSION}")
+    help_text = subprocess.check_output([args.executable, "run", "--help"],
+                                        text=True, stderr=subprocess.STDOUT, timeout=15)
+    for flag in ("--model", "--dir", "--format", "--auto"):
+        if flag not in help_text:
+            raise ValueError(f"required OpenCode interface missing: {flag}")
+    prompt = args.prompt_file.read_text()
+    if not prompt.strip():
+        raise ValueError("task prompt must be nonempty")
+    # Exclusive directory creation prevents overwriting previous evidence.
+    args.output.mkdir(mode=0o700)
+    receipt = {"schema": 1, "issue": args.issue, "cwd": str(cwd), "base": args.base,
+               "head_before": head, "model": args.model, "opencode_version": version,
+               "permissions": args.permissions, "timeout_seconds": args.timeout,
+               "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
+               "started_at": datetime.now(timezone.utc).isoformat(), "approval": False,
+               "live_verified": False, "review": "pending", "session_ids": [],
+               "result": "not-started", "exit_status": None}
+    command = [args.executable, "run", "--dir", str(cwd), "--model", args.model, "--format", "json"]
+    if args.permissions == "auto":
+        command.append("--auto")
+    handoff = (
+        f"AgentsMD bounded implementation handoff. Owning Issue: {args.issue}.\n"
+        f"Repository: {cwd}. Exact base: {args.base}. Starting HEAD: {head}.\n"
+        "Read complete current VISION.md, MISSION.md, OBJECTIVE.md and applicable project instructions before work.\n"
+        "Stay within the task's granted scope and authority. Tool auto-approval is not delivery authority.\n"
+        "The coordinator owns independent exact-SHA review, protected external mutations and final delivery state.\n"
+        "Return exact HEAD, changed files, proof commands/results, blockers and next action. Your result is a candidate, not approval or Live Verification.\n\n"
+        + prompt
+    )
+    receipt["dispatch_prompt_sha256"] = hashlib.sha256(handoff.encode()).hexdigest()
+    command += ["--", handoff]
+    events = args.output / "events.jsonl"
+    errors = args.output / "stderr.txt"
+    try:
+        with events.open("xb") as stdout, errors.open("xb") as stderr:
+            process = subprocess.Popen(command, cwd=cwd, stdin=subprocess.DEVNULL,
+                                       stdout=stdout, stderr=stderr, start_new_session=True)
+            try:
+                receipt["exit_status"] = process.wait(timeout=args.timeout)
+                receipt["result"] = "process-exited"
+            except (subprocess.TimeoutExpired, KeyboardInterrupt) as error:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                process.wait()
+                interrupted = isinstance(error, KeyboardInterrupt)
+                receipt.update(result="interrupted" if interrupted else "timeout",
+                               exit_status=130 if interrupted else 124)
+        sessions = set()
+        texts = []
+        invalid = False
+        event_error = False
+        for line in events.read_text(errors="replace").splitlines():
+            try:
+                event = json.loads(line)
+                if not isinstance(event, dict):
+                    raise ValueError("non-object event")
+            except (ValueError, json.JSONDecodeError):
+                invalid = True
+                continue
+            if isinstance(event.get("sessionID"), str) and event["sessionID"].strip():
+                sessions.add(event["sessionID"])
+            if event.get("type") == "error":
+                event_error = True
+            part = event.get("part")
+            if event.get("type") == "text" and isinstance(part, dict) and isinstance(part.get("text"), str):
+                texts.append(part["text"])
+        receipt["session_ids"] = sorted(sessions)
+        if receipt["result"] not in ("timeout", "interrupted"):
+            receipt["result"] = "candidate" if receipt["exit_status"] == 0 and sessions and any(text.strip() for text in texts) and not invalid and not event_error else "failed"
+        (args.output / "result.txt").write_text("\n".join(texts))
+    finally:
+        receipt["finished_at"] = datetime.now(timezone.utc).isoformat()
+        try:
+            receipt["head_after"] = git(cwd, "rev-parse", "HEAD")
+            receipt["worktree_status"] = git(cwd, "status", "--porcelain")
+        except subprocess.CalledProcessError:
+            receipt["head_after"] = None
+            receipt["worktree_status"] = None
+            receipt["after_state_error"] = "git-state-unavailable"
+            if receipt["result"] == "candidate":
+                receipt["result"] = "failed"
+        receipt["evidence"] = {p.name: sha(p) for p in (events, errors, args.output / "result.txt") if p.is_file()}
+        (args.output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
+    return {"receipt": str(args.output / "receipt.json"), "result": receipt["result"],
+            "exit_status": receipt["exit_status"]}, 0 if receipt["result"] == "candidate" else 2
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest="command", required=True)
+    for name in ("install", "status", "update", "uninstall"):
+        command = commands.add_parser(name)
+        command.add_argument("--source", required=True, type=absolute)
+        if name == "update":
+            command.add_argument("--previous-source", type=absolute)
+    command = commands.add_parser("run")
+    for name in ("cwd", "prompt-file", "output"):
+        command.add_argument("--" + name, required=True, type=absolute)
+    for name in ("issue", "base", "head", "model"):
+        command.add_argument("--" + name, required=True)
+    command.add_argument("--permissions", required=True, choices=("configured", "auto"))
+    command.add_argument("--timeout", type=int, default=900)
+    command.add_argument("--executable", default="opencode")
+    args = parser.parse_args()
+    try:
+        report, code = run(args) if args.command == "run" else manage(args)
+    except (OSError, ValueError, subprocess.SubprocessError) as error:
+        report, code = {"error": str(error)}, 2
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return code
+
+
+if __name__ == "__main__":
+    sys.exit(main())
