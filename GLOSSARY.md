@@ -163,3 +163,13 @@ Agent-created or agent-maintained host services, scheduled jobs, checks, and
 recovery automation that operate beyond the current task. It excludes
 project-local build tooling and one-off diagnostics.
 _Avoid_: machine runbook, persistent script
+
+**Scoped proof**:
+Complete required coverage composed from authenticated unaffected baseline
+results and current affected and artifact checks under a trusted Project policy.
+_Avoid_: skipped proof, fast check, complete test rerun
+
+**Complete-proof baseline**:
+An exact commit with direct successful proof for every declared check, used as
+the cumulative comparison anchor for scoped proof.
+_Avoid_: previous scoped candidate, latest commit

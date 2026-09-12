@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.8.0] - 2026-09-12
+
+### Added
+
+- Add authenticated scoped proof reuse with explicit project policies and complete baseline coverage
+
 ## [8.7.1] - 2026-09-12
 
 ### Changed
