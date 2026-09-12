@@ -48,7 +48,10 @@ Set `VERSIONCTL` to the selected executable for the commands below.
 6. Apply the same command without `--dry-run`.
 7. Inspect the canonical version, every reported mirror, and `CHANGELOG.md`.
 8. Stage and commit the deliverable, version, mirrors, and changelog together.
-9. On the clean commit, run `$VERSIONCTL release-check`.
+9. On the clean commit, run `$VERSIONCTL release-check`. If scoped proof is
+   declared, use [the scoped-proof contract](../../docs/scoped-proof.md) to
+   record or validate coverage for this final versioned SHA. Pre-version proof
+   cannot silently stand in for a changed candidate.
 10. Push only when the task's Git authority permits it. A policy value of
     `on-version-commit` authorizes the configured release workflow, but does
     not broaden permission for registry publication, deployment, or install.

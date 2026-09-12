@@ -58,3 +58,13 @@ Keep the v1 shape narrow:
 Validate every profile change through the public loader. Add a schema fixture
 for each new valid or invalid boundary. Put shared semantics in `AGENTS.md` and
 add a profile field only when Projects can genuinely differ.
+
+## Scoped proof
+
+When a Project declares or reuses scoped proof, read
+[`../../docs/scoped-proof.md`](../../docs/scoped-proof.md). Keep its scope map
+outside Delivery Profile v1 and bind existing command lanes to the Project's
+trusted adapter. Finish when the adapter identifies the complete baseline,
+frozen candidate, separately trusted policy, authenticated execution and
+current input assumptions, or reports why scoped delivery is unsupported.
+An unchanged legacy profile keeps its existing complete-proof path.

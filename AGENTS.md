@@ -440,15 +440,21 @@ Record, release policy, documentation, or current delivery state.
 - Give one complete merge unit or dependent stack exactly one SemVer
   transition. Classify it from the highest semantic impact in everything that
   ships. Intermediate stack layers do not carry independent releases.
-- Use GitHub-hosted runners for ordinary CI and release builds. Reserve Rocky
-  for agentic development and genuine macOS proof, Cavallo for human control
+- Use GitHub-hosted runners for ordinary CI and release builds. Project-owned
+  proof adapters may choose the appropriate host for reusable affected tests.
+  Reserve Rocky for agentic development and genuine macOS proof, Cavallo for
+  human control
   and acceptance, and Bigbrain for activation, health checks, and rollback of
   trusted artifacts. Untrusted pull request code does not run on
   production-connected infrastructure.
-- Use a changed-scope check for fast feedback only. The complete merge gate
-  proves the whole required merge unit. The complete release gate re-proves the
-  exact release SHA and its release identity. Never substitute a fast check for
-  either complete gate.
+- The complete merge gate proves the whole required merge unit; the complete
+  release gate binds that coverage and release identity to the exact release
+  SHA. When declaring or reusing scoped proof, read `docs/scoped-proof.md`.
+  A Project's trusted explicit policy may compose unaffected complete-baseline
+  coverage with current affected and artifact proof. An ordinary changed-scope
+  check remains feedback. Unsupported scope stops with a reason; select the
+  complete path explicitly. Report executed, reused and unverified proof
+  separately. Keep independent review and fresh external-state checks.
 - Every deployable artifact is built once from the exact release SHA, assigned
   an immutable digest, and promoted unchanged through distribution,
   deployment, installation, and activation. Rebuilding creates a different

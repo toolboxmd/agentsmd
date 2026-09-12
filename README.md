@@ -152,8 +152,10 @@ before subsequent strategic judgment.
 
 The portable contract in `AGENTS.md` owns shared lifecycle, execution-mode,
 review, SemVer, CI, artifact, website, and evidence semantics. It reports each
-delivery state separately and keeps fast changed-scope feedback distinct from
-the complete merge and release gates.
+delivery state separately. Projects can [reuse scoped proof](docs/scoped-proof.md)
+under an explicit trusted policy: complete baseline coverage plus current affected
+and artifact checks. Unknown scope stops with a reason. Projects without an
+adapter retain their complete merge and release gates.
 
 A Project may add `.toolboxmd/delivery.json` for only three kinds of real
 difference:

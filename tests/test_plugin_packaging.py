@@ -115,6 +115,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "SKILL_CATALOGUE.md",
                     "docs/adr/0001-persistent-host-automation.md",
                     "docs/opencode.md",
+                    "docs/scoped-proof.md",
                 ],
                 "requirements": [
                     "AGENTS.md",
@@ -145,6 +146,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/test_release_dispatch_contract.py",
                     "tests/test_repository_reconciliation_contract.py",
                     "tests/test_skill_contracts.py",
+                    "tests/test_scoped_proof.py",
                 ],
             },
         )

@@ -30,7 +30,8 @@
       "README.md",
       "SKILL_CATALOGUE.md",
       "docs/adr/0001-persistent-host-automation.md",
-      "docs/opencode.md"
+      "docs/opencode.md",
+      "docs/scoped-proof.md"
     ],
     "requirements": [
       "AGENTS.md",
@@ -60,7 +61,8 @@
       "tests/test_project_direction_loader.py",
       "tests/test_release_dispatch_contract.py",
       "tests/test_repository_reconciliation_contract.py",
-      "tests/test_skill_contracts.py"
+      "tests/test_skill_contracts.py",
+      "tests/test_scoped_proof.py"
     ]
   }
 }

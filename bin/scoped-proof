@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+"""Inspect scoped eligibility; trusted adapters import scoped_proof for run/validate."""
+from scoped_proof import main
+
+raise SystemExit(main())
