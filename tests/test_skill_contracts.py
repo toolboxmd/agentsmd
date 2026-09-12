@@ -301,6 +301,12 @@ def terminal_finalization_decision(case: dict[str, object]) -> str:
         or case.get("disposition") not in TERMINAL_DISPOSITIONS
     ):
         return "do-not-finalize"
+    if case.get("disposition") in {"merged", "approved-alternative-delivery"}:
+        if (
+            case.get("required-work-integrated") is not True
+            or case.get("required-delivery-verified") is not True
+        ):
+            return "do-not-finalize"
     return "begin-finalization"
 
 
@@ -325,7 +331,6 @@ def resource_finalization_decision(case: dict[str, object]) -> str:
     preserve_when_true = {
         "dirty",
         "active",
-        "unique",
         "shared",
         "persistent",
         "production",
@@ -346,6 +351,24 @@ def resource_finalization_decision(case: dict[str, object]) -> str:
         not in {"explicit", "creation-of-explicitly-disposable"}
     ):
         return "preserve"
+    information = case.get("information-disposition")
+    if information not in {"not-required", "verified-disposable", "verified-durable"}:
+        return "preserve"
+    if case.get("unique") and information == "not-required":
+        return "preserve"
+    if case.get("resource-type") in {"worktree", "disposable-checkout"}:
+        if case.get("persistent-state-outside") is not True:
+            return "preserve"
+        consumer = case.get("consumer-state")
+        if consumer == "resolved":
+            proof = case.get("consumer-proof", {})
+            if not isinstance(proof, dict) or any(
+                proof.get(field) is not True
+                for field in ("task-owned", "authority", "verified")
+            ):
+                return "preserve"
+        elif consumer != "none":
+            return "preserve"
     return "remove"
 
 
@@ -390,8 +413,18 @@ def issue_closure_decision(case: dict[str, object]) -> str:
 def finalization_report(case: dict[str, object]) -> str:
     if not case.get("outcome-closed"):
         return "outcome-open"
-    if "reconcile" in case.get("resource-actions", []):
+    actions = case.get("resource-actions", [])
+    if "reconcile" in actions or case.get("cleanup-verified") is not True:
         return "closed-not-fully-finalized"
+    exceptions = case.get("retained-exceptions", [])
+    if len(exceptions) != actions.count("preserve"):
+        return "closed-not-fully-finalized"
+    for exception in exceptions:
+        if not isinstance(exception, dict) or any(
+            not isinstance(exception.get(field), str) or not exception[field].strip()
+            for field in ("target", "condition", "owner", "next-action")
+        ) or exception.get("retention-justified") is not True:
+            return "closed-not-fully-finalized"
     return "closed-finalized"
 
 
@@ -1433,8 +1466,20 @@ class SkillContractTests(unittest.TestCase):
             "eligibility",
             "Preserve Issues, pull requests, commits, tags, releases, proof",
             "persistent, shared, production, materially changed, protected, gated, "
-            "dirty, active, unique, user-owned, or ambiguous resources",
+            "dirty, active, user-owned, or ambiguous resources",
             "until applicable authority exists",
+            "checkouts are temporary from creation through Delivery Finalization",
+            "required code and documentation integrated into the intended base",
+            "including deployment when required",
+            "secrets and databases do not belong in Git",
+            "Check every temporary checkout for removal",
+            "verify affected consumers still work",
+            "unpublished work is not assumed remotely recoverable",
+            "Uniqueness alone does not establish importance",
+            "no default archive or indefinite retention once verified disposable",
+            "owner where known, and next action",
+            "Continue independent eligible cleanup",
+            "Verify every removal's exact after-state",
             "Repository Reconciliation with its exact path, branch, `HEAD`, files, "
             "reason, and next action",
             "closed but not fully finalized",
@@ -1634,6 +1679,9 @@ class SkillContractTests(unittest.TestCase):
                 "equivalent-conclusive-closure",
                 "open",
                 "review-ready",
+                "local-only-required-work",
+                "required-deployment-pending",
+                "required-deployment-verified",
             },
         )
         self.assertFalse(payload["contract"]["real-resource-actions"])
@@ -1764,6 +1812,60 @@ class SkillContractTests(unittest.TestCase):
                 self.assertEqual(
                     finalization_report(case), case["expected-report"]
                 )
+
+    def test_retirement_transitions_preserve_protection_and_require_proof(self) -> None:
+        payload = json.loads(read_text("tests/fixtures/delivery_finalization_cases.json"))
+        cases = {
+            case["id"]: {**payload["resource-defaults"], **case}
+            for case in payload["resource-cases"]
+        }
+        for before, after in (
+            ("required-evidence-local", "required-evidence-durable"),
+            ("persistent-state-in-checkout", "persistent-state-stable"),
+            ("dependency-unresolved", "dependency-resolved"),
+            ("process-unresolved", "process-resolved"),
+        ):
+            with self.subTest(before=before, after=after):
+                self.assertEqual(resource_finalization_decision(cases[before]), "preserve")
+                self.assertEqual(resource_finalization_decision(cases[after]), "remove")
+        for name in ("dependency-resolved", "process-resolved"):
+            for field in ("task-owned", "authority", "verified"):
+                case = dict(cases[name])
+                case["consumer-proof"] = dict(case["consumer-proof"], **{field: False})
+                self.assertEqual(resource_finalization_decision(case), "preserve")
+        for name in ("generated-packages", "required-evidence-durable", "dependency-resolved"):
+            for protection in ("dirty", "active", "shared", "persistent", "production",
+                               "materially-changed", "protected", "gated", "user-owned",
+                               "needed-by-remaining-layer"):
+                with self.subTest(resource=name, protection=protection):
+                    self.assertEqual(resource_finalization_decision(
+                        dict(cases[name], **{protection: True})), "preserve")
+            for field in ("information-disposition", "persistent-state-outside", "consumer-state"):
+                case = dict(cases[name])
+                del case[field]
+                self.assertEqual(resource_finalization_decision(case), "preserve")
+        for case in cases.values():
+            if case["expected-decision"] in {"preserve", "reconcile"}:
+                exception = case["retained-exception"]
+                for field in ("target", "condition", "owner", "next-action"):
+                    self.assertTrue(exception[field].strip())
+        terminal = payload["terminal-cases"][0]
+        for field in ("required-work-integrated", "required-delivery-verified"):
+            case = dict(terminal)
+            del case[field]
+            self.assertEqual(terminal_finalization_decision(case), "do-not-finalize")
+        for disposition in ("cancelled", "superseded"):
+            self.assertEqual(terminal_finalization_decision(dict(terminal, **{
+                "disposition": disposition, "required-work-integrated": False,
+                "required-delivery-verified": False,
+            })), "begin-finalization")
+        report = payload["report-cases"][0]
+        for field in ("target", "condition", "owner", "next-action", "retention-justified"):
+            exception = dict(report["retained-exceptions"][0])
+            del exception[field]
+            self.assertEqual(finalization_report(dict(report, **{
+                "retained-exceptions": [exception],
+            })), "closed-not-fully-finalized")
 
     def test_workspace_isolation_cases_cover_every_selection_branch(
         self,

@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.7.1] - 2026-09-12
+
+### Changed
+
+- Require temporary checkout retirement after verified delivery, preserve required durable state, and resolve authorized cleanup obstacles.
+
 ## [8.7.0] - 2026-09-07
 
 ### Added

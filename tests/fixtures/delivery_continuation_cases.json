@@ -69,7 +69,9 @@
       "version-state",
       "delivery-state",
       "blockers",
-      "next-action"
+      "next-action",
+      "cleanup-state",
+      "finalization-state"
     ],
     "recovery_fields": [
       "issue",
@@ -80,7 +82,9 @@
       "granted-authority",
       "delivery-state",
       "blockers",
-      "next-action"
+      "next-action",
+      "cleanup-state",
+      "finalization-state"
     ],
     "reported_delivery_states": [
       "implementation",
@@ -276,7 +280,9 @@
         "version-state": "major transition prepared",
         "delivery-state": "PR ready",
         "blockers": "None",
-        "next-action": "coordinator verifies and advances"
+        "next-action": "coordinator verifies and advances",
+        "cleanup-state": "retained /workspace/task: open PR still needs checkout; owner implementation task; next action recheck after verified terminal outcome",
+        "finalization-state": "not started: review-ready is not terminal"
       },
       "handoff_channels": [
         "issue",
@@ -305,7 +311,9 @@
         "version-state": "major transition prepared",
         "delivery-state": "PR ready",
         "blockers": "None",
-        "next-action": "start toolboxmd/example#47"
+        "next-action": "start toolboxmd/example#47",
+        "cleanup-state": "retained /workspace/task: open PR still needs checkout; owner implementation task; next action recheck after verified terminal outcome",
+        "finalization-state": "not started: review-ready is not terminal"
       },
       "handoff_channels": [
         "issue",
@@ -344,7 +352,9 @@
         "version-state": "major transition prepared",
         "delivery-state": "PR ready",
         "blockers": "toolboxmd/example#39 remains open",
-        "next-action": "wait for blocker evidence"
+        "next-action": "wait for blocker evidence",
+        "cleanup-state": "retained /workspace/task: open PR still needs checkout; owner implementation task; next action recheck after verified terminal outcome",
+        "finalization-state": "not started: review-ready is not terminal"
       },
       "handoff_channels": [
         "issue",
@@ -385,7 +395,9 @@
         "granted-authority": "implementation through PR",
         "delivery-state": "PR ready",
         "blockers": "None",
-        "next-action": "verify and advance"
+        "next-action": "verify and advance",
+        "cleanup-state": "retained /workspace/task: open PR still needs checkout; owner implementation task; next action recheck after verified terminal outcome",
+        "finalization-state": "not started: review-ready is not terminal"
       },
       "expected": {
         "decision": "recover",

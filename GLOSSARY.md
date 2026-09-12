@@ -69,11 +69,17 @@ _Avoid_: generated promotion pull request, Merge Unit
 
 **Delivery Finalization**:
 The post-review lifecycle step for a verified terminal outcome that closes
-tracker state truthfully and retires only clean, exact, task-owned transient
-resources no remaining stack layer needs. It preserves durable truth and any
-resource that is persistent, shared, production, materially changed,
-protected, gated, dirty, active, unique, user-owned, or ambiguous.
+tracker state truthfully, checks every temporary checkout for removal, and
+retires eligible task-owned transient resources. It preserves required durable
+information and justified current needs, records exact retained exceptions,
+and distinguishes unresolved obstacles from completed finalization.
 _Avoid_: cleanup sweep, Repository Reconciliation
+
+**Temporary checkout**:
+A worktree or equivalent task workspace whose lifecycle ends with verified
+removal or an exact retained exception during Delivery Finalization. Required
+persistent local state has a stable home outside it.
+_Avoid_: archive, permanent task workspace
 
 **Repository Reconciliation**:
 A bounded repair path triggered when repository orientation detects drift. It
