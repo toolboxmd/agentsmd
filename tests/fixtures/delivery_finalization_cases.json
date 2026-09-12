@@ -19,56 +19,99 @@
       "disposition": "merged",
       "review-complete": true,
       "disposition-verified": true,
-      "expected-decision": "begin-finalization"
+      "expected-decision": "begin-finalization",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     },
     {
       "id": "approved-alternative-delivery",
       "disposition": "approved-alternative-delivery",
       "review-complete": true,
       "disposition-verified": true,
-      "expected-decision": "begin-finalization"
+      "expected-decision": "begin-finalization",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     },
     {
       "id": "cancelled",
       "disposition": "cancelled",
       "review-complete": true,
       "disposition-verified": true,
-      "expected-decision": "begin-finalization"
+      "expected-decision": "begin-finalization",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     },
     {
       "id": "duplicated",
       "disposition": "duplicated",
       "review-complete": true,
       "disposition-verified": true,
-      "expected-decision": "begin-finalization"
+      "expected-decision": "begin-finalization",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     },
     {
       "id": "superseded",
       "disposition": "superseded",
       "review-complete": true,
       "disposition-verified": true,
-      "expected-decision": "begin-finalization"
+      "expected-decision": "begin-finalization",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     },
     {
       "id": "equivalent-conclusive-closure",
       "disposition": "equivalent-conclusive-closure",
       "review-complete": true,
       "disposition-verified": true,
-      "expected-decision": "begin-finalization"
+      "expected-decision": "begin-finalization",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     },
     {
       "id": "open",
       "disposition": "open",
       "review-complete": false,
       "disposition-verified": true,
-      "expected-decision": "do-not-finalize"
+      "expected-decision": "do-not-finalize",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     },
     {
       "id": "review-ready",
       "disposition": "review-ready",
       "review-complete": false,
       "disposition-verified": true,
-      "expected-decision": "do-not-finalize"
+      "expected-decision": "do-not-finalize",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
+    },
+    {
+      "id": "local-only-required-work",
+      "disposition": "merged",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "do-not-finalize",
+      "required-work-integrated": false,
+      "required-delivery-verified": true
+    },
+    {
+      "id": "required-deployment-pending",
+      "disposition": "merged",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "do-not-finalize",
+      "required-work-integrated": true,
+      "required-delivery-verified": false
+    },
+    {
+      "id": "required-deployment-verified",
+      "disposition": "merged",
+      "review-complete": true,
+      "disposition-verified": true,
+      "expected-decision": "begin-finalization",
+      "required-work-integrated": true,
+      "required-delivery-verified": true
     }
   ],
   "resource-defaults": {
@@ -92,7 +135,10 @@
     "needed-by-remaining-layer": false,
     "before-state": "present",
     "after-state": "absent",
-    "expected-decision": "remove"
+    "expected-decision": "remove",
+    "information-disposition": "not-required",
+    "persistent-state-outside": true,
+    "consumer-state": "none"
   },
   "resource-cases": [
     {"id": "clean-local-branch", "resource-type": "local-branch"},
@@ -116,42 +162,85 @@
       "clean": false,
       "dirty": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/dirty",
+        "condition": "dirty",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "active",
       "resource-type": "task-process",
       "active": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/active",
+        "condition": "active",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "unique",
       "resource-type": "temporary-file",
       "unique": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "information-disposition": "unassessed",
+      "retained-exception": {
+        "target": "/workspace/unique",
+        "condition": "unique",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "shared",
       "resource-type": "container",
       "shared": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/shared",
+        "condition": "shared",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "persistent",
       "resource-type": "preview",
       "persistent": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/persistent",
+        "condition": "persistent",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "user-owned",
       "resource-type": "local-branch",
       "user-owned": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/user-owned",
+        "condition": "uncommitted user work has no durable copy",
+        "owner": "user",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "ambiguous",
@@ -164,9 +253,18 @@
         "path": "/workspace/unknown-checkout",
         "branch": "unknown",
         "head": "1111111111111111111111111111111111111111",
-        "files": ["unknown"],
+        "files": [
+          "unknown"
+        ],
         "reason": "ownership remains ambiguous",
         "next-action": "classify during Repository Reconciliation"
+      },
+      "retained-exception": {
+        "target": "/workspace/unknown-checkout",
+        "condition": "ambiguous",
+        "owner": "unknown",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
       }
     },
     {
@@ -174,42 +272,268 @@
       "resource-type": "remote-branch",
       "protected": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/protected",
+        "condition": "protected",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "materially-changed",
       "resource-type": "worktree",
       "materially-changed": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/materially-changed",
+        "condition": "materially-changed",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "still-needed-stack",
       "resource-type": "local-branch",
       "needed-by-remaining-layer": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/still-needed-stack",
+        "condition": "still-needed-stack",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "production",
       "resource-type": "preview",
       "production": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/production",
+        "condition": "production",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "gated",
       "resource-type": "test-account",
       "gated": true,
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/gated",
+        "condition": "gated",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
     },
     {
       "id": "missing-teardown-authority",
       "resource-type": "container",
       "teardown-authority": "missing",
       "after-state": "present",
-      "expected-decision": "preserve"
+      "expected-decision": "preserve",
+      "retained-exception": {
+        "target": "/workspace/missing-teardown-authority",
+        "condition": "missing-teardown-authority",
+        "owner": "task",
+        "next-action": "resolve or verify the recorded condition",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "generated-packages",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "verified-disposable"
+    },
+    {
+      "id": "build-output",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "verified-disposable"
+    },
+    {
+      "id": "disposable-fixtures",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "verified-disposable"
+    },
+    {
+      "id": "superseded-experiment",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "verified-disposable"
+    },
+    {
+      "id": "required-evidence-local",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "required-local",
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/required-evidence-local",
+        "condition": "required-evidence-local",
+        "owner": "task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "required-evidence-durable",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "verified-durable"
+    },
+    {
+      "id": "unpublished-work-unassessed",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "unassessed",
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/unpublished-work-unassessed",
+        "condition": "unpublished-work-unassessed",
+        "owner": "task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "integrated-git-history",
+      "resource-type": "worktree",
+      "unique": true,
+      "information-disposition": "verified-durable"
+    },
+    {
+      "id": "persistent-state-in-checkout",
+      "resource-type": "worktree",
+      "persistent-state-outside": false,
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/persistent-state-in-checkout",
+        "condition": "persistent-state-in-checkout",
+        "owner": "task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "persistent-state-stable",
+      "resource-type": "worktree"
+    },
+    {
+      "id": "dependency-unresolved",
+      "resource-type": "worktree",
+      "consumer-state": "unresolved",
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/dependency-unresolved",
+        "condition": "dependency-unresolved",
+        "owner": "task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "dependency-resolved-unverified",
+      "resource-type": "worktree",
+      "consumer-state": "resolved",
+      "consumer-proof": {
+        "task-owned": true,
+        "authority": true,
+        "verified": false
+      },
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/dependency-resolved-unverified",
+        "condition": "dependency-resolved-unverified",
+        "owner": "task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "dependency-resolved",
+      "resource-type": "worktree",
+      "consumer-state": "resolved",
+      "consumer-proof": {
+        "task-owned": true,
+        "authority": true,
+        "verified": true
+      }
+    },
+    {
+      "id": "process-unresolved",
+      "resource-type": "worktree",
+      "consumer-state": "unresolved",
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/process-unresolved",
+        "condition": "process-unresolved",
+        "owner": "task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "process-resolved-unverified",
+      "resource-type": "worktree",
+      "consumer-state": "resolved",
+      "consumer-proof": {
+        "task-owned": true,
+        "authority": true,
+        "verified": false
+      },
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/process-resolved-unverified",
+        "condition": "process-resolved-unverified",
+        "owner": "task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
+    },
+    {
+      "id": "process-resolved",
+      "resource-type": "worktree",
+      "consumer-state": "resolved",
+      "consumer-proof": {
+        "task-owned": true,
+        "authority": true,
+        "verified": true
+      }
+    },
+    {
+      "id": "unrelated-active-consumer",
+      "resource-type": "worktree",
+      "consumer-state": "active",
+      "expected-decision": "preserve",
+      "after-state": "present",
+      "retained-exception": {
+        "target": "/workspace/unrelated-active-consumer",
+        "condition": "another task still consumes this checkout",
+        "owner": "other-task",
+        "next-action": "resolve then recheck removal",
+        "retention-justified": false
+      }
     }
   ],
   "issue-cases": [
@@ -275,13 +599,29 @@
     {
       "id": "fully-finalized",
       "outcome-closed": true,
-      "resource-actions": ["remove", "preserve"],
-      "expected-report": "closed-finalized"
+      "resource-actions": [
+        "remove",
+        "preserve"
+      ],
+      "expected-report": "closed-finalized",
+      "cleanup-verified": true,
+      "retained-exceptions": [
+        {
+          "target": "/workspace/needed",
+          "condition": "active independent task",
+          "owner": "other-task",
+          "next-action": "recheck after that task concludes",
+          "retention-justified": true
+        }
+      ]
     },
     {
       "id": "unknown-residue",
       "outcome-closed": true,
-      "resource-actions": ["remove", "reconcile"],
+      "resource-actions": [
+        "remove",
+        "reconcile"
+      ],
       "expected-report": "closed-not-fully-finalized"
     },
     {
@@ -289,6 +629,43 @@
       "outcome-closed": false,
       "resource-actions": [],
       "expected-report": "outcome-open"
+    },
+    {
+      "id": "unresolved-task-obstacle",
+      "outcome-closed": true,
+      "resource-actions": [
+        "remove",
+        "preserve"
+      ],
+      "cleanup-verified": true,
+      "retained-exceptions": [
+        {
+          "target": "/workspace/old",
+          "condition": "dependency still linked",
+          "owner": "task",
+          "next-action": "replace link and verify consumer",
+          "retention-justified": false
+        }
+      ],
+      "expected-report": "closed-not-fully-finalized"
+    },
+    {
+      "id": "removal-unverified",
+      "outcome-closed": true,
+      "resource-actions": [
+        "remove"
+      ],
+      "cleanup-verified": false,
+      "expected-report": "closed-not-fully-finalized"
+    },
+    {
+      "id": "retention-without-exception",
+      "outcome-closed": true,
+      "resource-actions": [
+        "preserve"
+      ],
+      "cleanup-verified": true,
+      "expected-report": "closed-not-fully-finalized"
     }
   ]
 }

@@ -240,7 +240,10 @@ to route established steps again.
 - Before tracked mutation, give each implementation Issue one fresh exclusive
   branch and workspace. Record the intended base, branch, workspace path,
   ownership, and exact starting `HEAD`. Keep the canonical checkout as the
-  stable coordination and integration view.
+  stable coordination and integration view. Worktrees and equivalent task
+  checkouts are temporary from creation through Delivery Finalization. Keep
+  required persistent local state, including databases and configuration, in
+  stable locations outside them; secrets and databases do not belong in Git.
 - Read-only work may share repository state only when it cannot mutate or
   interfere with a writer. Independent mutating Issues may proceed in parallel
   only in separate workspaces with disjoint ownership. A branch, workspace,
@@ -268,7 +271,11 @@ to route established steps again.
 - Delivery Finalization starts only after review and a verified terminal
   disposition: merge, approved alternative delivery, cancellation,
   duplication, supersession, or equivalent conclusive closure. An open pull
-  request or review-ready candidate is not terminal.
+  request or review-ready candidate is not terminal. Successful delivery requires
+  required code and documentation integrated into the intended base and every
+  required delivery step verified before finalization, including deployment when required. A
+  local-only required change is unfinished work. Cancellation, supersession,
+  and other conclusive closures follow their verified disposition instead.
 - Remove only clean, exact, task-owned transient resources that no remaining
   stack layer needs: local and remote branches, worktrees, disposable
   checkouts, temporary files, task processes, containers, images, sockets,
@@ -276,13 +283,31 @@ to route established steps again.
   or previews. Authority to create an explicitly disposable resource includes
   its teardown after the terminal-outcome, ownership, and need checks pass.
   Age or cleanliness alone never proves ownership or removal eligibility.
+- Check every temporary checkout for removal after the required verified
+  outcome. Within granted authority, retire obsolete task processes and replace
+  cross-worktree dependency links with a stable arrangement, verify affected
+  consumers still work, then remove the obsolete checkout. Preserve remaining
+  stack needs and unrelated active work. Moving live databases or changing
+  protected resources requires applicable authority and proof.
 - Preserve Issues, pull requests, commits, tags, releases, proof, and other
-  durable truth. Preserve persistent, shared, production, materially changed,
-  protected, gated, dirty, active, unique, user-owned, or ambiguous resources
-  until applicable authority exists. Transfer unknown residue to Repository
-  Reconciliation with its exact path, branch, `HEAD`, files, reason, and next
-  action; report the outcome closed but not fully finalized while
-  classification remains.
+  durable truth in their canonical locations. Verify existing Git history and
+  durable records before relying on them; unpublished work is not assumed
+  remotely recoverable. Preserve identified required information lacking a
+  durable copy. Uniqueness alone does not establish importance. Generated
+  packages, build output, disposable fixtures, and superseded experiments need
+  no default archive or indefinite retention once verified disposable. Required
+  evidence remains durable; redundant copies do not require their checkout.
+- Preserve persistent, shared, production, materially changed, protected, gated,
+  dirty, active, user-owned, or ambiguous resources until applicable authority
+  exists. Inspect unique work before classifying it. For every retained
+  exception, record the exact target, current need or unresolved condition,
+  owner where known, and next action. Continue independent eligible cleanup.
+  Transfer unknown residue to Repository Reconciliation with its exact path,
+  branch, `HEAD`, files, reason, and next action; report the outcome closed but
+  not fully finalized while classification or task-owned obstacles remain.
+  Verify every removal's exact after-state and record cleanup or retained
+  exceptions in the durable handoff. A verified continuing need may justify
+  retention; an unresolved obstacle does not establish completed finalization.
 - Use native closing linkage only for a pull request that fully resolves the
   Issue, and use references for partial work. Close parents only after their
   acceptance criteria are satisfied and required children are terminal. Close
@@ -369,13 +394,14 @@ to route established steps again.
   when they are sufficient.
 - The implementation worker leaves a concise durable handoff on the Issue and
   PR with its branch, exact `HEAD`, proof state, version state, delivery state,
-  blockers, and next action. A coordinator independently verifies current Git
+  cleanup state, finalization state, blockers, and next action. A coordinator independently verifies current Git
   and GitHub state from that evidence, then starts the next unblocked Issue in
   another fresh context without importing the worker transcript.
 - An interrupted task may resume the same Issue when its context remains
   useful. A resumed or fresh task recovers the current Issue, workspace,
-  branch, `HEAD`, proof state, granted authority, delivery state, blockers, and
-  next action from Git, GitHub, project instructions, and the durable handoff.
+  branch, `HEAD`, proof state, granted authority, delivery state, cleanup state,
+  finalization state, blockers, and next action from Git, GitHub, project
+  instructions, and the durable handoff.
   Do not recreate completed work or request completed approvals again.
 - Keep the contract host-neutral. Tasks, threads, worktrees, and equivalent
   mechanisms are adapter choices, not global controls. Do not create a

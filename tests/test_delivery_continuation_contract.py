@@ -339,6 +339,18 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         del incomplete["handoff"]["proof-state"]
         self.assertTrue(validate_case(incomplete, self.contract))
 
+    def test_cleanup_and_finalization_survive_handoff_and_recovery(self) -> None:
+        for case_id, field in (("concise-report-back", "handoff"), ("recovery", "recovered_state")):
+            original = self.cases[case_id]
+            for state in ("cleanup-state", "finalization-state"):
+                with self.subTest(case=case_id, state=state):
+                    case = copy.deepcopy(original)
+                    del case[field][state]
+                    self.assertTrue(validate_case(case, self.contract))
+                    case = copy.deepcopy(original)
+                    case[field][state] = ""
+                    self.assertTrue(validate_case(case, self.contract))
+
     def test_event_specific_evidence_is_required(self) -> None:
         missing_handoff = copy.deepcopy(self.cases["concise-report-back"])
         del missing_handoff["handoff"]

@@ -258,6 +258,16 @@ class PluginPackagingTests(unittest.TestCase):
         missing = [relative for relative in expected if not (ROOT / relative).is_file()]
         self.assertEqual(missing, [])
 
+    def test_retirement_contract_and_proof_ship_together(self) -> None:
+        agents = " ".join(read_text("AGENTS.md").split())
+        glossary = read_text("GLOSSARY.md")
+        cases = json.loads(read_text("tests/fixtures/delivery_finalization_cases.json"))
+        self.assertIn("Check every temporary checkout for removal", agents)
+        self.assertIn("**Temporary checkout**:", glossary)
+        self.assertIn("required-deployment-pending", {c["id"] for c in cases["terminal-cases"]})
+        self.assertTrue({"required-evidence-durable", "dependency-resolved", "process-resolved"}
+                        <= {c["id"] for c in cases["resource-cases"]})
+
     def test_runtime_files_are_packaged_and_executable(self) -> None:
         for relative in (
             "bin/agentsmd-global-instructions",
