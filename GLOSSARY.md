@@ -81,6 +81,14 @@ removal or an exact retained exception during Delivery Finalization. Required
 persistent local state has a stable home outside it.
 _Avoid_: archive, permanent task workspace
 
+**Fresh context**:
+A child start seeded with the minimal durable packet and no prior transcript.
+Do not fork the parent transcript. The default is a nested child in the
+coordinator session. A separate host task is the exception when the slice must
+outlive the parent, a human must open it independently, or the writer must
+continue after the parent stops.
+_Avoid_: new sidebar session, new chat as the default, forked parent context
+
 **Repository Reconciliation**:
 A bounded repair path triggered when repository orientation detects drift. It
 refreshes exact evidence, resolves only approved legacy changes, and preserves

@@ -391,12 +391,19 @@ to route established steps again.
   repository, complete Issue, exact base and dependency state, current Project
   Direction and applicable instructions, relevant durable decisions, and
   granted authority. Repository and GitHub evidence replace prior transcripts
-  when they are sufficient.
+  when they are sufficient. A fresh context is a nested child in the
+  coordinator session with that seed packet and no prior transcript. Do not fork the parent transcript.
+  Open a separate host task only when the slice must outlive the parent, a
+  human must open it independently, or the writer must continue after the
+  parent stops.
 - The implementation worker leaves a concise durable handoff on the Issue and
   PR with its branch, exact `HEAD`, proof state, version state, delivery state,
   cleanup state, finalization state, blockers, and next action. A coordinator independently verifies current Git
   and GitHub state from that evidence, then starts the next unblocked Issue in
   another fresh context without importing the worker transcript.
+- When a child finishes, errors, or goes idle, close it so it leaves the working state.
+  Do not copy worker transcripts into the coordinator. Keep concurrent mutating
+  writers few, exclusive, and bounded; do not fan out unbounded children.
 - An interrupted task may resume the same Issue when its context remains
   useful. A resumed or fresh task recovers the current Issue, workspace,
   branch, `HEAD`, proof state, granted authority, delivery state, cleanup state,

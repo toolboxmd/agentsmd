@@ -110,6 +110,8 @@ Issue. Evaluate implementation authority from the full current request.
   unblocked implementation Issue in a fresh context without another
   authorization prompt. Follow Authority and continuation in `AGENTS.md` and
   seed its minimal durable context packet instead of the prior conversation.
+  Fresh context means a nested child in the coordinator session, not a new
+  host task, unless Authority and continuation requires a separate host task.
 - When the request was planning-only or otherwise lacks implementation
   authority, ask exactly once for authorization and name the first unblocked
   implementation Issue. Await that authority before changing implementation

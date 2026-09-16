@@ -36,6 +36,11 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         contract = agents.split(CONTRACT_HEADING, 1)[1].split("\n## ", 1)[0]
         self.assertIn("Delivery Authority", contract)
         self.assertIn("fresh context", contract)
+        self.assertIn("nested child", contract)
+        self.assertIn("Do not fork the parent transcript", contract)
+        self.assertIn("separate host task", contract)
+        self.assertIn("leaves the working state", contract)
+        self.assertIn("unbounded children", contract)
         self.assertIn("durable handoff", contract)
         self.assertIn("recover", contract)
 
@@ -50,6 +55,12 @@ class DeliveryContinuationContractTests(unittest.TestCase):
 
     def test_glossary_and_to_tickets_point_to_the_global_contract(self) -> None:
         glossary = (ROOT / "GLOSSARY.md").read_text(encoding="utf-8")
+        self.assertEqual(glossary.count("**Fresh context**:"), 1)
+        fresh = glossary.split("**Fresh context**:", 1)[1].split("\n\n**", 1)[0]
+        self.assertIn("nested child", fresh)
+        self.assertIn("Do not fork the parent transcript", fresh)
+        self.assertIn("separate host task", fresh)
+        self.assertIn("no prior transcript", fresh)
         marker = "**Delivery Authority**:"
         self.assertEqual(glossary.count(marker), 1)
         entry = glossary.split(marker, 1)[1].split("\n\n**", 1)[0]
