@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [8.8.2] - 2026-09-16
+
+### Changed
+
+- Make agent communication concise without losing required context
+
 ## [8.8.1] - 2026-09-16
 
 ### Changed

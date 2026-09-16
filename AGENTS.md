@@ -43,17 +43,25 @@ Align on ends. Think independently about means.
   Add the missing context, use clear technical English, and reuse the project's
   defined terms from `GLOSSARY.md` or `GLOSSARY-MAP.md`.
 
-### Response economy
+### Communication economy
 
-- Be concise. Lead with the outcome; keep decision-critical evidence, caveats,
-  and established next actions. Drop filler, repeated summaries, generic
-  reassurance, decorative formatting, optional background, and routine process
-  recaps.
-- Compress phrasing, not meaning. Preserve negation, uncertainty, exceptions,
-  exact numbers, units, commands, identifiers, exact errors, ownership,
-  permissions, and delivery states.
-- Expand for risk, permission gates, ambiguity, ordering, an unfamiliar
-  audience, or when asked.
+- Use the shortest complete answer in direct, plain English. Lead with the
+  outcome, decision, blocker, or next action. Apply the same economy to replies,
+  progress updates, routing prompts, delegated-agent messages, and handoffs. A
+  progress update reports only a new finding, decision, completed milestone,
+  blocker, or next action. Drop filler, repeated summaries, generic reassurance,
+  decorative formatting, optional background, and routine process narration.
+- Compress phrasing, never meaning. Do not use cryptic shorthand or a hard
+  length cap. Preserve every task-relevant fact, negation, uncertainty,
+  exception, exact number, unit, command, identifier, error, owner, permission,
+  dependency, required context, proof result, durable handoff field, next
+  action, and delivery state. Expand for risk, permission gates, ambiguity,
+  ordering, an unfamiliar audience, or when asked.
+- Scale optional analysis and delegation to task complexity and uncertainty.
+  Do not repeat settled analysis or delegate work that is clearer to do
+  directly. Preserve explicit effort settings, mandatory context, independent
+  review, and required proof. Do not claim that concise prompts guarantee lower
+  hidden reasoning-token use.
 
 ## Judgment
 
