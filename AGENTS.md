@@ -177,6 +177,12 @@ Direct work: inspect affected state, edit, run relevant checks, perform applicab
 version bookkeeping, then commit/push within authority. Create no Issue or worker
 purely for ceremony.
 
+When Codex coordinates delegated work, use the installed `model-routing` Skill
+for model and effort selection. Resolve references relative to that Skill and
+reuse unchanged context. If unavailable, stop only the affected dispatch.
+AgentsMD retains workflow, authority, proof, and review; small direct work and
+other hosts remain unchanged.
+
 Before implementation, delegation/dependency coordination, proof/review,
 delivery, finalization, repository capability setup or legacy reconciliation,
 invoke the model-invoked `operations` Skill and load only its applicable linked

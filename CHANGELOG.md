@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [11.0.0] - 2026-09-17
+
+### Changed
+
+- Delegate Codex model selection to the external Model Router skill
+
 ## [10.0.0] - 2026-09-17
 
 ### Changed

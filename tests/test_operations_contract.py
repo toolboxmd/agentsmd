@@ -59,7 +59,7 @@ class OperationsContractTests(unittest.TestCase):
                 ["python3", "-c", "from pathlib import Path; import sys; p=Path(sys.argv[1]); print((p.parent/'references/verification.md').read_text())", str(entry)],
                 cwd=cwd, text=True, capture_output=True, check=True,
             )
-            self.assertIn("Codex Luna", result.stdout)
+            self.assertIn("independent Codex review", result.stdout)
             self.assertNotIn("wrong source", result.stdout)
 
     def test_global_installer_resolves_canonical_modules_through_symlink(self):
@@ -93,12 +93,16 @@ class OperationsContractTests(unittest.TestCase):
             "Delegate when it reduces total work or provides required independence.",
             "Create no Issue or worker purely for ceremony",
             "Ownership also covers shared services, databases, ports and deployment targets",
+            "installed `model-routing` Skill",
+            "stop only the affected dispatch",
         ):
             self.assertIn(clause, core)
         verification = words(SKILL.parent / "references/verification.md")
         self.assertIn("exact user-approved prose replacement, matching expected-text assertions, and required version bookkeeping", verification)
         self.assertIn("Self-review and relevant checks still apply", verification)
-        self.assertIn("Codex Luna review at maximum reasoning against its exact SHA", verification)
+        self.assertIn("independent Codex review against its exact SHA", verification)
+        self.assertNotIn("Codex Luna", verification)
+        self.assertNotIn("maximum reasoning", verification)
 
     def test_context_reuse_and_proof_ownership_preserve_freshness(self):
         core = words(ROOT / "AGENTS.md")

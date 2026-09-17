@@ -240,9 +240,16 @@ sessions retain the Skill inventory and instruction chain loaded at startup.
 
 ### Codex
 
+Install [Model Router](https://github.com/toolboxmd/model-router)'s
+`model-routing` Skill before installing or updating AgentsMD for Codex.
+AgentsMD does not bundle it. Missing routing resources stop only delegated
+Codex work; direct work and other hosts remain unchanged.
+
 Add the ToolboxMD marketplace and install the plugin:
 
 ```sh
+# First install Model Router's model-routing Skill from an exact release:
+# https://github.com/toolboxmd/model-router#install-from-a-release
 codex plugin marketplace add toolboxmd/marketplace
 codex plugin add agentsmd@toolboxmd
 ```
