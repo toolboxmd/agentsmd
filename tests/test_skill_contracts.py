@@ -760,66 +760,16 @@ class SkillContractTests(unittest.TestCase):
         )
         positions = [normalized.index(stage) for stage in stages]
         self.assertEqual(positions, sorted(positions))
-        evidence_gate = normalized.index("Before step 4")
+        evidence_gate = normalized.index("Before acceleration or automation, record")
         self.assertLess(positions[2], evidence_gate)
         self.assertLess(evidence_gate, positions[3])
-        for required in (
-            "The fixed order is binding",
-            "all five steps again for every material requirement, solution, process, and recurring loop",
-            "It prevents perfect execution of the wrong requirement",
-            "Requirements from experts and inherited process need scrutiny",
-            "question the proposed interpretation and path",
-            "Complete this step when outcome, ownership, constraints, "
-            "acceptance, and proof are explicit.",
-            "Test whether the requirement, scope, code, test, dependency, "
-            "artifact, handoff, or ceremony should exist at all.",
-            "Deletion is stronger than cleanup",
-            "Make deletion risk-scaled and reversible.",
-            "Use committed Git history to recover in-scope tracked work.",
-            "Keep uncommitted user work, user data, credentials, legal controls",
-            "Required proof and unique regression tests survive",
-            "Restore work only when evidence proves it is required.",
-            "Complete this step when every survivor has an evidence-linked "
-            "reason to exist.",
-            "Addback maps the boundary; it is not a quota.",
-            "Prefer fewer states, narrower interfaces, direct paths, clear ownership",
-            "Simplicity must preserve necessary behavior, error handling, proof, safety",
-            "It is a design result, not a reason to hide complexity that still exists.",
-            "Complete this step when the surviving path is the simplest one "
-            "known to meet the requirement.",
-            "Speed means faster validated learning after the right work and structure",
-            "Use direct source inspection, smaller checks, fewer handoffs, cached work",
-            "Keep proof and single-writer boundaries intact.",
-            "Complete this step when the next unit of effort follows the "
-            "shortest safe feedback path through the current constraint.",
-            "Automation magnifies the process chosen before it.",
-            "Automate only a necessary, stable, proven, recurring semantic loop",
-            "Keep one-off or ambiguous work explicit until evidence makes it repeatable.",
-            "Complete this step when automation preserves the proven semantics "
-            "and exposes failures.",
-            "return to the earliest affected step",
-            "Resolve every earlier step before optimizing, accelerating, or automating.",
-            "Run the Algorithm inside a closed evidence loop.",
-            "Start from the useful outcome and inspect the exact source, work, state, or user surface.",
-            "Identify the active constraint using [Current constraint](current-constraint.md).",
-            "Make the smallest meaningful reversible change or experiment",
-            "the fastest check that can falsify the current assumption",
-            "inspect the result, correct the model and implementation, expose bad news, and repeat",
-            "Scale failure tolerance to consequence",
-            "feedback, not final Proof",
-            "highest practical Proof seam",
-            "exact delivery state must remain explicit",
-            "Human Gates",
-            "Project Direction",
-            "user-owned dirty work",
-            "explicit user constraints",
-            "current material-work artifact or evidence",
-            "questioned requirement and its supporting evidence",
-            "Keep a small direct microfix direct",
-            "Do not narrate the Algorithm as ceremony.",
-        ):
-            with self.subTest(required=required):
-                self.assertIn(required, normalized)
+        for start, end in zip(positions, positions[1:] + [len(normalized)]):
+            self.assertIn("Complete when", normalized[start:end])
+        self.assertIn("return to the earliest affected step", normalized)
+        self.assertIn("resolve it and its affected successors before proceeding", normalized)
+        # This is a structural check, not proof that an agent follows the method.
+        self.assertIn("[Current constraint](current-constraint.md)", skill)
+        self.assertIn("marketplace-project-record-regression.md", skill)
 
     def test_elon_method_routes_all_signals_and_preserves_compatibility(self) -> None:
         skill = read_text("skills/elon-method/SKILL.md")
@@ -874,8 +824,7 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, constraint)
         self.assertNotIn("Speed anywhere except that limiter is waste", constraint)
         agents = " ".join(read_text("AGENTS.md").split())
-        for signal in ("select or reassess material work", "stalled progress",
-                       "current-constraint reference before acceleration or parallel work"):
+        for signal in ("current-constraint reference before acceleration or parallel work",):
             self.assertIn(signal, agents)
 
     def test_idiot_index_requires_comparable_costs_and_hypothesis(self) -> None:

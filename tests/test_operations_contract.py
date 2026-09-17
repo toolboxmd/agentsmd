@@ -89,14 +89,9 @@ class OperationsContractTests(unittest.TestCase):
     def test_direct_work_boundary_keeps_cost_judgment_and_proof(self):
         core = words(ROOT / "AGENTS.md")
         for clause in (
-            "main agent owns reasoning, planning, orchestration, integration and outcome accountability",
-            "Delegate substantive implementation",
-            "briefing a worker, loading its context, coordination and checking its handoff would likely consume more tokens",
-            "not invented token counts or line-count thresholds",
-            "Unresolved design, shared runtime/API/schema contract changes and protected external impact do not qualify",
-            "exact user-approved prose replacement can qualify",
+            "Make the smallest possible change to achieve the wanted result.",
+            "Delegate when it reduces total work or provides required independence.",
             "Create no Issue or worker purely for ceremony",
-            "small code changes do not inherit the prose-review exception",
             "Ownership also covers shared services, databases, ports and deployment targets",
         ):
             self.assertIn(clause, core)

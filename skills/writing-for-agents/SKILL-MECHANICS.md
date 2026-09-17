@@ -1,22 +1,28 @@
 # Skill mechanics
 
-The skill-specific branch of [`writing-for-agents`](SKILL.md): what changes when the document is a skill (frontmatter, the invocation choice, and router skills). Everything else about writing it is the universal reference in `SKILL.md`.
+Use the writing guidance in [SKILL.md](SKILL.md); this reference covers packaging
+and invocation choices.
 
 ## Invocation
 
-Two choices, trading the two loads:
+Choose model invocation when the agent needs to discover the skill autonomously.
+Write its description for selection: what it does and when it applies. Keep the
+description economical because discovery exposes it before the body is loaded.
+Omit `disable-model-invocation` for this mode.
 
-- A **model-invoked** skill keeps a `description`, so the agent can fire it autonomously, and other skills can reach it. You can still type its name: model-invocation always _includes_ user reach; a description only ever adds agent discovery, never removes the human's. The description is the skill's top-level context pointer, forced to stay loaded at all times: permanent context load in exchange for discoverability. A model-invoked skill whose content is all reference is also one home for shared reference: another skill can invoke it, so reference needed by several skills lives in one place. Mechanics: omit `disable-model-invocation`, and write a model-facing description carrying the trigger branches (the pointer-writing rules in `SKILL.md` apply in full).
-- A **user-invoked** skill strips the description from the agent's reach: only the human typing its name can invoke it, and no other skill can. Zero context load, but it spends cognitive load: you are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing: a one-line summary, trigger lists stripped.
+Use `disable-model-invocation: true` for human-controlled workflows. Write a short
+human-facing description and match the target host's invocation metadata to that
+choice. User control is valuable where judgment belongs to the user; avoid making
+them remember routine routing the agent can perform.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+## Shared references and separate skills
 
-Shared reference that two user-invoked skills both need can live in neither: with no descriptions, neither can fire the other. Push it to a plain file outside the skill system: external reference any skill can point at.
+Put shared guidance in one referenced file when consumers need the same rules.
+A reference need not become another discoverable skill. Create a separate skill
+when it has a distinct useful invocation trigger or must be selected independently.
 
-## Splitting by invocation
-
-The invocation cut of splitting (the sequence cut lives in `SKILL.md`): split off a model-invoked skill when you have a distinct leading word that should trigger it on its own (a trigger word you actually use in your prompts), or another skill must reach it. You pay context load for the new always-loaded description, so that independent reach has to be worth it.
-
-## Router skills
-
-When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each, so the human has one skill to remember instead of many. It can only hint, never fire them: user-invoked skills have no description, so nothing but the human can reach them.
+A router earns its place when selecting among existing workflows is itself a
+recurring problem. It should identify the right workflow without duplicating it.
+Preserve explicit human-selection boundaries; naming another workflow does not
+authorize invoking it. Check the target host's supported invocation behavior
+rather than assuming every host loads or composes skills identically.

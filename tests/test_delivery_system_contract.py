@@ -40,7 +40,7 @@ class DeliverySystemContractTests(unittest.TestCase):
             "website-current",
         ):
             with self.subTest(state=state):
-                self.assertIn(state, self.agents)
+                self.assertIn(state, " ".join(self.modules.values()))
 
     def test_parallel_review_version_and_runner_contract_is_present(self) -> None:
         required = (

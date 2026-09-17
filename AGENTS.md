@@ -80,8 +80,7 @@ Align on ends. Think independently about means.
 
 ## Work
 
-- Do the requested work and the minimum needed to make its useful outcome
-  function.
+- Make the smallest possible change to achieve the wanted result.
 - Apply Authority and continuation to mutating work and delivery decisions.
   Load the relevant `operations` reference before its dependent action.
 - Persistent Host Automation: before creating or changing a host service,
@@ -92,16 +91,12 @@ Align on ends. Think independently about means.
 ### Elon method
 
 After Project Direction is loaded, invoke the model-invoked `elon-method` Skill
-for every material requirement, solution design, process design, and
-recurring-loop automation. Use it to select or reassess material work, identify
-stalled progress, and test inherited assumptions, novel designs, and cost claims.
+for material requirements, solution design, process design, and recurring-loop
+automation, before accepting features, writing specs or creating tickets.
+Use it to reassess stalled work and test inherited assumptions or cost claims.
 Load its current-constraint reference before acceleration or parallel work.
-Question requirements, delete unnecessary work, simplify, then accelerate and
-automate. Apply it before accepting features, writing specs or creating tickets.
-Reuse settled reasoning;
-revisit affected decisions when evidence changes. Record cuts, simplifications
-and why surviving scope is necessary in the existing plan or Issue. A small
-direct microfix whose requirement and solution are already clear stays direct.
+Reuse settled reasoning; revisit affected decisions when evidence changes.
+A small direct microfix whose requirement and solution are clear stays direct.
 
 - Keep audits, diagnoses, explanations, and reviews read-only unless the user
   asks for implementation.
@@ -111,8 +106,6 @@ direct microfix whose requirement and solution are already clear stays direct.
   or stage them. Continue only while your file set and proof remain independent.
   Stop for unsafe overlap, a moving base, or a material decision, and report
   unrelated changes separately in the handoff.
-- Keep each branch and file set under one writer. Parallelize only independent
-  work.
 - Keep the diff focused on the Issue or authorized direct task. Leave adjacent
   cleanup for a separate Issue.
 
@@ -174,21 +167,15 @@ trigger and approval contracts. The Skill Catalogue owns provenance.
 
 ## Execution and module routing
 
-The main agent owns reasoning, planning, orchestration, integration and
-outcome accountability. Delegate substantive implementation. For a bounded
-change with settled requirements, work directly when briefing a worker,
-loading its context, coordination and checking its handoff would likely
-consume more tokens than performing the change directly. Judge from task
-evidence, not invented token counts or line-count thresholds. Unresolved
-design, shared runtime/API/schema contract changes and protected external
-impact do not qualify for this shortcut. An exact user-approved prose
-replacement can qualify even in this global contract; its review exception
-remains limited to the verification module's exact conditions.
+The main agent owns reasoning, planning, integration, and the outcome.
+Delegate when it reduces total work or provides required independence.
+Choose after simplifying the solution. Account for briefing, context loading,
+coordination, and checking the result; use task evidence, not invented token
+estimates. Preserve explicit user choices and required review.
 
-Small direct work: inspect affected state, edit, run relevant checks, perform
-applicable version bookkeeping, then commit/push within authority. Create no
-Issue or worker purely for ceremony. Preserve authorized PR, CI, merge and
-release gates; small code changes do not inherit the prose-review exception.
+Direct work: inspect affected state, edit, run relevant checks, perform applicable
+version bookkeeping, then commit/push within authority. Create no Issue or worker
+purely for ceremony.
 
 Before implementation, delegation/dependency coordination, proof/review,
 delivery, finalization, repository capability setup or legacy reconciliation,
@@ -277,9 +264,6 @@ to route established steps again.
   legacy input ledgers with no active tracker or project-truth role. Reconcile
   unique entries into their canonical owners before separately authorized
   deletion. Do not add new delivery state or tracked intent to them.
-- Every project `AGENTS.md` keeps its five newest meaningful dated changes, or
-  all entries until five exist. Older completed history belongs in
-  `CHANGELOG.md`.
 - Use `GOAL_TEMPLATE.md` only when GitHub Issue state does not provide the
   required continuation contract.
 
@@ -292,8 +276,5 @@ response. Report outcome, unchecked areas, decisions and blockers. For Live
 Verification, report the exact artifact, target, public path, real
 integrations exercised and observed result.
 
-Report qualified, implemented, proved, reviewed, committed, pushed, PR-opened,
-approved, merged, closed, released, published, distributed or deployed,
-installed or activated, loaded, Live Verified, website-current, cleanup and
-finalization separately. A state is positive only after its own evidence
-exists. A failed or unperformed step never becomes a successful delivery claim.
+Report the achieved result and any unfinished required steps. Claim a delivery
+state only when its evidence exists.
