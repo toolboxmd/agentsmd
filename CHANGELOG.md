@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [9.2.1] - 2026-09-17
+
+### Changed
+
+- Make the Algorithm drive planning and use concise communication across agent outputs
+
 ## [9.2.0] - 2026-09-17
 
 ### Added
