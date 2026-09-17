@@ -20,11 +20,11 @@
   report the work as not live-verified. If the Issue requires Live
   Verification, the work remains blocked.
 
-- Give each authored implementation slice an independent Codex Luna review at
-  maximum reasoning against its exact SHA, unless it consists solely of an
-  exact user-approved prose replacement, matching expected-text assertions,
-  and required version bookkeeping. Self-review and relevant checks still
-  apply. A deterministically generated
+- Give each authored implementation slice an independent Codex review against
+  its exact SHA through the core execution routing contract, unless it consists
+  solely of an exact user-approved prose replacement, matching expected-text
+  assertions, and required version bookkeeping. Self-review and relevant
+  checks still apply. A deterministically generated
   Toolybara promotion pull request uses generated-scope validation instead.
   Apply a lower-layer review fix in the earliest owning layer, checkpoint every
   descendant, rebase it onto the corrected exact SHA, and re-prove every

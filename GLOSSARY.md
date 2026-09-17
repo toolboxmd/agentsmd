@@ -5,6 +5,11 @@ The ToolboxMD project that owns the portable agent operating contract and its
 installable workflow plugin.
 _Avoid_: Matt Skill pack, global prompt repository
 
+**Model Router**:
+The separate ToolboxMD plugin that selects the model and reasoning effort for
+routed Codex dispatches. AgentsMD owns workflow, authority, proof, and review.
+_Avoid_: AgentsMD model policy, routing matrix
+
 **Project Direction**:
 The coherent repository-root triad of `VISION.md`, `MISSION.md`, and
 `OBJECTIVE.md` that owns the project's confirmed long-range destination,
