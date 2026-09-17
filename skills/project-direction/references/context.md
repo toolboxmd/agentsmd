@@ -59,4 +59,3 @@
   contributing when its outcome advances the Objective even when the Objective
   does not name its task or Issue. Every proposed Spec and Issue must state how
   its outcome advances the current Objective.
-

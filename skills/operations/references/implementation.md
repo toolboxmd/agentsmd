@@ -94,4 +94,3 @@ Skill ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
 Substantive tracked implementation uses one ready Issue, one task branch, and one PR.
 Selected workflows may define a different structure when dependencies require
 it.
-
