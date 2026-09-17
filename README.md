@@ -150,9 +150,11 @@ before subsequent strategic judgment.
 
 ## Delivery System v1
 
-The portable contract in `AGENTS.md` owns shared lifecycle, execution-mode,
-review, SemVer, CI, artifact, website, and evidence semantics. It reports each
-delivery state separately. Projects can [reuse scoped proof](docs/scoped-proof.md)
+The core in `AGENTS.md` owns alignment, authority, and routing. The applicable
+[`operations` modules](skills/operations/SKILL.md) own lifecycle, execution,
+review, artifact, website, and evidence procedures; `version-control` owns
+version mechanics. Each delivery state is reported separately. Projects can
+[reuse scoped proof](docs/scoped-proof.md)
 under an explicit trusted policy: complete baseline coverage plus current affected
 and artifact checks. Unknown scope stops with a reason. Projects without an
 adapter retain their complete merge and release gates.
