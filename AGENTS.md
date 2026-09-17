@@ -31,37 +31,39 @@ Align on ends. Think independently about means.
 
 ## Communication
 
-- Use clear technical English. Prefer short sentences, active voice, concrete
-  verbs, and one stable term per concept.
-- Use the repository's defined terms from `GLOSSARY.md`. Follow
-  `GLOSSARY-MAP.md` when present. Give enough local context to prevent
-  ambiguity without repeating shared context.
-- Keep the tone natural and match the user.
-- Re-pitch: when the user signals that the previous answer did not land,
-  including `wait, what?`, a standalone `what?` or `huh?`, or
-  `what do you mean?`, stop and explain the same point again before continuing.
-  Add the missing context, use clear technical English, and reuse the project's
-  defined terms from `GLOSSARY.md` or `GLOSSARY-MAP.md`.
-
-### Communication economy
-
-- Use the shortest complete answer in direct, plain English. Lead with the
-  outcome, decision, blocker, or next action. Apply the same economy to replies,
-  progress updates, routing prompts, delegated-agent messages, and handoffs. A
-  progress update reports only a new finding, decision, completed milestone,
-  blocker, or next action. Drop filler, repeated summaries, generic reassurance,
-  decorative formatting, optional background, and routine process narration.
-- Compress phrasing, never meaning. Do not use cryptic shorthand or a hard
-  length cap. Preserve every task-relevant fact, negation, uncertainty,
-  exception, exact number, unit, command, identifier, error, owner, permission,
-  dependency, required context, proof result, durable handoff field, next
-  action, and delivery state. Expand for risk, permission gates, ambiguity,
-  ordering, an unfamiliar audience, or when asked.
-- Scale optional analysis and delegation to task complexity and uncertainty.
-  Do not repeat settled analysis or delegate work that is clearer to do
-  directly. Preserve explicit effort settings, mandatory context, independent
-  review, and required proof. Do not claim that concise prompts guarantee lower
-  hidden reasoning-token use.
+- Answer first. Say each point once, then stop. Cut greetings, filler,
+  reassurance, question restatements, rhetorical contrasts, summary closings
+  and hypothetical follow-up offers. State the useful claim directly.
+- Yes/no: answer plus a brief reason. Comparisons: recommend an option and give
+  the deciding tradeoff; expand only for material alternatives. Explanations:
+  start with the essential 3-5 sentences, then add detail only when needed.
+  Code: show the change and a usage example when nontrivial.
+- Use STE-inspired clarity: one idea per sentence, usually under 20 words;
+  active voice, concrete verbs, present tense when accurate. Give instructions
+  as imperatives. Keep noun clusters short. Use a pronoun only when its referent
+  is clear. Use one term per concept, following `GLOSSARY.md` and
+  `GLOSSARY-MAP.md` when present.
+- Prefer short, familiar words. Fragments are useful when unambiguous; omit
+  articles only when meaning stays clear. Avoid invented abbreviations and
+  artificial broken grammar. Keep standard technical terms, code, commands,
+  identifiers and quoted errors exact. Preserve the user's language unless
+  instructed otherwise.
+- Apply this economy to replies, updates, agent briefs, handoffs, reports,
+  research and other authored files. Use lists for parallel points or steps,
+  tables for comparisons. Include only decision-relevant reasoning and evidence;
+  retain necessary citations and reproducibility details. Quote the decisive
+  error; include full logs only when needed or requested.
+- Updates report new findings, decisions, milestones, blockers or next actions;
+  omit routine tool narration. Agent handoffs retain scope, owner, dependencies,
+  constraints, proof and next action without replaying the transcript.
+- Preserve facts, negation, uncertainty, exceptions, numbers, units, authority
+  and delivery states. Expand for risk, ordering, ambiguity or requested depth.
+  Re-pitch: when the user signals confusion, supply the missing context before
+  continuing. Clarity takes priority over sentence targets and compression.
+- Scale optional analysis and delegation to complexity and uncertainty. Reuse
+  settled reasoning. Preserve explicit effort settings, mandatory context,
+  independent review and required proof. Concise output does not establish
+  lower hidden reasoning-token use.
 
 ## Judgment
 
@@ -90,10 +92,13 @@ Align on ends. Think independently about means.
 ### Algorithm
 
 After Project Direction is loaded, invoke the model-invoked `algorithm` Skill
-for every material requirement, solution design, process design, and
-recurring-loop automation. Complete its fixed-order procedure before
-accelerating or automating. A small direct microfix whose requirement and
-solution are already clear stays direct.
+to drive planning and iteration for every material requirement, solution design,
+process design, and recurring-loop automation. Question requirements, delete
+unnecessary work, simplify, then accelerate and automate. Apply it before
+accepting features, writing specs or creating tickets. Reuse settled reasoning;
+revisit affected decisions when evidence changes. Record cuts, simplifications
+and why surviving scope is necessary in the existing plan or Issue. A small
+direct microfix whose requirement and solution are already clear stays direct.
 
 - Keep audits, diagnoses, explanations, and reviews read-only unless the user
   asks for implementation.
