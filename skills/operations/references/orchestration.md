@@ -2,32 +2,22 @@
 
 ## One final approval PR
 
-- For one requested outcome that needs multiple PRs, create an exclusively
-  owned task integration branch from the intended base. Target component PRs
-  at it, or stack them on their dependencies and retarget them to integration
-  in dependency order. A small task uses its ordinary PR as the final approval
-  PR; existing local microfix exceptions remain.
-- Before using internal integration, verify that branch protections and CI
-  support unreleased component heads and that internal pushes and merges
-  cannot trigger release, publication, deployment, or other protected external
-  impact. Route unsupported capability through [repository setup](repository-setup.md);
-  do not bypass checks or invent component releases.
-- The agent may merge a component into the task integration branch after
-  required checks and independent review pass for its exact head and current
-  base under [verification](verification.md). This is internal integration
-  authority, not approval to merge into the intended base. Apply the dependency
-  rules below for earliest-owner fixes, rebase, retarget, and revalidation.
-- Open one final approval PR from integration to the intended base. Present the
-  complete cumulative diff, combined verification, and a short map of component
-  PRs. Require complete outcome acceptance and independent review of this exact
-  cumulative candidate; component passes alone do not prove the final merge
-  gate. Follow [delivery](delivery.md) for its single version transition and
-  merge only after explicit human approval of the final PR.
-- Internal integration is not final delivery or grounds for Issue closure.
-  Keep component Issues open with integration evidence and references; reserve
-  closing linkage for the final approval PR. After authorized final delivery,
-  apply [finalization](finalization.md) to closure and eligible cleanup. Other
-  Human Gates remain unchanged.
+- For multiple PRs, create an exclusively owned integration branch from the
+  intended base. Target components there; stack dependencies and retarget in
+  merge order using the rules below. Small tasks use one ordinary PR; local
+  microfix exceptions remain.
+- Verify protections and CI accept unreleased components without release,
+  publication, deployment or other protected impact on internal pushes/merges.
+  Otherwise use [repository setup](repository-setup.md), never bypass checks.
+- Agents may merge components only into integration after exact-head/current-base
+  checks and independent [review](verification.md) pass.
+- The final PR targets the intended base: complete cumulative diff, component
+  map, outcome acceptance, combined proof and independent review of the exact
+  candidate. Component checks alone are insufficient. Its merge requires human
+  approval; [delivery](delivery.md) owns the single version transition.
+- Keep component Issues open with integration evidence; only the final PR carries
+  closing linkage. Internal integration is not delivery. After authorized delivery,
+  [finalize and clean up](finalization.md). Other Human Gates remain.
 
 ## Execution and dependencies
 

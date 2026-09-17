@@ -39,8 +39,7 @@
 ## Versioning
 
 - Every completed tracked deliverable has one SemVer transition before commit.
-  Internal component checkpoints belong to the final merge unit, whose version
-  transition follows [delivery](delivery.md). Read-only work and explicit WIP
+  Components defer versioning to [final delivery](delivery.md). Read-only work and explicit WIP
   checkpoints are exempt.
 - Use `major` for incompatible behavior, `minor` for a backward-compatible
   capability, and `patch` otherwise.
@@ -93,6 +92,4 @@ when the user names one or asks to follow that workflow, and stop at their
 approval gates. Other Skills follow their own trigger and approval contracts.
 Skill ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
 
-Substantive tracked implementation uses a ready Issue and one final approval
-PR per requested outcome. When decomposition is useful, apply the internal
-component structure in [orchestration](orchestration.md).
+For component PRs, follow [orchestration](orchestration.md).

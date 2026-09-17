@@ -63,13 +63,11 @@ that must ship as a single release identity and SemVer transition.
 _Avoid_: commit, implementation slice
 
 **Final approval PR**:
-The single cumulative pull request for a requested outcome, reviewed by the
-human for approval to merge into the intended base.
+The cumulative outcome PR requiring human approval to merge into the intended base.
 _Avoid_: component PR, task integration branch
 
 **Component PR**:
-An internally reviewed part of a requested outcome, integrated on its task
-integration branch and included in the final approval PR.
+An internally reviewed change feeding the integration branch and final approval PR.
 _Avoid_: final approval PR, independent release
 
 **Implementation Slice**:

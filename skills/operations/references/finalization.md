@@ -3,7 +3,7 @@
 - Delivery Finalization starts only after review and a verified terminal
   disposition: merge, approved alternative delivery, cancellation,
   duplication, supersession, or equivalent conclusive closure. Internal
-  component integration is not terminal; use the final approval PR outcome.
+  component integration is not terminal.
   An open pull request or review-ready candidate is not terminal. Successful delivery
   requires required code and documentation integrated into the intended base
   and every required delivery step verified before finalization, including
