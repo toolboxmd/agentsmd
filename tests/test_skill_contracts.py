@@ -2045,7 +2045,9 @@ class SkillContractTests(unittest.TestCase):
             "[LOGIC.md](LOGIC.md)",
             "[UI.md](UI.md)",
             "runnable smoke check",
-            "human verdict",
+            "authorized decision-maker",
+            "resume the owning workflow from its next incomplete step",
+            "decision evidence, not production code",
             "owning GitHub Issue",
             "throwaway branch",
         ):
