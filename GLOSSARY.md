@@ -194,3 +194,21 @@ _Avoid_: previous scoped candidate, latest commit
 An on-demand reference owned by the model-invoked `operations` Skill for one
 operating procedure. The core supplies the trigger; the module owns its detail.
 _Avoid_: custom loader, orchestration service
+
+**Elon method**:
+The AgentsMD method combining first principles, idiot index, current constraint,
+and the ordered Algorithm to choose means within confirmed direction and authority.
+
+**Algorithm**:
+The fixed sequence of questioning requirements, deleting unnecessary work,
+simplifying survivors, accelerating, and automating last.
+
+**Current constraint**:
+The evidence-supported limiter whose relief enables the next useful progress
+toward the authorized outcome under confirmed Project Direction.
+_Avoid_: busiest component, permanent bottleneck
+
+**Idiot index**:
+The ratio of quoted finished cost to constituent cost for comparable units and
+scope, used as a diagnostic hypothesis about possible overhead.
+_Avoid_: guaranteed savings, delivery estimate

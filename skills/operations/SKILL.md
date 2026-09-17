@@ -33,5 +33,5 @@ Read only the module whose trigger applies, including linked prerequisites:
 
 Load `delivery-profile` when a Project declares `.toolboxmd/delivery.json` or
 its delivery configuration is being decided. Use `version-control` for version
-mechanics, `project-direction` for direction repair, and `algorithm` for
+mechanics, `project-direction` for direction repair, and `elon-method` for
 material design. Do not load unrelated modules for read-only explanations.

@@ -16,6 +16,7 @@ ACTIVE_SKILLS = {
     "algorithm",
     "delivery-profile",
     "domain-modeling",
+    "elon-method",
     "grill-with-docs",
     "grilling",
     "operations",
@@ -252,6 +253,12 @@ class PluginPackagingTests(unittest.TestCase):
             "tests/test_repository_reconciliation_contract.py",
             "tests/fixtures/specify_workflow_cases.json",
             "skills/algorithm/evals/trigger-evals.json",
+            "skills/elon-method/evals/trigger-evals.json",
+            "skills/elon-method/references/first-principles.md",
+            "skills/elon-method/references/idiot-index.md",
+            "skills/elon-method/references/current-constraint.md",
+            "skills/elon-method/references/algorithm.md",
+            "skills/elon-method/references/marketplace-project-record-regression.md",
             "skills/algorithm/references/marketplace-project-record-regression.md",
             ".toolboxmd/delivery.json",
             "schemas/delivery-v1.schema.json",
@@ -399,6 +406,7 @@ class PluginPackagingTests(unittest.TestCase):
                 if name in {
                     "algorithm",
                     "delivery-profile",
+                    "elon-method",
                     "operations",
                     "project-direction",
                     "version-control",
@@ -434,6 +442,10 @@ class PluginPackagingTests(unittest.TestCase):
             "Delivery Profile",
             "Merge Unit",
             "Implementation Slice",
+            "Elon method",
+            "Algorithm",
+            "Current constraint",
+            "Idiot index",
         ):
             with self.subTest(term=term):
                 self.assertIn(f"**{term}**", glossary)

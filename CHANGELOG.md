@@ -3,6 +3,16 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [9.3.0] - 2026-09-17
+
+### Added
+
+- Add elon-method with evidence-based constraint selection, comparable cost analysis, and ordered Algorithm routing
+
+### Changed
+
+- Route material planning through elon-method and keep algorithm as a compatibility router
+
 ## [9.2.1] - 2026-09-17
 
 ### Changed

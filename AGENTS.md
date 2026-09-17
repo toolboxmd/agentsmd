@@ -89,13 +89,16 @@ Align on ends. Think independently about means.
   persist beyond the current task, read
   `docs/adr/0001-persistent-host-automation.md`.
 
-### Algorithm
+### Elon method
 
-After Project Direction is loaded, invoke the model-invoked `algorithm` Skill
-to drive planning and iteration for every material requirement, solution design,
-process design, and recurring-loop automation. Question requirements, delete
-unnecessary work, simplify, then accelerate and automate. Apply it before
-accepting features, writing specs or creating tickets. Reuse settled reasoning;
+After Project Direction is loaded, invoke the model-invoked `elon-method` Skill
+for every material requirement, solution design, process design, and
+recurring-loop automation. Use it to select or reassess material work, identify
+stalled progress, and test inherited assumptions, novel designs, and cost claims.
+Load its current-constraint reference before acceleration or parallel work.
+Question requirements, delete unnecessary work, simplify, then accelerate and
+automate. Apply it before accepting features, writing specs or creating tickets.
+Reuse settled reasoning;
 revisit affected decisions when evidence changes. Record cuts, simplifications
 and why surviving scope is necessary in the existing plan or Issue. A small
 direct microfix whose requirement and solution are already clear stays direct.
@@ -191,7 +194,7 @@ Before implementation, delegation/dependency coordination, proof/review,
 delivery, finalization, repository capability setup or legacy reconciliation,
 invoke the model-invoked `operations` Skill and load only its applicable linked
 reference. Reuse unchanged modules already in context. Existing
-`project-direction`, `algorithm`, `version-control` and `delivery-profile` Skills
+`project-direction`, `elon-method`, `version-control` and `delivery-profile` Skills
 retain their own roles. A missing required module blocks only its dependent
 action.
 
