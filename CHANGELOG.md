@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [9.1.0] - 2026-09-17
+
+### Added
+
+- Resume owning workflows from authorized prototype decisions
+
 ## [9.0.0] - 2026-09-17
 
 ### Changed

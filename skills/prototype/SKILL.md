@@ -15,10 +15,10 @@ A prototype is **throwaway code that answers a question**. The question decides 
 
 When a session claims a Wayfinder **Prototype Decision Issue**, invoke this
 Skill without asking the human to select it. Build the concrete artifact, then
-stop for the human verdict required by the HITL Issue. For a direct prototype
+obtain the decision required by the owning Issue. For a direct prototype
 request, use the user's question as the owning question.
 
-Record the question, artifact location, and verdict on the owning GitHub Issue.
+Record the question, artifact location, and decision on the owning GitHub Issue.
 
 ## Pick a branch
 
@@ -43,12 +43,15 @@ The two branches produce very different artifacts, so getting this wrong wastes 
    check that proves the artifact starts and its decision-critical interaction
    works.
 5. **Surface the state.** Render the relevant state after each action or
-   variant switch so the human can judge what changed.
-6. **Capture the answer.** Record the human verdict and what evidence changed
-   the decision on the owning GitHub Issue. Keep the prototype as primary
+   variant switch so the decision-maker can judge what changed.
+6. **Capture the answer.** Record the decision and what evidence changed it on
+   the owning GitHub Issue. Keep the prototype as primary
    evidence on a clearly named throwaway branch when existing Git authority
    permits that publication; otherwise report its local path and publication
    state.
-7. **Keep main clean.** Only the validated decision proceeds into production
+7. **Continue from the decision.** After an authorized decision-maker accepts
+   or rejects the prototype, resume the owning workflow from its next incomplete
+   step. Use an accepted prototype as decision evidence, not production code.
+8. **Keep main clean.** Only the validated decision proceeds into production
    implementation. The prototype shell, rejected variants, and temporary
    switcher stay off the main branch.
