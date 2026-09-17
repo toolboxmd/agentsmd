@@ -1,5 +1,26 @@
 # Orchestration and dependencies
 
+## One final approval PR
+
+- For multiple PRs, create an exclusively owned integration branch from the
+  intended base. Target components there; stack dependencies and retarget in
+  merge order using the rules below. Small tasks use one ordinary PR; local
+  microfix exceptions remain.
+- Verify protections and CI accept unreleased components without release,
+  publication, deployment or other protected impact on internal pushes/merges.
+  Otherwise use [repository setup](repository-setup.md), never bypass checks.
+- Agents may merge components only into integration after exact-head/current-base
+  checks and independent [review](verification.md) pass.
+- The final PR targets the intended base: complete cumulative diff, component
+  map, outcome acceptance, combined proof and independent review of the exact
+  candidate. Component checks alone are insufficient. Its merge requires human
+  approval; [delivery](delivery.md) owns the single version transition.
+- Keep component Issues open with integration evidence; only the final PR carries
+  closing linkage. Internal integration is not delivery. After authorized delivery,
+  [finalize and clean up](finalization.md). Other Human Gates remain.
+
+## Execution and dependencies
+
 - Choose the smallest valid execution mode. **Sequential direct work** serves
   one merge unit without useful parallelism. Sequential describes writer
   concurrency: substantive work still uses a delegated single writer. **Independent worktree pull

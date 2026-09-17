@@ -39,7 +39,8 @@
 ## Versioning
 
 - Every completed tracked deliverable has one SemVer transition before commit.
-  Read-only work and explicit WIP checkpoints are exempt.
+  Components defer versioning to [final delivery](delivery.md). Read-only work and explicit WIP
+  checkpoints are exempt.
 - Use `major` for incompatible behavior, `minor` for a backward-compatible
   capability, and `patch` otherwise.
 - Use the `version-control` skill for the canonical version, mirrors, changelog,
@@ -91,6 +92,4 @@ when the user names one or asks to follow that workflow, and stop at their
 approval gates. Other Skills follow their own trigger and approval contracts.
 Skill ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
 
-Substantive tracked implementation uses one ready Issue, one task branch, and one PR.
-Selected workflows may define a different structure when dependencies require
-it.
+For component PRs, follow [orchestration](orchestration.md).

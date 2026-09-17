@@ -152,7 +152,8 @@ its outcome advances the current Objective.
 Orient before mutation: inspect status, branch, HEAD, remotes and requested
 work; resolve the intended base and relevant divergence. Apply Authority and
 continuation. For tracked substantive work, search for an existing GitHub Issue
-in the owning product repository; use one ready Issue, task branch and PR.
+in the owning product repository; use a ready Issue and task branch.
+Use one final approval PR per outcome; decompose through reviewed component PRs.
 An Issue needs outcome, acceptance criteria, non-goals, blockers and proof.
 Read-only work, spikes, WIP checkpoints and explicitly local microfixes stay
 off the Issue-to-PR lane.
@@ -209,7 +210,8 @@ to route established steps again.
 
 - A requested GitHub implementation includes routine Issue updates, an
   exclusive task branch and workspace, implementation, proof, versioning,
-  commits, push, and opening or updating its PR. Merge, release, publication,
+  commits, push, PRs and internal integration under operations orchestration.
+  Final PR merges into the intended base require explicit human approval. Release, publication,
   distribution, installation, or deployment is included only when the current
   request or repository policy explicitly authorizes that exact operation and
   target. Before an external mutation, verify the live target and applicable

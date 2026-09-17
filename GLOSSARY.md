@@ -62,6 +62,14 @@ One independently reviewable and mergeable change, or one dependent stack
 that must ship as a single release identity and SemVer transition.
 _Avoid_: commit, implementation slice
 
+**Final approval PR**:
+The cumulative outcome PR requiring human approval to merge into the intended base.
+_Avoid_: component PR, task integration branch
+
+**Component PR**:
+An internally reviewed change feeding the integration branch and final approval PR.
+_Avoid_: final approval PR, independent release
+
 **Implementation Slice**:
 One authored part of a Merge Unit with an exclusive writer and an independent
 exact-SHA review obligation.
