@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [9.1.0] - 2026-09-17
+
+### Added
+
+- Add one final approval PR per outcome with reviewed internal component integration
+
 ## [9.0.0] - 2026-09-17
 
 ### Changed

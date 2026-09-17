@@ -15,7 +15,10 @@ Record, release policy, documentation, or current delivery state.
 
 - Give one complete merge unit or dependent stack exactly one SemVer
   transition. Classify it from the highest semantic impact in everything that
-  ships. Intermediate stack layers do not carry independent releases.
+  ships. Internal component PRs and intermediate stack layers are incomplete
+  checkpoints of that merge unit, not completed deliverables with independent
+  version bumps or releases. Prepare the single transition on the cumulative
+  final approval PR under `version-control`.
 
 - Every deployable artifact is built once from the exact release SHA, assigned
   an immutable digest, and promoted unchanged through distribution,
@@ -31,9 +34,11 @@ Record, release policy, documentation, or current delivery state.
   separate outcome.
 
 - Before opening or updating a PR, read `CONTRIBUTING.md` when present.
-- A PR is ready when every acceptance criterion is satisfied, required proof
-  is current, the final diff passed self-review, and the version transition is
-  committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
+- A final approval PR is ready when every acceptance criterion is satisfied,
+  required proof is current, the final diff passed self-review, and the version
+  transition is committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
+- Internal component readiness and merge follow [orchestration](orchestration.md).
+  Final approval PR merges require explicit human approval under the core.
 - For an authorized merge, re-check the exact PR head and readiness, use the
   repository's supported merge path, and verify the result.
 - Reuse established repository capability evidence while its assumptions hold.

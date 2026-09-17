@@ -20,9 +20,13 @@ version algorithms in agent instructions.
 1. Strictly read-only task: stop applying this skill, do not bump, and base any
    audit conclusion only on evidence actually inspected. Never fill missing CI
    or repository facts from the version policy.
-2. Intentionally incomplete checkpoint: use the WIP path below and do not bump.
-3. Completed tracked deliverable: run the full workflow.
-4. Missing `.version-policy.json` or `VERSION`: report that adoption is needed.
+2. Internal component checkpoint: follow the incomplete-checkpoint path under
+   [operations orchestration](../operations/references/orchestration.md) and
+   the repository's supported policy. The cumulative final approval PR owns
+   the single version transition; component readiness is not release readiness.
+3. Intentionally incomplete checkpoint: use the WIP path below and do not bump.
+4. Completed tracked deliverable: run the full workflow.
+5. Missing `.version-policy.json` or `VERSION`: report that adoption is needed.
    Do not invent an initial version unless adoption is in scope.
 
 ## Locate the CLI

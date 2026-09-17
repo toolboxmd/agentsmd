@@ -126,6 +126,44 @@ class OperationsContractTests(unittest.TestCase):
         self.assertIn("coordinator independently verifies current Git and GitHub state", coordination)
         self.assertNotIn("Start each unblocked implementation Issue in a fresh context", core)
 
+    def test_final_approval_separates_internal_and_intended_base_authority(self):
+        core = words(ROOT / "AGENTS.md")
+        self.assertIn("Use one final approval PR per requested outcome; use reviewed component PRs internally when the work needs decomposition", core)
+        self.assertIn("Merging the final approval PR into the intended base requires explicit human approval", core)
+        orchestration = words(SKILL.parent / "references/orchestration.md")
+        for clause in (
+            "task integration branch from the intended base",
+            "Target component PRs at it, or stack them on their dependencies",
+            "small task uses its ordinary PR",
+            "existing local microfix exceptions remain",
+            "required checks and independent review pass for its exact head and current base",
+            "internal pushes and merges cannot trigger release, publication, deployment, or other protected external impact",
+            "do not bypass checks or invent component releases",
+            "complete cumulative diff, combined verification, and a short map of component PRs",
+            "independent review of this exact cumulative candidate",
+            "component passes alone do not prove the final merge gate",
+            "Other Human Gates remain unchanged",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, orchestration)
+
+    def test_component_integration_cannot_complete_delivery_or_versioning(self):
+        orchestration = words(SKILL.parent / "references/orchestration.md")
+        for clause in (
+            "Keep component Issues open with integration evidence and references",
+            "reserve closing linkage for the final approval PR",
+            "After authorized final delivery",
+            "eligible cleanup",
+        ):
+            self.assertIn(clause, orchestration)
+        self.assertIn("Internal component integration is not terminal", words(SKILL.parent / "references/finalization.md"))
+        delivery = words(SKILL.parent / "references/delivery.md")
+        self.assertIn("not completed deliverables with independent version bumps or releases", delivery)
+        self.assertIn("Prepare the single transition on the cumulative final approval PR", delivery)
+        versioning = words(ROOT / "skills/version-control/SKILL.md")
+        self.assertIn("Internal component checkpoint", versioning)
+        self.assertIn("component readiness is not release readiness", versioning)
+
     def test_moved_procedures_have_one_owner(self):
         markers = {
             "finalization": "Delivery Finalization starts only after review",
