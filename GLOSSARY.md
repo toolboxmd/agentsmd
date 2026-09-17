@@ -181,3 +181,8 @@ _Avoid_: skipped proof, fast check, complete test rerun
 An exact commit with direct successful proof for every declared check, used as
 the cumulative comparison anchor for scoped proof.
 _Avoid_: previous scoped candidate, latest commit
+
+**Operations module**:
+An on-demand reference owned by the model-invoked `operations` Skill for one
+operating procedure. The core supplies the trigger; the module owns its detail.
+_Avoid_: custom loader, orchestration service

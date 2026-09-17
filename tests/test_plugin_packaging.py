@@ -18,6 +18,7 @@ ACTIVE_SKILLS = {
     "domain-modeling",
     "grill-with-docs",
     "grilling",
+    "operations",
     "project-direction",
     "prototype",
     "research",
@@ -116,12 +117,21 @@ class PluginPackagingTests(unittest.TestCase):
                     "docs/adr/0001-persistent-host-automation.md",
                     "docs/opencode.md",
                     "docs/scoped-proof.md",
+                    "skills/project-direction/references/context.md",
                 ],
                 "requirements": [
                     "AGENTS.md",
                     ".version-policy.json",
                     ".toolboxmd/delivery.json",
                     "schemas/delivery-v1.schema.json",
+                    "skills/operations/references/delivery.md",
+                    "skills/operations/references/finalization.md",
+                    "skills/operations/references/implementation.md",
+                    "skills/operations/references/orchestration.md",
+                    "skills/operations/references/reconciliation.md",
+                    "skills/operations/references/repository-setup.md",
+                    "skills/operations/references/verification.md",
+
                 ],
                 "proof": [
                     "tests/delivery_continuation_validator.py",
@@ -147,6 +157,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/test_repository_reconciliation_contract.py",
                     "tests/test_skill_contracts.py",
                     "tests/test_scoped_proof.py",
+                    "tests/test_operations_contract.py",
                 ],
             },
         )
@@ -261,7 +272,7 @@ class PluginPackagingTests(unittest.TestCase):
         self.assertEqual(missing, [])
 
     def test_retirement_contract_and_proof_ship_together(self) -> None:
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("skills/operations/references/finalization.md").split())
         glossary = read_text("GLOSSARY.md")
         cases = json.loads(read_text("tests/fixtures/delivery_finalization_cases.json"))
         self.assertIn("Check every temporary checkout for removal", agents)
@@ -291,7 +302,7 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_packaged_project_direction_guard_has_matching_contracts(self) -> None:
         loader = read_text("bin/project-direction")
-        agents = read_text("AGENTS.md")
+        agents = read_text("skills/project-direction/references/context.md")
         skill = read_text("skills/project-direction/SKILL.md")
 
         for required in (
@@ -302,7 +313,7 @@ class PluginPackagingTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, loader)
                 self.assertIn(required, agents)
-                self.assertIn(required, skill)
+        self.assertIn("[context.md](references/context.md)", skill)
 
     def test_matt_adaptations_declare_origin_and_licence(self) -> None:
         for name in MATT_ADAPTATIONS:
@@ -388,6 +399,7 @@ class PluginPackagingTests(unittest.TestCase):
                 if name in {
                     "algorithm",
                     "delivery-profile",
+                    "operations",
                     "project-direction",
                     "version-control",
                 }:

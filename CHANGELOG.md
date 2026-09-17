@@ -3,9 +3,11 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
-## [8.8.3] - 2026-09-17
+## [9.0.0] - 2026-09-17
 
 ### Changed
+
+- Move operating procedures into on-demand modules with bounded direct work and reusable context
 
 - Honor local Project Direction exceptions in loader guidance
 - Allow self-review for exact user-approved prose replacements, matching

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "contract": {
-    "authoritative_location": "AGENTS.md#Authority and continuation",
+    "authoritative_location": "skills/operations/references/implementation.md",
     "start_record_fields": [
       "intended-base",
       "branch",
@@ -111,6 +111,23 @@
       "base_moved": true,
       "expected_decision": "stop-affected-writer",
       "unrelated_work_decision": "continue"
+    },
+    {
+      "id": "owned-continuation",
+      "fresh_workspace": false,
+      "reuse_existing": true,
+      "same_task_owner": true,
+      "availability_established": true,
+      "existing_state": "clean"
+    },
+    {
+      "id": "unproven-continuation",
+      "fresh_workspace": false,
+      "reuse_existing": true,
+      "same_task_owner": true,
+      "availability_established": false,
+      "existing_state": "clean",
+      "expected_decision": "stop-affected-writer"
     }
   ]
 }

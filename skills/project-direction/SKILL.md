@@ -15,7 +15,10 @@ description: >
 # Project Direction
 
 Establish one confirmed strategic frame without inventing the user's intent.
-Until the triad is usable, inspect only the evidence needed to establish it and
+Honor explicit local Project Direction opt-outs before applying this Skill.
+For loading and currentness, read [context.md](references/context.md) only when
+that context needs resolution; reuse unchanged complete contents already in context.
+Until the required triad is usable, inspect only the evidence needed to establish it and
 do not begin other project work.
 
 ## Load the contracts
@@ -29,19 +32,9 @@ as files to copy with placeholders intact.
 1. Resolve the Git root. Read all existing root `VISION.md`, `MISSION.md`, and
    `OBJECTIVE.md` files in full. The complete local triad loads before other
    project work even when its upstream currentness is unknown.
-2. Apply the currentness guard after the complete local triad is loaded and
-   before a repository-dependent conclusion treats it as confirmed-current,
-   resolving the intended base, `HEAD`, configured upstream, and locally known
-   ahead/behind state. Use known
-   remote-tracking information when sufficient. Fetch only when current remote
-   state matters and that information is insufficient; do not make pull
-   routine. A known upstream that is ahead or diverged and changes a Project
-   Direction file makes loader status `potentially_stale`: identify the triad
-   as checkout-scoped, reconcile the intended base while preserving user work,
-   then reread all three files before subsequent strategic judgment. Explicit
-   unknown Git metadata limits the currentness claim without suppressing the
-   local triad. The loader and hooks inspect only local Git state and do not
-   access the network or mutate the checkout.
+2. Apply the currentness guard in [context.md](references/context.md) before
+   treating the triad as confirmed-current. Finish when the intended base is
+   reconciled or the currentness claim is explicitly qualified.
 3. Read the relevant repository, Issue, roadmap or milestone, product, ADR,
    glossary, and user evidence. Treat the active request as evidence, not as
    the default Objective candidate. Keep unsupported strategic claims unknown.
