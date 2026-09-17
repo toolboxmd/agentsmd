@@ -35,9 +35,10 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertEqual(agents.count(CONTRACT_HEADING), 1)
         contract = agents.split(CONTRACT_HEADING, 1)[1].split("\n## ", 1)[0]
         self.assertIn("Delivery Authority", contract)
-        self.assertIn("fresh context", contract)
+        contract = " ".join((ROOT / "skills/operations/references/orchestration.md").read_text().split())
+        self.assertIn("fresh child", contract)
         self.assertIn("nested child", contract)
-        self.assertIn("Do not fork the parent transcript", contract)
+        self.assertIn("do not fork the parent transcript", contract)
         self.assertIn("separate host task", contract)
         self.assertIn("leaves the working state", contract)
         self.assertIn("unbounded children", contract)
@@ -46,10 +47,10 @@ class DeliveryContinuationContractTests(unittest.TestCase):
 
     def test_work_delivery_human_gates_and_handoff_use_one_contract(self) -> None:
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-        for heading in ("Work", "Delivery", "Human gates", "Handoff"):
+        for heading in ("Work", "Delivery", "Human gates"):
             with self.subTest(heading=heading):
                 self.assertIn(
-                    "Authority and continuation", section(agents, heading)
+                    "Authority and continuation", " ".join(section(agents, heading).split())
                 )
         self.assertEqual(agents.count("Delivery Authority is authorization"), 1)
 
@@ -72,14 +73,14 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         tickets = (ROOT / "skills/to-tickets/SKILL.md").read_text(encoding="utf-8")
         boundary = section(tickets, "6. Continue at the implementation boundary")
         self.assertIn("Authority and continuation", boundary)
-        self.assertIn("minimal durable context packet", boundary)
+        self.assertIn("minimal durable context packet", " ".join(boundary.split()))
         self.assertNotIn("full current request into that handoff", boundary)
 
     def test_contract_is_host_neutral_and_does_not_create_an_orchestrator(
         self,
     ) -> None:
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
-        contract = section(agents, "Authority and continuation")
+        contract = " ".join((ROOT / "skills/operations/references/orchestration.md").read_text().split())
         for host_control in ("codex_app", "create_thread", "Claude", "Codex"):
             self.assertNotIn(host_control, contract)
         self.assertIn("adapter choices", contract)

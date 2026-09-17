@@ -1,0 +1,7 @@
+interface:
+  display_name: "Operations"
+  short_description: "Load the operating procedure needed for this action"
+  default_prompt: "Use $operations for this repository action."
+
+policy:
+  allow_implicit_invocation: true

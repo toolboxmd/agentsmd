@@ -556,7 +556,12 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
                 }
             ],
         )
-        self.assertIn("Do not begin other project work", payload["action"])
+        self.assertEqual(
+            payload["action"],
+            "Invoke the project-direction skill and establish the complete triad "
+            "before other project work, unless local instructions make Project "
+            "Direction optional.",
+        )
 
     def test_missing_triad_routes_before_git_metadata_inspection(self) -> None:
         self.write_triad()

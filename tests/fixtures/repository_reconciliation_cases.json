@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "contract": {
-    "authoritative-location": "AGENTS.md#Authority and continuation",
+    "authoritative-location": "skills/operations/references/reconciliation.md",
     "trigger": "orientation-detected-drift",
     "mode": "bounded-repair",
     "evidence-scope": [

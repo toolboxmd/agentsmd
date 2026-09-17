@@ -10,14 +10,16 @@ description: >
 # Delivery Profile
 
 Use the profile as Project-specific deltas to the portable Delivery System in
-`AGENTS.md`. This Skill only loads those deltas. Canonical version, Project
+`AGENTS.md` and the `operations` delivery reference. This Skill only loads
+those deltas. Canonical version, Project
 Record, release policy, documentation, and current delivery state remain in
 their owning files.
 
 ## Load
 
 1. Complete the Project Direction load and repository orientation required by
-   `AGENTS.md`. Continue when the complete triad and exact repository root,
+   `AGENTS.md`. Continue when required Project Direction (or an explicit local opt-out)
+   and exact repository root,
    branch, `HEAD`, upstream, and locally known ahead/behind state are present.
 2. From the repository root, locate `bin/delivery-profile`. When this Skill is
    installed as part of AgentsMD, resolve it at `../../bin/delivery-profile`
@@ -38,7 +40,8 @@ their owning files.
    in the handoff and no profile delta has been applied.
 5. On `valid`, apply only the loaded Project-specific deltas. The shared
    lifecycle, review, version, CI, artifact, website, and evidence semantics
-   remain those in `AGENTS.md`. This branch is complete when each declared
+   remain those in `AGENTS.md` and the applicable `operations` references.
+   This branch is complete when each declared
    delta is bound to its owning delivery step and no undeclared delta is
    inferred.
 
@@ -56,7 +59,7 @@ Keep the v1 shape narrow:
   route.
 
 Validate every profile change through the public loader. Add a schema fixture
-for each new valid or invalid boundary. Put shared semantics in `AGENTS.md` and
+for each new valid or invalid boundary. Put shared core decisions in `AGENTS.md`, procedures in `operations`, and
 add a profile field only when Projects can genuinely differ.
 
 ## Scoped proof

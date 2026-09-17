@@ -16,6 +16,7 @@
       "skills/domain-modeling/SKILL.md",
       "skills/grill-with-docs/SKILL.md",
       "skills/grilling/SKILL.md",
+      "skills/operations/SKILL.md",
       "skills/project-direction/SKILL.md",
       "skills/prototype/SKILL.md",
       "skills/research/SKILL.md",
@@ -31,13 +32,21 @@
       "SKILL_CATALOGUE.md",
       "docs/adr/0001-persistent-host-automation.md",
       "docs/opencode.md",
-      "docs/scoped-proof.md"
+      "docs/scoped-proof.md",
+      "skills/project-direction/references/context.md"
     ],
     "requirements": [
       "AGENTS.md",
       ".version-policy.json",
       ".toolboxmd/delivery.json",
-      "schemas/delivery-v1.schema.json"
+      "schemas/delivery-v1.schema.json",
+      "skills/operations/references/delivery.md",
+      "skills/operations/references/finalization.md",
+      "skills/operations/references/implementation.md",
+      "skills/operations/references/orchestration.md",
+      "skills/operations/references/reconciliation.md",
+      "skills/operations/references/repository-setup.md",
+      "skills/operations/references/verification.md"
     ],
     "proof": [
       "tests/delivery_continuation_validator.py",
@@ -62,7 +71,8 @@
       "tests/test_release_dispatch_contract.py",
       "tests/test_repository_reconciliation_contract.py",
       "tests/test_skill_contracts.py",
-      "tests/test_scoped_proof.py"
+      "tests/test_scoped_proof.py",
+      "tests/test_operations_contract.py"
     ]
   }
 }

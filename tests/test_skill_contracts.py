@@ -78,7 +78,15 @@ def workspace_isolation_decision(case: dict[str, object]) -> str:
         return "stop-affected-writer"
     if case.get("base_moved") or case.get("unsafe_overlap"):
         return "stop-affected-writer"
-    if not case.get("fresh_workspace") or not case.get("exclusive_branch"):
+    safe_continuation = (
+        case.get("reuse_existing")
+        and case.get("same_task_owner")
+        and case.get("availability_established")
+        and case.get("existing_state") == "clean"
+    )
+    if (
+        not case.get("fresh_workspace") and not safe_continuation
+    ) or not case.get("exclusive_branch"):
         return "stop-affected-writer"
 
     record = case.get("start_record")
@@ -561,7 +569,7 @@ class SkillContractTests(unittest.TestCase):
 
     def test_objective_is_milestone_level_across_public_contract(self) -> None:
         for relative in (
-            "AGENTS.md",
+            "skills/project-direction/references/context.md",
             "GLOSSARY.md",
             "README.md",
             "skills/project-direction/SKILL.md",
@@ -602,7 +610,7 @@ class SkillContractTests(unittest.TestCase):
 
     def test_vision_and_mission_have_distinct_directional_roles(self) -> None:
         for relative in (
-            "AGENTS.md",
+            "skills/project-direction/references/context.md",
             "GLOSSARY.md",
             "README.md",
             "skills/project-direction/SKILL.md",
@@ -639,11 +647,12 @@ class SkillContractTests(unittest.TestCase):
 
     def test_global_contract_requires_complete_current_project_direction(self) -> None:
         agents = read_text("AGENTS.md")
-        normalized = " ".join(agents.split())
+        context = read_text("skills/project-direction/references/context.md")
+        normalized = " ".join((agents + context).split())
         for required in (
             "Project Direction",
             "`VISION.md`, `MISSION.md`, and `OBJECTIVE.md`",
-            "at every task start, resume, clear, handoff, post-compaction continuation, and subagent start",
+            "at task and subagent start and after context loss",
             "locate and read all three files in full before any other work",
             "Only the repository and tracker inspection required by that Skill may proceed",
             "reported as oversized",
@@ -657,11 +666,12 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, normalized)
 
     def test_project_direction_currentness_contract_is_consistent(self) -> None:
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("skills/project-direction/references/context.md").split())
         skill = " ".join(read_text("skills/project-direction/SKILL.md").split())
         loader = read_text("bin/project-direction")
 
-        for contract in (agents, skill):
+        self.assertIn("[context.md](references/context.md)", skill)
+        for contract in (agents,):
             with self.subTest(contract=contract[:20]):
                 for required in (
                     "after the complete local triad is loaded",
@@ -706,7 +716,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("create a root `CONTEXT.md`", agents)
         self.assertNotIn("update the appropriate `CONTEXT.md`", agents)
         self.assertNotIn("ASD-STE100-style", agents)
-        self.assertIn("AgentsMD workflow Skills", agents)
+        self.assertIn("human-controlled planning Skills", agents)
 
     def test_global_contract_defines_independent_partnership(self) -> None:
         agents = read_text("AGENTS.md")
@@ -1133,11 +1143,9 @@ class SkillContractTests(unittest.TestCase):
     def test_repository_capability_setup_is_inspected_and_authorized_once(
         self,
     ) -> None:
-        agents = read_text("AGENTS.md")
+        agents = read_text("skills/operations/references/repository-setup.md")
         contract = " ".join(
-            agents.split("## Authority and continuation", 1)[1]
-            .split("\n## ", 1)[0]
-            .split()
+            agents.split()
         )
 
         for required in (
@@ -1177,16 +1185,14 @@ class SkillContractTests(unittest.TestCase):
         self.assertEqual(positions, sorted(positions))
 
     def test_mutating_issues_own_exclusive_workspaces(self) -> None:
-        agents = read_text("AGENTS.md")
+        agents = read_text("skills/operations/references/implementation.md")
         contract = " ".join(
-            agents.split("## Authority and continuation", 1)[1]
-            .split("\n## ", 1)[0]
-            .split()
+            agents.split()
         )
 
         for required in (
-            "Before tracked mutation, give each implementation Issue one fresh "
-            "exclusive branch and workspace",
+            "Before tracked mutation, select an exclusively owned task branch and "
+            "workspace; reuse them for continuation",
             "intended base, branch, workspace path, ownership, and exact "
             "starting `HEAD`",
             "canonical checkout as the stable coordination and integration view",
@@ -1198,7 +1204,7 @@ class SkillContractTests(unittest.TestCase):
             "unknown ownership or independence",
             "moving base or unsafe overlap stops only the affected writer",
             "unrelated independent work continues",
-            "fresh-context and durable-handoff rules in this section",
+            "[orchestration and handoff rules](orchestration.md)",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, contract)
@@ -1206,12 +1212,10 @@ class SkillContractTests(unittest.TestCase):
     def test_review_ready_pull_request_stacks_preserve_dependency_truth(
         self,
     ) -> None:
-        agents = read_text("AGENTS.md")
+        agents = read_text("skills/operations/references/orchestration.md")
         glossary = " ".join(read_text("GLOSSARY.md").split())
         contract = " ".join(
-            agents.split("## Authority and continuation", 1)[1]
-            .split("\n## ", 1)[0]
-            .split()
+            agents.split()
         )
 
         for required in (
@@ -1451,7 +1455,7 @@ class SkillContractTests(unittest.TestCase):
     def test_delivery_finalization_contract_is_concise_and_host_neutral(
         self,
     ) -> None:
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("skills/operations/references/finalization.md").split())
         glossary = " ".join(read_text("GLOSSARY.md").split())
 
         for required in (
@@ -1468,10 +1472,8 @@ class SkillContractTests(unittest.TestCase):
             "persistent, shared, production, materially changed, protected, gated, "
             "dirty, active, user-owned, or ambiguous resources",
             "until applicable authority exists",
-            "checkouts are temporary from creation through Delivery Finalization",
             "required code and documentation integrated into the intended base",
             "including deployment when required",
-            "secrets and databases do not belong in Git",
             "Check every temporary checkout for removal",
             "verify affected consumers still work",
             "unpublished work is not assumed remotely recoverable",
@@ -1503,10 +1505,14 @@ class SkillContractTests(unittest.TestCase):
             glossary,
         )
 
+        implementation = " ".join(read_text("skills/operations/references/implementation.md").split())
+        self.assertIn("checkouts are temporary from creation through Delivery Finalization", implementation)
+        self.assertIn("secrets and databases do not belong in Git", implementation)
+
     def test_repository_reconciliation_contract_is_bounded_and_approval_gated(
         self,
     ) -> None:
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("skills/operations/references/reconciliation.md").split())
         glossary = " ".join(read_text("GLOSSARY.md").split())
 
         for required in (
@@ -1890,6 +1896,8 @@ class SkillContractTests(unittest.TestCase):
                 "active",
                 "ambiguous",
                 "moving-base",
+                "owned-continuation",
+                "unproven-continuation",
             },
         )
         self.assertEqual(
@@ -2018,7 +2026,7 @@ class SkillContractTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, skill)
 
-        agents = read_text("AGENTS.md")
+        agents = read_text("skills/operations/references/implementation.md")
         normalized_agents = " ".join(agents.split())
         self.assertIn(
             "unresolved dependent decisions prevent a reliable spec",

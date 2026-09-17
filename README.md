@@ -42,7 +42,7 @@ global baseline. This matches the discovery model documented for
 The [AgentsMD Skill Catalogue](SKILL_CATALOGUE.md) is the only authoritative
 inventory for this package. The initial Active set is:
 
-- AgentsMD-native: `algorithm`, `delivery-profile`, `project-direction`, and
+- AgentsMD-native: `algorithm`, `delivery-profile`, `operations`, `project-direction`, and
   `version-control`.
 - ToolboxMD-native: `use-grok`.
 - Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
@@ -150,9 +150,11 @@ before subsequent strategic judgment.
 
 ## Delivery System v1
 
-The portable contract in `AGENTS.md` owns shared lifecycle, execution-mode,
-review, SemVer, CI, artifact, website, and evidence semantics. It reports each
-delivery state separately. Projects can [reuse scoped proof](docs/scoped-proof.md)
+The core in `AGENTS.md` owns alignment, authority, and routing. The applicable
+[`operations` modules](skills/operations/SKILL.md) own lifecycle, execution,
+review, artifact, website, and evidence procedures; `version-control` owns
+version mechanics. Each delivery state is reported separately. Projects can
+[reuse scoped proof](docs/scoped-proof.md)
 under an explicit trusted policy: complete baseline coverage plus current affected
 and artifact checks. Unknown scope stops with a reason. Projects without an
 adapter retain their complete merge and release gates.
@@ -417,3 +419,32 @@ architecture, checks, and deployment rules inside each project.
 ## License
 
 MIT. See `LICENSE`.
+
+## Core and operating procedures
+
+`AGENTS.md` keeps alignment, judgment, authority, task routing and truthful
+reporting in the core. The model-invoked `operations` Skill holds seven linked
+references for implementation, orchestration/dependencies, verification,
+delivery, finalization, repository setup and legacy reconciliation. Agents load
+only the procedures their next action needs and reuse unchanged context.
+
+The main agent plans and integrates; substantive implementation uses a worker.
+Bounded settled work stays direct when briefing, context loading, coordination
+and handoff checking would likely consume more tokens than doing the work.
+This qualitative decision never waives ownership, authority or required proof.
+Exact approved prose has the narrow review exception recorded in verification;
+small code changes still receive required independent review.
+
+Global instruction installation links only `AGENTS.md`. Resolve its symlink to
+the canonical AgentsMD checkout and use `skills/operations/SKILL.md` there to
+keep the core and modules coherent. Installed Skill discovery also supplies the
+operations package; check compatibility before combining sources. Resolve
+references from the actual selected Skill directory, never a target-project cwd
+or the directory containing the global symlink. Missing modules block only the
+action that requires them. No new runtime or configuration is needed.
+
+Keep full current Project Direction in context; reuse unchanged contents on
+follow-ups and reload after change or context loss. Existing loader hooks and
+local Project Direction exceptions remain supported. One canonical Issue
+handoff carries exact proof and delivery state, with links from the PR.
+Behavioral token savings are unmeasured; user Live Verification remains pending.

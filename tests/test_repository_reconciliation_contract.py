@@ -178,7 +178,7 @@ class RepositoryReconciliationContractTests(unittest.TestCase):
     def test_agent_contract_requires_observed_preflight_and_self_healing(
         self,
     ) -> None:
-        contract = " ".join((ROOT / "AGENTS.md").read_text().split())
+        contract = " ".join((ROOT / "skills/operations/references/reconciliation.md").read_text().split())
         for required in (
             "query each approved target's live owning Issue, pull request, and "
             "exact resource state immediately before mutation",

@@ -15,6 +15,10 @@ class DeliverySystemContractTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
         cls.agents_words = " ".join(cls.agents.split())
+        cls.modules = {
+            name: " ".join((ROOT / f"skills/operations/references/{name}.md").read_text().split())
+            for name in ("orchestration", "verification", "delivery")
+        }
         cls.skill = (ROOT / "skills/delivery-profile/SKILL.md").read_text(
             encoding="utf-8"
         )
@@ -57,7 +61,12 @@ class DeliverySystemContractTests(unittest.TestCase):
         )
         for phrase in required:
             with self.subTest(phrase=phrase):
-                self.assertIn(phrase, self.agents_words)
+                owner = (
+                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration")
+                    else "delivery" if phrase in ("highest semantic impact", "built once", "immutable digest", "promoted unchanged", "none, generated, narrative, or runtime", "major version", "complete website review", "SEO impact")
+                    else "verification"
+                )
+                self.assertIn(phrase, self.modules[owner])
 
     def test_proof_artifact_and_website_contract_is_present(self) -> None:
         required = (
@@ -74,7 +83,12 @@ class DeliverySystemContractTests(unittest.TestCase):
         )
         for phrase in required:
             with self.subTest(phrase=phrase):
-                self.assertIn(phrase, self.agents_words)
+                owner = (
+                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration")
+                    else "delivery" if phrase in ("highest semantic impact", "built once", "immutable digest", "promoted unchanged", "none, generated, narrative, or runtime", "major version", "complete website review", "SEO impact")
+                    else "verification"
+                )
+                self.assertIn(phrase, self.modules[owner])
 
     def test_legacy_ledgers_have_no_active_tracker_role(self) -> None:
         self.assertIn("legacy input ledgers", self.agents)
