@@ -204,10 +204,9 @@ def uninitialized_payload(
         "required_skill": "project-direction",
         "errors": errors,
         "action": (
-            "Invoke the project-direction Skill. Inspect only repository and "
-            "tracker evidence needed to establish Project Direction. Do not "
-            "begin other project work until the complete triad is confirmed, "
-            "written, and reread."
+            "Invoke the project-direction skill and establish the complete triad "
+            "before other project work, unless local instructions make Project "
+            "Direction optional."
         ),
     }
 
