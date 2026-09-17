@@ -8,6 +8,8 @@ SemVer and identify one user-consumable repository state.
 ### Changed
 
 - Honor local Project Direction exceptions in loader guidance
+- Allow self-review for exact user-approved prose replacements, matching
+  expected-text assertions, and required version bookkeeping
 
 ## [8.8.2] - 2026-09-16
 

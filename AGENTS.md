@@ -447,7 +447,10 @@ Record, release policy, documentation, or current delivery state.
   generated outputs, release identity, or acceptance build cannot safely
   separate. Different files alone do not prove independence.
 - Give each authored implementation slice an independent Codex Luna review at
-  maximum reasoning against its exact SHA. A deterministically generated
+  maximum reasoning against its exact SHA, unless it consists solely of an
+  exact user-approved prose replacement, matching expected-text assertions,
+  and required version bookkeeping. Self-review and relevant checks still
+  apply. A deterministically generated
   Toolybara promotion pull request uses generated-scope validation instead.
   Apply a lower-layer review fix in the earliest owning layer, checkpoint every
   descendant, rebase it onto the corrected exact SHA, and re-prove every
