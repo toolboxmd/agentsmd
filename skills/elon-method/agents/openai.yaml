@@ -1,0 +1,7 @@
+interface:
+  display_name: "Elon method"
+  short_description: "Rebuild material work from first principles, idiot index, current constraint, and the Algorithm"
+  default_prompt: "Use $elon-method on this material work."
+
+policy:
+  allow_implicit_invocation: true

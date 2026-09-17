@@ -735,7 +735,7 @@ class SkillContractTests(unittest.TestCase):
         normalized = " ".join(agents.split())
         for required in (
             "After Project Direction is loaded",
-            "invoke the model-invoked `algorithm` Skill",
+            "invoke the model-invoked `elon-method` Skill",
             "material requirement",
             "solution design",
             "process design",
@@ -749,7 +749,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("Run the Algorithm inside a closed evidence loop.", agents)
 
     def test_algorithm_skill_preserves_order_and_completion_contract(self) -> None:
-        skill = read_text("skills/algorithm/SKILL.md")
+        skill = read_text("skills/elon-method/references/algorithm.md")
         normalized = " ".join(skill.split())
         stages = (
             "Question every requirement.",
@@ -801,7 +801,7 @@ class SkillContractTests(unittest.TestCase):
             "Resolve every earlier step before optimizing, accelerating, or automating.",
             "Run the Algorithm inside a closed evidence loop.",
             "Start from the useful outcome and inspect the exact source, work, state, or user surface.",
-            "Identify the active constraint.",
+            "Identify the active constraint using [Current constraint](current-constraint.md).",
             "Make the smallest meaningful reversible change or experiment",
             "the fastest check that can falsify the current assumption",
             "inspect the result, correct the model and implementation, expose bad news, and repeat",
@@ -820,6 +820,113 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
+
+    def test_elon_method_routes_all_signals_and_preserves_compatibility(self) -> None:
+        skill = read_text("skills/elon-method/SKILL.md")
+        metadata = " ".join(skill.split("---\n", 2)[1].split())
+        self.assertNotIn("disable-model-invocation", metadata)
+        for signal in (
+            "analogy", "inherited process", "accepted impossibility", "novel design",
+            "price", "quote", "fee", "timeline", "headcount", "tool cost",
+            "selecting or reassessing material work", "progress stalls",
+            "acceleration", "parallel work", "automation", "material requirements",
+            "solution design", "process design", "recurring-loop automation",
+        ):
+            with self.subTest(signal=signal):
+                self.assertIn(signal, metadata)
+        self.assertIn("multiple references can apply", skill)
+        for reference in ("first-principles", "idiot-index", "current-constraint", "algorithm"):
+            self.assertIn(f"(references/{reference}.md)", skill)
+        self.assertIn("allow_implicit_invocation: true",
+                      read_text("skills/elon-method/agents/openai.yaml"))
+        compatibility = read_text("skills/algorithm/SKILL.md")
+        self.assertIn("compatibility router for `elon-method`", compatibility)
+        self.assertNotIn("1. Question every requirement.", compatibility)
+        legacy_evidence = read_text(
+            "skills/algorithm/references/marketplace-project-record-regression.md")
+        self.assertIn("../../elon-method/references/marketplace-project-record-regression.md",
+                      legacy_evidence)
+        self.assertNotIn("## First draft", legacy_evidence)
+
+    def test_current_constraint_requires_falsifiable_outcome_progress(self) -> None:
+        constraint = " ".join(read_text(
+            "skills/elon-method/references/current-constraint.md").split())
+        for required in (
+            "selecting or reassessing material work",
+            "confirmed Project Direction and the authorized outcome",
+            "next observable progress", "Trace the critical path",
+            "repository or live-system evidence", "observed facts from hypotheses",
+            "Compare plausible limiters", "if relieved, what progress becomes possible",
+            "what would still block it", "Record uncertainty and the missing evidence",
+            "smallest check that can distinguish them",
+            "current constraint and its owner in the existing plan or Issue",
+            "[Algorithm](algorithm.md) steps 1-3",
+            "before focusing acceleration", "smallest authorized intervention",
+            "owner, expected effect", "check that can falsify the diagnosis",
+            "when to check it before acting", "required final Proof remains intact",
+            "Compare observed progress with the expected effect", "expose bad news",
+            "Reassess after relief, changed dependencies, or new evidence",
+            "earliest affected Algorithm step", "blocker, owner, and next check",
+            "Defer attractive work", "useful independent authorized work",
+            "single-writer boundaries",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, constraint)
+        self.assertNotIn("Speed anywhere except that limiter is waste", constraint)
+        agents = " ".join(read_text("AGENTS.md").split())
+        for signal in ("select or reassess material work", "stalled progress",
+                       "current-constraint reference before acceleration or parallel work"):
+            self.assertIn(signal, agents)
+
+    def test_idiot_index_requires_comparable_costs_and_hypothesis(self) -> None:
+        reference = " ".join(read_text(
+            "skills/elon-method/references/idiot-index.md").split())
+        for required in (
+            "same outcome, scope, and comparable units",
+            "required integration, reliability, support, proof, compliance, and risk costs",
+            "measured values, estimates, and unknowns", "same currency and period",
+            "labor hours are not elapsed time", "people are not person-hours",
+            "report the index as unknown", "name the missing evidence",
+            "analogous ratios, not monetary cost indices",
+            "full necessary costs and uncertainties", "diagnostic hypothesis",
+            "not proof of waste or its cause", "floor, not a promise",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, reference)
+
+    def test_elon_method_trigger_fixture_covers_reference_combinations(self) -> None:
+        payload = json.loads(read_text("skills/elon-method/evals/trigger-evals.json"))
+        self.assertEqual(payload["skill_name"], "elon-method")
+        cases = {case["branch"]: case for case in payload["queries"]}
+        self.assertEqual(len(cases), len(payload["queries"]))
+        expected = {
+            "material-requirement": ["algorithm"],
+            "solution-design": ["algorithm"],
+            "process-design": ["algorithm"],
+            "recurring-loop-automation": ["current-constraint", "algorithm"],
+            "first-principles": ["first-principles"],
+            "novel-design": ["first-principles", "algorithm"],
+            "idiot-index": ["idiot-index"],
+            "timeline": ["idiot-index"],
+            "headcount": ["idiot-index"],
+            "current-constraint": ["current-constraint", "algorithm"],
+            "material-task-selection": ["current-constraint"],
+            "constraint-reassessment": ["current-constraint"],
+            "stalled-progress": ["current-constraint"],
+            "mixed-signals": ["first-principles", "idiot-index", "current-constraint", "algorithm"],
+            "direct-microfix": [],
+            "read-only-status": [],
+        }
+        self.assertEqual(set(cases), set(expected))
+        for branch, references in expected.items():
+            with self.subTest(branch=branch):
+                case = cases[branch]
+                self.assertTrue(case["query"].strip())
+                self.assertEqual(case["should_trigger"], bool(references))
+                self.assertEqual(case["references"], references)
+                for reference in references:
+                    self.assertTrue((ROOT / "skills/elon-method/references" /
+                                     f"{reference}.md").is_file())
 
     def test_algorithm_is_model_invoked_with_material_branches(self) -> None:
         skill = read_text("skills/algorithm/SKILL.md")
@@ -865,7 +972,7 @@ class SkillContractTests(unittest.TestCase):
     def test_algorithm_records_real_marketplace_regression(self) -> None:
         evidence = " ".join(
             read_text(
-                "skills/algorithm/references/marketplace-project-record-regression.md"
+                "skills/elon-method/references/marketplace-project-record-regression.md"
             ).split()
         )
         for required in (

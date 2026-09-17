@@ -31,7 +31,8 @@ AgentsMD adaptation automatically.
 
 | Skill | Current owner | Origin and source identity | Lifecycle | Licence | AgentsMD adaptation |
 | --- | --- | --- | --- | --- | --- |
-| `algorithm` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Runs the fixed five-step Algorithm for material work through an observable closed evidence loop while keeping direct microfixes direct. |
+| `elon-method` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Routes material work through first principles, cost investigation, evidence-based current-constraint selection and reassessment, and the ordered Algorithm. |
+| `algorithm` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Compatibility router to the five-step Algorithm owned by `elon-method`. |
 | `delivery-profile` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Loads and validates Project-specific Delivery System commands, artifact build details, and website mapping without duplicating canonical truth. |
 | `operations` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Loads only applicable implementation, orchestration, verification, delivery, finalization, setup and reconciliation references. |
 | `project-direction` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | Establishes and maintains confirmed Vision, Mission, and Objective with milestone-level scope; deterministic hooks reload the complete triad and expose locally known upstream currentness. |

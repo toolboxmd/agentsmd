@@ -42,8 +42,8 @@ global baseline. This matches the discovery model documented for
 The [AgentsMD Skill Catalogue](SKILL_CATALOGUE.md) is the only authoritative
 inventory for this package. The initial Active set is:
 
-- AgentsMD-native: `algorithm`, `delivery-profile`, `operations`, `project-direction`, and
-  `version-control`.
+- AgentsMD-native: `algorithm`, `elon-method`, `delivery-profile`, `operations`,
+  `project-direction`, and `version-control`.
 - ToolboxMD-native: `use-grok`.
 - Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
   `domain-modeling`, `prototype`, `research`, `to-spec`, `to-tickets`,
@@ -79,8 +79,12 @@ explicitly asks to consult Grok.
 `project-direction` is model-invoked when the triad is missing, unusable, stale,
 contradictory, completed, or explicitly due for review. It requires user
 confirmation before writing strategic direction.
-`algorithm` is model-invoked for material requirements, solution and process
-design, and recurring-loop automation. Small direct microfixes remain direct.
+`elon-method` is model-invoked for material design, task selection and
+reassessment, inherited assumptions, cost claims, and stalled progress. It
+routes to first principles, idiot index, current constraint, and the ordered
+Algorithm. Constraint selection uses evidence and a falsifying check; cost
+comparisons require comparable units and scope. `algorithm` remains a
+compatibility router. Small direct microfixes remain direct.
 `delivery-profile` is model-invoked when a Project delivery profile exists or
 Project-specific commands, artifacts, or website mapping are being used.
 
