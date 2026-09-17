@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [10.0.0] - 2026-09-17
+
+### Changed
+
+- Make minimum change govern design, writing, and delegation
+
 ## [9.3.0] - 2026-09-17
 
 ### Added

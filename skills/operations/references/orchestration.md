@@ -22,8 +22,8 @@
 ## Execution and dependencies
 
 - Choose the smallest valid execution mode. **Sequential direct work** serves
-  one merge unit without useful parallelism. Sequential describes writer
-  concurrency: substantive work still uses a delegated single writer. **Independent worktree pull
+  one merge unit without useful parallelism. Choose direct or delegated execution
+  under the core rule. **Independent worktree pull
   requests** serve genuinely independent merge units with exclusive branches,
   workspaces, and file sets. **Dependent stacked pull requests** serve layers
   whose predecessor is review-ready at an exact SHA. **Tightly coupled
@@ -47,13 +47,12 @@
   handoff. Report review-ready, blocker-cleared, stacked, rebased, revalidated,
   retargeted, and merged as separate states.
 
-- Delegate substantive implementation to a fresh child with the repository,
+- When delegating, seed a fresh child with the repository,
   complete Issue, exact base and dependency state, complete current Project
   Direction and applicable instructions, relevant durable decisions, and
   granted authority. Repository and GitHub evidence replace prior transcripts
   when sufficient. Use a nested child with that seed packet and no prior
-  transcript; do not fork the parent transcript. Bounded settled direct work
-  follows the core's qualitative token-cost rule and needs no worker.
+  transcript; do not fork the parent transcript. Direct work needs no worker.
   Open a separate host task only when the slice must outlive the parent, a
   human must open it independently, or the writer must continue after the
   parent stops.

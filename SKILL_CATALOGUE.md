@@ -46,7 +46,7 @@ AgentsMD adaptation automatically.
 | `to-spec` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/engineering/to-spec` | Active | [MIT](LICENSES/mattpocock-skills-MIT.txt) | User-invoked entry to the complete Specify workflow through approved parent and verified ticket publication, with a Parent Spec only opt-out. |
 | `to-tickets` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/engineering/to-tickets` | Active | [MIT](LICENSES/mattpocock-skills-MIT.txt) | User-invoked standalone ticket decomposition that publishes an approved native Issue graph, then reuses or requests implementation authority at the first unblocked Issue. |
 | `wayfinder` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/engineering/wayfinder` | Active | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Preserves destination-first planning, Research/Prototype/Grilling/Task Decision Issue types with HITL/AFK ownership, readable linked decisions, explicit fog and scope boundaries, assignee claims, and the visible GitHub frontier before handing a clear route to `to-spec`. |
-| `writing-for-agents` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/productivity/writing-for-agents` | Active | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Package ownership and provenance metadata only. The instruction-writing method is unchanged. |
+| `writing-for-agents` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/productivity/writing-for-agents` | Active | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Explains triggers, information placement, completion, examples, and pruning; scopes exhaustive coverage and context splitting to demonstrated needs. |
 
 ## Deferred
 

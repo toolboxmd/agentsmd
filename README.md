@@ -432,12 +432,9 @@ references for implementation, orchestration/dependencies, verification,
 delivery, finalization, repository setup and legacy reconciliation. Agents load
 only the procedures their next action needs and reuse unchanged context.
 
-The main agent plans and integrates; substantive implementation uses a worker.
-Bounded settled work stays direct when briefing, context loading, coordination
-and handoff checking would likely consume more tokens than doing the work.
-This qualitative decision never waives ownership, authority or required proof.
-Exact approved prose has the narrow review exception recorded in verification;
-small code changes still receive required independent review.
+The main agent owns the outcome and delegates when it reduces total work or
+provides required independence. Choose after simplifying the solution.
+Exact approved prose retains the narrow review exception in verification.
 
 Global instruction installation links only `AGENTS.md`. Resolve its symlink to
 the canonical AgentsMD checkout and use `skills/operations/SKILL.md` there to

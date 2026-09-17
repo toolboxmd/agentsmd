@@ -49,8 +49,8 @@
   authorized change.
 
 Before proof or review, read [verification](verification.md). For delegated
-work or recovery, read [orchestration](orchestration.md). Follow the core's small
-direct path when eligible, without creating an Issue or worker for ceremony.
+work or recovery, read [orchestration](orchestration.md). Follow the core's
+execution rule, without creating an Issue or worker for ceremony.
 
 ## Workflow routing
 
@@ -71,7 +71,7 @@ Choose the smallest lane that fits:
 - Clear: implement the ready Issue directly.
 - Shape: use `grill-with-docs` when bounded work still has unresolved
   terminology or user-owned decisions.
-- Specify: use `to-spec` when understood work spans multiple sessions.
+- Specify: use `to-spec` when the user requests a specification workflow.
   Selecting it selects the complete Specify workflow through verified ticket
   publication by default. Preserve approval before parent Issue publication
   and approval of ticket granularity, blocking edges, and publication. After
