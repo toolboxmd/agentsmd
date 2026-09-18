@@ -21,14 +21,14 @@ remains blocked.
 
 Each authored implementation slice needs independent Codex review of its exact
 SHA under core execution routing. The exception is a slice consisting solely of an exact
-user-approved replacement, matching expected-text assertions, and required version
+user-approved prose replacement, matching expected-text assertions, and required version
 bookkeeping; self-review and relevant checks still apply.
 
 A deterministically generated promotion PR may use generated-scope validation only
 when a trusted generator reproduces its exact diff from reviewed inputs, all changes
 lie within declared generated paths, and exact-candidate validation proves this.
-Authored changes retain review. Fix the earliest owning layer, checkpoint every
-descendant, rebase onto the corrected SHA, and re-prove affected heads without loss.
+Authored changes retain review. Before applying review fixes to dependent layers,
+read [orchestration](orchestration.md) for the stack-fix procedure.
 
 ## Hosts and complete coverage
 

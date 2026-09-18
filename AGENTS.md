@@ -29,7 +29,9 @@ example. Reuse unchanged full preferences, reload changed contents, discard
 removed preferences, and report unreadable files. Supported hooks supply this
 context automatically; otherwise read it explicitly at these boundaries.
 Preferences supply personal defaults. Explicit task instructions, required
-project constraints, proof, and authority boundaries take precedence. Machine
+project constraints, proof, and authority boundaries take precedence. Preferences
+cannot waive Human Gates, user-owned dirty work, confirmed Project Direction, or
+required context loading. Machine
 roles do not grant deployment permission. Keep private contents out of public
 artifacts and reports.
 
@@ -129,20 +131,22 @@ A small direct microfix whose requirement and solution are clear stays direct.
 ## Project Direction
 
 Keep complete current `VISION.md`, `MISSION.md`, and `OBJECTIVE.md` in context.
-Honor scoped local opt-outs. Reuse unchanged full contents on follow-ups; reload
-after change or context loss. Memory or summaries cannot replace the triad.
+Honor explicit local Project Direction opt-outs for their stated scope. Reuse
+unchanged full contents on follow-ups; reload after change or context loss. Memory or summaries cannot replace the triad.
 
 At initialization, or when loading, currentness, missing, or unusable direction
 needs resolution, read `project-direction`'s `references/context.md` through the
 module-resolution rule below. Keep it fully in context while applicable. It owns
-loading/currentness checks, alignment, and repair triggers. Check mutable Git
+loading/currentness checks and repair triggers. Check mutable Git
 state before relying on currentness. Invoke `project-direction` for repair or
 semantic change; only user confirmation changes direction.
 
-Evaluate requests and changes against all three files. Surface material drift
-before proceeding; recommend returning to Objective, confirming new direction,
-or authorizing a deliberate detour. Ordinary work contributes by advancing
-Objective. Every proposed Spec and Issue states that contribution.
+Evaluate every request, recommendation, Spec, Issue, and change against the triad.
+Before proceeding through material drift, state it and recommend returning to the
+Objective, confirming updated direction, or authorizing a deliberate detour. Only
+explicit user confirmation changes direction or authorizes that detour. Ordinary
+work contributes when it advances the Objective, even if unnamed there. Every
+proposed Spec and Issue states that contribution.
 
 ## Project language
 

@@ -15,8 +15,8 @@ or delivery state.
 
 ## Load
 
-1. Complete Project Direction loading (or establish a scoped local opt-out) and
-   orientation: exact root, branch, `HEAD`, upstream, and known ahead/behind state.
+1. Complete Project Direction loading (or confirm an explicit local opt-out for
+   its stated scope) and orientation: exact root, branch, `HEAD`, upstream, and known ahead/behind state.
 2. Locate executable `bin/delivery-profile` in the repository or `../../bin/delivery-profile`
    relative to this installed Skill. Report a missing loader and stop.
 3. If `.toolboxmd/delivery.json` is absent, record no declared deltas and finish.

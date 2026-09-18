@@ -38,8 +38,9 @@ blocker. Use native stacking from that SHA when available; otherwise preserve
 equivalent exact-base, review, rebase, revalidation, retarget, and merge-order
 invariants on an ordinary dependent branch. Independent work may continue.
 
-Fix the earliest layer owning failed acceptance. Checkpoint descendants, cascade
-rebase/revalidation after lower-layer changes, merge in dependency order, and
+Fix the earliest layer owning failed acceptance. Checkpoint descendants and cascade
+rebase/revalidation after lower-layer changes without losing later work. Merge in
+dependency order and
 verify automatic rebase/retarget before calling upper layers current. Preserve
 exact stack state across interruption and handoff. Report review-ready,
 blocker-cleared, stacked, rebased, revalidated, retargeted, and merged separately.

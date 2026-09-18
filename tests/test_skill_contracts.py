@@ -552,7 +552,7 @@ class SkillContractTests(unittest.TestCase):
 
     def test_project_direction_skill_preserves_user_owned_strategy(self) -> None:
         skill = read_text("skills/project-direction/SKILL.md")
-        normalized = " ".join((skill + read_text("skills/project-direction/references/context.md")).split())
+        normalized = " ".join((skill + read_text("AGENTS.md")).split())
         for required in (
             'triad together',
             'unsupported strategy unknown',
@@ -665,7 +665,7 @@ class SkillContractTests(unittest.TestCase):
             "only the Skill's necessary repository/tracker inspection may proceed",
             'oversized',
             'The current request is the immediate instruction',
-            "Surface material drift before proceeding",
+            "Before proceeding through material drift",
             'Every proposed Spec and Issue states that contribution',
             "Other Skills follow their own trigger and approval contracts",
             'Current confirmed direction',
@@ -1262,7 +1262,9 @@ class SkillContractTests(unittest.TestCase):
             'separate workspaces and disjoint ownership',
             'disjoint ownership of branch, workspace, and file set',
             'Preserve/report ambiguous, dirty, or active state',
-            'unless independence is established',
+            'unless exact ownership and availability are established',
+            'when ownership and availability remain established',
+            'Treat unknown ownership or independence as unsafe',
             'Unsafe overlap or a moving base stops only the affected writer',
             'stops only the affected writer',
             '[orchestration](orchestration.md)',

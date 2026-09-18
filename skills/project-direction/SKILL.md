@@ -14,14 +14,15 @@ description: >
 
 # Project Direction
 
-Establish a confirmed strategic frame without inventing user intent. Honor local
-opt-outs for their stated scope. Until the required triad is usable, inspect only
-evidence needed to establish it; do not begin other project work.
+Establish a confirmed strategic frame without inventing user intent. Honor explicit local
+Project Direction opt-outs for their stated scope. Until the required triad is
+usable, inspect only evidence needed to establish it; do not begin other project work.
 
 Before drafting or judging direction, read [file contracts](references/file-contracts.md)
 in full. Templates are drafting shapes, never unresolved placeholder content.
 When loading or currentness needs resolution, read [context](references/context.md);
-reuse unchanged complete context. That reference owns alignment and drift handling.
+reuse unchanged complete context. The core's Project Direction section owns
+alignment and drift handling.
 
 ## Workflow
 

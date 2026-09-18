@@ -51,7 +51,7 @@ class DeliverySystemContractTests(unittest.TestCase):
             "independent Codex review",
             "exact SHA",
             "generated-scope validation",
-            "earliest owning layer",
+            "earliest layer owning failed acceptance",
             "highest semantic impact",
             "GitHub-hosted runners",
             'Development hosts',
@@ -61,7 +61,7 @@ class DeliverySystemContractTests(unittest.TestCase):
         for phrase in required:
             with self.subTest(phrase=phrase):
                 owner = (
-                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration")
+                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration", "earliest layer owning failed acceptance")
                     else "delivery" if phrase in ("highest semantic impact", "built once", "immutable digest", "promoted unchanged", "none, generated, narrative, or runtime", "major version", "complete website review", "SEO impact")
                     else "verification"
                 )
@@ -83,7 +83,7 @@ class DeliverySystemContractTests(unittest.TestCase):
         for phrase in required:
             with self.subTest(phrase=phrase):
                 owner = (
-                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration")
+                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration", "earliest layer owning failed acceptance")
                     else "delivery" if phrase in ("highest semantic impact", "built once", "immutable digest", "promoted unchanged", "none, generated, narrative, or runtime", "major version", "complete website review", "SEO impact")
                     else "verification"
                 )

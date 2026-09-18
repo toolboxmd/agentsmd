@@ -2,10 +2,11 @@
 
 Before tracked mutation, apply the core's orientation, authority, user-work,
 and single-writer rules. Record intended base, branch, exclusive workspace,
-ownership, and exact starting `HEAD`. Reuse that workspace for continuation;
-a sequential writer needs no extra worktree. Cleanliness alone proves neither
-ownership nor availability. Preserve/report ambiguous, dirty, or active state
-and select another workspace unless independence is established. Unsafe overlap
+ownership, and exact starting `HEAD`. Reuse that workspace for continuation
+when ownership and availability remain established. A sequential writer needs no
+extra worktree. Cleanliness alone proves neither ownership nor availability. Preserve/report ambiguous, dirty, or active state
+and select another workspace unless exact ownership and availability are
+established. Treat unknown ownership or independence as unsafe. Unsafe overlap
 or a moving base stops only the affected writer.
 
 Keep the canonical checkout as stable coordination/integration view. Task
@@ -37,10 +38,8 @@ creating an Issue or worker for ceremony.
 
 ## Workflow routing
 
-Search for a matching open GitHub Issue before creating one. Product work belongs
-in its product repository; ask if ownership is unclear. Ready Issues state outcome,
-acceptance criteria, non-goals, blockers, and proof. Read-only work, throwaway
-spikes, WIP checkpoints, and explicitly local microfixes stay off the Issue-to-PR lane.
+Apply the core Delivery qualification rules before choosing a lane. Search open
+Issues for duplicates; ask if the owning repository is unclear.
 
 Choose the smallest suitable lane:
 
@@ -54,7 +53,5 @@ Choose the smallest suitable lane:
 - **Wayfind:** use `wayfinder` when dependent unresolved decisions prevent a reliable
   spec, regardless of effort size. Stop when ready for explicit `to-spec` selection.
 
-`grilling`, `grill-with-docs`, `to-spec`, `to-tickets`, and `wayfinder` are
-human-controlled planning Skills. Use them when named or requested and preserve
-their gates; other Skills retain their own triggers/approvals. `SKILL_CATALOGUE.md`
-owns provenance.
+For planning invocation, approval gates, and provenance, apply the core Delivery
+section; this routing table grants no additional invocation authority.

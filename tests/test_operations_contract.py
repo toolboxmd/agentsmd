@@ -98,7 +98,7 @@ class OperationsContractTests(unittest.TestCase):
         ):
             self.assertIn(clause, core)
         verification = words(SKILL.parent / "references/verification.md")
-        self.assertIn('exact user-approved replacement, matching expected-text assertions, and required version bookkeeping', verification)
+        self.assertIn('exact user-approved prose replacement, matching expected-text assertions, and required version bookkeeping', verification)
         self.assertIn("self-review and relevant checks still apply", verification)
         self.assertIn("independent Codex review of its exact SHA", verification)
         self.assertNotIn("Codex Luna", verification)
@@ -106,7 +106,7 @@ class OperationsContractTests(unittest.TestCase):
 
     def test_context_reuse_and_proof_ownership_preserve_freshness(self):
         core = words(ROOT / "AGENTS.md")
-        self.assertIn('Honor scoped local opt-outs', core)
+        self.assertIn('Honor explicit local Project Direction opt-outs for their stated scope', core)
         self.assertIn("Reuse unchanged full contents on follow-ups; reload after change or context loss", core)
         context = words(ROOT / "skills/project-direction/references/context.md")
         self.assertIn("Reuse unchanged full contents", context)
@@ -168,7 +168,7 @@ class OperationsContractTests(unittest.TestCase):
             "finalization": 'Begin only after review',
             "reconciliation": "The approval record carries a canonical SHA-256",
             "repository-setup": "one complete setup bundle",
-            "verification": 'exact user-approved replacement, matching expected-text assertions',
+            "verification": 'exact user-approved prose replacement, matching expected-text assertions',
             "orchestration": "Keep a dependent Issue natively blocked",
             "delivery": "Every deployable artifact is built once",
         }

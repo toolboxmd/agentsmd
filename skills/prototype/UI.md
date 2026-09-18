@@ -24,7 +24,8 @@ this branch. Both branches use the same URL parameter and switcher.
    purpose, available data, and the project's component/styling system. Vary
    layout, information hierarchy, and primary affordance, not just colour or
    copy. Redo near-duplicates, for example with explicit "no card grid" guidance.
-   Sharing a header is fine; sharing a layout must not constrain the alternatives.
+   Sharing small components such as a header is fine. Do not share a layout
+   component; each variant owns its layout.
 3. Select the rendered variant from `?variant=`, defaulting to A. Keep fetching
    above the switcher on an existing page; mount the same switcher on a new route.
 4. Put the switcher in one shared component at the project's shared-UI location.

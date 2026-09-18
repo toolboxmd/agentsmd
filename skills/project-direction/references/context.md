@@ -47,9 +47,5 @@ reprioritized Objective, or a user request to define, review, or update directio
 Distinguish repository/tracker facts from inference and user choices. Semantic
 writes require explicit confirmation.
 
-Evaluate every request, recommendation, Spec, Issue, and change against the triad.
-Before proceeding through material drift, state it and recommend returning to the
-Objective, confirming updated direction, or authorizing a deliberate detour. Only
-explicit user confirmation changes direction or authorizes that detour. Ordinary
-work contributes when it advances the Objective, even if unnamed there. Every
-proposed Spec and Issue states that contribution.
+Before judging alignment or acting on drift, apply the core `AGENTS.md` Project
+Direction section. It owns contribution, detour, and strategic confirmation rules.
