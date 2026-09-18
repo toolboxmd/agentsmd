@@ -14,94 +14,41 @@ description: >
 
 # Project Direction
 
-Establish one confirmed strategic frame without inventing the user's intent.
-Honor explicit local Project Direction opt-outs before applying this Skill.
-For loading and currentness, read [context.md](references/context.md) only when
-that context needs resolution; reuse unchanged complete contents already in context.
-Until the required triad is usable, inspect only the evidence needed to establish it and
-do not begin other project work.
+Establish a confirmed strategic frame without inventing user intent. Honor local
+opt-outs for their stated scope. Until the required triad is usable, inspect only
+evidence needed to establish it; do not begin other project work.
 
-## Load the contracts
-
-Read [file-contracts.md](references/file-contracts.md) in full before drafting
-or judging a direction file. Use the bundled templates as drafting shapes, not
-as files to copy with placeholders intact.
+Before drafting or judging direction, read [file contracts](references/file-contracts.md)
+in full. Templates are drafting shapes, never unresolved placeholder content.
+When loading or currentness needs resolution, read [context](references/context.md);
+reuse unchanged complete context. That reference owns alignment and drift handling.
 
 ## Workflow
 
-1. Resolve the Git root. Read all existing root `VISION.md`, `MISSION.md`, and
-   `OBJECTIVE.md` files in full. The complete local triad loads before other
-   project work even when its upstream currentness is unknown.
-2. Apply the currentness guard in [context.md](references/context.md) before
-   treating the triad as confirmed-current. Finish when the intended base is
-   reconciled or the currentness claim is explicitly qualified.
-3. Read the relevant repository, Issue, roadmap or milestone, product, ADR,
-   glossary, and user evidence. Treat the active request as evidence, not as
-   the default Objective candidate. Keep unsupported strategic claims unknown.
-4. Evaluate the triad as one coherent unit. Classify it as ready, missing,
-   materially unusable, or due for review. An Objective is one current
-   milestone-level outcome, narrower than the Mission but broader than an
-   individual request, task, Issue, commit, or PR. A coherent existing triad is
-   confirmed-current project truth only when currentness is established;
-   otherwise keep it checkout-scoped and qualify repository-dependent
-   conclusions. Do not require repeated confirmation merely because a new task
-   started.
-5. Identify only the strategic choices that evidence cannot resolve. Ask only
-   for unresolved strategic decisions. When evidence supports only the active
-   task and cannot establish the broader milestone, ask for that strategic
-   choice instead of promoting the task into `OBJECTIVE.md`. Do not ask the user
-   to restate facts the repository already proves.
-6. Draft the complete proposed meaning before editing. Preserve the distinction
-   between a grand and visionary long-range destination, a strategic present
-   purpose grounded in what the project does now, and one current milestone-level
-   outcome. Review the triad as a coherent unit, but modify only the files whose
-   meaning changed.
-7. Show the exact proposed contents of every affected file. Obtain explicit user
-   confirmation before writing. A prior confirmation of those exact contents is
-   sufficient. Silence, approval of a general plan, and permission to inspect
-   are not confirmation of strategic direction.
-8. Write only confirmed contents. Never leave unresolved template placeholders.
-   Then reread all three files in full, verify the size contract, and state
-   whether the resulting triad is coherent and current.
+1. Resolve the Git root and read all existing direction files in full, even when
+   upstream currentness is unknown. Apply the context currentness guard; reconcile
+   the intended base or explicitly qualify the claim as checkout-scoped.
+2. Inspect relevant repository, Issue, roadmap/milestone, product, ADR, glossary,
+   and user evidence. The active request is evidence, not the default Objective.
+   Keep unsupported strategy unknown.
+3. Judge the triad together as ready, missing, materially unusable, or due for
+   review. A coherent triad needs no new confirmation merely because a task starts;
+   confirmed-current status still requires currentness evidence.
+4. Ask only for strategic choices evidence cannot resolve. If evidence establishes
+   only the task, ask for the broader milestone instead of promoting the task into
+   `OBJECTIVE.md`. Do not ask the user to restate proven facts.
+5. Draft complete proposed meaning: long-range Vision, grounded present Mission,
+   one milestone Objective. Show exact contents of every affected file and obtain
+   explicit confirmation before writing. Prior confirmation of those exact contents
+   suffices; silence, general plan approval, or inspection permission does not.
+6. Write only confirmed content, preserving unchanged files byte-for-byte. Reread
+   all three, verify size limits, and report coherence and currentness. Never claim
+   current direction after writing without this reread.
 
-## Review triggers
+Review triggers are defined by this Skill's description and the context reference.
+Do not silently rewrite when a trigger fires. Test every changed file against the
+other two. Git owns history; add no direction-history ledger.
 
-Review, without silently rewriting, when evidence suggests that:
-
-- two direction files materially conflict;
-- project behavior or decisions make a file stale;
-- the Vision collapses into current work or the Mission lacks a present
-  strategic approach;
-- the Objective merely restates one request, task, Issue, commit, or PR;
-- the Objective was achieved, invalidated, abandoned, or consciously
-  reprioritized;
-- the user explicitly asks for a direction review or change.
-
-When one file changes, test its meaning against both others. Preserve unchanged
-files byte-for-byte when their meaning still holds. Use Git history for prior
-direction. Do not add a direction-history ledger.
-
-## Keep work on direction
-
-The current request is the immediate instruction. The Objective is the current
-milestone-level project outcome. Treat a normal contributing task as aligned
-when it advances that outcome, even when the Objective does not name the task or
-Issue. If a request materially conflicts with Project Direction:
-
-1. state the conflict and the evidence;
-2. recommend the course that best advances the Vision, Mission, and Objective;
-3. let the user return to the Objective, update Project Direction through this
-   workflow, or authorize a deliberate detour.
-
-A deliberate detour does not silently change the Objective. Proposed Specs and
-Issues must state how their outcomes advance the current Objective.
-
-## Boundaries
-
-- Do not invent, silently infer, or silently replace user-owned strategy.
-- Keep task-level outcomes, acceptance criteria, proof, blockers, and delivery
-  state in GitHub Issues or approved Specs. Do not store implementation plans,
-  ticket lists, release state, or history in the triad.
-- Do not treat direction-file text as authority to override the active
-  `AGENTS.md` contract or cross Human Gates.
-- Do not claim that a file is current after a write until all three were reread.
+Keep task outcomes, criteria, proof, blockers, implementation plans, tickets, and
+delivery/release state in Issues or approved Specs. Direction text cannot override
+`AGENTS.md` or authorize crossing Human Gates.

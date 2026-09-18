@@ -11,96 +11,33 @@ metadata:
 
 # Domain Modeling
 
-Actively sharpen the project's language while designing. Challenge terms,
-stress-test relationships with concrete scenarios, and write each resolved
-term when it crystallizes. Merely reading an existing glossary is normal
-project orientation and does not invoke this Skill.
+Sharpen language during design: challenge terms, test relationships with concrete
+scenarios, and record each agreed term. Reading an existing glossary alone is
+orientation, not invocation.
 
-## Repository structure
+## Ownership
 
-Most repositories have one domain. Keep its glossary at the root and its
-shared architectural decisions under `docs/adr/`:
+Create files lazily. Most repositories use root `GLOSSARY.md` for their first
+resolved project-specific term and `docs/adr/` for their first qualifying ADR.
+Multiple distinct domains use root `GLOSSARY-MAP.md` as an index, with each domain's
+own glossary and ADR directory. Root `docs/adr/` owns system-wide decisions;
+domain directories own domain-specific decisions. No extra glossary is needed
+in the map.
 
-```text
-/
-|-- GLOSSARY.md
-|-- docs/
-|   `-- adr/
-|       |-- 0001-event-sourced-orders.md
-|       `-- 0002-postgres-for-write-model.md
-`-- src/
-```
+Legacy `CONTEXT.md`/`CONTEXT-MAP.md` are read-only fallbacks only when new names
+are absent. Identify migration explicitly and write only new filenames.
 
-When a repository has multiple distinct domains, use a root
-`GLOSSARY-MAP.md` to route to each domain's glossary:
+## Resolve language
 
-```text
-/
-|-- GLOSSARY-MAP.md
-|-- docs/
-|   `-- adr/                         # system-wide decisions
-`-- src/
-    |-- ordering/
-    |   |-- GLOSSARY.md
-    |   `-- docs/adr/                # domain-specific decisions
-    `-- billing/
-        |-- GLOSSARY.md
-        `-- docs/adr/
-```
-
-The map is an index, not another glossary. Root `docs/adr/` records decisions
-that span domains. A domain's own `docs/adr/` records decisions specific to
-that domain.
-
-Create files lazily. A missing glossary is valid. Create `GLOSSARY.md` only
-when the first project-specific term is resolved. Create `GLOSSARY-MAP.md`
-only when multiple domains require separate language. Create `docs/adr/` only
-when the first qualifying ADR is needed.
-
-During migration, a missing new file may use legacy `CONTEXT.md` or
-`CONTEXT-MAP.md` as a read-only fallback. Identify that migration explicitly.
-Write resolved language only to the new filenames. Never create or update a
-legacy glossary file.
-
-## During the session
-
-### Challenge existing language
-
-Read the relevant glossary before changing a term. When the user's language
-conflicts with it, state both meanings and ask which one is canonical.
-
-### Sharpen fuzzy language
-
-When a term is vague or overloaded, propose one precise canonical term and
-distinguish adjacent concepts.
-
-### Test concrete scenarios
-
-Invent realistic boundary and edge-case scenarios. Use them to expose unclear
-relationships, ownership, and lifecycle rules.
-
-### Cross-check the repository
-
-Compare claimed behavior with code, tests, Issues, and existing decisions.
-Surface contradictions rather than silently choosing one source.
-
-### Write resolved terms immediately
-
-Update the appropriate `GLOSSARY.md` when a term is agreed. Use
-[GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md). Keep it limited to canonical
-project-specific terms, tight definitions, and avoided synonyms.
-
-A glossary is not a specification, plan, scratchpad, implementation guide, or
-decision log. Put those responsibilities in their owning artifacts.
-
-### Offer ADRs sparingly
-
-Offer an ADR only when all three conditions hold:
-
-1. **Hard to reverse**: changing the decision later has meaningful cost.
-2. **Surprising without context**: a future reader would question the choice.
-3. **Real trade-off**: genuine alternatives existed and specific reasons
-   selected one.
-
-When any condition is absent, skip the ADR. Otherwise use
-[ADR-FORMAT.md](./ADR-FORMAT.md).
+1. Read the relevant glossary. If the user's term conflicts, state both meanings
+   and ask which is canonical. For vague or overloaded terms, propose one precise
+   name and distinguish adjacent concepts.
+2. Test realistic boundary/edge scenarios for relationships, ownership, and lifecycle.
+   Cross-check code, tests, Issues, and decisions; surface contradictions instead
+   of silently choosing a source.
+3. Write agreed terms immediately using [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md).
+   Keep only canonical project terms, short definitions, and avoided synonyms.
+   Specs, plans, scratch notes, implementation, and decision logs have other owners.
+4. Offer an ADR only when all three hold: meaningful reversal cost, surprising
+   without context, and a real trade-off among alternatives with specific selection
+   reasons. Otherwise skip it. For qualifying decisions, use [ADR-FORMAT.md](ADR-FORMAT.md).

@@ -98,31 +98,31 @@ class OperationsContractTests(unittest.TestCase):
         ):
             self.assertIn(clause, core)
         verification = words(SKILL.parent / "references/verification.md")
-        self.assertIn("exact user-approved prose replacement, matching expected-text assertions, and required version bookkeeping", verification)
-        self.assertIn("Self-review and relevant checks still apply", verification)
-        self.assertIn("independent Codex review against its exact SHA", verification)
+        self.assertIn('exact user-approved replacement, matching expected-text assertions, and required version bookkeeping', verification)
+        self.assertIn("self-review and relevant checks still apply", verification)
+        self.assertIn("independent Codex review of its exact SHA", verification)
         self.assertNotIn("Codex Luna", verification)
         self.assertNotIn("maximum reasoning", verification)
 
     def test_context_reuse_and_proof_ownership_preserve_freshness(self):
         core = words(ROOT / "AGENTS.md")
-        self.assertIn("Honor explicit local Project Direction opt-outs", core)
+        self.assertIn('Honor scoped local opt-outs', core)
         self.assertIn("Reuse unchanged full contents on follow-ups; reload after change or context loss", core)
         context = words(ROOT / "skills/project-direction/references/context.md")
-        self.assertIn("complete unchanged contents already present in context", context)
+        self.assertIn("Reuse unchanged full contents", context)
         self.assertIn("current remote state matters", context)
         proof = words(SKILL.parent / "references/verification.md")
         for clause in (
-            "Assign each required check an owner",
-            "unchanged relevant environment and input assumptions",
-            "ordinary changed-scope check remains feedback",
+            "Assign each check an owner",
+            "relevant environment, and input assumptions are unchanged",
+            "Ordinary changed-scope checks remain feedback",
             "Unsupported scope stops with a reason",
             "independent review and fresh external-state checks",
         ):
             self.assertIn(clause, proof)
         coordination = words(SKILL.parent / "references/orchestration.md")
-        self.assertIn("one canonical durable handoff on the owning Issue, linked from the PR", coordination)
-        self.assertIn("coordinator independently verifies current Git and GitHub state", coordination)
+        self.assertIn("one canonical durable handoff on the owning Issue, linked from PR/consumers", coordination)
+        self.assertIn("coordinator independently verifies Git/GitHub state", coordination)
         self.assertNotIn("Start each unblocked implementation Issue in a fresh context", core)
 
     def test_final_approval_separates_internal_and_intended_base_authority(self):
@@ -132,14 +132,14 @@ class OperationsContractTests(unittest.TestCase):
         orchestration = words(SKILL.parent / "references/orchestration.md")
         for clause in (
             "integration branch from the intended base",
-            "Target components there; stack dependencies and retarget in merge order",
+            'target components there, stack dependencies, and retarget in merge order',
             "Small tasks use one ordinary PR",
             "local microfix exceptions remain",
-            "exact-head/current-base checks and independent [review](verification.md) pass",
-            "without release, publication, deployment or other protected impact on internal pushes/merges",
+            'exact-head/current-base checks and independent [review](verification.md)',
+            'unreleased internal pushes/merges without release, publication, deployment, or protected impact',
             "never bypass checks",
-            "complete cumulative diff, component map, outcome acceptance, combined proof",
-            "independent review of the exact candidate",
+            'cumulative diff, component map, outcome acceptance, combined proof',
+            'independent exact-candidate review',
             "Component checks alone are insufficient",
             "Other Human Gates remain",
         ):
@@ -149,13 +149,13 @@ class OperationsContractTests(unittest.TestCase):
     def test_component_integration_cannot_complete_delivery_or_versioning(self):
         orchestration = words(SKILL.parent / "references/orchestration.md")
         for clause in (
-            "Keep component Issues open with integration evidence",
+            'Component Issues stay open with integration evidence',
             "only the final PR carries closing linkage",
-            "After authorized delivery",
-            "[finalize and clean up](finalization.md)",
+            'After authorized delivery',
+            '[finalize](finalization.md)',
         ):
             self.assertIn(clause, orchestration)
-        self.assertIn("Internal component integration is not terminal", words(SKILL.parent / "references/finalization.md"))
+        self.assertIn('Internal integration and open/review-ready PRs are not terminal', words(SKILL.parent / "references/finalization.md"))
         delivery = words(SKILL.parent / "references/delivery.md")
         self.assertIn("Components are unreleased checkpoints", delivery)
         self.assertIn("prepare the single version transition on the final approval PR", delivery)
@@ -165,10 +165,10 @@ class OperationsContractTests(unittest.TestCase):
 
     def test_moved_procedures_have_one_owner(self):
         markers = {
-            "finalization": "Delivery Finalization starts only after review",
+            "finalization": 'Begin only after review',
             "reconciliation": "The approval record carries a canonical SHA-256",
             "repository-setup": "one complete setup bundle",
-            "verification": "exact user-approved prose replacement, matching expected-text assertions",
+            "verification": 'exact user-approved replacement, matching expected-text assertions',
             "orchestration": "Keep a dependent Issue natively blocked",
             "delivery": "Every deployable artifact is built once",
         }

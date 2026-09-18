@@ -6,6 +6,9 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
+import shutil
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -314,13 +317,33 @@ class PluginPackagingTests(unittest.TestCase):
 
         for required in (
             "potentially_stale",
-            "configured upstream",
+            'upstream',
             "ahead/behind",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, loader)
                 self.assertIn(required, agents)
-        self.assertIn("[context.md](references/context.md)", skill)
+        self.assertIn('[context](references/context.md)', skill)
+
+    def test_ticket_entrypoints_resolve_one_owner_after_install_relocation(self) -> None:
+        # Exercise the real published relative links with an unrelated install root.
+        # Existing workflow metadata and transition fixtures cover invocation/gates.
+        owner = Path("skills/to-tickets/references/ticket-decomposition.md")
+        with tempfile.TemporaryDirectory() as temporary:
+            installed = Path(temporary) / "plugins/cache/agentsmd/version"
+            shutil.copytree(ROOT / "skills", installed / "skills")
+            resolved = []
+            for name in ("to-spec", "to-tickets"):
+                entry = installed / "skills" / name / "SKILL.md"
+                links = re.findall(r"\[ticket decomposition\]\(([^)]+)\)", entry.read_text())
+                self.assertEqual(len(links), 1, name)
+                target = (entry.parent / links[0]).resolve(strict=True)
+                self.assertEqual(target, (installed / owner).resolve(strict=True))
+                self.assertEqual(target.read_bytes(), (ROOT / owner).read_bytes())
+                resolved.append(target)
+            self.assertEqual(resolved[0], resolved[1])
+            # The owner is guidance, not another independently invoked Skill.
+            self.assertFalse(resolved[0].read_text().startswith("---\n"))
 
     def test_matt_adaptations_declare_origin_and_licence(self) -> None:
         for name in MATT_ADAPTATIONS:

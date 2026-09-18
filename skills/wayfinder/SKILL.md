@@ -14,175 +14,99 @@ metadata:
 
 # Wayfinder
 
-Use Wayfinder when persistent decision fog prevents a reliable spec,
-regardless of predicted session length. Even a one-session effort may need a
-map when several dependent questions obscure the route. A large but clear
-effort does not: stop and tell the user it is ready for explicit `to-spec`
-selection instead.
+Map dependent decisions that prevent a reliable spec, regardless of predicted
+session length. A large but clear effort needs no map: present it for explicit
+`to-spec` selection and stop. Wayfinder resolves decisions, never implements
+the destination.
 
-Wayfinder finds the route to a destination. It does not implement the
-destination.
+Confirm the owning repository first: product decisions belong in the product
+repository; cross-project decisions in their designated owner. Ask before
+creating Issues if ownership is unclear. Name the destination, which bounds
+scope and directs every Decision Issue. Refer to Issues by descriptive linked
+titles, never bare numbers or slugs.
 
-## Name the destination
+## Map and frontier
 
-Name the destination before charting anything else. It is the spec, decision,
-or change that the map must make reachable. It fixes the scope and gives every
-Decision Issue a common direction.
-
-## Plan, don't do
-
-Each Decision Issue resolves a question. It is not a slice of implementation.
-When the next step is clear execution, the map has reached its edge: stop when
-the route is clear and present it for explicit `to-spec` selection.
-
-Research, a prototype, access, or a human conversation may be necessary to
-resolve a decision. Record that need as the Decision Issue type. Charting
-creates the typed Issues; working an Issue dispatches its required workflow.
-
-## Refer by name
-
-In narration and in the map, refer to every Issue by its descriptive linked
-title, never by a bare number or slug. The title lets a human scan the route;
-the link carries the Issue identity.
-
-## Ownership first
-
-Confirm the owning GitHub repository before mapping. Product decisions belong
-in the product repository. Cross-project decisions belong in their designated
-owner. If no repository clearly owns the map, ask the user before creating
-Issues.
-
-## The map
-
-The map is one parent GitHub Issue. Its native child Issues each resolve one
-currently precise decision or investigation. Native blocking relationships
-show which decisions are on the visible decision frontier.
-
-The map is an index, not a store. Each decision lives in exactly one Decision
-Issue. After that Issue closes, the map records only its descriptive linked
-name and a one-line gist.
+Use one parent GitHub Issue as an index and native child Issues for decisions.
+Native blocking relationships define dependencies. Each decision lives in exactly
+one Issue; after closure the map retains only its linked title and one-line gist.
 
 ```markdown
 ## Destination
-
-<the spec, decision, or change this map must make reachable>
+<spec, decision, or change this map must make reachable>
 
 ## Notes
-
 <standing constraints and relevant Skills>
 
 ## Decisions so far
-
 - [<closed Decision Issue title>](url): <one-line result>
 
 ## Not yet specified
-
-<in-scope fog that cannot yet be stated as a precise question>
+<in-scope questions that cannot yet be stated precisely>
 
 ## Out of scope
-
 <work beyond the destination>
 ```
 
-Every Decision Issue starts with the smallest useful body:
+Start each Decision Issue with:
 
 ```markdown
 ## Question
-
-<the decision or investigation this Issue resolves>
+<decision or investigation to resolve>
 
 ## Type
-
 <Research | Prototype | Grilling | Task>
 ```
 
-## Decision Issue types
+A precise question earns an Issue even when blocked or hard to answer. Use
+**Not yet specified** only when an earlier decision must resolve before the
+question itself becomes precise. Map the visible frontier, not an imagined
+complete breakdown. New answers may expose, collapse, or exclude work.
 
-The type states how the question can be resolved. **HITL** requires live work
-with a human who speaks for themselves. **AFK** can be resolved by an agent
-from evidence without live human judgment.
+Work beyond the destination is out of scope and cannot enter the frontier unless
+the destination changes. Close an Issue found out of scope and add its linked
+title and reason under **Out of scope**, never **Decisions so far**.
 
-- **Research (AFK):** Invoke the bundled `research` Skill when a session claims
-  the Issue. Establish the external fact the decision depends on and record
-  the cited answer on the Issue.
-- **Prototype (HITL):** Invoke the bundled `prototype` Skill when a session
-  claims the Issue. Build a cheap, rough artifact that gives the human
-  something concrete to react to, then wait for the human verdict. The
-  prototype informs the decision; it is not production implementation.
-- **Grilling (HITL):** resolve product taste, consequential architecture, or
-  another human-owned judgment through live conversation. Invoke the bundled
-  `grilling` and `domain-modeling` Skills when a session claims the Issue. The
-  agent never stands in for the human or answers its own questions.
-- **Task (HITL or AFK):** complete manual work, access, setup, or data movement
-  required before a decision can be made. A Task earns its place by unblocking
-  a decision, not by implementing the destination.
+## Typed routing
 
-The type is a routing contract, not merely a label. When a session works the
-Issue, dispatch from its type without asking the human to select a workflow.
-Charting still resolves none of the Issues it creates.
+HITL requires a human's live judgment; AFK can resolve from evidence. When a
+session claims an Issue, dispatch its type without another workflow-selection
+question:
 
-A session claims a Decision Issue by assigning it before beginning work. That
-assignee is the claim, so concurrent sessions can skip open Issues already in
-progress. An Issue is on the frontier when it is open, unblocked, and
-unclaimed.
+- **Research (AFK):** Invoke the bundled `research` Skill. Establish the external
+  fact and post a cited answer.
+- **Prototype (HITL):** Invoke the bundled `prototype` Skill. Build a cheap concrete
+  artifact and await the human verdict. It is decision evidence, not production.
+- **Grilling (HITL):** Invoke the bundled `grilling` and `domain-modeling` Skills
+  for taste, consequential architecture, or another human-owned judgment.
+  Never impersonate the human or answer your own questions.
+- **Task (HITL or AFK):** manual work, access, setup, or data movement needed to
+  unblock a decision. It cannot be destination implementation.
 
-## Fog and frontier
+Assign an Issue before working it. Assignment is its claim; concurrent sessions
+skip claimed Issues. A frontier Issue is open, unblocked, and unclaimed.
 
-Create a Decision Issue when its question is precise now, even when blocked.
-Keep it under **Not yet specified** when the question itself still depends on
-an unresolved decision.
+## Chart
 
-Map only the visible decision frontier. Do not predict a complete work
-breakdown through the fog. A newly resolved decision may expose new Issues,
-collapse suspected work, or move work out of scope.
+1. Confirm ownership and destination. Explore breadth-first across the problem
+   for distinct decisions, dependencies, and fog.
+2. If a reliable spec is now possible, present it for explicit `to-spec` selection
+   and stop without creating a map.
+3. Show the proposed map and visible Decision Issues. Publish only after approval.
+4. Create the map and typed native children, then native blocking edges once
+   real identities exist. Verify both relationships and stop. Charting resolves
+   none of its decisions.
 
-Fog is in scope but not yet sharp enough to express as a question. It is not a
-synonym for "hard to answer." Use this test:
+## Work
 
-- **Decision Issue:** the question is precise now, even if its answer is
-  blocked or unknown.
-- **Not yet specified:** an earlier decision must resolve before the question
-  itself can be stated precisely.
+Resolve at most one non-research Decision Issue per fresh context.
 
-## Out of scope
-
-Work beyond the destination is out of scope, not fog. It never graduates onto
-the frontier unless the destination changes. If an existing Decision Issue is
-discovered to be out of scope, close it and add one descriptive linked line to
-**Out of scope** with the reason. Do not record it under **Decisions so far**.
-
-## Chart the route
-
-1. Confirm the owning repository.
-2. Establish the destination, then explore breadth-first across the whole
-   problem to surface distinct decisions, dependencies, and remaining fog.
-3. If this clears the fog and the route fits a reliable spec, stop and tell the
-   user it is ready for explicit `to-spec` selection. Do not create a map.
-4. Show the proposed map and visible Decision Issues. Publish only after the
-   user approves.
-5. Create the map, then its native child Issues. Add native blocking edges in
-   a second pass after every Issue has an identity.
-6. Assign each Decision Issue its type.
-7. Verify parent-child and blocking relationships, then stop. Charting
-   resolves none of the decisions.
-
-## Work the route
-
-Resolve at most one non-research Decision Issue per fresh context:
-
-1. Read the map at low resolution and query its open native children.
-2. Select the first unblocked, unclaimed Decision Issue unless the user named
-   another.
-3. Claim it by assigning it before work so concurrent sessions skip it.
-4. Dispatch the workflow recorded by the Issue type without asking the human
-   to select it. Research Issues may proceed in parallel when their questions
-   and file ownership are independent.
-5. Post the resolution, close the Issue, and add one linked gist to
-   **Decisions so far**.
-6. Create only newly visible Decision Issues, wire their native relationships,
-   and remove any fog that has now graduated from **Not yet specified**.
-7. Close and classify any Issue exposed as out of scope.
-
-Do not require every imaginable decision to disappear. When the remaining
-route can be stated as a reliable spec, Wayfinder is complete. Present it for
-explicit `to-spec` selection and stop.
+1. Read the map at low resolution and query open native children. Select the first
+   unblocked, unclaimed Issue unless the user names another; assign it before work.
+2. Dispatch its typed workflow. Research Issues may run in parallel only with
+   independent questions and file ownership.
+3. Post the resolution, close the Issue, and add its linked gist to **Decisions
+   so far**. Create only newly visible Issues with native relationships; remove
+   graduated fog. Close and classify newly discovered out-of-scope Issues.
+4. Stop when a reliable spec can be stated, without eliminating every imaginable
+   decision. Present the route for explicit `to-spec` selection.

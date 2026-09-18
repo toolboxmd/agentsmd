@@ -552,17 +552,17 @@ class SkillContractTests(unittest.TestCase):
 
     def test_project_direction_skill_preserves_user_owned_strategy(self) -> None:
         skill = read_text("skills/project-direction/SKILL.md")
-        normalized = " ".join(skill.split())
+        normalized = " ".join((skill + read_text("skills/project-direction/references/context.md")).split())
         for required in (
-            "coherent unit",
-            "unsupported strategic claims unknown",
-            "Ask only for unresolved strategic decisions",
-            "explicit user confirmation before writing",
-            "Do not require repeated confirmation",
-            "modify only the files whose meaning changed",
-            "reread all three files in full",
+            'triad together',
+            'unsupported strategy unknown',
+            'Ask only for strategic choices evidence cannot resolve',
+            'explicit confirmation before writing',
+            'needs no new confirmation merely because a task starts',
+            'preserving unchanged files byte-for-byte',
+            'Reread all three',
             "deliberate detour",
-            "advance the current Objective",
+            'Every proposed Spec and Issue states that contribution',
         ):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
@@ -575,7 +575,11 @@ class SkillContractTests(unittest.TestCase):
             "skills/project-direction/SKILL.md",
             "skills/project-direction/references/file-contracts.md",
         ):
-            normalized = " ".join(read_text(relative).split())
+            text = read_text(relative)
+            if relative == "skills/project-direction/SKILL.md":
+                self.assertIn("(references/file-contracts.md)", text)
+                text += read_text("skills/project-direction/references/file-contracts.md")
+            normalized = " ".join(text.split())
             with self.subTest(relative=relative):
                 self.assertIn("milestone-level", normalized)
                 self.assertIn("narrower than the Mission", normalized)
@@ -616,7 +620,11 @@ class SkillContractTests(unittest.TestCase):
             "skills/project-direction/SKILL.md",
             "skills/project-direction/references/file-contracts.md",
         ):
-            normalized = " ".join(read_text(relative).split())
+            text = read_text(relative)
+            if relative == "skills/project-direction/SKILL.md":
+                self.assertIn("(references/file-contracts.md)", text)
+                text += read_text("skills/project-direction/references/file-contracts.md")
+            normalized = " ".join(text.split())
             with self.subTest(relative=relative):
                 self.assertIn("grand and visionary", normalized)
                 self.assertIn("strategic", normalized)
@@ -652,15 +660,15 @@ class SkillContractTests(unittest.TestCase):
         for required in (
             "Project Direction",
             "`VISION.md`, `MISSION.md`, and `OBJECTIVE.md`",
-            "at task and subagent start and after context loss",
-            "locate and read all three files in full before any other work",
-            "Only the repository and tracker inspection required by that Skill may proceed",
-            "reported as oversized",
-            "Treat the current request as the immediate instruction",
+            'at task/subagent start and after context loss',
+            'locating and fully reading them is the first task action',
+            "only the Skill's necessary repository/tracker inspection may proceed",
+            'oversized',
+            'The current request is the immediate instruction',
             "Surface material drift before proceeding",
-            "Every proposed Spec and Issue must state how its outcome advances the current Objective",
+            'Every proposed Spec and Issue states that contribution',
             "Other Skills follow their own trigger and approval contracts",
-            "own current Project Direction",
+            'Current confirmed direction',
         ):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
@@ -670,14 +678,14 @@ class SkillContractTests(unittest.TestCase):
         skill = " ".join(read_text("skills/project-direction/SKILL.md").split())
         loader = read_text("bin/project-direction")
 
-        self.assertIn("[context.md](references/context.md)", skill)
+        self.assertIn('[context](references/context.md)', skill)
         for contract in (agents,):
             with self.subTest(contract=contract[:20]):
                 for required in (
-                    "after the complete local triad is loaded",
+                    'Before treating loaded direction as confirmed-current',
                     "intended base",
                     "`HEAD`",
-                    "configured upstream",
+                    'upstream',
                     "ahead/behind",
                     "`potentially_stale`",
                     "reread all three",
@@ -722,11 +730,11 @@ class SkillContractTests(unittest.TestCase):
         agents = read_text("AGENTS.md")
         for required in (
             "Align on ends. Think independently about means.",
-            "Optimize for mission and valuable outcome",
-            "Form and state an independent view",
+            "Optimize for the user's confirmed values, mission, outcomes",
+            'State an independent view',
             "Dissent when it can materially change",
-            "Use initiative within authority",
-            "lead with it",
+            'Pursue necessary in-scope work within authority',
+            'Lead with disagreement',
         ):
             self.assertIn(required, agents)
 
@@ -802,22 +810,22 @@ class SkillContractTests(unittest.TestCase):
         constraint = " ".join(read_text(
             "skills/elon-method/references/current-constraint.md").split())
         for required in (
-            "selecting or reassessing material work",
-            "confirmed Project Direction and the authorized outcome",
-            "next observable progress", "Trace the critical path",
-            "repository or live-system evidence", "observed facts from hypotheses",
-            "Compare plausible limiters", "if relieved, what progress becomes possible",
-            "what would still block it", "Record uncertainty and the missing evidence",
-            "smallest check that can distinguish them",
-            "current constraint and its owner in the existing plan or Issue",
+            'material selection/reassessment',
+            'confirmed direction and authorized outcome',
+            "next observable progress", 'Trace requirements, implementation, proof, dependencies, and authority',
+            'repository/live evidence', 'Separate observed delay from hypotheses',
+            "Compare plausible limiters", 'what progress would relief enable',
+            'what remains blocked', 'Record uncertainty and missing evidence',
+            'smallest distinguishing check',
+            'constraint and owner in the existing plan/Issue',
             "[Algorithm](algorithm.md) steps 1-3",
-            "before focusing acceleration", "smallest authorized intervention",
-            "owner, expected effect", "check that can falsify the diagnosis",
-            "when to check it before acting", "required final Proof remains intact",
-            "Compare observed progress with the expected effect", "expose bad news",
-            "Reassess after relief, changed dependencies, or new evidence",
+            'before accelerating', "smallest authorized intervention",
+            'owner, expected progress', 'falsifying observation',
+            'Before acting, record owner, expected progress, falsifying observation, and when to check', 'does not replace final Proof',
+            'Inspect actual versus expected progress', "expose bad news",
+            'Reassess after relief or changed dependencies/evidence',
             "earliest affected Algorithm step", "blocker, owner, and next check",
-            "Defer attractive work", "useful independent authorized work",
+            "Defer attractive work", 'Continue independent authorized work',
             "single-writer boundaries",
         ):
             with self.subTest(required=required):
@@ -948,8 +956,8 @@ class SkillContractTests(unittest.TestCase):
             "`GLOSSARY-MAP.md`",
             "read-only fallback",
             "Create files lazily",
-            "|-- GLOSSARY.md",
-            "|-- GLOSSARY-MAP.md",
+            'root `GLOSSARY.md`',
+            'root `GLOSSARY-MAP.md`',
             "system-wide decisions",
             "domain-specific decisions",
         ):
@@ -1176,7 +1184,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertEqual(rejected_tickets["implementation_authority_prompts"], 0)
 
     def test_to_tickets_publishes_github_issues_and_native_edges(self) -> None:
-        skill = read_text("skills/to-tickets/SKILL.md")
+        skill = read_text("skills/to-tickets/SKILL.md") + read_text("skills/to-tickets/references/ticket-decomposition.md")
         for required in (
             "GitHub Issues",
             "native sub-Issue",
@@ -1247,20 +1255,17 @@ class SkillContractTests(unittest.TestCase):
         )
 
         for required in (
-            "Before tracked mutation, select an exclusively owned task branch and "
-            "workspace; reuse them for continuation",
-            "intended base, branch, workspace path, ownership, and exact "
-            "starting `HEAD`",
-            "canonical checkout as the stable coordination and integration view",
-            "Read-only work may share repository state only when it cannot mutate "
-            "or interfere with a writer",
-            "separate workspaces with disjoint ownership",
-            "A branch, workspace, and file set each has one writer",
-            "Preserve and report dirty, active, or ambiguous state",
-            "unknown ownership or independence",
-            "moving base or unsafe overlap stops only the affected writer",
-            "unrelated independent work continues",
-            "[orchestration and handoff rules](orchestration.md)",
+            "Before tracked mutation, apply the core's orientation, authority, user-work, and single-writer rules",
+            'intended base, branch, exclusive workspace, ownership, and exact starting `HEAD`',
+            'canonical checkout as stable coordination/integration view',
+            'Read-only work may share state only without mutating or interfering',
+            'separate workspaces and disjoint ownership',
+            'disjoint ownership of branch, workspace, and file set',
+            'Preserve/report ambiguous, dirty, or active state',
+            'unless independence is established',
+            'Unsafe overlap or a moving base stops only the affected writer',
+            'stops only the affected writer',
+            '[orchestration](orchestration.md)',
         ):
             with self.subTest(required=required):
                 self.assertIn(required, contract)
@@ -1275,24 +1280,16 @@ class SkillContractTests(unittest.TestCase):
         )
 
         for required in (
-            "Keep a dependent Issue natively blocked until its predecessor "
-            "publishes a complete review-ready pull request at an exact SHA",
-            "predecessor pull request, exact head, proof state, and dependency "
-            "state before clearing only that native blocker",
-            "native stacked pull request from that exact predecessor",
-            "ordinary dependent branch with equivalent exact-base, review, "
-            "rebase, revalidation, retarget, and dependency-ordered merge "
-            "invariants",
-            "Independent work remains free",
-            "earliest layer that owns the broken acceptance criterion",
-            "Cascade rebase and revalidation through every affected dependent "
-            "layer",
-            "verify automatic rebase or retarget before treating an upper layer "
-            "as current",
-            "exact stack state across interruption, fresh context, and durable "
-            "handoff",
-            "review-ready, blocker-cleared, stacked, rebased, revalidated, "
-            "retargeted, and merged as separate states",
+            'Keep a dependent Issue natively blocked until its predecessor publishes a complete review-ready PR at an exact SHA',
+            'Record PR, exact head, proof, and dependency state before clearing only that blocker',
+            'native stacking from that SHA',
+            'equivalent exact-base, review, rebase, revalidation, retarget, and merge-order invariants on an ordinary dependent branch',
+            'Independent work may continue',
+            'earliest layer owning failed acceptance',
+            'cascade rebase/revalidation after lower-layer changes',
+            'verify automatic rebase/retarget before calling upper layers current',
+            'exact stack state across interruption and handoff',
+            'review-ready, blocker-cleared, stacked, rebased, revalidated, retargeted, and merged separately',
         ):
             with self.subTest(required=required):
                 self.assertIn(required, contract)
@@ -1515,40 +1512,32 @@ class SkillContractTests(unittest.TestCase):
         glossary = " ".join(read_text("GLOSSARY.md").split())
 
         for required in (
-            "Delivery Finalization starts only after review and a verified "
-            "terminal disposition",
-            "An open pull request or review-ready candidate is not terminal",
-            "Remove only clean, exact, task-owned transient resources that no "
-            "remaining stack layer needs",
-            "Authority to create an explicitly disposable resource includes its "
-            "teardown",
-            "Age or cleanliness alone never proves ownership or removal "
-            "eligibility",
-            "Preserve Issues, pull requests, commits, tags, releases, proof",
+            'Begin only after review and a verified terminal disposition',
+            'open/review-ready PRs are not terminal',
+            'Remove only clean, exact, task-owned transient resources no stack layer still needs',
+            'Authority to create explicitly disposable resources includes teardown',
+            'Age/cleanliness alone never establishes eligibility',
+            'Preserve Issues, PRs, commits, tags, releases, proof',
             "persistent, shared, production, materially changed, protected, gated, "
             "dirty, active, user-owned, or ambiguous resources",
-            "until applicable authority exists",
-            "required code and documentation integrated into the intended base",
+            'until authorized',
+            'requires code/docs in the intended base',
             "including deployment when required",
             "Check every temporary checkout for removal",
-            "verify affected consumers still work",
+            'verify consumers before removal',
             "unpublished work is not assumed remotely recoverable",
-            "Uniqueness alone does not establish importance",
-            "no default archive or indefinite retention once verified disposable",
-            "owner where known, and next action",
-            "Continue independent eligible cleanup",
-            "Verify every removal's exact after-state",
-            "Repository Reconciliation with its exact path, branch, `HEAD`, files, "
-            "reason, and next action",
+            'uniqueness alone does not establish importance',
+            'Verified disposable packages, builds, fixtures, and superseded experiments need no archive or indefinite retention',
+            'known owner, and next action',
+            'Continue eligible independent cleanup',
+            "Verify each removal's after-state",
+            '[Reconciliation](reconciliation.md) with exact path, branch, HEAD, files, reason, and next action',
             "closed but not fully finalized",
-            "native closing linkage only for a pull request that fully resolves "
-            "the Issue, and use references for partial work",
-            "Close parents only after their acceptance criteria are satisfied and "
-            "required children are terminal",
-            "Close proof or experiment Issues after recording their evidence or "
-            "decision",
-            "Close duplicate or superseded Issues with a durable link",
-            "keep deferred work open, and never delete Issues",
+            'native closing linkage only for full Issue resolution, references for partial work',
+            'Close parents after acceptance and required children are terminal',
+            'Close proof/experiment Issues after recording evidence/decision',
+            'duplicates/supersessions need a durable link',
+            'Keep deferred work open; never delete Issues',
             "outcome, review, merge, closure, cleanup, finalization, and behavioral "
             "Live Verification separately",
         ):
@@ -1562,8 +1551,8 @@ class SkillContractTests(unittest.TestCase):
         )
 
         implementation = " ".join(read_text("skills/operations/references/implementation.md").split())
-        self.assertIn("checkouts are temporary from creation through Delivery Finalization", implementation)
-        self.assertIn("secrets and databases do not belong in Git", implementation)
+        self.assertIn('checkouts are temporary through Delivery Finalization', implementation)
+        self.assertIn("secrets and databases never belong in Git", implementation)
 
     def test_repository_reconciliation_contract_is_bounded_and_approval_gated(
         self,
@@ -2049,28 +2038,28 @@ class SkillContractTests(unittest.TestCase):
             wayfinder["completion"], "explicit-to-spec-selection"
         )
         for required in (
-            "owning GitHub repository",
-            "persistent decision fog",
+            'owning repository',
+            'dependent decisions',
             "regardless of predicted session length",
-            "## Plan, don't do",
-            "## Refer by name",
+            'never implements the destination',
+            'Refer to Issues by descriptive linked titles',
             "## Question",
             "## Type",
-            "## Decision Issue types",
+            '## Typed routing',
             "Research (AFK)",
             "Prototype (HITL)",
             "Grilling (HITL)",
             "Task (HITL or AFK)",
             "Invoke the bundled `research` Skill",
             "Invoke the bundled `prototype` Skill",
-            "without asking the human to select a workflow",
+            'without another workflow-selection question',
             "breadth-first",
-            "visible decision frontier",
+            'visible frontier',
             "native blocking",
-            "assigning it",
-            "agent never stands in for the human",
-            "close it",
-            "stop when the route is clear",
+            'assign it before work',
+            'Never impersonate the human',
+            'close the Issue',
+            'Stop when a reliable spec can be stated',
         ):
             self.assertIn(required, normalized)
         for forbidden in (
@@ -2085,7 +2074,7 @@ class SkillContractTests(unittest.TestCase):
         agents = read_text("skills/operations/references/implementation.md")
         normalized_agents = " ".join(agents.split())
         self.assertIn(
-            "unresolved dependent decisions prevent a reliable spec",
+            'dependent unresolved decisions prevent a reliable spec',
             normalized_agents,
         )
         self.assertNotIn(
@@ -2097,12 +2086,12 @@ class SkillContractTests(unittest.TestCase):
         skill = " ".join(read_text("skills/prototype/SKILL.md").split())
         for required in (
             "Prototype Decision Issue",
-            "without asking the human to select it",
+            "without another human selection",
             "[LOGIC.md](LOGIC.md)",
             "[UI.md](UI.md)",
-            "runnable smoke check",
+            'smallest smoke check',
             "authorized decision-maker",
-            "resume the owning workflow from its next incomplete step",
+            "resume the owning workflow's next incomplete step",
             "decision evidence, not production code",
             "owning GitHub Issue",
             "throwaway branch",
@@ -2154,7 +2143,7 @@ class SkillContractTests(unittest.TestCase):
             "8,192 bytes per file",
             "16,384 bytes combined",
             "intended base",
-            "configured upstream",
+            'upstream',
             "ahead/behind",
             "`potentially_stale`",
             "without network access or checkout mutation",

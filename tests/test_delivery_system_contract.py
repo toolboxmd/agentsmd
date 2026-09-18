@@ -54,9 +54,9 @@ class DeliverySystemContractTests(unittest.TestCase):
             "earliest owning layer",
             "highest semantic impact",
             "GitHub-hosted runners",
-            "development hosts",
+            'Development hosts',
             "human workstations",
-            "production-connected hosts",
+            'Production-connected hosts',
         )
         for phrase in required:
             with self.subTest(phrase=phrase):
@@ -98,7 +98,7 @@ class DeliverySystemContractTests(unittest.TestCase):
 
     def test_skill_is_a_narrow_profile_loader_not_an_orchestrator(self) -> None:
         self.assertIn("bin/delivery-profile", self.skill)
-        self.assertIn("Project-specific deltas", self.skill)
+        self.assertIn('Project deltas', self.skill)
         self.assertIn("AGENTS.md", self.skill)
         self.assertNotIn("orchestration engine", self.skill)
 
