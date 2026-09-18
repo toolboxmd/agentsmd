@@ -319,7 +319,7 @@ export AGENTSMD_HOST=codex
 | Host | Default global path | Respected configuration directory |
 | --- | --- | --- |
 | Codex | `~/.codex/AGENTS.md` | `CODEX_HOME` |
-| Grok Build | `~/.grok/AGENTS.md` | No additional override claimed |
+| Grok Build | `~/.grok/AGENTS.md` | `GROK_HOME` |
 | OpenCode | `~/.config/opencode/AGENTS.md` | `OPENCODE_CONFIG_DIR`, otherwise `XDG_CONFIG_HOME/opencode` |
 | Claude Code | `~/.claude/CLAUDE.md` | `CLAUDE_CONFIG_DIR` |
 
@@ -330,7 +330,9 @@ host's exported value. Legacy `project-direction hook` callers default to Codex
 only when other configured native paths do not imply a conflicting source.
 Conflicts report `source-ambiguous` and inject no preferences until selection is
 explicit. No host identity is inferred from inherited Codex/Claude markers.
-Export configuration-directory overrides consistently in installer and host environments. OpenCode documents a custom config
+Export configuration-directory overrides consistently in installer and host environments.
+Grok documents `GROK_HOME` in its [settings guide](https://docs.x.ai/build/settings);
+unset or empty values retain the default `~/.grok` path. OpenCode documents a custom config
 directory in its [configuration guide](https://opencode.ai/docs/config/).
 Claude documents `CLAUDE_CONFIG_DIR` in its
 [directory guide](https://code.claude.com/docs/en/claude-directory); verify its

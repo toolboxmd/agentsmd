@@ -28,7 +28,7 @@ class SharedPreferencesTests(unittest.TestCase):
         self.project = self.root / 'unrelated'
         self.project.mkdir()
         self.env = {key: value for key, value in os.environ.items()
-                    if key not in {'AGENTSMD_HOST', 'CODEX_HOME', 'CLAUDE_CONFIG_DIR', 'OPENCODE_CONFIG_DIR',
+                    if key not in {'AGENTSMD_HOST', 'CODEX_HOME', 'GROK_HOME', 'CLAUDE_CONFIG_DIR', 'OPENCODE_CONFIG_DIR',
                                    'XDG_CONFIG_HOME', 'PLUGIN_DATA', 'CLAUDE_PLUGIN_DATA', 'GROK_PLUGIN_DATA'}}
         self.env.update(HOME=str(self.home), AGENTSMD_PROJECT_DIRECTION_DATA=str(self.root / 'cache'))
 
@@ -69,6 +69,7 @@ class SharedPreferencesTests(unittest.TestCase):
     def test_config_roots_and_opencode_lifecycle_share_path(self):
         for host, key, relative in (('codex', 'CODEX_HOME', 'AGENTS.md'),
                                     ('claude', 'CLAUDE_CONFIG_DIR', 'CLAUDE.md'),
+                                    ('grok', 'GROK_HOME', 'AGENTS.md'),
                                     ('opencode', 'XDG_CONFIG_HOME', 'opencode/AGENTS.md'),
                                     ('opencode', 'OPENCODE_CONFIG_DIR', 'AGENTS.md')):
             with self.subTest(key=key):
@@ -81,6 +82,38 @@ class SharedPreferencesTests(unittest.TestCase):
                     self.command('agentsmd-opencode', 'uninstall', '--source', self.source, env=env)
                     self.assertFalse(Path(report['target']).exists())
                     self.assertTrue(self.private.exists())
+
+    def test_grok_home_selects_custom_source_and_preserves_default_fallback(self):
+        default_source = self.root / 'default-source/AGENTS.md'
+        default_source.parent.mkdir()
+        default_source.write_text('default Grok contract')
+        default_source.with_name('PREFERENCES.md').write_text('default Grok preferences')
+        default_target = self.home / '.grok/AGENTS.md'
+        default_target.parent.mkdir()
+        default_target.symlink_to(default_source)
+        custom_home = self.root / 'custom-grok'
+        custom_env = {**self.env, 'GROK_HOME': str(custom_home), 'AGENTSMD_HOST': 'grok'}
+        installed = self.install('grok', env=custom_env)
+        self.assertEqual(installed['target'], str(custom_home / 'AGENTS.md'))
+        self.assertEqual((custom_home / 'AGENTS.md').resolve(), self.source)
+        self.assertEqual(default_target.resolve(), default_source)
+        self.assertEqual(default_target.read_text(), 'default Grok contract')
+        self.private.write_text('custom Grok preferences')
+        inspected = self.command('project-direction', 'inspect', '--host', 'grok', env=custom_env)
+        self.assertEqual(inspected['instructions']['resolved_target'], str(self.source))
+        self.assertEqual(inspected['preferences']['content'], 'custom Grok preferences')
+        hooked = self.command('project-direction', 'hook', env=custom_env, input={
+            'hook_event_name': 'SessionStart', 'cwd': str(self.project), 'session_id': 'grok-custom'})
+        payload = json.loads(hooked['hookSpecificOutput']['additionalContext'].splitlines()[1])
+        self.assertEqual(payload['preferences']['content'], 'custom Grok preferences')
+        for value in (None, ''):
+            with self.subTest(grok_home=value):
+                fallback_env = dict(self.env)
+                if value is not None:
+                    fallback_env['GROK_HOME'] = value
+                fallback = self.command('project-direction', 'inspect', '--host', 'grok', env=fallback_env)
+                self.assertEqual(fallback['instructions']['target'], str(default_target))
+                self.assertEqual(fallback['preferences']['content'], 'default Grok preferences')
 
     def test_native_and_compatibility_paths_coexist_without_mutating_project_rules(self):
         project_rules = {'AGENTS.md': 'project native', 'CLAUDE.md': 'project fallback',

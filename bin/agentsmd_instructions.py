@@ -16,7 +16,7 @@ def default_target(host: str = "codex") -> Path:
     if host == "codex":
         return absolute(os.environ.get("CODEX_HOME") or Path.home() / ".codex") / "AGENTS.md"
     if host == "grok":
-        return Path.home() / ".grok/AGENTS.md"
+        return absolute(os.environ.get("GROK_HOME") or Path.home() / ".grok") / "AGENTS.md"
     if host == "claude":
         return absolute(os.environ.get("CLAUDE_CONFIG_DIR") or Path.home() / ".claude") / "CLAUDE.md"
     if host == "opencode":
