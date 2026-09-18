@@ -7,3 +7,6 @@ __pycache__/
 .coverage
 .pytest_cache/
 /skills/version-control-workspace/
+
+# Private defaults beside the canonical instruction source
+/PREFERENCES.md

@@ -25,18 +25,20 @@
   solely of an exact user-approved prose replacement, matching expected-text
   assertions, and required version bookkeeping. Self-review and relevant
   checks still apply. A deterministically generated
-  Toolybara promotion pull request uses generated-scope validation instead.
+  promotion pull request may use generated-scope validation only when a trusted
+  generator reproduces the exact diff from reviewed inputs, the full diff is
+  confined to declared generated paths, and validation proves those conditions
+  for the exact candidate. Authored changes retain independent review.
   Apply a lower-layer review fix in the earliest owning layer, checkpoint every
   descendant, rebase it onto the corrected exact SHA, and re-prove every
   affected head without losing later work.
 
 - Use GitHub-hosted runners for ordinary CI and release builds. Project-owned
   proof adapters may choose the appropriate host for reusable affected tests.
-  Reserve Rocky for agentic development and genuine macOS proof, Cavallo for
-  human control
-  and acceptance, and Bigbrain for activation, health checks, and rollback of
-  trusted artifacts. Untrusted pull request code does not run on
-  production-connected infrastructure.
+  Use development hosts for agentic work and platform-specific proof, human
+  workstations for acceptance, and production-connected hosts only for authorized
+  activation, health checks, and rollback of trusted artifacts. Untrusted pull
+  request code does not run on production-connected infrastructure.
 
 - The complete merge gate proves the whole required merge unit; the complete
   release gate binds that coverage and release identity to the exact release

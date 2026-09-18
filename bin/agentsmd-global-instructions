@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import shutil
@@ -15,115 +14,15 @@ from pathlib import Path
 from typing import Any
 
 
-def absolute(path: str | Path) -> Path:
-    return Path(os.path.abspath(os.path.expanduser(str(path))))
-
-
-def default_target() -> Path:
-    codex_home = os.environ.get("CODEX_HOME")
-    root = absolute(codex_home) if codex_home else Path.home() / ".codex"
-    return root / "AGENTS.md"
-
-
-def is_cache_path(path: Path) -> bool:
-    parts = path.parts
-    return any(
-        parts[index : index + 2] == ("plugins", "cache")
-        for index in range(len(parts) - 1)
-    )
-
-
-def target_location(target: Path) -> Path:
-    return target.parent.resolve(strict=False) / target.name
-
-
-def target_is_in_cache(target: Path) -> bool:
-    return is_cache_path(target) or is_cache_path(target_location(target))
-
-
-def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def inspect_target(target: Path) -> dict[str, Any]:
-    report: dict[str, Any] = {
-        "target": str(target),
-        "healthy": False,
-        "status": "missing",
-    }
-    if target_is_in_cache(target):
-        report["status"] = "cache-bound-target"
-        return report
-    if not os.path.lexists(target):
-        return report
-    if not target.is_symlink():
-        report["status"] = "non-symlink"
-        report["target_kind"] = "directory" if target.is_dir() else "file"
-        return report
-
-    link_target = os.readlink(target)
-    linked = Path(link_target)
-    linked_path = absolute(linked if linked.is_absolute() else target.parent / linked)
-    resolved = linked_path.resolve(strict=False)
-    report.update(
-        {
-            "link_target": link_target,
-            "resolved_target": str(resolved),
-            "target_kind": "symlink",
-        }
-    )
-    if is_cache_path(linked_path) or is_cache_path(resolved):
-        report["status"] = "cache-bound-link"
-        return report
-    if not resolved.is_file():
-        report["status"] = "broken-link"
-        return report
-    if resolved.name != "AGENTS.md":
-        report["status"] = "invalid-link-target"
-        return report
-
-    target_digest = digest(resolved)
-    report.update(
-        {
-            "healthy": True,
-            "sha256": target_digest,
-            "status": "valid-stable-link",
-            "target_sha256": target_digest,
-        }
-    )
-    return report
+from agentsmd_instructions import (
+    HOSTS, absolute, default_target, digest, initialize_preferences,
+    inspect_target, target_is_in_cache, target_location, validate_source,
+)
 
 
 def emit(report: dict[str, Any], exit_code: int) -> int:
     print(json.dumps(report, indent=2, sort_keys=True))
     return exit_code
-
-
-def validate_source(source: Path) -> tuple[Path | None, dict[str, Any] | None]:
-    if is_cache_path(source):
-        return None, {
-            "error": "cache-bound-source",
-            "source": str(source),
-        }
-    try:
-        resolved = source.resolve(strict=True)
-    except FileNotFoundError:
-        return None, {"error": "missing-source", "source": str(source)}
-    if is_cache_path(resolved):
-        return None, {
-            "error": "cache-bound-source",
-            "source": str(source),
-            "resolved_source": str(resolved),
-        }
-    if not resolved.is_file():
-        return None, {"error": "invalid-source", "source": str(source)}
-    if resolved.name != "AGENTS.md":
-        return None, {
-            "error": "invalid-source-name",
-            "source": str(source),
-            "resolved_source": str(resolved),
-        }
-    return resolved, None
 
 
 def next_backup_path(target: Path, backup_dir: Path) -> Path:
@@ -193,6 +92,7 @@ def install(
                 "action": "unchanged",
                 "source": str(resolved_source),
                 "source_sha256": digest(resolved_source),
+                "preferences": initialize_preferences(resolved_source),
             },
             0,
         )
@@ -254,6 +154,7 @@ def install(
             "previous_status": before["status"],
             "source": str(resolved_source),
             "source_sha256": digest(resolved_source),
+            "preferences": initialize_preferences(resolved_source),
         },
         0,
     )
@@ -268,13 +169,16 @@ def parser() -> argparse.ArgumentParser:
     inspect_command = subcommands.add_parser(
         "inspect", help="Report whether a global instruction target is healthy."
     )
-    inspect_command.add_argument("--target", type=absolute, default=default_target())
+    inspect_command.add_argument("--target", type=absolute)
+    inspect_command.add_argument("--host", choices=HOSTS, default="codex")
+    inspect_command.add_argument("--source", type=absolute)
 
     install_command = subcommands.add_parser(
         "install", help="Install or repair a stable global instruction link."
     )
     install_command.add_argument("--source", type=absolute, required=True)
-    install_command.add_argument("--target", type=absolute, default=default_target())
+    install_command.add_argument("--target", type=absolute)
+    install_command.add_argument("--host", choices=HOSTS, default="codex")
     install_command.add_argument(
         "--replace",
         action="store_true",
@@ -291,8 +195,15 @@ def parser() -> argparse.ArgumentParser:
 def main() -> int:
     arguments = parser().parse_args()
     try:
+        arguments.target = arguments.target or default_target(arguments.host)
         if arguments.command == "inspect":
-            report = inspect_target(arguments.target)
+            if arguments.source:
+                source, error = validate_source(arguments.source)
+                if error:
+                    return emit(error, 2)
+            else:
+                source = None
+            report = inspect_target(arguments.target, source)
             return emit(report, 0 if report["healthy"] else 2)
         return install(
             arguments.source,
@@ -300,7 +211,7 @@ def main() -> int:
             arguments.replace,
             arguments.backup_dir,
         )
-    except (OSError, ValueError) as error:
+    except (OSError, ValueError, RuntimeError) as error:
         return emit({"error": "io-error", "message": str(error)}, 2)
 
 

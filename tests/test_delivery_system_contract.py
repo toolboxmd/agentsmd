@@ -54,9 +54,9 @@ class DeliverySystemContractTests(unittest.TestCase):
             "earliest owning layer",
             "highest semantic impact",
             "GitHub-hosted runners",
-            "Rocky",
-            "Cavallo",
-            "Bigbrain",
+            "development hosts",
+            "human workstations",
+            "production-connected hosts",
         )
         for phrase in required:
             with self.subTest(phrase=phrase):

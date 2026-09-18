@@ -1,5 +1,5 @@
 {
-  "description": "Load complete Project Direction at supported task lifecycle boundaries.",
+  "description": "Load complete Project Direction, canonical source identity and private preferences at supported task lifecycle boundaries.",
   "hooks": {
     "SessionStart": [
       {
@@ -9,7 +9,7 @@
             "type": "command",
             "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/project-direction\" hook",
             "statusMessage": "Loading Project Direction",
-            "additionalContextLimit": 6000
+            "additionalContextLimit": 16000
           }
         ]
       }
@@ -21,7 +21,7 @@
             "type": "command",
             "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/project-direction\" hook",
             "statusMessage": "Checking Project Direction",
-            "additionalContextLimit": 6000
+            "additionalContextLimit": 16000
           }
         ]
       }
@@ -33,7 +33,7 @@
             "type": "command",
             "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/project-direction\" hook",
             "statusMessage": "Loading Project Direction for subagent",
-            "additionalContextLimit": 6000
+            "additionalContextLimit": 16000
           }
         ]
       }

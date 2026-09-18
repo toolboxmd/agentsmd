@@ -187,7 +187,7 @@ class PluginPackagingTests(unittest.TestCase):
                     handler["command"],
                     '"${CLAUDE_PLUGIN_ROOT}/bin/project-direction" hook',
                 )
-                self.assertEqual(handler["additionalContextLimit"], 6000)
+                self.assertEqual(handler["additionalContextLimit"], 16000)
 
     def test_three_host_identity(self) -> None:
         manifests = {

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import os
@@ -11,12 +12,16 @@ import sys
 import tempfile
 from pathlib import Path
 
+from agentsmd_instructions import HOSTS, context_payload
+
 REQUIRED_FILES = ("VISION.md", "MISSION.md", "OBJECTIVE.md")
 MAX_FILE_BYTES = 8192
 MAX_TOTAL_BYTES = 16384
 SUPPORTED_EVENTS = ("SessionStart", "UserPromptSubmit", "SubagentStart")
 BLOCK_START = "<<<AGENTSMD_PROJECT_DIRECTION_V1>>>"
 BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1>>>"
+# UTF-8 bytes bound tokens conservatively, including JSON escaping and delimiters.
+MAX_CONTEXT_BYTES = 14000
 
 
 def git_root(cwd: str) -> Path | None:
@@ -358,6 +363,25 @@ def hook_output(event: str, payload: dict[str, object]) -> dict[str, object]:
             BLOCK_END,
         )
     )
+    if len(context.encode("utf-8")) > MAX_CONTEXT_BYTES:
+        # Emit metadata and a full-read requirement, never partial private text or triad.
+        payload = json.loads(json.dumps(payload))
+        payload["loaded_status"] = payload["status"]
+        payload["status"] = "read_required"
+        for item in payload.get("files", []):
+            item.pop("content", None)
+        preferences = payload.get("preferences", {})
+        if preferences.get("status") == "ready":
+            preferences.pop("content", None)
+            preferences["status"] = "read_required"
+        payload["action"] = (
+            "Combined context exceeds the safe inline budget. Read every listed "
+            "Project Direction file and the private preferences file when present "
+            "in full before work. No file contents were injected. Apply the "
+            "canonical-source freshness check in instructions.action."
+        )
+        context = "\n".join((BLOCK_START, json.dumps(
+            payload, ensure_ascii=False, separators=(",", ":")), BLOCK_END))
     return {
         "hookSpecificOutput": {
             "hookEventName": event,
@@ -424,7 +448,7 @@ def report_input_error(detail: str) -> int:
     return 0
 
 
-def run_hook() -> int:
+def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
     try:
         event_input = json.load(sys.stdin)
     except (json.JSONDecodeError, UnicodeDecodeError):
@@ -448,6 +472,7 @@ def run_hook() -> int:
         if root is not None
         else not_in_repository_payload(cwd)
     )
+    payload.update(context_payload(host, require_unambiguous))
     current_fingerprint = fingerprint(payload)
     session_id = event_input.get("session_id")
     if (
@@ -475,10 +500,19 @@ def run_hook() -> int:
 
 
 def main(argv: list[str]) -> int:
-    if argv != ["hook"]:
-        print("usage: project-direction hook", file=sys.stderr)
-        return 2
-    return run_hook()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("command", choices=("hook", "inspect"))
+    parser.add_argument("--host", choices=HOSTS)
+    args = parser.parse_args(argv)
+    selected_host = args.host or os.environ.get("AGENTSMD_HOST")
+    if selected_host is not None and selected_host not in HOSTS:
+        parser.error("AGENTSMD_HOST must be codex, grok, opencode, or claude")
+    host = selected_host or "codex"
+    if args.command == "inspect":
+        payload = context_payload(host, selected_host is None)
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return 0 if payload["preferences"]["status"] in {"ready", "absent"} else 2
+    return run_hook(host, selected_host is None)
 
 
 if __name__ == "__main__":

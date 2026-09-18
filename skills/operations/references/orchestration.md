@@ -51,7 +51,11 @@
   complete Issue, exact base and dependency state, complete current Project
   Direction and applicable instructions, relevant durable decisions, and
   granted authority. Repository and GitHub evidence replace prior transcripts
-  when sufficient. Use a nested child with that seed packet and no prior
+  when sufficient. Include the canonical instruction source path and SHA-256.
+  The child verifies that identity against the live source and reads current
+  instructions and adjacent private preferences when freshness is unproved;
+  inherited startup text alone is insufficient. Include the exclusive workspace
+  in the packet and never publish private preference contents. Use a nested child with that seed packet and no prior
   transcript; do not fork the parent transcript. Direct work needs no worker.
   Open a separate host task only when the slice must outlive the parent, a
   human must open it independently, or the writer must continue after the

@@ -10,6 +10,29 @@ Git is the source of truth for repository state. GitHub Issues is the source
 of truth for active tracked work. The live system is the source of truth for
 external state.
 
+## Canonical source and preferences
+
+At task and worker start, after context loss, and after source changes, inspect
+this host's native global instruction link. Resolve its canonical `AGENTS.md`
+and verify the path and SHA-256 against the complete instructions in context.
+Read the current source if freshness is unproved. Startup text can remain stale
+within an existing host session. Use the canonical source's
+`bin/project-direction inspect --host <codex|grok|opencode|claude>` or the
+existing hook's source metadata.
+Resolve [setup and host limits](README.md#install-boundary) from that same source
+directory, never the global link directory or project cwd. Keep Skill bodies
+on demand.
+
+Read adjacent private `PREFERENCES.md` in full when present, including outside
+Git repositories. Never substitute project-local preferences or the public
+example. Reuse unchanged full preferences, reload changed contents, discard
+removed preferences, and report unreadable files. Supported hooks supply this
+context automatically; otherwise read it explicitly at these boundaries.
+Preferences supply personal defaults. Explicit task instructions, required
+project constraints, proof, and authority boundaries take precedence. Machine
+roles do not grant deployment permission. Keep private contents out of public
+artifacts and reports.
+
 ## Partnership
 
 Align on ends. Think independently about means.

@@ -10,7 +10,8 @@ Provider availability is independent of host support; select an exact
 
 OpenCode composes project `AGENTS.md` found while walking up from its working
 directory with global `$XDG_CONFIG_HOME/opencode/AGENTS.md`, defaulting to
-`~/.config/opencode/AGENTS.md`. `CLAUDE.md` is a project fallback, and
+`~/.config/opencode/AGENTS.md`; `OPENCODE_CONFIG_DIR` selects a custom global
+directory. `CLAUDE.md` is a project fallback, and
 `~/.claude/CLAUDE.md` is a global fallback when the OpenCode global file is
 absent. Configured `instructions` add further sources. AgentsMD does not edit
 that configuration. See the official [instruction rules](https://opencode.ai/docs/rules/).
@@ -27,7 +28,10 @@ continues to depend on the canonical operating contract.
 The global contract requires the full Project Direction triad before project
 work. OpenCode does not run the Codex Project Direction lifecycle hook. A
 fresh session must read those files and applicable project instructions. The
-bounded adapter includes this obligation in its handoff prompt.
+bounded adapter includes this obligation in its handoff prompt. It also requires
+current canonical instruction identity and adjacent private preferences. Use the
+[shared setup walkthrough](../README.md#install-boundary) for initialization,
+discovery checks and the explicit reading fallback.
 
 ## Install, update, status and uninstall
 
@@ -42,7 +46,9 @@ the link command verifies path ownership and bytes, not GitHub release status.
 "$AGENTSMD_DIR/bin/agentsmd-opencode" update --source "$AGENTSMD_DIR/AGENTS.md"
 ```
 
-Commands emit JSON including source and target hashes when readable. Ownership
+Commands emit JSON including source and target hashes when readable. Install
+and update initialize adjacent private preferences only when absent. Shared
+path checks reject cache-bound sources and targets. Ownership
 means a symlink's absolute lexical destination exactly matches the explicitly
 supplied canonical source. Status distinguishes `missing`, `regular-file`,
 `other-path`, `broken-link`, `divergent-link`, and `owned-link`. A broken link
@@ -62,8 +68,9 @@ identify the previous canonical release explicitly:
 
 Update refuses any target that is not the exact previous owned link. Uninstall
 removes only the exact supplied owned link, including a broken owned link.
-There is no force replacement option. Resolve an unrelated target deliberately
-outside this command. Source files, shared Skills, `opencode.json`,
+There is no force replacement option in this adapter. For an authorized
+migration, the common `agentsmd-global-instructions install --host opencode
+--source "$AGENTSMD_DIR/AGENTS.md" --replace` preserves a recoverable backup. Source files, shared Skills, `opencode.json`,
 `opencode.jsonc`, preferences and credentials remain in place. Start a fresh
 OpenCode session after a supported install or update.
 
