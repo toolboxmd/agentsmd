@@ -20,7 +20,10 @@ Accept runtime injection only with repository root, exact paths, hashes, and all
 three complete current files. Otherwise locating and fully reading them is the
 first task action. Where a host delivers injection only with the first tool
 result, such as Grok Build, the first response has none, so read the triad
-explicitly until it arrives. Repository files remain truth.
+explicitly until it arrives. Grok Build 1.0.34 executes no plugin-provided hook,
+so injection there needs the global hook file the README describes; without it
+no injection arrives at all and every task starts by reading the triad.
+Repository files remain truth.
 
 ## Currentness
 

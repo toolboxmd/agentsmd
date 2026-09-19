@@ -287,14 +287,53 @@ Inspect Skills in a fresh session. The separately pinned `use-grok` Skill still
 requires explicit invocation and an authenticated CLI. This setup grants no
 new authentication, quota or credit authority.
 
-Grok reads plugin hook output only on a tool call, so Project Direction arrives
-with the first tool result of a session. Later tool calls stay silent until the
-triad changes. Nothing arrives before that first tool result, so the explicit
-reading fallback below covers the first response. Grok must also resolve
-`agentsmd` to its own install: a same-named package without hooks in the Claude
-marketplace clone wins instead and delivers no context.
+Grok reads hook output only on a tool call, so Project Direction arrives with
+the first tool result of a session. Later tool calls stay silent until the triad
+changes. Nothing arrives before that first tool result, so the explicit reading
+fallback below covers the first response. First-tool delivery is proved on Grok
+1.0.34 through a global hook file. Plugin-hook delivery waits on the host.
+
+Grok 1.0.34 does not execute plugin-provided hooks. It discovers the plugin with
+`has_hooks=true` and then reports `total_hooks=0`, for a user-scope plugin, for
+`--plugin-dir`, and for a registry install alike, so the packaged hooks manifest
+is inert on Grok until the host fixes that. Global files under `~/.grok/hooks`
+and project files under `.grok/hooks` do run, so the supported interim path is a
+global hook file pointing at the stable canonical clone:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$AGENTSMD_DIR/bin/project-direction\" hook",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Write that to `~/.grok/hooks/agentsmd.json` with `$AGENTSMD_DIR` replaced by the
+absolute path of the clone from step 1. Never point it at a plugin cache path,
+which the loader rejects as a canonical source. Grok trusts global hook files
+automatically, so no trust prompt applies; project files under `.grok/hooks`
+still need trust. Start a fresh session for the file to load. Grok sets
+`GROK_HOOK_NAME` for global hooks as well as plugin hooks, and that variable is
+what activates the loader's Grok path, its 10,000 character cap and its
+`GROK_HOME` source resolution. An owned installer for this file is tracked as a
+follow-up Issue on
+[#105](https://github.com/toolboxmd/agentsmd/issues/105).
+
+Grok must also resolve `agentsmd` to its own install: a same-named package
+without hooks in the Claude marketplace clone wins instead.
 [toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)
-tracks that collision. Live Grok hook acceptance is not claimed by this release.
+tracks that collision. It gates Skill resolution now, and plugin-hook delivery
+once the host loads plugin hooks.
 
 **OpenCode:** link the packaged Skills only into OpenCode's own global Skill
 directory. Never link them into `~/.agents/skills`, `~/.claude/skills`, or
@@ -438,11 +477,15 @@ behavioral compliance. Check each installed host separately:
   Version 1.0.34 reports the global file; project discovery is trust-gated.
   Compare the native source and full expected byte count. Do not interpret an
   untrusted project's omitted files as proof of compatibility deduplication.
-  Confirm the same output resolves `agentsmd` to Grok's own installed plugin
-  with hooks, not to the hookless Claude marketplace clone
+  Confirm the same output resolves `agentsmd` to Grok's own installed plugin,
+  not to the Claude marketplace clone
   ([toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)).
-  Grok clips hook context at 10,000 characters, so the loader falls back to
-  `read_required` paths and hashes above that cap and requires explicit reads.
+  Version 1.0.34 loads no plugin-provided hook, so the packaged manifest is
+  inert there and `/hooks` shows Project Direction only when the global
+  `~/.grok/hooks/agentsmd.json` file above is installed and the session is
+  fresh. Grok clips hook context at 10,000 characters, so the loader falls back
+  to `read_required` paths and hashes above that cap and requires explicit
+  reads.
 - **OpenCode:** `opencode debug paths` and `opencode debug skill` inspect paths
   and Skills. Version 1.18.31 does not expose complete discovered native rule
   contents through `debug config`; settings output is not loaded-context proof.
