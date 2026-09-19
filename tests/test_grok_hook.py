@@ -86,11 +86,6 @@ class GrokHookFixture(unittest.TestCase):
                                 "type": "command",
                                 "command": f'"{source}/bin/project-direction" hook',
                                 "timeout": 15,
-                                "env": {
-                                    "AGENTSMD_PROJECT_DIRECTION_DATA": str(
-                                        self.grok_home / "agentsmd"
-                                    )
-                                },
                             }
                         ]
                     }
@@ -285,14 +280,42 @@ class GrokHookTests(GrokHookFixture):
                 self.assertEqual(report["exit_code"], 2)
                 self.assertFalse(self.target.exists())
 
-    def test_sources_holding_shell_expansion_characters_are_rejected(self) -> None:
-        unsafe = self.make_source("clone$HOME")
+    def test_sources_holding_shell_metacharacters_are_rejected(self) -> None:
+        marker = self.base / "executed"
+        unsafe = (
+            "clone$HOME",
+            f"clone`touch {marker}`",
+            "clone;id",
+            'clone"quoted',
+        )
+        for name in unsafe:
+            with self.subTest(name=name):
+                report = self.install(source=self.make_source(name))
 
-        report = self.install(source=unsafe)
+                self.assertEqual(report["exit_code"], 2)
+                self.assertIn("only letters, digits", str(report["error"]))
+                self.assertFalse(self.target.exists())
+        self.assertFalse(marker.exists())
 
-        self.assertEqual(report["exit_code"], 2)
-        self.assertIn("dollar", str(report["error"]))
-        self.assertFalse(self.target.exists())
+    def test_a_source_path_holding_spaces_installs_and_runs(self) -> None:
+        spaced = self.make_source("my clones/agents md")
+
+        report = self.install(source=spaced)
+
+        self.assertEqual(report["exit_code"], 0)
+        self.assertEqual(
+            json.loads(self.target.read_text()), self.expected_document(spaced)
+        )
+        command = json.loads(self.target.read_text())["hooks"]["PreToolUse"][0][
+            "hooks"
+        ][0]["command"]
+        # The quoted command must reach the loader, not a split word.
+        self.assertEqual(
+            subprocess.run(
+                command, shell=True, capture_output=True, text=True, check=False
+            ).returncode,
+            0,
+        )
 
 
 class GrokHookDeliveryTests(GrokHookFixture):
@@ -321,10 +344,10 @@ class GrokHookDeliveryTests(GrokHookFixture):
 
     def call_hook(self, session: str = "grok-session") -> subprocess.CompletedProcess[str]:
         handler = json.loads(self.target.read_text())["hooks"]["PreToolUse"][0]["hooks"][0]
-        # Grok sets GROK_HOOK_NAME for a global hook and applies the env map.
-        environment = self.environment(
-            GROK_HOOK_NAME="agentsmd", **handler["env"]
-        )
+        # Grok sets GROK_HOOK_NAME for a global hook, and the loader derives its
+        # cache from GROK_HOME, so the hook file carries no environment of its own.
+        environment = self.environment(GROK_HOOK_NAME="agentsmd")
+        environment.pop("AGENTSMD_PROJECT_DIRECTION_DATA", None)
         stdin = {
             "session_id": session,
             "sessionId": session,
@@ -367,7 +390,7 @@ class GrokHookDeliveryTests(GrokHookFixture):
             [item["content"] for item in payload["files"]],
             [self.triad[name] for name in ("VISION.md", "MISSION.md", "OBJECTIVE.md")],
         )
-        # The env map keeps the session fingerprint under GROK_HOME.
+        # The Grok cache contract keeps the session fingerprint under GROK_HOME.
         cache = self.grok_home / "agentsmd/project-direction"
         self.assertEqual(len(list(cache.glob("*.json"))), 1)
         self.assertEqual(second.returncode, 0, second.stderr)

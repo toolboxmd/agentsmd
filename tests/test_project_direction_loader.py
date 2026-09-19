@@ -862,6 +862,53 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         self.assertEqual(second.returncode, 0, second.stderr)
         self.assertEqual(second.stdout, "")
 
+    def invoke_grok_host_cache(
+        self, session: str, plugin_data: Path | None = None
+    ) -> subprocess.CompletedProcess[str]:
+        """Drive the Grok path with the host's own cache contract in force."""
+        environment = os.environ.copy()
+        for variable in (
+            "AGENTSMD_PROJECT_DIRECTION_DATA",
+            "AGENTSMD_HOST",
+            "PLUGIN_DATA",
+            "CLAUDE_PLUGIN_DATA",
+            "GROK_PLUGIN_DATA",
+        ):
+            environment.pop(variable, None)
+        environment["CODEX_HOME"] = str(self.base / "codex-home")
+        environment["GROK_HOME"] = str(self.grok_home)
+        environment["GROK_HOOK_NAME"] = "agentsmd"
+        if plugin_data is not None:
+            environment["GROK_PLUGIN_DATA"] = str(plugin_data)
+        payload = {
+            "session_id": session,
+            "cwd": str(self.repository),
+            "hook_event_name": "PreToolUse",
+            "tool_name": "read_file",
+        }
+        return subprocess.run(
+            [str(LOADER), "hook"],
+            input=json.dumps(payload),
+            text=True,
+            capture_output=True,
+            env=environment,
+            check=False,
+        )
+
+    def test_grok_global_and_plugin_hooks_share_one_session_cache(self) -> None:
+        self.write_triad()
+        plugin_data = self.base / "grok-plugin-data"
+
+        global_hook = self.invoke_grok_host_cache("shared-session")
+        plugin_hook = self.invoke_grok_host_cache("shared-session", plugin_data)
+
+        self.assertEqual(self.context_payload(global_hook)["status"], "ready")
+        self.assertEqual(plugin_hook.returncode, 0, plugin_hook.stderr)
+        self.assertEqual(plugin_hook.stdout, "")
+        cache = self.grok_home / "agentsmd/project-direction"
+        self.assertEqual(len(list(cache.glob("*.json"))), 1)
+        self.assertFalse(plugin_data.exists())
+
     def test_grok_tool_call_reinjects_after_a_direction_change(self) -> None:
         self.write_triad()
         self.context_payload(self.invoke("PreToolUse", tool_name="read_file", grok=True))

@@ -312,11 +312,16 @@ global hook files automatically, so no trust prompt applies; project files under
 `.grok/hooks` still need trust. Start a fresh session for the file to load. Grok
 sets `GROK_HOOK_NAME` for global hooks as well as plugin hooks, and that
 variable is what activates the loader's Grok path, its 10,000 character cap and
-its `GROK_HOME` source resolution. Remove the file with
-`agentsmd-grok-hook uninstall --source "$AGENTSMD_DIR"` once Grok executes
-plugin hooks. Until then the packaged manifest entry stays inert there, and if
-both paths ever deliver in one session, the loader's session fingerprint keeps
-the second delivery silent.
+its `GROK_HOME` source resolution. Remove the file once Grok executes plugin
+hooks:
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" uninstall --source "$AGENTSMD_DIR"
+```
+
+Until then the packaged manifest entry stays inert on Grok. Both Grok paths
+share one session fingerprint cache under `GROK_HOME`, so a session reached by
+the global file and a plugin hook still receives the triad once.
 
 Grok must also resolve `agentsmd` to its own install: a same-named package
 without hooks in the Claude marketplace clone wins instead.
@@ -425,9 +430,10 @@ repeated setup reports `unchanged`, a file generated for another clone reports
 Neither is replaced without `--replace`, which first copies the previous file
 into the adjacent `agentsmd-backups/` directory, or into `--backup-dir`.
 `status` exits zero only for an owned current file, and `uninstall` removes only
-that file. The hook entry also names a stable fingerprint cache under
-`GROK_HOME`, so once-per-session delivery survives a cleared temporary
-directory.
+that file. Under Grok the loader keeps its session fingerprint in
+`$GROK_HOME/agentsmd`, so once-per-session delivery survives a cleared
+temporary directory and is shared with a plugin hook if the host ever loads
+one.
 
 Setup copies tracked `PREFERENCES.example.md` to adjacent private
 `PREFERENCES.md` only when absent. Existing contents survive all setup and update

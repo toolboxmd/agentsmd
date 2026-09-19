@@ -25,9 +25,10 @@ from agentsmd_instructions import (
 # hashes at most three direction files, so 15 seconds is ample headroom.
 TIMEOUT_SECONDS = 15
 COMMAND_PATTERN = re.compile(r'^"(?P<source>.+)/bin/project-direction" hook$')
-# Grok expands ${VAR} and $VAR in a command, and the command is quoted, so a
-# source path holding these characters would be rewritten or split at run time.
-FORBIDDEN_SOURCE_CHARACTERS = '"$\\\n\r'
+# Grok runs the command through a shell and expands ${VAR} and $VAR in it, so
+# only a conservative character set is safe to embed. Everything else, from a
+# backtick to a semicolon, is rejected rather than escaped.
+SAFE_SOURCE_PATTERN = re.compile(r"^[A-Za-z0-9/._+@~ -]+$")
 
 
 def grok_home() -> Path:
@@ -52,12 +53,14 @@ def source_root(value: str | Path) -> Path:
             raise ValueError("source must be a stable canonical clone outside plugin caches")
     if loader.is_symlink() or not loader.is_file():
         raise ValueError("source must hold a regular bin/project-direction loader")
-    if any(character in str(source) for character in FORBIDDEN_SOURCE_CHARACTERS):
-        raise ValueError("source path must not hold a quote, dollar, backslash or newline")
+    if not SAFE_SOURCE_PATTERN.match(str(source)):
+        raise ValueError(
+            "source path must hold only letters, digits, space and / . _ - + @ ~"
+        )
     return source
 
 
-def hook_document(source: Path, home: Path) -> dict[str, Any]:
+def hook_document(source: Path) -> dict[str, Any]:
     return {
         # Grok ignores unknown top-level keys, so the marker names the source
         # without changing what the host loads.
@@ -70,11 +73,6 @@ def hook_document(source: Path, home: Path) -> dict[str, Any]:
                             "type": "command",
                             "command": f'"{source}/bin/project-direction" hook',
                             "timeout": TIMEOUT_SECONDS,
-                            # A global hook gets no GROK_PLUGIN_DATA, so name a
-                            # stable cache and keep once-per-session delivery.
-                            "env": {
-                                "AGENTSMD_PROJECT_DIRECTION_DATA": str(home / "agentsmd"),
-                            },
                         }
                     ]
                 }
@@ -83,8 +81,8 @@ def hook_document(source: Path, home: Path) -> dict[str, Any]:
     }
 
 
-def hook_bytes(source: Path, home: Path) -> bytes:
-    document = json.dumps(hook_document(source, home), indent=2, sort_keys=True)
+def hook_bytes(source: Path) -> bytes:
+    document = json.dumps(hook_document(source), indent=2, sort_keys=True)
     return (document + "\n").encode("utf-8")
 
 
@@ -165,9 +163,8 @@ def write_hook_file(target: Path, content: bytes) -> None:
 
 def manage(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
     source = source_root(args.source)
-    home = grok_home()
     target = hook_target()
-    expected = hook_bytes(source, home)
+    expected = hook_bytes(source)
     before = inspect(target, expected)
     report: dict[str, Any] = {
         "command": args.command,

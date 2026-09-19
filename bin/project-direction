@@ -12,7 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from agentsmd_instructions import HOSTS, context_payload
+from agentsmd_instructions import HOSTS, context_payload, default_target
 
 REQUIRED_FILES = ("VISION.md", "MISSION.md", "OBJECTIVE.md")
 MAX_FILE_BYTES = 8192
@@ -418,12 +418,13 @@ def grok_hook() -> bool:
 
 
 def cache_directory() -> Path:
-    for variable in (
-        "AGENTSMD_PROJECT_DIRECTION_DATA",
-        "PLUGIN_DATA",
-        "CLAUDE_PLUGIN_DATA",
-        "GROK_PLUGIN_DATA",
-    ):
+    if value := os.environ.get("AGENTSMD_PROJECT_DIRECTION_DATA"):
+        return Path(value).expanduser().resolve() / "project-direction"
+    # Grok's global hook file and a plugin hook must share one cache, so a
+    # session reached by both paths still delivers the triad once.
+    if grok_hook():
+        return default_target("grok").parent / "agentsmd" / "project-direction"
+    for variable in ("PLUGIN_DATA", "CLAUDE_PLUGIN_DATA", "GROK_PLUGIN_DATA"):
         if value := os.environ.get(variable):
             return Path(value).expanduser().resolve() / "project-direction"
     return Path(tempfile.gettempdir()) / "agentsmd-project-direction"
