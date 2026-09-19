@@ -37,6 +37,17 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/project-direction\" hook",
+            "statusMessage": "Delivering Project Direction"
+          }
+        ]
+      }
     ]
   }
 }

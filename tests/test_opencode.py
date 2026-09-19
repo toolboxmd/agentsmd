@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -169,6 +170,326 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.manage("update", "--previous-source", previous)[0], 2)
         self.assertEqual(os.readlink(self.target), str(previous))
         self.assertTrue(previous.is_dir())
+
+    def prepare_skills(self, names=("alpha", "beta")):
+        source = self.root / "release/skills"
+        for name in names:
+            (source / name).mkdir(parents=True)
+            (source / name / "SKILL.md").write_text("# " + name + "\n")
+        (source / "not-a-skill").mkdir()
+        self.skills = self.target.parent / "skills"
+        return source
+
+    def test_skill_links_install_repeat_status_and_uninstall(self):
+        source = self.prepare_skills()
+        code, report = self.call("skills", "status", "--source", source)
+        self.assertEqual(code, 2)
+        self.assertEqual([entry["status"] for entry in report["entries"]], ["missing", "missing"])
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["installed", "installed"])
+        self.assertEqual(report["target_directory"], str(self.skills))
+        for name in ("alpha", "beta"):
+            self.assertEqual((self.skills / name).resolve(), source / name)
+        self.assertFalse(os.path.lexists(self.skills / "not-a-skill"))
+        self.assertEqual(self.call("skills", "status", "--source", source)[0], 0)
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["unchanged", "unchanged"])
+        code, report = self.call("skills", "uninstall", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["uninstalled", "uninstalled"])
+        for name in ("alpha", "beta"):
+            self.assertFalse(os.path.lexists(self.skills / name))
+        self.assertEqual(self.call("skills", "uninstall", "--source", source)[0], 2)
+
+    def test_skill_links_preserve_user_entries_and_install_the_rest(self):
+        source = self.prepare_skills(("alpha", "beta", "gamma"))
+        self.skills.mkdir(parents=True)
+        (self.skills / "alpha").write_text("user skill file")
+        foreign = self.root / "foreign/beta"
+        foreign.mkdir(parents=True)
+        (foreign / "SKILL.md").write_text("user skill\n")
+        (self.skills / "beta").symlink_to(foreign, target_is_directory=True)
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 2)
+        self.assertEqual({entry["name"]: entry["action"] for entry in report["entries"]},
+                         {"alpha": "preserved", "beta": "preserved", "gamma": "installed"})
+        self.assertEqual({entry["name"]: entry["before"]["status"] for entry in report["entries"]},
+                         {"alpha": "regular-file", "beta": "divergent-link", "gamma": "missing"})
+        self.assertEqual((self.skills / "gamma").resolve(), source / "gamma")
+        for action in ("status", "uninstall"):
+            self.assertEqual(self.call("skills", action, "--source", source)[0], 2)
+        self.assertEqual((self.skills / "alpha").read_text(), "user skill file")
+        self.assertEqual(os.readlink(self.skills / "beta"), str(foreign))
+        self.assertFalse(os.path.lexists(self.skills / "gamma"))
+
+    def test_skill_links_status_and_uninstall_reach_removed_sources(self):
+        source = self.prepare_skills()
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)
+        shutil.rmtree(source / "alpha")
+        (source / "beta/SKILL.md").unlink()
+        code, report = self.call("skills", "status", "--source", source)
+        self.assertEqual(code, 2)
+        states = {entry["name"]: (entry["status"], entry["owned"]) for entry in report["entries"]}
+        self.assertEqual(states, {"alpha": ("broken-link", True), "beta": ("owned-link", True)})
+        code, report = self.call("skills", "uninstall", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["uninstalled", "uninstalled"])
+        for name in ("alpha", "beta"):
+            self.assertFalse(os.path.lexists(self.skills / name))
+        shutil.rmtree(source)
+        self.assertEqual(self.call("skills", "status", "--source", source)[0], 2)
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 2)
+
+    def test_skill_links_uninstall_removes_owned_link_to_replaced_source(self):
+        source = self.prepare_skills()
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)
+        shutil.rmtree(source / "alpha")
+        (source / "alpha").write_text("replaced by a regular file\n")
+        code, report = self.call("skills", "status", "--source", source)
+        self.assertEqual(code, 2)
+        alpha = next(entry for entry in report["entries"] if entry["name"] == "alpha")
+        self.assertTrue(alpha["owned"])
+        self.assertEqual(alpha["status"], "other-path")
+        code, report = self.call("skills", "uninstall", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["uninstalled", "uninstalled"])
+        self.assertFalse(os.path.lexists(self.skills / "alpha"))
+        self.assertEqual((source / "alpha").read_text(), "replaced by a regular file\n")
+
+    def test_skill_links_refuse_cache_bound_skill_before_linking(self):
+        source = self.prepare_skills()
+        cached = self.root / "plugins/cache/gamma"
+        cached.mkdir(parents=True)
+        (cached / "SKILL.md").write_text("cached\n")
+        (source / "gamma").symlink_to(cached, target_is_directory=True)
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 2)
+        entry = next(entry for entry in report["entries"] if entry["name"] == "gamma")
+        self.assertEqual(entry["action"], "rejected")
+        self.assertEqual(entry["reason"], "cache-bound-source")
+        self.assertFalse(os.path.lexists(self.skills / "gamma"))
+        self.assertEqual((self.skills / "alpha").resolve(), source / "alpha")
+
+    def test_skill_links_use_config_dir_and_home_fallback(self):
+        source = self.prepare_skills()
+        env = {**self.env, "OPENCODE_CONFIG_DIR": str(self.root / "custom")}
+        code, report = self.call("skills", "install", "--source", source, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target_directory"], str(self.root / "custom/skills"))
+        env = dict(self.env)
+        del env["XDG_CONFIG_HOME"]
+        code, report = self.call("skills", "install", "--source", source, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target_directory"], str(self.home / ".config/opencode/skills"))
+        self.assertEqual((self.home / ".config/opencode/skills/alpha").resolve(), source / "alpha")
+
+    def test_skill_links_reject_cache_source_and_shared_targets(self):
+        cached = self.root / "plugins/cache/skills"
+        (cached / "alpha").mkdir(parents=True)
+        (cached / "alpha/SKILL.md").write_text("cached\n")
+        self.assertEqual(self.call("skills", "install", "--source", cached)[0], 2)
+        source = self.prepare_skills()
+        for name in (".agents", ".claude", ".grok"):
+            env = {**self.env, "OPENCODE_CONFIG_DIR": str(self.home / name)}
+            code, report = self.call("skills", "install", "--source", source, env=env)
+            self.assertEqual(code, 2, report)
+            self.assertIn("shared Skill directory", report["error"])
+            self.assertFalse(os.path.lexists(self.home / name / "skills/alpha"))
+        alias = self.root / "alias"
+        alias.mkdir()
+        (alias / "skills").symlink_to(self.home / ".agents/skills", target_is_directory=True)
+        env = {**self.env, "OPENCODE_CONFIG_DIR": str(alias)}
+        self.assertEqual(self.call("skills", "install", "--source", source, env=env)[0], 2)
+        self.assertFalse(os.path.lexists(self.home / ".agents/skills/alpha"))
+
+    def prepare_plugin(self):
+        clone = self.root / "release"
+        (clone / "bin").mkdir(parents=True, exist_ok=True)
+        (clone / "bin/project-direction").write_text("#!/bin/sh\nexit 0\n")
+        module = clone / "opencode/agentsmd-project-direction.js"
+        module.parent.mkdir(parents=True, exist_ok=True)
+        module.write_text("export default async () => ({});\n")
+        self.plugin = self.target.parent / "plugins/agentsmd-project-direction.js"
+        return clone, module
+
+    def test_plugin_link_install_repeat_status_and_uninstall(self):
+        clone, module = self.prepare_plugin()
+        code, report = self.call("plugin", "status", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["entry"]["status"], "missing")
+        self.assertEqual(report["target"], str(self.plugin))
+        code, report = self.call("plugin", "install", "--source", clone)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["action"], "installed")
+        self.assertEqual(os.readlink(self.plugin), str(module))
+        self.assertEqual(self.call("plugin", "install", "--source", module)[1]["action"], "unchanged")
+        self.assertEqual(self.call("plugin", "status", "--source", module)[0], 0)
+        code, report = self.call("plugin", "uninstall", "--source", clone)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["action"], "uninstalled")
+        self.assertFalse(os.path.lexists(self.plugin))
+        self.assertEqual(self.call("plugin", "uninstall", "--source", clone)[0], 2)
+
+    def test_plugin_link_preserves_existing_entries_and_removes_owned_broken_link(self):
+        clone, module = self.prepare_plugin()
+        self.plugin.parent.mkdir(parents=True)
+        foreign = self.root / "foreign/agentsmd-project-direction.js"
+        foreign.parent.mkdir()
+        foreign.write_text("user plugin\n")
+        for kind, prepare in (("regular-file", lambda: self.plugin.write_text("user plugin file")),
+                              ("divergent-link", lambda: self.plugin.symlink_to(foreign))):
+            with self.subTest(kind=kind):
+                prepare()
+                self.assertEqual(self.call("plugin", "status", "--source", clone)[1]["entry"]["status"], kind)
+                for action in ("install", "uninstall"):
+                    code, report = self.call("plugin", action, "--source", clone)
+                    self.assertEqual(code, 2, report)
+                    self.assertEqual(report["action"], "preserved")
+                if self.plugin.is_symlink():
+                    self.assertEqual(os.readlink(self.plugin), str(foreign))
+                    self.plugin.unlink()
+                else:
+                    self.assertEqual(self.plugin.read_text(), "user plugin file")
+                    self.plugin.unlink()
+        self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
+        module.unlink()
+        code, report = self.call("plugin", "status", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["entry"]["status"], "broken-link")
+        self.assertTrue(report["entry"]["owned"])
+        self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 2)
+        self.assertEqual(self.call("plugin", "uninstall", "--source", clone)[0], 0)
+        self.assertFalse(os.path.lexists(self.plugin))
+
+    def test_plugin_link_rejects_noncanonical_and_loaderless_sources(self):
+        clone, module = self.prepare_plugin()
+        alias = self.root / "alias-clone"
+        alias.symlink_to(clone, target_is_directory=True)
+        code, report = self.call("plugin", "install", "--source", alias / "opencode" / module.name)
+        self.assertEqual(code, 2)
+        self.assertIn("symlink alias", report["error"])
+        aliased = self.root / "aliased-clone"
+        (aliased / "bin").mkdir(parents=True)
+        (aliased / "bin/project-direction").write_text("#!/bin/sh\nexit 0\n")
+        (aliased / "opencode").symlink_to(module.parent, target_is_directory=True)
+        code, report = self.call("plugin", "install", "--source", aliased)
+        self.assertEqual(code, 2)
+        self.assertIn("symlink alias", report["error"])
+        standalone = self.root / "standalone/opencode"
+        standalone.mkdir(parents=True)
+        (standalone / module.name).write_text("export default async () => ({});\n")
+        code, report = self.call("plugin", "install", "--source", standalone.parent)
+        self.assertEqual(code, 2)
+        self.assertIn("bin/project-direction", report["error"])
+        self.assertFalse(os.path.lexists(self.plugin))
+
+    def reset_plugin_fixture(self):
+        clone = self.root / "release"
+        if clone.is_symlink():
+            clone.unlink()
+        elif clone.is_dir():
+            shutil.rmtree(clone)
+        plugin = self.target.parent / "plugins/agentsmd-project-direction.js"
+        if os.path.lexists(plugin):
+            plugin.unlink()
+        return self.prepare_plugin()
+
+    def test_plugin_link_ownership_survives_every_source_mutation(self):
+        def remove_clone_root(clone, module):
+            shutil.rmtree(clone)
+
+        def remove_loader(clone, module):
+            (clone / "bin/project-direction").unlink()
+
+        def remove_opencode_directory(clone, module):
+            shutil.rmtree(module.parent)
+
+        def replace_module_with_directory(clone, module):
+            module.unlink()
+            module.mkdir()
+
+        def replace_module_with_alias(clone, module):
+            copy = module.parent / "copy.js"
+            copy.write_text(module.read_text())
+            module.unlink()
+            module.symlink_to(copy)
+
+        def alias_the_clone_root(clone, module):
+            moved = self.root / "moved-release"
+            if moved.is_dir():
+                shutil.rmtree(moved)
+            clone.rename(moved)
+            clone.symlink_to(moved, target_is_directory=True)
+
+        for mutate in (remove_clone_root, remove_loader, remove_opencode_directory,
+                       replace_module_with_directory, replace_module_with_alias,
+                       alias_the_clone_root):
+            with self.subTest(mutation=mutate.__name__):
+                clone, module = self.reset_plugin_fixture()
+                self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
+                mutate(clone, module)
+                code, report = self.call("plugin", "status", "--source", clone)
+                self.assertTrue(report["entry"]["owned"], report)
+                self.assertIn(report["entry"]["status"], ("owned-link", "broken-link", "other-path"))
+                self.assertEqual(code, 0 if report["entry"]["status"] == "owned-link" else 2)
+                code, report = self.call("plugin", "uninstall", "--source", clone)
+                self.assertEqual(code, 0, report)
+                self.assertEqual(report["action"], "uninstalled")
+                self.assertFalse(os.path.lexists(self.plugin))
+                code, report = self.call("plugin", "install", "--source", clone)
+                self.assertEqual(code, 2, report)
+                self.assertIn("error", report)
+                self.assertFalse(os.path.lexists(self.plugin))
+
+    def test_plugin_link_survives_a_removed_clone_root(self):
+        clone, module = self.prepare_plugin()
+        self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
+        shutil.rmtree(clone)
+        code, report = self.call("plugin", "status", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["entry"]["status"], "broken-link")
+        self.assertTrue(report["entry"]["owned"])
+        code, report = self.call("plugin", "install", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertIn("existing regular plugin file", report["error"])
+        self.assertTrue(os.path.lexists(self.plugin))
+        code, report = self.call("plugin", "uninstall", "--source", clone)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["action"], "uninstalled")
+        self.assertFalse(os.path.lexists(self.plugin))
+
+    def test_plugin_link_uses_config_dir_home_fallback_and_rejects_bad_sources(self):
+        clone, module = self.prepare_plugin()
+        env = {**self.env, "OPENCODE_CONFIG_DIR": str(self.root / "custom")}
+        code, report = self.call("plugin", "install", "--source", clone, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target"], str(self.root / "custom/plugins/agentsmd-project-direction.js"))
+        env = dict(self.env)
+        del env["XDG_CONFIG_HOME"]
+        code, report = self.call("plugin", "install", "--source", clone, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target"],
+                         str(self.home / ".config/opencode/plugins/agentsmd-project-direction.js"))
+        cached = self.root / "plugins/cache/release/opencode/agentsmd-project-direction.js"
+        cached.parent.mkdir(parents=True)
+        cached.write_text("cached\n")
+        for source in (cached, cached.parents[1], self.source, clone / "bin/project-direction"):
+            with self.subTest(source=str(source)):
+                self.assertEqual(self.call("plugin", "install", "--source", source)[0], 2)
+        alias = self.root / "alias/agentsmd-project-direction.js"
+        alias.parent.mkdir()
+        alias.symlink_to(module)
+        code, report = self.call("plugin", "install", "--source", alias)
+        self.assertEqual(code, 2)
+        self.assertIn("opencode/agentsmd-project-direction.js", report["error"])
+        alias_root = self.root / "alias-root"
+        alias_root.symlink_to(clone, target_is_directory=True)
+        code, report = self.call("plugin", "install", "--source", alias_root)
+        self.assertEqual(code, 2, report)
+        self.assertIn("symlink alias", report["error"])
+        self.assertFalse(os.path.lexists(self.plugin))
 
     def prepare_run(self, mode="success", help_stream="stdout"):
         self.repo = self.root / "repo"

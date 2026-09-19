@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [11.2.0] - 2026-09-19
+
+### Added
+
+- Load Project Direction and discover Skills exactly once on every supported host: exactly-once Skill discovery and Project Direction delivery on OpenCode and Grok Build, verified Claude Code hook acceptance
+
 ## [11.1.0] - 2026-09-18
 
 ### Added

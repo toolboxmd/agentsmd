@@ -5,7 +5,8 @@ contract, an approved workflow Skill Catalogue, and deterministic repository
 version control. It also owns Project Direction, the confirmed Vision, Mission,
 and Objective that keep agent work purposeful and focused. The installable
 plugin exposes the same owned workflow suite to Codex, Claude Code, and Grok
-Build. OpenCode uses shared Skills and its native global instruction link.
+Build. OpenCode uses its own global Skill directory, its own plugin, and its
+native global instruction link.
 
 For a new install, follow the [setup walkthrough](#install-boundary). It covers
 plugins or shared Skills, one canonical instruction source, and private defaults.
@@ -191,13 +192,18 @@ The AgentsMD profile uses the real repository test suites, exact-SHA
 mapping. Profile validation resolves each command executable without running
 the delivery commands.
 
-For Codex, the plugin registers three deterministic lifecycle hooks:
+For Codex, the plugin registers three deterministic context-loading lifecycle
+hooks:
 
 - `SessionStart` loads at startup, resume, clear, and compact. A root-task
   automatic compaction reloads before the immediate model continuation.
 - `UserPromptSubmit` reloads when the Git root or any content hash changes and
   stays silent for an already loaded session/root/hash state.
 - `SubagentStart` loads the complete triad into each new worker.
+
+A fourth manifest entry, `PreToolUse`, serves Grok Build alone. It exits without
+output unless Grok's own hook environment is present, so Codex and Claude Code
+behavior is unchanged.
 
 The loader resolves the Git root, reads the files in Vision, Mission, Objective
 order, and emits one bounded block with exact paths, SHA-256 hashes, and complete
@@ -212,8 +218,10 @@ Use `/hooks` in a fresh session to inspect that state. Hooks can also be disable
 by host or administrator policy, so the `AGENTS.md` first-read rule remains the
 fallback. Current Codex hooks prove root-task post-compaction reload and
 subagent-start injection. The public contract does not prove reinjection after
-a subagent's private compaction. Automatic lifecycle behavior on other hosts is
-not claimed until it receives equivalent host-level acceptance.
+a subagent's private compaction. Automatic lifecycle behavior on Claude Code,
+Grok Build, and OpenCode is recorded per host in the
+[host lifecycle delivery table](#4-verify-discovery-and-current-context), with
+the delivery mechanism and the fallback each host still needs.
 
 ## Install boundary
 
@@ -269,7 +277,12 @@ claude plugin install agentsmd@toolboxmd
 ```
 
 In a fresh session, inspect the plugin and select `/agentsmd:to-spec` or another
-bundled Skill. Claude lifecycle-hook acceptance is not claimed by this release.
+bundled Skill. Claude Code SessionStart hook acceptance is verified on version
+2.1.278: a `claude -p --plugin-dir <repo>` run with the plugin answered with the
+repository Objective while a control run without the plugin answered NONE, and
+the debug log recorded the hook supplying 4,254 characters of additional
+context. `UserPromptSubmit` and `SubagentStart` share the same output contract
+but were not separately exercised live.
 
 **Grok Build:**
 
@@ -280,32 +293,78 @@ grok plugin install agentsmd --trust
 
 Inspect Skills in a fresh session. The separately pinned `use-grok` Skill still
 requires explicit invocation and an authenticated CLI. This setup grants no
-new authentication, quota or credit authority. Grok lifecycle-hook acceptance
-is not claimed by this release.
+new authentication, quota or credit authority.
+
+Grok reads hook output only on a tool call, so Project Direction arrives with
+the first tool result of a session. Later tool calls stay silent until the triad
+changes. Nothing arrives before that first tool result, so the explicit reading
+fallback below covers the first response. First-tool delivery is proved on Grok
+1.0.34 through a global hook file. Plugin-hook delivery waits on the host.
+
+Grok 1.0.34 does not execute plugin-provided hooks. It discovers the plugin with
+`has_hooks=true` and then reports `total_hooks=0`, for a user-scope plugin, for
+`--plugin-dir`, and for a registry install alike, so the packaged hooks manifest
+is inert on Grok until the host fixes that. Global files under `~/.grok/hooks`
+and project files under `.grok/hooks` do run, so the supported interim path is
+one owned global hook file, installed in step 3:
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" install --source "$AGENTSMD_DIR"
+```
+
+The installer writes `$GROK_HOME/hooks/agentsmd.json`, by default
+`~/.grok/hooks/agentsmd.json`, with one `PreToolUse` entry that runs the loader
+from the stable clone of step 1 with a 15 second timeout. It never points at a
+plugin cache path, which both the installer and the loader reject. Grok trusts
+global hook files automatically, so no trust prompt applies; project files under
+`.grok/hooks` still need trust. Start a fresh session for the file to load. Grok
+sets `GROK_HOOK_NAME` for global hooks as well as plugin hooks, and that
+variable is what activates the loader's Grok path, its 10,000 character cap and
+its `GROK_HOME` source resolution. Remove the file once Grok executes plugin
+hooks:
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" uninstall --source "$AGENTSMD_DIR"
+```
+
+Until then the packaged manifest entry stays inert on Grok. Both Grok paths
+share one session fingerprint cache under `GROK_HOME`, so a session reached by
+the global file and a plugin hook still receives the triad once.
+
+Grok must also resolve `agentsmd` to its own install: a same-named package
+without hooks in the Claude marketplace clone wins instead.
+[toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)
+tracks that collision. It gates Skill resolution now, and plugin-hook delivery
+once the host loads plugin hooks.
 
 **OpenCode:** link the packaged Skills only into OpenCode's own global Skill
 directory. Never link them into `~/.agents/skills`, `~/.claude/skills`, or
 `~/.grok/skills`: Codex and Grok Build scan `~/.agents/skills`, and Grok scans
 `~/.claude/skills`, so a host that already uses the plugin would list every
-Skill twice. There is no AgentsMD OpenCode plugin. An owned installer for these
-links is tracked in [#106](https://github.com/toolboxmd/agentsmd/issues/106);
-until it lands, create them without replacing an existing entry:
+Skill twice. A separate owned link installs the AgentsMD OpenCode plugin.
 
 ```sh
-skills_dir="${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}/skills"
-mkdir -p "$skills_dir"
-for skill in "$AGENTSMD_DIR"/skills/*; do
-  target="$skills_dir/${skill##*/}"
-  if [ ! -e "$target" ] && [ ! -L "$target" ]; then
-    ln -s "$skill" "$target"
-  fi
-done
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills install --source "$AGENTSMD_DIR/skills"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin install --source "$AGENTSMD_DIR"
 opencode debug skill
 ```
 
-Inspect existing same-name Skills instead of overwriting them. OpenCode's
-bounded run adapter remains pinned to **1.18.29**; link setup does not expand
-that run contract. See [OpenCode details](docs/opencode.md).
+The first command creates one owned link per Skill under
+`${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}/skills` and never replaces an
+existing entry; it preserves and reports each foreign entry, installs the rest
+and exits 2. Inspect existing same-name Skills instead of overwriting them.
+`skills status` and `skills uninstall` report and remove only those owned
+links.
+
+The second command creates one owned link under the same directory's `plugins`
+folder. Through it OpenCode receives the Project Direction block in the model's
+system prompt, the same payload the Codex hook emits. That plugin uses the
+experimental system transform hook of OpenCode **1.18.29** and states no support
+beyond it. `plugin status` and `plugin uninstall` report and remove only that
+owned link. Start a fresh OpenCode session after install; a running session
+keeps its loaded plugins. OpenCode's bounded run adapter remains pinned to
+**1.18.29**; link setup does not expand that run contract. See
+[OpenCode details](docs/opencode.md).
 
 ### 3. Link global instructions and initialize preferences
 
@@ -364,6 +423,26 @@ finds the same path. Sources and targets inside `plugins/cache` are rejected.
 The result records source and target SHA-256 digests; repeated setup reports
 `unchanged` and creates no extra backup.
 
+Grok Build needs one more owned file, because version 1.0.34 executes no
+plugin-provided hook:
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" install --source "$AGENTSMD_DIR"
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" status --source "$AGENTSMD_DIR"
+```
+
+`--source` takes the clone root from step 1, and `GROK_HOME` selects the same
+directory as the instruction link. Ownership is the exact generated content:
+repeated setup reports `unchanged`, a file generated for another clone reports
+`divergent` and names that clone, and every other content reports `user-owned`.
+Neither is replaced without `--replace`, which first copies the previous file
+into the adjacent `agentsmd-backups/` directory, or into `--backup-dir`.
+`status` exits zero only for an owned current file, and `uninstall` removes only
+that file. Under Grok the loader keeps its session fingerprint in
+`$GROK_HOME/agentsmd`, so once-per-session delivery survives a cleared
+temporary directory and is shared with a plugin hook if the host ever loads
+one.
+
 Setup copies tracked `PREFERENCES.example.md` to adjacent private
 `PREFERENCES.md` only when absent. Existing contents survive all setup and update
 commands, including OpenCode's ownership-safe lifecycle. Edit the private file
@@ -380,6 +459,17 @@ The common installer supplies the explicit backed-up migration path for a
 user-owned OpenCode target. Neither command changes host settings or credentials.
 
 ### 4. Verify discovery and current context
+
+Per host, these are the lifecycle events that deliver Project Direction
+automatically, the events each host ignores or leaves inert, the delivery
+mechanism, and the fallback that still applies:
+
+| Host | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
+| --- | --- | --- | --- | --- |
+| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` (registered, exits silently; that entry serves Grok Build alone) | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
+| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | `PreToolUse` (registered, exits silently; that entry serves Grok Build alone) | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading fallback for freshness, and for the two events not separately exercised live |
+| Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart` (stdout discarded), `UserPromptSubmit` (context discarded although allowed), `SubagentStart` (passive); the packaged plugin hook is inert because Grok 1.0.34 never executes plugin-provided hooks | Owned global hook file installed by `bin/agentsmd-grok-hook` | Explicit reading fallback for the first response, before the first tool call delivers |
+| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, `SubagentStart`, or `PreToolUse` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link) | Explicit reading fallback for freshness verification |
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
@@ -430,6 +520,14 @@ behavioral compliance. Check each installed host separately:
   Version 1.0.34 reports the global file; project discovery is trust-gated.
   Compare the native source and full expected byte count. Do not interpret an
   untrusted project's omitted files as proof of compatibility deduplication.
+  Confirm the same output resolves `agentsmd` to Grok's own installed plugin,
+  not to the Claude marketplace clone
+  ([toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)).
+  Version 1.0.34 loads no plugin-provided hook, so the packaged manifest is
+  inert there and `/hooks` shows Project Direction only when the global
+  `agentsmd.json` hook file above is installed and the session is fresh. Grok clips hook context at 10,000 characters, so the loader falls back
+  to `read_required` paths and hashes above that cap and requires explicit
+  reads.
 - **OpenCode:** `opencode debug paths` and `opencode debug skill` inspect paths
   and Skills. Version 1.18.31 does not expose complete discovered native rule
   contents through `debug config`; settings output is not loaded-context proof.

@@ -2155,6 +2155,43 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
 
+    def test_readme_records_per_host_lifecycle_delivery(self) -> None:
+        readme = read_text("README.md")
+        normalized = " ".join(readme.split())
+        self.assertNotIn("Claude lifecycle-hook acceptance is not claimed", readme)
+        self.assertNotIn("OpenCode uses shared Skills", readme)
+        for required in (
+            "| Host | Delivering events | Ignored or inert events"
+            " | Delivery mechanism | Fallback that still applies |",
+            "| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` |",
+            "| Claude Code | `SessionStart` (verified on 2.1.278);",
+            "| Grok Build | `PreToolUse`, on the first tool call of a session |",
+            "| OpenCode | Every session, appended to the system prompt |",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, readme)
+        # Both packaged-hook hosts register PreToolUse and exit silently on it.
+        self.assertEqual(
+            readme.count(
+                "`PreToolUse` (registered, exits silently; that entry serves "
+                "Grok Build alone) | Packaged plugin hook"
+            ),
+            2,
+        )
+        self.assertNotIn("| None identified |", readme)
+        for required in (
+            "Claude Code SessionStart hook acceptance is verified on version",
+            "2.1.278",
+            "a `claude -p --plugin-dir <repo>` run with the plugin answered with the",
+            "repository Objective while a control run without the plugin answered",
+            "NONE",
+            "the debug log recorded the hook supplying 4,254 characters of additional",
+            "context",
+            "were not separately exercised live",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

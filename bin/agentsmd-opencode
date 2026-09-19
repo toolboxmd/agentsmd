@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owned OpenCode instruction links and bounded, evidence-capturing runs."""
+"""Owned OpenCode instruction, Skill and plugin links, and bounded, evidence-capturing runs."""
 
 from __future__ import annotations
 
@@ -112,6 +112,180 @@ def manage(args):
         raise ValueError("post-install verification failed")
     return {"action": "updated" if args.command == "update" else "installed", "before": before, "after": after,
             "preferences": initialize_preferences(source)}, 0
+
+
+SHARED_SKILL_DIRECTORIES = (".agents/skills", ".claude/skills", ".grok/skills")
+
+
+def contains(root, path):
+    return path == root or root in path.parents
+
+
+def skills_source(value, require_directory):
+    source = absolute(value)
+    for candidate in (source, source.resolve()):
+        if is_cache_path(candidate):
+            raise ValueError("source must be a stable canonical skills directory outside plugin caches")
+    if require_directory and not source.is_dir():
+        raise ValueError("source must be an existing skills directory")
+    return source
+
+
+def skill_names(source, directory, command):
+    names = {path.name for path in source.iterdir() if (path / "SKILL.md").is_file()} if source.is_dir() else set()
+    # Status and uninstall must still see an owned link whose source Skill is gone.
+    if command != "install" and directory.is_dir():
+        names.update(path.name for path in directory.iterdir()
+                     if path.is_symlink() and absolute(path.parent / os.readlink(path)) == source / path.name)
+    return sorted(names)
+
+
+def skills_target():
+    directory = absolute(default_target("opencode").parent / "skills")
+    shared = set()
+    for name in SHARED_SKILL_DIRECTORIES:
+        root = absolute(Path.home() / name)
+        shared.update((root, root.resolve()))
+    for location in (directory, directory.parent.resolve() / directory.name, directory.resolve()):
+        if is_cache_path(location):
+            raise ValueError("cache-bound-target")
+        if any(contains(root, location) for root in shared):
+            raise ValueError("target must not resolve under a shared Skill directory")
+    return directory
+
+
+def inspect_skill(target, source, is_directory=True):
+    report = {"name": target.name, "target": str(target), "source": str(source),
+              "owned": False, "status": "missing"}
+    if target_is_in_cache(target):
+        report["status"] = "cache-bound-target"
+        return report
+    if not os.path.lexists(target):
+        return report
+    if not target.is_symlink():
+        report["status"] = "regular-file" if target.is_file() else "other-path"
+        return report
+    linked = absolute(target.parent / os.readlink(target))
+    report.update(link_target=os.readlink(target), owned=linked == source)
+    if is_cache_path(linked) or is_cache_path(linked.resolve()):
+        report.update(status="cache-bound-link", owned=False)
+        return report
+    if not target.exists():
+        report["status"] = "broken-link"
+    elif not (target.is_dir() if is_directory else target.is_file()):
+        report["status"] = "other-path"
+    else:
+        report["status"] = "owned-link" if report["owned"] else "divergent-link"
+    return report
+
+
+def manage_skills(args):
+    source = skills_source(args.source, args.skills_command == "install")
+    directory = skills_target()
+    names = skill_names(source, directory, args.skills_command)
+    if not names:
+        raise ValueError("source holds no Skill directory containing a SKILL.md and the target holds no owned link")
+    report = {"command": "skills " + args.skills_command, "source": str(source),
+              "target_directory": str(directory), "entries": []}
+    code = 0
+    for name in names:
+        skill = source / name
+        target = directory / name
+        before = inspect_skill(target, skill)
+        if args.skills_command == "status":
+            report["entries"].append(before)
+            if before["status"] != "owned-link":
+                code = 2
+            continue
+        entry = {"name": name, "action": "preserved", "before": before, "after": before}
+        if args.skills_command == "uninstall":
+            # Ownership is the exact lexical destination, whatever it resolves to now.
+            if before["owned"]:
+                target.unlink()
+                entry.update(action="uninstalled", after=inspect_skill(target, skill))
+        elif before["status"] == "owned-link":
+            entry["action"] = "unchanged"
+        elif before["status"] == "missing":
+            # The resolved Skill path is validated before any link exists.
+            if is_cache_path(skill) or is_cache_path(skill.resolve()):
+                entry.update(action="rejected", reason="cache-bound-source")
+            else:
+                directory.mkdir(parents=True, exist_ok=True)
+                target.symlink_to(skill, target_is_directory=True)
+                after = inspect_skill(target, skill)
+                if after["status"] != "owned-link":
+                    # Remove only the exact link this command just created.
+                    if target.is_symlink() and absolute(target.parent / os.readlink(target)) == skill:
+                        target.unlink()
+                    after = inspect_skill(target, skill)
+                # Every entry is verified on its own; a blocked entry never removes another.
+                entry.update(action="installed" if after["status"] == "owned-link" else "failed", after=after)
+        if entry["action"] in ("preserved", "failed", "rejected"):
+            code = 2
+        report["entries"].append(entry)
+    return report, code
+
+
+PLUGIN_MODULE = "agentsmd-project-direction.js"
+
+
+def plugin_source(value, validate=False):
+    """Resolve the lexical plugin path; only installation validates the clone."""
+    source = absolute(value)
+    if source.name != PLUGIN_MODULE:
+        source = source / "opencode" / PLUGIN_MODULE
+    if source.parent.name != "opencode":
+        raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
+    for candidate in (source, source.resolve()):
+        if is_cache_path(candidate):
+            raise ValueError("source must be a stable canonical plugin file outside plugin caches")
+    if not validate:
+        # Ownership is lexical, so status and uninstall still reach an owned link
+        # after the clone was removed, emptied or aliased.
+        return source
+    for component in (source, *source.parents):
+        # A link created through any alias component breaks when that alias moves.
+        if component.is_symlink():
+            raise ValueError("source must be a canonical clone root or plugin file, not a symlink alias")
+    if not source.is_file():
+        raise ValueError("installation source must be an existing regular plugin file")
+    # The plugin runs the loader beside its own clone, so that clone must hold one.
+    loader = source.parents[1] / "bin/project-direction"
+    if loader.is_symlink() or not loader.is_file():
+        raise ValueError("source clone must hold a regular bin/project-direction beside opencode/")
+    return source
+
+
+def plugin_target():
+    target = absolute(default_target("opencode").parent / "plugins") / PLUGIN_MODULE
+    if target_is_in_cache(target):
+        raise ValueError("cache-bound-target")
+    return target
+
+
+def manage_plugin(args):
+    source = plugin_source(args.source, validate=args.plugin_command == "install")
+    target = plugin_target()
+    before = inspect_skill(target, source, is_directory=False)
+    report = {"command": "plugin " + args.plugin_command, "source": str(source), "target": str(target)}
+    if args.plugin_command == "status":
+        report["entry"] = before
+        return report, 0 if before["status"] == "owned-link" else 2
+    entry = {"action": "preserved", "before": before, "after": before}
+    if args.plugin_command == "uninstall":
+        if before["owned"]:
+            target.unlink()
+            entry.update(action="uninstalled", after=inspect_skill(target, source, is_directory=False))
+    elif before["status"] == "owned-link":
+        entry["action"] = "unchanged"
+    elif before["status"] == "missing":
+        # An existing entry of any kind stays user-owned, as the Skill links decide.
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.symlink_to(source)
+        after = inspect_skill(target, source, is_directory=False)
+        entry.update(action="installed" if after["status"] == "owned-link" else "failed", after=after)
+    report.update(entry)
+    return report, 0 if entry["action"] in ("installed", "unchanged", "uninstalled") else 2
 
 
 def git(cwd, *args):
@@ -234,6 +408,14 @@ def main():
         command.add_argument("--source", required=True, type=absolute)
         if name == "update":
             command.add_argument("--previous-source", type=absolute)
+    command = commands.add_parser("skills")
+    skills = command.add_subparsers(dest="skills_command", required=True)
+    for name in ("install", "status", "uninstall"):
+        skills.add_parser(name).add_argument("--source", required=True, type=absolute)
+    command = commands.add_parser("plugin")
+    plugin = command.add_subparsers(dest="plugin_command", required=True)
+    for name in ("install", "status", "uninstall"):
+        plugin.add_parser(name).add_argument("--source", required=True, type=absolute)
     command = commands.add_parser("run")
     for name in ("cwd", "prompt-file", "output"):
         command.add_argument("--" + name, required=True, type=absolute)
@@ -244,7 +426,14 @@ def main():
     command.add_argument("--executable", default="opencode")
     args = parser.parse_args()
     try:
-        report, code = run(args) if args.command == "run" else manage(args)
+        if args.command == "run":
+            report, code = run(args)
+        elif args.command == "skills":
+            report, code = manage_skills(args)
+        elif args.command == "plugin":
+            report, code = manage_plugin(args)
+        else:
+            report, code = manage(args)
     except (OSError, ValueError, subprocess.SubprocessError) as error:
         report, code = {"error": str(error)}, 2
     print(json.dumps(report, indent=2, sort_keys=True))

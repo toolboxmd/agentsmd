@@ -21,18 +21,20 @@ defaulting to `~/.config/opencode/skills`, and also from the shared
 `~/.agents/skills` and `~/.claude/skills` directories. Link AgentsMD Skills only
 into the OpenCode directory. Codex and Grok Build scan `~/.agents/skills`, and
 Grok scans `~/.claude/skills`, so shared links duplicate every Skill on a host
-that already uses the plugin. An owned per-Skill link installer is tracked in
-[#106](https://github.com/toolboxmd/agentsmd/issues/106). Verify available
+that already uses the plugin. The `skills` command group below creates and
+removes those owned links. Verify available
 names with `opencode debug skill` in the intended repository. See official
 [Skill discovery](https://opencode.ai/docs/skills/). Host-native frontmatter
 differs: OpenCode ignores unrecognized fields, so user-only planning invocation
 continues to depend on the canonical operating contract.
 
 The global contract requires the full Project Direction triad before project
-work. OpenCode does not run the Codex Project Direction lifecycle hook. A
-fresh session must read those files and applicable project instructions. The
-bounded adapter includes this obligation in its handoff prompt. It also requires
-current canonical instruction identity and adjacent private preferences. Use the
+work. OpenCode runs no Codex lifecycle hook, so the AgentsMD plugin below
+delivers the same loader payload in the system prompt instead. Without that
+plugin, a fresh session must read those files and applicable project
+instructions explicitly. The bounded adapter includes this obligation in its
+handoff prompt. It also requires current canonical instruction identity and
+adjacent private preferences. Use the
 [shared setup walkthrough](../README.md#install-boundary) for initialization,
 discovery checks and the explicit reading fallback.
 
@@ -54,8 +56,8 @@ and update initialize adjacent private preferences only when absent. Shared
 path checks reject cache-bound sources and targets. Ownership
 means a symlink's absolute lexical destination exactly matches the explicitly
 supplied canonical source. Status distinguishes `missing`, `regular-file`,
-`other-path`, `broken-link`, `divergent-link`, and `owned-link`. A broken link
-also reports whether its destination is owned. Only a healthy owned link
+`other-path`, `broken-link`, `divergent-link`, `cache-bound-link`, and
+`owned-link`. A broken link also reports whether its destination is owned. Only a healthy owned link
 returns status exit code zero. A regular file containing identical bytes is
 still user-owned and preserved.
 
@@ -76,6 +78,95 @@ migration, the common `agentsmd-global-instructions install --host opencode
 --source "$AGENTSMD_DIR/AGENTS.md" --replace` preserves a recoverable backup. Source files, shared Skills, `opencode.json`,
 `opencode.jsonc`, preferences and credentials remain in place. Start a fresh
 OpenCode session after a supported install or update.
+
+## Skill links
+
+`skills install` creates one owned symlink per Skill directory that holds a
+`SKILL.md`, named after that directory, under `$OPENCODE_CONFIG_DIR/skills`,
+otherwise `$XDG_CONFIG_HOME/opencode/skills`, defaulting to
+`~/.config/opencode/skills`. The command resolves that directory exactly as the
+instruction link resolves its own.
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills install --source "$AGENTSMD_DIR/skills"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills status --source "$AGENTSMD_DIR/skills"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills uninstall --source "$AGENTSMD_DIR/skills"
+opencode debug skill
+```
+
+Each entry reports one of the instruction link's states: `missing`,
+`regular-file`, `other-path`, `broken-link`, `divergent-link`,
+`cache-bound-link` and `owned-link`. The ownership rule is the same: a symlink
+whose absolute lexical destination exactly matches the supplied Skill directory.
+Install creates missing links and verifies existing owned links. It never
+replaces an existing entry of any kind. Each entry is decided on its own, as the
+instruction link decides its single target, so a blocked entry is preserved and
+reported while the remaining Skills still install, and the command exits 2.
+Uninstall removes only exact owned links, including a broken owned link, and
+exits 2 when any entry was not an owned link. Status exits 0 only when every
+Skill is an owned link.
+
+Install reports the Skills present in the source directory. Status and uninstall
+also report any target entry whose link destination is exactly
+`<source>/<name>`, so an owned link survives removal of its source Skill and
+uninstall still removes it. Only install requires an existing source directory.
+
+Sources inside `plugins/cache` are rejected, including a single Skill directory
+that resolves into a plugin cache; that entry is refused before any link is
+created. A target is rejected when the Skill directory resolves under `~/.agents/skills`, `~/.claude/skills`,
+`~/.grok/skills` or a `plugins/cache` path. Codex and Grok Build scan
+`~/.agents/skills`, and Grok scans `~/.claude/skills`, so links there would list
+every Skill twice on a host that already uses the plugin. Skill links do not
+expand the bounded run contract, which stays pinned to **1.18.29**. Run
+`opencode debug skill` in a fresh session in the intended repository and confirm
+each AgentsMD Skill appears exactly once.
+
+## Plugin link
+
+`plugin install` creates one owned symlink named `agentsmd-project-direction.js`
+under `$OPENCODE_CONFIG_DIR/plugins`, otherwise `$XDG_CONFIG_HOME/opencode/plugins`,
+defaulting to `~/.config/opencode/plugins`. The command resolves that directory
+exactly as the instruction and Skill links resolve their own. The source is the
+canonical clone or released artifact root, or its
+`opencode/agentsmd-project-direction.js` file.
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin install --source "$AGENTSMD_DIR"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin status --source "$AGENTSMD_DIR"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin uninstall --source "$AGENTSMD_DIR"
+```
+
+OpenCode loads that module and the plugin appends the Project Direction block to
+the model's system prompt on every request in the session's working directory.
+It runs `bin/project-direction hook --host opencode` beside the link's canonical
+target with a synthetic `SessionStart` input, so OpenCode receives the payload
+the Codex hook emits, including the `not_in_repository` and `uninitialized`
+verdicts. Any loader failure leaves the system prompt unchanged and logs one
+`agentsmd-project-direction:` line to stderr. Start a fresh OpenCode session
+after install; a running session keeps its loaded plugins.
+
+The plugin uses `experimental.chat.system.transform`, which is experimental in
+OpenCode **1.18.29**, the version the bounded run adapter pins. The plugin
+context exposes no host version, so the pin is documented, not enforced at
+runtime. Treat a different OpenCode version as unproved until the seam is
+rechecked.
+
+The entry reports the Skill links' ownership states: `missing`, `owned-link`,
+`divergent-link`, `regular-file`, `other-path` and `broken-link`. Install
+creates a missing link and verifies an existing owned link. It never replaces an
+existing entry of any kind; a foreign entry is preserved and reported, and the
+command exits 2. Status exits 0 only for a healthy owned link.
+
+Install alone validates the source. It rejects a path holding any symlinked
+component and requires a regular plugin file at
+`<clone root>/opencode/agentsmd-project-direction.js` beside a regular
+`<clone root>/bin/project-direction`, because the plugin runs the loader of its
+own clone. Status and uninstall derive ownership from the lexical link
+destination only, so an owned link stays reportable and removable after the
+clone was removed, emptied, altered or replaced by an alias. Uninstall removes
+any owned entry and nothing else. Sources under `plugins/cache`, a cache-bound
+target and a file under another name or outside an `opencode` directory are
+rejected everywhere, because those checks are lexical.
 
 ## Bounded implementation run
 
@@ -116,9 +207,15 @@ review and external authority independently.
 ## Proof and remaining host differences
 
 `python3 -m unittest tests.test_opencode -v` tests isolated HOME/XDG ownership,
-config and credential preservation, lifecycle transitions, explicit CLI
-arguments, stale-head refusal, malformed events, errors and timeout. It uses a
-fake CLI and spends no model quota. The full repository and versionctl suites
+config and credential preservation, lifecycle transitions, Skill and plugin link
+install, repeat install, preserved user entries, uninstall and rejected shared
+directories, explicit CLI arguments, stale-head refusal, malformed events,
+errors and timeout. It uses a
+fake CLI and spends no model quota. `python3 -m unittest tests.test_opencode_plugin -v`
+runs the plugin module under Node against a fixture repository and asserts that
+the appended system entry equals the loader payload byte for byte, that an
+installed link resolves the canonical loader, and that an unreachable or failing
+loader leaves the system prompt unchanged. It skips when `node` is absent. The full repository and versionctl suites
 remain the deterministic release gates.
 
 Issue #78 separately requires one requested fresh-session fixture using the
@@ -130,6 +227,8 @@ ordinary work on real projects remains separately pending until user evidence
 exists, as defined by `AGENTS.override.md`.
 
 OpenCode does not reproduce Codex app-native task coordination, memory,
-connectors, computer/browser UI tools or lifecycle hooks. Host-native tools and
+connectors, computer/browser UI tools or lifecycle hooks. The plugin covers
+system-prompt delivery only; it reproduces no `UserPromptSubmit` or subagent
+refresh semantics. Host-native tools and
 permissions remain OpenCode's responsibility; AgentsMD supplies the shared
 operating contract and the narrow CLI handoff.

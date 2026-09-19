@@ -182,7 +182,14 @@ class PluginPackagingTests(unittest.TestCase):
         )
         self.assertNotIn("matcher", hooks["UserPromptSubmit"][0])
         self.assertNotIn("matcher", hooks["SubagentStart"][0])
-        for event in ("SessionStart", "UserPromptSubmit", "SubagentStart"):
+        # PreToolUse carries no matcher so Grok delivers on the first tool of any kind.
+        self.assertNotIn("matcher", hooks["PreToolUse"][0])
+        for event in (
+            "SessionStart",
+            "UserPromptSubmit",
+            "SubagentStart",
+            "PreToolUse",
+        ):
             with self.subTest(event=event):
                 handler = hooks[event][0]["hooks"][0]
                 self.assertEqual(handler["type"], "command")
@@ -190,7 +197,15 @@ class PluginPackagingTests(unittest.TestCase):
                     handler["command"],
                     '"${CLAUDE_PLUGIN_ROOT}/bin/project-direction" hook',
                 )
-                self.assertEqual(handler["additionalContextLimit"], 16000)
+                self.assertTrue(handler["statusMessage"])
+                if event == "PreToolUse":
+                    self.assertNotIn("additionalContextLimit", handler)
+                else:
+                    self.assertEqual(handler["additionalContextLimit"], 16000)
+        for event, count in hooks.items():
+            with self.subTest(event=event):
+                self.assertEqual(len(count), 1)
+                self.assertEqual(len(count[0]["hooks"]), 1)
 
     def test_three_host_identity(self) -> None:
         manifests = {
