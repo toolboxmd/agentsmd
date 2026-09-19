@@ -231,20 +231,28 @@ PLUGIN_MODULE = "agentsmd-project-direction.js"
 
 def plugin_source(value):
     source = absolute(value)
-    if source.is_symlink():
-        # A link created through an alias root breaks when that alias moves.
-        raise ValueError("source must be a canonical clone root or plugin file, not a symlink alias")
     if source.name != PLUGIN_MODULE:
         # A removed clone root still normalizes, so an owned dangling link stays
         # inspectable and removable. Install validates existence separately.
         source = source / "opencode" / PLUGIN_MODULE
+    for component in (source, *source.parents):
+        # A link created through any alias component breaks when that alias moves.
+        if component.is_symlink():
+            raise ValueError("source must be a canonical clone root or plugin file, not a symlink alias")
     for candidate in (source, source.resolve()):
         if is_cache_path(candidate):
             raise ValueError("source must be a stable canonical plugin file outside plugin caches")
         if candidate.name != PLUGIN_MODULE:
             raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
-    if source.is_symlink() or (os.path.lexists(source) and not source.is_file()):
-        raise ValueError("source must be a canonical regular plugin file, not a symlink alias or directory")
+    if source.parent.name != "opencode":
+        raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
+    if os.path.lexists(source):
+        if not source.is_file():
+            raise ValueError("source must be a canonical regular plugin file, not a symlink alias or directory")
+        # The plugin runs the loader beside its own clone, so that clone must hold one.
+        loader = source.parents[1] / "bin/project-direction"
+        if loader.is_symlink() or not loader.is_file():
+            raise ValueError("source clone must hold a regular bin/project-direction beside opencode/")
     return source
 
 

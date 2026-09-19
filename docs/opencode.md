@@ -157,8 +157,11 @@ creates a missing link and verifies an existing owned link. It never replaces an
 existing entry of any kind; a foreign entry is preserved and reported, and the
 command exits 2. Uninstall removes only the exact owned link, including a broken
 owned link, and status exits 0 only for a healthy owned link. Sources inside
-`plugins/cache`, symlink aliases and files under another name are rejected, as
-is a cache-bound target.
+`plugins/cache`, paths holding any symlinked component and files under another
+name are rejected, as is a cache-bound target. The plugin file must sit at
+`<clone root>/opencode/agentsmd-project-direction.js` beside a regular
+`<clone root>/bin/project-direction`, because the plugin runs the loader of its
+own clone. A removed clone root still reports and removes its owned link.
 
 ## Bounded implementation run
 

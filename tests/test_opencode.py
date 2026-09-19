@@ -363,6 +363,28 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.call("plugin", "uninstall", "--source", clone)[0], 0)
         self.assertFalse(os.path.lexists(self.plugin))
 
+    def test_plugin_link_rejects_noncanonical_and_loaderless_sources(self):
+        clone, module = self.prepare_plugin()
+        alias = self.root / "alias-clone"
+        alias.symlink_to(clone, target_is_directory=True)
+        code, report = self.call("plugin", "install", "--source", alias / "opencode" / module.name)
+        self.assertEqual(code, 2)
+        self.assertIn("symlink alias", report["error"])
+        aliased = self.root / "aliased-clone"
+        (aliased / "bin").mkdir(parents=True)
+        (aliased / "bin/project-direction").write_text("#!/bin/sh\nexit 0\n")
+        (aliased / "opencode").symlink_to(module.parent, target_is_directory=True)
+        code, report = self.call("plugin", "install", "--source", aliased)
+        self.assertEqual(code, 2)
+        self.assertIn("symlink alias", report["error"])
+        standalone = self.root / "standalone/opencode"
+        standalone.mkdir(parents=True)
+        (standalone / module.name).write_text("export default async () => ({});\n")
+        code, report = self.call("plugin", "install", "--source", standalone.parent)
+        self.assertEqual(code, 2)
+        self.assertIn("bin/project-direction", report["error"])
+        self.assertFalse(os.path.lexists(self.plugin))
+
     def test_plugin_link_survives_a_removed_clone_root(self):
         clone, module = self.prepare_plugin()
         self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
