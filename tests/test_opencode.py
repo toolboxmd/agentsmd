@@ -384,7 +384,14 @@ class OpenCodeTests(unittest.TestCase):
         alias = self.root / "alias/agentsmd-project-direction.js"
         alias.parent.mkdir()
         alias.symlink_to(module)
-        self.assertEqual(self.call("plugin", "install", "--source", alias)[0], 2)
+        code, report = self.call("plugin", "install", "--source", alias)
+        self.assertEqual(code, 2)
+        self.assertIn("symlink alias", report["error"])
+        alias_root = self.root / "alias-root"
+        alias_root.symlink_to(clone, target_is_directory=True)
+        code, report = self.call("plugin", "install", "--source", alias_root)
+        self.assertEqual(code, 2, report)
+        self.assertIn("symlink alias", report["error"])
         self.assertFalse(os.path.lexists(self.plugin))
 
     def prepare_run(self, mode="success", help_stream="stdout"):

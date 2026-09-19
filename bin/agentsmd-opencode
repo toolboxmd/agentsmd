@@ -231,6 +231,9 @@ PLUGIN_MODULE = "agentsmd-project-direction.js"
 
 def plugin_source(value):
     source = absolute(value)
+    if source.is_symlink():
+        # A link created through an alias root breaks when that alias moves.
+        raise ValueError("source must be a canonical clone root or plugin file, not a symlink alias")
     if source.is_dir():
         source = source / "opencode" / PLUGIN_MODULE
     for candidate in (source, source.resolve()):
@@ -239,7 +242,7 @@ def plugin_source(value):
         if candidate.name != PLUGIN_MODULE:
             raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
     if source.is_symlink() or (os.path.lexists(source) and not source.is_file()):
-        raise ValueError("source must be a regular plugin file, not a symlink alias or directory")
+        raise ValueError("source must be a canonical regular plugin file, not a symlink alias or directory")
     return source
 
 
