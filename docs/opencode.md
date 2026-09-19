@@ -54,8 +54,8 @@ and update initialize adjacent private preferences only when absent. Shared
 path checks reject cache-bound sources and targets. Ownership
 means a symlink's absolute lexical destination exactly matches the explicitly
 supplied canonical source. Status distinguishes `missing`, `regular-file`,
-`other-path`, `broken-link`, `divergent-link`, and `owned-link`. A broken link
-also reports whether its destination is owned. Only a healthy owned link
+`other-path`, `broken-link`, `divergent-link`, `cache-bound-link`, and
+`owned-link`. A broken link also reports whether its destination is owned. Only a healthy owned link
 returns status exit code zero. A regular file containing identical bytes is
 still user-owned and preserved.
 
@@ -92,19 +92,26 @@ instruction link resolves its own.
 opencode debug skill
 ```
 
-Each entry reports one of `missing`, `owned-link`, `divergent-link`,
-`regular-file`, `other-path` and `broken-link`, under the instruction link's
-ownership rule: a symlink whose absolute lexical destination exactly matches the
-supplied Skill directory. Install creates missing links and verifies existing
-owned links. It never replaces an existing entry of any kind. Each entry is
-decided on its own, as the instruction link decides its single target, so a
-blocked entry is preserved and reported while the remaining Skills still
-install, and the command exits 2. Uninstall removes only exact owned links,
-including a broken owned link, and exits 2 when any entry was not an owned
-link. Status exits 0 only when every Skill is an owned link.
+Each entry reports one of the instruction link's states: `missing`,
+`regular-file`, `other-path`, `broken-link`, `divergent-link`,
+`cache-bound-link` and `owned-link`. The ownership rule is the same: a symlink
+whose absolute lexical destination exactly matches the supplied Skill directory.
+Install creates missing links and verifies existing owned links. It never
+replaces an existing entry of any kind. Each entry is decided on its own, as the
+instruction link decides its single target, so a blocked entry is preserved and
+reported while the remaining Skills still install, and the command exits 2.
+Uninstall removes only exact owned links, including a broken owned link, and
+exits 2 when any entry was not an owned link. Status exits 0 only when every
+Skill is an owned link.
 
-Sources inside `plugins/cache` are rejected. A target is rejected when the Skill
-directory resolves under `~/.agents/skills`, `~/.claude/skills`,
+Install reports the Skills present in the source directory. Status and uninstall
+also report any target entry whose link destination is exactly
+`<source>/<name>`, so an owned link survives removal of its source Skill and
+uninstall still removes it. Only install requires an existing source directory.
+
+Sources inside `plugins/cache` are rejected, including a single Skill directory
+that resolves into a plugin cache; that entry is refused before any link is
+created. A target is rejected when the Skill directory resolves under `~/.agents/skills`, `~/.claude/skills`,
 `~/.grok/skills` or a `plugins/cache` path. Codex and Grok Build scan
 `~/.agents/skills`, and Grok scans `~/.claude/skills`, so links there would list
 every Skill twice on a host that already uses the plugin. Skill links do not

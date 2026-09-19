@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -222,6 +223,38 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual((self.skills / "alpha").read_text(), "user skill file")
         self.assertEqual(os.readlink(self.skills / "beta"), str(foreign))
         self.assertFalse(os.path.lexists(self.skills / "gamma"))
+
+    def test_skill_links_status_and_uninstall_reach_removed_sources(self):
+        source = self.prepare_skills()
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)
+        shutil.rmtree(source / "alpha")
+        (source / "beta/SKILL.md").unlink()
+        code, report = self.call("skills", "status", "--source", source)
+        self.assertEqual(code, 2)
+        states = {entry["name"]: (entry["status"], entry["owned"]) for entry in report["entries"]}
+        self.assertEqual(states, {"alpha": ("broken-link", True), "beta": ("owned-link", True)})
+        code, report = self.call("skills", "uninstall", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["uninstalled", "uninstalled"])
+        for name in ("alpha", "beta"):
+            self.assertFalse(os.path.lexists(self.skills / name))
+        shutil.rmtree(source)
+        self.assertEqual(self.call("skills", "status", "--source", source)[0], 2)
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 2)
+
+    def test_skill_links_refuse_cache_bound_skill_before_linking(self):
+        source = self.prepare_skills()
+        cached = self.root / "plugins/cache/gamma"
+        cached.mkdir(parents=True)
+        (cached / "SKILL.md").write_text("cached\n")
+        (source / "gamma").symlink_to(cached, target_is_directory=True)
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 2)
+        entry = next(entry for entry in report["entries"] if entry["name"] == "gamma")
+        self.assertEqual(entry["action"], "rejected")
+        self.assertEqual(entry["reason"], "cache-bound-source")
+        self.assertFalse(os.path.lexists(self.skills / "gamma"))
+        self.assertEqual((self.skills / "alpha").resolve(), source / "alpha")
 
     def test_skill_links_use_config_dir_and_home_fallback(self):
         source = self.prepare_skills()

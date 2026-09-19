@@ -121,14 +121,23 @@ def contains(root, path):
     return path == root or root in path.parents
 
 
-def skills_source(value):
+def skills_source(value, require_directory):
     source = absolute(value)
     for candidate in (source, source.resolve()):
         if is_cache_path(candidate):
             raise ValueError("source must be a stable canonical skills directory outside plugin caches")
-    if not source.is_dir():
+    if require_directory and not source.is_dir():
         raise ValueError("source must be an existing skills directory")
     return source
+
+
+def skill_names(source, directory, command):
+    names = {path.name for path in source.iterdir() if (path / "SKILL.md").is_file()} if source.is_dir() else set()
+    # Status and uninstall must still see an owned link whose source Skill is gone.
+    if command != "install" and directory.is_dir():
+        names.update(path.name for path in directory.iterdir()
+                     if path.is_symlink() and absolute(path.parent / os.readlink(path)) == source / path.name)
+    return sorted(names)
 
 
 def skills_target():
@@ -171,24 +180,24 @@ def inspect_skill(target, source):
 
 
 def manage_skills(args):
-    source = skills_source(args.source)
+    source = skills_source(args.source, args.skills_command == "install")
     directory = skills_target()
-    skills = sorted((path for path in source.iterdir() if (path / "SKILL.md").is_file()),
-                    key=lambda path: path.name)
-    if not skills:
-        raise ValueError("source holds no Skill directory containing a SKILL.md")
+    names = skill_names(source, directory, args.skills_command)
+    if not names:
+        raise ValueError("source holds no Skill directory containing a SKILL.md and the target holds no owned link")
     report = {"command": "skills " + args.skills_command, "source": str(source),
               "target_directory": str(directory), "entries": []}
     code = 0
-    for skill in skills:
-        target = directory / skill.name
+    for name in names:
+        skill = source / name
+        target = directory / name
         before = inspect_skill(target, skill)
         if args.skills_command == "status":
             report["entries"].append(before)
             if before["status"] != "owned-link":
                 code = 2
             continue
-        entry = {"name": skill.name, "action": "preserved", "before": before, "after": before}
+        entry = {"name": name, "action": "preserved", "before": before, "after": before}
         if args.skills_command == "uninstall":
             if before["owned"] and before["status"] in ("owned-link", "broken-link"):
                 target.unlink()
@@ -196,12 +205,21 @@ def manage_skills(args):
         elif before["status"] == "owned-link":
             entry["action"] = "unchanged"
         elif before["status"] == "missing":
-            directory.mkdir(parents=True, exist_ok=True)
-            target.symlink_to(skill, target_is_directory=True)
-            after = inspect_skill(target, skill)
-            # Every entry is verified on its own; a blocked entry never removes another.
-            entry.update(action="installed" if after["status"] == "owned-link" else "failed", after=after)
-        if entry["action"] in ("preserved", "failed"):
+            # The resolved Skill path is validated before any link exists.
+            if is_cache_path(skill) or is_cache_path(skill.resolve()):
+                entry.update(action="rejected", reason="cache-bound-source")
+            else:
+                directory.mkdir(parents=True, exist_ok=True)
+                target.symlink_to(skill, target_is_directory=True)
+                after = inspect_skill(target, skill)
+                if after["status"] != "owned-link":
+                    # Remove only the exact link this command just created.
+                    if target.is_symlink() and absolute(target.parent / os.readlink(target)) == skill:
+                        target.unlink()
+                    after = inspect_skill(target, skill)
+                # Every entry is verified on its own; a blocked entry never removes another.
+                entry.update(action="installed" if after["status"] == "owned-link" else "failed", after=after)
+        if entry["action"] in ("preserved", "failed", "rejected"):
             code = 2
         report["entries"].append(entry)
     return report, code
