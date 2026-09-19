@@ -287,25 +287,20 @@ is not claimed by this release.
 directory. Never link them into `~/.agents/skills`, `~/.claude/skills`, or
 `~/.grok/skills`: Codex and Grok Build scan `~/.agents/skills`, and Grok scans
 `~/.claude/skills`, so a host that already uses the plugin would list every
-Skill twice. There is no AgentsMD OpenCode plugin. An owned installer for these
-links is tracked in [#106](https://github.com/toolboxmd/agentsmd/issues/106);
-until it lands, create them without replacing an existing entry:
+Skill twice. There is no AgentsMD OpenCode plugin.
 
 ```sh
-skills_dir="${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}/skills"
-mkdir -p "$skills_dir"
-for skill in "$AGENTSMD_DIR"/skills/*; do
-  target="$skills_dir/${skill##*/}"
-  if [ ! -e "$target" ] && [ ! -L "$target" ]; then
-    ln -s "$skill" "$target"
-  fi
-done
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills install --source "$AGENTSMD_DIR/skills"
 opencode debug skill
 ```
 
-Inspect existing same-name Skills instead of overwriting them. OpenCode's
-bounded run adapter remains pinned to **1.18.29**; link setup does not expand
-that run contract. See [OpenCode details](docs/opencode.md).
+The command creates one owned link per Skill under
+`${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}/skills` and never replaces an
+existing entry; it preserves and reports each foreign entry, installs the rest
+and exits 2. Inspect existing same-name Skills instead of overwriting them.
+`skills status` and `skills uninstall` report and remove only those owned
+links. OpenCode's bounded run adapter remains pinned to **1.18.29**; link setup
+does not expand that run contract. See [OpenCode details](docs/opencode.md).
 
 ### 3. Link global instructions and initialize preferences
 

@@ -170,6 +170,91 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(os.readlink(self.target), str(previous))
         self.assertTrue(previous.is_dir())
 
+    def prepare_skills(self, names=("alpha", "beta")):
+        source = self.root / "release/skills"
+        for name in names:
+            (source / name).mkdir(parents=True)
+            (source / name / "SKILL.md").write_text("# " + name + "\n")
+        (source / "not-a-skill").mkdir()
+        self.skills = self.target.parent / "skills"
+        return source
+
+    def test_skill_links_install_repeat_status_and_uninstall(self):
+        source = self.prepare_skills()
+        code, report = self.call("skills", "status", "--source", source)
+        self.assertEqual(code, 2)
+        self.assertEqual([entry["status"] for entry in report["entries"]], ["missing", "missing"])
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["installed", "installed"])
+        self.assertEqual(report["target_directory"], str(self.skills))
+        for name in ("alpha", "beta"):
+            self.assertEqual((self.skills / name).resolve(), source / name)
+        self.assertFalse(os.path.lexists(self.skills / "not-a-skill"))
+        self.assertEqual(self.call("skills", "status", "--source", source)[0], 0)
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["unchanged", "unchanged"])
+        code, report = self.call("skills", "uninstall", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["uninstalled", "uninstalled"])
+        for name in ("alpha", "beta"):
+            self.assertFalse(os.path.lexists(self.skills / name))
+        self.assertEqual(self.call("skills", "uninstall", "--source", source)[0], 2)
+
+    def test_skill_links_preserve_user_entries_and_install_the_rest(self):
+        source = self.prepare_skills(("alpha", "beta", "gamma"))
+        self.skills.mkdir(parents=True)
+        (self.skills / "alpha").write_text("user skill file")
+        foreign = self.root / "foreign/beta"
+        foreign.mkdir(parents=True)
+        (foreign / "SKILL.md").write_text("user skill\n")
+        (self.skills / "beta").symlink_to(foreign, target_is_directory=True)
+        code, report = self.call("skills", "install", "--source", source)
+        self.assertEqual(code, 2)
+        self.assertEqual({entry["name"]: entry["action"] for entry in report["entries"]},
+                         {"alpha": "preserved", "beta": "preserved", "gamma": "installed"})
+        self.assertEqual({entry["name"]: entry["before"]["status"] for entry in report["entries"]},
+                         {"alpha": "regular-file", "beta": "divergent-link", "gamma": "missing"})
+        self.assertEqual((self.skills / "gamma").resolve(), source / "gamma")
+        for action in ("status", "uninstall"):
+            self.assertEqual(self.call("skills", action, "--source", source)[0], 2)
+        self.assertEqual((self.skills / "alpha").read_text(), "user skill file")
+        self.assertEqual(os.readlink(self.skills / "beta"), str(foreign))
+        self.assertFalse(os.path.lexists(self.skills / "gamma"))
+
+    def test_skill_links_use_config_dir_and_home_fallback(self):
+        source = self.prepare_skills()
+        env = {**self.env, "OPENCODE_CONFIG_DIR": str(self.root / "custom")}
+        code, report = self.call("skills", "install", "--source", source, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target_directory"], str(self.root / "custom/skills"))
+        env = dict(self.env)
+        del env["XDG_CONFIG_HOME"]
+        code, report = self.call("skills", "install", "--source", source, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target_directory"], str(self.home / ".config/opencode/skills"))
+        self.assertEqual((self.home / ".config/opencode/skills/alpha").resolve(), source / "alpha")
+
+    def test_skill_links_reject_cache_source_and_shared_targets(self):
+        cached = self.root / "plugins/cache/skills"
+        (cached / "alpha").mkdir(parents=True)
+        (cached / "alpha/SKILL.md").write_text("cached\n")
+        self.assertEqual(self.call("skills", "install", "--source", cached)[0], 2)
+        source = self.prepare_skills()
+        for name in (".agents", ".claude", ".grok"):
+            env = {**self.env, "OPENCODE_CONFIG_DIR": str(self.home / name)}
+            code, report = self.call("skills", "install", "--source", source, env=env)
+            self.assertEqual(code, 2, report)
+            self.assertIn("shared Skill directory", report["error"])
+            self.assertFalse(os.path.lexists(self.home / name / "skills/alpha"))
+        alias = self.root / "alias"
+        alias.mkdir()
+        (alias / "skills").symlink_to(self.home / ".agents/skills", target_is_directory=True)
+        env = {**self.env, "OPENCODE_CONFIG_DIR": str(alias)}
+        self.assertEqual(self.call("skills", "install", "--source", source, env=env)[0], 2)
+        self.assertFalse(os.path.lexists(self.home / ".agents/skills/alpha"))
+
     def prepare_run(self, mode="success", help_stream="stdout"):
         self.repo = self.root / "repo"
         self.repo.mkdir()

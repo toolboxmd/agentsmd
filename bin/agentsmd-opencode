@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owned OpenCode instruction links and bounded, evidence-capturing runs."""
+"""Owned OpenCode instruction and Skill links, and bounded, evidence-capturing runs."""
 
 from __future__ import annotations
 
@@ -112,6 +112,99 @@ def manage(args):
         raise ValueError("post-install verification failed")
     return {"action": "updated" if args.command == "update" else "installed", "before": before, "after": after,
             "preferences": initialize_preferences(source)}, 0
+
+
+SHARED_SKILL_DIRECTORIES = (".agents/skills", ".claude/skills", ".grok/skills")
+
+
+def contains(root, path):
+    return path == root or root in path.parents
+
+
+def skills_source(value):
+    source = absolute(value)
+    for candidate in (source, source.resolve()):
+        if is_cache_path(candidate):
+            raise ValueError("source must be a stable canonical skills directory outside plugin caches")
+    if not source.is_dir():
+        raise ValueError("source must be an existing skills directory")
+    return source
+
+
+def skills_target():
+    directory = absolute(default_target("opencode").parent / "skills")
+    shared = set()
+    for name in SHARED_SKILL_DIRECTORIES:
+        root = absolute(Path.home() / name)
+        shared.update((root, root.resolve()))
+    for location in (directory, directory.parent.resolve() / directory.name, directory.resolve()):
+        if is_cache_path(location):
+            raise ValueError("cache-bound-target")
+        if any(contains(root, location) for root in shared):
+            raise ValueError("target must not resolve under a shared Skill directory")
+    return directory
+
+
+def inspect_skill(target, source):
+    report = {"name": target.name, "target": str(target), "source": str(source),
+              "owned": False, "status": "missing"}
+    if target_is_in_cache(target):
+        report["status"] = "cache-bound-target"
+        return report
+    if not os.path.lexists(target):
+        return report
+    if not target.is_symlink():
+        report["status"] = "regular-file" if target.is_file() else "other-path"
+        return report
+    linked = absolute(target.parent / os.readlink(target))
+    report.update(link_target=os.readlink(target), owned=linked == source)
+    if is_cache_path(linked) or is_cache_path(linked.resolve()):
+        report.update(status="cache-bound-link", owned=False)
+        return report
+    if not target.exists():
+        report["status"] = "broken-link"
+    elif not target.is_dir():
+        report["status"] = "other-path"
+    else:
+        report["status"] = "owned-link" if report["owned"] else "divergent-link"
+    return report
+
+
+def manage_skills(args):
+    source = skills_source(args.source)
+    directory = skills_target()
+    skills = sorted((path for path in source.iterdir() if (path / "SKILL.md").is_file()),
+                    key=lambda path: path.name)
+    if not skills:
+        raise ValueError("source holds no Skill directory containing a SKILL.md")
+    report = {"command": "skills " + args.skills_command, "source": str(source),
+              "target_directory": str(directory), "entries": []}
+    code = 0
+    for skill in skills:
+        target = directory / skill.name
+        before = inspect_skill(target, skill)
+        if args.skills_command == "status":
+            report["entries"].append(before)
+            if before["status"] != "owned-link":
+                code = 2
+            continue
+        entry = {"name": skill.name, "action": "preserved", "before": before, "after": before}
+        if args.skills_command == "uninstall":
+            if before["owned"] and before["status"] in ("owned-link", "broken-link"):
+                target.unlink()
+                entry.update(action="uninstalled", after=inspect_skill(target, skill))
+        elif before["status"] == "owned-link":
+            entry["action"] = "unchanged"
+        elif before["status"] == "missing":
+            directory.mkdir(parents=True, exist_ok=True)
+            target.symlink_to(skill, target_is_directory=True)
+            after = inspect_skill(target, skill)
+            # Every entry is verified on its own; a blocked entry never removes another.
+            entry.update(action="installed" if after["status"] == "owned-link" else "failed", after=after)
+        if entry["action"] in ("preserved", "failed"):
+            code = 2
+        report["entries"].append(entry)
+    return report, code
 
 
 def git(cwd, *args):
@@ -234,6 +327,10 @@ def main():
         command.add_argument("--source", required=True, type=absolute)
         if name == "update":
             command.add_argument("--previous-source", type=absolute)
+    command = commands.add_parser("skills")
+    skills = command.add_subparsers(dest="skills_command", required=True)
+    for name in ("install", "status", "uninstall"):
+        skills.add_parser(name).add_argument("--source", required=True, type=absolute)
     command = commands.add_parser("run")
     for name in ("cwd", "prompt-file", "output"):
         command.add_argument("--" + name, required=True, type=absolute)
@@ -244,7 +341,12 @@ def main():
     command.add_argument("--executable", default="opencode")
     args = parser.parse_args()
     try:
-        report, code = run(args) if args.command == "run" else manage(args)
+        if args.command == "run":
+            report, code = run(args)
+        elif args.command == "skills":
+            report, code = manage_skills(args)
+        else:
+            report, code = manage(args)
     except (OSError, ValueError, subprocess.SubprocessError) as error:
         report, code = {"error": str(error)}, 2
     print(json.dumps(report, indent=2, sort_keys=True))

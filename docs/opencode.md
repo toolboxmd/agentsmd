@@ -21,8 +21,8 @@ defaulting to `~/.config/opencode/skills`, and also from the shared
 `~/.agents/skills` and `~/.claude/skills` directories. Link AgentsMD Skills only
 into the OpenCode directory. Codex and Grok Build scan `~/.agents/skills`, and
 Grok scans `~/.claude/skills`, so shared links duplicate every Skill on a host
-that already uses the plugin. An owned per-Skill link installer is tracked in
-[#106](https://github.com/toolboxmd/agentsmd/issues/106). Verify available
+that already uses the plugin. The `skills` command group below creates and
+removes those owned links. Verify available
 names with `opencode debug skill` in the intended repository. See official
 [Skill discovery](https://opencode.ai/docs/skills/). Host-native frontmatter
 differs: OpenCode ignores unrecognized fields, so user-only planning invocation
@@ -77,6 +77,41 @@ migration, the common `agentsmd-global-instructions install --host opencode
 `opencode.jsonc`, preferences and credentials remain in place. Start a fresh
 OpenCode session after a supported install or update.
 
+## Skill links
+
+`skills install` creates one owned symlink per Skill directory that holds a
+`SKILL.md`, named after that directory, under `$OPENCODE_CONFIG_DIR/skills`,
+otherwise `$XDG_CONFIG_HOME/opencode/skills`, defaulting to
+`~/.config/opencode/skills`. The command resolves that directory exactly as the
+instruction link resolves its own.
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills install --source "$AGENTSMD_DIR/skills"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills status --source "$AGENTSMD_DIR/skills"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills uninstall --source "$AGENTSMD_DIR/skills"
+opencode debug skill
+```
+
+Each entry reports one of `missing`, `owned-link`, `divergent-link`,
+`regular-file`, `other-path` and `broken-link`, under the instruction link's
+ownership rule: a symlink whose absolute lexical destination exactly matches the
+supplied Skill directory. Install creates missing links and verifies existing
+owned links. It never replaces an existing entry of any kind. Each entry is
+decided on its own, as the instruction link decides its single target, so a
+blocked entry is preserved and reported while the remaining Skills still
+install, and the command exits 2. Uninstall removes only exact owned links,
+including a broken owned link, and exits 2 when any entry was not an owned
+link. Status exits 0 only when every Skill is an owned link.
+
+Sources inside `plugins/cache` are rejected. A target is rejected when the Skill
+directory resolves under `~/.agents/skills`, `~/.claude/skills`,
+`~/.grok/skills` or a `plugins/cache` path. Codex and Grok Build scan
+`~/.agents/skills`, and Grok scans `~/.claude/skills`, so links there would list
+every Skill twice on a host that already uses the plugin. Skill links do not
+expand the bounded run contract, which stays pinned to **1.18.29**. Run
+`opencode debug skill` in a fresh session in the intended repository and confirm
+each AgentsMD Skill appears exactly once.
+
 ## Bounded implementation run
 
 The coordinator supplies the complete Issue scope, accepted decisions, exact
@@ -116,8 +151,10 @@ review and external authority independently.
 ## Proof and remaining host differences
 
 `python3 -m unittest tests.test_opencode -v` tests isolated HOME/XDG ownership,
-config and credential preservation, lifecycle transitions, explicit CLI
-arguments, stale-head refusal, malformed events, errors and timeout. It uses a
+config and credential preservation, lifecycle transitions, Skill link
+install, repeat install, preserved user entries, uninstall and rejected shared
+directories, explicit CLI arguments, stale-head refusal, malformed events,
+errors and timeout. It uses a
 fake CLI and spends no model quota. The full repository and versionctl suites
 remain the deterministic release gates.
 
