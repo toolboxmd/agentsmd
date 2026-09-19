@@ -5,7 +5,8 @@ contract, an approved workflow Skill Catalogue, and deterministic repository
 version control. It also owns Project Direction, the confirmed Vision, Mission,
 and Objective that keep agent work purposeful and focused. The installable
 plugin exposes the same owned workflow suite to Codex, Claude Code, and Grok
-Build. OpenCode uses shared Skills and its native global instruction link.
+Build. OpenCode uses its own global Skill directory, its own plugin, and its
+native global instruction link.
 
 For a new install, follow the [setup walkthrough](#install-boundary). It covers
 plugins or shared Skills, one canonical instruction source, and private defaults.
@@ -217,8 +218,10 @@ Use `/hooks` in a fresh session to inspect that state. Hooks can also be disable
 by host or administrator policy, so the `AGENTS.md` first-read rule remains the
 fallback. Current Codex hooks prove root-task post-compaction reload and
 subagent-start injection. The public contract does not prove reinjection after
-a subagent's private compaction. Automatic lifecycle behavior on other hosts is
-not claimed until it receives equivalent host-level acceptance.
+a subagent's private compaction. Automatic lifecycle behavior on Claude Code,
+Grok Build, and OpenCode is recorded per host in the
+[host lifecycle delivery table](#4-verify-discovery-and-current-context), with
+the delivery mechanism and the fallback each host still needs.
 
 ## Install boundary
 
@@ -274,7 +277,12 @@ claude plugin install agentsmd@toolboxmd
 ```
 
 In a fresh session, inspect the plugin and select `/agentsmd:to-spec` or another
-bundled Skill. Claude lifecycle-hook acceptance is not claimed by this release.
+bundled Skill. Claude Code SessionStart hook acceptance is verified on version
+2.1.278: a `claude -p --plugin-dir <repo>` run with the plugin answered with the
+repository Objective while a control run without the plugin answered NONE, and
+the debug log recorded the hook supplying 4,254 characters of additional
+context. `UserPromptSubmit` and `SubagentStart` share the same output contract
+but were not separately exercised live.
 
 **Grok Build:**
 
@@ -451,6 +459,17 @@ The common installer supplies the explicit backed-up migration path for a
 user-owned OpenCode target. Neither command changes host settings or credentials.
 
 ### 4. Verify discovery and current context
+
+Per host, these are the lifecycle events that deliver Project Direction
+automatically, the events each host ignores or leaves inert, the delivery
+mechanism, and the fallback that still applies:
+
+| Host | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
+| --- | --- | --- | --- | --- |
+| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` (registered, exits silently; that entry serves Grok Build alone) | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
+| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | None identified | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading fallback for freshness, and for the two events not separately exercised live |
+| Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart` (stdout discarded), `UserPromptSubmit` (context discarded although allowed), `SubagentStart` (passive); the packaged plugin hook is inert because Grok 1.0.34 never executes plugin-provided hooks | Owned global hook file installed by `bin/agentsmd-grok-hook` | Explicit reading fallback for the first response, before the first tool call delivers |
+| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, `SubagentStart`, or `PreToolUse` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link) | Explicit reading fallback for freshness verification |
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
