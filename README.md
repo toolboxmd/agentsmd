@@ -283,14 +283,19 @@ requires explicit invocation and an authenticated CLI. This setup grants no
 new authentication, quota or credit authority. Grok lifecycle-hook acceptance
 is not claimed by this release.
 
-**OpenCode:** reuse the shared `~/.agents/skills/<name>/SKILL.md` installation.
-There is no AgentsMD OpenCode plugin. If a shared Skill is absent, link its
-canonical directory without replacing an existing copy:
+**OpenCode:** link the packaged Skills only into OpenCode's own global Skill
+directory. Never link them into `~/.agents/skills`, `~/.claude/skills`, or
+`~/.grok/skills`: Codex and Grok Build scan `~/.agents/skills`, and Grok scans
+`~/.claude/skills`, so a host that already uses the plugin would list every
+Skill twice. There is no AgentsMD OpenCode plugin. An owned installer for these
+links is tracked in [#106](https://github.com/toolboxmd/agentsmd/issues/106);
+until it lands, create them without replacing an existing entry:
 
 ```sh
-mkdir -p "$HOME/.agents/skills"
+skills_dir="${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}/skills"
+mkdir -p "$skills_dir"
 for skill in "$AGENTSMD_DIR"/skills/*; do
-  target="$HOME/.agents/skills/${skill##*/}"
+  target="$skills_dir/${skill##*/}"
   if [ ! -e "$target" ] && [ ! -L "$target" ]; then
     ln -s "$skill" "$target"
   fi
@@ -298,10 +303,9 @@ done
 opencode debug skill
 ```
 
-Inspect existing same-name Skills instead of overwriting them. Do not add these
-shared links for a host already using the plugin if that creates duplicate
-active discovery. OpenCode's bounded run adapter remains pinned to **1.18.29**;
-link setup does not expand that run contract. See [OpenCode details](docs/opencode.md).
+Inspect existing same-name Skills instead of overwriting them. OpenCode's
+bounded run adapter remains pinned to **1.18.29**; link setup does not expand
+that run contract. See [OpenCode details](docs/opencode.md).
 
 ### 3. Link global instructions and initialize preferences
 

@@ -8,6 +8,7 @@ SemVer and identify one user-consumable repository state.
 ### Added
 
 - Add shared private preferences and four-harness setup; consolidate instructions while preserving operating rules
+- Point OpenCode Skill links at the OpenCode global directory and warn against shared Skill directories
 
 ## [11.0.0] - 2026-09-17
 

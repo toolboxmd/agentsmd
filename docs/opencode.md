@@ -16,11 +16,14 @@ directory. `CLAUDE.md` is a project fallback, and
 absent. Configured `instructions` add further sources. AgentsMD does not edit
 that configuration. See the official [instruction rules](https://opencode.ai/docs/rules/).
 
-OpenCode discovers `~/.agents/skills/<name>/SKILL.md` and loads Skills on demand.
-Reuse that shared installation; this integration creates no Skill tree.
-Verify available names with `opencode debug skill` in the intended repository.
-The host also discovers project Skills and its own config Skill paths; avoid
-installing a second copy of a shared Skill there. See official
+OpenCode loads Skills on demand from `$OPENCODE_CONFIG_DIR/skills/<name>/SKILL.md`,
+defaulting to `~/.config/opencode/skills`, and also from the shared
+`~/.agents/skills` and `~/.claude/skills` directories. Link AgentsMD Skills only
+into the OpenCode directory. Codex and Grok Build scan `~/.agents/skills`, and
+Grok scans `~/.claude/skills`, so shared links duplicate every Skill on a host
+that already uses the plugin. An owned per-Skill link installer is tracked in
+[#106](https://github.com/toolboxmd/agentsmd/issues/106). Verify available
+names with `opencode debug skill` in the intended repository. See official
 [Skill discovery](https://opencode.ai/docs/skills/). Host-native frontmatter
 differs: OpenCode ignores unrecognized fields, so user-only planning invocation
 continues to depend on the canonical operating contract.
