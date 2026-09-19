@@ -297,37 +297,26 @@ Grok 1.0.34 does not execute plugin-provided hooks. It discovers the plugin with
 `has_hooks=true` and then reports `total_hooks=0`, for a user-scope plugin, for
 `--plugin-dir`, and for a registry install alike, so the packaged hooks manifest
 is inert on Grok until the host fixes that. Global files under `~/.grok/hooks`
-and project files under `.grok/hooks` do run, so the supported interim path is a
-global hook file pointing at the stable canonical clone:
+and project files under `.grok/hooks` do run, so the supported interim path is
+one owned global hook file, installed in step 3:
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$AGENTSMD_DIR/bin/project-direction\" hook",
-            "timeout": 15
-          }
-        ]
-      }
-    ]
-  }
-}
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" install --source "$AGENTSMD_DIR"
 ```
 
-Write that to `~/.grok/hooks/agentsmd.json` with `$AGENTSMD_DIR` replaced by the
-absolute path of the clone from step 1. Never point it at a plugin cache path,
-which the loader rejects as a canonical source. Grok trusts global hook files
-automatically, so no trust prompt applies; project files under `.grok/hooks`
-still need trust. Start a fresh session for the file to load. Grok sets
-`GROK_HOOK_NAME` for global hooks as well as plugin hooks, and that variable is
-what activates the loader's Grok path, its 10,000 character cap and its
-`GROK_HOME` source resolution. An owned installer for this file is tracked as a
-follow-up Issue on
-[#105](https://github.com/toolboxmd/agentsmd/issues/105).
+The installer writes `$GROK_HOME/hooks/agentsmd.json`, by default
+`~/.grok/hooks/agentsmd.json`, with one `PreToolUse` entry that runs the loader
+from the stable clone of step 1 with a 15 second timeout. It never points at a
+plugin cache path, which both the installer and the loader reject. Grok trusts
+global hook files automatically, so no trust prompt applies; project files under
+`.grok/hooks` still need trust. Start a fresh session for the file to load. Grok
+sets `GROK_HOOK_NAME` for global hooks as well as plugin hooks, and that
+variable is what activates the loader's Grok path, its 10,000 character cap and
+its `GROK_HOME` source resolution. Remove the file with
+`agentsmd-grok-hook uninstall --source "$AGENTSMD_DIR"` once Grok executes
+plugin hooks. Until then the packaged manifest entry stays inert there, and if
+both paths ever deliver in one session, the loader's session fingerprint keeps
+the second delivery silent.
 
 Grok must also resolve `agentsmd` to its own install: a same-named package
 without hooks in the Claude marketplace clone wins instead.
@@ -421,6 +410,25 @@ finds the same path. Sources and targets inside `plugins/cache` are rejected.
 The result records source and target SHA-256 digests; repeated setup reports
 `unchanged` and creates no extra backup.
 
+Grok Build needs one more owned file, because version 1.0.34 executes no
+plugin-provided hook:
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" install --source "$AGENTSMD_DIR"
+"$AGENTSMD_DIR/bin/agentsmd-grok-hook" status --source "$AGENTSMD_DIR"
+```
+
+`--source` takes the clone root from step 1, and `GROK_HOME` selects the same
+directory as the instruction link. Ownership is the exact generated content:
+repeated setup reports `unchanged`, a file generated for another clone reports
+`divergent` and names that clone, and every other content reports `user-owned`.
+Neither is replaced without `--replace`, which first copies the previous file
+into the adjacent `agentsmd-backups/` directory, or into `--backup-dir`.
+`status` exits zero only for an owned current file, and `uninstall` removes only
+that file. The hook entry also names a stable fingerprint cache under
+`GROK_HOME`, so once-per-session delivery survives a cleared temporary
+directory.
+
 Setup copies tracked `PREFERENCES.example.md` to adjacent private
 `PREFERENCES.md` only when absent. Existing contents survive all setup and update
 commands, including OpenCode's ownership-safe lifecycle. Edit the private file
@@ -492,8 +500,7 @@ behavioral compliance. Check each installed host separately:
   ([toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)).
   Version 1.0.34 loads no plugin-provided hook, so the packaged manifest is
   inert there and `/hooks` shows Project Direction only when the global
-  `~/.grok/hooks/agentsmd.json` file above is installed and the session is
-  fresh. Grok clips hook context at 10,000 characters, so the loader falls back
+  `agentsmd.json` hook file above is installed and the session is fresh. Grok clips hook context at 10,000 characters, so the loader falls back
   to `read_required` paths and hashes above that cap and requires explicit
   reads.
 - **OpenCode:** `opencode debug paths` and `opencode debug skill` inspect paths

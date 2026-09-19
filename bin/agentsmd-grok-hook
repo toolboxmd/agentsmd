@@ -1,0 +1,232 @@
+#!/usr/bin/env python3
+"""Owned global Grok hook file that delivers Project Direction on first tool use."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import shutil
+import sys
+import uuid
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+
+from agentsmd_instructions import (
+    absolute, default_target, is_cache_path, target_is_in_cache,
+)
+
+
+# Grok kills a hook after `timeout` seconds; the loader reads a repository and
+# hashes at most three direction files, so 15 seconds is ample headroom.
+TIMEOUT_SECONDS = 15
+COMMAND_PATTERN = re.compile(r'^"(?P<source>.+)/bin/project-direction" hook$')
+# Grok expands ${VAR} and $VAR in a command, and the command is quoted, so a
+# source path holding these characters would be rewritten or split at run time.
+FORBIDDEN_SOURCE_CHARACTERS = '"$\\\n\r'
+
+
+def grok_home() -> Path:
+    # Reuse the host path contract, so GROK_HOME governs both files.
+    return default_target("grok").parent
+
+
+def hook_target() -> Path:
+    return grok_home() / "hooks" / "agentsmd.json"
+
+
+def source_root(value: str | Path) -> Path:
+    source = absolute(value)
+    if source.is_symlink():
+        raise ValueError("source must be the canonical clone root, not a symlink alias")
+    if not source.is_dir():
+        raise ValueError("source must be an existing canonical clone directory")
+    source = source.resolve()
+    loader = source / "bin" / "project-direction"
+    for candidate in (source, loader, loader.resolve()):
+        if is_cache_path(candidate):
+            raise ValueError("source must be a stable canonical clone outside plugin caches")
+    if loader.is_symlink() or not loader.is_file():
+        raise ValueError("source must hold a regular bin/project-direction loader")
+    if any(character in str(source) for character in FORBIDDEN_SOURCE_CHARACTERS):
+        raise ValueError("source path must not hold a quote, dollar, backslash or newline")
+    return source
+
+
+def hook_document(source: Path, home: Path) -> dict[str, Any]:
+    return {
+        # Grok ignores unknown top-level keys, so the marker names the source
+        # without changing what the host loads.
+        "agentsmd": {"installer": "agentsmd-grok-hook", "source": str(source)},
+        "hooks": {
+            "PreToolUse": [
+                {
+                    "hooks": [
+                        {
+                            "type": "command",
+                            "command": f'"{source}/bin/project-direction" hook',
+                            "timeout": TIMEOUT_SECONDS,
+                            # A global hook gets no GROK_PLUGIN_DATA, so name a
+                            # stable cache and keep once-per-session delivery.
+                            "env": {
+                                "AGENTSMD_PROJECT_DIRECTION_DATA": str(home / "agentsmd"),
+                            },
+                        }
+                    ]
+                }
+            ]
+        },
+    }
+
+
+def hook_bytes(source: Path, home: Path) -> bytes:
+    document = json.dumps(hook_document(source, home), indent=2, sort_keys=True)
+    return (document + "\n").encode("utf-8")
+
+
+def installed_source(raw: bytes) -> str | None:
+    """Report the source of a file that is ours in shape but not in content."""
+    try:
+        document = json.loads(raw)
+    except (ValueError, UnicodeDecodeError):
+        return None
+    if not isinstance(document, dict):
+        return None
+    marker = document.get("agentsmd")
+    if isinstance(marker, dict) and isinstance(marker.get("source"), str):
+        return marker["source"]
+    hooks = document.get("hooks")
+    groups = hooks.get("PreToolUse") if isinstance(hooks, dict) else None
+    for group in groups if isinstance(groups, list) else []:
+        handlers = group.get("hooks") if isinstance(group, dict) else None
+        for handler in handlers if isinstance(handlers, list) else []:
+            command = handler.get("command") if isinstance(handler, dict) else None
+            match = COMMAND_PATTERN.match(command) if isinstance(command, str) else None
+            if match:
+                return match.group("source")
+    return None
+
+
+def inspect(target: Path, expected: bytes) -> dict[str, Any]:
+    report: dict[str, Any] = {"target": str(target), "owned": False, "status": "missing"}
+    if target_is_in_cache(target):
+        report["status"] = "cache-bound-target"
+        return report
+    if not os.path.lexists(target):
+        return report
+    if target.is_symlink() or not target.is_file():
+        report["status"] = "other-path"
+        return report
+    raw = target.read_bytes()
+    report["target_sha256"] = hashlib.sha256(raw).hexdigest()
+    if raw == expected:
+        report.update(status="owned-current", owned=True)
+        return report
+    source = installed_source(raw)
+    if source is None:
+        report["status"] = "user-owned"
+        return report
+    report.update(status="divergent", installed_source=source)
+    return report
+
+
+def next_backup_path(target: Path, backup_dir: Path) -> Path:
+    stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S.%fZ")
+    candidate = backup_dir / f"{target.name}.{stamp}.bak"
+    counter = 1
+    while os.path.lexists(candidate):
+        candidate = backup_dir / f"{target.name}.{stamp}.{counter}.bak"
+        counter += 1
+    return candidate
+
+
+def back_up(target: Path, backup_dir: Path) -> Path:
+    backup_dir.mkdir(parents=True, exist_ok=True)
+    backup = next_backup_path(target, backup_dir)
+    shutil.copy2(target, backup)
+    return backup
+
+
+def write_hook_file(target: Path, content: bytes) -> None:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    temporary = target.parent / f".{target.name}.agentsmd-{uuid.uuid4().hex}"
+    try:
+        temporary.write_bytes(content)
+        temporary.chmod(0o644)
+        os.replace(temporary, target)
+    finally:
+        if os.path.lexists(temporary):
+            temporary.unlink()
+
+
+def manage(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
+    source = source_root(args.source)
+    home = grok_home()
+    target = hook_target()
+    expected = hook_bytes(source, home)
+    before = inspect(target, expected)
+    report: dict[str, Any] = {
+        "command": args.command,
+        "source": str(source),
+        "target": str(target),
+        "before": before,
+        "after": before,
+    }
+    if before["status"] == "cache-bound-target":
+        return {**report, "action": "preserved", "error": "cache-bound-target"}, 2
+    if args.command == "status":
+        return report, 0 if before["owned"] else 2
+    if args.command == "uninstall":
+        if before["status"] == "missing":
+            return {**report, "action": "absent"}, 0
+        if not before["owned"]:
+            # Ownership is the exact generated content, so nothing else is ours.
+            return {**report, "action": "preserved", "error": "not-owned"}, 2
+        target.unlink()
+        return {**report, "action": "uninstalled", "after": inspect(target, expected)}, 0
+    if before["owned"]:
+        return {**report, "action": "unchanged"}, 0
+    backup: Path | None = None
+    if os.path.lexists(target):
+        if before["status"] == "other-path":
+            return {**report, "action": "preserved", "error": "unsupported-target"}, 2
+        if not args.replace:
+            return {**report, "action": "preserved", "error": "replacement-required"}, 2
+        backup = back_up(target, args.backup_dir or target.parent / "agentsmd-backups")
+    write_hook_file(target, expected)
+    after = inspect(target, expected)
+    if not after["owned"]:
+        return {**report, "action": "failed", "error": "post-install-verification-failed",
+                "after": after}, 2
+    return {**report, "action": "replaced" if backup else "installed",
+            "backup": str(backup) if backup else None, "after": after}, 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest="command", required=True)
+    for name in ("install", "status", "uninstall"):
+        command = commands.add_parser(name)
+        command.add_argument("--source", required=True, type=absolute)
+        if name == "install":
+            command.add_argument(
+                "--replace",
+                action="store_true",
+                help="Authorize replacement after preserving the existing file.",
+            )
+            command.add_argument("--backup-dir", type=absolute)
+    args = parser.parse_args()
+    try:
+        report, code = manage(args)
+    except (OSError, ValueError) as error:
+        report, code = {"error": str(error)}, 2
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return code
+
+
+if __name__ == "__main__":
+    sys.exit(main())
