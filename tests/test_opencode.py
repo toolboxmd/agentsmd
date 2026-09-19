@@ -242,6 +242,22 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.call("skills", "status", "--source", source)[0], 2)
         self.assertEqual(self.call("skills", "install", "--source", source)[0], 2)
 
+    def test_skill_links_uninstall_removes_owned_link_to_replaced_source(self):
+        source = self.prepare_skills()
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)
+        shutil.rmtree(source / "alpha")
+        (source / "alpha").write_text("replaced by a regular file\n")
+        code, report = self.call("skills", "status", "--source", source)
+        self.assertEqual(code, 2)
+        alpha = next(entry for entry in report["entries"] if entry["name"] == "alpha")
+        self.assertTrue(alpha["owned"])
+        self.assertEqual(alpha["status"], "other-path")
+        code, report = self.call("skills", "uninstall", "--source", source)
+        self.assertEqual(code, 0, report)
+        self.assertEqual([entry["action"] for entry in report["entries"]], ["uninstalled", "uninstalled"])
+        self.assertFalse(os.path.lexists(self.skills / "alpha"))
+        self.assertEqual((source / "alpha").read_text(), "replaced by a regular file\n")
+
     def test_skill_links_refuse_cache_bound_skill_before_linking(self):
         source = self.prepare_skills()
         cached = self.root / "plugins/cache/gamma"

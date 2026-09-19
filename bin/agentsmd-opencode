@@ -199,7 +199,8 @@ def manage_skills(args):
             continue
         entry = {"name": name, "action": "preserved", "before": before, "after": before}
         if args.skills_command == "uninstall":
-            if before["owned"] and before["status"] in ("owned-link", "broken-link"):
+            # Ownership is the exact lexical destination, whatever it resolves to now.
+            if before["owned"]:
                 target.unlink()
                 entry.update(action="uninstalled", after=inspect_skill(target, skill))
         elif before["status"] == "owned-link":
