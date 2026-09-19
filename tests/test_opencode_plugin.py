@@ -31,7 +31,10 @@ for (let call = 0; call < Number(calls); call += 1) {
 }
 process.stdout.write(JSON.stringify({
   system: output.system,
-  supported: module.SUPPORTED_OPENCODE_VERSION,
+  supported: module.default.supportedOpenCodeVersion,
+  exports: Object.fromEntries(
+    Object.entries(module).map(([name, value]) => [name, typeof value]),
+  ),
 }));
 """
 
@@ -132,6 +135,18 @@ class OpenCodePluginTests(unittest.TestCase):
         self.assertEqual(payload["status"], "not_in_repository")
         self.assertNotIn("files", payload)
         self.assertNotIn("Make agent work purposeful.", report["system"][0])
+
+    def test_every_module_export_is_a_plugin_function(self) -> None:
+        # OpenCode calls every export of a plugin module, so a value export fails to load.
+        report, stderr = self.transform(self.repository, calls=0)
+        self.assertNotIn(LOG_PREFIX, stderr)
+        self.assertEqual(report["system"], [])
+        self.assertTrue(report["exports"])
+        self.assertEqual(
+            sorted(set(report["exports"].values())),
+            ["function"],
+            report["exports"],
+        )
 
     def test_installed_link_resolves_the_canonical_loader(self) -> None:
         plugins = self.base / "opencode/plugins"

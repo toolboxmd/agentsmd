@@ -15,7 +15,9 @@ import { fileURLToPath } from "node:url";
 // `experimental.chat.system.transform` is experimental in this OpenCode
 // version, which the bounded run adapter pins as well. The plugin context
 // exposes no host version, so the pin is documentation, not a runtime gate.
-export const SUPPORTED_OPENCODE_VERSION = "1.18.29";
+// OpenCode treats every export of a plugin module as a plugin function, so the
+// pin stays a module constant and a property of the exported function.
+const SUPPORTED_OPENCODE_VERSION = "1.18.29";
 
 const LOG_PREFIX = "agentsmd-project-direction:";
 const LOADER = ["bin", "project-direction"];
@@ -86,6 +88,8 @@ function loadContext(directory, sessionID) {
   }
   return context;
 }
+
+agentsmdProjectDirection.supportedOpenCodeVersion = SUPPORTED_OPENCODE_VERSION;
 
 export default async function agentsmdProjectDirection(context) {
   const directory =
