@@ -13,42 +13,25 @@ description: >
 
 # Elon method
 
-Apply this Skill after the complete current Project Direction is loaded.
-It is one method with four references. Load only the references the current
-signal needs. Reuse unchanged reference contents already in context. A missing
-required reference blocks only its dependent step.
+Use after complete current Project Direction loads. Choose means within the
+current request, confirmed direction, explicit constraints, and authority.
+Preserve Human Gates, dirty user work, unique regressions, and final required
+Proof. Clear microfixes adding no material design, process, cost claim, or loop
+stay direct.
 
-Do not narrate the method as ceremony. Use it to choose the next action.
-Explain a reference only when the reasoning, decision, or tradeoff is useful
-to the user.
-
-Keep a small direct microfix direct when its requirement and solution are
-already clear and it adds no material design, process, cost claim, or
-recurring loop.
-
-## Boundaries
-
-The method chooses means. It does not replace the current request, confirmed
-Project Direction, explicit user constraints, or user authority. Preserve
-Human Gates, user-owned dirty work, unique regression proof, and the final
-Proof required by the Issue and risk.
-
-## Route
-
-Load every reference whose trigger applies; multiple references can apply:
+Load all applicable references; multiple references can apply. Reuse unchanged
+context. Missing references block only dependent steps. Explain useful reasoning
+or tradeoffs, not ceremonial method narration.
 
 | Signal | Load |
 | --- | --- |
-| Analogy, inherited process, accepted impossibility, or novel design | [First principles](references/first-principles.md) |
-| Price, quote, fee, timeline, headcount, or tool cost treated as given | [Idiot index](references/idiot-index.md) |
-| Material task selection or reassessment, stalled progress, acceleration, parallel work, or automation | [Current constraint](references/current-constraint.md) |
-| Material requirement, solution, process, or recurring loop | [Algorithm](references/algorithm.md) |
+| Analogy, inherited process, accepted impossibility, novel design | [First principles](references/first-principles.md) |
+| Price, quote, fee, timeline, headcount, tool cost treated as given | [Idiot index](references/idiot-index.md) |
+| Material selection/reassessment, stalled progress, acceleration, parallel work, automation | [Current constraint](references/current-constraint.md) |
+| Material requirement, solution, process, recurring loop | [Algorithm](references/algorithm.md) |
 
-The Algorithm reference owns the ordered procedure. Current constraint supports
-selection and reassessment within that procedure; it does not permit skipping
-steps 1-3. First principles and idiot index supply evidence where their signals
-apply. A pricing question can stop after idiot index.
-
-The Marketplace Project Record failure and correction are preserved in
-[the regression reference](references/marketplace-project-record-regression.md).
-It is evidence, not a template for ordinary work.
+Algorithm owns the ordered procedure. Current constraint supports selection,
+never skips steps 1-3. First principles and idiot index provide evidence when
+triggered; a pricing question may stop after idiot index. The [Marketplace
+regression](references/marketplace-project-record-regression.md) is evidence,
+not an ordinary-work template.

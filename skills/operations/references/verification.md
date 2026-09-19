@@ -1,64 +1,61 @@
+
 # Verification
 
-- Proof comes from the Issue or authorized direct task, project instructions, selected skill, and risk.
-- Use TDD for bug reproductions and high-risk behavioral seams. Otherwise prove
-  behavior at the highest practical seam.
-- When `implement` is selected, follow its stronger TDD, suite, review, and
-  commit requirements.
-- Self-review the complete diff against the Issue or authorized direct task,
-  project rules, scope,
-  secrets, generated files, and unrelated changes.
-- Verify the final artifact when lower-level checks cannot prove the required
-  behavior.
-- Live Verification: when required, exercise the exact claimed artifact or
-  commit through the same public path and runtime used in production. Use the
-  real APIs, accounts, authentication, permissions, quotas, and credits the
-  behavior depends on when applicable and explicitly authorized.
-- Tests, mocks, fake harnesses, synthetic responses, and shallow smoke checks
-  may support readiness, but they do not count as Live Verification.
-- If the real path or its prerequisites are unavailable or unauthorized,
-  report the work as not live-verified. If the Issue requires Live
-  Verification, the work remains blocked.
+Proof comes from the Issue/authorized task, project instructions, selected Skill,
+and risk. Use TDD for bug reproductions and high-risk behavioral seams; otherwise test the highest
+practical seam. Selected `implement` retains its stronger TDD, suite, review,
+and commit requirements. Self-review the complete diff for acceptance, rules,
+scope, secrets, generated files, and unrelated changes. Verify the final artifact
+when lower-level checks cannot prove required behavior.
 
-- Give each authored implementation slice an independent Codex review against
-  its exact SHA through the core execution routing contract, unless it consists
-  solely of an exact user-approved prose replacement, matching expected-text
-  assertions, and required version bookkeeping. Self-review and relevant
-  checks still apply. A deterministically generated
-  Toolybara promotion pull request uses generated-scope validation instead.
-  Apply a lower-layer review fix in the earliest owning layer, checkpoint every
-  descendant, rebase it onto the corrected exact SHA, and re-prove every
-  affected head without losing later work.
+## Live Verification
 
-- Use GitHub-hosted runners for ordinary CI and release builds. Project-owned
-  proof adapters may choose the appropriate host for reusable affected tests.
-  Reserve Rocky for agentic development and genuine macOS proof, Cavallo for
-  human control
-  and acceptance, and Bigbrain for activation, health checks, and rollback of
-  trusted artifacts. Untrusted pull request code does not run on
-  production-connected infrastructure.
+When required, exercise the exact artifact/commit through the production public
+path and runtime, with real APIs, accounts, auth, permissions, quotas, and credits
+where applicable and explicitly authorized. Tests, mocks, fake harnesses, synthetic
+responses, and shallow smoke checks are not Live Verification. If prerequisites
+are unavailable/unauthorized, report not live-verified; required Live Verification
+remains blocked.
 
-- The complete merge gate proves the whole required merge unit; the complete
-  release gate binds that coverage and release identity to the exact release
-  SHA. When declaring or reusing scoped proof, read [the scoped-proof
-  contract](../../../docs/scoped-proof.md). A Project's trusted explicit
-  policy may compose unaffected complete-baseline coverage with current
-  affected and artifact proof. An ordinary changed-scope check remains
-  feedback. Unsupported scope stops with a reason; select the complete path
-  explicitly. Report executed, reused and unverified proof separately. Keep
-  independent review and fresh external-state checks.
+## Independent review
 
-- Evidence binds the owning Issue or authorized direct task, branch, exact
-  base and head SHAs, commands, results, review identity and verdict, version
-  transition, artifact digest, external target, authority, timestamps where
-  state can drift, and each lifecycle state. A summary or earlier run never
-  replaces exact current proof.
+Each authored implementation slice needs independent Codex review of its exact
+SHA under core execution routing. The exception is a slice consisting solely of an exact
+user-approved prose replacement, matching expected-text assertions, and required version
+bookkeeping; self-review and relevant checks still apply.
 
-- Assign each required check an owner and retain its command, result and exact
-  candidate. Reuse valid proof from that owner; coordinator and worker need
-  not rerun identical checks against an unchanged candidate with unchanged relevant
-  environment and input assumptions. Changed inputs,
-  stale external state or incomplete evidence require affected revalidation
-  under the scoped-proof contract, or the complete path when unsupported.
-  This does not waive independent review, release identity, complete coverage,
-  or fresh external-state checks.
+A deterministically generated promotion PR may use generated-scope validation only
+when a trusted generator reproduces its exact diff from reviewed inputs, all changes
+lie within declared generated paths, and exact-candidate validation proves this.
+Authored changes retain review. Before applying review fixes to dependent layers,
+read [orchestration](orchestration.md) for the stack-fix procedure.
+
+## Hosts and complete coverage
+
+Use GitHub-hosted runners for ordinary CI/release builds; Project proof adapters
+may choose hosts for reusable affected tests. Development hosts serve agent work
+and platform proof, human workstations acceptance. Production-connected hosts
+serve only authorized trusted-artifact activation, health checks, and rollback;
+never run untrusted PR code there.
+
+The complete merge gate covers the whole merge unit. The complete release gate
+binds coverage and identity to the exact release SHA. Before declaring/reusing
+scoped proof, read [its contract](../../../docs/scoped-proof.md): a trusted explicit
+Project policy may combine unaffected complete-baseline coverage with current
+affected/artifact proof. Ordinary changed-scope checks remain feedback. Unsupported
+scope stops with a reason; explicitly choose complete proof. Report executed,
+reused, and unverified coverage separately. Retain independent review and fresh
+external-state checks.
+
+## Evidence and reuse
+
+Bind evidence to Issue/task, branch, exact base/head, commands/results, reviewer/
+verdict, version transition, artifact digest, external target, authority, timestamps where state can drift, and lifecycle state. Summaries or earlier runs cannot
+replace exact current proof.
+
+Assign each check an owner and retain command, result, and exact candidate.
+Coordinator/worker may reuse that proof without duplicate runs when candidate,
+relevant environment, and input assumptions are unchanged. Changed inputs, stale
+external state, or incomplete evidence require affected revalidation under scoped
+policy, otherwise complete proof. Reuse never waives independent review, release
+identity, complete coverage, or fresh external-state checks.

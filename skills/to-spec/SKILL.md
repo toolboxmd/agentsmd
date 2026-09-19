@@ -91,47 +91,15 @@ Re-fetch the published body and comments. Report the Issue number and URL.
 If the full current request explicitly requested Parent Spec only, stop after
 this verified publication. Otherwise continue the selected workflow.
 
-### 6. Draft the implementation ticket graph
+### 6. Continue through ticket publication
 
-Use the verified parent Issue and the full current request as the source. Draft
-the smallest useful graph of implementation Issues. Prefer independently
-provable tracer bullets. Use expand-migrate-contract only when a true wide
-refactor prevents independently green slices.
-
-Every proposed Issue must name its title, blockers, and delivered outcome. Each
-Issue must include the parent reference, acceptance criteria, non-goals, and
-required proof.
-
-### 7. Approve the ticket graph
-
-Obtain approval of ticket granularity, blocking edges, and publication. Ask
-whether the merge or split choices are right. When the user rejects or revises
-the draft, update it and repeat this gate until the user approves the complete
-graph or stops the workflow.
-
-### 8. Publish and verify implementation Issues
-
-After approval, create Issues in dependency order. Add every implementation
-Issue as a native sub-Issue of the parent and add native blocking relationships
-after real Issue identifiers exist. Leave the parent body and state unchanged.
-Do not add an automatic readiness label.
-
-Re-fetch the parent's children and every native blocking edge. Report the final
-Issue URLs and graph only after publication and relationship verification.
-
-### 9. Continue at the implementation boundary
-
-Identify the first unblocked implementation Issue and evaluate implementation
-authority from the full current request.
-
-- When that request already authorizes implementation, begin the first
-  unblocked Issue under the core's direct/delegated boundary without another
-  authorization prompt. Follow Authority and continuation in `AGENTS.md`.
-  For delegation, use the `operations` orchestration reference and its minimal
-  durable context packet instead of the prior conversation.
-- When the request was planning-only or otherwise lacks implementation
-  authority, ask exactly once for authorization and name the Issue. Await that
-  authority before changing implementation files.
+Unless the full current request explicitly selects Parent Spec only, read and
+perform [ticket decomposition](../to-tickets/references/ticket-decomposition.md)
+after verified parent publication. Use the verified parent and full current
+request as its source. This is the selected workflow's continuation, not an
+invocation of another planning Skill or another routing question. The shared
+procedure owns graph approval, native relationship verification, and the
+first unblocked Issue's implementation-authority boundary.
 
 ## Parent Issue template
 

@@ -1,38 +1,27 @@
+
 # Current constraint
 
-Use this reference when selecting or reassessing material work, when progress
-stalls, or before acceleration, parallel work, or automation.
+Use for material selection/reassessment, stalled progress, acceleration,
+parallel work, or automation.
 
-## Evidence loop
+1. Anchor in confirmed direction and authorized outcome. State the next observable
+   progress. Trace requirements, implementation, proof, dependencies, and authority
+   using repository/live evidence. Separate observed delay from hypotheses.
+2. Compare plausible limiters: what progress would relief enable, and what remains
+   blocked? Prefer evidence over loud complaints or busy components. Record uncertainty
+   and missing evidence; use the smallest distinguishing check if candidates tie.
+3. Record the constraint and owner in the existing plan/Issue. Apply [Algorithm](algorithm.md)
+   steps 1-3 before accelerating. If deletion/simplification removes it, reassess.
+   Use first principles for inherited assumptions and idiot index for unexamined costs.
+4. Choose the smallest authorized intervention. Before acting, record owner,
+   expected progress, falsifying observation, and when to check. Fast feedback
+   does not replace final Proof.
+5. Inspect actual versus expected progress; expose bad news and revise when
+   evidence disagrees. Reassess after relief or changed dependencies/evidence,
+   returning to the earliest affected Algorithm step. The next constraint may differ.
 
-1. Anchor the decision in confirmed Project Direction and the authorized
-   outcome. State the next observable progress toward that outcome.
-2. Trace the critical path through requirements, implementation, proof,
-   dependencies, and authority. Inspect repository or live-system evidence for
-   where progress actually waits. Separate observed facts from hypotheses.
-3. Compare plausible limiters. For each, ask: if relieved, what progress becomes
-   possible, and what would still block it? Prefer the candidate supported by
-   observed delay or failed progress, not the loudest complaint or busiest
-   component. Record uncertainty and the missing evidence. If candidates remain
-   indistinguishable, choose the smallest check that can distinguish them.
-4. Name the current constraint and its owner in the existing plan or Issue.
-   Apply [Algorithm](algorithm.md) steps 1-3 to question, delete, and simplify
-   the work before focusing acceleration on the surviving constraint. If those
-   steps remove it, reassess before investing effort. Use first principles for
-   inherited assumptions and idiot index for unexamined cost claims.
-5. Choose the smallest authorized intervention. Record its owner, expected
-   effect on outcome progress, and a check that can falsify the diagnosis.
-   Define the observation and when to check it before acting. A fast check is
-   feedback; required final Proof remains intact.
-6. Inspect the result. Compare observed progress with the expected effect,
-   expose bad news, and revise the diagnosis when evidence disagrees. Reassess
-   after relief, changed dependencies, or new evidence. Return to the earliest
-   affected Algorithm step; the next constraint may be different.
-
-Concentrate effort where relief advances the outcome. Defer attractive work
-without evidence that it advances the outcome. When the constraint is blocked
-by an external dependency or Human Gate, report the blocker, owner, and next
-check or required decision. Continue useful independent authorized
-work that does not delay the critical path or create avoidable rework.
-Parallelize only independent ownership and dependencies. Preserve authority,
-proof, user-owned dirty work, and single-writer boundaries.
+Defer attractive work without outcome evidence. For an external dependency or
+Human Gate, report blocker, owner, and next check/decision. Continue independent
+authorized work only if it avoids delaying the critical path or needless rework.
+Parallelism requires independent ownership/dependencies and preserves authority,
+proof, user work, and single-writer boundaries.

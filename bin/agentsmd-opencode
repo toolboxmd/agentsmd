@@ -15,6 +15,9 @@ import sys
 from datetime import datetime, timezone
 
 
+from agentsmd_instructions import default_target, initialize_preferences, is_cache_path, target_is_in_cache
+
+
 SUPPORTED_VERSION = "1.18.29"
 
 
@@ -43,6 +46,9 @@ def source_path(value):
 def inspect(target, source):
     report = {"target": str(target), "source": str(source), "owned": False,
               "status": "missing", "source_sha256": sha(source) if source.is_file() else None}
+    if target_is_in_cache(target):
+        report["status"] = "cache-bound-target"
+        return report
     if not os.path.lexists(target):
         return report
     if not target.is_symlink():
@@ -52,6 +58,9 @@ def inspect(target, source):
         return report
     linked = absolute(target.parent / os.readlink(target))
     report.update(link_target=os.readlink(target), owned=linked == source)
+    if is_cache_path(linked) or is_cache_path(linked.resolve()):
+        report.update(status="cache-bound-link", owned=False)
+        return report
     if not target.exists():
         report["status"] = "broken-link"
     elif not target.is_file():
@@ -65,11 +74,9 @@ def inspect(target, source):
 
 def manage(args):
     source = source_path(args.source)
-    config = os.environ.get("XDG_CONFIG_HOME")
-    if config and not Path(config).is_absolute():
-        raise ValueError("XDG_CONFIG_HOME must be absolute")
-    target = (Path(config) if config else Path.home() / ".config") / "opencode/AGENTS.md"
-    target = absolute(target)
+    target = absolute(default_target("opencode"))
+    if target_is_in_cache(target):
+        raise ValueError("cache-bound-target")
     if source == target or source.resolve() == target.parent.resolve() / target.name:
         raise ValueError("source and target must differ")
     before = inspect(target, source)
@@ -83,7 +90,8 @@ def manage(args):
     if not source.is_file() or source.is_symlink():
         raise ValueError("installation source must be an existing regular canonical AGENTS.md")
     if before["status"] == "owned-link":
-        return {"action": "unchanged", "before": before, "after": before}, 0
+        return {"action": "unchanged", "before": before, "after": before,
+                "preferences": initialize_preferences(source)}, 0
     if os.path.lexists(target):
         previous = source_path(args.previous_source) if args.command == "update" and args.previous_source else source
         old = inspect(target, previous)
@@ -102,7 +110,8 @@ def manage(args):
     after = inspect(target, source)
     if after["status"] != "owned-link":
         raise ValueError("post-install verification failed")
-    return {"action": "updated" if args.command == "update" else "installed", "before": before, "after": after}, 0
+    return {"action": "updated" if args.command == "update" else "installed", "before": before, "after": after,
+            "preferences": initialize_preferences(source)}, 0
 
 
 def git(cwd, *args):
@@ -150,6 +159,7 @@ def run(args):
     handoff = (
         f"AgentsMD bounded implementation handoff. Owning Issue: {args.issue}.\n"
         f"Repository: {cwd}. Exact base: {args.base}. Starting HEAD: {head}.\n"
+        "Inspect the native global instruction link, read its current canonical AGENTS.md and adjacent PREFERENCES.md; report source path/hash. Inherited startup text may be stale.\n"
         "Read complete current VISION.md, MISSION.md, OBJECTIVE.md and applicable project instructions before work.\n"
         "Stay within the task's granted scope and authority. Tool auto-approval is not delivery authority.\n"
         "The coordinator owns independent exact-SHA review, protected external mutations and final delivery state.\n"

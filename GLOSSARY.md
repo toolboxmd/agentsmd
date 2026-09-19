@@ -217,3 +217,12 @@ _Avoid_: busiest component, permanent bottleneck
 The ratio of quoted finished cost to constituent cost for comparable units and
 scope, used as a diagnostic hypothesis about possible overhead.
 _Avoid_: guaranteed savings, delivery estimate
+
+**Canonical instruction source**:
+The stable `AGENTS.md` shared through each configured host's native global link.
+_Avoid_: plugin-cache instructions, project instructions
+
+**Private preferences**:
+Personal defaults in `PREFERENCES.md` beside the canonical instruction source,
+subject to explicit task instructions, required project constraints and authority.
+_Avoid_: shared policy, project preferences

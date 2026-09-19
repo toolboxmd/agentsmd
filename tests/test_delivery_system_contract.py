@@ -51,17 +51,17 @@ class DeliverySystemContractTests(unittest.TestCase):
             "independent Codex review",
             "exact SHA",
             "generated-scope validation",
-            "earliest owning layer",
+            "earliest layer owning failed acceptance",
             "highest semantic impact",
             "GitHub-hosted runners",
-            "Rocky",
-            "Cavallo",
-            "Bigbrain",
+            'Development hosts',
+            "human workstations",
+            'Production-connected hosts',
         )
         for phrase in required:
             with self.subTest(phrase=phrase):
                 owner = (
-                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration")
+                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration", "earliest layer owning failed acceptance")
                     else "delivery" if phrase in ("highest semantic impact", "built once", "immutable digest", "promoted unchanged", "none, generated, narrative, or runtime", "major version", "complete website review", "SEO impact")
                     else "verification"
                 )
@@ -83,7 +83,7 @@ class DeliverySystemContractTests(unittest.TestCase):
         for phrase in required:
             with self.subTest(phrase=phrase):
                 owner = (
-                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration")
+                    "orchestration" if phrase in ("Sequential direct work", "Independent worktree pull requests", "Dependent stacked pull requests", "Tightly coupled single-writer integration", "earliest layer owning failed acceptance")
                     else "delivery" if phrase in ("highest semantic impact", "built once", "immutable digest", "promoted unchanged", "none, generated, narrative, or runtime", "major version", "complete website review", "SEO impact")
                     else "verification"
                 )
@@ -98,7 +98,7 @@ class DeliverySystemContractTests(unittest.TestCase):
 
     def test_skill_is_a_narrow_profile_loader_not_an_orchestrator(self) -> None:
         self.assertIn("bin/delivery-profile", self.skill)
-        self.assertIn("Project-specific deltas", self.skill)
+        self.assertIn('Project deltas', self.skill)
         self.assertIn("AGENTS.md", self.skill)
         self.assertNotIn("orchestration engine", self.skill)
 

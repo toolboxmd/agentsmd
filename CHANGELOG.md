@@ -3,6 +3,13 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [11.1.0] - 2026-09-18
+
+### Added
+
+- Add shared private preferences and four-harness setup; consolidate instructions while preserving operating rules
+- Point OpenCode Skill links at the OpenCode global directory and warn against shared Skill directories
+
 ## [11.0.0] - 2026-09-17
 
 ### Changed

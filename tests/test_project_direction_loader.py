@@ -125,6 +125,8 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         payload.update(extra)
         environment = os.environ.copy()
         environment["AGENTSMD_PROJECT_DIRECTION_DATA"] = str(self.cache)
+        environment["CODEX_HOME"] = str(self.base / "codex-home")
+        environment["AGENTSMD_HOST"] = "codex"
         return subprocess.run(
             [str(LOADER), "hook"],
             input=json.dumps(payload),
@@ -809,6 +811,8 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
     def test_malformed_hook_input_reports_failure_without_crashing(self) -> None:
         environment = os.environ.copy()
         environment["AGENTSMD_PROJECT_DIRECTION_DATA"] = str(self.cache)
+        environment["CODEX_HOME"] = str(self.base / "codex-home")
+        environment["AGENTSMD_HOST"] = "codex"
 
         result = subprocess.run(
             [str(LOADER), "hook"],
@@ -827,6 +831,8 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
     def test_hook_input_requires_supported_event_and_directory(self) -> None:
         environment = os.environ.copy()
         environment["AGENTSMD_PROJECT_DIRECTION_DATA"] = str(self.cache)
+        environment["CODEX_HOME"] = str(self.base / "codex-home")
+        environment["AGENTSMD_HOST"] = "codex"
 
         result = subprocess.run(
             [str(LOADER), "hook"],

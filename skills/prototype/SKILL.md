@@ -11,47 +11,38 @@ metadata:
 
 # Prototype
 
-A prototype is **throwaway code that answers a question**. The question decides the shape.
+A prototype is throwaway code answering a concrete question. On claiming a
+Wayfinder **Prototype Decision Issue**, invoke this Skill without another human
+selection. Build the artifact and obtain the owning Issue's required decision.
+For direct requests, the user's question owns the work. Record question, artifact
+location, and decision on the owning GitHub Issue.
 
-When a session claims a Wayfinder **Prototype Decision Issue**, invoke this
-Skill without asking the human to select it. Build the concrete artifact, then
-obtain the decision required by the owning Issue. For a direct prototype
-request, use the user's question as the owning question.
+## Select the branch
 
-Record the question, artifact location, and decision on the owning GitHub Issue.
+- Logic/state/data questions: read [LOGIC.md](LOGIC.md). Build one shareable HTML
+  file with free-play buttons and tabbed guided scenarios a non-developer can drive.
+- Appearance questions: read [UI.md](UI.md). Build radically different variants
+  on one route with URL selection and a floating bottom bar.
 
-## Pick a branch
+Resolve ambiguity from prompt, code, or the available user. If unreachable, choose
+the closest branch (backend logic versus page/component UI) and state that
+assumption at the prototype's top.
 
-Identify which question is being answered, using the user's prompt, the surrounding code, or by asking if the user is around:
+## Common rules
 
-- **"Does this logic / state model feel right?"** → [LOGIC.md](LOGIC.md). Build a single shareable HTML file (free-play buttons plus tabbed guided walkthroughs) that pushes the state machine through cases that are hard to reason about on paper, and that a non-developer can drive.
-- **"What should this look like?"** → [UI.md](UI.md). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
-
-The two branches produce very different artifacts, so getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn't reachable, default to whichever branch better matches the surrounding code (a backend module → logic; a page or component → UI) and state the assumption at the top of the prototype.
-
-## Rules that apply to both
-
-1. **Throwaway from day one.** Put it near the relevant module or page and
-   name it clearly as a prototype. Follow the project's existing routing and
-   component conventions.
-2. **Trivial to run.** Start a UI prototype with one existing task-runner
-   command. Keep a logic demo in one self-contained HTML file.
-3. **No persistence by default.** Keep state in memory unless persistence is
-   the question. Use unmistakably disposable data when it is required.
-4. **Learn before polishing.** Skip production abstractions, exhaustive error
-   handling, and a production test suite. Run the smallest runnable smoke
-   check that proves the artifact starts and its decision-critical interaction
-   works.
-5. **Surface the state.** Render the relevant state after each action or
-   variant switch so the decision-maker can judge what changed.
-6. **Capture the answer.** Record the decision and what evidence changed it on
-   the owning GitHub Issue. Keep the prototype as primary
-   evidence on a clearly named throwaway branch when existing Git authority
-   permits that publication; otherwise report its local path and publication
-   state.
-7. **Continue from the decision.** After an authorized decision-maker accepts
-   or rejects the prototype, resume the owning workflow from its next incomplete
-   step. Use an accepted prototype as decision evidence, not production code.
-8. **Keep main clean.** Only the validated decision proceeds into production
-   implementation. The prototype shell, rejected variants, and temporary
-   switcher stay off the main branch.
+1. Clearly name the throwaway artifact near its module/page; follow project routing
+   and component conventions. UI starts with one existing task-runner command;
+   logic remains one self-contained HTML file.
+2. Keep state in memory unless persistence is the question, then use unmistakably
+   disposable data. Render relevant state after every action or variant switch.
+3. Learn before polishing. Skip production abstractions, exhaustive error handling,
+   and production tests. Run the smallest smoke check proving startup and the
+   decision-critical interaction.
+4. Record the decision and evidence that changed it on the owning Issue. Preserve
+   the prototype as primary evidence on a clearly named throwaway branch when
+   existing Git authority permits publication; otherwise report local path and
+   publication state.
+5. After an authorized decision-maker accepts or rejects it, resume the owning
+   workflow's next incomplete step. Acceptance supplies decision evidence, not
+   production code. Only validated decisions enter production implementation;
+   prototype shells, rejected variants, and temporary switchers stay off main.

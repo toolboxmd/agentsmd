@@ -1,95 +1,57 @@
 # Implementation
 
-- Before tracked mutation, select an exclusively owned task branch and
-  workspace; reuse them for continuation when ownership and availability
-  remain established. Record the intended base, branch, workspace path,
-  ownership, and exact starting `HEAD`. Keep the canonical checkout as the
-  stable coordination and integration view. Worktrees and equivalent task
-  checkouts are temporary from creation through Delivery Finalization. Keep
-  required persistent local state, including databases and configuration, in
-  stable locations outside them; secrets and databases do not belong in Git.
+Before tracked mutation, apply the core's orientation, authority, user-work,
+and single-writer rules. Record intended base, branch, exclusive workspace,
+ownership, and exact starting `HEAD`. Reuse that workspace for continuation
+when ownership and availability remain established. A sequential writer needs no
+extra worktree. Cleanliness alone proves neither ownership nor availability. Preserve/report ambiguous, dirty, or active state
+and select another workspace unless exact ownership and availability are
+established. Treat unknown ownership or independence as unsafe. Unsafe overlap
+or a moving base stops only the affected writer.
 
-- Read-only work may share repository state only when it cannot mutate or
-  interfere with a writer. Independent mutating Issues may proceed in parallel
-  only in separate workspaces with disjoint ownership. A branch, workspace,
-  and file set each has one writer at a time.
+Keep the canonical checkout as stable coordination/integration view. Task
+worktrees and equivalent checkouts are temporary through Delivery Finalization.
+Keep required persistent state, including databases/configuration, outside them;
+secrets and databases never belong in Git. Read-only work may share state only
+without mutating or interfering. Concurrent mutating Issues need separate
+workspaces and disjoint ownership of branch, workspace, and file set.
 
-- Preserve and report dirty, active, or ambiguous state before selecting a
-  workspace. Select another workspace unless exact ownership and availability
-  are established; cleanliness alone proves neither. Treat unknown ownership
-  or independence as unsafe. A moving base or unsafe overlap stops only the
-  affected writer; unrelated independent work continues. For delegation,
-  dependencies or interrupted tracked-work recovery, apply [orchestration and
-  handoff rules](orchestration.md).
+## Git and versioning
 
-## Git
+Resolve the intended base instead of assuming `main`. Fetch when current base
+or PR state matters; do not routinely pull, merge, rebase, stash, reset, or
+discard. Understand divergence and deliberately include or omit unpublished
+commits. Create or reuse one task branch for the Issue or authorized direct task.
+Keep commits useful and reviewable.
 
-- Resolve the intended base branch instead of assuming `main`.
-- Fetch when current base or PR state matters. Avoid routine pull, merge,
-  rebase, stash, reset, or discard operations.
-- Understand local and remote divergence before branching. Include or omit
-  unpublished commits deliberately.
-- Create or reuse one task branch for the Issue or authorized direct task. Use
-  the current branch when it is already the correct task branch.
-- Reuse the exclusively owned task branch/workspace for continuation.
-  Concurrent writers require separate workspaces and disjoint write scopes;
-  a sequential writer needs no extra worktree solely for ceremony.
-- Keep commits useful and reviewable.
+Every completed tracked deliverable has one SemVer transition before commit:
+major for incompatible behavior, minor for compatible capability, patch otherwise.
+Read-only work and explicit WIP checkpoints are exempt. Components defer to
+[final delivery](delivery.md). Use `version-control` for canonical version,
+mirrors, changelog, commits, tags, and release. Missing policy requires separately
+authorized adoption.
 
-## Versioning
-
-- Every completed tracked deliverable has one SemVer transition before commit.
-  Components defer versioning to [final delivery](delivery.md). Read-only work and explicit WIP
-  checkpoints are exempt.
-- Use `major` for incompatible behavior, `minor` for a backward-compatible
-  capability, and `patch` otherwise.
-- Use the `version-control` skill for the canonical version, mirrors, changelog,
-  commit, tag, and release contract.
-- Preserve missing-policy boundaries. Adopt versioning only as its own
-  authorized change.
-
-Before proof or review, read [verification](verification.md). For delegated
-work or recovery, read [orchestration](orchestration.md). Follow the core's
-execution rule, without creating an Issue or worker for ceremony.
+Before proof/review, read [verification](verification.md). For delegation,
+dependencies, component PRs, or interrupted recovery, read
+[orchestration](orchestration.md). Apply the core's execution choice without
+creating an Issue or worker for ceremony.
 
 ## Workflow routing
 
-- Orient: inspect status, branch, HEAD, remotes, and the requested work before
-  changing tracked files.
-- Follow Authority and continuation after orientation establishes the exact
-  scope and current state.
-- GitHub: search for a matching open Issue before creating one.
-- Ownership: create product Issues in the product repository. If no GitHub
-  repository clearly owns the work, ask before creating Issues.
-- An Issue is ready when its outcome, acceptance criteria, non-goals, blockers,
-  and required proof are explicit.
-- Read-only work, throwaway spikes, WIP checkpoints, and explicitly local
-  microfixes stay off the Issue-to-PR lane.
+Apply the core Delivery qualification rules before choosing a lane. Search open
+Issues for duplicates; ask if the owning repository is unclear.
 
-Choose the smallest lane that fits:
+Choose the smallest suitable lane:
 
-- Clear: implement the ready Issue directly.
-- Shape: use `grill-with-docs` when bounded work still has unresolved
-  terminology or user-owned decisions.
-- Specify: use `to-spec` when the user requests a specification workflow.
-  Selecting it selects the complete Specify workflow through verified ticket
-  publication by default. Preserve approval before parent Issue publication
-  and approval of ticket granularity, blocking edges, and publication. After
-  verified parent Issue publication, continue directly through the same
-  ticket-graph stage without invoking another planning Skill or asking another
-  routing question. Then begin the first unblocked implementation Issue when
-  the full current request already grants implementation authority; otherwise
-  ask exactly once and name that Issue. An explicit Parent Spec only request
-  stops after the verified parent Issue. Apply the direct/delegated boundary
-  in `AGENTS.md` when starting implementation.
-- Wayfind: use `wayfinder` when unresolved dependent decisions prevent a
-  reliable spec, regardless of predicted effort size. Once the path is clear,
-  stop with the route ready for the user to select `to-spec` explicitly.
+- **Clear:** implement the ready Issue.
+- **Shape:** use `grill-with-docs` for bounded unresolved terminology or user decisions.
+- **Specify:** use `to-spec` when requested. That Skill owns the complete workflow
+  through approved parent and ticket publication, Parent Spec only opt-out, and
+  continuation to the first unblocked Issue under existing implementation authority.
+  Read it when selected; preserve both publication gates and its single named-Issue
+  authority question when implementation is not authorized.
+- **Wayfind:** use `wayfinder` when dependent unresolved decisions prevent a reliable
+  spec, regardless of effort size. Stop when ready for explicit `to-spec` selection.
 
-The AgentsMD workflow Skills `grilling`, `grill-with-docs`, `to-spec`,
-`to-tickets`, and `wayfinder` are human-controlled planning Skills. Use them
-when the user names one or asks to follow that workflow, and stop at their
-approval gates. Other Skills follow their own trigger and approval contracts.
-Skill ownership and provenance live in the AgentsMD `SKILL_CATALOGUE.md`.
-
-For component PRs, follow [orchestration](orchestration.md).
+For planning invocation, approval gates, and provenance, apply the core Delivery
+section; this routing table grants no additional invocation authority.
