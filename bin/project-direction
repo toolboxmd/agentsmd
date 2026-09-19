@@ -494,8 +494,10 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
         )
     event = event_value
     # Only Grok reads hook output on a tool call, so PreToolUse stays inert on
-    # every other host.
-    grok = grok_hook()
+    # every other host. An explicit --host or AGENTSMD_HOST selection stays
+    # above the marker: a Codex or Claude run keeps its own delivery events
+    # even inside a Grok process.
+    grok = host == "grok" and grok_hook()
     if event == "PreToolUse" and not grok:
         return 0
     cwd = cwd_value

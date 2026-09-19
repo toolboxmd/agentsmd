@@ -2170,6 +2170,15 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, readme)
+        # Both packaged-hook hosts register PreToolUse and exit silently on it.
+        self.assertEqual(
+            readme.count(
+                "`PreToolUse` (registered, exits silently; that entry serves "
+                "Grok Build alone) | Packaged plugin hook"
+            ),
+            2,
+        )
+        self.assertNotIn("| None identified |", readme)
         for required in (
             "Claude Code SessionStart hook acceptance is verified on version",
             "2.1.278",

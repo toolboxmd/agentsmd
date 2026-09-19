@@ -121,7 +121,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         self,
         event: str,
         grok: bool = False,
-        host: str | None = "codex",
+        host: str | None = "auto",
         **extra: object,
     ) -> subprocess.CompletedProcess[str]:
         payload: dict[str, object] = {
@@ -136,6 +136,10 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         # Never let a real ~/.grok answer for the fixture host.
         environment["GROK_HOME"] = str(self.grok_home)
         environment.pop("AGENTSMD_HOST", None)
+        # A real Grok hook process carries no AGENTSMD_HOST, so the marker
+        # resolves the host. Other hosts keep the Codex selection.
+        if host == "auto":
+            host = None if grok else "codex"
         if host is not None:
             environment["AGENTSMD_HOST"] = host
         environment.pop("GROK_HOOK_NAME", None)
@@ -828,6 +832,27 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
             "ready",
         )
 
+    def test_explicit_host_selection_outranks_the_grok_marker(self) -> None:
+        self.write_triad()
+
+        session = self.invoke(
+            "SessionStart", source="startup", grok=True, host="codex"
+        )
+        prompt = self.invoke(
+            "UserPromptSubmit", turn_id="turn-2", grok=True, host="codex"
+        )
+        tool = self.invoke(
+            "PreToolUse", tool_name="read_file", grok=True, host="codex"
+        )
+
+        # A selected Codex run keeps Codex delivery inside a Grok process.
+        self.assertEqual(self.context_payload(session)["status"], "ready")
+        self.assertEqual(len(self.cached_sessions()), 1)
+        self.assertEqual(prompt.returncode, 0, prompt.stderr)
+        self.assertEqual(prompt.stdout, "")
+        self.assertEqual(tool.returncode, 0, tool.stderr)
+        self.assertEqual(tool.stdout, "")
+
     def test_grok_session_start_records_no_fingerprint(self) -> None:
         self.write_triad()
 
@@ -987,10 +1012,12 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         default = self.context_payload(
             self.invoke("SessionStart", source="startup", host=None, session_id="default")
         )
+        # An explicit host also keeps its own delivery events, so this one
+        # loads on SessionStart rather than on a tool call.
         overridden = self.context_payload(
             self.invoke(
-                "PreToolUse",
-                tool_name="read_file",
+                "SessionStart",
+                source="startup",
                 grok=True,
                 host="codex",
                 session_id="overridden",
