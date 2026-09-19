@@ -155,13 +155,18 @@ The entry reports the Skill links' ownership states: `missing`, `owned-link`,
 `divergent-link`, `regular-file`, `other-path` and `broken-link`. Install
 creates a missing link and verifies an existing owned link. It never replaces an
 existing entry of any kind; a foreign entry is preserved and reported, and the
-command exits 2. Uninstall removes only the exact owned link, including a broken
-owned link, and status exits 0 only for a healthy owned link. Sources inside
-`plugins/cache`, paths holding any symlinked component and files under another
-name are rejected, as is a cache-bound target. The plugin file must sit at
+command exits 2. Status exits 0 only for a healthy owned link.
+
+Install alone validates the source. It rejects a path holding any symlinked
+component and requires a regular plugin file at
 `<clone root>/opencode/agentsmd-project-direction.js` beside a regular
 `<clone root>/bin/project-direction`, because the plugin runs the loader of its
-own clone. A removed clone root still reports and removes its owned link.
+own clone. Status and uninstall derive ownership from the lexical link
+destination only, so an owned link stays reportable and removable after the
+clone was removed, emptied, altered or replaced by an alias. Uninstall removes
+any owned entry and nothing else. Sources under `plugins/cache`, a cache-bound
+target and a file under another name or outside an `opencode` directory are
+rejected everywhere, because those checks are lexical.
 
 ## Bounded implementation run
 

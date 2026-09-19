@@ -229,30 +229,30 @@ def manage_skills(args):
 PLUGIN_MODULE = "agentsmd-project-direction.js"
 
 
-def plugin_source(value):
+def plugin_source(value, validate=False):
+    """Resolve the lexical plugin path; only installation validates the clone."""
     source = absolute(value)
     if source.name != PLUGIN_MODULE:
-        # A removed clone root still normalizes, so an owned dangling link stays
-        # inspectable and removable. Install validates existence separately.
         source = source / "opencode" / PLUGIN_MODULE
+    if source.parent.name != "opencode":
+        raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
+    for candidate in (source, source.resolve()):
+        if is_cache_path(candidate):
+            raise ValueError("source must be a stable canonical plugin file outside plugin caches")
+    if not validate:
+        # Ownership is lexical, so status and uninstall still reach an owned link
+        # after the clone was removed, emptied or aliased.
+        return source
     for component in (source, *source.parents):
         # A link created through any alias component breaks when that alias moves.
         if component.is_symlink():
             raise ValueError("source must be a canonical clone root or plugin file, not a symlink alias")
-    for candidate in (source, source.resolve()):
-        if is_cache_path(candidate):
-            raise ValueError("source must be a stable canonical plugin file outside plugin caches")
-        if candidate.name != PLUGIN_MODULE:
-            raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
-    if source.parent.name != "opencode":
-        raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
-    if os.path.lexists(source):
-        if not source.is_file():
-            raise ValueError("source must be a canonical regular plugin file, not a symlink alias or directory")
-        # The plugin runs the loader beside its own clone, so that clone must hold one.
-        loader = source.parents[1] / "bin/project-direction"
-        if loader.is_symlink() or not loader.is_file():
-            raise ValueError("source clone must hold a regular bin/project-direction beside opencode/")
+    if not source.is_file():
+        raise ValueError("installation source must be an existing regular plugin file")
+    # The plugin runs the loader beside its own clone, so that clone must hold one.
+    loader = source.parents[1] / "bin/project-direction"
+    if loader.is_symlink() or not loader.is_file():
+        raise ValueError("source clone must hold a regular bin/project-direction beside opencode/")
     return source
 
 
@@ -264,7 +264,7 @@ def plugin_target():
 
 
 def manage_plugin(args):
-    source = plugin_source(args.source)
+    source = plugin_source(args.source, validate=args.plugin_command == "install")
     target = plugin_target()
     before = inspect_skill(target, source, is_directory=False)
     report = {"command": "plugin " + args.plugin_command, "source": str(source), "target": str(target)}
@@ -273,14 +273,12 @@ def manage_plugin(args):
         return report, 0 if before["status"] == "owned-link" else 2
     entry = {"action": "preserved", "before": before, "after": before}
     if args.plugin_command == "uninstall":
-        if before["owned"] and before["status"] in ("owned-link", "broken-link"):
+        if before["owned"]:
             target.unlink()
             entry.update(action="uninstalled", after=inspect_skill(target, source, is_directory=False))
     elif before["status"] == "owned-link":
         entry["action"] = "unchanged"
     elif before["status"] == "missing":
-        if not source.is_file():
-            raise ValueError("installation source must be an existing regular plugin file")
         # An existing entry of any kind stays user-owned, as the Skill links decide.
         target.parent.mkdir(parents=True, exist_ok=True)
         target.symlink_to(source)

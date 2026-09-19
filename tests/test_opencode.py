@@ -385,6 +385,64 @@ class OpenCodeTests(unittest.TestCase):
         self.assertIn("bin/project-direction", report["error"])
         self.assertFalse(os.path.lexists(self.plugin))
 
+    def reset_plugin_fixture(self):
+        clone = self.root / "release"
+        if clone.is_symlink():
+            clone.unlink()
+        elif clone.is_dir():
+            shutil.rmtree(clone)
+        plugin = self.target.parent / "plugins/agentsmd-project-direction.js"
+        if os.path.lexists(plugin):
+            plugin.unlink()
+        return self.prepare_plugin()
+
+    def test_plugin_link_ownership_survives_every_source_mutation(self):
+        def remove_clone_root(clone, module):
+            shutil.rmtree(clone)
+
+        def remove_loader(clone, module):
+            (clone / "bin/project-direction").unlink()
+
+        def remove_opencode_directory(clone, module):
+            shutil.rmtree(module.parent)
+
+        def replace_module_with_directory(clone, module):
+            module.unlink()
+            module.mkdir()
+
+        def replace_module_with_alias(clone, module):
+            copy = module.parent / "copy.js"
+            copy.write_text(module.read_text())
+            module.unlink()
+            module.symlink_to(copy)
+
+        def alias_the_clone_root(clone, module):
+            moved = self.root / "moved-release"
+            if moved.is_dir():
+                shutil.rmtree(moved)
+            clone.rename(moved)
+            clone.symlink_to(moved, target_is_directory=True)
+
+        for mutate in (remove_clone_root, remove_loader, remove_opencode_directory,
+                       replace_module_with_directory, replace_module_with_alias,
+                       alias_the_clone_root):
+            with self.subTest(mutation=mutate.__name__):
+                clone, module = self.reset_plugin_fixture()
+                self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
+                mutate(clone, module)
+                code, report = self.call("plugin", "status", "--source", clone)
+                self.assertTrue(report["entry"]["owned"], report)
+                self.assertIn(report["entry"]["status"], ("owned-link", "broken-link", "other-path"))
+                self.assertEqual(code, 0 if report["entry"]["status"] == "owned-link" else 2)
+                code, report = self.call("plugin", "uninstall", "--source", clone)
+                self.assertEqual(code, 0, report)
+                self.assertEqual(report["action"], "uninstalled")
+                self.assertFalse(os.path.lexists(self.plugin))
+                code, report = self.call("plugin", "install", "--source", clone)
+                self.assertEqual(code, 2, report)
+                self.assertIn("error", report)
+                self.assertFalse(os.path.lexists(self.plugin))
+
     def test_plugin_link_survives_a_removed_clone_root(self):
         clone, module = self.prepare_plugin()
         self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
@@ -395,7 +453,7 @@ class OpenCodeTests(unittest.TestCase):
         self.assertTrue(report["entry"]["owned"])
         code, report = self.call("plugin", "install", "--source", clone)
         self.assertEqual(code, 2)
-        self.assertEqual(report["action"], "preserved")
+        self.assertIn("existing regular plugin file", report["error"])
         self.assertTrue(os.path.lexists(self.plugin))
         code, report = self.call("plugin", "uninstall", "--source", clone)
         self.assertEqual(code, 0, report)
@@ -425,7 +483,7 @@ class OpenCodeTests(unittest.TestCase):
         alias.symlink_to(module)
         code, report = self.call("plugin", "install", "--source", alias)
         self.assertEqual(code, 2)
-        self.assertIn("symlink alias", report["error"])
+        self.assertIn("opencode/agentsmd-project-direction.js", report["error"])
         alias_root = self.root / "alias-root"
         alias_root.symlink_to(clone, target_is_directory=True)
         code, report = self.call("plugin", "install", "--source", alias_root)
