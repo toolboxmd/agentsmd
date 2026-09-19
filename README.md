@@ -191,13 +191,18 @@ The AgentsMD profile uses the real repository test suites, exact-SHA
 mapping. Profile validation resolves each command executable without running
 the delivery commands.
 
-For Codex, the plugin registers three deterministic lifecycle hooks:
+For Codex, the plugin registers three deterministic context-loading lifecycle
+hooks:
 
 - `SessionStart` loads at startup, resume, clear, and compact. A root-task
   automatic compaction reloads before the immediate model continuation.
 - `UserPromptSubmit` reloads when the Git root or any content hash changes and
   stays silent for an already loaded session/root/hash state.
 - `SubagentStart` loads the complete triad into each new worker.
+
+A fourth manifest entry, `PreToolUse`, serves Grok Build alone. It exits without
+output unless Grok's own hook environment is present, so Codex and Claude Code
+behavior is unchanged.
 
 The loader resolves the Git root, reads the files in Vision, Mission, Objective
 order, and emits one bounded block with exact paths, SHA-256 hashes, and complete

@@ -31,6 +31,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
             ["git", "init", "--quiet", str(self.repository)], check=True
         )
         self.cache = self.base / "plugin-data"
+        self.grok_home = self.base / "grok-home"
 
     def write_triad(self, repository: Path | None = None) -> dict[str, str]:
         target = repository or self.repository
@@ -117,7 +118,11 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         return publisher
 
     def invoke(
-        self, event: str, grok: bool = False, **extra: object
+        self,
+        event: str,
+        grok: bool = False,
+        host: str | None = "codex",
+        **extra: object,
     ) -> subprocess.CompletedProcess[str]:
         payload: dict[str, object] = {
             "session_id": "session-1",
@@ -128,7 +133,11 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         environment = os.environ.copy()
         environment["AGENTSMD_PROJECT_DIRECTION_DATA"] = str(self.cache)
         environment["CODEX_HOME"] = str(self.base / "codex-home")
-        environment["AGENTSMD_HOST"] = "codex"
+        # Never let a real ~/.grok answer for the fixture host.
+        environment["GROK_HOME"] = str(self.grok_home)
+        environment.pop("AGENTSMD_HOST", None)
+        if host is not None:
+            environment["AGENTSMD_HOST"] = host
         environment.pop("GROK_HOOK_NAME", None)
         if grok:
             # Grok is the only host that sets this for a plugin hook.
@@ -875,15 +884,15 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
                 f"# {name}\n\n" + "d" * 3400, encoding="utf-8"
             )
 
-        grok = self.context_payload(
-            self.invoke(
-                "PreToolUse",
-                tool_name="read_file",
-                grok=True,
-                session_id="grok-session",
-            )
+        result = self.invoke(
+            "PreToolUse",
+            tool_name="read_file",
+            grok=True,
+            session_id="grok-session",
         )
-        codex = self.context_payload(self.invoke("SessionStart", source="startup"))
+        grok = self.context_payload(result)
+        codex_result = self.invoke("SessionStart", source="startup")
+        codex = self.context_payload(codex_result)
 
         self.assertEqual(grok["status"], "read_required")
         self.assertEqual(grok["loaded_status"], "ready")
@@ -891,9 +900,74 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         for item in grok["files"]:
             self.assertNotIn("content", item)
             self.assertIn("sha256", item)
-        self.assertLessEqual(len(json.dumps(grok, ensure_ascii=False)), 10000)
+        # Grok clips the rendered block, delimiters included, at 10,000 characters.
+        delivered = json.loads(result.stdout)["hookSpecificOutput"][
+            "additionalContext"
+        ]
+        self.assertLessEqual(len(delivered), 10000)
         self.assertEqual(codex["status"], "ready")
         self.assertTrue(all("content" in item for item in codex["files"]))
+        self.assertGreater(
+            len(
+                json.loads(codex_result.stdout)["hookSpecificOutput"][
+                    "additionalContext"
+                ]
+            ),
+            10000,
+        )
+
+    def test_grok_hook_variable_selects_the_grok_canonical_source(self) -> None:
+        self.write_triad()
+        canonical = self.base / "canonical"
+        canonical.mkdir()
+        (canonical / "AGENTS.md").write_text("# Global Agent Rules\n", encoding="utf-8")
+        (canonical / "PREFERENCES.md").write_text(
+            "Grok private defaults.\n", encoding="utf-8"
+        )
+        self.grok_home.mkdir()
+        (self.grok_home / "AGENTS.md").symlink_to(canonical / "AGENTS.md")
+
+        # Separate sessions keep each resolution independent of the fingerprint.
+        detected = self.context_payload(
+            self.invoke(
+                "PreToolUse",
+                tool_name="read_file",
+                grok=True,
+                host=None,
+                session_id="detected",
+            )
+        )
+        default = self.context_payload(
+            self.invoke("SessionStart", source="startup", host=None, session_id="default")
+        )
+        overridden = self.context_payload(
+            self.invoke(
+                "PreToolUse",
+                tool_name="read_file",
+                grok=True,
+                host="codex",
+                session_id="overridden",
+            )
+        )
+
+        self.assertEqual(detected["instructions"]["status"], "valid-stable-link")
+        self.assertEqual(
+            detected["instructions"]["resolved_target"],
+            str((canonical / "AGENTS.md").resolve()),
+        )
+        self.assertEqual(
+            detected["preferences"]["content"], "Grok private defaults.\n"
+        )
+        # Without the Grok variable the loader keeps the Codex default.
+        self.assertEqual(default["instructions"]["target"],
+                         str(self.base / "codex-home/AGENTS.md"))
+        self.assertEqual(default["preferences"]["status"], "source-unavailable")
+        # An explicit host still wins over detection.
+        self.assertEqual(
+            overridden["instructions"]["target"],
+            str(self.base / "codex-home/AGENTS.md"),
+        )
+        self.assertNotIn("content", overridden["preferences"])
 
     def test_directory_outside_git_reports_no_project_repository(self) -> None:
         self.write_triad()

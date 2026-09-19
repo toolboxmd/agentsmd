@@ -408,6 +408,15 @@ def hook_output(
     }
 
 
+def grok_hook() -> bool:
+    """Grok sets this for its own hook process, and only Grok sets it.
+
+    The CLAUDE_PLUGIN_ROOT and CLAUDE_PLUGIN_DATA aliases Grok also sets cannot
+    identify a host, so they are never consulted.
+    """
+    return bool(os.environ.get("GROK_HOOK_NAME"))
+
+
 def cache_directory() -> Path:
     for variable in (
         "AGENTSMD_PROJECT_DIRECTION_DATA",
@@ -483,9 +492,9 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
             "SubagentStart, or PreToolUse"
         )
     event = event_value
-    # Only Grok sets GROK_HOOK_NAME, and only Grok reads hook output on a tool
-    # call. PreToolUse stays inert on every other host.
-    grok = bool(os.environ.get("GROK_HOOK_NAME"))
+    # Only Grok reads hook output on a tool call, so PreToolUse stays inert on
+    # every other host.
+    grok = grok_hook()
     if event == "PreToolUse" and not grok:
         return 0
     cwd = cwd_value
@@ -535,12 +544,18 @@ def main(argv: list[str]) -> int:
     selected_host = args.host or os.environ.get("AGENTSMD_HOST")
     if selected_host is not None and selected_host not in HOSTS:
         parser.error("AGENTSMD_HOST must be codex, grok, opencode, or claude")
-    host = selected_host or "codex"
+    # Explicit selection always wins. Otherwise Grok's own hook variable names
+    # the host, so its canonical source and preferences resolve under GROK_HOME
+    # instead of the Codex default.
+    resolved_host = selected_host or ("grok" if grok_hook() else None)
+    host = resolved_host or "codex"
+    # Only an unidentified host needs the other configured sources to agree.
+    require_unambiguous = resolved_host is None
     if args.command == "inspect":
-        payload = context_payload(host, selected_host is None)
+        payload = context_payload(host, require_unambiguous)
         print(json.dumps(payload, ensure_ascii=False, indent=2))
         return 0 if payload["preferences"]["status"] in {"ready", "absent"} else 2
-    return run_hook(host, selected_host is None)
+    return run_hook(host, require_unambiguous)
 
 
 if __name__ == "__main__":
