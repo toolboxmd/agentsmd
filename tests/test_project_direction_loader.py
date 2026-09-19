@@ -116,7 +116,9 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         )
         return publisher
 
-    def invoke(self, event: str, **extra: object) -> subprocess.CompletedProcess[str]:
+    def invoke(
+        self, event: str, grok: bool = False, **extra: object
+    ) -> subprocess.CompletedProcess[str]:
         payload: dict[str, object] = {
             "session_id": "session-1",
             "cwd": str(self.repository),
@@ -127,6 +129,10 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         environment["AGENTSMD_PROJECT_DIRECTION_DATA"] = str(self.cache)
         environment["CODEX_HOME"] = str(self.base / "codex-home")
         environment["AGENTSMD_HOST"] = "codex"
+        environment.pop("GROK_HOOK_NAME", None)
+        if grok:
+            # Grok is the only host that sets this for a plugin hook.
+            environment["GROK_HOOK_NAME"] = "agentsmd:project-direction"
         return subprocess.run(
             [str(LOADER), "hook"],
             input=json.dumps(payload),
@@ -793,6 +799,101 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
             "SubagentStart",
         )
         self.assertEqual(self.context_payload(subagent)["status"], "ready")
+
+    def cached_sessions(self) -> list[str]:
+        directory = self.cache / "project-direction"
+        return sorted(item.name for item in directory.glob("*.json"))
+
+    def test_pre_tool_use_is_silent_without_the_grok_environment(self) -> None:
+        self.write_triad()
+
+        result = self.invoke("PreToolUse", tool_name="Read", tool_input={})
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "")
+        self.assertFalse((self.cache / "project-direction").exists())
+        self.assertEqual(
+            self.context_payload(self.invoke("SessionStart", source="startup"))[
+                "status"
+            ],
+            "ready",
+        )
+
+    def test_grok_session_start_records_no_fingerprint(self) -> None:
+        self.write_triad()
+
+        session = self.invoke("SessionStart", source="startup", grok=True)
+        prompt = self.invoke("UserPromptSubmit", turn_id="turn-2", grok=True)
+        subagent = self.invoke("SubagentStart", agent_id="agent-1", grok=True)
+
+        for result in (session, prompt, subagent):
+            self.assertEqual(self.context_payload(result)["status"], "ready")
+        self.assertEqual(self.cached_sessions(), [])
+
+    def test_grok_first_tool_call_delivers_direction_then_stays_silent(
+        self,
+    ) -> None:
+        contents = self.write_triad()
+        self.context_payload(self.invoke("SessionStart", source="startup", grok=True))
+
+        first = self.invoke("PreToolUse", tool_name="read_file", grok=True)
+        second = self.invoke("PreToolUse", tool_name="run_terminal_command", grok=True)
+
+        self.assertEqual(
+            json.loads(first.stdout)["hookSpecificOutput"]["hookEventName"],
+            "PreToolUse",
+        )
+        payload = self.context_payload(first)
+        self.assertEqual(payload["status"], "ready")
+        self.assertEqual(
+            [item["content"] for item in payload["files"]],
+            [contents[name] for name in ("VISION.md", "MISSION.md", "OBJECTIVE.md")],
+        )
+        self.assertEqual(len(self.cached_sessions()), 1)
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertEqual(second.stdout, "")
+
+    def test_grok_tool_call_reinjects_after_a_direction_change(self) -> None:
+        self.write_triad()
+        self.context_payload(self.invoke("PreToolUse", tool_name="read_file", grok=True))
+        changed = "# Objective\n\nShip and verify Project Direction now.\n"
+        (self.repository / "OBJECTIVE.md").write_text(changed, encoding="utf-8")
+
+        payload = self.context_payload(
+            self.invoke("PreToolUse", tool_name="read_file", grok=True)
+        )
+
+        self.assertEqual(payload["status"], "ready")
+        self.assertEqual(payload["files"][2]["content"], changed)
+        self.assertEqual(
+            self.invoke("PreToolUse", tool_name="read_file", grok=True).stdout, ""
+        )
+
+    def test_grok_context_cap_falls_back_to_required_reads(self) -> None:
+        for name in ("VISION.md", "MISSION.md", "OBJECTIVE.md"):
+            (self.repository / name).write_text(
+                f"# {name}\n\n" + "d" * 3400, encoding="utf-8"
+            )
+
+        grok = self.context_payload(
+            self.invoke(
+                "PreToolUse",
+                tool_name="read_file",
+                grok=True,
+                session_id="grok-session",
+            )
+        )
+        codex = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(grok["status"], "read_required")
+        self.assertEqual(grok["loaded_status"], "ready")
+        self.assertEqual(len(grok["files"]), 3)
+        for item in grok["files"]:
+            self.assertNotIn("content", item)
+            self.assertIn("sha256", item)
+        self.assertLessEqual(len(json.dumps(grok, ensure_ascii=False)), 10000)
+        self.assertEqual(codex["status"], "ready")
+        self.assertTrue(all("content" in item for item in codex["files"]))
 
     def test_directory_outside_git_reports_no_project_repository(self) -> None:
         self.write_triad()

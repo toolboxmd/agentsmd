@@ -18,7 +18,9 @@ Reread all three immediately when any changes or their full contents leave conte
 
 Accept runtime injection only with repository root, exact paths, hashes, and all
 three complete current files. Otherwise locating and fully reading them is the
-first task action. Repository files remain truth.
+first task action. Where a host delivers injection only with the first tool
+result, such as Grok Build, the first response has none, so read the triad
+explicitly until it arrives. Repository files remain truth.
 
 ## Currentness
 

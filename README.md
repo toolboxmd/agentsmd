@@ -280,8 +280,16 @@ grok plugin install agentsmd --trust
 
 Inspect Skills in a fresh session. The separately pinned `use-grok` Skill still
 requires explicit invocation and an authenticated CLI. This setup grants no
-new authentication, quota or credit authority. Grok lifecycle-hook acceptance
-is not claimed by this release.
+new authentication, quota or credit authority.
+
+Grok reads plugin hook output only on a tool call, so Project Direction arrives
+with the first tool result of a session. Later tool calls stay silent until the
+triad changes. Nothing arrives before that first tool result, so the explicit
+reading fallback below covers the first response. Grok must also resolve
+`agentsmd` to its own install: a same-named package without hooks in the Claude
+marketplace clone wins instead and delivers no context.
+[toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)
+tracks that collision. Live Grok hook acceptance is not claimed by this release.
 
 **OpenCode:** link the packaged Skills only into OpenCode's own global Skill
 directory. Never link them into `~/.agents/skills`, `~/.claude/skills`, or
@@ -425,6 +433,11 @@ behavioral compliance. Check each installed host separately:
   Version 1.0.34 reports the global file; project discovery is trust-gated.
   Compare the native source and full expected byte count. Do not interpret an
   untrusted project's omitted files as proof of compatibility deduplication.
+  Confirm the same output resolves `agentsmd` to Grok's own installed plugin
+  with hooks, not to the hookless Claude marketplace clone
+  ([toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)).
+  Grok clips hook context at 10,000 characters, so the loader falls back to
+  `read_required` paths and hashes above that cap and requires explicit reads.
 - **OpenCode:** `opencode debug paths` and `opencode debug skill` inspect paths
   and Skills. Version 1.18.31 does not expose complete discovered native rule
   contents through `debug config`; settings output is not loaded-context proof.

@@ -17,11 +17,18 @@ from agentsmd_instructions import HOSTS, context_payload
 REQUIRED_FILES = ("VISION.md", "MISSION.md", "OBJECTIVE.md")
 MAX_FILE_BYTES = 8192
 MAX_TOTAL_BYTES = 16384
-SUPPORTED_EVENTS = ("SessionStart", "UserPromptSubmit", "SubagentStart")
+SUPPORTED_EVENTS = (
+    "SessionStart",
+    "UserPromptSubmit",
+    "SubagentStart",
+    "PreToolUse",
+)
 BLOCK_START = "<<<AGENTSMD_PROJECT_DIRECTION_V1>>>"
 BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1>>>"
 # UTF-8 bytes bound tokens conservatively, including JSON escaping and delimiters.
 MAX_CONTEXT_BYTES = 14000
+# Grok clips PreToolUse additionalContext at 10,000 rendered characters.
+MAX_GROK_CONTEXT_CHARACTERS = 10000
 
 
 def git_root(cwd: str) -> Path | None:
@@ -355,15 +362,27 @@ def direction_payload(root: Path) -> dict[str, object]:
     return payload
 
 
-def hook_output(event: str, payload: dict[str, object]) -> dict[str, object]:
-    context = "\n".join(
+def direction_block(payload: dict[str, object]) -> str:
+    return "\n".join(
         (
             BLOCK_START,
             json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
             BLOCK_END,
         )
     )
-    if len(context.encode("utf-8")) > MAX_CONTEXT_BYTES:
+
+
+def over_budget(context: str, grok: bool) -> bool:
+    if grok:
+        return len(context) > MAX_GROK_CONTEXT_CHARACTERS
+    return len(context.encode("utf-8")) > MAX_CONTEXT_BYTES
+
+
+def hook_output(
+    event: str, payload: dict[str, object], grok: bool = False
+) -> dict[str, object]:
+    context = direction_block(payload)
+    if over_budget(context, grok):
         # Emit metadata and a full-read requirement, never partial private text or triad.
         payload = json.loads(json.dumps(payload))
         payload["loaded_status"] = payload["status"]
@@ -380,8 +399,7 @@ def hook_output(event: str, payload: dict[str, object]) -> dict[str, object]:
             "in full before work. No file contents were injected. Apply the "
             "canonical-source freshness check in instructions.action."
         )
-        context = "\n".join((BLOCK_START, json.dumps(
-            payload, ensure_ascii=False, separators=(",", ":")), BLOCK_END))
+        context = direction_block(payload)
     return {
         "hookSpecificOutput": {
             "hookEventName": event,
@@ -461,10 +479,15 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
     event_value = event_input.get("hook_event_name")
     if event_value not in SUPPORTED_EVENTS:
         return report_input_error(
-            "hook_event_name must be SessionStart, UserPromptSubmit, or "
-            "SubagentStart"
+            "hook_event_name must be SessionStart, UserPromptSubmit, "
+            "SubagentStart, or PreToolUse"
         )
     event = event_value
+    # Only Grok sets GROK_HOOK_NAME, and only Grok reads hook output on a tool
+    # call. PreToolUse stays inert on every other host.
+    grok = bool(os.environ.get("GROK_HOOK_NAME"))
+    if event == "PreToolUse" and not grok:
+        return 0
     cwd = cwd_value
     root = git_root(cwd)
     payload = (
@@ -475,16 +498,21 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
     payload.update(context_payload(host, require_unambiguous))
     current_fingerprint = fingerprint(payload)
     session_id = event_input.get("session_id")
+    # Grok discards SessionStart, UserPromptSubmit and SubagentStart output, so
+    # its session fingerprint belongs to the first PreToolUse that reaches the
+    # model. Every other host keeps the prompt-boundary fingerprint.
+    delivering_event = "PreToolUse" if grok else "UserPromptSubmit"
+    recording_events = (
+        {"PreToolUse"} if grok else {"SessionStart", "UserPromptSubmit"}
+    )
     if (
-        event == "UserPromptSubmit"
+        event == delivering_event
         and isinstance(session_id, str)
         and cached_fingerprint(session_id) == current_fingerprint
     ):
         return 0
     cache_warning = None
-    if event in {"SessionStart", "UserPromptSubmit"} and isinstance(
-        session_id, str
-    ):
+    if event in recording_events and isinstance(session_id, str):
         try:
             write_fingerprint(session_id, current_fingerprint)
         except OSError:
@@ -492,7 +520,7 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
                 "AgentsMD Project Direction loaded, but its cache state was "
                 "not saved. Later prompts may reload the same context."
             )
-    output = hook_output(event, payload)
+    output = hook_output(event, payload, grok)
     if cache_warning is not None:
         output["systemMessage"] = cache_warning
     json.dump(output, sys.stdout, ensure_ascii=False, separators=(",", ":"))
