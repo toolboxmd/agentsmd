@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owned OpenCode instruction and Skill links, and bounded, evidence-capturing runs."""
+"""Owned OpenCode instruction, Skill and plugin links, and bounded, evidence-capturing runs."""
 
 from __future__ import annotations
 
@@ -154,7 +154,7 @@ def skills_target():
     return directory
 
 
-def inspect_skill(target, source):
+def inspect_skill(target, source, is_directory=True):
     report = {"name": target.name, "target": str(target), "source": str(source),
               "owned": False, "status": "missing"}
     if target_is_in_cache(target):
@@ -172,7 +172,7 @@ def inspect_skill(target, source):
         return report
     if not target.exists():
         report["status"] = "broken-link"
-    elif not target.is_dir():
+    elif not (target.is_dir() if is_directory else target.is_file()):
         report["status"] = "other-path"
     else:
         report["status"] = "owned-link" if report["owned"] else "divergent-link"
@@ -224,6 +224,57 @@ def manage_skills(args):
             code = 2
         report["entries"].append(entry)
     return report, code
+
+
+PLUGIN_MODULE = "agentsmd-project-direction.js"
+
+
+def plugin_source(value):
+    source = absolute(value)
+    if source.is_dir():
+        source = source / "opencode" / PLUGIN_MODULE
+    for candidate in (source, source.resolve()):
+        if is_cache_path(candidate):
+            raise ValueError("source must be a stable canonical plugin file outside plugin caches")
+        if candidate.name != PLUGIN_MODULE:
+            raise ValueError("source must be a clone root or its opencode/" + PLUGIN_MODULE)
+    if source.is_symlink() or (os.path.lexists(source) and not source.is_file()):
+        raise ValueError("source must be a regular plugin file, not a symlink alias or directory")
+    return source
+
+
+def plugin_target():
+    target = absolute(default_target("opencode").parent / "plugins") / PLUGIN_MODULE
+    if target_is_in_cache(target):
+        raise ValueError("cache-bound-target")
+    return target
+
+
+def manage_plugin(args):
+    source = plugin_source(args.source)
+    target = plugin_target()
+    before = inspect_skill(target, source, is_directory=False)
+    report = {"command": "plugin " + args.plugin_command, "source": str(source), "target": str(target)}
+    if args.plugin_command == "status":
+        report["entry"] = before
+        return report, 0 if before["status"] == "owned-link" else 2
+    entry = {"action": "preserved", "before": before, "after": before}
+    if args.plugin_command == "uninstall":
+        if before["owned"] and before["status"] in ("owned-link", "broken-link"):
+            target.unlink()
+            entry.update(action="uninstalled", after=inspect_skill(target, source, is_directory=False))
+    elif before["status"] == "owned-link":
+        entry["action"] = "unchanged"
+    elif before["status"] == "missing":
+        if not source.is_file():
+            raise ValueError("installation source must be an existing regular plugin file")
+        # An existing entry of any kind stays user-owned, as the Skill links decide.
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.symlink_to(source)
+        after = inspect_skill(target, source, is_directory=False)
+        entry.update(action="installed" if after["status"] == "owned-link" else "failed", after=after)
+    report.update(entry)
+    return report, 0 if entry["action"] in ("installed", "unchanged", "uninstalled") else 2
 
 
 def git(cwd, *args):
@@ -350,6 +401,10 @@ def main():
     skills = command.add_subparsers(dest="skills_command", required=True)
     for name in ("install", "status", "uninstall"):
         skills.add_parser(name).add_argument("--source", required=True, type=absolute)
+    command = commands.add_parser("plugin")
+    plugin = command.add_subparsers(dest="plugin_command", required=True)
+    for name in ("install", "status", "uninstall"):
+        plugin.add_parser(name).add_argument("--source", required=True, type=absolute)
     command = commands.add_parser("run")
     for name in ("cwd", "prompt-file", "output"):
         command.add_argument("--" + name, required=True, type=absolute)
@@ -364,6 +419,8 @@ def main():
             report, code = run(args)
         elif args.command == "skills":
             report, code = manage_skills(args)
+        elif args.command == "plugin":
+            report, code = manage_plugin(args)
         else:
             report, code = manage(args)
     except (OSError, ValueError, subprocess.SubprocessError) as error:

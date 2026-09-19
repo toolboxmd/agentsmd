@@ -29,10 +29,12 @@ differs: OpenCode ignores unrecognized fields, so user-only planning invocation
 continues to depend on the canonical operating contract.
 
 The global contract requires the full Project Direction triad before project
-work. OpenCode does not run the Codex Project Direction lifecycle hook. A
-fresh session must read those files and applicable project instructions. The
-bounded adapter includes this obligation in its handoff prompt. It also requires
-current canonical instruction identity and adjacent private preferences. Use the
+work. OpenCode runs no Codex lifecycle hook, so the AgentsMD plugin below
+delivers the same loader payload in the system prompt instead. Without that
+plugin, a fresh session must read those files and applicable project
+instructions explicitly. The bounded adapter includes this obligation in its
+handoff prompt. It also requires current canonical instruction identity and
+adjacent private preferences. Use the
 [shared setup walkthrough](../README.md#install-boundary) for initialization,
 discovery checks and the explicit reading fallback.
 
@@ -119,6 +121,45 @@ expand the bounded run contract, which stays pinned to **1.18.29**. Run
 `opencode debug skill` in a fresh session in the intended repository and confirm
 each AgentsMD Skill appears exactly once.
 
+## Plugin link
+
+`plugin install` creates one owned symlink named `agentsmd-project-direction.js`
+under `$OPENCODE_CONFIG_DIR/plugins`, otherwise `$XDG_CONFIG_HOME/opencode/plugins`,
+defaulting to `~/.config/opencode/plugins`. The command resolves that directory
+exactly as the instruction and Skill links resolve their own. The source is the
+canonical clone or released artifact root, or its
+`opencode/agentsmd-project-direction.js` file.
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin install --source "$AGENTSMD_DIR"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin status --source "$AGENTSMD_DIR"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin uninstall --source "$AGENTSMD_DIR"
+```
+
+OpenCode loads that module and the plugin appends the Project Direction block to
+the model's system prompt on every request in the session's working directory.
+It runs `bin/project-direction hook --host opencode` beside the link's canonical
+target with a synthetic `SessionStart` input, so OpenCode receives the payload
+the Codex hook emits, including the `not_in_repository` and `uninitialized`
+verdicts. Any loader failure leaves the system prompt unchanged and logs one
+`agentsmd-project-direction:` line to stderr. Start a fresh OpenCode session
+after install; a running session keeps its loaded plugins.
+
+The plugin uses `experimental.chat.system.transform`, which is experimental in
+OpenCode **1.18.29**, the version the bounded run adapter pins. The plugin
+context exposes no host version, so the pin is documented, not enforced at
+runtime. Treat a different OpenCode version as unproved until the seam is
+rechecked.
+
+The entry reports the Skill links' ownership states: `missing`, `owned-link`,
+`divergent-link`, `regular-file`, `other-path` and `broken-link`. Install
+creates a missing link and verifies an existing owned link. It never replaces an
+existing entry of any kind; a foreign entry is preserved and reported, and the
+command exits 2. Uninstall removes only the exact owned link, including a broken
+owned link, and status exits 0 only for a healthy owned link. Sources inside
+`plugins/cache`, symlink aliases and files under another name are rejected, as
+is a cache-bound target.
+
 ## Bounded implementation run
 
 The coordinator supplies the complete Issue scope, accepted decisions, exact
@@ -158,11 +199,15 @@ review and external authority independently.
 ## Proof and remaining host differences
 
 `python3 -m unittest tests.test_opencode -v` tests isolated HOME/XDG ownership,
-config and credential preservation, lifecycle transitions, Skill link
+config and credential preservation, lifecycle transitions, Skill and plugin link
 install, repeat install, preserved user entries, uninstall and rejected shared
 directories, explicit CLI arguments, stale-head refusal, malformed events,
 errors and timeout. It uses a
-fake CLI and spends no model quota. The full repository and versionctl suites
+fake CLI and spends no model quota. `python3 -m unittest tests.test_opencode_plugin -v`
+runs the plugin module under Node against a fixture repository and asserts that
+the appended system entry equals the loader payload byte for byte, that an
+installed link resolves the canonical loader, and that an unreachable or failing
+loader leaves the system prompt unchanged. It skips when `node` is absent. The full repository and versionctl suites
 remain the deterministic release gates.
 
 Issue #78 separately requires one requested fresh-session fixture using the
@@ -174,6 +219,8 @@ ordinary work on real projects remains separately pending until user evidence
 exists, as defined by `AGENTS.override.md`.
 
 OpenCode does not reproduce Codex app-native task coordination, memory,
-connectors, computer/browser UI tools or lifecycle hooks. Host-native tools and
+connectors, computer/browser UI tools or lifecycle hooks. The plugin covers
+system-prompt delivery only; it reproduces no `UserPromptSubmit` or subagent
+refresh semantics. Host-native tools and
 permissions remain OpenCode's responsibility; AgentsMD supplies the shared
 operating contract and the narrow CLI handoff.

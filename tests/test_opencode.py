@@ -304,6 +304,89 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.call("skills", "install", "--source", source, env=env)[0], 2)
         self.assertFalse(os.path.lexists(self.home / ".agents/skills/alpha"))
 
+    def prepare_plugin(self):
+        clone = self.root / "release"
+        (clone / "bin").mkdir(parents=True, exist_ok=True)
+        (clone / "bin/project-direction").write_text("#!/bin/sh\nexit 0\n")
+        module = clone / "opencode/agentsmd-project-direction.js"
+        module.parent.mkdir(parents=True, exist_ok=True)
+        module.write_text("export default async () => ({});\n")
+        self.plugin = self.target.parent / "plugins/agentsmd-project-direction.js"
+        return clone, module
+
+    def test_plugin_link_install_repeat_status_and_uninstall(self):
+        clone, module = self.prepare_plugin()
+        code, report = self.call("plugin", "status", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["entry"]["status"], "missing")
+        self.assertEqual(report["target"], str(self.plugin))
+        code, report = self.call("plugin", "install", "--source", clone)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["action"], "installed")
+        self.assertEqual(os.readlink(self.plugin), str(module))
+        self.assertEqual(self.call("plugin", "install", "--source", module)[1]["action"], "unchanged")
+        self.assertEqual(self.call("plugin", "status", "--source", module)[0], 0)
+        code, report = self.call("plugin", "uninstall", "--source", clone)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["action"], "uninstalled")
+        self.assertFalse(os.path.lexists(self.plugin))
+        self.assertEqual(self.call("plugin", "uninstall", "--source", clone)[0], 2)
+
+    def test_plugin_link_preserves_existing_entries_and_removes_owned_broken_link(self):
+        clone, module = self.prepare_plugin()
+        self.plugin.parent.mkdir(parents=True)
+        foreign = self.root / "foreign/agentsmd-project-direction.js"
+        foreign.parent.mkdir()
+        foreign.write_text("user plugin\n")
+        for kind, prepare in (("regular-file", lambda: self.plugin.write_text("user plugin file")),
+                              ("divergent-link", lambda: self.plugin.symlink_to(foreign))):
+            with self.subTest(kind=kind):
+                prepare()
+                self.assertEqual(self.call("plugin", "status", "--source", clone)[1]["entry"]["status"], kind)
+                for action in ("install", "uninstall"):
+                    code, report = self.call("plugin", action, "--source", clone)
+                    self.assertEqual(code, 2, report)
+                    self.assertEqual(report["action"], "preserved")
+                if self.plugin.is_symlink():
+                    self.assertEqual(os.readlink(self.plugin), str(foreign))
+                    self.plugin.unlink()
+                else:
+                    self.assertEqual(self.plugin.read_text(), "user plugin file")
+                    self.plugin.unlink()
+        self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
+        module.unlink()
+        code, report = self.call("plugin", "status", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["entry"]["status"], "broken-link")
+        self.assertTrue(report["entry"]["owned"])
+        self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 2)
+        self.assertEqual(self.call("plugin", "uninstall", "--source", clone)[0], 0)
+        self.assertFalse(os.path.lexists(self.plugin))
+
+    def test_plugin_link_uses_config_dir_home_fallback_and_rejects_bad_sources(self):
+        clone, module = self.prepare_plugin()
+        env = {**self.env, "OPENCODE_CONFIG_DIR": str(self.root / "custom")}
+        code, report = self.call("plugin", "install", "--source", clone, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target"], str(self.root / "custom/plugins/agentsmd-project-direction.js"))
+        env = dict(self.env)
+        del env["XDG_CONFIG_HOME"]
+        code, report = self.call("plugin", "install", "--source", clone, env=env)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["target"],
+                         str(self.home / ".config/opencode/plugins/agentsmd-project-direction.js"))
+        cached = self.root / "plugins/cache/release/opencode/agentsmd-project-direction.js"
+        cached.parent.mkdir(parents=True)
+        cached.write_text("cached\n")
+        for source in (cached, cached.parents[1], self.source, clone / "bin/project-direction"):
+            with self.subTest(source=str(source)):
+                self.assertEqual(self.call("plugin", "install", "--source", source)[0], 2)
+        alias = self.root / "alias/agentsmd-project-direction.js"
+        alias.parent.mkdir()
+        alias.symlink_to(module)
+        self.assertEqual(self.call("plugin", "install", "--source", alias)[0], 2)
+        self.assertFalse(os.path.lexists(self.plugin))
+
     def prepare_run(self, mode="success", help_stream="stdout"):
         self.repo = self.root / "repo"
         self.repo.mkdir()

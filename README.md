@@ -339,20 +339,30 @@ once the host loads plugin hooks.
 directory. Never link them into `~/.agents/skills`, `~/.claude/skills`, or
 `~/.grok/skills`: Codex and Grok Build scan `~/.agents/skills`, and Grok scans
 `~/.claude/skills`, so a host that already uses the plugin would list every
-Skill twice. There is no AgentsMD OpenCode plugin.
+Skill twice. A separate owned link installs the AgentsMD OpenCode plugin.
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-opencode" skills install --source "$AGENTSMD_DIR/skills"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" plugin install --source "$AGENTSMD_DIR"
 opencode debug skill
 ```
 
-The command creates one owned link per Skill under
+The first command creates one owned link per Skill under
 `${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}/skills` and never replaces an
 existing entry; it preserves and reports each foreign entry, installs the rest
 and exits 2. Inspect existing same-name Skills instead of overwriting them.
 `skills status` and `skills uninstall` report and remove only those owned
-links. OpenCode's bounded run adapter remains pinned to **1.18.29**; link setup
-does not expand that run contract. See [OpenCode details](docs/opencode.md).
+links.
+
+The second command creates one owned link under the same directory's `plugins`
+folder. Through it OpenCode receives the Project Direction block in the model's
+system prompt, the same payload the Codex hook emits. That plugin uses the
+experimental system transform hook of OpenCode **1.18.29** and states no support
+beyond it. `plugin status` and `plugin uninstall` report and remove only that
+owned link. Start a fresh OpenCode session after install; a running session
+keeps its loaded plugins. OpenCode's bounded run adapter remains pinned to
+**1.18.29**; link setup does not expand that run contract. See
+[OpenCode details](docs/opencode.md).
 
 ### 3. Link global instructions and initialize preferences
 
