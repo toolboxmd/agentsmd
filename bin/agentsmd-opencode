@@ -234,7 +234,9 @@ def plugin_source(value):
     if source.is_symlink():
         # A link created through an alias root breaks when that alias moves.
         raise ValueError("source must be a canonical clone root or plugin file, not a symlink alias")
-    if source.is_dir():
+    if source.name != PLUGIN_MODULE:
+        # A removed clone root still normalizes, so an owned dangling link stays
+        # inspectable and removable. Install validates existence separately.
         source = source / "opencode" / PLUGIN_MODULE
     for candidate in (source, source.resolve()):
         if is_cache_path(candidate):

@@ -363,6 +363,23 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.call("plugin", "uninstall", "--source", clone)[0], 0)
         self.assertFalse(os.path.lexists(self.plugin))
 
+    def test_plugin_link_survives_a_removed_clone_root(self):
+        clone, module = self.prepare_plugin()
+        self.assertEqual(self.call("plugin", "install", "--source", clone)[0], 0)
+        shutil.rmtree(clone)
+        code, report = self.call("plugin", "status", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["entry"]["status"], "broken-link")
+        self.assertTrue(report["entry"]["owned"])
+        code, report = self.call("plugin", "install", "--source", clone)
+        self.assertEqual(code, 2)
+        self.assertEqual(report["action"], "preserved")
+        self.assertTrue(os.path.lexists(self.plugin))
+        code, report = self.call("plugin", "uninstall", "--source", clone)
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["action"], "uninstalled")
+        self.assertFalse(os.path.lexists(self.plugin))
+
     def test_plugin_link_uses_config_dir_home_fallback_and_rejects_bad_sources(self):
         clone, module = self.prepare_plugin()
         env = {**self.env, "OPENCODE_CONFIG_DIR": str(self.root / "custom")}
