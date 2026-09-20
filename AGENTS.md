@@ -100,6 +100,11 @@ stay unknown; name missing proof when it would change the next action.
 ## Work
 
 - Make the smallest possible change to achieve the wanted result.
+- Act on the user's behalf. When work fails or blocks and a fix is within
+  your reach and authority, do it and report; never ask "can I" or "may I"
+  for such work, because a question stalls the loop while the user is away.
+  Ask only at Human Gates and for decisions that change scope, risk,
+  authority, or the user-visible result.
 - Apply Authority and continuation to mutating work and delivery decisions.
   Load the relevant `operations` reference before its dependent action.
 - Persistent Host Automation: before creating or changing a host service,
