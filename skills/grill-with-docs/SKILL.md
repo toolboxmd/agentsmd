@@ -1,7 +1,6 @@
 ---
 name: grill-with-docs
 description: Relentlessly sharpen a plan while recording resolved project terms and durable architectural decisions lazily.
-disable-model-invocation: true
 license: MIT
 metadata:
   owner: toolboxmd

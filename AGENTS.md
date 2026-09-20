@@ -173,10 +173,11 @@ Read-only work, spikes, WIP checkpoints and explicitly local microfixes stay
 off the Issue-to-PR lane.
 
 Use the smallest suitable lane. The `operations` implementation reference
-holds workflow routing; `grilling`, `grill-with-docs`, `to-spec`, `to-tickets`
-and `wayfinder` are human-controlled planning Skills. Invoke them when named
-or requested, preserving their approval gates. Other Skills follow their own
-trigger and approval contracts. The Skill Catalogue owns provenance.
+holds workflow routing; `grilling`, `grill-with-docs`, `to-spec`,
+`to-tickets` and `wayfinder` are model-invocable planning Skills. Invoke
+them when named, requested, or when their trigger applies, preserving the
+approval gates inside their bodies. Other Skills follow their own trigger
+and approval contracts. The Skill Catalogue owns provenance.
 
 ## Execution and module routing
 
