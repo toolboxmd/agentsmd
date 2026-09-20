@@ -60,10 +60,12 @@ MIT notice. `use-grok` retains its Apache-2.0 licence and separate source
 history. Deferred, retired, and upstream-reference Skills are documented but
 remain outside active plugin discovery.
 
-The AgentsMD workflow Skills `grilling`, `grill-with-docs`, `to-spec`,
-`to-tickets`, and `wayfinder` are human-controlled planning workflows. They run
-only when the user selects that workflow and stop at their documented approval
-gates.
+Every AgentsMD Skill is model-invocable, including the planning Skills
+`grilling`, `grill-with-docs`, `to-spec`, `to-tickets`, and `wayfinder`.
+The agent may invoke a planning Skill when its trigger applies or when
+the user names it. Human control lives in the approval gates inside
+each Skill body. A draft is shown and explicit approval precedes
+publication or mutation.
 Selecting `to-spec` runs the complete Specify workflow through verified ticket
 publication by default. It waits for approval before publishing the parent
 Issue and before publishing the ticket graph, then starts the first unblocked

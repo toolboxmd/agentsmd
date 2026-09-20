@@ -1,7 +1,6 @@
 ---
 name: wayfinder
 description: Map persistent decision fog as a parent GitHub Issue and a visible frontier of Decision Issues, then resolve one decision at a time until a reliable spec is possible.
-disable-model-invocation: true
 license: MIT
 compatibility: Requires a GitHub repository and authenticated GitHub access.
 metadata:

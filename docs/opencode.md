@@ -25,8 +25,8 @@ that already uses the plugin. The `skills` command group below creates and
 removes those owned links. Verify available
 names with `opencode debug skill` in the intended repository. See official
 [Skill discovery](https://opencode.ai/docs/skills/). Host-native frontmatter
-differs: OpenCode ignores unrecognized fields, so user-only planning invocation
-continues to depend on the canonical operating contract.
+differs. OpenCode ignores unrecognized fields. AgentsMD Skills are
+model-invocable on every host, with approval gates inside each Skill body.
 
 The global contract requires the full Project Direction triad before project
 work. OpenCode runs no Codex lifecycle hook, so the AgentsMD plugin below

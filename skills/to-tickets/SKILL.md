@@ -1,7 +1,6 @@
 ---
 name: to-tickets
 description: Break an approved plan or parent Issue into linked implementation Issues with explicit proof and native relationships.
-disable-model-invocation: true
 license: MIT
 compatibility: Requires a GitHub repository and authenticated GitHub access.
 metadata:
@@ -17,7 +16,7 @@ metadata:
   implementation-context: fresh
   implementation-authority-source: full-current-request
   missing-authority-prompt-limit: 1
-  invocation: user
+  invocation: model
 ---
 
 # To Tickets

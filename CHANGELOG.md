@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [11.3.0] - 2026-09-20
+
+### Added
+
+- Make every AgentsMD Skill model-invocable; human control stays in each Skill's approval gates
+
 ## [11.2.0] - 2026-09-19
 
 ### Added

@@ -724,7 +724,8 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("create a root `CONTEXT.md`", agents)
         self.assertNotIn("update the appropriate `CONTEXT.md`", agents)
         self.assertNotIn("ASD-STE100-style", agents)
-        self.assertIn("human-controlled planning Skills", agents)
+        self.assertIn("model-invocable planning Skills", agents)
+        self.assertNotIn("human-controlled planning Skills", agents)
 
     def test_global_contract_defines_independent_partnership(self) -> None:
         agents = read_text("AGENTS.md")
@@ -1007,10 +1008,10 @@ class SkillContractTests(unittest.TestCase):
         spec = frontmatter_metadata("skills/to-spec/SKILL.md")
         tickets = frontmatter_metadata("skills/to-tickets/SKILL.md")
 
-        self.assertEqual(contract["entry_invocation"], "user")
+        self.assertEqual(contract["entry_invocation"], "model")
         self.assertEqual(contract["continuation_owner"], "to-spec")
         self.assertEqual(contract["continuation_stage"], "ticket-graph")
-        self.assertEqual(contract["ticket_skill_invocation"], "user")
+        self.assertEqual(contract["ticket_skill_invocation"], "model")
 
         self.assertEqual(spec["workflow"], contract["workflow"])
         self.assertEqual(
@@ -1077,22 +1078,39 @@ class SkillContractTests(unittest.TestCase):
         tickets_fields = frontmatter_fields("skills/to-tickets/SKILL.md")
         self.assertEqual(spec_fields["name"], contract["entry_skill"])
         self.assertEqual(tickets_fields["name"], contract["ticket_skill"])
-        self.assertTrue(spec_fields["disable-model-invocation"])
-        self.assertTrue(tickets_fields["disable-model-invocation"])
-        self.assertFalse(
+        self.assertNotIn("disable-model-invocation", spec_fields)
+        self.assertNotIn("disable-model-invocation", tickets_fields)
+        self.assertTrue(
             nested_yaml_value(
                 "skills/to-spec/agents/openai.yaml",
                 "policy",
                 "allow_implicit_invocation",
             )
         )
-        self.assertFalse(
+        self.assertTrue(
             nested_yaml_value(
                 "skills/to-tickets/agents/openai.yaml",
                 "policy",
                 "allow_implicit_invocation",
             )
         )
+
+    def test_all_skills_are_model_invocable(self) -> None:
+        for skill_path in sorted((ROOT / "skills").glob("*/SKILL.md")):
+            with self.subTest(skill=skill_path.parent.name):
+                frontmatter = skill_path.read_text(encoding="utf-8").split(
+                    "---\n", 2
+                )[1]
+                self.assertNotIn("disable-model-invocation", frontmatter)
+        for metadata_path in sorted(
+            (ROOT / "skills").glob("*/agents/openai.yaml")
+        ):
+            with self.subTest(host_metadata=metadata_path.parent.parent.name):
+                text = metadata_path.read_text(encoding="utf-8")
+                if "allow_implicit_invocation" in text:
+                    self.assertTrue(nested_yaml_value(str(metadata_path.relative_to(ROOT)), "policy", "allow_implicit_invocation"))
+        self.assertIn("model-invocable", read_text("SKILL_CATALOGUE.md"))
+        self.assertIn("model-invocable", read_text("README.md"))
 
     def test_specify_workflow_state_fixture_covers_every_decision_branch(
         self,
@@ -2135,9 +2153,10 @@ class SkillContractTests(unittest.TestCase):
         readme = read_text("README.md")
         normalized = " ".join(readme.split())
         self.assertNotIn("The workflow Skills are human-controlled.", readme)
+        self.assertNotIn("human-controlled planning workflows", readme)
         for required in (
             "VISION.md`, `MISSION.md`, and `OBJECTIVE.md",
-            "human-controlled planning workflows",
+            "model-invocable",
             "`project-direction` is model-invoked",
             "SessionStart",
             "UserPromptSubmit",
