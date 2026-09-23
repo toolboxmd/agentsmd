@@ -31,10 +31,12 @@ that limitation from a live integration claim.
 
 Preserve tests for unique regressions while their requirement remains. Remove
 tests that only mirror implementation details when they add no independent
-contract. Exact text can be a valid requirement for legal wording, protocol
-output, or instruction boundaries; incidental prose should not be frozen merely
-to create test volume. Instruction-package checks prove structure and declared
-contracts, not that a model behaves correctly in ordinary work.
+contract. A test that every compatible addition must edit mirrors the
+implementation; assert the invariant instead. Exact text can be a valid
+requirement for legal wording, protocol output, or instruction boundaries;
+incidental prose should not be frozen merely to create test volume.
+Instruction-package checks prove structure and declared contracts, not that a
+model behaves correctly in ordinary work.
 
 Run focused feedback while changing a unit, then the complete required merge and
 release proof. Test selection and impact analysis do not create a trusted scoped-
