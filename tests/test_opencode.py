@@ -242,6 +242,47 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.call("skills", "status", "--source", source)[0], 2)
         self.assertEqual(self.call("skills", "install", "--source", source)[0], 2)
 
+    def test_bundle_upgrade_retires_only_obsolete_owned_links(self):
+        source = self.prepare_skills(("operations", "project-direction", "research"))
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)
+        for name in ("operations", "project-direction", "research"):
+            shutil.rmtree(source / name)
+        shutil.copytree(ROOT / "skills/operations", source / "operations")
+        foreign = self.root / "user-skill"
+        foreign.mkdir()
+        (foreign / "SKILL.md").write_text("user-owned")
+        (self.skills / "personal").symlink_to(foreign, target_is_directory=True)
+        code, report = self.call("skills", "update", "--source", source)
+        self.assertEqual(code, 0, report)
+        retired = {e["name"] for e in report["entries"] if e["action"] == "retired"}
+        self.assertEqual(retired, {"project-direction", "research"})
+        self.assertEqual((self.skills / "personal").resolve(), foreign)
+        for name in retired:
+            self.assertFalse(os.path.lexists(self.skills / name))
+        entry = self.skills / "operations"
+        self.assertEqual(list(entry.rglob("SKILL.md")), [entry / "SKILL.md"])
+        self.assertTrue((entry / "workflows/project-direction/index.md").is_file())
+        self.assertEqual(self.call("skills", "update", "--source", source)[0], 0)
+
+    def test_bundle_upgrade_keeps_old_links_when_replacement_is_blocked(self):
+        source = self.prepare_skills(("project-direction",))
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)
+        shutil.rmtree(source / "project-direction")
+        shutil.copytree(ROOT / "skills/operations", source / "operations")
+        (self.skills / "operations").mkdir()
+        (self.skills / "operations/SKILL.md").write_text("user-owned replacement")
+        code, report = self.call("skills", "update", "--source", source)
+        self.assertEqual(code, 2, report)
+        self.assertTrue((self.skills / "project-direction").is_symlink())
+        self.assertEqual((self.skills / "operations/SKILL.md").read_text(), "user-owned replacement")
+
+    def test_empty_upgrade_source_cannot_retire_old_inventory(self):
+        source = self.prepare_skills(("project-direction",))
+        self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)
+        shutil.rmtree(source / "project-direction")
+        self.assertEqual(self.call("skills", "update", "--source", source)[0], 2)
+        self.assertTrue((self.skills / "project-direction").is_symlink())
+
     def test_skill_links_uninstall_removes_owned_link_to_replaced_source(self):
         source = self.prepare_skills()
         self.assertEqual(self.call("skills", "install", "--source", source)[0], 0)

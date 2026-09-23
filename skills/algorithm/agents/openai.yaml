@@ -1,7 +1,0 @@
-interface:
-  display_name: "Algorithm"
-  short_description: "Compatibility router to elon-method"
-  default_prompt: "Use $elon-method to reduce this material work."
-
-policy:
-  allow_implicit_invocation: true

@@ -3,6 +3,19 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.0.0] - 2026-09-23
+
+### Changed
+
+- Replace separate workflow Skill commands with one automatic Operations entry and on-demand procedures. Model Router requires its compatible bundle resolver before migration.
+- Apply focused communication, including contextual `bro` / `bruh` re-explanation cues, and Elon reasoning before material decisions; preserve authority, direction, independent review and proof.
+- Keep task-specific evidence in one folder, route research experiments through Prototype, and retain learned guidance at its existing owner.
+
+### Added
+
+- Distill pstack investigation, design, diagnosis, review, verification and writing methods, with a complete pinned source inventory and attribution.
+- Verify copied procedure closure and real Model Router role-kit compatibility; migrate only obsolete owned OpenCode Skill links.
+
 ## [11.4.0] - 2026-09-20
 
 ### Added

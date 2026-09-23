@@ -180,8 +180,29 @@ def inspect_skill(target, source, is_directory=True):
 
 
 def manage_skills(args):
-    source = skills_source(args.source, args.skills_command == "install")
+    source = skills_source(args.source, args.skills_command in ("install", "update"))
     directory = skills_target()
+    if args.skills_command == "update":
+        # Verify the replacement inventory before retiring any old owned link.
+        installation = argparse.Namespace(**vars(args))
+        installation.skills_command = "install"
+        report, code = manage_skills(installation)
+        report["command"] = "skills update"
+        if code:
+            return report, code
+        for name in skill_names(source, directory, "update"):
+            skill = source / name
+            if (skill / "SKILL.md").is_file():
+                continue
+            target = directory / name
+            before = inspect_skill(target, skill)
+            if before["owned"]:
+                target.unlink()
+                report["entries"].append({
+                    "name": name, "action": "retired", "before": before,
+                    "after": inspect_skill(target, skill),
+                })
+        return report, 0
     names = skill_names(source, directory, args.skills_command)
     if not names:
         raise ValueError("source holds no Skill directory containing a SKILL.md and the target holds no owned link")
@@ -410,7 +431,7 @@ def main():
             command.add_argument("--previous-source", type=absolute)
     command = commands.add_parser("skills")
     skills = command.add_subparsers(dest="skills_command", required=True)
-    for name in ("install", "status", "uninstall"):
+    for name in ("install", "status", "update", "uninstall"):
         skills.add_parser(name).add_argument("--source", required=True, type=absolute)
     command = commands.add_parser("plugin")
     plugin = command.add_subparsers(dest="plugin_command", required=True)

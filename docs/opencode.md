@@ -89,6 +89,7 @@ instruction link resolves its own.
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-opencode" skills install --source "$AGENTSMD_DIR/skills"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" skills update --source "$AGENTSMD_DIR/skills"
 "$AGENTSMD_DIR/bin/agentsmd-opencode" skills status --source "$AGENTSMD_DIR/skills"
 "$AGENTSMD_DIR/bin/agentsmd-opencode" skills uninstall --source "$AGENTSMD_DIR/skills"
 opencode debug skill
@@ -106,10 +107,16 @@ Uninstall removes only exact owned links, including a broken owned link, and
 exits 2 when any entry was not an owned link. Status exits 0 only when every
 Skill is an owned link.
 
+Update installs and verifies the current inventory first. Only after that succeeds
+does it retire exact owned links whose source no longer contains `SKILL.md`.
+A blocked replacement or empty source preserves the old links. This migrates
+the former separate skills to the single Operations bundle without removing
+unrelated installations. Repeat updates are safe.
+
 Install reports the Skills present in the source directory. Status and uninstall
 also report any target entry whose link destination is exactly
 `<source>/<name>`, so an owned link survives removal of its source Skill and
-uninstall still removes it. Only install requires an existing source directory.
+uninstall still removes it. Install and update require an existing source directory.
 
 Sources inside `plugins/cache` are rejected, including a single Skill directory
 that resolves into a plugin cache; that entry is refused before any link is

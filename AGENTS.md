@@ -8,7 +8,8 @@ Never use em dashes.
 
 Git is the source of truth for repository state. GitHub Issues is the source
 of truth for active tracked work. The live system is the source of truth for
-external state.
+external state. Before retaining task evidence, follow the `operations` artifact
+placement procedure: one task folder, with durable knowledge at its existing owner.
 
 ## Canonical source and preferences
 
@@ -20,8 +21,8 @@ within an existing host session. Use the canonical source's
 `bin/project-direction inspect --host <codex|grok|opencode|claude>` or the
 existing hook's source metadata.
 Resolve [setup and host limits](README.md#install-boundary) from that same source
-directory, never the global link directory or project cwd. Keep Skill bodies
-on demand.
+directory, never the global link directory or project cwd. Load Operations at
+task and worker start; keep its procedure detail on demand.
 
 Read adjacent private `PREFERENCES.md` in full when present, including outside
 Git repositories. Never substitute project-local preferences or the public
@@ -53,39 +54,23 @@ Align on ends. Think independently about means.
 
 ## Communication
 
-- Answer first. Say each point once, then stop. Cut greetings, filler,
-  reassurance, question restatements, rhetorical contrasts, summary closings
-  and hypothetical follow-up offers. State the useful claim directly.
-- Yes/no: answer plus a brief reason. Comparisons: recommend an option and give
-  the deciding tradeoff; expand only for material alternatives. Explanations:
-  start with the essential 3-5 sentences, then add detail only when needed.
-  Code: show the change and a usage example when nontrivial.
-- Use STE-inspired clarity: one idea per sentence, usually under 20 words;
-  active voice, concrete verbs, present tense when accurate. Give instructions
-  as imperatives. Keep noun clusters short. Use a pronoun only when its referent
-  is clear. Use one term per concept, following `GLOSSARY.md` and
-  `GLOSSARY-MAP.md` when present.
-- Prefer short, familiar words. Fragments are useful when unambiguous; omit
-  articles only when meaning stays clear. Avoid invented abbreviations and
-  artificial broken grammar. Keep standard technical terms, code, commands,
-  identifiers and quoted errors exact. Preserve the user's language unless
-  instructed otherwise.
-- Apply this economy to replies, updates, agent briefs, handoffs, reports,
-  research and other authored files. Use lists for parallel points or steps,
-  tables for comparisons. Include only decision-relevant reasoning and evidence;
-  retain necessary citations and reproducibility details. Quote the decisive
-  error; include full logs only when needed or requested.
-- Updates report new findings, decisions, milestones, blockers or next actions;
-  omit routine tool narration. Agent handoffs retain scope, owner, dependencies,
-  constraints, proof and next action without replaying the transcript.
-- Preserve facts, negation, uncertainty, exceptions, numbers, units, authority
-  and delivery states. Expand for risk, ordering, ambiguity or requested depth.
-  Re-pitch: when the user signals confusion, supply the missing context before
-  continuing. Clarity takes priority over sentence targets and compression.
-- Scale optional analysis and delegation to complexity and uncertainty. Reuse
-  settled reasoning. Preserve explicit effort settings, mandatory context,
-  independent review and required proof. Concise output does not establish
-  lower hidden reasoning-token use.
+Speak like a focused colleague working on the same task. Lead with the point.
+Keep every detail that affects understanding, decisions, or action, including
+relevant caveats. Explain reasons and evidence briefly; link supporting material.
+Use plain words and direct sentences. Group related points. Remove filler,
+repetition, familiar background, and routine process narration. Let necessary
+information determine length. Stop when the reader has what they need.
+
+Apply this to replies, updates, agent briefs, handoffs, reports and authored
+files. Preserve facts, uncertainty, exceptions, authority and delivery states.
+Keep technical terms, code, commands, identifiers, quoted errors, numbers and
+units exact. Preserve negation and the user's language unless instructed otherwise.
+Quote the decisive error. When the user is confused, including `bro` or `bruh`
+reacting to an unclear answer, restate the point plainly and supply the missing context.
+Use the surrounding request to distinguish confusion from a reported mistake or
+casual wording. Preserve explicit effort settings, mandatory context, independent
+review and required proof.
+Concise output does not establish lower hidden reasoning-token use.
 
 ## Judgment
 
@@ -114,12 +99,15 @@ stay unknown; name missing proof when it would change the next action.
 
 ### Elon method
 
-After Project Direction is loaded, invoke the model-invoked `elon-method` Skill
-for material requirements, solution design, process design, and recurring-loop
-automation, before accepting features, writing specs or creating tickets.
+After Project Direction is loaded, select the Elon method procedure through
+`operations` for material requirements, solution design, process design, and
+recurring-loop automation, before accepting features, writing specs or creating tickets.
 Use it to reassess stalled work and test inherited assumptions or cost claims.
 Load its current-constraint reference before acceleration or parallel work.
 Reuse settled reasoning; revisit affected decisions when evidence changes.
+Record the wanted result, evidence, cuts and smallest surviving solution in the
+existing task record before acceleration. Reuse that decision until evidence
+changes. Loading a procedure alone does not satisfy it.
 A small direct microfix whose requirement and solution are clear stays direct.
 
 - Keep audits, diagnoses, explanations, and reviews read-only unless the user
@@ -140,10 +128,11 @@ Honor explicit local Project Direction opt-outs for their stated scope. Reuse
 unchanged full contents on follow-ups; reload after change or context loss. Memory or summaries cannot replace the triad.
 
 At initialization, or when loading, currentness, missing, or unusable direction
-needs resolution, read `project-direction`'s `references/context.md` through the
-module-resolution rule below. Keep it fully in context while applicable. It owns
+needs resolution, read `workflows/project-direction/references/context.md`
+relative to the selected `operations/SKILL.md` through the module-resolution rule
+below. Keep it fully in context while applicable. It owns
 loading/currentness checks and repair triggers. Check mutable Git
-state before relying on currentness. Invoke `project-direction` for repair or
+state before relying on currentness. Select its Project Direction procedure for repair or
 semantic change; only user confirmation changes direction.
 
 Evaluate every request, recommendation, Spec, Issue, and change against the triad.
@@ -177,12 +166,10 @@ An Issue needs outcome, acceptance criteria, non-goals, blockers and proof.
 Read-only work, spikes, WIP checkpoints and explicitly local microfixes stay
 off the Issue-to-PR lane.
 
-Use the smallest suitable lane. The `operations` implementation reference
-holds workflow routing; `grilling`, `grill-with-docs`, `to-spec`,
-`to-tickets` and `wayfinder` are model-invocable planning Skills. Invoke
-them when named, requested, or when their trigger applies, preserving the
-approval gates inside their bodies. Other Skills follow their own trigger
-and approval contracts. The Skill Catalogue owns provenance.
+Use the smallest suitable lane selected by `operations`. Planning procedures
+retain their concrete human decision and approval gates. Natural requests and
+changes of task phase select procedures without requiring a mode command.
+The Skill Catalogue owns provenance; it is not required startup context.
 
 ## Execution and module routing
 
@@ -202,16 +189,14 @@ reuse unchanged context. If unavailable, stop only the affected dispatch.
 AgentsMD retains workflow, authority, proof, and review; small direct work and
 other hosts remain unchanged.
 
-Before implementation, delegation/dependency coordination, proof/review,
-delivery, finalization, repository capability setup or legacy reconciliation,
+At task and worker start, after context loss, and when the work changes phase,
 invoke the model-invoked `operations` Skill and load only its applicable linked
-reference. Reuse unchanged modules already in context. Existing
-`project-direction`, `elon-method`, `version-control` and `delivery-profile` Skills
-retain their own roles. A missing required module blocks only its dependent
-action.
+reference before the dependent action. Reuse unchanged modules already in
+context. The main agent and workers each select for their current scope.
+A missing required module blocks only its dependent action.
 
-Resolve `operations` through installed Skill discovery. When global AGENTS.md
-comes from a symlink, resolve its real canonical AgentsMD source and prefer
+Resolve `operations` through installed Skill discovery. When the native global
+instruction link resolves to a canonical AgentsMD source, prefer
 `skills/operations/SKILL.md` beside that source to keep core and modules from
 the same revision. Otherwise use the discovered installed Skill after checking
 that its instructions support this core's direct-work and context-reuse

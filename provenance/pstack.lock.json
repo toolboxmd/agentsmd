@@ -1,0 +1,1890 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "repository": "https://github.com/cursor/plugins",
+    "revision": "b42effe0aa50f59c693d7e2924714e015e00bf7c",
+    "subdirectory": "pstack",
+    "tree": "f66b1f3ed67364a915305457ee9099edc44f9333",
+    "version": "0.15.3"
+  },
+  "license": {
+    "source": "LICENSE",
+    "destination": "LICENSES/pstack-MIT.txt",
+    "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e"
+  },
+  "report": "docs/work/119-pstack-integration/analysis.md",
+  "inventory": [
+    {
+      "path": ".cursor-plugin/plugin.json",
+      "gitBlob": "974daecc794570c79e84256962f3be20697de2b4",
+      "sha256": "e454a0e9095f6043abaa82a9590ad44590587eef8ad8e67a6ecc7022d7295863",
+      "bytes": 721,
+      "encoding": "utf-8"
+    },
+    {
+      "path": ".gitignore",
+      "gitBlob": "aafcb345668bd80cbb256b066898d4df8988da0e",
+      "sha256": "8ffe9de56bd30c1a95cd945262d6e3ac355ada4111551dde41f67851b9f1fc55",
+      "bytes": 30,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "LICENSE",
+      "gitBlob": "6b5400237fdf6545be0b8fae370d6f2fcff8fb25",
+      "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e",
+      "bytes": 1067,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "README.md",
+      "gitBlob": "b7cdef8aeb15da88a8f9cdd82904d884552395b7",
+      "sha256": "16262f32aa041d857f2936f3ad6c589648f8e7b5d23e03c3c0a8c76ef99fd08c",
+      "bytes": 22949,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "agents/comment-sicko.md",
+      "gitBlob": "9a688b8c5b5734ee80f782d4616a78c4c59b0946",
+      "sha256": "c0fd0383008da45fc78cfac17b9007d62c42f87ad1c8d5c2fb658b1fd01f7c82",
+      "bytes": 2230,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "agents/poteto-agent.md",
+      "gitBlob": "91d53b85918f842c703758e66352b956ee80feb7",
+      "sha256": "c3850be1b97bc97cec0568ed8b26d04e7693c4e07868137c58fe546d37f288e9",
+      "bytes": 641,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "assets/logo.png",
+      "gitBlob": "3754e87cb0e1362f17428bc84c661166ee145156",
+      "sha256": "672f6791589ef758b0ced2c4c477913fa2758623c438e265639a0d539ce90695",
+      "bytes": 361140,
+      "encoding": "binary"
+    },
+    {
+      "path": "automations/benny/FOR_AGENTS.md",
+      "gitBlob": "e732156e9b88b463e4a40c0f51596bca4aedcdb4",
+      "sha256": "a125e317dec1b8731fdc71f404c669f1127a73af932f7a7b8b8744a5542328a7",
+      "bytes": 7460,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/README.md",
+      "gitBlob": "76804c8c566aae1a70734725416ae2f251a7ae30",
+      "sha256": "ca3c42cbb7f0bf7068f7407eb355815e6c234d5c2786942f3cbe751a3690024b",
+      "bytes": 1321,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/skills/reproduce-and-fix-issues/SKILL.md",
+      "gitBlob": "effa5f0a38d2cfe7d948a71ff51827e2e2017257",
+      "sha256": "1363cc07343fe86aab42853b1bd4563288cbcbdf12f1c265b3b3b1afa25c09cb",
+      "bytes": 14238,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/skills/reproduce-and-fix-issues/references/control-adapter.md",
+      "gitBlob": "3399491eddbc458f3a7ceb6fd62b8f89266b07ef",
+      "sha256": "58b0615d2fca895f9a20df83266e280042b0d585b5f2fd324e2094a682fd846b",
+      "bytes": 5517,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/skills/reproduce-and-fix-issues/references/feature-map.example.md",
+      "gitBlob": "620ddedba3c13d603974b1d78754e36946dacf81",
+      "sha256": "1e5c7c8522daec3e43fcc2e73ceb97289ded65b552949ce65a11cc8eb3d2b6ee",
+      "bytes": 5646,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/skills/reproduce-and-fix-issues/references/verify-existing-fix.md",
+      "gitBlob": "e3cda3c06a48432fd932b32318ade4e6178ef4ed",
+      "sha256": "c90eae00abcdec71a58fa8d60f2c495b082a526ad50b8e8e494837609129bf29",
+      "bytes": 3149,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/skills/setup-benny/SKILL.md",
+      "gitBlob": "b05c26f4d4a39c16559f5ef2bbdd380adc923fda",
+      "sha256": "5a3cbe63360c9f6373b6cb6c79a1eaf7e0eba181bfaa1577e2e6431af3407282",
+      "bytes": 13992,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/skills/triage-issue-reports/SKILL.md",
+      "gitBlob": "d691672d00fb8f8f07fc17290d00ae49d1fd119b",
+      "sha256": "216a758b8711e64d19a55e6032c496527daac6364d010611040f3c04ef1a448f",
+      "bytes": 10320,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/skills/triage-issue-reports/references/routing.example.md",
+      "gitBlob": "d71aea768c7d9452270ca4f11091a47e5750038c",
+      "sha256": "e5e53013692568cf69da8e8b302fff929fe2fbc9aec1a4651fd7997e2c7a4025",
+      "bytes": 1892,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/templates/configuration.example.yaml",
+      "gitBlob": "8616f5fcced0ac57964467dd537a6ba80560a271",
+      "sha256": "13e24b4ce9b9a0913916e85fe3b080b88d45f8e55dccfe8ae38e0751a997b6f5",
+      "bytes": 2424,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/templates/reproduce-automation-prompt.md",
+      "gitBlob": "5c66c922d69f7323d0c78461480baaf45d7b1284",
+      "sha256": "71ec574f1844e379394ae4ef14c48d7df10afbaa319d395c788d7f856f0e6899",
+      "bytes": 1822,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "automations/benny/templates/triage-automation-prompt.md",
+      "gitBlob": "939e5e15c09f57d17cee00c9ed58b3679a268e0f",
+      "sha256": "e0bba594547834f013ec805915610eb597e7929efe3ffbe85ae00339ee16d474",
+      "bytes": 1569,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/01-setup.md",
+      "gitBlob": "1e602f61c81eb1902150b849682b92b8e583fa7c",
+      "sha256": "bbac20e25fb097029e2676ecf3212f4a72f566eaf2b1031b56317aa1e4fdf490",
+      "bytes": 2955,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/02-poteto-mode.md",
+      "gitBlob": "403cbe8cc9dbc5204c6f9399abcced228f8e76f7",
+      "sha256": "379a1b2c9cd2ba54032b2b142563328d0f3d65039f067863d19b1d4c008737f5",
+      "bytes": 4728,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/03-understand.md",
+      "gitBlob": "af985988c2ac9babbabf6e9b4447c2f22a346ee7",
+      "sha256": "16f3fe0f7df092a5c69dac90971ef57e63a8a9ae926eed851285c7bfddc0f3fd",
+      "bytes": 3516,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/04-design.md",
+      "gitBlob": "681d39cff22438b4feb3d40a8d97017af026bc3d",
+      "sha256": "21e820ff73c0b70682aa570a967ede446b4d7caf62e8f391d0dd733ccb74874c",
+      "bytes": 4866,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/05-build-and-clean.md",
+      "gitBlob": "c38bc44a39fe5e6ace2cd228f631c7eb57ecccf3",
+      "sha256": "6bd421b43a3cf9fec3cd201fd40ce65fd8c657264eac48b0c9a175b6afd7c252",
+      "bytes": 4763,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/06-verify-and-ship.md",
+      "gitBlob": "d96c76612c647bfd33270d510440991946c508ed",
+      "sha256": "c93cd50c0359ce875a82b3f7d64eab102a4b0815dbbecdb8e0e5e910bd2d18e9",
+      "bytes": 6000,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/07-overnight.md",
+      "gitBlob": "9ff66b7706041179ff3661213939a961eb196212",
+      "sha256": "5033d61e8b4b6fb0b2304b2132f26bf0b6aee685aa4ed53a76a73cf0ac1c3557",
+      "bytes": 5447,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/08-principles.md",
+      "gitBlob": "be1102d678a9748b396f829e29fb3dfdd60ba205",
+      "sha256": "3ede7c9cf74d9631142aec016a01843d97c1e20469387144b70c2660d50fa96f",
+      "bytes": 5233,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/09-make-it-yours.md",
+      "gitBlob": "6723069b5108f586575fe5353272ee6567a49b02",
+      "sha256": "b98588a232a38ca7acebbeecb95ac771df1981aed662dcb45c96b4b66ed20ec0",
+      "bytes": 4641,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/10-recipes-and-pitfalls.md",
+      "gitBlob": "da0af5e6f7984d24818ef1cd28f518d0014da788",
+      "sha256": "a4662cd98870f08c6abe117a832abe37670ee84f8ed25dcbe7e99ef4eb8e05e0",
+      "bytes": 4598,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/README.md",
+      "gitBlob": "b8b1b079456d6f2b2c536937d21180ba5c21f733",
+      "sha256": "0db8dd72e832c06638ca2f43489e8597d44dc0ea8da3b5088e4382ea26d904c5",
+      "bytes": 2011,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "docs/guide/images/design.jpg",
+      "gitBlob": "f86909437f8b5a83da3cba7bc35a018c9d4887c8",
+      "sha256": "b8ed07427f6a0c37dd8ba97961fc0eb5071efeee6c4a230648bdb7547f6f2a8f",
+      "bytes": 402373,
+      "encoding": "binary"
+    },
+    {
+      "path": "docs/guide/images/overnight.jpg",
+      "gitBlob": "d64e1c63066c9f088da909160f5e136049e9a512",
+      "sha256": "4b4405e4df8925c5b3abbe702f681af0f3b1f5f32271b599f95717f578f1a0c8",
+      "bytes": 347071,
+      "encoding": "binary"
+    },
+    {
+      "path": "docs/guide/images/recipes.jpg",
+      "gitBlob": "69fe992fdb9fb8e7baacc144ea140f9c93b262fb",
+      "sha256": "9fa2d51b476635712737795ddef81806efaa0086bb3bfa9f9f45695d9ab0f8e8",
+      "bytes": 410550,
+      "encoding": "binary"
+    },
+    {
+      "path": "docs/guide/images/router.jpg",
+      "gitBlob": "c8fba6a266505caf406d5185d7a4cc6e34be98a4",
+      "sha256": "525843055a4efd2b10acc50a8652fd02b0834ea733a8a2f895c1eb89036017da",
+      "bytes": 450945,
+      "encoding": "binary"
+    },
+    {
+      "path": "docs/guide/images/understanding.jpg",
+      "gitBlob": "bb1b1ac15dd11da9ad047d203049a1a24abb2b46",
+      "sha256": "b60587e9a9bbe2550e93be9819cf0cd4acf77d90fac769a0c43d82bd8e34e279",
+      "bytes": 376523,
+      "encoding": "binary"
+    },
+    {
+      "path": "docs/guide/images/verification.jpg",
+      "gitBlob": "a252ae0b5e14cb6fcef2e3b806bbd66316242446",
+      "sha256": "2a76b52007a1cd2866ba67fd47d7d9ef3e1118bb5a09c4665eee8c3f161bd09a",
+      "bytes": 331450,
+      "encoding": "binary"
+    },
+    {
+      "path": "skills/architect/SKILL.md",
+      "gitBlob": "a062cb706c2aa3b79fc2b3f2687d840a2a233d19",
+      "sha256": "598fd2216e6e1bf448af664113150bd4ddc132dea06fd2d0d909ef4ec32ed318",
+      "bytes": 5341,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/architect/references/design-red-flags.md",
+      "gitBlob": "32cb24083f308fd67ab4c431b44e1d7d3563435a",
+      "sha256": "905066f9bbac81c573c2b325be47751d2c0f9325e0a0772bd4384e82dafe9336",
+      "bytes": 1944,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/architect/references/rationale-template.md",
+      "gitBlob": "a10f77f59510c532cd909faaf3bfeee5ffbfd588",
+      "sha256": "0cedfccdc7b47fc881febd5a8293eecbc542c20f8df825639904a8102d2eb5d3",
+      "bytes": 3050,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/architect/references/runner-prompt.md",
+      "gitBlob": "580ec47a5df4259a6a9ace5c452e33092053bb90",
+      "sha256": "983bf2820cc14ed8ecab6e448e1033e5cfe6031967d0a9287b48c7fa9c33d925",
+      "bytes": 3087,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/arena/SKILL.md",
+      "gitBlob": "2139ad1cd68e3e4d74d4bea8538193bff01f29f5",
+      "sha256": "191e48db2016f5fd2627e728a0ac0e47ee853e710ae7b82392b0a5dc29e55e44",
+      "bytes": 4507,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/automate-me/SKILL.md",
+      "gitBlob": "cd3636e9a53c7c782cf15254204dccfc854086b5",
+      "sha256": "1510979b0b71b54284427a19c09918f8b1fdfc168f9b7f9e30098793a5ec88ef",
+      "bytes": 7164,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/blast-radius/SKILL.md",
+      "gitBlob": "1713b283d477530be64e925ede2bdbe5ce2d6e31",
+      "sha256": "5f02db9101ccf26c20254718f0fcd5c2c7ac5d4292b0e0923d0944ac47237aff",
+      "bytes": 3851,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/bro/SKILL.md",
+      "gitBlob": "b1701b778639c08bfc306291d70170c525c66a68",
+      "sha256": "aa329d0ceeeecb6822a7174ad76bb07a7826a3c52ceb6a588dec4138815084bb",
+      "bytes": 267,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/create-verification-skill/SKILL.md",
+      "gitBlob": "f869e26122991252373d5b8f6357e5b9ff195a00",
+      "sha256": "644f2551403c1bca01a2855b34611b6e7be0ce0dc5b204514c376c0f6a6e6ac4",
+      "bytes": 5879,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/create-verification-skill/references/feature-map-example/README.md",
+      "gitBlob": "fb64570cfab3bbe672fe80925651933ebd57aa33",
+      "sha256": "cb7bd782cf89968a4ba3d58a5151db837430db92d19a6f52a906973b77b516ba",
+      "bytes": 2601,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/create-verification-skill/references/feature-map-example/create-note.md",
+      "gitBlob": "21357566b69223a503d6780a04fb90ce540eae22",
+      "sha256": "644a44c74f35d38c2feb7cd05a0121fdebbb623e8dc376c185b565a581d1ccf7",
+      "bytes": 2926,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/create-verification-skill/references/feature-map-example/search.md",
+      "gitBlob": "1f8e57d3aaf19cf27a9464d55fa72e46bcbc8b0f",
+      "sha256": "6e87b9e7f2791a7776ba1bb83f371cd285c306c67f19d245cc4dd6ca3015c823",
+      "bytes": 3478,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/figure-it-out/SKILL.md",
+      "gitBlob": "33973339b71a564fe58670ce0da99abecfba6bae",
+      "sha256": "3ff2079de3730b671effcca90e3d06357147bfeca19c924d1d6a76c52f402c22",
+      "bytes": 4124,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/how/SKILL.md",
+      "gitBlob": "a3a835fa660673903ee0cbc5262b3258bf897d7a",
+      "sha256": "d171118cb4c9fe6dd01968f9750020fb5fd9e7af97a303de6c0e163270906e18",
+      "bytes": 2718,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/how/references/explainer-prompt.md",
+      "gitBlob": "3a36fb6736c5b74ac2774350841e332a019dec94",
+      "sha256": "ddb89cebefc24e2b54517a331aedfe045b6971e101f45c71b8cef4cccff45bff",
+      "bytes": 3085,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/how/references/explorer-prompt.md",
+      "gitBlob": "9b4b0594bfd779015616e9d280369aba939583b4",
+      "sha256": "a3b44a6e5bb16a6d4d1cac19db8ed5322ffd5f5f5d45baca4e73990ca096f8be",
+      "bytes": 2684,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/interrogate/SKILL.md",
+      "gitBlob": "0fd70fd89293e36a333c362264a3cfe2da66c10f",
+      "sha256": "c71a1ba74871c233a28b8b246c653b3f193b58de45d9e19d63bd16b9f20ad22d",
+      "bytes": 4883,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/interrogate/references/code-quality-review.md",
+      "gitBlob": "50230358f9b6138caf66065b1084be595d453d81",
+      "sha256": "623d3d8122d075c303b562783b471a732992e84166b318f85ab6d6c118b13304",
+      "bytes": 5372,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/interrogate/references/lead-judgment.md",
+      "gitBlob": "5ce526097fdd3dfeaf4cd3b126a3f486c3ee36ae",
+      "sha256": "6e5bdf5670eb34017692e9b6c546f36ac7552e6bb9f3f2f3429164fcc46a9361",
+      "bytes": 3465,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/interrogate/references/reviewer-prompt.md",
+      "gitBlob": "53ffa747ff6af72ed24cc00e2622b2c14dd564a9",
+      "sha256": "a397cc61102add709803d917fb23d726920525bf23e7c06dc4ed0b5cbeb00e54",
+      "bytes": 2756,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/interrogate/references/rubric.md",
+      "gitBlob": "04bd4ca6d31a17694071c415c349128a3b404006",
+      "sha256": "59e9b7cc4556e735e1b859a7dd1f7637b013a2426a84825ac1c51979942c158a",
+      "bytes": 5096,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/maintain-verification-skill/SKILL.md",
+      "gitBlob": "a2680b91fead45a0b4963d8c367a854956bea59d",
+      "sha256": "515c0eaa054b3f6be1b1fb06f2c2f173c80fddb58bbcac57576f89c479bc68e8",
+      "bytes": 4922,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/make-bot-ui/SKILL.md",
+      "gitBlob": "285df7569758a70e62e9f3596a1f829a5b6ba80e",
+      "sha256": "3624c8ef16cf2e48deb2a4049e72c6962a9431c8d6c6af90e7bd7ea0375224ec",
+      "bytes": 4649,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/no-comments/SKILL.md",
+      "gitBlob": "3b3e76295a7ad66806dcc683e4de92fb25690f8b",
+      "sha256": "5c5b0882297d704c3a9720c52b7a793c68b013eaf717989f0945624efdfe2b05",
+      "bytes": 2560,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/SKILL.md",
+      "gitBlob": "5cec6fb87ac9b578631b121c24a1b4c0421d674d",
+      "sha256": "b0f3c37399df185f640f14f902e9c7dec6f30d54ba17cbacac623090d024b805",
+      "bytes": 19052,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/authoring-a-skill.md",
+      "gitBlob": "8c5a55a44f5e95bba92f652da0ac87e941c49538",
+      "sha256": "f6a13a445c360b48d6cd72780ac01955f45b82826476efe0e67c7559329407aa",
+      "bytes": 831,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/autonomous-run.md",
+      "gitBlob": "12c3a7d84effcacf3550cb893be67498d7b28a4a",
+      "sha256": "15e54ad3ac92565613980772d8708de6e19cc4690bfd4bb3fb8836522407377b",
+      "bytes": 1878,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/autopilot-full.md",
+      "gitBlob": "5456b79489978c20ca846d06104e9990bb0b7c44",
+      "sha256": "0dd8f3dbcf028468fc6d6534a017512d097fd35ffb6dd3e3d0aad729cae38311",
+      "bytes": 8720,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/autopilot-stack.md",
+      "gitBlob": "810a70fff72ae49a9387b5ea41dcb13f890c83c0",
+      "sha256": "f626f4ed17725de5ea96ac22597a1c298c46c36015e844bf86a68f6d38d57fbf",
+      "bytes": 5209,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/babysit.md",
+      "gitBlob": "73eddb732ad9d4a4c27c16e3cc6c41f78becc3e1",
+      "sha256": "51be21872152f97612d37258273269b88212b6696432d25d678cac30f02f4157",
+      "bytes": 8010,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/bug-fix.md",
+      "gitBlob": "7deba2c88ebc708a541ad226e904217c3eeceecd",
+      "sha256": "7dea48e47a866a2c2ad63250bc562da3afdc52d53cbe2052e85b0a33308a6ee7",
+      "bytes": 2333,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/eval.md",
+      "gitBlob": "3dae34e2ef0cbdd9bafa5ab372da5ea143d48452",
+      "sha256": "b862bfa2fae2399abf047a8e80d3e3dddb64003af96fb1cebb625216131e36bb",
+      "bytes": 2524,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/feature.md",
+      "gitBlob": "42ca2b572364416a18b2c011a39b289e029095c7",
+      "sha256": "a869e3f23324139c9be4798d7729aa1d59cae7bee0145c7ea7b4ca2525e8c146",
+      "bytes": 2911,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/hillclimb.md",
+      "gitBlob": "582555e826675068ceaea08e6134a44ba0ea4511",
+      "sha256": "41980da135de2579bb38570e4b3373e015029148734ab5dc7d6103417b499af6",
+      "bytes": 4081,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/investigation.md",
+      "gitBlob": "cd119f04f23e0b7acb3f8cc5ba13ce4ab7aa6c7d",
+      "sha256": "dc66bcf6af3a074fc7f67aa5e12b93ef571a4fb4d8e17f2f1af5ae5359f42e46",
+      "bytes": 928,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/multi-phase-plan.md",
+      "gitBlob": "ac92ba53be6498b308b888affb05065fa62c1cec",
+      "sha256": "dd77f3728e81789807f9069194c9e05a97f7a941e65f5de09f9b3170b2776a79",
+      "bytes": 13090,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/opening-a-pr.md",
+      "gitBlob": "a5c65a0959d0c37ebd12d5636710c4e0f91fba88",
+      "sha256": "b173ff9638ff62f91f6813c1a0ed3417cdf9f6545a659be0c1fb1f42130e0e66",
+      "bytes": 4923,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/orchestrate.md",
+      "gitBlob": "d5b6d008026ff0177f52e22a6fb4b2edae5c87e2",
+      "sha256": "d42b4375f1bd4ce23da0b575a198571a2117df7eea10c3c9fc6d92ae1053f7be",
+      "bytes": 16779,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/pause-safely.md",
+      "gitBlob": "9d1c5f8303976fff40de099f7f28185909430c11",
+      "sha256": "77968cfe5f4a71a8cd33e0ae8ffcdbd88dd693a212c240457773e6c40c96c21d",
+      "bytes": 1135,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/perf-issue.md",
+      "gitBlob": "688d483d4d4a6c58efa515558c822e11f621540f",
+      "sha256": "bb957907426666b7aa599aed3f6ddebf423364a1428f93790b5cb9e15c878e7e",
+      "bytes": 3074,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/prototype.md",
+      "gitBlob": "18bedc7e9249d180f9198d5b4b13e3817d41d281",
+      "sha256": "7aa1f52c691c3d46d5afc527b23f90977fce869ce33573c73c81a4c7f0cde962",
+      "bytes": 2161,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/refactoring.md",
+      "gitBlob": "ee66cdfbe53ee0cade74ac749e08d076ce775c20",
+      "sha256": "0117e5f29030cfd027f9f897a21ee5cbb3f9793f0d4bd0d11cc28eaf0405fe16",
+      "bytes": 3316,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/runtime-forensics.md",
+      "gitBlob": "ba659bfe1c4c2f956f3285974bfdc941120f9948",
+      "sha256": "594f02c40c243a346e1f57b688ecf2ed5e882f21b3d24ed2204d1ac6f1c24a8a",
+      "bytes": 1210,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/session-pickup.md",
+      "gitBlob": "9b2ed06e0ff8b01bf03b7a0d6a4cbb8ba3a46720",
+      "sha256": "1604fb463f7c7410d43fa024ca76c1c1824c166a01fd69d61f073d06fdca2a47",
+      "bytes": 1678,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/shipping.md",
+      "gitBlob": "0f1d41f189222b991734015926a3b22607e1b92f",
+      "sha256": "19f3f6803a7bbe9ff04f624b03e3b55f07ac0a05e991aa00d5fe51239b920b2a",
+      "bytes": 5439,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/trace-forensics.md",
+      "gitBlob": "48ed6b2f690215027eda96a1897ed98212bbd07a",
+      "sha256": "137ce3984fb96e45971fdff4d3c79fa4ccc647c5b30ae4945783b9fb23f8cec7",
+      "bytes": 1865,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/visual-parity.md",
+      "gitBlob": "248830ec74a593fc22143a842026388f92f1b9f4",
+      "sha256": "950ca51999a6454c98eee6bcbc3d1bbe501a4e3a5d5439b6f6ddc378991b256c",
+      "bytes": 1197,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/worktree-cleanup.md",
+      "gitBlob": "39c9ef9f368ac63b0e4245503302a4c174e846d6",
+      "sha256": "fc464dc4121926df1704f483c5feca83717c0a40b4651d3e11bd3aedd89441b6",
+      "bytes": 2932,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/references/bugbot-triage.md",
+      "gitBlob": "b2fc7d35712783707607cf2f39752885c8d5105c",
+      "sha256": "b2d146c770d8d3593e1ef3d77b668039b8e1f78093ea1a86f1d45d7f99614309",
+      "bytes": 9629,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/bootstrap.ts",
+      "gitBlob": "d9c63e2007449a80000abe75ecaf7f2a0bd5826b",
+      "sha256": "ccd2ed08fd9da9d0d942e5f2491cfc74bb92d8a08fa51755e0da1ac8de287361",
+      "bytes": 1737,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/bun.lock",
+      "gitBlob": "65f0c662f300a0f72b319ca93ea18f56219c2581",
+      "sha256": "667d9cf7222e9aae3fa42a4be383e657784216e9df115da02227fbc5ac7bbe46",
+      "bytes": 6679,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/check-plan.mjs",
+      "gitBlob": "cdb272750cd649c6d4b6bee6f52409e4eb1a314f",
+      "sha256": "d9736d08134b9f21c15b26b334d9a27cfb2870ebd5615a0b46482b611f2692f2",
+      "bytes": 7630,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/orch/orch.test.ts",
+      "gitBlob": "9c234de724991083b4644e906a5f1358f8ef8dcc",
+      "sha256": "174b86d21ff51ccd28d1a8c938cb2e0c6fa287b209d4ca6c03932fcb1b53372e",
+      "bytes": 18424,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/orch/orch.ts",
+      "gitBlob": "219ac17bd8805b45140eca7c429834be9ded1b7d",
+      "sha256": "f091687df627a0b75fabd54af58945a9cd6c7039ef0622012ac9ed60cd8ec434",
+      "bytes": 15511,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/orch/store.ts",
+      "gitBlob": "5e6c602fb670a6b5598977f5bf85d717cf797ef7",
+      "sha256": "0eae7cf69282e827b1227166f2e32cee3560f2f3e65b3f1f2faf6fb83d3b4c5b",
+      "bytes": 42927,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/package.json",
+      "gitBlob": "8a3dfe27c2d0221a786e1ce61963d51c55260725",
+      "sha256": "d1f815091209d49763775cc188e8e06ff32d5fec648bffd2272bc25a165e87c3",
+      "bytes": 352,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/cli.test.ts",
+      "gitBlob": "0656b413e6c180858ca42981105944c45caf9dca",
+      "sha256": "a35592b4c6da96caf8d47987e9cd503fab6c7774ab87d11a43f24b4b5df2a9d1",
+      "bytes": 6161,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/cli.ts",
+      "gitBlob": "ec8a2f27c5ac24866b699e6395e7d1f32e595068",
+      "sha256": "89c08863089181a232be782c4b2ed90a1552f44aeecb0dcb7aac2c623620e680",
+      "bytes": 6983,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/fakes.test-helper.ts",
+      "gitBlob": "2312522cd7399334115a5f39fd6438aab7fc5aa5",
+      "sha256": "e53e31b7f03068063f53a99a3591b052aaed66e4e2b196b3a364980f60324ab1",
+      "bytes": 2944,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/github.test.ts",
+      "gitBlob": "87f4048f08a63a54975c4ef2de8065375e751683",
+      "sha256": "0cbce011050522938523e36bb42a260e92b812dcd2076930fa681672ad316b24",
+      "bytes": 9059,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/github.ts",
+      "gitBlob": "79bc06fb682c5d99de7d48338b0a6ecd27a518da",
+      "sha256": "d1bbbafbe8e2c703c84da2029de7f2c4011412512f8cf65a42100f46bcb92c8a",
+      "bytes": 24072,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/policy.test.ts",
+      "gitBlob": "0620ddedde46da8e763ab2a55ebceaad2aa6d0a7",
+      "sha256": "a9fedb25feefd1f57ef6a662f80c99018690170a3a8070773a08eaf694d1d3d9",
+      "bytes": 12397,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/policy.ts",
+      "gitBlob": "4665be37e8f9afff1c9e1f5dd60d98e0d70c8c6c",
+      "sha256": "68d240505852cf23c9b2dea463342e9e61243f486b3cc86c735d140f9ee7be49",
+      "bytes": 25132,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/render.ts",
+      "gitBlob": "0e935839357335f24ab1bbc193d761495646ea99",
+      "sha256": "2b709e86628d5b8fdb61f860e60ababc342b0626c67576305442cf548283a604",
+      "bytes": 7083,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/tsconfig.json",
+      "gitBlob": "477af90b05cbd24fcf974fd73cf331d5ac7379cc",
+      "sha256": "1ecccc72320b086c63ce3f73c959896fd747363e63553b3b1136296ea4069e45",
+      "bytes": 270,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/types.compile.ts",
+      "gitBlob": "1b53279c7f3e5da55703ed17d6ad0616254c5751",
+      "sha256": "621af4c9a664fbf699a9737efccdc248abb416df8819c9dc5f824beae2b9b1d6",
+      "bytes": 2258,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/types.ts",
+      "gitBlob": "b67144e0d757e0b61ff079f981ced0a98555ea9d",
+      "sha256": "64ba6221e3bfe61bbb292337d199cdec6309455477280efb060203dba34e0e91",
+      "bytes": 12359,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/watch-pr",
+      "gitBlob": "99807d577c3b006cfe6ee9e149cf2914bfd4afd6",
+      "sha256": "d955603be6cc0e8b8ffcec722f635192b2261410b1f2929abea94480e47eb5d4",
+      "bytes": 211,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/poteto-mode/scripts/worktree-audit.sh",
+      "gitBlob": "b9af08160032aeb17143248f2a3648e98f5a75b3",
+      "sha256": "95b8530f3c0ccada8cabc4b0727c052fbc85c141531375aaace65c427af8aecc",
+      "bytes": 3984,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-attack-the-premise/SKILL.md",
+      "gitBlob": "f9785ff9fdcf37d1c689e4468da7d611f3b76d4b",
+      "sha256": "c87bd7536f772f8a403ad8155535ee17a1bbec9a353156693eb3bb1520c87ae3",
+      "bytes": 1941,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-boundary-discipline/SKILL.md",
+      "gitBlob": "dfe9a6fb0e5acd6ae43a41437ee0951adfe839cb",
+      "sha256": "62ac2862c2caa22dd14531f51c9c6bb445ceb198ca98a687e25b4d47c1f10a28",
+      "bytes": 1883,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-build-the-lever/SKILL.md",
+      "gitBlob": "277189a10b00fddc7cbb63fcf2323c7341abb0df",
+      "sha256": "458b269eab8e95a1573276955312f7d2a13ae8599879a9efc748248f6bc34b56",
+      "bytes": 2458,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-encode-lessons-in-structure/SKILL.md",
+      "gitBlob": "df9cd5ff2fb3c18267349cc6aecd8121848ef834",
+      "sha256": "77044c83a9ac6df78fc643887ea5f1f11f082adaf14b717c060cdaed03cce863",
+      "bytes": 2211,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-exhaust-the-design-space/SKILL.md",
+      "gitBlob": "85dd16f1312f3427e2dddcfc8e7deb89e2555bb3",
+      "sha256": "8583310d7297b7823d75494faa57b003564d436807febecdecbd8321abe5cf6e",
+      "bytes": 1152,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-experience-first/SKILL.md",
+      "gitBlob": "5ea51741302cf3af4cc0b90ec70815bd3208dbf2",
+      "sha256": "58903529d733b1c1a7c9ccf127d45ef3c7d0d9f0b81164a4dc6b80efe6f2912b",
+      "bytes": 1184,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-fix-root-causes/SKILL.md",
+      "gitBlob": "7e5a419aeec97b4076fa517865013677428a9fa3",
+      "sha256": "ba4cd38da1dcc8fe5432feb64457cba95594736a9b21b2ebf8f8c52aee068707",
+      "bytes": 1246,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-foundational-thinking/SKILL.md",
+      "gitBlob": "19cc6c0eaa6fcbc2863fb73d1d25ca196c6a46e0",
+      "sha256": "864b827e8199d946ce58beca0f89c4ed4099ed6e426fb698a3aaa45de2a9eea2",
+      "bytes": 1530,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-guard-the-context-window/SKILL.md",
+      "gitBlob": "eb2cecc40f9d830dc077009f93a467be69f195a2",
+      "sha256": "9f60e2c79b35f865cb103462f9128c6760b70f603475d1e535e5930f61840f66",
+      "bytes": 1067,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-laziness-protocol/SKILL.md",
+      "gitBlob": "e5bc77e62aa96ae13e482a84df61b3c711c5d828",
+      "sha256": "9006579e9e3f33955d17569733db688ae65f22577dc3b21803d219a5a8445aff",
+      "bytes": 1371,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-make-operations-idempotent/SKILL.md",
+      "gitBlob": "a0834247ca99b09c11441747717a8034d4c22d7c",
+      "sha256": "540738217c3da7bf513b9886924ad6a2bc77e58be867f5bd2e1831c74bf2ce70",
+      "bytes": 1390,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md",
+      "gitBlob": "06c7cfd87becc62d614d0af075b792f8ec6eb21d",
+      "sha256": "09978915a4a11990cf0a9a02d9c08cc59e0b7a04c5c24b83aa560fbe4146f75b",
+      "bytes": 1146,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-minimize-reader-load/SKILL.md",
+      "gitBlob": "64541d963123e344078d82fd3977e857e76129df",
+      "sha256": "42551c5dc74cd578163c148da552db3ff67d29b78600ef216bfd311fb828fe69",
+      "bytes": 2095,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-model-the-domain/SKILL.md",
+      "gitBlob": "e1d664a19243c90a84e5e7a816e9e05146c88720",
+      "sha256": "bbadbb9a723fac3f76e782ae45665eb94058ec10993e4bae36d4dc6b0e4eac07",
+      "bytes": 2082,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-never-block-on-the-human/SKILL.md",
+      "gitBlob": "46d410715c0f36cc43f6774dac9f89b3404e9aa4",
+      "sha256": "d82bce9ab9193249d1ec0d514202d89602f0fd3d312174d622c2dd222bae5a2e",
+      "bytes": 1343,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-outcome-oriented-execution/SKILL.md",
+      "gitBlob": "4c2ed4695b4ca15ea5a98468c13bfe5de97f16df",
+      "sha256": "beedcaed75572a6a1662d47f16da203c2bd2c9dbffbbd678d4ba187d67b7e670",
+      "bytes": 1132,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-prove-it-works/SKILL.md",
+      "gitBlob": "b596462649a6a6b9f0a2d87e1052678cb0c1a9a6",
+      "sha256": "0fcfadbc93a367bc0b633ab206e25fff013b36c72ab18a5fdc9794525e59a38c",
+      "bytes": 1795,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-redesign-from-first-principles/SKILL.md",
+      "gitBlob": "090a4325f43a96080cce3895f0e932b62c39146a",
+      "sha256": "a1c7fd0a96b40e12a74bceb0e6bb20a9666dd844dcabfb624acb27da23b929fe",
+      "bytes": 844,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-separate-before-serializing-shared-state/SKILL.md",
+      "gitBlob": "ff93b4a2032c08e2232992a9a24f2891ee14e58f",
+      "sha256": "05294b40448e927c5da1c7b6f5c6b9fed3744637e3833d2d948b9154a9dd00bb",
+      "bytes": 1565,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-sequence-verifiable-units/SKILL.md",
+      "gitBlob": "986371260ebccd9a5a6818c9561e88c1d270d0ee",
+      "sha256": "2ccbbacc56ace5afdfb8670cef19d7bd009fb2a0033b9a741cbdf2b6baf72187",
+      "bytes": 1705,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-subtract-before-you-add/SKILL.md",
+      "gitBlob": "d28770cf47a5798d0250a25ad494aedfecad154e",
+      "sha256": "a983a50e732c1ed315eba7aaf47a61329e31c4794eb1ab9d25d9945265b31e03",
+      "bytes": 1094,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-test-behavior-not-implementation/SKILL.md",
+      "gitBlob": "42de6f8f7cab01b9f67aa28bd59b128f7574fbab",
+      "sha256": "87e40efe4e486f7ea639d2ed1fc0abe6c93b8fd0e89a81218086909d2470a52e",
+      "bytes": 2575,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/principle-type-system-discipline/SKILL.md",
+      "gitBlob": "6030f171bee0d1902cf7ca91f06225e09f0f5433",
+      "sha256": "c83da8031ffb4c86410030d3e261f659598fca2b7d8158fd9dc269d70a3a025e",
+      "bytes": 4922,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/recall/SKILL.md",
+      "gitBlob": "a70062a3f89a8d68b3391bc71fc4c6cc2dfcf6a4",
+      "sha256": "d265b0e5b6dc5b89c0407f3387d24462c988e1990a37d5359735137908128c5a",
+      "bytes": 5212,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/reflect/SKILL.md",
+      "gitBlob": "827b5e9cca8c301d42d3e84fedf40c53ea3f240f",
+      "sha256": "f32b1e21763a70afffcf4aa21e7544e517033d10c21948fca21b2bdae55604d5",
+      "bytes": 4558,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/reflect/references/divergent-reviewer.md",
+      "gitBlob": "73969d847dd97f2d714df20d27359ce98ad0f7cc",
+      "sha256": "7da0334ce282e6d8d7349c0cff14ffbd10a91a756c0b5c3ccc97291f57b8bed6",
+      "bytes": 3883,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/reflect/references/judgment-reviewer.md",
+      "gitBlob": "830213aedff81c5b27462988201663e1f0229a72",
+      "sha256": "917bb2ad21240a42b440aeb2a17766092e09f70d0982417b2f4caa6d74f27164",
+      "bytes": 3249,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/reflect/references/synthesizer.md",
+      "gitBlob": "d0e78195186c0dd6cfdc87ba19402ea8cd2aa385",
+      "sha256": "2f76c847eb45b182dc6fbcbf7d96c8ee7e2986ecfd9e0d640fec44e3cc5a617c",
+      "bytes": 4164,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/reflect/references/tooling-reviewer.md",
+      "gitBlob": "e7fcd9e669c5a10664f4a14d8856af6978f9e535",
+      "sha256": "8c74ebf7811801d634db7ab609b097d77ea00ab77bb4b258d69bd96e671cfa39",
+      "bytes": 4603,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/setup-pstack/SKILL.md",
+      "gitBlob": "0246157bc06c81155e6ee3fefd0892c5a31e9a80",
+      "sha256": "7df7503a01c86479e6a8ca4c34c8b6155afc1a10c6f89f79a7b48a7b507ac1c3",
+      "bytes": 5420,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/show-me-your-work/SKILL.md",
+      "gitBlob": "e2d8b3be9879ae9ba547aeddd602fea2383c6886",
+      "sha256": "1234ea255877acd096c8c1ed65c1999d6d5a63c222f69bd9d4374d685e633238",
+      "bytes": 5352,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/show-me-your-work/references/decision-log-template.tsv",
+      "gitBlob": "db220376ecb8c582a6a4f6575a8f26469603a38d",
+      "sha256": "6779378006a2f5225e8c06deb84f1d913fb532041ebbb6e50d94600bfe3f4b76",
+      "bytes": 38,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/show-me-your-work/scripts/log.sh",
+      "gitBlob": "052e53b7e1090579eaec1d3d59f7a1cd2f2e452a",
+      "sha256": "a65a4bc5fb7cdeadbdb7b7ff1ca4682f4d9c42420942b2977cd17b46c4ac338e",
+      "bytes": 1377,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/swarm/SKILL.md",
+      "gitBlob": "bd308e8f56febdf6f43fea6b13679e762ecd9839",
+      "sha256": "26ea50ab6cf92b140949cc39eb690410fc74d45db34ae511f357d741f92aaf77",
+      "bytes": 2642,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/tdd/SKILL.md",
+      "gitBlob": "6f4933ff41e298b0562ea1c1239cd33046634b88",
+      "sha256": "706b30f046f28f492e90a06c1f576b0ae78060ea11461087a3878e7e40c6141c",
+      "bytes": 3405,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/teach/SKILL.md",
+      "gitBlob": "25369f3f554ed6b5826340ae3eee688fac0bda80",
+      "sha256": "bd286e5a6290673be2cd28aef7af2ec7f1fb138e6bce156ea657368c7e7fc8a4",
+      "bytes": 5623,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/technical-writing/SKILL.md",
+      "gitBlob": "1cd44cf2595a5caeda1f702aacd4f8a25aa8166a",
+      "sha256": "10c74685e1639cc4f8ff096007e5405b25ca0e824b65aaa17105c238faf6a1e8",
+      "bytes": 10205,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/typescript-best-practices/SKILL.md",
+      "gitBlob": "2c0279d9a5f800192605e47b55cae4e75a17ec27",
+      "sha256": "28f9e61710e205f6f3c5476f333483cff0e988f6a5b639e2faad536344b40c5e",
+      "bytes": 2684,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/typescript-best-practices/references/patterns.md",
+      "gitBlob": "f44d22ffe9130c5340d55a2fa57028c6959479cb",
+      "sha256": "62e9cd32d2fa066a35d0d1349aac22dce31a48ad7d5eaf142570770cfe707384",
+      "bytes": 8860,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/unslop/SKILL.md",
+      "gitBlob": "229a090708710c36caa0017f8d33e90880dc6846",
+      "sha256": "195411d320b5b328f9f642baf59757ed19aaf0931c0838740e0aca273d538dc1",
+      "bytes": 6015,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/SKILL.md",
+      "gitBlob": "79b526077dd843ea3e907dd5d86e470260efbeda",
+      "sha256": "5359ca2077226dff35c9830100df0503d4b49ff21c9d1c4ad5cbd413253d103a",
+      "bytes": 9989,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/epistemics.md",
+      "gitBlob": "3732bf6881b60d1337fa3498574452a85d33ba30",
+      "sha256": "fcc0f559c072832c869a5ada72434b4849320a637ae63c09e8ee14f7ad787059",
+      "bytes": 7749,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/investigator-prompt.md",
+      "gitBlob": "3b56af44c589833508f4605cfdd4432b39a16739",
+      "sha256": "6892956a7ab0b5ee6c4babaf4f793703abe89b350ea7cb9463b4a56eea1c8266",
+      "bytes": 6985,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/source-playbook.md",
+      "gitBlob": "aa3d877cd539763ff05e266ae0a02dd811441e2b",
+      "sha256": "9ae9dcb9d09111c9facc68510331c5aba4aed9b1b057314ff1fc0e166ad3993a",
+      "bytes": 1363,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/code-archaeology.md",
+      "gitBlob": "32d5f97f8d2d3974c668f5f0392737b7e8e25afd",
+      "sha256": "8c14aa382f0de40829b2668d43e3f54814480bb93a486c9282ada4003f6b9dbd",
+      "bytes": 3489,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/databricks.md",
+      "gitBlob": "2770763ff5d0d1ad004abcc9a0138c9537ad1978",
+      "sha256": "236ede7aab6454662a992db088a5393537a5233a4c26719c93188f9e174488f6",
+      "bytes": 6994,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/datadog.md",
+      "gitBlob": "d8363b1c1d1c7eadb15d47abd83bf70537c39620",
+      "sha256": "ebe9c07bac28e47757ee7f16fb93b0c01d427a08c501957d047f395a2f37b7e7",
+      "bytes": 5323,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/incident-postmortem.md",
+      "gitBlob": "450d6e52f25b1b41f741cb3e9c93e1c74ef858b4",
+      "sha256": "a899470f05f86029630a13a2696491cc708ca7b56a6e822a69ff6e954d6ff8cf",
+      "bytes": 1973,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/linear.md",
+      "gitBlob": "899c643c078f322afe6ae0ef78a007f8ffd356c1",
+      "sha256": "01304e7f1badfcfb78babbb0edcadeb3cc8dd3f713793420cdff24ba190f907c",
+      "bytes": 2996,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/notion.md",
+      "gitBlob": "d16230a4105fd1dacf870da0950a38faeb9381e6",
+      "sha256": "3bcfa695c49dfad4ac036d5d7181c12585f55ac04f1936198d16ab75a2788997",
+      "bytes": 2853,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/sentry.md",
+      "gitBlob": "2b7cf6f3098ee868547dc4e69efacfe9c255246b",
+      "sha256": "6f292bc4fb1548e956f95e1900b9481abf5134254419f1cd9edec95428c82d73",
+      "bytes": 4947,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/sources/slack.md",
+      "gitBlob": "863a527d60e4e055e680834ef8098ea04273a1ae",
+      "sha256": "58fee61d024b3700b407e7acbed367944720ff05adfddb6954d36c88368f3ba7",
+      "bytes": 3105,
+      "encoding": "utf-8"
+    },
+    {
+      "path": "skills/why/references/synthesizer-prompt.md",
+      "gitBlob": "9707dfcc2fc57ea126484a433c5cd9ee4d400ef3",
+      "sha256": "733a3e9cf897b1aca56aaddeae01a3832e4bfed024c2f602db2d1bf807d7a73b",
+      "bytes": 7984,
+      "encoding": "utf-8"
+    }
+  ],
+  "decisions": [
+    {
+      "source": "skills/architect/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/software-design/index.md"
+      ],
+      "rationale": "Trace the consumer path, compare structures, write usage first, hide invariants. Remove automatic panels at every function boundary."
+    },
+    {
+      "source": "skills/arena/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/references/bounded-delegation.md"
+      ],
+      "rationale": "Compare independent alternatives, choose a coherent base, synthesize deliberately, then verify the new candidate. Agreement alone proves nothing."
+    },
+    {
+      "source": "skills/automate-me/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/reflection/references/learning-and-placement.md"
+      ],
+      "rationale": "Capture explicit preferences and supported habits in their private owner. Do not generate public personal-mode policy or infer scheduling authority."
+    },
+    {
+      "source": "skills/blast-radius/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/code-review/references/impact-analysis.md"
+      ],
+      "rationale": "Trace direct and hidden consumers, test load-bearing dependency assumptions, separate confirmed, cleared, and unproven risks."
+    },
+    {
+      "source": "skills/bro/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/research/references/explanation.md",
+        "AGENTS.md"
+      ],
+      "rationale": "Restate the claim plainly, supply the missing concept, preserve consequential caveats, and stop. No separate wrapper needed."
+    },
+    {
+      "source": "skills/create-verification-skill/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/project-verification/index.md"
+      ],
+      "rationale": "Discover the real surface and harness; define launch, doctor, driver, evidence, cleanup, and a runnable initial feature map."
+    },
+    {
+      "source": "skills/figure-it-out/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/references/implementation.md"
+      ],
+      "rationale": "Define falsifiable done, capture baseline, resolve the riskiest unknown, inspect artifacts, and distinguish verified from inconclusive."
+    },
+    {
+      "source": "skills/how/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/research/references/mechanics.md"
+      ],
+      "rationale": "Trace real triggers, calls, types, state, boundaries, and failures. Separate exploration evidence from the reader-facing mental model."
+    },
+    {
+      "source": "skills/interrogate/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/code-review/index.md"
+      ],
+      "rationale": "Use focused independent lenses and a shared evidence rubric; adjudicate each finding. Remove vote-based truth, quotas, and compelled restructuring."
+    },
+    {
+      "source": "skills/maintain-verification-skill/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/project-verification/references/create-and-maintain.md"
+      ],
+      "rationale": "Reconcile feature coverage, repair owned harness drift, distinguish product regressions, and preserve unverified routes. One driver owns each app instance."
+    },
+    {
+      "source": "skills/make-bot-ui/SKILL.md",
+      "kind": "skill",
+      "disposition": "Defer",
+      "destinations": [
+        "skills/operations/references/external-handoffs.md"
+      ],
+      "rationale": "Retain server-side secrets, authenticated narrow actions, and untrusted payloads. Exclude host-specific installation, network exposure, and vendor backend assumptions."
+    },
+    {
+      "source": "skills/no-comments/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge corrected subset",
+      "destinations": [
+        "skills/operations/workflows/code-review/references/structure-and-constraints.md"
+      ],
+      "rationale": "Treat comments as evidence of missing structure or hidden constraints. Preserve useful rationale until its replacement is verified; reject ambiguous deletion."
+    },
+    {
+      "source": "skills/poteto-mode/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge selected routes",
+      "destinations": [
+        "skills/operations/SKILL.md"
+      ],
+      "rationale": "Retain candid judgment and concrete workflow distinctions. Exclude persona, compulsory wrapper chains, fixed models, and blanket external-write authority."
+    },
+    {
+      "source": "skills/principle-attack-the-premise/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/elon-method/references/first-principles.md"
+      ],
+      "rationale": "After repeated premise-sharing failures, name the assumption and run a distinguishing check. Actor imbalance census is one example, not the universal method."
+    },
+    {
+      "source": "skills/principle-boundary-discipline/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
+      ],
+      "rationale": "Separate representation, validation, and policy at owning boundaries. Internal types do not erase changing trust, lifetime, or concurrency conditions."
+    },
+    {
+      "source": "skills/principle-build-the-lever/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/elon-method/references/algorithm.md"
+      ],
+      "rationale": "Use rerunnable instruments when scale, reproducibility, or recurrence earns them. Do not require tooling as an extra deliverable for every task."
+    },
+    {
+      "source": "skills/principle-encode-lessons-in-structure/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/reflection/references/learning-and-placement.md"
+      ],
+      "rationale": "Prefer a schema, check, metadata, or runtime guard when it can enforce the lesson. Keep judgment, rationale, and authority that mechanisms cannot replace."
+    },
+    {
+      "source": "skills/principle-exhaust-the-design-space/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/compare-designs.md"
+      ],
+      "rationale": "Compare meaningfully different designs for real uncertainty. Bounded alternatives suffice; forced or established designs need no exploration quota."
+    },
+    {
+      "source": "skills/principle-experience-first/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/index.md"
+      ],
+      "rationale": "Begin with consumer interaction, failure, and recovery. Respect confirmed priorities instead of making visual delight override reliability or scope."
+    },
+    {
+      "source": "skills/principle-fix-root-causes/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/references/reproduction-and-cause.md"
+      ],
+      "rationale": "Explain the mechanism and reproduce the original trigger. Guards and retries are legitimate when their input and failure contracts justify them."
+    },
+    {
+      "source": "skills/principle-foundational-thinking/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
+      ],
+      "rationale": "Choose representations and dependency order before scattered logic. Foundational work needs a current constraint, not speculative future usefulness."
+    },
+    {
+      "source": "skills/principle-guard-the-context-window/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/references/orchestration.md",
+        "skills/operations/references/bounded-delegation.md"
+      ],
+      "rationale": "Bound context, use precise packets and evidence pointers, and avoid transcript dumps. Never omit mandatory full instructions or direction to compress."
+    },
+    {
+      "source": "skills/principle-laziness-protocol/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/elon-method/references/algorithm.md"
+      ],
+      "rationale": "Remove unnecessary layers, branches, and coordination. Judge total consumer burden rather than fixed file/layer counts or minimum changed lines."
+    },
+    {
+      "source": "skills/principle-make-operations-idempotent/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
+      ],
+      "rationale": "Name operation identity, commit point, durable result, and reconciliation path. Retries must not duplicate effects; PIDs alone do not prove ownership."
+    },
+    {
+      "source": "skills/principle-migrate-callers-then-delete-legacy-apis/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
+      ],
+      "rationale": "Migrate controlled consumers and remove obsolete paths. Retain explicit compatibility when external clients, persisted data, or independent deployment require it."
+    },
+    {
+      "source": "skills/principle-minimize-reader-load/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
+      ],
+      "rationale": "Reduce hidden state and unnecessary caller knowledge. Keep a boundary when it owns meaningful policy, even with one current caller."
+    },
+    {
+      "source": "skills/principle-model-the-domain/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md",
+        "skills/operations/workflows/domain-modeling/index.md"
+      ],
+      "rationale": "Choose states, reducers, registries, and collections from invariants and access patterns. Avoid structures that make local clear code harder to understand."
+    },
+    {
+      "source": "skills/principle-never-block-on-the-human/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge existing owner",
+      "destinations": [
+        "AGENTS.md"
+      ],
+      "rationale": "Proceed through authorized reversible work. Reversibility does not itself authorize messages, spending, deployment, or scope changes."
+    },
+    {
+      "source": "skills/principle-outcome-oriented-execution/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
+      ],
+      "rationale": "Use explicit transformation boundaries and converge on the target. Temporary breakage stays isolated and cannot masquerade as review-ready output."
+    },
+    {
+      "source": "skills/principle-prove-it-works/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/references/verification.md"
+      ],
+      "rationale": "Inspect the real artifact and discriminating result. Validate the observer too; a suspiciously easy pass may mean the intended behavior never ran."
+    },
+    {
+      "source": "skills/principle-redesign-from-first-principles/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/index.md"
+      ],
+      "rationale": "Use the new requirement to challenge inherited shape. A greenfield sketch informs the smallest authorized change, not an automatic system rewrite."
+    },
+    {
+      "source": "skills/principle-separate-before-serializing-shared-state/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
+      ],
+      "rationale": "Separate actor-owned facts when semantics permit; otherwise enforce real serialization. Include services, ports, databases, and topology in ownership."
+    },
+    {
+      "source": "skills/principle-sequence-verifiable-units/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/change-existing-systems.md",
+        "skills/operations/references/implementation.md"
+      ],
+      "rationale": "Give meaningful transformations checkable boundaries. Preserve final combined proof and dependency readiness; do not publish broken intermediate merge units."
+    },
+    {
+      "source": "skills/principle-subtract-before-you-add/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge existing method",
+      "destinations": [
+        "skills/operations/workflows/elon-method/references/algorithm.md"
+      ],
+      "rationale": "Delete unnecessary machinery before optimization. Preserve unique regressions, required compatibility, user work, and evidence-backed defensive behavior."
+    },
+    {
+      "source": "skills/principle-test-behavior-not-implementation/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge corrected subset",
+      "destinations": [
+        "skills/operations/references/test-design.md"
+      ],
+      "rationale": "Use public behavior and independent oracles. Correct false undefined examples; retain meaningful negative assertions, boundary mocks, and exact product contracts."
+    },
+    {
+      "source": "skills/principle-type-system-discipline/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/typescript.md",
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
+      ],
+      "rationale": "Encode valid states and parse boundaries. Explain mutation, brands, predicates, casts, and the actual limits of static guarantees."
+    },
+    {
+      "source": "skills/recall/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/research/references/recall.md"
+      ],
+      "rationale": "Recover scoped intent, corrections, recurring problems, failed attempts, and reverts. Reconcile history with canonical and live state before resuming."
+    },
+    {
+      "source": "skills/reflect/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/reflection/index.md"
+      ],
+      "rationale": "Apply judgment, tooling, and alternative-explanation lenses. Diagnose missing guidance, trigger failure, placement, execution, or mechanism before adding prose."
+    },
+    {
+      "source": "skills/setup-pstack/SKILL.md",
+      "kind": "skill",
+      "disposition": "Defer to existing owner",
+      "destinations": [
+        "AGENTS.md"
+      ],
+      "rationale": "Discover actual model availability and honor explicit budgets. Do not import another per-role routing file, model-slug policy, or installation surface."
+    },
+    {
+      "source": "skills/show-me-your-work/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/references/orchestration.md"
+      ],
+      "rationale": "Keep optional material-decision history with receipts and explicit corrections. Canonical current state remains on the Issue; do not create a second ledger."
+    },
+    {
+      "source": "skills/swarm/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/references/bounded-delegation.md"
+      ],
+      "rationale": "Distinguish required coverage, optional alternatives, and races. Missing required slices remain gaps; define aggregation and stopping before dispatch."
+    },
+    {
+      "source": "skills/tdd/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/references/test-design.md"
+      ],
+      "rationale": "Observe a practical regression fail for the intended reason, then pass after repair. State evidence limits when a useful deterministic seam is unavailable."
+    },
+    {
+      "source": "skills/teach/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/research/references/explanation.md"
+      ],
+      "rationale": "Explain the problem and mechanism through a concrete example, layer detail, and preserve historical confidence. No forced diagrams, quizzes, or premature stopping."
+    },
+    {
+      "source": "skills/technical-writing/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/technical-writing/index.md"
+      ],
+      "rationale": "Select tutorial, how-to, reference, or explanation by reader need. Keep visible results, conditions before actions, exact terms, and meaningful tradeoffs."
+    },
+    {
+      "source": "skills/typescript-best-practices/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt corrected reference",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/typescript.md"
+      ],
+      "rationale": "Retain purposeful unions, parsing, and consumer types. Correct invalid-range, nonempty mutation, satisfies, cast, and transport-coupling overclaims."
+    },
+    {
+      "source": "skills/unslop/SKILL.md",
+      "kind": "skill",
+      "disposition": "Merge",
+      "destinations": [
+        "skills/operations/workflows/technical-writing/references/prose.md"
+      ],
+      "rationale": "Replace vague claims with mechanisms, remove stock framing and repetition, preserve natural grammar and uncertainty. Do not install a global taboo vocabulary."
+    },
+    {
+      "source": "skills/why/SKILL.md",
+      "kind": "skill",
+      "disposition": "Adapt",
+      "destinations": [
+        "skills/operations/workflows/research/references/history.md"
+      ],
+      "rationale": "Anchor code origin, investigate selected evidence categories, follow linked leads, preserve contradiction and uncertainty, and return actionable change constraints."
+    },
+    {
+      "source": "automations/benny/skills/setup-benny/SKILL.md",
+      "kind": "skill",
+      "disposition": "Defer pack; retain mechanisms",
+      "destinations": [
+        "skills/operations/references/external-handoffs.md",
+        "skills/operations/workflows/project-verification/index.md"
+      ],
+      "rationale": "Validate fresh target capabilities, separate user configuration, preserve updates, and prove deployment identity before activation."
+    },
+    {
+      "source": "automations/benny/skills/triage-issue-reports/SKILL.md",
+      "kind": "skill",
+      "disposition": "Defer pack; retain mechanisms",
+      "destinations": [
+        "skills/operations/references/external-handoffs.md",
+        "skills/operations/workflows/diagnosis/references/reproduction-and-cause.md"
+      ],
+      "rationale": "Freeze source identity, trace cause before routing, classify duplicate confidence, authenticate handoffs, and record partial external outcomes."
+    },
+    {
+      "source": "automations/benny/skills/reproduce-and-fix-issues/SKILL.md",
+      "kind": "skill",
+      "disposition": "Defer pack; retain mechanisms",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/index.md",
+        "skills/operations/workflows/project-verification/references/observations.md"
+      ],
+      "rationale": "Confirm the discriminating state, respect fix ownership, verify existing artifacts, bound optional repair, retain before/after evidence, and clean owned resources."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/authoring-a-skill.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/writing-for-agents/index.md"
+      ],
+      "rationale": "Validate triggers, frontmatter, references, and decision-changing prose. Use supported skill authoring, without a mandatory PR for read-only or local work."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/autonomous-run.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/implementation.md"
+      ],
+      "rationale": "Falsifiable predicate, evidence-based iterations, honest discarded hypotheses, durable checkpoints. No unsolicited scheduler, out-of-scope side fixes, or weakening done."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/autopilot-full.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/bounded-delegation.md"
+      ],
+      "rationale": "End-to-end ownership, code-ready exact SHA, parallel independent review, accumulated findings, stop propagation. Preserve final approval and confirm writer shutdown before replacement."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/autopilot-stack.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/orchestration.md"
+      ],
+      "rationale": "One topology writer, exact parents, current remote state, dependent revalidation, truthful bottom-up reviewability. Preserve AgentsMD final approval PR and proof policy."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/babysit.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/delivery.md",
+        "skills/operations/workflows/code-review/index.md"
+      ],
+      "rationale": "Distinguish check, comments, merge-readiness, and landing; classify CI and review claims. No status request silently authorizes fixes or merge."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/bug-fix.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/index.md"
+      ],
+      "rationale": "Reproduce at the causal seam, discriminate hypotheses, repair the mechanism, retain failing-before/passing-after proof, and inspect nearby behavior."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/eval.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/evaluation.md"
+      ],
+      "rationale": "Consistent tasks, blinded evaluation metadata where useful, fair criteria, privacy, and calibrated outcomes. No synthetic model-run release gate by default."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/feature.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/software-design/index.md",
+        "skills/operations/references/implementation.md"
+      ],
+      "rationale": "Consumer outcome, data shape, justified boundary, implementation, and proof. No mandatory architecture panel or worker for a clear microfix."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/hillclimb.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/references/performance.md"
+      ],
+      "rationale": "Freeze measurement, log bounded experiments, preserve correctness, retain improvements beyond noise. No arbitrary minimum iteration count or endless unattended loop."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/investigation.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/research/index.md"
+      ],
+      "rationale": "Read-only mechanics, rationale, or recommendation with citations and actual judgment. Remove ceremonial throughput messages and unnecessary handbacks between evidence modes."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/multi-phase-plan.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/to-tickets/references/ticket-decomposition.md",
+        "skills/operations/references/bounded-delegation.md"
+      ],
+      "rationale": "Make visible outcomes and evidence explicit, record alternatives and risks, preserve plan-only scope. Do not copy fixed swarms or replace approved native Issue graphs."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/opening-a-pr.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/delivery.md",
+        "skills/operations/workflows/technical-writing/index.md"
+      ],
+      "rationale": "Brief reviewers on intent, scope, tradeoffs, impact, and evidence. Reject reset-hard shortcuts, draft bans, unowned patch movement, and arbitrary PR counts."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/orchestrate.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/bounded-delegation.md",
+        "skills/operations/references/orchestration.md"
+      ],
+      "rationale": "Capacity-limited rolling windows, safe drains, dependency relay, pilot, continuous integration, exact evidence, mode-specific retries, and stale-result reconciliation."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/pause-safely.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/orchestration.md",
+        "skills/operations/workflows/version-control/index.md"
+      ],
+      "rationale": "Stop at safe boundaries, preserve owned work, record exact recovery state. Do not commit user-owned changes or treat task completion as a pause."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/perf-issue.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/references/performance.md"
+      ],
+      "rationale": "Representative workload, user metric, validated baseline, eight hypothesis families, controlled comparison, behavioral constraints, and honest noise limits."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/prototype.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/prototype/EMPIRICAL.md"
+      ],
+      "rationale": "Use the cheapest executable artifact for the decision, including scripts or native harnesses. Keep human-facing logic/UI variants and existing verdict gates."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/refactoring.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
+      ],
+      "rationale": "State preserved behavior and structural target, inventory consumers, compare old/new outcomes, migrate safely, and retain necessary compatibility."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/runtime-forensics.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/references/runtime-and-traces.md"
+      ],
+      "rationale": "Use live state and instrumentation to separate mechanisms. Distinguish read-only observation from authorized injection, restart, or repair."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/session-pickup.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/research/references/recall.md",
+        "skills/operations/references/orchestration.md"
+      ],
+      "rationale": "Recover intent and failed attempts, verify current state, reuse exact valid proof, and resume the right task without replaying completed work."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/shipping.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/delivery.md"
+      ],
+      "rationale": "Check current candidate, contiguous dependencies, actual merge state, and post-merge retargeting. Do not import patch-id-only reuse or merge authority."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/trace-forensics.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/references/runtime-and-traces.md"
+      ],
+      "rationale": "Inspect capture conditions, symbols, time intervals, self/inclusive cost, retained objects, and confounders. Paired traces alone do not establish causality."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/visual-parity.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/visual-parity.md"
+      ],
+      "rationale": "Freeze representative states, viewport, environment, baseline, and tolerances before comparison. Investigate deltas; no universal zero-pixel rule."
+    },
+    {
+      "source": "skills/poteto-mode/playbooks/worktree-cleanup.md",
+      "kind": "playbook",
+      "disposition": "Adapt into existing owner",
+      "destinations": [
+        "skills/operations/references/finalization.md",
+        "skills/operations/references/reconciliation.md"
+      ],
+      "rationale": "Inventory real worktrees, verify ownership and current use, preserve ambiguous and untracked work. Reject automatic force deletion and blanket simulator pruning."
+    }
+  ],
+  "supportingDecisions": [
+    {
+      "sourcePrefix": "skills/architect/references/",
+      "destinations": [
+        "skills/operations/workflows/software-design/index.md"
+      ],
+      "rationale": "Adapt usage-first comparison, sketch, and red flags."
+    },
+    {
+      "sourcePrefix": "skills/interrogate/references/",
+      "destinations": [
+        "skills/operations/workflows/code-review/index.md"
+      ],
+      "rationale": "Adapt evidence rubric and lead adjudication."
+    },
+    {
+      "sourcePrefix": "skills/why/",
+      "destinations": [
+        "skills/operations/workflows/research/index.md"
+      ],
+      "rationale": "Adapt epistemics and all eight evidence categories; group related sources."
+    },
+    {
+      "sourcePrefix": "skills/how/",
+      "destinations": [
+        "skills/operations/workflows/research/references/mechanics.md"
+      ],
+      "rationale": "Adapt evidence exploration and explanation; delegation conditional."
+    },
+    {
+      "sourcePrefix": "skills/reflect/",
+      "destinations": [
+        "skills/operations/workflows/reflection/index.md"
+      ],
+      "rationale": "Adapt judgment, tooling, divergent lenses and synthesis."
+    },
+    {
+      "sourcePrefix": "skills/typescript-best-practices/",
+      "destinations": [
+        "skills/operations/workflows/software-design/references/typescript.md"
+      ],
+      "rationale": "Correct and adapt typed representation examples."
+    },
+    {
+      "sourcePrefix": "skills/create-verification-skill/",
+      "destinations": [
+        "skills/operations/workflows/project-verification/index.md"
+      ],
+      "rationale": "Unify map and runtime contracts across surfaces."
+    },
+    {
+      "sourcePrefix": "automations/benny/",
+      "destinations": [
+        "skills/operations/workflows/diagnosis/index.md",
+        "skills/operations/workflows/project-verification/index.md",
+        "skills/operations/references/external-handoffs.md"
+      ],
+      "rationale": "Retain portable causal, evidence, and authenticated handoff methods; defer vendor pack."
+    },
+    {
+      "sourcePrefix": "skills/poteto-mode/scripts/",
+      "destinations": [
+        "skills/operations/references/bounded-delegation.md",
+        "skills/operations/references/verification.md",
+        "docs/work/119-pstack-integration/analysis.md"
+      ],
+      "rationale": "Do not import runtime; retain exact identity, derived status, recovery and safe unknown-state requirements."
+    },
+    {
+      "sourcePrefix": "skills/show-me-your-work/",
+      "destinations": [
+        "skills/operations/references/orchestration.md"
+      ],
+      "rationale": "Retain optional linked decision history; no new log runtime."
+    },
+    {
+      "sourcePrefix": "agents/",
+      "destinations": [
+        "skills/operations/SKILL.md",
+        "skills/operations/workflows/code-review/index.md"
+      ],
+      "rationale": "Retain role purposes, not vendor personas or destructive comment policy."
+    },
+    {
+      "sourcePrefix": "docs/",
+      "destinations": [
+        "docs/work/119-pstack-integration/analysis.md"
+      ],
+      "rationale": "Read explanatory guides as workflow rationale; do not import vendor installation or image assets."
+    }
+  ]
+}

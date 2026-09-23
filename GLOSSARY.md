@@ -120,13 +120,13 @@ publication and opts out before ticket decomposition or implementation.
 _Avoid_: parent-Spec-only, planning-only
 
 **Skill**:
-An Agent Skills-compatible package that gives an agent a reusable procedure or
-reference behind a named invocation boundary.
+An Agent Skills-compatible package discovered through `SKILL.md`, with a named
+invocation boundary and metadata describing when to load its body.
 _Avoid_: command, prompt file
 
 **Skill Catalogue**:
-The authoritative AgentsMD inventory of active, deferred, retired, and
-upstream-reference Skills, including ownership and provenance.
+The authoritative AgentsMD inventory of active Skills, retained procedures,
+and deferred, retired or upstream-reference material, including provenance.
 _Avoid_: Product Registry, Plugin Registry
 
 **Active Skill**:
@@ -134,16 +134,16 @@ A Skill that AgentsMD owns and exposes through active plugin discovery.
 _Avoid_: installed Skill, referenced Skill
 
 **Adapted Skill**:
-An Active Skill whose current AgentsMD behavior derives from an external Skill
+A Skill or retained procedure whose current AgentsMD behavior derives from an external Skill
 and records that origin and local change.
 _Avoid_: copied Skill, Matt Skill
 
 **Native Skill**:
-An Active Skill created and maintained inside AgentsMD.
+A Skill or retained procedure created and maintained inside AgentsMD.
 _Avoid_: adapted Skill
 
 **ToolboxMD-native Skill**:
-An Active Skill created in another ToolboxMD project and intentionally bundled
+A Skill or retained procedure created in another ToolboxMD project and intentionally bundled
 by AgentsMD with its original lineage intact.
 _Avoid_: third-party Skill, AgentsMD-native Skill
 
@@ -196,8 +196,8 @@ the cumulative comparison anchor for scoped proof.
 _Avoid_: previous scoped candidate, latest commit
 
 **Operations module**:
-An on-demand reference owned by the model-invoked `operations` Skill for one
-operating procedure. The core supplies the trigger; the module owns its detail.
+The existing name for an Operations-owned Reference containing procedure detail.
+It is not a separate package or discovery type.
 _Avoid_: custom loader, orchestration service
 
 **Elon method**:
@@ -226,3 +226,28 @@ _Avoid_: plugin-cache instructions, project instructions
 Personal defaults in `PREFERENCES.md` beside the canonical instruction source,
 subject to explicit task instructions, required project constraints and authority.
 _Avoid_: shared policy, project preferences
+
+**Procedure**:
+Instructions for a bounded action, selected through Operations and stored in
+ordinary linked files without a separate host Skill discovery entry.
+_Avoid_: hidden Skill, mode command
+
+**Reference**:
+A linked supporting document containing detail, examples, or constraints loaded
+when its caller's stated condition applies. It has no separate discovery entry.
+_Avoid_: hidden Skill, package type
+
+**Workflow**:
+An ordered sequence of actions toward an outcome, which may use several
+Procedures and References; it is not another registration type.
+_Avoid_: Skill, package type
+
+**Playbook**:
+pstack's upstream term for an operating guide. AgentsMD retains its useful
+content in Procedures and References, without a separate playbook package type.
+_Avoid_: fourth package kind
+
+**Task evidence folder**:
+The single lazily created home for retained task-specific findings and experiments,
+linked from the owning Issue; it is not an active tracker or a second knowledge owner.
+_Avoid_: reflection diary, local backlog

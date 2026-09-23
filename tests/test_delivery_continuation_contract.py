@@ -70,7 +70,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("Issues and", entry)
         self.assertIn("repositories", entry)
 
-        tickets = (ROOT / "skills/to-tickets/references/ticket-decomposition.md").read_text(encoding="utf-8")
+        tickets = (ROOT / "skills/operations/workflows/to-tickets/references/ticket-decomposition.md").read_text(encoding="utf-8")
         boundary = section(tickets, "5. Continue at the implementation boundary")
         self.assertIn("Authority and continuation", boundary)
         self.assertIn("minimal durable context packet", " ".join(boundary.split()))

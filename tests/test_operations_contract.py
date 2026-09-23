@@ -30,9 +30,9 @@ class OperationsContractTests(unittest.TestCase):
         self.assertNotIn("disable-model-invocation: true", text)
         self.assertIn("allow_implicit_invocation: true", (SKILL.parent / "agents/openai.yaml").read_text())
         destinations = set(links(SKILL))
-        self.assertEqual(destinations, {f"references/{name}.md" for name in MODULES})
+        self.assertTrue({f"references/{name}.md" for name in MODULES} <= destinations)
         for row in text.splitlines():
-            if "references/" in row:
+            if row.startswith("| ") and "references/" in row:
                 self.assertGreater(len(row.split("|")[1].strip()), 10)
         self.assertIn("load only its applicable linked reference", words(ROOT / "AGENTS.md"))
         self.assertIn("Reuse unchanged reference contents already in context", words(SKILL))
@@ -42,7 +42,8 @@ class OperationsContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             package = root / "installed/agentsmd"
-            shutil.copytree(ROOT / "skills/operations", package / "skills/operations")
+            # Operating methods now link to their owning engineering Skills.
+            shutil.copytree(ROOT / "skills", package / "skills")
             shutil.copytree(ROOT / "docs", package / "docs")
             cwd = root / "unrelated-project"
             cwd.mkdir()
@@ -108,7 +109,7 @@ class OperationsContractTests(unittest.TestCase):
         core = words(ROOT / "AGENTS.md")
         self.assertIn('Honor explicit local Project Direction opt-outs for their stated scope', core)
         self.assertIn("Reuse unchanged full contents on follow-ups; reload after change or context loss", core)
-        context = words(ROOT / "skills/project-direction/references/context.md")
+        context = words(ROOT / "skills/operations/workflows/project-direction/references/context.md")
         self.assertIn("Reuse unchanged full contents", context)
         self.assertIn("current remote state matters", context)
         proof = words(SKILL.parent / "references/verification.md")
@@ -159,7 +160,7 @@ class OperationsContractTests(unittest.TestCase):
         delivery = words(SKILL.parent / "references/delivery.md")
         self.assertIn("Components are unreleased checkpoints", delivery)
         self.assertIn("prepare the single version transition on the final approval PR", delivery)
-        versioning = words(ROOT / "skills/version-control/SKILL.md")
+        versioning = words(ROOT / "skills/operations/workflows/version-control/index.md")
         self.assertIn("Internal component checkpoint", versioning)
         self.assertIn("defer versioning to the final approval PR", versioning)
 

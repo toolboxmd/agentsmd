@@ -1,5 +1,0 @@
-interface:
-  display_name: "To Spec"
-  short_description: "Run the complete Specify planning workflow"
-policy:
-  allow_implicit_invocation: true

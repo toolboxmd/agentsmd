@@ -213,10 +213,11 @@ def uninitialized_payload(
     return {
         "status": "uninitialized",
         "repository_root": str(root),
-        "required_skill": "project-direction",
+        "required_skill": "operations",
+        "required_procedure": "workflows/project-direction/index.md",
         "errors": errors,
         "action": (
-            "Invoke the project-direction skill and establish the complete triad "
+            "Invoke operations and read workflows/project-direction/index.md to establish the complete triad "
             "before other project work, unless local instructions make Project "
             "Direction optional."
         ),
