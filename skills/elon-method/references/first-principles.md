@@ -20,5 +20,12 @@ impossibility, or a novel design. Skip it on a clear microfix.
 Reasoning by analogy is the default for ordinary work that already has a known
 safe workflow. First principles is the override when convention is the blocker.
 
+Repeated repairs that fail through the same premise are evidence to revisit that
+premise. Name it and choose an observation distinguishing it from alternatives.
+For a resource imbalance, count all actors creating and holding the state before
+adding another cleanup step. For another problem, choose its relevant falsifier.
+Use `software-design` for competing implementation shapes and `diagnosis` for
+controlled causal investigation; failed repairs do not automatically justify a rewrite.
+
 Do not use this reference to waive Human Gates, user-owned dirty work, or
 confirmed Project Direction.

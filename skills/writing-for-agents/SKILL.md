@@ -22,7 +22,8 @@ Identify the reader, loading moment, and decision or action the document changes
 Separate required steps from reference material. Order dependencies correctly;
 keep conditions, definitions, and exceptions beside their rules.
 
-Use direct verbs, familiar words, and exact technical terms. Replace vague advice
+For substantive prose editing, use the shared
+[prose guidance](../technical-writing/references/prose.md). Replace vague advice
 such as "be thorough" with an action. Keep explicit prohibitions where boundaries
 matter, with an allowed path when needed: "Preserve dirty files; use a separate
 worktree."

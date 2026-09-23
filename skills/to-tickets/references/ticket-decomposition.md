@@ -25,6 +25,12 @@ blocked by Expand, then contract after all migrations. Use a shared integration
 branch only when even migration batches cannot stay green. This is no excuse for
 ordinary horizontal slicing.
 
+For each acceptance criterion, name the observable result and evidence that can
+prove it. Keep parent requirements stable and user-visible. Put current paths,
+commands, fixtures, exact revisions, and environment gotchas in the implementation
+packet after orientation. Completion requires the stated evidence for the current
+candidate, not a checked box or worker summary.
+
 ## 3. Approve
 
 Show a numbered graph with **Title**, **Blocked by**, and **What it delivers**

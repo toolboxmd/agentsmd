@@ -55,3 +55,34 @@ Choose the smallest suitable lane:
 
 For planning invocation, approval gates, and provenance, apply the core Delivery
 section; this routing table grants no additional invocation authority.
+
+## Engineering method
+
+Choose technical work by the claim being changed, while retaining the lane above:
+
+| Need | Method |
+| --- | --- |
+| Understand mechanics, historical constraints, or earlier failed work | `research` |
+| Choose an API, boundary, state model, or migration | `software-design` |
+| Explain a defect, reproduce it, verify another fix, or improve performance | `diagnosis` |
+| Preserve behavior while restructuring or migrating callers | `software-design`, [change existing systems](../../software-design/references/change-existing-systems.md) |
+| Select behavioral proof or pin a regression | [Test design](test-design.md) |
+| Repair missing or stale product-driving instructions | `project-verification` |
+
+Search duplicate work by cause, signature, affected version, and concrete existing
+artifacts. Similar wording is not sufficient. Use diagnosis when that distinction
+or fix ownership is unclear. Do not author a competing patch in another owner's
+active scope when the useful next step is evaluating their exact candidate.
+
+For unfamiliar material work, state an observable done condition and what would
+falsify it. Capture the relevant baseline before it disappears. Resolve the
+riskiest uncertainty first, then sequence units that produce useful evidence.
+Keep tightly coupled work under one owner. For each uncertain unit, make the
+smallest authorized experiment, inspect the actual artifact, and keep or revise
+the result. Inconclusive observations do not pass.
+
+Build only proof support that distinguishes success from failure. If a result
+passes suspiciously easily, check that the observer exercised the intended
+behavior and artifact. Correct defective gates in a reviewable change; never
+weaken acceptance to fit the implementation. Unit checks lead to whole-outcome
+verification under the existing proof contract.

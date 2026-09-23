@@ -36,6 +36,13 @@ Test the smallest candidate with a check that can falsify the assumption.
 Inspect the result, correct the approach, and repeat before expanding it.
 Fast feedback does not replace required final proof.
 
+A small reproduction or measurement script is an instrument, not necessarily
+automation of a recurring process. For bulk edits or repeated analysis, first
+understand one representative case. Build a rerunnable tool when its coverage,
+repeatability, or saved work justifies maintenance; compare its output with the
+understood case before expansion. Do not require tooling for every nontrivial
+task. Recurring orchestration still waits for step 5 and its authority boundary.
+
 The core owns authority, Project Direction, explicit user constraints, and
 user-owned dirty work. Operations owns required proof and review.
 

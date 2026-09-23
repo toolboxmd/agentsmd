@@ -45,6 +45,12 @@ verify automatic rebase/retarget before calling upper layers current. Preserve
 exact stack state across interruption and handoff. Report review-ready,
 blocker-cleared, stacked, rebased, revalidated, retargeted, and merged separately.
 
+A dependency transfers context as well as order. Relay the exact upstream
+artifact, relevant decisions, proof, and remaining limitations to its consumer.
+Assign one writer to topology changes, including rebases, retargets, and merge
+order. Refresh affected observations after topology changes under the proof
+policy; prior branch names alone do not establish current identity.
+
 ## Workers and recovery
 
 Seed a fresh child with repository, complete Issue, exact base/dependencies, full
@@ -54,6 +60,13 @@ verifies the live source and reads current instructions/adjacent private prefere
 when freshness is unproved. Startup text alone is insufficient. Never publish
 private preferences. Use repository/GitHub evidence instead of prior transcripts
 when sufficient.
+
+Include the unit's outcome, allowed and forbidden writes, shared-resource limits,
+acceptance, proof seam, known gotchas, report shape, and bounded escalation
+condition. Do not dispatch unresolved ownership or acceptance. Before parallel
+work, read [bounded delegation](bounded-delegation.md) for alternative-versus-
+coverage aggregation, capacity, pilots, and failure recovery. For an authorized
+external intake or automation adapter, also read [external handoffs](external-handoffs.md).
 
 Use a nested child with that packet and no prior transcript; do not fork the parent
 transcript. Direct work needs no worker. A separate host task is only for work that
@@ -77,3 +90,13 @@ request completed approvals again.
 
 Tasks, threads, and worktrees are host-neutral adapter choices. Do not create a
 persistent orchestration service without later evidence and authority.
+
+For long or uncertain work whose consequential choices would otherwise disappear,
+keep a material-decision trail linked from the canonical handoff. Record the
+decision, reason, evidence, and observed result at meaningful pivots. A routine
+task needs no extra journal. The trail owns history, never current acceptance,
+delivery state, or decisions that belong in an ADR. Keep private material local;
+publish only sanitized evidence within authority. Correct or supersede earlier
+claims explicitly instead of rewriting them into eventual success. Before
+handoff, resolve material evidence pointers and include the trail in required
+review when it supports the outcome.

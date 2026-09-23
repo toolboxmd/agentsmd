@@ -7,6 +7,8 @@ metadata:
   origin: mattpocock/skills
   origin-skill: skills/engineering/prototype
   source-revision: 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76
+  additional-origin: cursor/plugins/pstack
+  additional-source-revision: b42effe0aa50f59c693d7e2924714e015e00bf7c
 ---
 
 # Prototype
@@ -19,20 +21,26 @@ location, and decision on the owning GitHub Issue.
 
 ## Select the branch
 
-- Logic/state/data questions: read [LOGIC.md](LOGIC.md). Build one shareable HTML
+- Human-facing logic/state/data decisions: read [LOGIC.md](LOGIC.md). Build one shareable HTML
   file with free-play buttons and tabbed guided scenarios a non-developer can drive.
 - Appearance questions: read [UI.md](UI.md). Build radically different variants
   on one route with URL selection and a floating bottom bar.
+- Empirical semantics, integration, ordering, or timing questions: read
+  [EMPIRICAL.md](EMPIRICAL.md). Use the smallest executable script or native harness
+  that distinguishes the alternatives, without a presentation shell.
 
 Resolve ambiguity from prompt, code, or the available user. If unreachable, choose
 the closest branch (backend logic versus page/component UI) and state that
-assumption at the prototype's top.
+assumption at the prototype's top. Preserve the owning decision's HITL/AFK type.
+An empirical artifact does not convert a human-owned Wayfinder decision into an
+agent-owned one.
 
 ## Common rules
 
 1. Clearly name the throwaway artifact near its module/page; follow project routing
    and component conventions. UI starts with one existing task-runner command;
-   logic remains one self-contained HTML file.
+   a human-facing logic demo remains one self-contained HTML file. Empirical
+   work uses its documented native invocation.
 2. Keep state in memory unless persistence is the question, then use unmistakably
    disposable data. Render relevant state after every action or variant switch.
 3. Learn before polishing. Skip production abstractions, exhaustive error handling,
@@ -42,7 +50,8 @@ assumption at the prototype's top.
    the prototype as primary evidence on a clearly named throwaway branch when
    existing Git authority permits publication; otherwise report local path and
    publication state.
-5. After an authorized decision-maker accepts or rejects it, resume the owning
+5. After an authorized decision-maker accepts or rejects it, or the empirical
+   completion condition resolves an agent-owned question, resume the owning
    workflow's next incomplete step. Acceptance supplies decision evidence, not
    production code. Only validated decisions enter production implementation;
    prototype shells, rejected variants, and temporary switchers stay off main.

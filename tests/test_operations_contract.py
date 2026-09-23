@@ -42,7 +42,8 @@ class OperationsContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             package = root / "installed/agentsmd"
-            shutil.copytree(ROOT / "skills/operations", package / "skills/operations")
+            # Operating methods now link to their owning engineering Skills.
+            shutil.copytree(ROOT / "skills", package / "skills")
             shutil.copytree(ROOT / "docs", package / "docs")
             cwd = root / "unrelated-project"
             cwd.mkdir()

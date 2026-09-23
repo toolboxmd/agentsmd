@@ -9,8 +9,11 @@ AgentsMD Skills are model-invocable. Write the description for autonomous
 selection. State what the Skill does and when it applies. Keep the description
 economical because discovery exposes it before the body loads. Do not set
 `disable-model-invocation`. Put human control in approval gates inside the body.
-Show the draft. Get explicit approval before publication or mutation. Match host
-metadata to that policy. Set Codex `allow_implicit_invocation: true`.
+Apply existing Delivery Authority before requesting approval. Invocation grants
+no new authority. Show the concrete proposal and obtain approval when a required
+human decision or ungranted protected operation remains. Preserve Project Direction
+and other applicable Human Gates. Match host metadata to that policy. Set Codex
+`allow_implicit_invocation: true`.
 
 ## Shared references and separate skills
 

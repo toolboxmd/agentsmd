@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [11.5.0] - 2026-09-23
+
+### Added
+
+- Add pstack-derived engineering skills and deepen research, proof, and coordination workflows
+
 ## [11.4.0] - 2026-09-20
 
 ### Added

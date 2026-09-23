@@ -45,7 +45,7 @@ global baseline. This matches the discovery model documented for
 ## Skill Catalogue
 
 The [AgentsMD Skill Catalogue](SKILL_CATALOGUE.md) is the only authoritative
-inventory for this package. The initial Active set is:
+inventory for this package. The Active set is:
 
 - AgentsMD-native: `algorithm`, `elon-method`, `delivery-profile`, `operations`,
   `project-direction`, and `version-control`.
@@ -53,10 +53,13 @@ inventory for this package. The initial Active set is:
 - Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
   `domain-modeling`, `prototype`, `research`, `to-spec`, `to-tickets`,
   `wayfinder`, and `writing-for-agents`.
+- Adapted from Lauren Tan's pstack: `software-design`, `diagnosis`, `code-review`,
+  `project-verification`, `reflection`, and `technical-writing`. pstack methods
+  also deepen the existing research, prototype, operations, and writing workflows.
 
 The catalogue records exact source revisions, current ownership, origin,
 licence, lifecycle, and local adaptation. Matt-derived material retains its
-MIT notice. `use-grok` retains its Apache-2.0 licence and separate source
+MIT notice, as does pstack-derived material. `use-grok` retains its Apache-2.0 licence and separate source
 history. Deferred, retired, and upstream-reference Skills are documented but
 remain outside active plugin discovery.
 
@@ -64,8 +67,9 @@ Every AgentsMD Skill is model-invocable, including the planning Skills
 `grilling`, `grill-with-docs`, `to-spec`, `to-tickets`, and `wayfinder`.
 The agent may invoke a planning Skill when its trigger applies or when
 the user names it. Human control lives in the approval gates inside
-each Skill body. A draft is shown and explicit approval precedes
-publication or mutation.
+each Skill body. Existing Delivery Authority carries through routine work.
+Show the concrete proposal and obtain approval when a required human decision
+or ungranted protected operation remains. Invocation grants no new authority.
 Selecting `to-spec` runs the complete Specify workflow through verified ticket
 publication by default. It waits for approval before publishing the parent
 Issue and before publishing the ticket graph, then starts the first unblocked
@@ -83,6 +87,17 @@ When a session works a typed Wayfinder Decision Issue, it automatically uses
 `research`, `prototype`, or `grilling` as recorded by that Issue; HITL work still
 waits for the required human judgment. `use-grok` runs only after the user
 explicitly asks to consult Grok.
+
+The engineering skills select concrete methods without loading the whole library:
+`research` traces mechanics and historical rationale, recalls scoped work, and
+teaches the system; `software-design` develops caller-first structures;
+`diagnosis` investigates defects and performance; `code-review` tests safety
+claims and adjudicates findings. `project-verification` creates or maintains a
+repository's runnable verification instructions. `reflection` improves guidance
+from observed failures, and `technical-writing` serves human readers.
+The [pstack distillation](docs/research/2026-09-23-pstack-integration.md) accounts
+for every source skill and playbook, including what was merged or excluded.
+
 `project-direction` is model-invoked when the triad is missing, unusable, stale,
 contradictory, completed, or explicitly due for review. It requires user
 confirmation before writing strategic direction.

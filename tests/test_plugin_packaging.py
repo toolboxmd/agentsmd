@@ -17,15 +17,21 @@ VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 ACTIVE_SKILLS = {
     "algorithm",
+    "code-review",
     "delivery-profile",
+    "diagnosis",
     "domain-modeling",
     "elon-method",
     "grill-with-docs",
     "grilling",
     "operations",
     "project-direction",
+    "project-verification",
     "prototype",
+    "reflection",
     "research",
+    "software-design",
+    "technical-writing",
     "to-spec",
     "to-tickets",
     "use-grok",
@@ -118,6 +124,7 @@ class PluginPackagingTests(unittest.TestCase):
                 "documentation": [
                     "README.md",
                     "SKILL_CATALOGUE.md",
+                    "docs/research/2026-09-23-pstack-integration.md",
                     "docs/adr/0001-persistent-host-automation.md",
                     "docs/opencode.md",
                     "docs/scoped-proof.md",
@@ -162,6 +169,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/test_skill_contracts.py",
                     "tests/test_scoped_proof.py",
                     "tests/test_operations_contract.py",
+                    "tests/test_pstack_packaging.py",
                 ],
             },
         )
@@ -452,6 +460,9 @@ class PluginPackagingTests(unittest.TestCase):
                     self.assertIn("this release commit", row)
                 elif name == "use-grok":
                     self.assertIn("use-grok pin", row)
+                elif name in {"software-design", "diagnosis", "code-review",
+                              "project-verification", "reflection", "technical-writing"}:
+                    self.assertIn("pstack pin", row)
                 else:
                     self.assertIn("Matt pin", row)
 

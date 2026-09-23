@@ -2,11 +2,21 @@
 # Verification
 
 Proof comes from the Issue/authorized task, project instructions, selected Skill,
-and risk. Use TDD for bug reproductions and high-risk behavioral seams; otherwise test the highest
-practical seam. Selected `implement` retains its stronger TDD, suite, review,
-and commit requirements. Self-review the complete diff for acceptance, rules,
+and risk. Use TDD for bug reproductions and high-risk behavioral seams; otherwise
+test the highest practical seam. Read [test design](test-design.md) when designing
+behavioral proof; it owns faithful seams, independent oracles, and failing-before
+evidence. Use `code-review` for review method and impact analysis. Self-review the complete diff for acceptance, rules,
 scope, secrets, generated files, and unrelated changes. Verify the final artifact
 when lower-level checks cannot prove required behavior.
+
+For a claimed reproduction or fix, name the expected state, broken state, and
+observation that distinguishes them. Inspect evidence, not just its existence or
+a worker's summary. `project-verification` owns reusable product-driving recipes
+and [observations](../../project-verification/references/observations.md).
+For a visual-preservation contract, read [visual parity](visual-parity.md).
+For an explicitly requested model/workflow evaluation, read [evaluation](evaluation.md).
+These methods do not add synthetic behavioral release gates or override a
+Project's declared proof boundary.
 
 ## Live Verification
 
