@@ -135,6 +135,8 @@ class DeliveryContinuationContractTests(unittest.TestCase):
                 "completed-work-non-recreation",
                 "missing-authority",
                 "truthful-failure",
+                "approved-repair-new-candidate",
+                "explicit-candidate-limit",
             },
         )
         for case in self.cases.values():
@@ -144,6 +146,37 @@ class DeliveryContinuationContractTests(unittest.TestCase):
                     self.contract["authoritative_location"],
                 )
                 self.assertEqual(validate_case(case, self.contract), [])
+
+    def test_repair_approval_keeps_proof_and_explicit_limits(self) -> None:
+        repair = copy.deepcopy(self.cases["approved-repair-new-candidate"])
+        self.assertNotEqual(repair["request"]["candidate"], repair["previous_candidate"])
+        self.assertNotEqual(repair["request"]["pr"], repair["previous_pr"])
+        self.assertEqual(validate_case(repair, self.contract), [])
+
+        repair["proof_state"] = "failed"
+        repair["reported_delivery_states"] = copy.deepcopy(
+            self.cases["truthful-failure"]["reported_delivery_states"])
+        repair["expected"] = {"decision": "failed", "reauthorization_prompts": 0}
+        self.assertEqual(validate_case(repair, self.contract), [])
+
+        limited = copy.deepcopy(self.cases["explicit-candidate-limit"])
+        limited["request"]["candidate"] = limited["authority"]["candidate_limit"]
+        limited["expected"] = {"decision": "continue", "reauthorization_prompts": 0}
+        self.assertEqual(validate_case(limited, self.contract), [])
+        limited["explicit_stop"] = True
+        limited["expected"] = {"decision": "stop-explicit", "reauthorization_prompts": 0}
+        self.assertEqual(validate_case(limited, self.contract), [])
+
+    def test_core_carries_approval_without_implicitly_pinning_the_candidate(self) -> None:
+        core = " ".join((ROOT / "AGENTS.md").read_text().split())
+        for clause in (
+            "Approval to merge or ship carries through routine fixes, retries",
+            "or replacement PRs needed to complete that same task",
+            "or PR numbers alone do not require another approval",
+            "Required review and proof still apply to each current candidate",
+            "do not infer that restriction merely because approval followed a particular PR",
+        ):
+            self.assertIn(clause, core)
 
     def test_authority_boundaries_fail_closed(self) -> None:
         material = self.cases["material-change-reauthorization"]
@@ -169,7 +202,6 @@ class DeliveryContinuationContractTests(unittest.TestCase):
                 "scope",
                 "risk",
                 "authority",
-                "exact-candidate",
                 "target",
                 "protected-external-impact",
             },
@@ -414,7 +446,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
             check=False,
         )
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertEqual(result.stdout.strip(), "13 cases valid")
+        self.assertEqual(result.stdout.strip(), "15 cases valid")
 
 
 if __name__ == "__main__":

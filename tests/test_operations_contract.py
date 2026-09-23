@@ -129,7 +129,7 @@ class OperationsContractTests(unittest.TestCase):
     def test_final_approval_separates_internal_and_intended_base_authority(self):
         core = words(ROOT / "AGENTS.md")
         self.assertIn("Use one final approval PR per outcome; decompose through reviewed component PRs", core)
-        self.assertIn("Final PR merges into the intended base require explicit human approval", core)
+        self.assertIn("Final PR merges require human approval for the task and intended base", core)
         orchestration = words(SKILL.parent / "references/orchestration.md")
         for clause in (
             "integration branch from the intended base",

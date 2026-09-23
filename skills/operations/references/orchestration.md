@@ -14,7 +14,8 @@ exact-head/current-base checks and independent [review](verification.md).
 
 The final PR targets the intended base with cumulative diff, component map,
 outcome acceptance, combined proof, and independent exact-candidate review.
-Component checks alone are insufficient. Human approval owns its merge;
+Component checks alone are insufficient. Apply existing merge approval under
+the core's Authority and continuation contract;
 [delivery](delivery.md) owns the single version transition. Component Issues stay
 open with integration evidence; only the final PR carries closing linkage.
 Internal integration is not delivery. After authorized delivery, [finalize](finalization.md).

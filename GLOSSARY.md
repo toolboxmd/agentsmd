@@ -45,8 +45,8 @@ _Avoid_: Current Goal, task outcome, task list, backlog
 
 **Delivery Authority**:
 Authorization to deliver an identified outcome or scope in named Issues and
-repositories through the exact operations, candidates, and targets granted by
-the current request or repository policy.
+repositories through granted operations and targets. It carries through routine
+repairs; explicit candidate limits still apply.
 _Avoid_: standing authority, repository-wide permission
 
 **Delivery System**:
@@ -68,7 +68,7 @@ that must ship as a single release identity and SemVer transition.
 _Avoid_: commit, implementation slice
 
 **Final approval PR**:
-The cumulative outcome PR requiring human approval to merge into the intended base.
+The cumulative outcome PR merged under human approval for the task and intended base.
 _Avoid_: component PR, task integration branch
 
 **Component PR**:
