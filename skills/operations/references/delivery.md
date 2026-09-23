@@ -2,7 +2,7 @@
 
 The Delivery System is the shared lifecycle contract. A root
 `.toolboxmd/delivery.json`, when present, contains only Project-specific deltas
-and must be loaded through the `delivery-profile` Skill after Project Direction
+and must be loaded through the [delivery-profile](../workflows/delivery-profile/index.md) procedure after Project Direction
 and repository orientation. The profile never owns canonical version, Project
 Record, release policy, documentation, or current delivery state.
 
@@ -16,7 +16,7 @@ Record, release policy, documentation, or current delivery state.
 - Give one complete merge unit or dependent stack exactly one SemVer
   transition. Classify it from the highest semantic impact in everything that
   ships. Components are unreleased checkpoints; prepare the single version
-  transition on the final approval PR under `version-control`.
+  transition on the final approval PR under [version-control](../workflows/version-control/index.md).
 
 - Every deployable artifact is built once from the exact release SHA, assigned
   an immutable digest, and promoted unchanged through distribution,

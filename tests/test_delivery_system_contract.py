@@ -19,7 +19,7 @@ class DeliverySystemContractTests(unittest.TestCase):
             name: " ".join((ROOT / f"skills/operations/references/{name}.md").read_text().split())
             for name in ("orchestration", "verification", "delivery")
         }
-        cls.skill = (ROOT / "skills/delivery-profile/SKILL.md").read_text(
+        cls.skill = (ROOT / "skills/operations/workflows/delivery-profile/index.md").read_text(
             encoding="utf-8"
         )
 

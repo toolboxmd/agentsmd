@@ -1,0 +1,26 @@
+{
+  "fixture_kind": "procedure-selection",
+  "procedure_name": "version-control",
+  "queries": [
+    {"query": "Implement the parser fix in src/parser.py and commit it.", "should_select": true},
+    {"query": "Correct the outdated README install example.", "should_select": true},
+    {"query": "Update AGENTS.md with our new review rule and finish the commit.", "should_select": true},
+    {"query": "Create a project skill for database migrations.", "should_select": true},
+    {"query": "Add a backwards-compatible command to the plugin.", "should_select": true},
+    {"query": "Tune the tracked system prompt and hand off the result.", "should_select": true},
+    {"query": "Change the default in config.json and commit the deliverable.", "should_select": true},
+    {"query": "Refresh the checked-in dataset and its schema notes.", "should_select": true},
+    {"query": "Remove the deprecated public API and prepare the release commit.", "should_select": true},
+    {"query": "Make an intentional WIP checkpoint for these staged files.", "should_select": true},
+    {"query": "Inspect git status and tell me what is dirty. Do not edit.", "should_select": false},
+    {"query": "Review this diff and leave it unchanged.", "should_select": false},
+    {"query": "Explain the difference between SemVer minor and patch.", "should_select": false},
+    {"query": "Read package.json and report its current version only.", "should_select": false},
+    {"query": "Diagnose the failing hook, but do not implement a fix.", "should_select": false},
+    {"query": "Show the last ten Git commits.", "should_select": false},
+    {"query": "What tag points at HEAD right now?", "should_select": false},
+    {"query": "Summarize the release workflow without changing it.", "should_select": false},
+    {"query": "Write a temporary note outside the Git repository.", "should_select": false},
+    {"query": "Check whether VERSION and package.json currently agree.", "should_select": false}
+  ]
+}

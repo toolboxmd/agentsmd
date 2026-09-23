@@ -25,7 +25,7 @@ global baseline. This matches the discovery model documented for
 - `SKILL_CATALOGUE.md`: authoritative ownership, lifecycle, provenance,
   licence, and adaptation inventory.
 - `THIRD_PARTY_NOTICES.md` and `LICENSES/`: redistributed-source notices.
-- `skills/`: only the Active Skills in the catalogue.
+- `skills/operations/`: one discoverable Skill and its ordinary on-demand procedures.
 - `GOAL_TEMPLATE.md`: harness-neutral continuation contract when GitHub Issue
   state is insufficient.
 - `VERSION`, `.version-policy.json`, and `CHANGELOG.md`: canonical release
@@ -42,73 +42,74 @@ global baseline. This matches the discovery model documented for
 - `.github/workflows/`: read-only transition validation and policy-authorized
   exact-SHA GitHub Release automation.
 
-## Skill Catalogue
+## Skill Catalogue and automatic selection
 
-The [AgentsMD Skill Catalogue](SKILL_CATALOGUE.md) is the only authoritative
-inventory for this package. The Active set is:
+AgentsMD exposes one model-invocable Skill, `operations`. Normal requests select
+its applicable procedure. The global contract requires selection at task start,
+after context loss, and when work changes phase. Only the selected procedure and
+its relevant references load; other workflows do not advertise descriptions.
 
-- AgentsMD-native: `algorithm`, `elon-method`, `delivery-profile`, `operations`,
-  `project-direction`, and `version-control`.
-- ToolboxMD-native: `use-grok`.
-- Adapted from Matt Pocock: `grilling`, `grill-with-docs`,
-  `domain-modeling`, `prototype`, `research`, `to-spec`, `to-tickets`,
-  `wayfinder`, and `writing-for-agents`.
-- Adapted from Lauren Tan's pstack: `software-design`, `diagnosis`, `code-review`,
-  `project-verification`, `reflection`, and `technical-writing`. pstack methods
-  also deepen the existing research, prototype, operations, and writing workflows.
+The [Skill Catalogue](SKILL_CATALOGUE.md) records retained methods, owners,
+licences, source revisions and exclusions. It is human reference, not startup
+context. [The pstack analysis](docs/work/119-pstack-integration/analysis.md)
+accounts for all 50 source skills and 23 playbooks.
 
-The catalogue records exact source revisions, current ownership, origin,
-licence, lifecycle, and local adaptation. Matt-derived material retains its
-MIT notice, as does pstack-derived material. `use-grok` retains its Apache-2.0 licence and separate source
-history. Deferred, retired, and upstream-reference Skills are documented but
-remain outside active plugin discovery.
+Elon method runs before accepting material requirements or an approach. Its
+first-principles, cost, constraint and Algorithm references load only when
+applicable. Clear microfixes stay direct. Research can select an empirical,
+logic or UI prototype when reading cannot resolve the question. Reflection
+corrects an observed failure at its existing owner; it creates no diary.
 
-Every AgentsMD Skill is model-invocable, including the planning Skills
-`grilling`, `grill-with-docs`, `to-spec`, `to-tickets`, and `wayfinder`.
-The agent may invoke a planning Skill when its trigger applies or when
-the user names it. Human control lives in the approval gates inside
-each Skill body. Existing Delivery Authority carries through routine work.
-Show the concrete proposal and obtain approval when a required human decision
-or ungranted protected operation remains. Invocation grants no new authority.
-Selecting `to-spec` runs the complete Specify workflow through verified ticket
-publication by default. It waits for approval before publishing the parent
-Issue and before publishing the ticket graph, then starts the first unblocked
-Issue only when the full current request already authorizes implementation. A
-planning-only request asks exactly once for that authority, and an explicit
-Parent Spec only request stops after the verified parent. `to-spec` owns its
-ticket-graph continuation directly, while `to-tickets` remains available only
-when the user explicitly selects it for standalone ticket decomposition.
+Planning selection is automatic, while concrete human decisions remain human.
+`to-spec` keeps parent and ticket-publication approval gates. Existing Delivery
+Authority carries through routine work; selecting a procedure adds no authority.
+An explicit Parent Spec only request stops after verified parent publication.
+Wayfinder keeps HITL verdicts and returns resolved work to the appropriate lane.
+Grok runs only when the user explicitly asks to consult it.
 
-Issue #39 supersedes only the Issue #5 human-routing decision that stopped the
-selected Specify workflow between established stages; all other Issue #5
-outcomes remain unchanged.
+## Migration to one entry point
 
-When a session works a typed Wayfinder Decision Issue, it automatically uses
-`research`, `prototype`, or `grilling` as recorded by that Issue; HITL work still
-waits for the required human judgment. `use-grok` runs only after the user
-explicitly asks to consult Grok.
+This is a major interface change. Former separate commands such as
+`$agentsmd:research`, `$agentsmd:to-spec`, or `/agentsmd:elon-method` are no longer
+registered. Ask naturally, name the desired method in the request, or invoke
+`$agentsmd:operations` / `/agentsmd:operations`. The former `algorithm` name
+selects Elon method; its duplicate compatibility wrapper is removed.
 
-The engineering skills select concrete methods without loading the whole library:
-`research` traces mechanics and historical rationale, recalls scoped work, and
-teaches the system; `software-design` develops caller-first structures;
-`diagnosis` investigates defects and performance; `code-review` tests safety
-claims and adjudicates findings. `project-verification` creates or maintains a
-repository's runnable verification instructions. `reflection` improves guidance
-from observed failures, and `technical-writing` serves human readers.
-The [pstack distillation](docs/research/2026-09-23-pstack-integration.md) accounts
-for every source skill and playbook, including what was merged or excluded.
+The package contains one `SKILL.md`. Children are ordinary
+`workflows/<name>/index.md` files, not hidden or explicit-only skills. Recursive
+host discovery therefore finds no leaf descriptions. Existing sessions can
+retain old metadata: update the canonical source and plugin coherently through
+the supported setup, verify discovery, and start a fresh session. Preserve
+unrelated installations and remove only identified obsolete owned links.
+`agentsmd-opencode skills update` performs that ownership-checked link migration.
 
-`project-direction` is model-invoked when the triad is missing, unusable, stale,
-contradictory, completed, or explicitly due for review. It requires user
-confirmation before writing strategic direction.
-`elon-method` is model-invoked for material design, task selection and
-reassessment, inherited assumptions, cost claims, and stalled progress. It
-routes to first principles, idiot index, current constraint, and the ordered
-Algorithm. Constraint selection uses evidence and a falsifying check; cost
-comparisons require comparable units and scope. `algorithm` remains a
-compatibility router. Small direct microfixes remain direct.
-`delivery-profile` is model-invoked when a Project delivery profile exists or
-Project-specific commands, artifacts, or website mapping are being used.
+Model Router remains a separate plugin and owns model/effort policy. Its
+[compatible kit change](https://github.com/toolboxmd/model-router/issues/65)
+accepts both the old separate direction skill and the new procedure bundle.
+Upgrade Model Router before switching its role kits to this AgentsMD layout.
+The `agentsmd-project-direction` hook and `bin/project-direction` loader retain
+their identities. A worker receives the same operations folder through symlink
+or copy; procedures stay within that folder. Executables resolve from the
+canonical AgentsMD installation. Workers read project verification instructions
+by exact path because isolated kits disable project skill discovery.
+
+This structure reduces discovery text; deterministic checks prove packaging,
+links, upgrade behavior and kit compatibility. It does not guarantee model
+selection on every turn. Ordinary-use behavioral verification remains pending.
+
+## Durable artifacts
+
+Use [artifact placement](skills/operations/references/artifacts.md) before
+retaining task material. Each task reuses one evidence folder under the project's
+declared convention, or `docs/work/<issue-number>-<short-slug>/`. Research,
+comparisons and experimental findings share it. Short answers need no file.
+Issues own active intent and handoff; validated knowledge belongs in existing
+docs, glossaries, ADRs, code and tests. Disposable prototypes stay off the
+production branch. Model Router keeps its reports in its existing state directory.
+
+Reusable product-driving recipes have one project owner, normally
+`.toolboxmd/verification/index.md`, linked from project instructions. Runtime
+evidence goes to the task's evidence owner, not beside every feature recipe.
 
 ## Registry boundaries
 
@@ -154,10 +155,10 @@ Every project repository governed by the AgentsMD contract requires root
 The global contract requires the complete current triad in model context before
 project discussion, research, planning, specification, implementation, review,
 or delivery. A coherent triad whose currentness is established remains project
-truth without repeated user confirmation. The model-invoked
-`project-direction` Skill initializes or repairs it from repository, tracker,
+truth without repeated user confirmation. The Project Direction procedure selected through
+`operations` initializes or repairs it from repository, tracker,
 ADR, glossary, product, and user evidence.
-The Skill asks only unresolved strategic questions, shows exact drafts, and
+The procedure asks only unresolved strategic questions, shows exact drafts, and
 waits for explicit user confirmation before writing. It treats the active task
 as evidence rather than the default Objective, keeps a coherent milestone-level
 Objective current across contributing work, and reviews a task-level Objective
@@ -180,7 +181,7 @@ The core in `AGENTS.md` owns alignment, authority, and routing. The applicable
 [`operations` modules](skills/operations/SKILL.md) own lifecycle, execution,
 review, artifact, website, and evidence procedures; `version-control` owns
 version mechanics. Each delivery state is reported separately. Projects can
-[reuse scoped proof](docs/scoped-proof.md)
+[reuse scoped proof](skills/operations/references/scoped-proof.md)
 under an explicit trusted policy: complete baseline coverage plus current affected
 and artifact checks. Unknown scope stops with a reason. Projects without an
 adapter retain their complete merge and release gates.
@@ -282,7 +283,7 @@ codex plugin add agentsmd@toolboxmd
 ```
 
 In a fresh Codex session, use `/skills` or `$` to inspect namespaced Skills such
-as `$agentsmd:to-spec`. Open `/hooks`, review the AgentsMD hook commands, and
+as `$agentsmd:operations`. Open `/hooks`, review the AgentsMD hook commands, and
 trust the current hook hash. Recheck trust after hook updates. Disabled or
 untrusted hooks require the explicit reading fallback below.
 
@@ -293,8 +294,7 @@ claude plugin marketplace add toolboxmd/marketplace
 claude plugin install agentsmd@toolboxmd
 ```
 
-In a fresh session, inspect the plugin and select `/agentsmd:to-spec` or another
-bundled Skill. Claude Code SessionStart hook acceptance is verified on version
+In a fresh session, inspect the plugin and select `/agentsmd:operations`. Claude Code SessionStart hook acceptance is verified on version
 2.1.278: a `claude -p --plugin-dir <repo>` run with the plugin answered with the
 repository Objective while a control run without the plugin answered NONE, and
 the debug log recorded the hook supplying 4,254 characters of additional
@@ -308,8 +308,8 @@ grok plugin marketplace add toolboxmd/marketplace
 grok plugin install agentsmd --trust
 ```
 
-Inspect Skills in a fresh session. The separately pinned `use-grok` Skill still
-requires explicit invocation and an authenticated CLI. This setup grants no
+Inspect Skills in a fresh session. The bundled `use-grok` procedure still
+requires an explicit request to consult Grok and an authenticated CLI. This setup grants no
 new authentication, quota or credit authority.
 
 Grok reads hook output only on a tool call, so Project Direction arrives with
@@ -671,9 +671,9 @@ MIT. See `LICENSE`.
 ## Core and operating procedures
 
 `AGENTS.md` keeps alignment, judgment, authority, task routing and truthful
-reporting in the core. The model-invoked `operations` Skill holds seven linked
-references for implementation, orchestration/dependencies, verification,
-delivery, finalization, repository setup and legacy reconciliation. Agents load
+reporting in the core. The model-invoked `operations` Skill selects the procedure
+needed for the current task and phase, including engineering methods and
+implementation, orchestration, verification, delivery and finalization. Agents load
 only the procedures their next action needs and reuse unchanged context.
 
 The main agent owns the outcome and delegates when it reduces total work or

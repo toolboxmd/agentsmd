@@ -27,7 +27,7 @@ Keep commits useful and reviewable.
 Every completed tracked deliverable has one SemVer transition before commit:
 major for incompatible behavior, minor for compatible capability, patch otherwise.
 Read-only work and explicit WIP checkpoints are exempt. Components defer to
-[final delivery](delivery.md). Use `version-control` for canonical version,
+[final delivery](delivery.md). Use [version-control](../workflows/version-control/index.md) for canonical version,
 mirrors, changelog, commits, tags, and release. Missing policy requires separately
 authorized adoption.
 
@@ -44,14 +44,15 @@ Issues for duplicates; ask if the owning repository is unclear.
 Choose the smallest suitable lane:
 
 - **Clear:** implement the ready Issue.
-- **Shape:** use `grill-with-docs` for bounded unresolved terminology or user decisions.
-- **Specify:** use `to-spec` when requested. That Skill owns the complete workflow
+- **Shape:** use [grilling](../workflows/grilling/index.md) for unresolved human-owned decisions or an explicit grilling request. Use [grill-with-docs](../workflows/grill-with-docs/index.md) when that discussion also needs terminology or ADR work.
+- **Specify:** use [to-spec](../workflows/to-spec/index.md) when a specification is needed or requested. That procedure owns the complete workflow
   through approved parent and ticket publication, Parent Spec only opt-out, and
   continuation to the first unblocked Issue under existing implementation authority.
   Read it when selected; preserve both publication gates and its single named-Issue
   authority question when implementation is not authorized.
-- **Wayfind:** use `wayfinder` when dependent unresolved decisions prevent a reliable
-  spec, regardless of effort size. Stop when ready for explicit `to-spec` selection.
+- **Wayfind:** use [wayfinder](../workflows/wayfinder/index.md) when dependent unresolved decisions prevent a reliable
+  spec, regardless of effort size. When decisions resolve, return to the smallest
+  suitable lane without asking the human to name a workflow.
 
 For planning invocation, approval gates, and provenance, apply the core Delivery
 section; this routing table grants no additional invocation authority.
@@ -62,12 +63,12 @@ Choose technical work by the claim being changed, while retaining the lane above
 
 | Need | Method |
 | --- | --- |
-| Understand mechanics, historical constraints, or earlier failed work | `research` |
-| Choose an API, boundary, state model, or migration | `software-design` |
-| Explain a defect, reproduce it, verify another fix, or improve performance | `diagnosis` |
-| Preserve behavior while restructuring or migrating callers | `software-design`, [change existing systems](../../software-design/references/change-existing-systems.md) |
+| Understand mechanics, historical constraints, or earlier failed work | [research](../workflows/research/index.md) |
+| Choose an API, boundary, state model, or migration | [software-design](../workflows/software-design/index.md) |
+| Explain a defect, reproduce it, verify another fix, or improve performance | [diagnosis](../workflows/diagnosis/index.md) |
+| Preserve behavior while restructuring or migrating callers | [software-design](../workflows/software-design/index.md), [change existing systems](../workflows/software-design/references/change-existing-systems.md) |
 | Select behavioral proof or pin a regression | [Test design](test-design.md) |
-| Repair missing or stale product-driving instructions | `project-verification` |
+| Repair missing or stale product-driving instructions | [project-verification](../workflows/project-verification/index.md) |
 
 Search duplicate work by cause, signature, affected version, and concrete existing
 artifacts. Similar wording is not sufficient. Use diagnosis when that distinction

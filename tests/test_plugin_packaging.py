@@ -15,30 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
-ACTIVE_SKILLS = {
-    "algorithm",
-    "code-review",
-    "delivery-profile",
-    "diagnosis",
-    "domain-modeling",
-    "elon-method",
-    "grill-with-docs",
-    "grilling",
-    "operations",
-    "project-direction",
-    "project-verification",
-    "prototype",
-    "reflection",
-    "research",
-    "software-design",
-    "technical-writing",
-    "to-spec",
-    "to-tickets",
-    "use-grok",
-    "version-control",
-    "wayfinder",
-    "writing-for-agents",
-}
+ACTIVE_SKILLS = {"operations"}
 
 PROJECT_RECORD_SKILLS = [
     f"skills/{name}/SKILL.md" for name in sorted(ACTIVE_SKILLS)
@@ -124,11 +101,11 @@ class PluginPackagingTests(unittest.TestCase):
                 "documentation": [
                     "README.md",
                     "SKILL_CATALOGUE.md",
-                    "docs/research/2026-09-23-pstack-integration.md",
+                    "docs/work/119-pstack-integration/analysis.md",
                     "docs/adr/0001-persistent-host-automation.md",
                     "docs/opencode.md",
-                    "docs/scoped-proof.md",
-                    "skills/project-direction/references/context.md",
+                    "skills/operations/references/scoped-proof.md",
+                    "skills/operations/workflows/project-direction/references/context.md",
                 ],
                 "requirements": [
                     "AGENTS.md",
@@ -252,7 +229,7 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_active_skill_inventory_is_exact(self) -> None:
         discovered = {
-            path.parent.name for path in (ROOT / "skills").glob("*/SKILL.md")
+            path.parent.name for path in (ROOT / "skills").rglob("SKILL.md")
         }
         self.assertEqual(discovered, ACTIVE_SKILLS)
         self.assertTrue(INACTIVE_SKILLS.isdisjoint(discovered))
@@ -278,28 +255,28 @@ class PluginPackagingTests(unittest.TestCase):
             "tests/test_delivery_continuation_contract.py",
             "tests/test_repository_reconciliation_contract.py",
             "tests/fixtures/specify_workflow_cases.json",
-            "skills/algorithm/evals/trigger-evals.json",
-            "skills/elon-method/evals/trigger-evals.json",
-            "skills/elon-method/references/first-principles.md",
-            "skills/elon-method/references/idiot-index.md",
-            "skills/elon-method/references/current-constraint.md",
-            "skills/elon-method/references/algorithm.md",
-            "skills/elon-method/references/marketplace-project-record-regression.md",
-            "skills/algorithm/references/marketplace-project-record-regression.md",
+
+            "skills/operations/workflows/elon-method/evals/procedure-selection.json",
+            "skills/operations/workflows/elon-method/references/first-principles.md",
+            "skills/operations/workflows/elon-method/references/idiot-index.md",
+            "skills/operations/workflows/elon-method/references/current-constraint.md",
+            "skills/operations/workflows/elon-method/references/algorithm.md",
+            "skills/operations/workflows/elon-method/references/marketplace-project-record-regression.md",
+
             ".toolboxmd/delivery.json",
             "schemas/delivery-v1.schema.json",
-            "skills/project-direction/references/file-contracts.md",
-            "skills/project-direction/templates/MISSION.md",
-            "skills/project-direction/templates/OBJECTIVE.md",
-            "skills/project-direction/templates/VISION.md",
-            "skills/prototype/LOGIC.md",
-            "skills/prototype/UI.md",
-            "skills/domain-modeling/ADR-FORMAT.md",
-            "skills/domain-modeling/GLOSSARY-FORMAT.md",
-            "skills/use-grok/references/grok-cli.md",
-            "skills/version-control/references/bump-rules.md",
-            "skills/version-control/references/project-policy.md",
-            "skills/writing-for-agents/SKILL-MECHANICS.md",
+            "skills/operations/workflows/project-direction/references/file-contracts.md",
+            "skills/operations/workflows/project-direction/templates/MISSION.md",
+            "skills/operations/workflows/project-direction/templates/OBJECTIVE.md",
+            "skills/operations/workflows/project-direction/templates/VISION.md",
+            "skills/operations/workflows/prototype/LOGIC.md",
+            "skills/operations/workflows/prototype/UI.md",
+            "skills/operations/workflows/domain-modeling/ADR-FORMAT.md",
+            "skills/operations/workflows/domain-modeling/GLOSSARY-FORMAT.md",
+            "skills/operations/workflows/use-grok/references/grok-cli.md",
+            "skills/operations/workflows/version-control/references/bump-rules.md",
+            "skills/operations/workflows/version-control/references/project-policy.md",
+            "skills/operations/workflows/writing-for-agents/SKILL-MECHANICS.md",
         }
         missing = [relative for relative in expected if not (ROOT / relative).is_file()]
         self.assertEqual(missing, [])
@@ -335,8 +312,8 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_packaged_project_direction_guard_has_matching_contracts(self) -> None:
         loader = read_text("bin/project-direction")
-        agents = read_text("skills/project-direction/references/context.md")
-        skill = read_text("skills/project-direction/SKILL.md")
+        agents = read_text("skills/operations/workflows/project-direction/references/context.md")
+        skill = read_text("skills/operations/workflows/project-direction/index.md")
 
         for required in (
             "potentially_stale",
@@ -351,13 +328,13 @@ class PluginPackagingTests(unittest.TestCase):
     def test_ticket_entrypoints_resolve_one_owner_after_install_relocation(self) -> None:
         # Exercise the real published relative links with an unrelated install root.
         # Existing workflow metadata and transition fixtures cover invocation/gates.
-        owner = Path("skills/to-tickets/references/ticket-decomposition.md")
+        owner = Path("skills/operations/workflows/to-tickets/references/ticket-decomposition.md")
         with tempfile.TemporaryDirectory() as temporary:
             installed = Path(temporary) / "plugins/cache/agentsmd/version"
             shutil.copytree(ROOT / "skills", installed / "skills")
             resolved = []
             for name in ("to-spec", "to-tickets"):
-                entry = installed / "skills" / name / "SKILL.md"
+                entry = installed / "skills/operations/workflows" / name / "index.md"
                 links = re.findall(r"\[ticket decomposition\]\(([^)]+)\)", entry.read_text())
                 self.assertEqual(len(links), 1, name)
                 target = (entry.parent / links[0]).resolve(strict=True)
@@ -370,7 +347,7 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_matt_adaptations_declare_origin_and_licence(self) -> None:
         for name in MATT_ADAPTATIONS:
-            metadata = frontmatter(f"skills/{name}/SKILL.md")
+            metadata = frontmatter(f"skills/operations/workflows/{name}/index.md")
             with self.subTest(skill=name):
                 self.assertIn("license: MIT", metadata)
                 self.assertIn("owner: toolboxmd", metadata)
@@ -380,11 +357,16 @@ class PluginPackagingTests(unittest.TestCase):
                     metadata,
                 )
 
-    def test_use_grok_is_the_exact_approved_source(self) -> None:
-        for relative, expected in USE_GROK_SHA256.items():
-            payload = (ROOT / "skills/use-grok" / relative).read_bytes()
-            actual = hashlib.sha256(payload).hexdigest()
-            self.assertEqual(actual, expected, relative)
+    def test_use_grok_preserves_origin_and_cli_reference(self) -> None:
+        body = read_text("skills/operations/workflows/use-grok/index.md")
+        self.assertIn("a8ae6ab3c862de836ca576276a221610e3fe274c", body)
+        self.assertIn("Apache-2.0", body)
+        self.assertIn("Do not run unless the user asked to consult Grok", body)
+        reference = read_text("skills/operations/workflows/use-grok/references/grok-cli.md")
+        # Only its pointer to the relocated entry changes; the CLI contract stays pinned.
+        normalized = reference.replace("in `index.md`", "in `SKILL.md`").encode()
+        self.assertEqual(hashlib.sha256(normalized).hexdigest(),
+                         USE_GROK_SHA256["references/grok-cli.md"])
 
     def test_third_party_licences_are_packaged(self) -> None:
         matt = read_text("LICENSES/mattpocock-skills-MIT.txt")
@@ -411,7 +393,7 @@ class PluginPackagingTests(unittest.TestCase):
             if line.startswith("| `project-direction`")
         )
         self.assertIn("AgentsMD-native; this release commit", row)
-        self.assertIn("Active", row)
+        self.assertIn("Procedure", row)
         self.assertIn("MIT", row)
         self.assertIn("Vision, Mission, and Objective", row)
 
@@ -423,7 +405,7 @@ class PluginPackagingTests(unittest.TestCase):
             if line.startswith("| `algorithm`")
         )
         self.assertIn("AgentsMD-native; this release commit", row)
-        self.assertIn("Active", row)
+        self.assertIn("Retired", row)
         self.assertIn("MIT", row)
         self.assertIn("five-step Algorithm", row)
 
@@ -435,7 +417,7 @@ class PluginPackagingTests(unittest.TestCase):
             if line.startswith("| `delivery-profile`")
         )
         self.assertIn("AgentsMD-native; this release commit", row)
-        self.assertIn("Active", row)
+        self.assertIn("Procedure", row)
         self.assertIn("MIT", row)
         self.assertIn("Delivery System", row)
 

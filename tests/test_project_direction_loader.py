@@ -565,7 +565,8 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         )
 
         self.assertEqual(payload["status"], "uninitialized")
-        self.assertEqual(payload["required_skill"], "project-direction")
+        self.assertEqual(payload["required_skill"], "operations")
+        self.assertEqual(payload["required_procedure"], "workflows/project-direction/index.md")
         self.assertNotIn("files", payload)
         self.assertEqual(
             payload["errors"],
@@ -579,7 +580,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         )
         self.assertEqual(
             payload["action"],
-            "Invoke the project-direction skill and establish the complete triad "
+            "Invoke operations and read workflows/project-direction/index.md to establish the complete triad "
             "before other project work, unless local instructions make Project "
             "Direction optional.",
         )

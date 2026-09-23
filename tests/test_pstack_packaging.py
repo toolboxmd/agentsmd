@@ -95,32 +95,30 @@ class PstackPackagingTests(unittest.TestCase):
         self.assertEqual(set(sources) - paths, set())
         self.assertTrue({d["source"] for d in self.lock["decisions"]} <= set(sources))
 
-    def test_new_skills_have_discovery_provenance_and_packaged_destinations(self):
+    def test_procedures_keep_provenance_without_discovery_entries(self):
         record = json.loads((ROOT / ".toolboxmd/project.json").read_text())
-        discovered = {p.parent.name for p in (ROOT / "skills").glob("*/SKILL.md")}
-        self.assertTrue(NEW_SKILLS <= discovered)
-        self.assertEqual(set(record["factSources"]["skills"]),
-                         {f"skills/{name}/SKILL.md" for name in discovered})
+        discovered = {p.relative_to(ROOT).as_posix() for p in (ROOT / "skills").rglob("SKILL.md")}
+        self.assertEqual(discovered, {"skills/operations/SKILL.md"})
+        self.assertEqual(set(record["factSources"]["skills"]), discovered)
         catalogue = (ROOT / "SKILL_CATALOGUE.md").read_text()
         for name in NEW_SKILLS:
-            body = (ROOT / f"skills/{name}/SKILL.md").read_text()
-            metadata = body.split("---\n", 2)[1]
-            self.assertIn(f"name: {name}\n", metadata)
+            folder = ROOT / "skills/operations/workflows" / name
+            metadata = (folder / "index.md").read_text().split("---\n", 2)[1]
             self.assertIn(f"source-revision: {REVISION}", metadata)
             self.assertIn("license: MIT", metadata)
             self.assertIn(f"| `{name}` |", catalogue)
-            policy = (ROOT / f"skills/{name}/agents/openai.yaml").read_text()
-            self.assertIn("allow_implicit_invocation: true", policy)
+            self.assertFalse((folder / "SKILL.md").exists())
+            self.assertFalse((folder / "agents").exists())
 
     def test_all_skill_reference_graphs_survive_package_relocation(self):
         with tempfile.TemporaryDirectory() as temporary:
-            package = (Path(temporary) / "installed/agentsmd").resolve()
-            shutil.copytree(ROOT, package, ignore=shutil.ignore_patterns(
-                ".git", "__pycache__", "dist", ".venv", "PREFERENCES.md"))
+            # Copy only the role-kit unit, not the package. No external docs may rescue links.
+            bundle = (Path(temporary) / "isolated-kit/skills/operations").resolve()
+            shutil.copytree(ROOT / "skills/operations", bundle)
             decoy = Path(temporary) / "unrelated-project/skills/operations/references"
             decoy.mkdir(parents=True)
             (decoy / "verification.md").write_text("wrong source")
-            pending = list((package / "skills").glob("*/SKILL.md"))
+            pending = [bundle / "SKILL.md"]
             visited = set()
             while pending:
                 document = pending.pop().resolve()
@@ -129,13 +127,12 @@ class PstackPackagingTests(unittest.TestCase):
                 visited.add(document)
                 for link in relative_links(document):
                     target = (document.parent / link).resolve()
-                    self.assertTrue(target.is_relative_to(package), (document, link))
+                    self.assertTrue(target.is_relative_to(bundle), (document, link))
                     self.assertTrue(target.exists(), (document, link))
                     if target.is_file() and target.suffix == ".md":
                         pending.append(target)
-            for name in NEW_SKILLS | {"research", "prototype", "operations"}:
-                for reference in (package / "skills" / name).glob("**/*.md"):
-                    self.assertIn(reference.resolve(), visited, reference)
+            for reference in bundle.rglob("*.md"):
+                self.assertIn(reference.resolve(), visited, reference)
 
 
 if __name__ == "__main__":

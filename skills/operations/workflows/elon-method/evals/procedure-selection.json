@@ -1,0 +1,136 @@
+{
+  "fixture_kind": "procedure-selection",
+  "procedure_name": "elon-method",
+  "queries": [
+    {
+      "branch": "material-requirement",
+      "query": "Implement this material requirement and prove the useful outcome.",
+      "should_select": true,
+      "references": [
+        "algorithm"
+      ]
+    },
+    {
+      "branch": "solution-design",
+      "query": "Design the smallest solution for this approved capability.",
+      "should_select": true,
+      "references": [
+        "algorithm"
+      ]
+    },
+    {
+      "branch": "process-design",
+      "query": "Create a release process that preserves our authority gates.",
+      "should_select": true,
+      "references": [
+        "algorithm"
+      ]
+    },
+    {
+      "branch": "recurring-loop-automation",
+      "query": "Automate this recurring reconciliation loop.",
+      "should_select": true,
+      "references": [
+        "current-constraint",
+        "algorithm"
+      ]
+    },
+    {
+      "branch": "first-principles",
+      "query": "Every repo does it this way and anything else is impossible.",
+      "should_select": true,
+      "references": [
+        "first-principles"
+      ]
+    },
+    {
+      "branch": "idiot-index",
+      "query": "The vendor quote is $10,000. What should this actually cost?",
+      "should_select": true,
+      "references": [
+        "idiot-index"
+      ]
+    },
+    {
+      "branch": "current-constraint",
+      "query": "Make the delivery loop faster and add parallel workers.",
+      "should_select": true,
+      "references": [
+        "current-constraint",
+        "algorithm"
+      ]
+    },
+    {
+      "branch": "direct-microfix",
+      "query": "Fix the one misspelled word in README.md.",
+      "should_select": false,
+      "references": []
+    },
+    {
+      "branch": "read-only-status",
+      "query": "Show the current Git branch and status without changing anything.",
+      "should_select": false,
+      "references": []
+    },
+    {
+      "branch": "novel-design",
+      "query": "Design a new interface with no established implementation pattern.",
+      "should_select": true,
+      "references": [
+        "first-principles",
+        "algorithm"
+      ]
+    },
+    {
+      "branch": "timeline",
+      "query": "The vendor says delivery takes six weeks. Is that duration justified?",
+      "should_select": true,
+      "references": [
+        "idiot-index"
+      ]
+    },
+    {
+      "branch": "headcount",
+      "query": "This service needs twelve people according to the quote. Test that staffing assumption.",
+      "should_select": true,
+      "references": [
+        "idiot-index"
+      ]
+    },
+    {
+      "branch": "material-task-selection",
+      "query": "Choose the next material task that advances our authorized outcome.",
+      "should_select": true,
+      "references": [
+        "current-constraint"
+      ]
+    },
+    {
+      "branch": "constraint-reassessment",
+      "query": "The proof queue is clear now. Reassess what limits the outcome next.",
+      "should_select": true,
+      "references": [
+        "current-constraint"
+      ]
+    },
+    {
+      "branch": "stalled-progress",
+      "query": "Implementation is complete but delivery has stopped progressing. Find what blocks it.",
+      "should_select": true,
+      "references": [
+        "current-constraint"
+      ]
+    },
+    {
+      "branch": "mixed-signals",
+      "query": "Replan delivery: the inherited design costs $10,000 and adding workers has not improved progress.",
+      "should_select": true,
+      "references": [
+        "first-principles",
+        "idiot-index",
+        "current-constraint",
+        "algorithm"
+      ]
+    }
+  ]
+}

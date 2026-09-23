@@ -12,7 +12,7 @@
     "destination": "LICENSES/pstack-MIT.txt",
     "sha256": "bc957ca6bee02792566a1a028d105e02e247c6e77cf057061674273da77b200e"
   },
-  "report": "docs/research/2026-09-23-pstack-integration.md",
+  "report": "docs/work/119-pstack-integration/analysis.md",
   "inventory": [
     {
       "path": ".cursor-plugin/plugin.json",
@@ -1127,7 +1127,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/software-design/SKILL.md"
+        "skills/operations/workflows/software-design/index.md"
       ],
       "rationale": "Trace the consumer path, compare structures, write usage first, hide invariants. Remove automatic panels at every function boundary."
     },
@@ -1145,7 +1145,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/reflection/references/learning-and-placement.md"
+        "skills/operations/workflows/reflection/references/learning-and-placement.md"
       ],
       "rationale": "Capture explicit preferences and supported habits in their private owner. Do not generate public personal-mode policy or infer scheduling authority."
     },
@@ -1154,7 +1154,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/code-review/references/impact-analysis.md"
+        "skills/operations/workflows/code-review/references/impact-analysis.md"
       ],
       "rationale": "Trace direct and hidden consumers, test load-bearing dependency assumptions, separate confirmed, cleared, and unproven risks."
     },
@@ -1163,7 +1163,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/research/references/explanation.md",
+        "skills/operations/workflows/research/references/explanation.md",
         "AGENTS.md"
       ],
       "rationale": "Restate the claim plainly, supply the missing concept, preserve consequential caveats, and stop. No separate wrapper needed."
@@ -1173,7 +1173,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/project-verification/SKILL.md"
+        "skills/operations/workflows/project-verification/index.md"
       ],
       "rationale": "Discover the real surface and harness; define launch, doctor, driver, evidence, cleanup, and a runnable initial feature map."
     },
@@ -1191,7 +1191,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/research/references/mechanics.md"
+        "skills/operations/workflows/research/references/mechanics.md"
       ],
       "rationale": "Trace real triggers, calls, types, state, boundaries, and failures. Separate exploration evidence from the reader-facing mental model."
     },
@@ -1200,7 +1200,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/code-review/SKILL.md"
+        "skills/operations/workflows/code-review/index.md"
       ],
       "rationale": "Use focused independent lenses and a shared evidence rubric; adjudicate each finding. Remove vote-based truth, quotas, and compelled restructuring."
     },
@@ -1209,7 +1209,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/project-verification/references/create-and-maintain.md"
+        "skills/operations/workflows/project-verification/references/create-and-maintain.md"
       ],
       "rationale": "Reconcile feature coverage, repair owned harness drift, distinguish product regressions, and preserve unverified routes. One driver owns each app instance."
     },
@@ -1227,7 +1227,7 @@
       "kind": "skill",
       "disposition": "Merge corrected subset",
       "destinations": [
-        "skills/code-review/references/structure-and-constraints.md"
+        "skills/operations/workflows/code-review/references/structure-and-constraints.md"
       ],
       "rationale": "Treat comments as evidence of missing structure or hidden constraints. Preserve useful rationale until its replacement is verified; reject ambiguous deletion."
     },
@@ -1245,7 +1245,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/elon-method/references/first-principles.md"
+        "skills/operations/workflows/elon-method/references/first-principles.md"
       ],
       "rationale": "After repeated premise-sharing failures, name the assumption and run a distinguishing check. Actor imbalance census is one example, not the universal method."
     },
@@ -1254,7 +1254,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/state-and-boundaries.md"
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
       ],
       "rationale": "Separate representation, validation, and policy at owning boundaries. Internal types do not erase changing trust, lifetime, or concurrency conditions."
     },
@@ -1263,7 +1263,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/elon-method/references/algorithm.md"
+        "skills/operations/workflows/elon-method/references/algorithm.md"
       ],
       "rationale": "Use rerunnable instruments when scale, reproducibility, or recurrence earns them. Do not require tooling as an extra deliverable for every task."
     },
@@ -1272,7 +1272,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/reflection/references/learning-and-placement.md"
+        "skills/operations/workflows/reflection/references/learning-and-placement.md"
       ],
       "rationale": "Prefer a schema, check, metadata, or runtime guard when it can enforce the lesson. Keep judgment, rationale, and authority that mechanisms cannot replace."
     },
@@ -1281,7 +1281,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/compare-designs.md"
+        "skills/operations/workflows/software-design/references/compare-designs.md"
       ],
       "rationale": "Compare meaningfully different designs for real uncertainty. Bounded alternatives suffice; forced or established designs need no exploration quota."
     },
@@ -1290,7 +1290,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/SKILL.md"
+        "skills/operations/workflows/software-design/index.md"
       ],
       "rationale": "Begin with consumer interaction, failure, and recovery. Respect confirmed priorities instead of making visual delight override reliability or scope."
     },
@@ -1299,7 +1299,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/diagnosis/references/reproduction-and-cause.md"
+        "skills/operations/workflows/diagnosis/references/reproduction-and-cause.md"
       ],
       "rationale": "Explain the mechanism and reproduce the original trigger. Guards and retries are legitimate when their input and failure contracts justify them."
     },
@@ -1308,7 +1308,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/state-and-boundaries.md"
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
       ],
       "rationale": "Choose representations and dependency order before scattered logic. Foundational work needs a current constraint, not speculative future usefulness."
     },
@@ -1327,7 +1327,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/elon-method/references/algorithm.md"
+        "skills/operations/workflows/elon-method/references/algorithm.md"
       ],
       "rationale": "Remove unnecessary layers, branches, and coordination. Judge total consumer burden rather than fixed file/layer counts or minimum changed lines."
     },
@@ -1336,7 +1336,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/change-existing-systems.md"
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
       ],
       "rationale": "Name operation identity, commit point, durable result, and reconciliation path. Retries must not duplicate effects; PIDs alone do not prove ownership."
     },
@@ -1345,7 +1345,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/change-existing-systems.md"
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
       ],
       "rationale": "Migrate controlled consumers and remove obsolete paths. Retain explicit compatibility when external clients, persisted data, or independent deployment require it."
     },
@@ -1354,7 +1354,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/state-and-boundaries.md"
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
       ],
       "rationale": "Reduce hidden state and unnecessary caller knowledge. Keep a boundary when it owns meaningful policy, even with one current caller."
     },
@@ -1363,8 +1363,8 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/state-and-boundaries.md",
-        "skills/domain-modeling/SKILL.md"
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md",
+        "skills/operations/workflows/domain-modeling/index.md"
       ],
       "rationale": "Choose states, reducers, registries, and collections from invariants and access patterns. Avoid structures that make local clear code harder to understand."
     },
@@ -1382,7 +1382,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/change-existing-systems.md"
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
       ],
       "rationale": "Use explicit transformation boundaries and converge on the target. Temporary breakage stays isolated and cannot masquerade as review-ready output."
     },
@@ -1400,7 +1400,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/SKILL.md"
+        "skills/operations/workflows/software-design/index.md"
       ],
       "rationale": "Use the new requirement to challenge inherited shape. A greenfield sketch informs the smallest authorized change, not an automatic system rewrite."
     },
@@ -1409,7 +1409,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/change-existing-systems.md"
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
       ],
       "rationale": "Separate actor-owned facts when semantics permit; otherwise enforce real serialization. Include services, ports, databases, and topology in ownership."
     },
@@ -1418,7 +1418,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/change-existing-systems.md",
+        "skills/operations/workflows/software-design/references/change-existing-systems.md",
         "skills/operations/references/implementation.md"
       ],
       "rationale": "Give meaningful transformations checkable boundaries. Preserve final combined proof and dependency readiness; do not publish broken intermediate merge units."
@@ -1428,7 +1428,7 @@
       "kind": "skill",
       "disposition": "Merge existing method",
       "destinations": [
-        "skills/elon-method/references/algorithm.md"
+        "skills/operations/workflows/elon-method/references/algorithm.md"
       ],
       "rationale": "Delete unnecessary machinery before optimization. Preserve unique regressions, required compatibility, user work, and evidence-backed defensive behavior."
     },
@@ -1446,8 +1446,8 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/software-design/references/typescript.md",
-        "skills/software-design/references/state-and-boundaries.md"
+        "skills/operations/workflows/software-design/references/typescript.md",
+        "skills/operations/workflows/software-design/references/state-and-boundaries.md"
       ],
       "rationale": "Encode valid states and parse boundaries. Explain mutation, brands, predicates, casts, and the actual limits of static guarantees."
     },
@@ -1456,7 +1456,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/research/references/recall.md"
+        "skills/operations/workflows/research/references/recall.md"
       ],
       "rationale": "Recover scoped intent, corrections, recurring problems, failed attempts, and reverts. Reconcile history with canonical and live state before resuming."
     },
@@ -1465,7 +1465,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/reflection/SKILL.md"
+        "skills/operations/workflows/reflection/index.md"
       ],
       "rationale": "Apply judgment, tooling, and alternative-explanation lenses. Diagnose missing guidance, trigger failure, placement, execution, or mechanism before adding prose."
     },
@@ -1510,7 +1510,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/research/references/explanation.md"
+        "skills/operations/workflows/research/references/explanation.md"
       ],
       "rationale": "Explain the problem and mechanism through a concrete example, layer detail, and preserve historical confidence. No forced diagrams, quizzes, or premature stopping."
     },
@@ -1519,7 +1519,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/technical-writing/SKILL.md"
+        "skills/operations/workflows/technical-writing/index.md"
       ],
       "rationale": "Select tutorial, how-to, reference, or explanation by reader need. Keep visible results, conditions before actions, exact terms, and meaningful tradeoffs."
     },
@@ -1528,7 +1528,7 @@
       "kind": "skill",
       "disposition": "Adapt corrected reference",
       "destinations": [
-        "skills/software-design/references/typescript.md"
+        "skills/operations/workflows/software-design/references/typescript.md"
       ],
       "rationale": "Retain purposeful unions, parsing, and consumer types. Correct invalid-range, nonempty mutation, satisfies, cast, and transport-coupling overclaims."
     },
@@ -1537,7 +1537,7 @@
       "kind": "skill",
       "disposition": "Merge",
       "destinations": [
-        "skills/technical-writing/references/prose.md"
+        "skills/operations/workflows/technical-writing/references/prose.md"
       ],
       "rationale": "Replace vague claims with mechanisms, remove stock framing and repetition, preserve natural grammar and uncertainty. Do not install a global taboo vocabulary."
     },
@@ -1546,7 +1546,7 @@
       "kind": "skill",
       "disposition": "Adapt",
       "destinations": [
-        "skills/research/references/history.md"
+        "skills/operations/workflows/research/references/history.md"
       ],
       "rationale": "Anchor code origin, investigate selected evidence categories, follow linked leads, preserve contradiction and uncertainty, and return actionable change constraints."
     },
@@ -1556,7 +1556,7 @@
       "disposition": "Defer pack; retain mechanisms",
       "destinations": [
         "skills/operations/references/external-handoffs.md",
-        "skills/project-verification/SKILL.md"
+        "skills/operations/workflows/project-verification/index.md"
       ],
       "rationale": "Validate fresh target capabilities, separate user configuration, preserve updates, and prove deployment identity before activation."
     },
@@ -1566,7 +1566,7 @@
       "disposition": "Defer pack; retain mechanisms",
       "destinations": [
         "skills/operations/references/external-handoffs.md",
-        "skills/diagnosis/references/reproduction-and-cause.md"
+        "skills/operations/workflows/diagnosis/references/reproduction-and-cause.md"
       ],
       "rationale": "Freeze source identity, trace cause before routing, classify duplicate confidence, authenticate handoffs, and record partial external outcomes."
     },
@@ -1575,8 +1575,8 @@
       "kind": "skill",
       "disposition": "Defer pack; retain mechanisms",
       "destinations": [
-        "skills/diagnosis/SKILL.md",
-        "skills/project-verification/references/observations.md"
+        "skills/operations/workflows/diagnosis/index.md",
+        "skills/operations/workflows/project-verification/references/observations.md"
       ],
       "rationale": "Confirm the discriminating state, respect fix ownership, verify existing artifacts, bound optional repair, retain before/after evidence, and clean owned resources."
     },
@@ -1585,7 +1585,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/writing-for-agents/SKILL.md"
+        "skills/operations/workflows/writing-for-agents/index.md"
       ],
       "rationale": "Validate triggers, frontmatter, references, and decision-changing prose. Use supported skill authoring, without a mandatory PR for read-only or local work."
     },
@@ -1622,7 +1622,7 @@
       "disposition": "Adapt into existing owner",
       "destinations": [
         "skills/operations/references/delivery.md",
-        "skills/code-review/SKILL.md"
+        "skills/operations/workflows/code-review/index.md"
       ],
       "rationale": "Distinguish check, comments, merge-readiness, and landing; classify CI and review claims. No status request silently authorizes fixes or merge."
     },
@@ -1631,7 +1631,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/diagnosis/SKILL.md"
+        "skills/operations/workflows/diagnosis/index.md"
       ],
       "rationale": "Reproduce at the causal seam, discriminate hypotheses, repair the mechanism, retain failing-before/passing-after proof, and inspect nearby behavior."
     },
@@ -1649,7 +1649,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/software-design/SKILL.md",
+        "skills/operations/workflows/software-design/index.md",
         "skills/operations/references/implementation.md"
       ],
       "rationale": "Consumer outcome, data shape, justified boundary, implementation, and proof. No mandatory architecture panel or worker for a clear microfix."
@@ -1659,7 +1659,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/diagnosis/references/performance.md"
+        "skills/operations/workflows/diagnosis/references/performance.md"
       ],
       "rationale": "Freeze measurement, log bounded experiments, preserve correctness, retain improvements beyond noise. No arbitrary minimum iteration count or endless unattended loop."
     },
@@ -1668,7 +1668,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/research/SKILL.md"
+        "skills/operations/workflows/research/index.md"
       ],
       "rationale": "Read-only mechanics, rationale, or recommendation with citations and actual judgment. Remove ceremonial throughput messages and unnecessary handbacks between evidence modes."
     },
@@ -1677,7 +1677,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/to-tickets/references/ticket-decomposition.md",
+        "skills/operations/workflows/to-tickets/references/ticket-decomposition.md",
         "skills/operations/references/bounded-delegation.md"
       ],
       "rationale": "Make visible outcomes and evidence explicit, record alternatives and risks, preserve plan-only scope. Do not copy fixed swarms or replace approved native Issue graphs."
@@ -1688,7 +1688,7 @@
       "disposition": "Adapt into existing owner",
       "destinations": [
         "skills/operations/references/delivery.md",
-        "skills/technical-writing/SKILL.md"
+        "skills/operations/workflows/technical-writing/index.md"
       ],
       "rationale": "Brief reviewers on intent, scope, tradeoffs, impact, and evidence. Reject reset-hard shortcuts, draft bans, unowned patch movement, and arbitrary PR counts."
     },
@@ -1708,7 +1708,7 @@
       "disposition": "Adapt into existing owner",
       "destinations": [
         "skills/operations/references/orchestration.md",
-        "skills/version-control/SKILL.md"
+        "skills/operations/workflows/version-control/index.md"
       ],
       "rationale": "Stop at safe boundaries, preserve owned work, record exact recovery state. Do not commit user-owned changes or treat task completion as a pause."
     },
@@ -1717,7 +1717,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/diagnosis/references/performance.md"
+        "skills/operations/workflows/diagnosis/references/performance.md"
       ],
       "rationale": "Representative workload, user metric, validated baseline, eight hypothesis families, controlled comparison, behavioral constraints, and honest noise limits."
     },
@@ -1726,7 +1726,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/prototype/EMPIRICAL.md"
+        "skills/operations/workflows/prototype/EMPIRICAL.md"
       ],
       "rationale": "Use the cheapest executable artifact for the decision, including scripts or native harnesses. Keep human-facing logic/UI variants and existing verdict gates."
     },
@@ -1735,7 +1735,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/software-design/references/change-existing-systems.md"
+        "skills/operations/workflows/software-design/references/change-existing-systems.md"
       ],
       "rationale": "State preserved behavior and structural target, inventory consumers, compare old/new outcomes, migrate safely, and retain necessary compatibility."
     },
@@ -1744,7 +1744,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/diagnosis/references/runtime-and-traces.md"
+        "skills/operations/workflows/diagnosis/references/runtime-and-traces.md"
       ],
       "rationale": "Use live state and instrumentation to separate mechanisms. Distinguish read-only observation from authorized injection, restart, or repair."
     },
@@ -1753,7 +1753,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/research/references/recall.md",
+        "skills/operations/workflows/research/references/recall.md",
         "skills/operations/references/orchestration.md"
       ],
       "rationale": "Recover intent and failed attempts, verify current state, reuse exact valid proof, and resume the right task without replaying completed work."
@@ -1772,7 +1772,7 @@
       "kind": "playbook",
       "disposition": "Adapt into existing owner",
       "destinations": [
-        "skills/diagnosis/references/runtime-and-traces.md"
+        "skills/operations/workflows/diagnosis/references/runtime-and-traces.md"
       ],
       "rationale": "Inspect capture conditions, symbols, time intervals, self/inclusive cost, retained objects, and confounders. Paired traces alone do not establish causality."
     },
@@ -1800,57 +1800,57 @@
     {
       "sourcePrefix": "skills/architect/references/",
       "destinations": [
-        "skills/software-design/SKILL.md"
+        "skills/operations/workflows/software-design/index.md"
       ],
       "rationale": "Adapt usage-first comparison, sketch, and red flags."
     },
     {
       "sourcePrefix": "skills/interrogate/references/",
       "destinations": [
-        "skills/code-review/SKILL.md"
+        "skills/operations/workflows/code-review/index.md"
       ],
       "rationale": "Adapt evidence rubric and lead adjudication."
     },
     {
       "sourcePrefix": "skills/why/",
       "destinations": [
-        "skills/research/SKILL.md"
+        "skills/operations/workflows/research/index.md"
       ],
       "rationale": "Adapt epistemics and all eight evidence categories; group related sources."
     },
     {
       "sourcePrefix": "skills/how/",
       "destinations": [
-        "skills/research/references/mechanics.md"
+        "skills/operations/workflows/research/references/mechanics.md"
       ],
       "rationale": "Adapt evidence exploration and explanation; delegation conditional."
     },
     {
       "sourcePrefix": "skills/reflect/",
       "destinations": [
-        "skills/reflection/SKILL.md"
+        "skills/operations/workflows/reflection/index.md"
       ],
       "rationale": "Adapt judgment, tooling, divergent lenses and synthesis."
     },
     {
       "sourcePrefix": "skills/typescript-best-practices/",
       "destinations": [
-        "skills/software-design/references/typescript.md"
+        "skills/operations/workflows/software-design/references/typescript.md"
       ],
       "rationale": "Correct and adapt typed representation examples."
     },
     {
       "sourcePrefix": "skills/create-verification-skill/",
       "destinations": [
-        "skills/project-verification/SKILL.md"
+        "skills/operations/workflows/project-verification/index.md"
       ],
       "rationale": "Unify map and runtime contracts across surfaces."
     },
     {
       "sourcePrefix": "automations/benny/",
       "destinations": [
-        "skills/diagnosis/SKILL.md",
-        "skills/project-verification/SKILL.md",
+        "skills/operations/workflows/diagnosis/index.md",
+        "skills/operations/workflows/project-verification/index.md",
         "skills/operations/references/external-handoffs.md"
       ],
       "rationale": "Retain portable causal, evidence, and authenticated handoff methods; defer vendor pack."
@@ -1860,7 +1860,7 @@
       "destinations": [
         "skills/operations/references/bounded-delegation.md",
         "skills/operations/references/verification.md",
-        "docs/research/2026-09-23-pstack-integration.md"
+        "docs/work/119-pstack-integration/analysis.md"
       ],
       "rationale": "Do not import runtime; retain exact identity, derived status, recovery and safe unknown-state requirements."
     },
@@ -1875,14 +1875,14 @@
       "sourcePrefix": "agents/",
       "destinations": [
         "skills/operations/SKILL.md",
-        "skills/code-review/SKILL.md"
+        "skills/operations/workflows/code-review/index.md"
       ],
       "rationale": "Retain role purposes, not vendor personas or destructive comment policy."
     },
     {
       "sourcePrefix": "docs/",
       "destinations": [
-        "docs/research/2026-09-23-pstack-integration.md"
+        "docs/work/119-pstack-integration/analysis.md"
       ],
       "rationale": "Read explanatory guides as workflow rationale; do not import vendor installation or image assets."
     }

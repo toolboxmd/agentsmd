@@ -1,0 +1,30 @@
+{
+  "fixture_kind": "procedure-selection",
+  "procedure_name": "project-direction",
+  "queries": [
+    {"query": "Create VISION.md, MISSION.md, and OBJECTIVE.md for this repository.", "should_select": true},
+    {"query": "The Project Direction loader says MISSION.md is missing.", "should_select": true},
+    {"query": "Our Objective is complete. Help define the next one.", "should_select": true},
+    {"query": "Review whether our Mission still matches our Vision.", "should_select": true},
+    {"query": "Update the project Vision after our strategy change.", "should_select": true},
+    {"query": "OBJECTIVE.md has TODO placeholders. Repair it.", "should_select": true},
+    {"query": "The direction files contradict one another.", "should_select": true},
+    {"query": "We abandoned the current Objective and need to reprioritize.", "should_select": true},
+    {"query": "The loader rejected an oversized VISION.md.", "should_select": true},
+    {"query": "Define Project Direction before we start coding.", "should_select": true},
+    {"query": "OBJECTIVE.md only says to merge Issue #116 and close PR #136. Review it.", "should_select": true},
+    {"query": "Our Vision only lists this quarter's release. Make it genuinely visionary.", "should_select": true},
+    {"query": "Our Mission is an abstract future slogan with no present strategy.", "should_select": true},
+    {"query": "Read the existing direction files and summarize them.", "should_select": false},
+    {"query": "Implement the ready parser Issue.", "should_select": false},
+    {"query": "Explain what a mission statement is in general.", "should_select": false},
+    {"query": "Show git status without changing anything.", "should_select": false},
+    {"query": "Review this pull request against its Issue.", "should_select": false},
+    {"query": "Write a product specification for the approved Objective.", "should_select": false},
+    {"query": "Run the test suite and report failures.", "should_select": false},
+    {"query": "List the current GitHub Issues.", "should_select": false},
+    {"query": "Fix one typo in README.md.", "should_select": false},
+    {"query": "Read VISION.md before answering this design question.", "should_select": false},
+    {"query": "Implement the next Issue that contributes to our confirmed milestone-level Objective.", "should_select": false}
+  ]
+}
