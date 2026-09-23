@@ -13,6 +13,13 @@ mutable target, permission and candidate checks at the action boundary.
   capability from current evidence; report an unsupported capability
   explicitly.
 
+- When creating or configuring a repository, check automatic deletion of merged
+  pull-request branches. Enable it through the settings authority below unless
+  the Project documents an exception. On GitHub, verify
+  `delete_branch_on_merge=true` for that exact repository; do not assume an
+  organization default applies to new repositories. This setting does not
+  retire existing stale branches; classify those through Reconciliation.
+
 - If inspection finds a required gap, record `proposed setup`: one complete
   setup bundle with the exact current state, proposed settings, expected
   effect, risks, and rollback path. At `approval`, obtain one scoped user

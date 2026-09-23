@@ -18,6 +18,12 @@ accounts, or previews. Authority to create explicitly disposable resources inclu
 teardown after terminal-outcome, ownership, and need checks. Age/cleanliness alone
 never establishes eligibility.
 
+Verify obsolete remote task branches are absent after eligible retirement,
+even when automatic deletion is enabled. Every retained branch needs a current
+purpose: preserve active work, dependent PR stacks, and maintained release or
+development lines. Record that purpose or the unresolved retention condition
+with the exceptions below. Do not impose a universal single-branch policy.
+
 Check every temporary checkout for removal. Within authority, retire obsolete
 processes and replace cross-worktree dependency links with stable arrangements;
 verify consumers before removal. Preserve stack needs and unrelated active work.
