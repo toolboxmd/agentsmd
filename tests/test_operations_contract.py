@@ -105,6 +105,21 @@ class OperationsContractTests(unittest.TestCase):
         self.assertNotIn("Codex Luna", verification)
         self.assertNotIn("maximum reasoning", verification)
 
+    def test_failing_existing_test_is_judged_before_it_is_edited(self):
+        proof = words(SKILL.parent / "references/verification.md")
+        for clause in (
+            "When an existing test fails after an intended change, decide what it protects before editing it",
+            "Delete a test that protects no valid requirement",
+            "Rewrite one that froze incidental detail, such as exact lists, counts, order, or whole snapshots, "
+            "to assert the requirement so the next compatible addition passes",
+            "Otherwise fix the code",
+            "Never only update expected values to the new output",
+            "Report which case applied",
+        ):
+            self.assertIn(clause, proof)
+        design = words(SKILL.parent / "references/test-design.md")
+        self.assertIn("A test that every compatible addition must edit mirrors the implementation", design)
+
     def test_context_reuse_and_proof_ownership_preserve_freshness(self):
         core = words(ROOT / "AGENTS.md")
         self.assertIn('Honor explicit local Project Direction opt-outs for their stated scope', core)

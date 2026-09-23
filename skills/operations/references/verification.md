@@ -9,6 +9,13 @@ evidence. Use [code-review](../workflows/code-review/index.md) for review method
 scope, secrets, generated files, and unrelated changes. Verify the final artifact
 when lower-level checks cannot prove required behavior.
 
+When an existing test fails after an intended change, decide what it protects
+before editing it. Delete a test that protects no valid requirement. Rewrite one
+that froze incidental detail, such as exact lists, counts, order, or whole
+snapshots, to assert the requirement so the next compatible addition passes.
+Otherwise fix the code. Never only update expected values to the new output.
+Report which case applied.
+
 For a claimed reproduction or fix, name the expected state, broken state, and
 observation that distinguishes them. Inspect evidence, not just its existence or
 a worker's summary. [project-verification](../workflows/project-verification/index.md) owns reusable product-driving recipes

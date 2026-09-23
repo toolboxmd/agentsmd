@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.1.0] - 2026-09-23
+
+### Added
+
+- Judge what a failing existing test protects before editing it; never only update expected values
+
 ## [12.0.1] - 2026-09-23
 
 ### Changed
