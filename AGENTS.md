@@ -216,7 +216,11 @@ to route established steps again.
 - A requested GitHub implementation includes routine Issue updates, an
   exclusive task branch and workspace, implementation, proof, versioning,
   commits, push, PRs and internal integration under operations orchestration.
-  Final PR merges into the intended base require explicit human approval. Release, publication,
+  Final PR merges require human approval for the task and intended base.
+  Approval to merge or ship carries through routine fixes, retries, and follow-up
+  or replacement PRs needed to complete that same task. Changed commits, versions,
+  or PR numbers alone do not require another approval. Required review and proof
+  still apply to each current candidate. Release, publication,
   distribution, installation, or deployment is included only when the current
   request or repository policy explicitly authorizes that exact operation and
   target. Before an external mutation, verify the live target and applicable
@@ -224,8 +228,10 @@ to route established steps again.
   reporting success.
 
 - Reauthorization is required only after a material change to the outcome,
-  scope, risk, authority, exact candidate or target, or protected external
-  impact. An explicit stop instruction stops the affected work. Missing
+  scope, risk, authority, target, protected external impact, or an explicit
+  approval limit. Honor an expressly stated restriction to one PR, commit or
+  artifact; do not infer that restriction merely because approval followed a
+  particular PR. An explicit stop instruction stops the affected work. Missing
   authority remains a blocker. Authority for one Issue or repository never
   extends to unrelated work.
 

@@ -25,7 +25,6 @@
       "scope",
       "risk",
       "authority",
-      "exact-candidate",
       "target",
       "protected-external-impact"
     ],
@@ -225,7 +224,6 @@
     {
       "id": "material-change-reauthorization",
       "material_changes": [
-        "exact-candidate",
         "protected-external-impact"
       ],
       "expected": {
@@ -465,6 +463,61 @@
       "expected": {
         "decision": "failed",
         "reauthorization_prompts": 0
+      }
+    },
+    {
+      "id": "approved-repair-new-candidate",
+      "authority": {
+        "operations": [
+          "merge"
+        ],
+        "targets": {
+          "merge": "main"
+        }
+      },
+      "request": {
+        "operations": [
+          "merge"
+        ],
+        "targets": {
+          "merge": "main"
+        },
+        "candidate": "repaired-sha",
+        "pr": 70
+      },
+      "previous_candidate": "approved-sha",
+      "previous_pr": 69,
+      "expected": {
+        "decision": "continue",
+        "reauthorization_prompts": 0
+      }
+    },
+    {
+      "id": "explicit-candidate-limit",
+      "authority": {
+        "operations": [
+          "merge"
+        ],
+        "targets": {
+          "merge": "main"
+        },
+        "candidate_limit": "approved-sha"
+      },
+      "request": {
+        "operations": [
+          "merge"
+        ],
+        "targets": {
+          "merge": "main"
+        },
+        "candidate": "repaired-sha",
+        "pr": 70
+      },
+      "previous_candidate": "approved-sha",
+      "previous_pr": 69,
+      "expected": {
+        "decision": "reauthorization-required",
+        "reauthorization_prompts": 1
       }
     }
   ]

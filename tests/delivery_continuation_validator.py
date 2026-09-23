@@ -60,6 +60,12 @@ def _decision(case: dict[str, Any], contract: dict[str, Any]) -> str:
         return "authority-required"
     if case.get("material_changes"):
         return "reauthorization-required"
+    candidate_limit = authority.get("candidate_limit")
+    if candidate_limit is not None:
+        if not isinstance(candidate_limit, str) or not candidate_limit.strip():
+            return "authority-required"
+        if request.get("candidate") != candidate_limit:
+            return "reauthorization-required"
     authorized = set(authority.get("operations", []))
     requested = set(request.get("operations", []))
     allowed = set(contract["implementation_operations"]) | set(
