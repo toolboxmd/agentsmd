@@ -195,10 +195,14 @@ broken runtime, failed verification, or incomplete candidate never implicitly
 authorizes the planner to implement, debug, or rerun the worker loop; judgment
 reaches the planner through the dispatcher as a specific decision with
 evidence, attempted remedies, and a recommendation, and the planner returns
-direction through the dispatcher. File type alone never sets the boundary:
+direction through the dispatcher. When no eligible agent or approach remains,
+the planner reports the blocker and a recommendation to the user; planner
+implementation needs an explicit user exception recorded with the task. File
+type alone never sets the boundary:
 planner specification writing is permitted while delegated implementation prose
 stays implementation. Planning and coordination writes and authorized direct
-work outside a Router-managed job remain possible, and an explicit user
+work for tasks not submitted to Model Router remain possible; a submitted task
+remains Router-managed through terminal disposition. An explicit user
 override stays authoritative when recorded with the task. The Operations
 bounded-delegation reference owns Router-managed recovery detail.
 

@@ -112,8 +112,11 @@ class OperationsContractTests(unittest.TestCase):
             "Assigned agents own implementation, code debugging, test execution, and mechanical recovery",
             "never implicitly authorizes the planner to implement, debug, or rerun the worker loop",
             "as a specific decision with evidence, attempted remedies, and a recommendation",
+            "When no eligible agent or approach remains",
+            "needs an explicit user exception recorded with the task",
             "planner specification writing is permitted while delegated implementation prose stays implementation",
-            "authorized direct work outside a Router-managed job remain possible",
+            "for tasks not submitted to Model Router remain possible",
+            "remains Router-managed through terminal disposition",
             "explicit user override stays authoritative when recorded with the task",
             "bounded-delegation reference owns Router-managed recovery detail",
         ):
@@ -122,11 +125,18 @@ class OperationsContractTests(unittest.TestCase):
         recovery = words(SKILL.parent / "references/bounded-delegation.md")
         for clause in (
             "dispatcher owns execution and routine recovery",
+            "never covers implementation, repair, recovery, or completion of a submitted candidate",
+            "remain dispatcher-assigned work",
             "then returns control",
+            "When no eligible agent or approach remains",
+            "needs an explicit user exception recorded with the task",
             "still reach the appropriate human gate",
             "never silently waiving proof",
             "not a second monitoring system",
             "cannot mechanically prevent every out-of-band action",
+            "for tasks not submitted to Model Router",
+            "remains Router-managed through terminal disposition",
+            "instead of implementing the candidate",
             "timed-out worker",
             "broken runtime",
             "Failed verification",
@@ -147,6 +157,8 @@ class OperationsContractTests(unittest.TestCase):
                 self.assertIn(clause, proof)
         coordination = words(SKILL.parent / "references/orchestration.md")
         self.assertIn("owns the planner, dispatcher, and worker boundary", coordination)
+        self.assertIn("For Router-managed execution", coordination)
+        self.assertNotIn("without becoming the implementer", coordination)
         self.assertIn("Router-managed execution", words(ROOT / "GLOSSARY.md"))
         owned = [
             ROOT / "AGENTS.md",
@@ -160,6 +172,7 @@ class OperationsContractTests(unittest.TestCase):
                 self.assertNotIn("read-only planner", text)
                 self.assertNotIn("muse-spark", text)
                 self.assertNotIn("planner_rungs", text)
+                self.assertNotIn("Router-managed job", text)
 
     def test_failing_existing_test_is_judged_before_it_is_edited(self):
         proof = words(SKILL.parent / "references/verification.md")

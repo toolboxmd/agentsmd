@@ -67,9 +67,8 @@ acceptance, proof seam, known gotchas, report shape, and bounded escalation
 condition. Do not dispatch unresolved ownership or acceptance. Before parallel
 work, read [bounded delegation](bounded-delegation.md) for alternative-versus-
 coverage aggregation, capacity, pilots, and failure recovery. For Router-managed
-jobs, bounded delegation also owns the planner, dispatcher, and worker
-boundary: the dispatcher owns execution and recovery, and the planner decides
-through the dispatcher without becoming the implementer. For an authorized
+execution, bounded delegation also owns the planner, dispatcher, and worker
+boundary. For an authorized
 external intake or automation adapter, also read [external handoffs](external-handoffs.md).
 
 Use a nested child with that packet and no prior transcript; do not fork the parent

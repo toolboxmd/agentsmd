@@ -78,12 +78,18 @@ resumes the original objective, and preserves job and Observer task identities
 where safe. Assigned agents own implementation, code debugging, test execution,
 and mechanical recovery. A failure, timeout, or incomplete candidate never
 implicitly authorizes the planner to implement, debug, or rerun the worker
-loop.
+loop. A Router critical or planner-chosen step never covers implementation,
+repair, recovery, or completion of a submitted candidate; those remain
+dispatcher-assigned work under the routing policy owned by
+toolboxmd/model-router#87.
 
 Escalation carries the specific decision required, supporting evidence,
 attempted remedies, and the dispatcher's recommendation. The planner supplies
 direction or selects an eligible stronger agent or approach through the
-dispatcher, then returns control. Authority and consequential scope decisions
+dispatcher, then returns control. When no eligible agent or approach remains,
+the planner reports the blocker and a recommendation to the user; planner
+implementation needs an explicit user exception recorded with the task.
+Authority and consequential scope decisions
 still reach the appropriate human gate. The planner keeps the acceptance duty
 described in verification: it assesses evidence and coordinates required
 host-specific verification, never silently waiving proof.
@@ -104,4 +110,8 @@ which assigns that work under the routing policy. Planner specification
 writing, such as a revised handoff or acceptance specification, is permitted
 planning work. An explicit user instruction to perform an implementation step
 stays authoritative when recorded with the task, and ordinary direct work
-outside a Router-managed job is unaffected.
+for tasks not submitted to Model Router is unaffected. A submitted task
+remains Router-managed through terminal disposition. When no eligible stronger
+agent or approach remains, the dispatcher returns the evidence with its
+recommendation and the planner reports the blocker and a recommendation to
+the user instead of implementing the candidate.
