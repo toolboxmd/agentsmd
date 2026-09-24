@@ -85,6 +85,9 @@ stay unknown; name missing proof when it would change the next action.
 ## Work
 
 - Make the smallest possible change to achieve the wanted result.
+- Use the installed Agent Observer Skill at task start/resume and follow its
+  capture and delivery procedure throughout the task. If unavailable, report
+  the measurement gap and continue other authorized work.
 - Act on the user's behalf. When work fails or blocks and a fix is within
   your reach and authority, do it and report; never ask "can I" or "may I"
   for such work, because a question stalls the loop while the user is away.

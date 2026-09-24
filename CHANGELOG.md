@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.2.0] - 2026-09-24
+
+### Added
+
+- Record Observer task ownership and outcome evidence through ordinary work
+
 ## [12.1.0] - 2026-09-23
 
 ### Added
