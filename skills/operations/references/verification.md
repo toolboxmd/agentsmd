@@ -18,7 +18,11 @@ Report which case applied.
 
 For a claimed reproduction or fix, name the expected state, broken state, and
 observation that distinguishes them. Inspect evidence, not just its existence or
-a worker's summary. [project-verification](../workflows/project-verification/index.md) owns reusable product-driving recipes
+a worker's summary. For Router-managed execution the planner keeps its
+acceptance duty while assigned agents own implementation proof: it assesses
+evidence and coordinates required host-specific verification. It never silently
+waives required proof, pretends an unavailable worker tool exists, or treats a
+tool limitation as permission for an open-ended implementation takeover. [project-verification](../workflows/project-verification/index.md) owns reusable product-driving recipes
 and [observations](../workflows/project-verification/references/observations.md).
 For a visual-preservation contract, read [visual parity](visual-parity.md).
 For an explicitly requested model/workflow evaluation, read [evaluation](evaluation.md).

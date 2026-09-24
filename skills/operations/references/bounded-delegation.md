@@ -67,3 +67,41 @@ explicitly absorbed. Stopping a worker does not remove its acceptance criterion.
 Recover from Git, GitHub, current instructions, and the canonical handoff. A
 compact frontier can be derived from those owners; it must not become a second
 task database or omit complete authority-bearing constraints.
+
+## Router-managed planner, dispatcher, and worker boundary
+
+For Router-managed execution the direct-work default does not apply. The
+planner clarifies outcomes, performs only the bounded inspection a decision
+needs, writes specifications and handoffs, and reviews evidence. The dispatcher
+owns execution and routine recovery: it assigns correction and recovery,
+resumes the original objective, and preserves job and Observer task identities
+where safe. Assigned agents own implementation, code debugging, test execution,
+and mechanical recovery. A failure, timeout, or incomplete candidate never
+implicitly authorizes the planner to implement, debug, or rerun the worker
+loop.
+
+Escalation carries the specific decision required, supporting evidence,
+attempted remedies, and the dispatcher's recommendation. The planner supplies
+direction or selects an eligible stronger agent or approach through the
+dispatcher, then returns control. Authority and consequential scope decisions
+still reach the appropriate human gate. The planner keeps the acceptance duty
+described in verification: it assesses evidence and coordinates required
+host-specific verification, never silently waiving proof.
+
+Existing Observer lifecycle records may identify planner execution beyond the
+assigned role. That observation is measurement, not a second monitoring
+system, and instructions cannot mechanically prevent every out-of-band action.
+
+Examples. A timed-out worker returns its partial candidate and timing evidence
+to the dispatcher, which assigns bounded correction; the planner does not
+rerun the worker commands. A broken runtime reaches the dispatcher with the
+failure evidence, which recovers or reassigns the job; the planner does not
+debug the runtime itself. Failed verification returns the candidate with the
+failing evidence; the dispatcher first determines whether a coherent candidate
+exists before requesting further proof, and required final checks stay. A
+planner decision for a stronger eligible agent goes through the dispatcher,
+which assigns that work under the routing policy. Planner specification
+writing, such as a revised handoff or acceptance specification, is permitted
+planning work. An explicit user instruction to perform an implementation step
+stays authoritative when recorded with the task, and ordinary direct work
+outside a Router-managed job is unaffected.

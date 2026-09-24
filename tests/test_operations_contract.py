@@ -105,6 +105,62 @@ class OperationsContractTests(unittest.TestCase):
         self.assertNotIn("Codex Luna", verification)
         self.assertNotIn("maximum reasoning", verification)
 
+    def test_router_managed_boundary_keeps_planner_dispatcher_worker_ownership(self):
+        core = words(ROOT / "AGENTS.md")
+        for clause in (
+            "For Router-managed execution the direct-work default above does not apply",
+            "Assigned agents own implementation, code debugging, test execution, and mechanical recovery",
+            "never implicitly authorizes the planner to implement, debug, or rerun the worker loop",
+            "as a specific decision with evidence, attempted remedies, and a recommendation",
+            "planner specification writing is permitted while delegated implementation prose stays implementation",
+            "authorized direct work outside a Router-managed job remain possible",
+            "explicit user override stays authoritative when recorded with the task",
+            "bounded-delegation reference owns Router-managed recovery detail",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, core)
+        recovery = words(SKILL.parent / "references/bounded-delegation.md")
+        for clause in (
+            "dispatcher owns execution and routine recovery",
+            "then returns control",
+            "still reach the appropriate human gate",
+            "never silently waiving proof",
+            "not a second monitoring system",
+            "cannot mechanically prevent every out-of-band action",
+            "timed-out worker",
+            "broken runtime",
+            "Failed verification",
+            "stronger eligible agent",
+            "permitted planning work",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, recovery)
+        proof = words(SKILL.parent / "references/verification.md")
+        for clause in (
+            "planner keeps its acceptance duty while assigned agents own implementation proof",
+            "assesses evidence and coordinates required host-specific verification",
+            "never silently waives required proof",
+            "pretends an unavailable worker tool exists",
+            "permission for an open-ended implementation takeover",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, proof)
+        coordination = words(SKILL.parent / "references/orchestration.md")
+        self.assertIn("owns the planner, dispatcher, and worker boundary", coordination)
+        self.assertIn("Router-managed execution", words(ROOT / "GLOSSARY.md"))
+        owned = [
+            ROOT / "AGENTS.md",
+            SKILL.parent / "references/bounded-delegation.md",
+            SKILL.parent / "references/orchestration.md",
+            SKILL.parent / "references/verification.md",
+        ]
+        for document in owned:
+            text = words(document)
+            with self.subTest(document=document.name):
+                self.assertNotIn("read-only planner", text)
+                self.assertNotIn("muse-spark", text)
+                self.assertNotIn("planner_rungs", text)
+
     def test_failing_existing_test_is_judged_before_it_is_edited(self):
         proof = words(SKILL.parent / "references/verification.md")
         for clause in (

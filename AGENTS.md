@@ -186,6 +186,22 @@ Direct work: inspect affected state, edit, run relevant checks, perform applicab
 version bookkeeping, then commit/push within authority. Create no Issue or worker
 purely for ceremony.
 
+For Router-managed execution the direct-work default above does not apply. The
+planner remains the user's strategic counterpart: it clarifies outcomes,
+performs only the bounded inspection a decision needs, writes specifications
+and handoffs, and reviews evidence. Assigned agents own implementation, code
+debugging, test execution, and mechanical recovery. A worker failure, timeout,
+broken runtime, failed verification, or incomplete candidate never implicitly
+authorizes the planner to implement, debug, or rerun the worker loop; judgment
+reaches the planner through the dispatcher as a specific decision with
+evidence, attempted remedies, and a recommendation, and the planner returns
+direction through the dispatcher. File type alone never sets the boundary:
+planner specification writing is permitted while delegated implementation prose
+stays implementation. Planning and coordination writes and authorized direct
+work outside a Router-managed job remain possible, and an explicit user
+override stays authoritative when recorded with the task. The Operations
+bounded-delegation reference owns Router-managed recovery detail.
+
 When Codex coordinates delegated work, use the installed `model-routing` Skill
 for model and effort selection. Resolve references relative to that Skill and
 reuse unchanged context. If unavailable, stop only the affected dispatch.

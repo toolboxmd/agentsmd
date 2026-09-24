@@ -10,6 +10,14 @@ The separate ToolboxMD plugin that selects the model and reasoning effort for
 routed Codex dispatches. AgentsMD owns workflow, authority, proof, and review.
 _Avoid_: AgentsMD model policy, routing matrix
 
+**Router-managed execution**:
+Work submitted through Model Router where the dispatcher owns execution and
+recovery and assigned agents own implementation, code debugging, test execution,
+and mechanical recovery. The planner, dispatcher, and worker boundary is owned
+by the core execution routing rule and the Operations bounded-delegation
+reference.
+_Avoid_: planner-implemented recovery, direct dispatch
+
 **Agent Observer**:
 The separate ToolboxMD plugin that connects native agent usage to explicitly
 owned tasks and outcome evidence. AgentsMD retains workflow, authority and proof.

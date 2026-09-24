@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.3.0] - 2026-09-24
+
+### Added
+
+- Router-managed planner/dispatcher/worker boundary: planner decides through dispatcher, assigned agents own implementation and recovery
+
 ## [12.2.1] - 2026-09-24
 
 ### Changed
