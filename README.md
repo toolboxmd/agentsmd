@@ -676,7 +676,7 @@ needed for the current task and phase, including engineering methods and
 implementation, orchestration, verification, delivery and finalization. Agents load
 only the procedures their next action needs and reuse unchanged context.
 
-The main agent owns the outcome and delegates when it reduces total work or
+The planner owns the outcome and delegates when it reduces total work or
 provides required independence. Choose after simplifying the solution.
 Exact approved prose retains the narrow review exception in verification.
 

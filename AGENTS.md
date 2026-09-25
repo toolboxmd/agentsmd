@@ -176,26 +176,29 @@ The Skill Catalogue owns provenance; it is not required startup context.
 
 ## Execution and module routing
 
-The main agent owns reasoning, planning, integration, and the outcome.
-Delegate when it reduces total work or provides required independence.
-Choose after simplifying the solution. Account for briefing, context loading,
-coordination, and checking the result; use task evidence, not invented token
-estimates. Preserve explicit user choices and required review.
+The planner is the top-level agent the user works with. It owns reasoning,
+specs, integration, acceptance, and the outcome. Delegate when it reduces total
+work or provides required independence. Choose after simplifying the solution.
+Account for briefing, context loading, coordination, and checking the result;
+use task evidence, not invented token estimates. Preserve explicit user choices
+and required review.
 
 Direct work: inspect affected state, edit, run relevant checks, perform applicable
 version bookkeeping, then commit/push within authority. Create no Issue or worker
 purely for ceremony.
 
-When Codex coordinates delegated work, use the installed `model-routing` Skill
-for model and effort selection. Resolve references relative to that Skill and
-reuse unchanged context. If unavailable, stop only the affected dispatch.
-AgentsMD retains workflow, authority, proof, and review; small direct work and
-other hosts remain unchanged.
+Delegate through the routing tool when one is available; it owns model, effort,
+roles, execution, and recovery for the work it accepts. If it is unavailable or
+cannot run the work, stop only the affected dispatch and report it; never
+substitute another route silently. A delegated failure returns to the planner
+as a decision with evidence. The planner decides; it implements that work only
+on explicit user instruction. AgentsMD retains workflow, authority, proof, and
+review.
 
 At task and worker start, after context loss, and when the work changes phase,
 invoke the model-invoked `operations` Skill and load only its applicable linked
 reference before the dependent action. Reuse unchanged modules already in
-context. The main agent and workers each select for their current scope.
+context. The planner and workers each select for their current scope.
 A missing required module blocks only its dependent action.
 
 Resolve `operations` through installed Skill discovery. When the native global

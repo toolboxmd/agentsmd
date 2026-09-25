@@ -62,6 +62,6 @@ not completing it. A clear microfix stays direct.
 
 The old `algorithm` name selects Elon method's Algorithm reference. Planning
 procedures retain their concrete human decision and approval gates; selecting
-one automatically does not approve its proposal. Model Router still owns model
-and effort selection when dispatch is warranted. Workers use this entry point
+one automatically does not approve its proposal. The routing tool still owns
+model and effort selection when dispatch is warranted. Workers use this entry point
 for their assigned scope; it does not authorize another dispatch.
