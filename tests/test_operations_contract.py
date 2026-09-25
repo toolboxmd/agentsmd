@@ -60,7 +60,7 @@ class OperationsContractTests(unittest.TestCase):
                 ["python3", "-c", "from pathlib import Path; import sys; p=Path(sys.argv[1]); print((p.parent/'references/verification.md').read_text())", str(entry)],
                 cwd=cwd, text=True, capture_output=True, check=True,
             )
-            self.assertIn("independent Codex review", result.stdout)
+            self.assertIn("independent review of its exact SHA", result.stdout)
             self.assertNotIn("wrong source", result.stdout)
 
     def test_global_installer_resolves_canonical_modules_through_symlink(self):
@@ -94,16 +94,46 @@ class OperationsContractTests(unittest.TestCase):
             "Delegate when it reduces total work or provides required independence.",
             "Create no Issue or worker purely for ceremony",
             "Ownership also covers shared services, databases, ports and deployment targets",
-            "installed `model-routing` Skill",
+            "Delegate through the routing tool when one is available",
             "stop only the affected dispatch",
         ):
             self.assertIn(clause, core)
         verification = words(SKILL.parent / "references/verification.md")
         self.assertIn('exact user-approved prose replacement, matching expected-text assertions, and required version bookkeeping', verification)
         self.assertIn("self-review and relevant checks still apply", verification)
-        self.assertIn("independent Codex review of its exact SHA", verification)
-        self.assertNotIn("Codex Luna", verification)
+        self.assertIn("independent review of its exact SHA by an agent that did not author it", verification)
+        self.assertNotIn("Codex", verification)
         self.assertNotIn("maximum reasoning", verification)
+
+    def test_planner_delegates_through_routing_tool_without_silent_substitution(self):
+        core = words(ROOT / "AGENTS.md")
+        for clause in (
+            "The planner is the top-level agent the user works with",
+            "owns reasoning, specs, integration, acceptance, and the outcome",
+            "owns model, effort, roles, execution, and recovery for the work it accepts",
+            "never substitute another route silently",
+            "A delegated failure returns to the planner as a decision with evidence",
+            "it implements that work only on explicit user instruction",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, core)
+        recovery = words(SKILL.parent / "references/bounded-delegation.md")
+        self.assertIn("An escalation names the decision needed, its evidence, the remedies tried, and a recommendation", recovery)
+        self.assertIn("never with a silent takeover of the delegated work", recovery)
+        self.assertIn("never waives required proof", words(SKILL.parent / "references/verification.md"))
+        self.assertIn("Submit that packet through the routing tool", words(SKILL.parent / "references/orchestration.md"))
+        layered = [
+            ROOT / "AGENTS.md",
+            SKILL,
+            SKILL.parent / "references/bounded-delegation.md",
+            SKILL.parent / "references/orchestration.md",
+            SKILL.parent / "references/verification.md",
+        ]
+        for document in layered:
+            text = words(document)
+            with self.subTest(document=document.name):
+                for forbidden in ("model-routing", "prism_submit", "spawn_thread", "Codex coordinates", "Codex review"):
+                    self.assertNotIn(forbidden, text)
 
     def test_failing_existing_test_is_judged_before_it_is_edited(self):
         proof = words(SKILL.parent / "references/verification.md")

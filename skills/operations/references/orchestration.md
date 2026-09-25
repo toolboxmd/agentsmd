@@ -69,15 +69,16 @@ work, read [bounded delegation](bounded-delegation.md) for alternative-versus-
 coverage aggregation, capacity, pilots, and failure recovery. For an authorized
 external intake or automation adapter, also read [external handoffs](external-handoffs.md).
 
-Use a nested child with that packet and no prior transcript; do not fork the parent
-transcript. Direct work needs no worker. A separate host task is only for work that
+Submit that packet through the routing tool when one is available; otherwise use
+a nested child with it and no prior transcript; do not fork the parent transcript.
+Direct work needs no worker. A separate host task is only for work that
 must outlive the parent, be independently openable by a human, or continue after
 the parent stops. Close finished, errored, or idle children so each leaves the
 working state. Keep writers few, exclusive, and bounded; no unbounded children.
 Do not copy worker transcripts into the coordinator.
 
-For retained supporting files, follow [artifact placement](artifacts.md). Model
-Router reports stay in its existing state directory; link their identities.
+For retained supporting files, follow [artifact placement](artifacts.md). Routing
+tool reports stay in its own state directory; link their identities.
 Keep one canonical durable handoff on the owning Issue, linked from PR/consumers:
 branch, workspace, exact base/HEAD, proof commands/results/links, review identity/
 verdict, version, authority, dependencies, delivery, cleanup, finalization, blockers,

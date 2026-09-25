@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.3.0] - 2026-09-25
+
+### Added
+
+- Planner delegates through the routing tool and never substitutes silently; tool-neutral delegation rules
+
 ## [12.2.1] - 2026-09-24
 
 ### Changed

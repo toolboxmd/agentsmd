@@ -48,7 +48,7 @@ class DeliverySystemContractTests(unittest.TestCase):
             "Independent worktree pull requests",
             "Dependent stacked pull requests",
             "Tightly coupled single-writer integration",
-            "independent Codex review",
+            "independent review of its exact SHA",
             "exact SHA",
             "generated-scope validation",
             "earliest layer owning failed acceptance",

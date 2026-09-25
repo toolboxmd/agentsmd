@@ -58,8 +58,12 @@ legitimate long check. Do not restart an idle worker merely to ask for status.
 Confirm a writer has stopped before reusing its resources. If stopping is
 unconfirmed, isolate the replacement from every shared resource or keep that
 action blocked. Propagate user stops to every affected worker and record any
-unconfirmed stop. Follow installed routing and explicit user choices for any
-justified model change.
+unconfirmed stop. The routing tool owns model changes for work it accepted;
+explicit user choices still apply.
+
+An escalation names the decision needed, its evidence, the remedies tried, and a
+recommendation. Answer with direction, an eligible alternative, or a Human Gate;
+never with a silent takeover of the delegated work.
 
 Salvage useful late findings through the current task; never merge a stale result
 blindly. Account for each unit as accepted, failed, stopped, superseded, or

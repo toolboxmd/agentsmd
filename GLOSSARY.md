@@ -6,9 +6,20 @@ installable workflow plugin.
 _Avoid_: Matt Skill pack, global prompt repository
 
 **Model Router**:
-The separate ToolboxMD plugin that selects the model and reasoning effort for
-routed Codex dispatches. AgentsMD owns workflow, authority, proof, and review.
+The separate ToolboxMD router, labelled Prism in the interface, that accepts
+delegated work and selects its models, effort, and roles. AgentsMD owns
+workflow, authority, proof, and review.
 _Avoid_: AgentsMD model policy, routing matrix
+
+**Planner**:
+The top-level agent the user works with. It owns judgment, specs, and
+acceptance, and delegates the rest.
+_Avoid_: main agent
+
+**Routing tool**:
+The host-provided means of delegating work with routed model and role
+selection, such as Model Router.
+_Avoid_: model-routing Skill
 
 **Agent Observer**:
 The separate ToolboxMD plugin that connects native agent usage to explicitly
