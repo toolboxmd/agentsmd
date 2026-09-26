@@ -33,8 +33,16 @@ Record, release policy, documentation, or current delivery state.
 
 - Before opening or updating a PR, read `CONTRIBUTING.md` when present.
 - A final approval PR is ready when every acceptance criterion is satisfied,
-  required proof is current, the final diff passed self-review, and the version
-  transition is committed. Blocked work ends in a blocker handoff, not a ready-PR claim.
+  required proof is current, the final diff passed self-review, independent
+  review passed on the current head, and the version transition is committed.
+  Blocked work ends in a blocker handoff, not a ready-PR claim.
+- On GitHub, independent review passed only when the newest
+  `review/independent` status on the head has state `success` and was created
+  by the repository's `gh` account, or the PR records an exempt slice under
+  [verification](verification.md). The combined `/status` endpoint omits the
+  creator; read the newest-first list:
+  `gh api 'repos/{owner}/{repo}/commits/<head>/statuses?per_page=100' --jq '[.[] | select(.context == "review/independent")][0] | {state, creator: .creator.login}'`.
+  Prose review claims and statuses on earlier heads do not count.
 - Internal component readiness and merge follow [orchestration](orchestration.md).
 - For an authorized merge, re-check the exact PR head and readiness, use the
   repository's supported merge path, and verify the result.

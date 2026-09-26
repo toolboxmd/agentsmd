@@ -192,6 +192,34 @@ class OperationsContractTests(unittest.TestCase):
             with self.subTest(clause=clause):
                 self.assertIn(clause, orchestration)
 
+    def test_review_verdict_is_a_commit_status_on_the_exact_head(self):
+        verification = words(SKILL.parent / "references/verification.md")
+        for clause in (
+            "commit status `review/independent` on the exact reviewed SHA",
+            "Post `pending` when review starts",
+            "`success` when no blocking finding remains or `failure` otherwise",
+            "first publish the findings",
+            "gh api repos/{owner}/{repo}/statuses/<sha>",
+            "-f context=review/independent",
+            "-f target_url=",
+            "A new push starts without this status; review its head again",
+            "the planner posts `pending` at dispatch and relays the reviewer's findings and verdict unchanged",
+            "If review stops without a verdict, post `error` with the reason",
+            "An exempt slice posts no status, so tools show it as waiting for review",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, verification)
+        delivery = words(SKILL.parent / "references/delivery.md")
+        for clause in (
+            "independent review passed on the current head",
+            "newest `review/independent` status on the head has state `success` and was created by the repository's `gh` account",
+            "gh api 'repos/{owner}/{repo}/commits/<head>/statuses?per_page=100'",
+            "Prose review claims and statuses on earlier heads do not count",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, delivery)
+        self.assertIn("`review/independent` `success` on the current head, or a recorded exemption", words(SKILL.parent / "references/orchestration.md"))
+
     def test_component_integration_cannot_complete_delivery_or_versioning(self):
         orchestration = words(SKILL.parent / "references/orchestration.md")
         for clause in (

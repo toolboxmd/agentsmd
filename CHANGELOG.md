@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.4.0] - 2026-09-26
+
+### Added
+
+- Record the independent review verdict as commit status review/independent on the exact head; merge readiness requires success
+
 ## [12.3.0] - 2026-09-25
 
 ### Added

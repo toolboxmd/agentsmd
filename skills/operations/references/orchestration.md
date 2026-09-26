@@ -10,7 +10,9 @@ tasks use one ordinary PR; local microfix exceptions remain.
 Verify protections/CI permit unreleased internal pushes/merges without release,
 publication, deployment, or protected impact. Otherwise use [repository setup](repository-setup.md),
 never bypass checks. Agents may merge components into integration only after
-exact-head/current-base checks and independent [review](verification.md).
+exact-head/current-base checks and independent [review](verification.md), shown
+on GitHub by `review/independent` `success` on the current head, or a recorded
+exemption, as defined in [delivery](delivery.md).
 
 The final PR targets the intended base with cumulative diff, component map,
 outcome acceptance, combined proof, and independent exact-candidate review.
