@@ -52,6 +52,27 @@ an agent that did not author it, delegated under core execution routing. The exc
 user-approved prose replacement, matching expected-text assertions, and required version
 bookkeeping; self-review and relevant checks still apply.
 
+On GitHub, record the verdict as commit status `review/independent` on the
+exact reviewed SHA through the repository's authenticated `gh` account. The
+reviewer posts it. When the reviewer cannot write, the planner posts `pending`
+at dispatch and relays the reviewer's findings and verdict unchanged, as the
+comment and the status. Post `pending` when review starts, linking the PR.
+When it ends, first publish the findings as a PR comment or review, then post
+`success` when no blocking finding remains or `failure` otherwise, with a
+one-line summary under 140 characters linking those findings. `gh` fills
+`{owner}` and `{repo}` from the current checkout:
+
+```sh
+gh api repos/{owner}/{repo}/statuses/<sha> -f state=<pending|success|failure|error> \
+  -f context=review/independent -f description='<one-line verdict>' \
+  -f target_url=<PR or findings URL>
+```
+
+If review stops without a verdict, post `error` with the reason, so `pending`
+never stays on an abandoned review; tools read `error` as a failure. A new push
+starts without this status; review its head again. An exempt slice posts no
+status, so tools show it as waiting for review; record its exemption on the PR.
+
 A deterministically generated promotion PR may use generated-scope validation only
 when a trusted generator reproduces its exact diff from reviewed inputs, all changes
 lie within declared generated paths, and exact-candidate validation proves this.
