@@ -89,7 +89,7 @@ skip claimed Issues. A frontier Issue is open, unblocked, and unclaimed.
    for distinct decisions, dependencies, and fog.
 2. If a reliable spec is now possible, return to Operations without creating a map.
    Select [to-spec](../to-spec/index.md) if a specification is needed; preserve its
-   publication approval gates.
+   user-decision gates.
 3. Show the proposed map and visible Decision Issues. Publish only after approval.
 4. Create the map and typed native children, then native blocking edges once
    real identities exist. Verify both relationships and stop. Charting resolves

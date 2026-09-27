@@ -3,8 +3,8 @@
   "contract": {
     "workflow": "specify",
     "default_completion": "verified-ticket-publication",
-    "parent_publication_approval": "required",
-    "ticket_publication_approval": "required",
+    "parent_publication_approval": "unresolved-user-decision-only",
+    "ticket_publication_approval": "unresolved-user-decision-only",
     "parent_only_opt_out": "supported",
     "entry_procedure": "to-spec",
     "entry_selection": "operations",
@@ -24,10 +24,8 @@
       "parent_only": false,
       "transitions": [
         "draft-parent",
-        "approve-parent",
         "publish-and-verify-parent",
         "draft-tickets",
-        "approve-ticket-graph",
         "publish-and-verify-tickets",
         "request-implementation-authority"
       ],
@@ -43,10 +41,8 @@
       "parent_only": false,
       "transitions": [
         "draft-parent",
-        "approve-parent",
         "publish-and-verify-parent",
         "draft-tickets",
-        "approve-ticket-graph",
         "publish-and-verify-tickets",
         "start-first-unblocked-issue-in-fresh-context"
       ],
@@ -62,7 +58,6 @@
       "parent_only": true,
       "transitions": [
         "draft-parent",
-        "approve-parent",
         "publish-and-verify-parent",
         "complete-parent-only"
       ],
@@ -78,12 +73,12 @@
       "parent_only": false,
       "transitions": [
         "draft-parent",
+        "ask-parent-user-decision",
         "revise-parent-draft",
-        "approve-parent",
         "publish-and-verify-parent",
         "draft-tickets",
+        "ask-ticket-user-decision",
         "revise-ticket-draft",
-        "approve-ticket-graph",
         "publish-and-verify-tickets",
         "request-implementation-authority"
       ],
@@ -99,7 +94,8 @@
       "parent_only": false,
       "transitions": [
         "draft-parent",
-        "reject-parent-draft",
+        "ask-parent-user-decision",
+        "reject-parent-user-decision",
         "stop-without-parent-publication"
       ],
       "terminal_state": "parent-draft-rejected",
@@ -114,10 +110,10 @@
       "parent_only": false,
       "transitions": [
         "draft-parent",
-        "approve-parent",
         "publish-and-verify-parent",
         "draft-tickets",
-        "reject-ticket-draft",
+        "ask-ticket-user-decision",
+        "reject-ticket-user-decision",
         "stop-without-ticket-publication"
       ],
       "terminal_state": "ticket-draft-rejected",

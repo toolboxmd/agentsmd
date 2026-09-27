@@ -43,7 +43,7 @@ not completing it. A clear microfix stays direct.
 | Resolve unresolved human-owned choices, or the user asks to be grilled or stress-test their thinking | [Grilling](workflows/grilling/index.md); [grill with docs](workflows/grill-with-docs/index.md) when terminology or ADR work is needed |
 | Agree terms or record a costly architectural decision | [Domain modeling](workflows/domain-modeling/index.md) |
 | Map dependent unresolved decisions | [Wayfinder](workflows/wayfinder/index.md) |
-| Produce a specification or decompose an approved plan | [Specify](workflows/to-spec/index.md), or [tickets](workflows/to-tickets/index.md) for an existing approved plan |
+| Produce a specification or decompose a plan | [Specify](workflows/to-spec/index.md), or [tickets](workflows/to-tickets/index.md) for an existing plan or parent Issue |
 | Edit tracked files or select a workspace | [Implementation](references/implementation.md) |
 | Delegate or coordinate dependencies, recover a handoff | [Orchestration](references/orchestration.md) |
 | Choose or run proof, review, or claim readiness | [Verification](references/verification.md); [code review](workflows/code-review/index.md) for review findings |

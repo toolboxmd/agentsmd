@@ -944,8 +944,27 @@ class SkillContractTests(unittest.TestCase):
             "technical clarifications",
             "schema or API contracts",
             "external behavior",
+            "publish without a routine approval stop",
+            "A request to specify, plan, or decompose the work authorizes publishing its parent and ticket Issues",
+            "ask once for that authority before publishing",
+            "genuinely user-owned decision remains unresolved",
         ):
             self.assertIn(required, normalized)
+        decomposition = " ".join(
+            read_text(
+                "skills/operations/workflows/to-tickets/references/ticket-decomposition.md"
+            ).split()
+        )
+        self.assertIn("do not stop for graph approval", decomposition)
+        self.assertIn("ask once for that authority before publishing", decomposition)
+        self.assertIn("genuinely user-owned decision remains unresolved", decomposition)
+        self.assertIn("so the user can correct it afterward", decomposition)
+        self.assertNotIn("Obtain approval", decomposition)
+        self.assertNotIn("Retain approval", normalized)
+        router = read_text("skills/operations/SKILL.md")
+        tickets_entry = read_text("skills/operations/workflows/to-tickets/index.md")
+        self.assertIn("decompose a plan", router)
+        self.assertNotIn("approved plan", router + tickets_entry)
         for forbidden in (
             "setup-matt-pocock-skills",
             "ready-for-agent",
@@ -1074,13 +1093,18 @@ class SkillContractTests(unittest.TestCase):
             transitions = case["transitions"]
             with self.subTest(branch=branch):
                 self.assertEqual(transitions[0], "draft-parent")
+                self.assertFalse(
+                    {"approve-parent", "approve-ticket-graph"} & set(transitions)
+                )
                 if branch == "rejected-parent-draft":
                     self.assertNotIn("publish-and-verify-parent", transitions)
                     continue
-                self.assertLess(
-                    transitions.index("approve-parent"),
-                    transitions.index("publish-and-verify-parent"),
-                )
+                for gate in ("ask-parent-user-decision", "revise-parent-draft"):
+                    if gate in transitions:
+                        self.assertLess(
+                            transitions.index(gate),
+                            transitions.index("publish-and-verify-parent"),
+                        )
                 if case["parent_only"]:
                     self.assertNotIn("draft-tickets", transitions)
                 else:
@@ -1093,10 +1117,12 @@ class SkillContractTests(unittest.TestCase):
                             "publish-and-verify-tickets", transitions
                         )
                         continue
-                    self.assertLess(
-                        transitions.index("approve-ticket-graph"),
-                        transitions.index("publish-and-verify-tickets"),
-                    )
+                    for gate in ("ask-ticket-user-decision", "revise-ticket-draft"):
+                        if gate in transitions:
+                            self.assertLess(
+                                transitions.index(gate),
+                                transitions.index("publish-and-verify-tickets"),
+                            )
 
         planning = cases["planning-only"]
         self.assertEqual(
@@ -1132,7 +1158,16 @@ class SkillContractTests(unittest.TestCase):
         )
         self.assertEqual(rejected_parent["implementation_authority_prompts"], 0)
 
+        self.assertLess(
+            rejected_parent["transitions"].index("ask-parent-user-decision"),
+            rejected_parent["transitions"].index("reject-parent-user-decision"),
+        )
+
         rejected_tickets = cases["rejected-ticket-draft"]
+        self.assertLess(
+            rejected_tickets["transitions"].index("ask-ticket-user-decision"),
+            rejected_tickets["transitions"].index("reject-ticket-user-decision"),
+        )
         self.assertEqual(
             rejected_tickets["terminal_state"], "ticket-draft-rejected"
         )
@@ -1147,7 +1182,7 @@ class SkillContractTests(unittest.TestCase):
             "fresh context",
             "## Non-goals",
             "## Required proof",
-            "user approves",
+            "do not stop for",
         ):
             self.assertIn(required, skill)
         for forbidden in (
@@ -2015,6 +2050,7 @@ class SkillContractTests(unittest.TestCase):
             "native blocking",
             'assign it before work',
             'Never impersonate the human',
+            "Publish only after approval",
             'close the Issue',
             'Stop when a reliable spec can be stated',
         ):

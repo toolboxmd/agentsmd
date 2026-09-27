@@ -31,23 +31,29 @@ commands, fixtures, exact revisions, and environment gotchas in the implementati
 packet after orientation. Completion requires the stated evidence for the current
 candidate, not a checked box or worker summary.
 
-## 3. Approve
+## 3. User-decision gate
 
-Show a numbered graph with **Title**, **Blocked by**, and **What it delivers**
-for each Issue. Ask whether merge/split choices are right. Obtain approval of
-granularity, blocking edges, and publication. Revise and repeat until the user
-approves the complete graph or stops.
+A request to specify, plan, or decompose the work authorizes publishing its
+Issues in the resolved owning repository; without such a request, ask once for
+that authority before publishing. Granularity, blocking edges, and publication
+are otherwise agent-owned; do not stop for graph approval. Stop only when a genuinely user-owned decision remains
+unresolved: product taste, consequential or difficult-to-reverse architecture,
+or a change to confirmed scope or authority. Ask only that decision, revise the
+graph from the answer, and continue. If the user stops the workflow, publish
+no ticket graph.
 
 ## 4. Publish and verify
 
-After the user approves, create Issues in dependency order using the template
+Create Issues in dependency order using the template
 below. Add each as a native sub-Issue; add native blocking relationships after
 real identifiers exist. Leave the parent body/state unchanged. Deferred future
 work stays standalone when parent completion does not depend on it. Add no
 automatic readiness label; explicit fields establish readiness.
 
 Re-fetch parent children and every native blocking edge. Report final Issue URLs
-and graph only after the complete publication and relationships are verified.
+and a numbered graph with **Title**, **Blocked by**, and **What it delivers**
+only after the complete publication and relationships are verified, so the user
+can correct it afterward.
 
 ## 5. Continue at the implementation boundary
 
