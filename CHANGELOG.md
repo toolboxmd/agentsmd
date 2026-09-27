@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.5.0] - 2026-09-27
+
+### Added
+
+- Load the committed Project Direction; report uncommitted triad files as drafts
+
 ## [12.4.0] - 2026-09-26
 
 ### Added

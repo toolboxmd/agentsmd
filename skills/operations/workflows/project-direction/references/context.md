@@ -23,7 +23,14 @@ result, such as Grok Build, the first response has none, so read the triad
 explicitly until it arrives. Grok Build 1.0.34 executes no plugin-provided hook,
 so injection there needs the global hook file the README describes; without it
 no injection arrives at all and every task starts by reading the triad.
-Repository files remain truth.
+The committed triad on the intended base is the Project Direction. Uncommitted,
+modified, or deleted triad files in a checkout are drafts: propose one through
+[project-direction](../index.md) (user confirmation, then a PR) or discard it.
+Overwriting a stale local copy is safe; Git keeps every committed state. When
+reading explicitly, read the committed version (`git show HEAD:OBJECTIVE.md`).
+The loader injects `HEAD` versions and lists drafts in `drafts`; a file with no
+committed version is injected with `source` `draft` and is unconfirmed, which
+still lets a new project initialize.
 
 ## Currentness
 
@@ -34,10 +41,11 @@ information is insufficient. Do not routinely pull. Loaders/hooks inspect local
 Git only, without network access or checkout mutation.
 
 If known upstream is ahead or diverged and changes any direction file relative
-to `HEAD`, treat `potentially_stale` as checkout-scoped evidence. Reconcile the
-intended base while preserving user work and reread all three before further
-strategic judgment. Unknown Git metadata qualifies currentness; it never suppresses
-the local triad.
+to `HEAD`, the status is `potentially_stale` and the loader injects those files
+from the local upstream ref (`source` `upstream`); the checkout copies are stale.
+Reconcile the intended base while preserving user work and reread all three before
+editing direction. Unknown Git metadata qualifies currentness; it never suppresses
+the committed triad.
 
 ## Repair and alignment
 

@@ -235,41 +235,111 @@ def not_in_repository_payload(cwd: str) -> dict[str, object]:
     }
 
 
+def git_blob(root: Path, ref: str, name: str) -> bytes | None:
+    """Return a committed file from a local ref, or None when it has none.
+
+    A committed symlink resolves to its target inside the tree; one that
+    leaves the tree yields None.
+    """
+    environment = os.environ.copy()
+    environment["GIT_OPTIONAL_LOCKS"] = "0"
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "cat-file", "--batch", "--follow-symlinks"],
+            input=f"{ref}:{name}\n".encode("utf-8"),
+            capture_output=True,
+            check=False,
+            env=environment,
+        )
+    except OSError:
+        return None
+    header, _, body = result.stdout.partition(b"\n")
+    fields = header.split()
+    if result.returncode != 0 or len(fields) != 3 or fields[1] != b"blob":
+        return None
+    return body[: int(fields[2])]
+
+
+def working_file(root: Path, name: str) -> tuple[bytes | None, dict[str, object] | None]:
+    path = root / name
+    if not path.is_file():
+        return None, {"name": name, "path": str(path), "reason": "missing"}
+    resolved_path = path.resolve()
+    if root != resolved_path and root not in resolved_path.parents:
+        return None, {"name": name, "path": str(path), "reason": "outside_repository"}
+    try:
+        return path.read_bytes(), None
+    except OSError:
+        return None, {
+            "name": name,
+            "path": str(path),
+            "reason": "unreadable",
+            "detail": "read failed",
+        }
+
+
 def direction_payload(root: Path) -> dict[str, object]:
-    errors = [
-        {"name": name, "path": str(root / name), "reason": "missing"}
-        for name in REQUIRED_FILES
-        if not (root / name).is_file()
-    ]
+    # The committed triad is the direction: upstream when known upstream is
+    # ahead and changes a file, else HEAD. Checkout copies that differ from
+    # HEAD are drafts, injected only when no committed version exists.
+    git = git_metadata(root)
+    upstream_changed = (
+        git["divergence"]["state"] == "known"
+        and git["divergence"]["behind"] > 0
+        and git["project_direction_diff"]["state"] == "known"
+        and bool(git["project_direction_diff"]["files"])
+    )
+    upstream_files: list[str] = []
+    if upstream_changed:
+        # Merge-base diff: only files upstream changed, never local commits.
+        changed = run_git(
+            root,
+            "diff",
+            "--name-only",
+            "--no-renames",
+            "--no-ext-diff",
+            f"HEAD...{git['upstream']['ref']}",
+            "--",
+            *REQUIRED_FILES,
+        )
+        if changed is not None and changed.returncode == 0:
+            upstream_files = changed.stdout.splitlines()
+    # Stale only when upstream itself changed a direction file.
+    stale = bool(upstream_files)
+    head_known = git["head"]["state"] == "known"
+    errors: list[dict[str, object]] = []
+    drafts: list[dict[str, str]] = []
+    loaded: dict[str, tuple[bytes, str]] = {}
+    for name in REQUIRED_FILES:
+        path = root / name
+        head = git_blob(root, "HEAD", name) if head_known else None
+        working, error = working_file(root, name)
+        if head is None and working is not None:
+            drafts.append({"name": name, "path": str(path), "state": "untracked"})
+        elif head is not None and error is not None and error["reason"] == "missing":
+            drafts.append({"name": name, "path": str(path), "state": "deleted"})
+        elif head is not None and working != head:
+            drafts.append({"name": name, "path": str(path), "state": "modified"})
+        upstream = (
+            git_blob(root, git["upstream"]["ref"], name)
+            if name in upstream_files
+            else None
+        )
+        if upstream is not None:
+            loaded[name] = (upstream, "upstream")
+        elif head is not None:
+            loaded[name] = (head, "head")
+        elif working is not None:
+            loaded[name] = (working, "draft")
+        else:
+            errors.append(error)
     if errors:
         return uninitialized_payload(root, errors)
 
     contents: dict[str, str] = {}
     total_bytes = 0
-    for name in REQUIRED_FILES:
+    for name, (raw, _) in loaded.items():
         path = root / name
-        resolved_path = path.resolve()
-        if root != resolved_path and root not in resolved_path.parents:
-            errors.append(
-                {
-                    "name": name,
-                    "path": str(path),
-                    "reason": "outside_repository",
-                }
-            )
-            continue
-        try:
-            raw = path.read_bytes()
-        except OSError:
-            errors.append(
-                {
-                    "name": name,
-                    "path": str(path),
-                    "reason": "unreadable",
-                    "detail": "read failed",
-                }
-            )
-            continue
         total_bytes += len(raw)
         if len(raw) > MAX_FILE_BYTES:
             errors.append(
@@ -322,17 +392,11 @@ def direction_payload(root: Path) -> dict[str, object]:
             {
                 "name": name,
                 "path": str(path),
+                "source": loaded[name][1],
                 "sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
                 "content": content,
             }
         )
-    git = git_metadata(root)
-    stale = (
-        git["divergence"]["state"] == "known"
-        and git["divergence"]["behind"] > 0
-        and git["project_direction_diff"]["state"] == "known"
-        and bool(git["project_direction_diff"]["files"])
-    )
     payload: dict[str, object] = {
         "status": "potentially_stale" if stale else "ready",
         "repository_root": str(root),
@@ -346,18 +410,28 @@ def direction_payload(root: Path) -> dict[str, object]:
         ),
         "files": files,
     }
+    if drafts:
+        payload["drafts"] = {
+            "files": drafts,
+            "action": (
+                "These checkout files differ from HEAD and are drafts, not "
+                "Project Direction. A files[] entry with source \"draft\" has "
+                "no committed version and is unconfirmed. Propose a draft "
+                "through the Project Direction procedure or discard it."
+            ),
+        }
     if stale:
         payload["warning"] = {
             "code": "potentially_stale",
             "message": (
-                "The loaded Project Direction is checkout-scoped and may lag "
-                "the known upstream. Do not present it as confirmed-current "
-                "repository truth."
+                "The checkout lags a known upstream that changes Project "
+                "Direction. Files with source \"upstream\" were read from the "
+                "local upstream ref; the checkout copies are stale."
             ),
             "action": (
                 "Resolve and reconcile the intended base while preserving "
                 "user work, then reread VISION.md, MISSION.md, and "
-                "OBJECTIVE.md before subsequent strategic judgment."
+                "OBJECTIVE.md before editing them."
             ),
         }
     return payload
