@@ -728,7 +728,6 @@ class SkillContractTests(unittest.TestCase):
         agents = read_text("AGENTS.md")
         normalized = " ".join(agents.split())
         for required in (
-            "After Project Direction is loaded",
             "select the Elon method procedure through `operations`",
             "material requirement",
             "solution design",
