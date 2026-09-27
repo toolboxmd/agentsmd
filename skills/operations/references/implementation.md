@@ -53,10 +53,10 @@ Choose the smallest suitable lane:
 - **Clear:** implement the ready Issue.
 - **Shape:** use [grilling](../workflows/grilling/index.md) for unresolved human-owned decisions or an explicit grilling request. Use [grill-with-docs](../workflows/grill-with-docs/index.md) when that discussion also needs terminology or ADR work.
 - **Specify:** use [to-spec](../workflows/to-spec/index.md) when a specification is needed or requested. That procedure owns the complete workflow
-  through approved parent and ticket publication, Parent Spec only opt-out, and
+  through verified parent and ticket publication, Parent Spec only opt-out, and
   continuation to the first unblocked Issue under existing implementation authority.
-  Read it when selected; preserve both publication gates and its single named-Issue
-  authority question when implementation is not authorized.
+  Read it when selected; preserve its unresolved-user-decision gates and its single
+  named-Issue authority question when implementation is not authorized.
 - **Wayfind:** use [wayfinder](../workflows/wayfinder/index.md) when dependent unresolved decisions prevent a reliable
   spec, regardless of effort size. When decisions resolve, return to the smallest
   suitable lane without asking the human to name a workflow.

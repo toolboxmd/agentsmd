@@ -61,7 +61,8 @@ logic or UI prototype when reading cannot resolve the question. Reflection
 corrects an observed failure at its existing owner; it creates no diary.
 
 Planning selection is automatic, while concrete human decisions remain human.
-`to-spec` keeps parent and ticket-publication approval gates. Existing Delivery
+`to-spec` publishes parent and ticket Issues without a routine approval stop;
+it asks only when a user-owned decision remains unresolved. Existing Delivery
 Authority carries through routine work; selecting a procedure adds no authority.
 An explicit Parent Spec only request stops after verified parent publication.
 Wayfinder keeps HITL verdicts and returns resolved work to the appropriate lane.

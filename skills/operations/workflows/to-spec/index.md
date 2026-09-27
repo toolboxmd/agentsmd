@@ -9,8 +9,8 @@ metadata:
   workflow: specify
   workflow-stage: parent-spec
   default-completion: verified-ticket-publication
-  parent-publication-approval: required
-  ticket-publication-approval: required
+  parent-publication-approval: unresolved-user-decision-only
+  ticket-publication-approval: unresolved-user-decision-only
   continuation-stage: ticket-graph
   parent-only-opt-out: supported
   implementation-target: first-unblocked-issue
@@ -56,7 +56,7 @@ migration fallbacks when the new names are absent.
 Prefer an existing testing seam. Choose the highest public seam that can prove
 the outcome. Introduce as few new seams as possible, ideally one, and only when
 existing behavior cannot prove the outcome. Confirm the proposed seam with the
-user and present any remaining user-owned decision before publishing.
+user only when choosing it is a user-owned decision.
 
 ### 3. Draft the parent Issue
 
@@ -68,18 +68,20 @@ Avoid implementation paths and code snippets because they drift. A short
 prototype-derived state machine, schema, or type shape may be included when it
 records an approved decision more precisely than prose.
 
-### 4. Approval gate
+### 4. User-decision gate
 
-Show the complete draft or a precise change summary for an existing Issue.
-Retain approval before parent Issue publication: publish only after the user
-approves the outcome, scope, testing seam, and remaining blockers. When the user
-rejects or revises the draft, update it and repeat this gate until the user
-approves it or stops the workflow.
+A request to specify, plan, or decompose the work authorizes publishing its parent and
+ticket Issues in the resolved owning repository. Without such a request, ask
+once for that authority before publishing. Otherwise publish without a routine
+approval stop. Stop before publication only when a
+genuinely user-owned decision remains unresolved: product taste, consequential
+or difficult-to-reverse architecture, or a change to confirmed scope or
+authority. Ask only that decision, update the draft from the answer, and
+continue. If the user stops the workflow, publish nothing.
 
 ### 5. Publish and verify
 
-Create the GitHub parent Issue or update the exact existing Issue the user
-approved. Do not add an automatic readiness label. Readiness comes from the
+Create the GitHub parent Issue or update the exact existing Issue. Do not add an automatic readiness label. Readiness comes from the
 explicit outcome, acceptance criteria, non-goals, blockers, and required
 proof.
 
@@ -95,7 +97,7 @@ perform [ticket decomposition](../to-tickets/references/ticket-decomposition.md)
 after verified parent publication. Use the verified parent and full current
 request as its source. This is the selected workflow's continuation, not an
 selection of another planning procedure or another routing question. The shared
-procedure owns graph approval, native relationship verification, and the
+procedure owns its user-decision gate, native relationship verification, and the
 first unblocked Issue's implementation-authority boundary.
 
 ## Parent Issue template

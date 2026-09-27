@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.0.0] - 2026-09-27
+
+### Changed
+
+- Specify publishes parent and ticket Issues without a routine approval stop; it asks only an unresolved user-owned decision
+
 ## [12.8.0] - 2026-09-27
 
 ### Added

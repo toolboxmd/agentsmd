@@ -9,7 +9,7 @@ metadata:
   workflow: specify
   workflow-stage: ticket-graph
   default-completion: verified-ticket-publication
-  ticket-publication-approval: required
+  ticket-publication-approval: unresolved-user-decision-only
   implementation-target: first-unblocked-issue
   implementation-context: fresh
   implementation-authority-source: full-current-request
@@ -19,12 +19,12 @@ metadata:
 
 # To Tickets
 
-Turn an approved plan, parent Issue, or conversation into the smallest useful
+Turn a plan, parent Issue, or conversation into the smallest useful
 graph of implementation GitHub Issues when decomposition is needed or requested.
 Each Issue owns one narrow, complete, independently provable outcome and fits one
-fresh context. Preserve the approval gates in the shared procedure below.
+fresh context. Preserve the user-decision gate in the shared procedure below.
 
 Tracer-bullet and expand-contract language guides the decomposition. The
 published artifacts are called GitHub Issues.
 
-When this procedure is selected, read and perform [ticket decomposition](references/ticket-decomposition.md), including source gathering, graph approval, publication verification, and the implementation boundary. This shared procedure owns those steps.
+When this procedure is selected, read and perform [ticket decomposition](references/ticket-decomposition.md), including source gathering, the user-decision gate, publication verification, and the implementation boundary. This shared procedure owns those steps.
