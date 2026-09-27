@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.6.0] - 2026-09-27
+
+### Added
+
+- Fix missing or wrong shared behavior at its owner, not in private preferences; check every host delegation tool and prefer a visible child that honors the requested model and effort
+
 ## [12.5.0] - 2026-09-27
 
 ### Added

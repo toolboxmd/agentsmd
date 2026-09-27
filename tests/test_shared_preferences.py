@@ -310,5 +310,16 @@ class SharedPreferencesTests(unittest.TestCase):
                          (unpacked / 'PREFERENCES.example.md').read_bytes())
 
 
+class PreferencePlacementContractTests(unittest.TestCase):
+    def test_shared_fixes_go_to_their_owner_not_private_preferences(self):
+        agents = (ROOT / 'AGENTS.md').read_text(encoding='utf-8')
+        section = agents.split('## Canonical source and preferences', 1)[1].split('\n## ', 1)[0]
+        text = ' '.join(section.split())
+        self.assertIn('When a correction or discovery reveals missing or wrong shared behavior or tool '
+                      'knowledge, fix it at the owner of that behavior (the shared instructions, the '
+                      'project, or the tool that provides it), not in preferences; keep a preference only '
+                      'for what cannot live at an owner, and remove it once the owner fix lands.', text)
+
+
 if __name__ == '__main__':
     unittest.main()

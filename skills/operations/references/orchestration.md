@@ -71,11 +71,14 @@ work, read [bounded delegation](bounded-delegation.md) for alternative-versus-
 coverage aggregation, capacity, pilots, and failure recovery. For an authorized
 external intake or automation adapter, also read [external handoffs](external-handoffs.md).
 
-Submit that packet through the routing tool when one is available; otherwise use
-a nested child with it and no prior transcript; do not fork the parent transcript.
-Direct work needs no worker. A separate host task is only for work that
-must outlive the parent, be independently openable by a human, or continue after
-the parent stops. Close finished, errored, or idle children so each leaves the
+Before choosing, check every delegation tool the host provides, including
+deferred and MCP-supplied tools. Submit that packet through the routing tool for
+work it accepts. When the host has no routing tool, or the routing tool cannot
+honor a model or effort the user named, report that, then use a host child
+mechanism that honors them and shows the child to the user, else a nested child
+with the packet and no prior transcript; do not fork the parent transcript. Direct work needs no worker. A separate host task is
+only for work that must outlive the parent or continue after it stops, or when
+the host offers no visible child. Close finished, errored, or idle children so each leaves the
 working state. Keep writers few, exclusive, and bounded; no unbounded children.
 Do not copy worker transcripts into the coordinator.
 

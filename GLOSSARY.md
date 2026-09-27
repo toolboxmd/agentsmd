@@ -112,10 +112,11 @@ _Avoid_: archive, permanent task workspace
 
 **Fresh context**:
 A child start seeded with the minimal durable packet and no prior transcript.
-Do not fork the parent transcript. The default is a nested child in the
-coordinator session. A separate host task is the exception when the slice must
-outlive the parent, a human must open it independently, or the writer must
-continue after the parent stops.
+Do not fork the parent transcript. Outside the routing tool, the default is a
+host child that honors the requested model and effort and is visible to the
+user, else a nested child in the coordinator session. A separate host task is
+the exception when the slice must outlive the parent or continue after it
+stops, or when the host offers no visible child.
 _Avoid_: new sidebar session, new chat as the default, forked parent context
 
 **Repository Reconciliation**:

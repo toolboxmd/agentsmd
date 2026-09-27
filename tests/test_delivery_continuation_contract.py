@@ -40,6 +40,20 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("nested child", contract)
         self.assertIn("do not fork the parent transcript", contract)
         self.assertIn("separate host task", contract)
+        self.assertIn(
+            "Before choosing, check every delegation tool the host provides, including deferred and "
+            "MCP-supplied tools. Submit that packet through the routing tool for work it accepts. "
+            "When the host has no routing tool, or the routing tool cannot honor a model or effort "
+            "the user named, report that, then use a host child mechanism that honors them and shows "
+            "the child to the user, else a nested child with the packet and no prior transcript; do "
+            "not fork the parent transcript.",
+            contract,
+        )
+        self.assertIn(
+            "A separate host task is only for work that must outlive the parent or continue after "
+            "it stops, or when the host offers no visible child.",
+            contract,
+        )
         self.assertIn("leaves the working state", contract)
         self.assertIn("unbounded children", contract)
         self.assertIn("durable handoff", contract)
@@ -61,6 +75,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("nested child", fresh)
         self.assertIn("Do not fork the parent transcript", fresh)
         self.assertIn("separate host task", fresh)
+        self.assertIn("host child that honors the requested model and effort and is visible to the user", " ".join(fresh.split()))
         self.assertIn("no prior transcript", fresh)
         marker = "**Delivery Authority**:"
         self.assertEqual(glossary.count(marker), 1)
