@@ -79,7 +79,7 @@ mechanism that honors them and shows the child to the user, else a nested child
 with the packet and no prior transcript; do not fork the parent transcript. Direct work needs no worker. A separate host task is
 only for work that must outlive the parent or continue after it stops, or when
 the host offers no visible child. Close finished, errored, or idle children so each leaves the
-working state. Keep writers few, exclusive, and bounded; no unbounded children.
+working state. Never delete shared temporary directories by wildcard. Keep writers few, exclusive, and bounded; no unbounded children.
 Do not copy worker transcripts into the coordinator.
 
 For retained supporting files, follow [artifact placement](artifacts.md). Routing

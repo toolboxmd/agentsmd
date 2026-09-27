@@ -11,6 +11,11 @@ disposition instead.
 
 ## Resources
 
+Retire at merge, not at session end: whoever merges the task's final PR, in the
+same step, removes its eligible worktree and local and remote branch, stops the
+processes running in that worktree, and verifies each is gone.
+The rules below decide eligibility and exceptions.
+
 Remove only clean, exact, task-owned transient resources no stack layer still needs:
 local/remote branches, worktrees/checkouts, temporary files, processes, containers,
 images, sockets, ports, locks, PIDs, and explicitly disposable credentials, test

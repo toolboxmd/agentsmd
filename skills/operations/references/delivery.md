@@ -45,7 +45,9 @@ Record, release policy, documentation, or current delivery state.
   Prose review claims and statuses on earlier heads do not count.
 - Internal component readiness and merge follow [orchestration](orchestration.md).
 - For an authorized merge, re-check the exact PR head and readiness, use the
-  repository's supported merge path, and verify the result.
+  repository's supported merge path, verify the result, and in the same step
+  retire the task's worktree, branches and processes under
+  [finalization](finalization.md).
 - Reuse established repository capability evidence while its assumptions hold.
   For an unverified required capability, settings change or detected drift, read
   [repository setup](repository-setup.md). Fresh checks of mutable PR heads,

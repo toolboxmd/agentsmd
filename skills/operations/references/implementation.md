@@ -9,6 +9,13 @@ and select another workspace unless exact ownership and availability are
 established. Treat unknown ownership or independence as unsafe. Unsafe overlap
 or a moving base stops only the affected writer.
 
+When a planner starts or resumes work in a repository, list its worktrees.
+Remove, with their branches, those whose PR is merged or closed, that are clean,
+and hold no commits missing from their remote branch or the base; first stop the
+processes running inside them. Report any other worktree whose PR is merged or closed to the user,
+with its changed files and the change's nature in one line, and keep it until the
+user decides.
+
 Keep the canonical checkout as stable coordination/integration view. Task
 worktrees and equivalent checkouts are temporary through Delivery Finalization.
 Keep required persistent state, including databases/configuration, outside them;
