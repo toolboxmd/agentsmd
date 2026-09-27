@@ -221,8 +221,10 @@ Do not silently mix an older incompatible module with this core.
 
 Delivery Authority is authorization from the current request or repository
 policy to deliver an identified outcome or scope in named Issues and
-repositories. Carry it through routine in-scope work without asking the human
-to route established steps again.
+repositories. Repository policy is the project's own instructions, including
+`AGENTS.override.md` when present; read it on every host. Carry Delivery
+Authority through routine in-scope work without asking the human to route
+established steps again.
 
 
 - A requested GitHub implementation includes routine Issue updates, an
@@ -232,11 +234,9 @@ to route established steps again.
   Approval to merge or ship carries through routine fixes, retries, and follow-up
   or replacement PRs needed to complete that same task. Changed commits, versions,
   or PR numbers alone do not require another approval. Required review and proof
-  still apply to each current candidate. Release, publication,
-  distribution, installation, or deployment is included only when the current
-  request or repository policy explicitly authorizes that exact operation and
-  target. Before an external mutation, verify the live target and applicable
-  authority. After the mutation, verify the resulting live state before
+  still apply to each current candidate. Human Gates still apply. Before an
+  external mutation, verify the live target and applicable authority. After
+  the mutation, verify the resulting live state before
   reporting success.
 
 - Reauthorization is required only after a material change to the outcome,

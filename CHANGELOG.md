@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.1.0] - 2026-09-27
+
+### Added
+
+- Repository policy lives in the project's own instructions including AGENTS.override.md; the release and installation gate is stated once; this repository pre-authorizes merge, release and local installation
+
 ## [13.0.1] - 2026-09-27
 
 ### Changed
