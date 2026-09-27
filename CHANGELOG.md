@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.7.0] - 2026-09-27
+
+### Added
+
+- Retire task worktrees, branches and processes at merge; sweep stale worktrees at task start; no wildcard temp deletion
+
 ## [12.6.0] - 2026-09-27
 
 ### Added

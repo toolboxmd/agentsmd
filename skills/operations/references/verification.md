@@ -47,6 +47,8 @@ remains blocked.
 
 ## Independent review
 
+A reviewer that only reads a diff creates no worktree; only test runs need one.
+
 Each authored implementation slice needs independent review of its exact SHA by
 an agent that did not author it, delegated under core execution routing. The exception is a slice consisting solely of an exact
 user-approved prose replacement, matching expected-text assertions, and required version

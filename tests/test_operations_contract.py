@@ -237,6 +237,24 @@ class OperationsContractTests(unittest.TestCase):
         self.assertIn("Internal component checkpoint", versioning)
         self.assertIn("defer versioning to the final approval PR", versioning)
 
+    def test_task_workspaces_retire_at_merge_and_stale_ones_are_swept(self):
+        references = SKILL.parent / "references"
+        self.assertIn("Retire at merge, not at session end: whoever merges the task's final PR, in the same step, removes its eligible worktree and local and remote branch, stops the processes running in that worktree, and verifies each is gone. The rules below decide eligibility and exceptions", words(references / "finalization.md"))
+        self.assertIn("in the same step retire the task's worktree, branches and processes under [finalization](finalization.md)", words(references / "delivery.md"))
+        self.assertIn("Never delete shared temporary directories by wildcard", words(references / "orchestration.md"))
+        self.assertNotIn("Workers record every PID", words(references / "orchestration.md"))
+        self.assertIn("A reviewer that only reads a diff creates no worktree; only test runs need one", words(references / "verification.md"))
+        sweep = "When a planner starts or resumes work in a repository, list its worktrees"
+        self.assertIn(sweep, words(references / "implementation.md"))
+        for clause in (
+            "those whose PR is merged or closed, that are clean, and hold no commits missing from their remote branch or the base; first stop the processes running inside them",
+            "Report any other worktree whose PR is merged or closed to the user, with its changed files and the change's nature in one line, and keep it until the user decides",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, words(references / "implementation.md"))
+        documents = [ROOT / "AGENTS.md", *references.glob("*.md")]
+        self.assertEqual([d for d in documents if sweep in words(d)], [references / "implementation.md"])
+
     def test_moved_procedures_have_one_owner(self):
         markers = {
             "finalization": 'Begin only after review',
