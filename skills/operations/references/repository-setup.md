@@ -14,8 +14,10 @@ mutable target, permission and candidate checks at the action boundary.
   explicitly.
 
 - When creating or configuring a repository, check automatic deletion of merged
-  pull-request branches. Enable it through the settings authority below unless
-  the Project documents an exception. On GitHub, verify
+  pull-request branches unless the Project documents an exception. Approval to
+  create a repository covers enabling and verifying `delete_branch_on_merge=true`
+  on that repository without asking again. On an existing repository, and for
+  every other setting, use the settings authority below. On GitHub, verify
   `delete_branch_on_merge=true` for that exact repository; do not assume an
   organization default applies to new repositories. This setting does not
   retire existing stale branches; classify those through Reconciliation.

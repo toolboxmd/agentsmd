@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.0.1] - 2026-09-27
+
+### Changed
+
+- Repository creation approval covers enabling and verifying delete_branch_on_merge
+
 ## [13.0.0] - 2026-09-27
 
 ### Changed
