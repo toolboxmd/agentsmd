@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [12.8.0] - 2026-09-27
+
+### Added
+
+- Elon method triggers on recommending or accepting a material design, in conversation or an artifact; Project Direction informs it and is no longer a precondition; material-design Issues carry an Elon record
+
 ## [12.7.0] - 2026-09-27
 
 ### Added

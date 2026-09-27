@@ -1,6 +1,6 @@
 # Algorithm
 
-Apply after Project Direction is loaded. Keep a small direct microfix direct.
+Apply with Project Direction when loaded. Keep a small direct microfix direct.
 Use this method to choose the work, not to narrate a checklist.
 
 ## Ordered procedure

@@ -106,9 +106,10 @@ stay unknown; name missing proof when it would change the next action.
 
 ### Elon method
 
-After Project Direction is loaded, select the Elon method procedure through
-`operations` for material requirements, solution design, process design, and
-recurring-loop automation, before accepting features, writing specs or creating tickets.
+Before recommending or accepting a material requirement, solution design, architecture,
+process design, or recurring-loop automation, in conversation or an artifact, select
+the Elon method procedure through `operations`. Project Direction informs it when
+loaded; it is not a precondition.
 Use it to reassess stalled work and test inherited assumptions or cost claims.
 Load its current-constraint reference before acceleration or parallel work.
 Reuse settled reasoning; revisit affected decisions when evidence changes.
@@ -169,7 +170,8 @@ work; resolve the intended base and relevant divergence. Apply Authority and
 continuation. For tracked substantive work, search for an existing GitHub Issue
 in the owning product repository; use a ready Issue and task branch.
 Use one final approval PR per outcome; decompose through reviewed component PRs.
-An Issue needs outcome, acceptance criteria, non-goals, blockers and proof.
+An Issue needs outcome, acceptance criteria, non-goals, blockers, proof and, for
+material design, an Elon record: wanted result, evidence, cuts, smallest surviving solution.
 Read-only work, spikes, WIP checkpoints and explicitly local microfixes stay
 off the Issue-to-PR lane.
 

@@ -255,6 +255,31 @@ class OperationsContractTests(unittest.TestCase):
         documents = [ROOT / "AGENTS.md", *references.glob("*.md")]
         self.assertEqual([d for d in documents if sweep in words(d)], [references / "implementation.md"])
 
+    def test_elon_method_triggers_on_decisions_without_direction_gate(self):
+        core = words(ROOT / "AGENTS.md")
+        self.assertIn(
+            "Before recommending or accepting a material requirement, solution design, architecture, "
+            "process design, or recurring-loop automation, in conversation or an artifact, select "
+            "the Elon method procedure through `operations`. Project Direction informs it when "
+            "loaded; it is not a precondition.",
+            core,
+        )
+        self.assertIn(
+            "An Issue needs outcome, acceptance criteria, non-goals, blockers, proof and, for "
+            "material design, an Elon record: wanted result, evidence, cuts, smallest surviving solution.",
+            core,
+        )
+        self.assertIn("A small direct microfix whose requirement and solution are clear stays direct.", core)
+        method = SKILL.parent / "workflows/elon-method"
+        self.assertIn(
+            "Use with current Project Direction when loaded; otherwise against the request.",
+            words(method / "index.md"),
+        )
+        self.assertIn("Apply with Project Direction when loaded.", words(method / "references/algorithm.md"))
+        for document in (ROOT / "AGENTS.md", method / "index.md", method / "references/algorithm.md"):
+            self.assertNotIn("after Project Direction is loaded", words(document).lower())
+            self.assertNotIn("after complete current Project Direction loads", words(document))
+
     def test_moved_procedures_have_one_owner(self):
         markers = {
             "finalization": 'Begin only after review',

@@ -1,8 +1,9 @@
 
 # Elon method
 
-Use after complete current Project Direction loads. Choose means within the
-current request, confirmed direction, explicit constraints, and authority.
+Use with current Project Direction when loaded; otherwise against the request.
+Choose means within the current request, confirmed direction, explicit
+constraints, and authority.
 Preserve Human Gates, dirty user work, unique regressions, and final required
 Proof. Clear microfixes adding no material design, process, cost claim, or loop
 stay direct.
