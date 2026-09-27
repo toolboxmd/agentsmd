@@ -280,6 +280,19 @@ class OperationsContractTests(unittest.TestCase):
             self.assertNotIn("after Project Direction is loaded", words(document).lower())
             self.assertNotIn("after complete current Project Direction loads", words(document))
 
+    def test_repository_creation_approval_covers_merged_branch_deletion(self):
+        setup = words(SKILL.parent / "references/repository-setup.md")
+        self.assertIn(
+            "Approval to create a repository covers enabling and verifying "
+            "`delete_branch_on_merge=true` on that repository without asking again.",
+            setup,
+        )
+        self.assertIn(
+            "On an existing repository, and for every other setting, use the settings authority below.",
+            setup,
+        )
+        self.assertIn("obtain one scoped user approval before any `settings mutation`", setup)
+
     def test_moved_procedures_have_one_owner(self):
         markers = {
             "finalization": 'Begin only after review',
