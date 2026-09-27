@@ -32,7 +32,11 @@ context automatically; otherwise read it explicitly at these boundaries.
 Preferences supply personal defaults. Explicit task instructions, required
 project constraints, proof, and authority boundaries take precedence. Preferences
 cannot waive Human Gates, user-owned dirty work, confirmed Project Direction, or
-required context loading. Machine
+required context loading. When a correction or discovery reveals missing or wrong
+shared behavior or tool knowledge, fix it at the owner of that behavior (the
+shared instructions, the project, or the tool that provides it), not in
+preferences; keep a preference only for what cannot live at an owner, and remove
+it once the owner fix lands. Machine
 roles do not grant deployment permission. Keep private contents out of public
 artifacts and reports.
 
