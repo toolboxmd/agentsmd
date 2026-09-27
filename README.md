@@ -164,16 +164,16 @@ as evidence rather than the default Objective, keeps a coherent milestone-level
 Objective current across contributing work, and reviews a task-level Objective
 instead of letting ordinary requests churn project direction.
 
-After loading the local triad, currentness-sensitive conclusions resolve the
-intended base, `HEAD`, configured upstream, and locally known ahead/behind
-state. The loader exposes that local Git identity without network access or
-checkout mutation. When a known upstream is ahead or diverged and changes a
-Project Direction file relative to `HEAD`, the payload status is
-`potentially_stale`, includes the changed direction filenames, and identifies
-the loaded triad as checkout-scoped. Unrelated upstream changes remain `ready`.
-Missing or unresolved Git state is explicit metadata and never suppresses the
-complete local triad. After reconciliation, all three files must be reread
-before subsequent strategic judgment.
+The committed triad is the direction; uncommitted triad files are reported as
+drafts, and a never-committed triad loads as drafts so a new project can
+initialize ([context](skills/operations/workflows/project-direction/references/context.md)).
+Currentness-sensitive conclusions resolve the intended base, `HEAD`, configured
+upstream, and locally known ahead/behind state. The loader exposes that local
+Git identity without network access or checkout mutation. When a known upstream
+is ahead or diverged and changes a Project Direction file relative to `HEAD`,
+the payload status is `potentially_stale`. Unrelated upstream changes remain
+`ready`. After reconciliation, all three files must be reread before subsequent
+strategic judgment.
 
 ## Delivery System v1
 

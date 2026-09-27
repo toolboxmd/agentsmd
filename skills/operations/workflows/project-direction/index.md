@@ -15,9 +15,9 @@ alignment and drift handling.
 
 ## Workflow
 
-1. Resolve the Git root and read all existing direction files in full, even when
-   upstream currentness is unknown. Apply the context currentness guard; reconcile
-   the intended base or explicitly qualify the claim as checkout-scoped.
+1. Resolve the Git root and read the committed triad in full, even when upstream
+   currentness is unknown; treat uncommitted triad files as drafts. Apply the
+   context currentness guard and reconcile the intended base.
 2. Inspect relevant repository, Issue, roadmap/milestone, product, ADR, glossary,
    and user evidence. The active request is evidence, not the default Objective.
    Keep unsupported strategy unknown.

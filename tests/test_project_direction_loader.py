@@ -218,7 +218,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         self.assertEqual(payload["git"]["upstream"]["state"], "unknown")
 
     def test_known_upstream_direction_change_is_potentially_stale(self) -> None:
-        self.commit_triad()
+        committed = self.commit_triad()
         remote = self.configure_upstream()
         changed = "# Objective\n\nShip current Project Direction.\n"
         self.publish_upstream_change(remote, "OBJECTIVE.md", changed)
@@ -249,14 +249,107 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
             {"state": "known", "files": ["OBJECTIVE.md"]},
         )
         self.assertEqual(payload["warning"]["code"], "potentially_stale")
-        self.assertIn("checkout-scoped", payload["warning"]["message"])
+        self.assertIn("checkout copies are stale", payload["warning"]["message"])
         self.assertIn("reread", payload["warning"]["action"])
-        self.assertEqual(payload["files"][1]["content"], local_mission)
+        self.assertEqual(
+            [(item["source"], item["content"]) for item in payload["files"]],
+            [
+                ("head", committed["VISION.md"]),
+                ("head", committed["MISSION.md"]),
+                ("upstream", changed),
+            ],
+        )
+        self.assertEqual(
+            payload["drafts"]["files"],
+            [
+                {
+                    "name": "MISSION.md",
+                    "path": str(self.repository.resolve() / "MISSION.md"),
+                    "state": "modified",
+                }
+            ],
+        )
         self.assertEqual(
             untracked.read_text(encoding="utf-8"),
             "Preserve this user-owned file.\n",
         )
         self.assertEqual(before, after)
+
+    def test_clean_committed_triad_loads_head_without_drafts(self) -> None:
+        contents = self.commit_triad()
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(payload["status"], "ready")
+        self.assertEqual(
+            [(item["source"], item["content"]) for item in payload["files"]],
+            [("head", contents[name]) for name in contents],
+        )
+        self.assertNotIn("drafts", payload)
+
+    def test_modified_triad_file_loads_head_and_reports_draft(self) -> None:
+        contents = self.commit_triad()
+        (self.repository / "OBJECTIVE.md").write_text(
+            "# Objective\n\nDraft objective.\n", encoding="utf-8"
+        )
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(payload["status"], "ready")
+        self.assertEqual(payload["files"][2]["source"], "head")
+        self.assertEqual(payload["files"][2]["content"], contents["OBJECTIVE.md"])
+        self.assertEqual(
+            [(item["name"], item["state"]) for item in payload["drafts"]["files"]],
+            [("OBJECTIVE.md", "modified")],
+        )
+
+    def test_untracked_triad_loads_upstream_committed_version(self) -> None:
+        # A branch without the triad while known upstream commits it: the
+        # untracked checkout copies are drafts and upstream is the direction.
+        self.git("config", "user.name", "AgentsMD Tests")
+        self.git("config", "user.email", "agentsmd-tests@example.invalid")
+        (self.repository / "README.md").write_text("Project.\n", encoding="utf-8")
+        self.git("add", "README.md")
+        self.git("commit", "--quiet", "-m", "Start project")
+        self.git("branch", "-M", "main")
+        remote = self.configure_upstream()
+        publisher = self.clone_publisher(remote)
+        committed = self.write_triad(publisher)
+        self.git("add", *committed, repository=publisher)
+        self.git("commit", "--quiet", "-m", "Add direction", repository=publisher)
+        self.git("push", "--quiet", repository=publisher)
+        self.git("fetch", "--quiet", "origin", "main")
+        for name in committed:
+            (self.repository / name).write_text(
+                f"# Stale {name}\n", encoding="utf-8"
+            )
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(payload["status"], "potentially_stale")
+        self.assertEqual(
+            [(item["source"], item["content"]) for item in payload["files"]],
+            [("upstream", committed[name]) for name in committed],
+        )
+        self.assertEqual(
+            [item["state"] for item in payload["drafts"]["files"]],
+            ["untracked"] * 3,
+        )
+
+    def test_never_committed_triad_loads_drafts_marked_as_drafts(self) -> None:
+        contents = self.write_triad()
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(
+            [(item["source"], item["content"]) for item in payload["files"]],
+            [("draft", contents[name]) for name in contents],
+        )
+        self.assertEqual(
+            [item["state"] for item in payload["drafts"]["files"]],
+            ["untracked"] * 3,
+        )
+        self.assertIn("unconfirmed", payload["drafts"]["action"])
 
     def test_diverged_direction_change_is_potentially_stale(self) -> None:
         self.commit_triad()
@@ -280,6 +373,59 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         self.assertEqual(
             payload["git"]["project_direction_diff"]["files"], ["VISION.md"]
         )
+
+    def test_diverged_checkout_keeps_newer_local_committed_file(self) -> None:
+        committed = self.commit_triad()
+        remote = self.configure_upstream()
+        local = "# Objective\n\nShip newer local Project Direction.\n"
+        (self.repository / "OBJECTIVE.md").write_text(local, encoding="utf-8")
+        self.git("commit", "--quiet", "-am", "Advance local objective")
+        upstream = "# Vision\n\nMake current agent work purposeful.\n"
+        self.publish_upstream_change(remote, "VISION.md", upstream)
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(
+            [(item["source"], item["content"]) for item in payload["files"]],
+            [
+                ("upstream", upstream),
+                ("head", committed["MISSION.md"]),
+                ("head", local),
+            ],
+        )
+
+    def test_local_only_direction_change_is_not_stale(self) -> None:
+        self.commit_triad()
+        remote = self.configure_upstream()
+        local = "# Objective\n\nShip newer local Project Direction.\n"
+        (self.repository / "OBJECTIVE.md").write_text(local, encoding="utf-8")
+        self.git("commit", "--quiet", "-am", "Advance local objective")
+        self.publish_upstream_change(remote, "README.md", "Unrelated change.\n")
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(payload["status"], "ready")
+        self.assertNotIn("warning", payload)
+        self.assertEqual(
+            [item["source"] for item in payload["files"]], ["head"] * 3
+        )
+        self.assertEqual(payload["files"][2]["content"], local)
+
+    def test_upstream_deletion_keeps_head_version(self) -> None:
+        committed = self.commit_triad()
+        remote = self.configure_upstream()
+        publisher = self.clone_publisher(remote)
+        self.git("rm", "--quiet", "MISSION.md", repository=publisher)
+        self.git("commit", "--quiet", "-m", "Drop mission", repository=publisher)
+        self.git("push", "--quiet", repository=publisher)
+        self.git("fetch", "--quiet", "origin", "main")
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(payload["status"], "potentially_stale")
+        self.assertEqual(payload["files"][1]["source"], "head")
+        self.assertEqual(payload["files"][1]["content"], committed["MISSION.md"])
+        self.assertNotIn("drafts", payload)
 
     def test_unrelated_upstream_change_does_not_mark_direction_stale(self) -> None:
         self.commit_triad()
@@ -585,39 +731,6 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
             "Direction optional.",
         )
 
-    def test_missing_triad_routes_before_git_metadata_inspection(self) -> None:
-        self.write_triad()
-        (self.repository / "MISSION.md").unlink()
-        real_git = shutil.which("git")
-        self.assertIsNotNone(real_git)
-        git_log = self.base / "git-calls.log"
-        wrapper_directory = self.base / "logging-git"
-        wrapper_directory.mkdir()
-        wrapper = wrapper_directory / "git"
-        wrapper.write_text(
-            "#!/bin/sh\n"
-            f"printf '%s\\n' \"$*\" >> {shlex.quote(str(git_log))}\n"
-            f"exec {shlex.quote(real_git)} \"$@\"\n",
-            encoding="utf-8",
-        )
-        wrapper.chmod(0o755)
-
-        original_path = os.environ["PATH"]
-        os.environ["PATH"] = f"{wrapper_directory}{os.pathsep}{original_path}"
-        try:
-            payload = self.context_payload(
-                self.invoke("SessionStart", source="resume")
-            )
-        finally:
-            os.environ["PATH"] = original_path
-
-        calls = git_log.read_text(encoding="utf-8").splitlines()
-        metadata_calls = [
-            call for call in calls if "rev-parse --show-toplevel" not in call
-        ]
-        self.assertEqual(payload["status"], "uninitialized")
-        self.assertEqual(metadata_calls, [])
-
     def test_blank_file_is_uninitialized_and_never_partially_loaded(self) -> None:
         self.write_triad()
         (self.repository / "OBJECTIVE.md").write_text(" \n\t", encoding="utf-8")
@@ -721,6 +834,26 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         self.assertNotIn("files", payload)
         self.assertEqual(payload["errors"][0]["name"], "MISSION.md")
         self.assertEqual(payload["errors"][0]["reason"], "outside_repository")
+
+    def test_committed_symlinked_triad_loads_target_text(self) -> None:
+        contents = self.write_triad()
+        docs = self.repository / "docs"
+        docs.mkdir()
+        for name in contents:
+            (self.repository / name).rename(docs / name)
+            (self.repository / name).symlink_to(Path("docs") / name)
+        self.git("config", "user.name", "AgentsMD Tests")
+        self.git("config", "user.email", "agentsmd-tests@example.invalid")
+        self.git("add", "-A")
+        self.git("commit", "--quiet", "-m", "Link Project Direction")
+
+        payload = self.context_payload(self.invoke("SessionStart", source="startup"))
+
+        self.assertEqual(
+            [(item["source"], item["content"]) for item in payload["files"]],
+            [("head", contents[name]) for name in contents],
+        )
+        self.assertNotIn("drafts", payload)
 
     def test_literal_instruction_and_delimiter_text_remains_file_data(self) -> None:
         contents = self.write_triad()
