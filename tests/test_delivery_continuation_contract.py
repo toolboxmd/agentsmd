@@ -107,6 +107,26 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("User-owned behavioral Live Verification", normalized)
         self.assertIn("after release through normal work in real projects", normalized)
 
+    def test_repository_policy_home_and_single_gate_statement(self) -> None:
+        agents = " ".join((ROOT / "AGENTS.md").read_text(encoding="utf-8").split())
+        override = " ".join(
+            (ROOT / "AGENTS.override.md").read_text(encoding="utf-8").split()
+        )
+        self.assertIn(
+            "Repository policy is the project's own instructions, including "
+            "`AGENTS.override.md` when present; read it on every host.",
+            agents,
+        )
+        self.assertEqual(agents.count("installation"), 1)
+        self.assertIn("Human Gates still apply.", agents)
+        for grant in (
+            "merging a reviewed final PR whose required proof passed",
+            "GitHub release through the release workflow",
+            "installing that released version on the maintainer's local hosts",
+            "Third-party marketplace submission and publication still need explicit authority",
+        ):
+            self.assertIn(grant, override)
+
     def test_merge_experiment_evidence_and_supersession_are_truthful(self) -> None:
         evidence = self.payload["evidence"]["merge_authority_experiment"]
         self.assertEqual(evidence["issue"], "toolboxmd/agentsmd#29")
