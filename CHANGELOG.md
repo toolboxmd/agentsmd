@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.2.0] - 2026-09-28
+
+### Added
+
+- Agents research reachable decision-relevant unknowns, including on the web, before recommending (#145)
+
 ## [13.1.2] - 2026-09-28
 
 ### Changed
