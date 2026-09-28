@@ -118,7 +118,7 @@ class OpenCodePluginTests(unittest.TestCase):
     def test_triad_repository_payload_reaches_the_system_prompt(self) -> None:
         report, stderr = self.transform(self.repository)
         self.assertNotIn(LOG_PREFIX, stderr)
-        self.assertEqual(report["supported"], "1.18.29")
+        self.assertEqual(report["supported"], "1.18.32")
         self.assertEqual(len(report["system"]), 1)
         self.assertEqual(report["system"][0], self.loaded_context(self.repository))
         payload = json.loads(report["system"][0].splitlines()[1])

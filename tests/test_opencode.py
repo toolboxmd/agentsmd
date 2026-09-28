@@ -545,7 +545,7 @@ class OpenCodeTests(unittest.TestCase):
         fake.write_text('''#!/usr/bin/env python3
 import json, os, pathlib, sys, time
 if sys.argv[1:] == ['--version']:
-    print('1.18.29'); sys.exit()
+    print('1.18.32'); sys.exit()
 if sys.argv[1:] == ['run', '--help']:
     print('--model --dir --format --auto', file=sys.''' + help_stream + '''); sys.exit()
 pathlib.Path('invocation.json').write_text(json.dumps({'argv': sys.argv[1:], 'cwd': os.getcwd()}))

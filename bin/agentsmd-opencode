@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 from agentsmd_instructions import default_target, initialize_preferences, is_cache_path, target_is_in_cache
 
 
-SUPPORTED_VERSION = "1.18.29"
+SUPPORTED_VERSION = "1.18.32"
 
 
 def absolute(value):
