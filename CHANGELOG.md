@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.1.1] - 2026-09-27
+
+### Changed
+
+- AGENTS.override.md no longer pre-authorizes final PR merges; the user merges, then release and local installation proceed
+
 ## [13.1.0] - 2026-09-27
 
 ### Added

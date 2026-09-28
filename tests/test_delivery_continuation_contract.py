@@ -120,12 +120,13 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertEqual(agents.count("installation"), 1)
         self.assertIn("Human Gates still apply.", agents)
         for grant in (
-            "merging a reviewed final PR whose required proof passed",
+            "Final PR merges stay with the user.",
             "GitHub release through the release workflow",
             "installing that released version on the maintainer's local hosts",
             "Third-party marketplace submission and publication still need explicit authority",
         ):
             self.assertIn(grant, override)
+        self.assertNotIn("merging a reviewed final PR", override)
 
     def test_merge_experiment_evidence_and_supersession_are_truthful(self) -> None:
         evidence = self.payload["evidence"]["merge_authority_experiment"]
