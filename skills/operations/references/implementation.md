@@ -12,9 +12,11 @@ or a moving base stops only the affected writer.
 When a planner starts or resumes work in a repository, list its worktrees.
 Remove, with their branches, those whose PR is merged or closed, that are clean,
 and hold no commits missing from their remote branch or the base; first stop the
-processes running inside them. Report any other worktree whose PR is merged or closed to the user,
-with its changed files and the change's nature in one line, and keep it until the
-user decides.
+processes running inside them. A commit is not missing when its changes are
+already in the base under another SHA, as after a rebase or squash merge; check
+this before keeping a worktree. Report any other worktree whose PR is merged or closed to the user,
+with its changed files and the change's nature in one line, stating what remains
+unmerged and how that was checked, and keep it until the user decides.
 
 Keep the canonical checkout as stable coordination/integration view. Task
 worktrees and equivalent checkouts are temporary through Delivery Finalization.
