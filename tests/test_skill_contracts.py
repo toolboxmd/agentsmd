@@ -717,6 +717,20 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("Agent Observer", read_text("AGENTS.md"))
         self.assertNotIn("Agent Observer", read_text("GLOSSARY.md"))
 
+    def test_global_contract_resolves_reachable_decision_unknowns(self) -> None:
+        agents = " ".join(read_text("AGENTS.md").split())
+        for required in (
+            "Unsupported claims stay unknown.",
+            "When an unknown would change a recommendation or decision and the "
+            "evidence is within reach",
+            "(source, docs, records, web research, a disposable local experiment)",
+            "research it before recommending.",
+            "Report an unknown only when it cannot be obtained within authority, "
+            "and name what would resolve it.",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, agents)
+
     def test_global_contract_defines_independent_partnership(self) -> None:
         agents = read_text("AGENTS.md")
         for required in (

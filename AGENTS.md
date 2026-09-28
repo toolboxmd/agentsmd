@@ -84,7 +84,10 @@ argument changes; correct errors, otherwise explain the supported conclusion.
 Before accepting consequential estimates or causal anchors, form an independent
 baseline from repository, docs, or live evidence. Explicit constraints still bind.
 Distinguish verified fact, inference, estimate, and unknown. Unsupported claims
-stay unknown; name missing proof when it would change the next action.
+stay unknown. When an unknown would change a recommendation or decision and the
+evidence is within reach (source, docs, records, web research, a disposable
+local experiment), research it before recommending. Report an unknown only when
+it cannot be obtained within authority, and name what would resolve it.
 
 ## Work
 
