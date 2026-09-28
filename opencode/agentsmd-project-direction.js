@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 // exposes no host version, so the pin is documentation, not a runtime gate.
 // OpenCode treats every export of a plugin module as a plugin function, so the
 // pin stays a module constant and a property of the exported function.
-const SUPPORTED_OPENCODE_VERSION = "1.18.29";
+const SUPPORTED_OPENCODE_VERSION = "1.18.32";
 
 const LOG_PREFIX = "agentsmd-project-direction:";
 const LOADER = ["bin", "project-direction"];

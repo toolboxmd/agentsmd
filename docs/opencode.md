@@ -1,6 +1,6 @@
 # OpenCode host
 
-AgentsMD supports the OpenCode **1.18.29** CLI interface on POSIX hosts. The
+AgentsMD supports the OpenCode **1.18.32** CLI interface on POSIX hosts. The
 adapter checks that exact version and its required flags before a model run.
 Other versions need compatibility proof before this support claim expands.
 Provider availability is independent of host support; select an exact
@@ -124,7 +124,7 @@ created. A target is rejected when the Skill directory resolves under `~/.agents
 `~/.grok/skills` or a `plugins/cache` path. Codex and Grok Build scan
 `~/.agents/skills`, and Grok scans `~/.claude/skills`, so links there would list
 every Skill twice on a host that already uses the plugin. Skill links do not
-expand the bounded run contract, which stays pinned to **1.18.29**. Run
+expand the bounded run contract, which stays pinned to **1.18.32**. Run
 `opencode debug skill` in a fresh session in the intended repository and confirm
 each AgentsMD Skill appears exactly once.
 
@@ -153,7 +153,7 @@ verdicts. Any loader failure leaves the system prompt unchanged and logs one
 after install; a running session keeps its loaded plugins.
 
 The plugin uses `experimental.chat.system.transform`, which is experimental in
-OpenCode **1.18.29**, the version the bounded run adapter pins. The plugin
+OpenCode **1.18.32**, the version the bounded run adapter pins. The plugin
 context exposes no host version, so the pin is documented, not enforced at
 runtime. Treat a different OpenCode version as unproved until the seam is
 rechecked.

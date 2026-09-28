@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.3.1] - 2026-09-28
+
+### Changed
+
+- Support OpenCode 1.18.32, the installed version, in the run adapter and Project Direction plugin (#78)
+
 ## [13.3.0] - 2026-09-28
 
 ### Added

@@ -377,11 +377,11 @@ links.
 The second command creates one owned link under the same directory's `plugins`
 folder. Through it OpenCode receives the Project Direction block in the model's
 system prompt, the same payload the Codex hook emits. That plugin uses the
-experimental system transform hook of OpenCode **1.18.29** and states no support
+experimental system transform hook of OpenCode **1.18.32** and states no support
 beyond it. `plugin status` and `plugin uninstall` report and remove only that
 owned link. Start a fresh OpenCode session after install; a running session
 keeps its loaded plugins. OpenCode's bounded run adapter remains pinned to
-**1.18.29**; link setup does not expand that run contract. See
+**1.18.32**; link setup does not expand that run contract. See
 [OpenCode details](docs/opencode.md).
 
 ### 3. Link global instructions and initialize preferences
