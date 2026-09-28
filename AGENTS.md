@@ -86,8 +86,9 @@ baseline from repository, docs, or live evidence. Explicit constraints still bin
 Distinguish verified fact, inference, estimate, and unknown. Unsupported claims
 stay unknown. When an unknown would change a recommendation or decision and the
 evidence is within reach (source, docs, records, web research, a disposable
-local experiment), research it before recommending. Report an unknown only when
-it cannot be obtained within authority, and name what would resolve it.
+local experiment), research it before recommending or handing the decision to
+the user. Report an unknown only when it cannot be obtained within authority,
+and name what would resolve it.
 
 ## Work
 

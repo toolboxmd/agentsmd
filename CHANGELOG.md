@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.3.0] - 2026-09-28
+
+### Added
+
+- Check facts before handing a decision to the user; the worktree sweep treats content-merged commits as merged (#155)
+
 ## [13.2.0] - 2026-09-28
 
 ### Added

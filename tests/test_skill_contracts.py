@@ -724,7 +724,7 @@ class SkillContractTests(unittest.TestCase):
             "When an unknown would change a recommendation or decision and the "
             "evidence is within reach",
             "(source, docs, records, web research, a disposable local experiment)",
-            "research it before recommending.",
+            "research it before recommending or handing the decision to the user.",
             "Report an unknown only when it cannot be obtained within authority, "
             "and name what would resolve it.",
         ):

@@ -248,7 +248,8 @@ class OperationsContractTests(unittest.TestCase):
         self.assertIn(sweep, words(references / "implementation.md"))
         for clause in (
             "those whose PR is merged or closed, that are clean, and hold no commits missing from their remote branch or the base; first stop the processes running inside them",
-            "Report any other worktree whose PR is merged or closed to the user, with its changed files and the change's nature in one line, and keep it until the user decides",
+            "A commit is not missing when its changes are already in the base under another SHA, as after a rebase or squash merge; check this before keeping a worktree",
+            "Report any other worktree whose PR is merged or closed to the user, with its changed files and the change's nature in one line, stating what remains unmerged and how that was checked, and keep it until the user decides",
         ):
             with self.subTest(clause=clause):
                 self.assertIn(clause, words(references / "implementation.md"))
