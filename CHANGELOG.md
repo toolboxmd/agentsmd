@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.1.2] - 2026-09-28
+
+### Changed
+
+- Remove the Agent Observer capture trigger from the core; Observer attributes work from host state (#147)
+
 ## [13.1.1] - 2026-09-27
 
 ### Changed

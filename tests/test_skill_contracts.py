@@ -712,6 +712,11 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("Natural requests and", agents)
         self.assertNotIn("human-controlled planning Skills", agents)
 
+    def test_global_contract_leaves_measurement_to_agent_observer(self) -> None:
+        # Agent Observer attributes work from host state; agents run no capture.
+        self.assertNotIn("Agent Observer", read_text("AGENTS.md"))
+        self.assertNotIn("Agent Observer", read_text("GLOSSARY.md"))
+
     def test_global_contract_defines_independent_partnership(self) -> None:
         agents = read_text("AGENTS.md")
         for required in (
