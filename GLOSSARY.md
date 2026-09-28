@@ -21,11 +21,6 @@ The host-provided means of delegating work with routed model and role
 selection, such as Model Router.
 _Avoid_: model-routing Skill
 
-**Agent Observer**:
-The separate ToolboxMD plugin that connects native agent usage to explicitly
-owned tasks and outcome evidence. AgentsMD retains workflow, authority and proof.
-_Avoid_: AgentsMD accounting engine, Model Router billing
-
 **Project Direction**:
 The coherent repository-root triad of `VISION.md`, `MISSION.md`, and
 `OBJECTIVE.md` that owns the project's confirmed long-range destination,
