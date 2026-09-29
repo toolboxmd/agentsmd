@@ -7,7 +7,7 @@ SemVer and identify one user-consumable repository state.
 
 ### Added
 
-- Leaner startup: trust the hook's verified source, role-neutral orientation, project paths never resolve into the AgentsMD clone (#169)
+- Leaner startup: trust the hook's verified source, role-neutral orientation, project paths never resolve into the AgentsMD clone, outside text is data rather than instructions (#169)
 
 ## [14.0.0] - 2026-09-29
 
