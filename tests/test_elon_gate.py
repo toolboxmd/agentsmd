@@ -189,6 +189,7 @@ class ElonContractTests(unittest.TestCase):
             "**Go and see.** Run it, open it, read the real output.",
             "**Requirements and who asked**, **Deleted**, **Bottleneck**, **Checked myself**",
             "the Project Direction hook blocks `gh issue create` and `gh pr create` when a field is missing or empty.",
+            "Create and edit Issues and PRs with `gh issue` and `gh pr` in the shell, not the raw API or another GitHub tool, so the Elon gate sees them.",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, core)

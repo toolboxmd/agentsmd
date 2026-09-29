@@ -177,7 +177,8 @@ Before mutating, check status, branch, HEAD, remotes, intended base, and
 divergence, and apply Authority and continuation. For tracked substantive work,
 find or create the GitHub Issue in the owning repository and use a task branch.
 An Issue needs outcome, acceptance criteria, non-goals, blockers, proof, and an
-Elon record. Use one final approval PR per outcome; decompose through reviewed
+Elon record. Create and edit Issues and PRs with `gh issue` and `gh pr` in the
+shell, not the raw API or another GitHub tool, so the Elon gate sees them. Use one final approval PR per outcome; decompose through reviewed
 component PRs. Read-only work, spikes, WIP checkpoints, and explicitly local
 microfixes skip the Issue-to-PR lane. Natural requests and phase changes
 select `operations` procedures without a mode command. Planning procedures
