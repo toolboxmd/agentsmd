@@ -526,23 +526,38 @@ def make_home(host, arm):
         raise
 
 
-# Bash is allowed in Claude runs, so every shell command runs in Claude Code's
-# OS-level sandbox (Seatbelt on macOS): writes only to the working directory (the
-# run's repository), the --add-dir directories (the repository and the plugin copy
-# in the temporary HOME) and the per-user temp directory. No unsandboxed retry, and
-# no fallback to running unsandboxed if the sandbox cannot start.
-# https://code.claude.com/docs/en/sandboxing
-CLAUDE_SETTINGS = {
-    "permissions": {"defaultMode": "acceptEdits"},
-    "sandbox": {"enabled": True, "allowUnsandboxedCommands": False, "failIfUnavailable": True},
-}
+def claude_settings(home):
+    """Settings for the temporary HOME. Bash is allowed in Claude runs, so every shell
+    command runs in Claude Code's OS-level sandbox (Seatbelt on macOS):
+
+    - writes only to the working directory (the run's repository), the --add-dir
+      directories (the repository and the plugin copy in the temporary HOME) and the
+      per-user temp directory;
+    - no reads of the real home (checkouts, logins, other worktrees) or of the
+      keychain link in the temporary HOME; the temporary HOME itself is readable
+      (a narrower rule wins), and paths outside the real home (the repository,
+      system and tool directories) keep the default read access;
+    - no unsandboxed retry, and no fallback to running unsandboxed.
+
+    Claude's own process is not sandboxed: it still reads its login through the link.
+    https://code.claude.com/docs/en/sandboxing"""
+    return {
+        "permissions": {"defaultMode": "acceptEdits"},
+        "sandbox": {
+            "enabled": True, "allowUnsandboxedCommands": False, "failIfUnavailable": True,
+            "filesystem": {
+                "denyRead": [str(REAL_HOME), str(home / "Library/Keychains")],
+                "allowRead": [str(home)],
+            },
+        },
+    }
 
 
 def setup_claude(home, plugin, env):
     config = home / ".claude"
     config.mkdir()
     shutil.copy2(plugin / "global/AGENTS.md", config / "CLAUDE.md")
-    (config / "settings.json").write_text(json.dumps(CLAUDE_SETTINGS))
+    (config / "settings.json").write_text(json.dumps(claude_settings(home)))
     # Login: account metadata only (no token), plus a link to the macOS keychain
     # directory so Claude reads the existing login itself. No credential is copied.
     keychains = KEYCHAINS
@@ -615,7 +630,7 @@ def command(host, model, effort, repo, plugin, prompt):
                "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--add-dir", str(plugin),
                "--plugin-dir", str(plugin),
                # acceptEdits denies every non-read shell command in -p; allow Bash
-               # so mid-task runs can branch, test and commit. CLAUDE_SETTINGS runs
+               # so mid-task runs can branch, test and commit. claude_settings runs
                # every shell command in Claude Code's sandbox.
                "--allowedTools", "Bash",
                "--no-session-persistence", "--max-turns", "40"]

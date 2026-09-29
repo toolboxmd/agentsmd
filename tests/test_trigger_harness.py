@@ -214,8 +214,17 @@ class ClaudeSandboxTests(unittest.TestCase):
         self.assertIs(sandbox["allowUnsandboxedCommands"], False)
         self.assertIs(sandbox["failIfUnavailable"], True)
         # Nothing widens the default write set (working directory, --add-dir, temp).
-        self.assertNotIn("filesystem", sandbox)
+        self.assertEqual(set(sandbox["filesystem"]), {"denyRead", "allowRead"})
         self.assertNotIn("excludedCommands", sandbox)
+        # Reads: the real home and the keychain link are denied; the temporary HOME
+        # (plugin copy) is re-allowed, and the repository lies outside the real home.
+        self.assertEqual(sandbox["filesystem"]["denyRead"],
+                         [str(t.REAL_HOME), str(home / "Library/Keychains")])
+        self.assertEqual(sandbox["filesystem"]["allowRead"], [str(home)])
+        self.assertFalse(home.resolve().is_relative_to(t.REAL_HOME))
+        repo = t.make_repo()
+        self.addCleanup(t.remove, repo)
+        self.assertFalse(repo.resolve().is_relative_to(t.REAL_HOME))
 
 
 class NoEditVerdictTests(unittest.TestCase):
