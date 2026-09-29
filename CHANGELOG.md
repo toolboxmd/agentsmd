@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.7] - 2026-09-30
+
+### Changed
+
+- Trigger audit reads the Agent Observer ledger (measure.py --ledger) and fixes four native miscounts (#164, agent-observer#36)
+
 ## [14.5.6] - 2026-09-29
 
 ### Changed
