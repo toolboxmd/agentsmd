@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.4] - 2026-09-29
+
+### Changed
+
+- Elon gate reads a --body-file that the same command writes from a heredoc, tracking what each write leaves in it, and accepts only the documented field label forms (#172)
+
 ## [14.5.3] - 2026-09-29
 
 ### Changed
