@@ -68,6 +68,14 @@ difference.
   state `error`, are attempts, not reads. Records list them as `failed_calls`.
 - **A positive run with no edit is `read-noedit` (or `skip-noedit`)**, not
   `fired`.
+- **A shell read with a non-zero exit still counts** (added after the tables
+  above were recorded). Claude reports a chained command such as `cat
+  prose.md; ls missing` as an error although the file was read, so only
+  `permission_denials` fail a shell call now; Read calls still fail on an
+  error result. Two base-arm Opus test-design runs in `records.jsonl` read
+  `test-design.md` through such a command and were scored `skip`, so Opus base
+  may be 5/20 rather than 3/20. No shipped-arm cell is affected: none of their
+  failed shell calls names a required file.
 
 Deterministic tests in `tests/test_trigger_harness.py` pin these.
 
@@ -97,25 +105,31 @@ pre-fix batch, which did not affect them.
 
 | Host, model | Version control before `git commit`: base / shipped | Verification before `gh pr create`: base / shipped |
 | --- | --- | --- |
-| Claude Code, Opus 5.5, medium | 0/5 / **5/5** | not measurable: 0 of 10 runs reached `gh pr create` |
+| Claude Code, Opus 5.5, medium | 0/5 / **5/5** | 0/5 / **0/5** (Bash allowed; `gh pr create` reached in 10/10) |
 | OpenCode, Muse 1.3 | 4/5 / **5/5** | 5/5 / **5/5** |
 | Codex, `gpt-6-astra`, low (pre-fix batch) | 4/5 | 5/5 |
 | Grok Build, `grok-4.7`, medium (pre-fix batch) | 5/5 | 4/5 |
 
-**Claude's verification moment is still unmeasured.** In `claude -p
---permission-mode acceptEdits` the harness denies every Bash call that is not
-a plain read: `git checkout -b`, the test runs and the commit all appear in
-`failed_calls`. Opus reads the procedures, edits, tries to branch and test,
-and ends without attempting `gh pr create`. The version-control cell counts the
-read against the first `git commit` attempt, denied or not. Measuring
-verification needs Bash allowed in the Claude runs (for example
-`--allowedTools Bash`, still confined to the temporary HOME and repository),
-a harness change not made here.
+**Claude skips verification before `gh pr create`.** The first rerun could
+not reach the moment: `claude -p --permission-mode acceptEdits` denied every
+non-read Bash call. The harness now passes `--allowedTools Bash` (the run stays
+in its temporary HOME and repository, as on the other hosts), and the verification
+case was rerun on Claude (10 runs, arms base `42152be` and shipped `3fa82c0`,
+the #179 merge). Every run branched, tested, committed and called `gh pr
+create`; none read `verification.md` first. With the pointer, Opus invokes
+`operations` at the start and reads no procedure file before the PR. The
+version-control cell above is from the run with Bash denied; it scores the read
+against the first `git commit` attempt.
+
+**Proposal (not built), per #174's mid-task criterion:** injection at the
+action for Claude Code, a PreToolUse hook on `gh pr create` whose context
+points at `references/verification.md`, measured with this case.
 
 ## Conditions
 
 Claude Code 2.1.284, OpenCode 1.18.33, Codex 0.159.0, Grok 1.0.44. Batches ran
 19:41-19:49 (base and B2, 110 runs), 19:50-20:00 (B3, 70 runs) and
-20:03-20:09 (mid-task, 40 runs) from a
+20:03-20:09 (mid-task, 40 runs) and 20:15-20:17 (Claude verification with
+Bash allowed, 10 runs) from a
 temporary worktree of this branch, with the canonical checkout held still. No
 abort; no run wrote outside its repository.

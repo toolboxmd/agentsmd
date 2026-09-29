@@ -123,6 +123,20 @@ class FailedReadTests(unittest.TestCase):
         stream = claude_stream(self.read, claude_result("r1", True), self.edit)
         self.assertEqual(self.verdict(stream), "skip")
 
+    def test_a_shell_read_with_a_nonzero_exit_still_counts(self):
+        # `cat prose.md; ls missing` reads the file and still exits non-zero.
+        shell = claude_call("b1", "Bash", command="cat /p/workflows/" + PROSE + "; ls missing")
+        stream = claude_stream(shell, claude_result("b1", True), self.edit)
+        self.assertEqual(self.t.failed_calls(stream), set())
+        self.assertEqual(self.verdict(stream), "fired")
+
+    def test_a_denied_shell_read_is_not_counted(self):
+        shell = claude_call("b1", "Bash", command="cat /p/workflows/" + PROSE)
+        stream = claude_stream(shell, claude_result("b1", True), self.edit, {
+            "type": "result", "permission_denials": [
+                {"tool_name": "Bash", "tool_use_id": "b1", "tool_input": {}}]})
+        self.assertEqual(self.verdict(stream), "skip")
+
     def test_a_failed_opencode_read_is_not_counted(self):
         def part(call_id, tool, status, **arguments):
             return {"type": "tool_use", "part": {"callID": call_id, "tool": tool,
