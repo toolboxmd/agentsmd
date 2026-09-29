@@ -76,6 +76,13 @@ class GitRepository:
         result = self.run(["rev-parse", "--verify", "HEAD"], check=False)
         return result.stdout.strip() if result.returncode == 0 else None
 
+    def merge_head(self) -> str | None:
+        result = self.run(["rev-parse", "-q", "--verify", "MERGE_HEAD"], check=False)
+        return result.stdout.strip() if result.returncode == 0 else None
+
+    def staged_paths_against(self, ref: str) -> list[str]:
+        return self._zpaths(["diff", "--cached", "--name-only", "-z", ref])
+
     @property
     def branch(self) -> str | None:
         value = self.run(["branch", "--show-current"]).stdout.strip()

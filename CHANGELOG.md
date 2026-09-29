@@ -7,7 +7,7 @@ SemVer and identify one user-consumable repository state.
 
 ### Changed
 
-- Elon gate reads a --body-file written by a heredoc earlier in the same command, attributes heredocs to the command that declares them, and accepts only the documented field label forms (#172)
+- versionctl pre-commit hook judges a merge commit against the merged-in base, so merging the base into a bumped branch needs no second bump, and an unbumped branch can no longer pass by inheriting the base's bump (#178)
 
 ## [14.5.1] - 2026-09-29
 
