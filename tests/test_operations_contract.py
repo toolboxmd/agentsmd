@@ -38,6 +38,23 @@ class OperationsContractTests(unittest.TestCase):
         self.assertIn("Reuse unchanged reference contents already in context", words(SKILL))
         self.assertIn("blocks only the dependent action", words(SKILL))
 
+    def test_missed_file_triggers_are_one_hop_from_routing(self):
+        # Issue #164: these files measured 91-97% skipped behind a second hop.
+        rows = {
+            "Before editing a `SKILL.md`": {
+                "workflows/technical-writing/references/prose.md",
+                "workflows/writing-for-agents/SKILL-MECHANICS.md",
+            },
+            "Before editing a README": {"workflows/technical-writing/references/prose.md"},
+            "Before editing or adding a test file": {"references/test-design.md"},
+            "Before editing `GLOSSARY.md`": {"workflows/domain-modeling/GLOSSARY-FORMAT.md"},
+        }
+        lines = SKILL.read_text().splitlines()
+        for trigger, targets in rows.items():
+            row = [line for line in lines if line.startswith(f"| {trigger}")]
+            self.assertEqual(len(row), 1, trigger)
+            self.assertTrue(targets <= set(re.findall(r"\]\(([^)]+)\)", row[0])), trigger)
+
     def test_installed_package_links_resolve_from_an_arbitrary_project_cwd(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

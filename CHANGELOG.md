@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.2.0] - 2026-09-29
+
+### Added
+
+- Procedure triggers for prose, skill mechanics, test design and glossary format name the edit and sit one hop from routing (#164)
+
 ## [14.1.0] - 2026-09-29
 
 ### Added

@@ -33,7 +33,8 @@ are absent. Identify migration explicitly and write only new filenames.
 2. Test realistic boundary/edge scenarios for relationships, ownership, and lifecycle.
    Cross-check code, tests, Issues, and decisions; surface contradictions instead
    of silently choosing a source.
-3. Write agreed terms immediately using [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md).
+3. Before editing a glossary file, read [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md); write
+   agreed terms immediately.
    Keep only canonical project terms, short definitions, and avoided synonyms.
    Specs, plans, scratch notes, implementation, and decision logs have other owners.
 4. Offer an ADR only when all three hold: meaningful reversal cost, surprising
