@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.5] - 2026-09-29
+
+### Changed
+
+- trigger_test.py --summary reads records without login_files_changed, including the post-install canary (#189)
+
 ## [14.5.4] - 2026-09-29
 
 ### Changed

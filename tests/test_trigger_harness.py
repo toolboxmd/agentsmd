@@ -339,6 +339,7 @@ class CommittedRecordsTests(unittest.TestCase):
     def test_login_status_reads_null_as_unknown(self):
         status = self.t.login_status
         self.assertEqual(status({"login_files_changed": None}), "unknown")
+        self.assertEqual(status({}), "unknown")
         self.assertEqual(status({"login_files_changed": []}), "unchanged")
         self.assertEqual(status({"login_files_changed": ["~/.codex/auth.json"]}), "changed")
         with self.assertRaises(ValueError):
@@ -357,6 +358,17 @@ class CommittedRecordsTests(unittest.TestCase):
         tables = out.getvalue().strip().replace("\n### ", "\n#### ")
         tables = tables[4:] if tables.startswith("### ") else tables
         self.assertIn("#### " + tables, (HARNESS.parent / "results.md").read_text())
+
+    def test_the_canary_records_summarize_without_a_login_field(self):
+        canary = HARNESS.parent.parent / "174-routing-injection" / "canary.jsonl"
+        self.assertTrue(all("login_files_changed" not in json.loads(line)
+                            for line in canary.read_text().splitlines()))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            self.t.summarize_records(canary)
+        self.assertIn("4 of 4 runs valid", out.getvalue())
+        self.assertIn("| Naive, technical-writing `prose.md` read before first edit | 4/4 |",
+                      out.getvalue())
 
 
 if __name__ == "__main__":
