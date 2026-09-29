@@ -128,11 +128,20 @@ def guard_checkout(report: dict[str, Any]) -> dict[str, Any]:
     root = Path(str(report["resolved_target"])).parent.parent
     if not (root / ".git").exists():
         return report
-    branch = _git(root, "symbolic-ref", "-q", "--short", "HEAD")
-    if branch is None:
-        return report
     quoted = shlex.quote(str(root))
     git = f"git -C {quoted}"
+    branch = _git(root, "symbolic-ref", "-q", "--short", "HEAD")
+    deleted = _git(root, "ls-files", "--deleted")
+    if (branch is None or branch.returncode > 1 or
+            deleted is None or deleted.returncode != 0):
+        # A Git clone whose state cannot be read is not proven safe.
+        report.update(
+            healthy=False, status="source-checkout-unverified",
+            action=(
+                f"Git could not read the canonical AgentsMD clone {root}. Run "
+                f"`{git} status` and fix what it reports, then rerun inspect. "
+                + REREAD_ACTION))
+        return report
     if branch.stdout.strip() != "main":
         tag = _git(root, "describe", "--tags", "--exact-match", "HEAD")
         if tag is None or tag.returncode != 0:
@@ -148,8 +157,7 @@ def guard_checkout(report: dict[str, Any]) -> dict[str, Any]:
                     f"`{git} checkout \"$({git} describe --tags --abbrev=0 origin/main)\"` "
                     "(a release-tag install), then rerun inspect. " + REREAD_ACTION))
             return report
-    deleted = _git(root, "ls-files", "--deleted")
-    if deleted is not None and deleted.returncode == 0 and deleted.stdout.strip():
+    if deleted.stdout.strip():
         report.update(
             healthy=False, status="source-checkout-files-missing",
             missing_files=deleted.stdout.strip("\n").split("\n")[:20],

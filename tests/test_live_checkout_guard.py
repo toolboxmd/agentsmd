@@ -7,6 +7,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -96,6 +97,29 @@ class LiveCheckoutGuardTests(unittest.TestCase):
         self.assertEqual(report["missing_files"], ["README.md"])
 
         self.restore(report)
+        code, report = self.inspect()
+        self.assertEqual((code, report["status"]), (0, "valid-stable-link"))
+
+    def test_git_failure_is_unhealthy(self) -> None:
+        tools = self.root / "tools"
+        tools.mkdir()
+        (tools / "python3").symlink_to(sys.executable)
+        failing = tools / "failing"
+        failing.mkdir()
+        (failing / "git").write_text("#!/bin/sh\nexit 128\n")
+        (failing / "git").chmod(0o755)
+        for path in (str(tools), f"{failing}:{tools}"):
+            with self.subTest(path=path):
+                self.env["PATH"] = path
+                code, report = self.inspect()
+                self.assertEqual((code, report["status"]), (2, "source-checkout-unverified"))
+
+    def test_non_git_source_is_not_checked(self) -> None:
+        plain = self.root / "plain/global/AGENTS.md"
+        plain.parent.mkdir(parents=True)
+        plain.write_text("# Contract\n")
+        self.target.unlink()
+        self.target.symlink_to(plain)
         code, report = self.inspect()
         self.assertEqual((code, report["status"]), (0, "valid-stable-link"))
 
