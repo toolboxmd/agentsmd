@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.0.0] - 2026-09-29
+
+### Changed
+
+- Separate the global contract into global/AGENTS.md and migrate host instruction links
+
 ## [13.6.0] - 2026-09-29
 
 ### Added

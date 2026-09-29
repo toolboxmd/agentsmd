@@ -60,7 +60,7 @@ can correct it afterward.
 Identify the first unblocked implementation Issue. Evaluate authority from the
 full current request. When already authorized, begin under the core's
 direct/delegated boundary without another prompt; follow Authority and continuation
-in `AGENTS.md`. For delegation, read Operations orchestration and use its minimal
+in `global/AGENTS.md`. For delegation, read Operations orchestration and use its minimal
 durable context packet, not the prior conversation.
 
 For planning-only work or otherwise missing authority, ask exactly once, naming

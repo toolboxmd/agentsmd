@@ -1125,13 +1125,13 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
     def test_grok_hook_variable_selects_the_grok_canonical_source(self) -> None:
         self.write_triad()
         canonical = self.base / "canonical"
-        canonical.mkdir()
-        (canonical / "AGENTS.md").write_text("# Global Agent Rules\n", encoding="utf-8")
+        (canonical / "global").mkdir(parents=True)
+        (canonical / "global/AGENTS.md").write_text("# Global Agent Rules\n", encoding="utf-8")
         (canonical / "PREFERENCES.md").write_text(
             "Grok private defaults.\n", encoding="utf-8"
         )
         self.grok_home.mkdir()
-        (self.grok_home / "AGENTS.md").symlink_to(canonical / "AGENTS.md")
+        (self.grok_home / "AGENTS.md").symlink_to(canonical / "global/AGENTS.md")
 
         # Separate sessions keep each resolution independent of the fingerprint.
         detected = self.context_payload(
@@ -1161,7 +1161,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         self.assertEqual(detected["instructions"]["status"], "valid-stable-link")
         self.assertEqual(
             detected["instructions"]["resolved_target"],
-            str((canonical / "AGENTS.md").resolve()),
+            str((canonical / "global/AGENTS.md").resolve()),
         )
         self.assertEqual(
             detected["preferences"]["content"], "Grok private defaults.\n"

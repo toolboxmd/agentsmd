@@ -231,11 +231,11 @@ scope, used as a diagnostic hypothesis about possible overhead.
 _Avoid_: guaranteed savings, delivery estimate
 
 **Canonical instruction source**:
-The stable `AGENTS.md` shared through each configured host's native global link.
+The stable `global/AGENTS.md` shared through each configured host's native global link.
 _Avoid_: plugin-cache instructions, project instructions
 
 **Private preferences**:
-Personal defaults in `PREFERENCES.md` beside the canonical instruction source,
+Personal defaults in `PREFERENCES.md` at the canonical AgentsMD clone root,
 subject to explicit task instructions, required project constraints and authority.
 _Avoid_: shared policy, project preferences
 

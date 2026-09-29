@@ -64,8 +64,8 @@ class OpenCodePluginTests(unittest.TestCase):
         self.git("commit", "--quiet", "-m", "Add Project Direction")
         config = self.base / "opencode"
         config.mkdir()
-        source = self.base / "release/AGENTS.md"
-        source.parent.mkdir()
+        source = self.base / "release/global/AGENTS.md"
+        source.parent.mkdir(parents=True)
         source.write_text("# Agents\n\nCanonical contract fixture.\n", encoding="utf-8")
         (config / "AGENTS.md").symlink_to(source)
         self.environment = {

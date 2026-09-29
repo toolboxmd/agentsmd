@@ -60,5 +60,5 @@ reprioritized Objective, or a user request to define, review, or update directio
 Distinguish repository/tracker facts from inference and user choices. Semantic
 writes require explicit confirmation.
 
-Before judging alignment or acting on drift, apply the core `AGENTS.md` Project
+Before judging alignment or acting on drift, apply the core `global/AGENTS.md` Project
 Direction section. It owns contribution, detour, and strategic confirmation rules.

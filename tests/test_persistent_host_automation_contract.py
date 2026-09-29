@@ -29,7 +29,7 @@ def read_text(path: Path) -> str:
 class PersistentHostAutomationContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.agents = read_text(ROOT / "AGENTS.md")
+        cls.agents = read_text(ROOT / "global/AGENTS.md")
         cls.glossary = read_text(ROOT / "GLOSSARY.md")
         cls.contract = read_text(ADR)
         cls.cases = {case["id"]: case["plan"] for case in load_cases(FIXTURES)}

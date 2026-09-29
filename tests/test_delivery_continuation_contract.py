@@ -30,7 +30,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         cls.cases = {case["id"]: case for case in cls.payload["cases"]}
 
     def test_global_contract_has_one_authoritative_location(self) -> None:
-        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        agents = (ROOT / "global/AGENTS.md").read_text(encoding="utf-8")
 
         self.assertEqual(agents.count(CONTRACT_HEADING), 1)
         contract = agents.split(CONTRACT_HEADING, 1)[1].split("\n## ", 1)[0]
@@ -60,7 +60,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("recover", contract)
 
     def test_work_delivery_human_gates_and_handoff_use_one_contract(self) -> None:
-        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        agents = (ROOT / "global/AGENTS.md").read_text(encoding="utf-8")
         for heading in ("Work", "Delivery", "Human gates"):
             with self.subTest(heading=heading):
                 self.assertIn(
@@ -94,7 +94,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
     def test_contract_is_host_neutral_and_does_not_create_an_orchestrator(
         self,
     ) -> None:
-        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        agents = (ROOT / "global/AGENTS.md").read_text(encoding="utf-8")
         contract = " ".join((ROOT / "skills/operations/references/orchestration.md").read_text().split())
         for host_control in ("codex_app", "create_thread", "Claude", "Codex"):
             self.assertNotIn(host_control, contract)
@@ -102,21 +102,24 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("persistent orchestration service", contract)
 
     def test_behavioral_live_verification_remains_user_owned(self) -> None:
-        override = (ROOT / "AGENTS.override.md").read_text(encoding="utf-8")
-        normalized = " ".join(override.split())
+        project = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        normalized = " ".join(project.split())
         self.assertIn("User-owned behavioral Live Verification", normalized)
         self.assertIn("after release through normal work in real projects", normalized)
 
     def test_repository_policy_home_and_single_gate_statement(self) -> None:
-        agents = " ".join((ROOT / "AGENTS.md").read_text(encoding="utf-8").split())
-        override = " ".join(
-            (ROOT / "AGENTS.override.md").read_text(encoding="utf-8").split()
+        agents = " ".join((ROOT / "global/AGENTS.md").read_text(encoding="utf-8").split())
+        project = " ".join(
+            (ROOT / "AGENTS.md").read_text(encoding="utf-8").split()
         )
         self.assertIn(
-            "Repository policy is the project's own instructions, including "
-            "`AGENTS.override.md` when present; read it on every host.",
+            "Repository policy is the project's own `AGENTS.md`.",
             agents,
         )
+        self.assertFalse((ROOT / "AGENTS.override.md").exists())
+        self.assertNotIn("AGENTS.override.md", agents)
+        self.assertIn("The global contract lives in `global/AGENTS.md` and is edited there.", project)
+        self.assertNotIn("## Authority and continuation", project)
         self.assertEqual(agents.count("installation"), 1)
         self.assertIn("Human Gates still apply.", agents)
         for grant in (
@@ -125,8 +128,8 @@ class DeliveryContinuationContractTests(unittest.TestCase):
             "installing that released version on the maintainer's local hosts",
             "Third-party marketplace submission and publication still need explicit authority",
         ):
-            self.assertIn(grant, override)
-        self.assertNotIn("merging a reviewed final PR", override)
+            self.assertIn(grant, project)
+        self.assertNotIn("merging a reviewed final PR", project)
 
     def test_merge_experiment_evidence_and_supersession_are_truthful(self) -> None:
         evidence = self.payload["evidence"]["merge_authority_experiment"]
@@ -204,7 +207,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertEqual(validate_case(limited, self.contract), [])
 
     def test_core_carries_approval_without_implicitly_pinning_the_candidate(self) -> None:
-        core = " ".join((ROOT / "AGENTS.md").read_text().split())
+        core = " ".join((ROOT / "global/AGENTS.md").read_text().split())
         for clause in (
             "Approval to merge or ship carries through routine fixes, retries",
             "or replacement PRs needed to complete that same task",
@@ -304,7 +307,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
     def test_each_external_operation_requires_exact_authority_and_target(
         self,
     ) -> None:
-        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        agents = (ROOT / "global/AGENTS.md").read_text(encoding="utf-8")
         contract_text = section(agents, "Authority and continuation")
         self.assertIn(
             "After the mutation, verify the resulting live state before "

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "contract": {
-    "authoritative_location": "AGENTS.md#Authority and continuation",
+    "authoritative_location": "global/AGENTS.md#Authority and continuation",
     "implementation_operations": [
       "issue-update",
       "exclusive-branch-and-workspace",
@@ -178,7 +178,7 @@
     }
   },
   "case_defaults": {
-    "contract_location": "AGENTS.md#Authority and continuation",
+    "contract_location": "global/AGENTS.md#Authority and continuation",
     "authority": {
       "repository": "toolboxmd/example",
       "issue": 46,

@@ -19,12 +19,12 @@ class SharedPreferencesTests(unittest.TestCase):
         self.root = Path(self.temp.name).resolve()
         self.home = self.root / 'home'
         self.home.mkdir()
-        self.source = self.root / 'stable/AGENTS.md'
-        self.source.parent.mkdir()
+        self.source = self.root / 'stable/global/AGENTS.md'
+        self.source.parent.mkdir(parents=True)
         self.source.write_text('# Shared contract\n')
-        self.example = self.source.with_name('PREFERENCES.example.md')
+        self.example = self.source.parent.parent / 'PREFERENCES.example.md'
         self.example.write_text('# Generic preferences\n')
-        self.private = self.source.with_name('PREFERENCES.md')
+        self.private = self.source.parent.parent / 'PREFERENCES.md'
         self.project = self.root / 'unrelated'
         self.project.mkdir()
         self.env = {key: value for key, value in os.environ.items()
@@ -66,6 +66,52 @@ class SharedPreferencesTests(unittest.TestCase):
                 self.assertEqual(self.install(host)['action'], 'unchanged')
                 self.assertEqual(self.private.read_text(), 'personal unchanged\n')
 
+    def test_migration_rejects_old_root_and_backs_up_each_host_link(self):
+        clone = self.root / 'migration-clone'
+        (clone / 'global').mkdir(parents=True)
+        old = clone / 'AGENTS.md'
+        old.write_text('repository instructions')
+        new = clone / 'global/AGENTS.md'
+        new.write_text('shared global contract')
+        (clone / 'PREFERENCES.md').write_text('preserved private defaults')
+        (clone / 'global/PREFERENCES.md').write_text('WRONG NESTED DEFAULTS')
+        for host, relative in (('codex', '.codex/AGENTS.md'), ('claude', '.claude/CLAUDE.md'),
+                               ('grok', '.grok/AGENTS.md'), ('opencode', '.config/opencode/AGENTS.md')):
+            with self.subTest(host=host):
+                target = self.home / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.symlink_to(old)
+                stale = self.command('agentsmd-global-instructions', 'inspect', '--host', host, expected=2)
+                self.assertEqual(stale['status'], 'stale-source-layout')
+                self.assertFalse(stale['healthy'])
+                blocked = self.command('project-direction', 'inspect', '--host', host, expected=2)
+                self.assertEqual(blocked['instructions']['status'], 'stale-source-layout')
+                self.assertNotIn('content', blocked['preferences'])
+                self.command('agentsmd-global-instructions', 'install', '--host', host,
+                             '--source', new, expected=2)
+                self.assertEqual(target.resolve(), old)
+                migrated = self.command('agentsmd-global-instructions', 'install', '--host', host,
+                                        '--source', new, '--replace')
+                self.assertEqual(migrated['previous_status'], 'stale-source-layout')
+                backup = Path(migrated['backup'])
+                self.assertTrue(backup.is_symlink())
+                self.assertEqual(backup.resolve(), old)
+                self.assertEqual(target.resolve(), new)
+                inspected = self.command('agentsmd-global-instructions', 'inspect', '--host', host,
+                                         '--source', new)
+                self.assertEqual(inspected['source_sha256'], hashlib.sha256(new.read_bytes()).hexdigest())
+                self.assertEqual(inspected['target_sha256'], inspected['source_sha256'])
+                loaded = self.command('project-direction', 'inspect', '--host', host)
+                self.assertEqual(loaded['preferences']['path'], str(clone / 'PREFERENCES.md'))
+                self.assertEqual(loaded['preferences']['content'], 'preserved private defaults')
+                repeated = self.command('agentsmd-global-instructions', 'install', '--host', host,
+                                        '--source', new)
+                self.assertEqual(repeated['action'], 'unchanged')
+                self.assertEqual(len(list(backup.parent.iterdir())), 1)
+        rejected = self.command('agentsmd-global-instructions', 'install', '--host', 'codex',
+                                '--source', old, '--replace', expected=2)
+        self.assertEqual(rejected['error'], 'invalid-source-layout')
+
     def test_config_roots_and_opencode_lifecycle_share_path(self):
         for host, key, relative in (('codex', 'CODEX_HOME', 'AGENTS.md'),
                                     ('claude', 'CLAUDE_CONFIG_DIR', 'CLAUDE.md'),
@@ -84,10 +130,10 @@ class SharedPreferencesTests(unittest.TestCase):
                     self.assertTrue(self.private.exists())
 
     def test_grok_home_selects_custom_source_and_preserves_default_fallback(self):
-        default_source = self.root / 'default-source/AGENTS.md'
-        default_source.parent.mkdir()
+        default_source = self.root / 'default-source/global/AGENTS.md'
+        default_source.parent.mkdir(parents=True)
         default_source.write_text('default Grok contract')
-        default_source.with_name('PREFERENCES.md').write_text('default Grok preferences')
+        (default_source.parent.parent / 'PREFERENCES.md').write_text('default Grok preferences')
         default_target = self.home / '.grok/AGENTS.md'
         default_target.parent.mkdir()
         default_target.symlink_to(default_source)
@@ -131,8 +177,8 @@ class SharedPreferencesTests(unittest.TestCase):
 
     def test_source_comparison_distinguishes_divergent_identical_bytes(self):
         self.install()
-        other = self.root / 'other/AGENTS.md'
-        other.parent.mkdir()
+        other = self.root / 'other/global/AGENTS.md'
+        other.parent.mkdir(parents=True)
         other.write_bytes(self.source.read_bytes())
         report = self.command('agentsmd-global-instructions', 'inspect', '--source', other, expected=2)
         self.assertEqual(report['status'], 'divergent-link')
@@ -180,10 +226,10 @@ class SharedPreferencesTests(unittest.TestCase):
         self.assertNotEqual(original['instructions']['sha256'], changed['instructions']['sha256'])
         self.assertEqual(changed['instructions']['sha256'], hashlib.sha256(self.source.read_bytes()).hexdigest())
         self.assertIsNone(self.hook())
-        other = self.root / 'new-source'
-        other.mkdir()
+        other = self.root / 'new-source/global'
+        other.mkdir(parents=True)
         (other / 'AGENTS.md').write_bytes(self.source.read_bytes())
-        (other / 'PREFERENCES.md').write_text('new source defaults')
+        (other.parent / 'PREFERENCES.md').write_text('new source defaults')
         target = self.home / '.codex/AGENTS.md'
         target.unlink()
         target.symlink_to(other / 'AGENTS.md')
@@ -217,10 +263,10 @@ class SharedPreferencesTests(unittest.TestCase):
 
     def test_hook_host_selection_refuses_conflicts_and_honors_explicit_override(self):
         self.install()
-        other = self.root / 'other-host'
-        other.mkdir()
+        other = self.root / 'other-host/global'
+        other.mkdir(parents=True)
         (other / 'AGENTS.md').write_text('different host source')
-        (other / 'PREFERENCES.md').write_text('other host preferences')
+        (other.parent / 'PREFERENCES.md').write_text('other host preferences')
         target = self.home / '.claude/CLAUDE.md'
         target.parent.mkdir()
         target.symlink_to(other / 'AGENTS.md')
@@ -274,7 +320,7 @@ class SharedPreferencesTests(unittest.TestCase):
         # Include this component's new files before its coordinator-owned commit.
         # Never sweep unrelated untracked user files into the package fixture.
         package_files = set(inventory.splitlines()) | {
-            '.gitattributes', 'PREFERENCES.example.md',
+            '.gitattributes', 'PREFERENCES.example.md', 'global/AGENTS.md',
             'bin/agentsmd_instructions.py', 'tests/test_shared_preferences.py'}
         for name in package_files:
             source = ROOT / name
@@ -291,7 +337,7 @@ class SharedPreferencesTests(unittest.TestCase):
         archive = self.root / 'agentsmd-fixture.tar.gz'
         git('archive', '--format=tar.gz', '--prefix=agentsmd/', f'--output={archive}', 'HEAD')
         with tarfile.open(archive) as package:
-            for name in ('PREFERENCES.example.md', 'AGENTS.md', 'bin/project-direction',
+            for name in ('PREFERENCES.example.md', 'AGENTS.md', 'global/AGENTS.md', 'bin/project-direction',
                          'bin/agentsmd-global-instructions', 'bin/agentsmd_instructions.py'):
                 self.assertIn('agentsmd/' + name, package.getnames())
             # Extract only this locally generated trusted fixture, then exercise the shipped CLI.
@@ -303,7 +349,7 @@ class SharedPreferencesTests(unittest.TestCase):
         unpacked = self.root / 'unpacked/agentsmd'
         result = subprocess.run(
             [str(unpacked / 'bin/agentsmd-global-instructions'), 'install', '--host', 'claude',
-             '--source', str(unpacked / 'AGENTS.md')], env=self.env, cwd=self.project,
+             '--source', str(unpacked / 'global/AGENTS.md')], env=self.env, cwd=self.project,
             text=True, capture_output=True, check=True)
         self.assertEqual(json.loads(result.stdout)['preferences']['action'], 'created')
         self.assertEqual((unpacked / 'PREFERENCES.md').read_bytes(),
@@ -312,7 +358,7 @@ class SharedPreferencesTests(unittest.TestCase):
 
 class PreferencePlacementContractTests(unittest.TestCase):
     def test_shared_fixes_go_to_their_owner_not_private_preferences(self):
-        agents = (ROOT / 'AGENTS.md').read_text(encoding='utf-8')
+        agents = (ROOT / 'global/AGENTS.md').read_text(encoding='utf-8')
         section = agents.split('## Canonical source and preferences', 1)[1].split('\n## ', 1)[0]
         text = ' '.join(section.split())
         self.assertIn('When a correction or discovery reveals missing or wrong shared behavior or tool '

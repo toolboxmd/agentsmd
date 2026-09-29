@@ -29,7 +29,7 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def source_path(value):
+def source_path(value, allow_legacy=False):
     path = absolute(value)
     if path.is_symlink():
         raise ValueError("source must be a canonical AGENTS.md, not a symlink alias")
@@ -40,6 +40,8 @@ def source_path(value):
             candidate.parts[i:i + 2] == ("plugins", "cache") for i in range(len(candidate.parts))
         ):
             raise ValueError("source must be a stable canonical AGENTS.md outside plugin caches")
+    if not allow_legacy and any(candidate.parent.name != "global" for candidate in (path, path.resolve())):
+        raise ValueError("source must be the canonical clone global/AGENTS.md")
     return path
 
 
@@ -73,7 +75,7 @@ def inspect(target, source):
 
 
 def manage(args):
-    source = source_path(args.source)
+    source = source_path(args.source, allow_legacy=args.command == "uninstall")
     target = absolute(default_target("opencode"))
     if target_is_in_cache(target):
         raise ValueError("cache-bound-target")
@@ -93,7 +95,7 @@ def manage(args):
         return {"action": "unchanged", "before": before, "after": before,
                 "preferences": initialize_preferences(source)}, 0
     if os.path.lexists(target):
-        previous = source_path(args.previous_source) if args.command == "update" and args.previous_source else source
+        previous = source_path(args.previous_source, allow_legacy=True) if args.command == "update" and args.previous_source else source
         old = inspect(target, previous)
         if args.command != "update" or not old["owned"]:
             raise ValueError("existing target is not the exact previous owned link; target preserved")
@@ -354,7 +356,7 @@ def run(args):
     handoff = (
         f"AgentsMD bounded implementation handoff. Owning Issue: {args.issue}.\n"
         f"Repository: {cwd}. Exact base: {args.base}. Starting HEAD: {head}.\n"
-        "Inspect the native global instruction link, read its current canonical AGENTS.md and adjacent PREFERENCES.md; report source path/hash. Inherited startup text may be stale.\n"
+        "Inspect the native global instruction link, read its current canonical global/AGENTS.md and clone-root PREFERENCES.md; report source path/hash. Inherited startup text may be stale.\n"
         "Read complete current VISION.md, MISSION.md, OBJECTIVE.md and applicable project instructions before work.\n"
         "Stay within the task's granted scope and authority. Tool auto-approval is not delivery authority.\n"
         "The coordinator owns independent exact-SHA review, protected external mutations and final delivery state.\n"

@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class DeliverySystemContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        cls.agents = (ROOT / "global/AGENTS.md").read_text(encoding="utf-8")
         cls.agents_words = " ".join(cls.agents.split())
         cls.modules = {
             name: " ".join((ROOT / f"skills/operations/references/{name}.md").read_text().split())

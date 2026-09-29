@@ -17,8 +17,9 @@ global baseline. This matches the discovery model documented for
 
 ## Package contents
 
-- `AGENTS.md`: portable global working agreements.
-- `PREFERENCES.example.md`: generic template for private adjacent `PREFERENCES.md`.
+- `global/AGENTS.md`: portable global working agreements.
+- `AGENTS.md`: this repository's project instructions.
+- `PREFERENCES.example.md`: generic template for private clone-root `PREFERENCES.md`.
 - `VISION.md`, `MISSION.md`, and `OBJECTIVE.md`: this project's current
   Project Direction.
 - `GLOSSARY.md`: canonical AgentsMD project language.
@@ -178,7 +179,7 @@ strategic judgment.
 
 ## Delivery System v1
 
-The core in `AGENTS.md` owns alignment, authority, and routing. The applicable
+The core in `global/AGENTS.md` owns alignment, authority, and routing. The applicable
 [`operations` modules](skills/operations/SKILL.md) own lifecycle, execution,
 review, artifact, website, and evidence procedures; `version-control` owns
 version mechanics. Each delivery state is reported separately. Projects can
@@ -237,7 +238,7 @@ Human Gates.
 
 Codex requires the user to review and trust a new or changed plugin hook hash.
 Use `/hooks` in a fresh session to inspect that state. Hooks can also be disabled
-by host or administrator policy, so the `AGENTS.md` first-read rule remains the
+by host or administrator policy, so the `global/AGENTS.md` first-read rule remains the
 fallback. Current Codex hooks prove root-task post-compaction reload and
 subagent-start injection. The public contract does not prove reinjection after
 a subagent's private compaction. Automatic lifecycle behavior on Claude Code,
@@ -395,9 +396,9 @@ Run the following for each desired host, setting `AGENTSMD_HOST` to `codex`, `gr
 ```sh
 export AGENTSMD_HOST=codex
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
-  --source "$AGENTSMD_DIR/AGENTS.md"
+  --source "$AGENTSMD_DIR/global/AGENTS.md"
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --host "$AGENTSMD_HOST" \
-  --source "$AGENTSMD_DIR/AGENTS.md"
+  --source "$AGENTSMD_DIR/global/AGENTS.md"
 ```
 
 | Host | Default global path | Respected configuration directory |
@@ -407,7 +408,7 @@ export AGENTSMD_HOST=codex
 | OpenCode | `~/.config/opencode/AGENTS.md` | `OPENCODE_CONFIG_DIR`, otherwise `XDG_CONFIG_HOME/opencode` |
 | Claude Code | `~/.claude/CLAUDE.md` | `CLAUDE_CONFIG_DIR` |
 
-All links resolve to the same stable `AGENTS.md`. Set `AGENTSMD_HOST` separately
+All links resolve to the same stable `global/AGENTS.md`. Set `AGENTSMD_HOST` separately
 for each host process: `codex`, `grok`, `opencode`, or `claude`. The loader's
 `--host` option overrides that environment selection. Do not reuse a different
 host's exported value. Legacy `project-direction hook` callers default to Codex
@@ -424,16 +425,20 @@ actual instruction discovery in the installed version, because host bugs can
 make documented path support differ from loaded context.
 
 Inspection reports `missing`, `broken-link`, `cache-bound-link`,
-`cache-bound-target`, `invalid-link-target`, or user-owned `non-symlink` targets.
+`cache-bound-target`, `invalid-link-target`, `stale-source-layout`, or user-owned
+`non-symlink` targets. Links to the former clone-root `AGENTS.md` are stale and
+exit nonzero, including when `--source` is omitted.
 With `--source`, a different stable source reports `divergent-link`, even when
 its bytes match. Only a healthy matching link exits zero. Without `--source`,
 `valid-stable-link` proves a stable destination, not the intended identity.
 
-Existing targets are preserved unless you explicitly authorize replacement:
+To migrate a pre-14.0 installation, run the replacement command below for each
+host after updating the clone. Existing targets are preserved unless you
+explicitly authorize replacement:
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --host "$AGENTSMD_HOST" \
-  --source "$AGENTSMD_DIR/AGENTS.md" --replace
+  --source "$AGENTSMD_DIR/global/AGENTS.md" --replace
 ```
 
 Replacement first creates a recoverable backup in the target's adjacent
@@ -464,8 +469,8 @@ that file. Under Grok the loader keeps its session fingerprint in
 temporary directory and is shared with a plugin hook if the host ever loads
 one.
 
-Setup copies tracked `PREFERENCES.example.md` to adjacent private
-`PREFERENCES.md` only when absent. Existing contents survive all setup and update
+Setup copies tracked `PREFERENCES.example.md` to private `PREFERENCES.md` at the
+canonical clone root only when absent. Existing contents survive all setup and update
 commands, including OpenCode's ownership-safe lifecycle. Edit the private file
 for personal defaults; never commit it. It is gitignored and excluded from Git
 release archives. Keep credentials elsewhere. Explicit task instructions,
@@ -494,13 +499,13 @@ mechanism, and the fallback that still applies:
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
-  --source "$AGENTSMD_DIR/AGENTS.md"
+  --source "$AGENTSMD_DIR/global/AGENTS.md"
 "$AGENTSMD_DIR/bin/project-direction" inspect --host "$AGENTSMD_HOST"
 ```
 
 The first command verifies link identity. The second reads private preferences
-from that source's directory, including outside Git and when invoked from a
-plugin cache. It never reads project-local preferences or substitutes the
+from the canonical clone root, one directory above `global/`, including outside
+Git and when invoked from a plugin cache. It never reads project-local preferences or substitutes the
 example. Its JSON contains private text: do not publish raw output.
 `preferences.status` is `ready` with complete contents, `absent` for shared
 defaults, or an explicit failure. Files over 8,192 bytes return `oversized`
@@ -520,7 +525,7 @@ private contents. The increased hook context allowance requires renewed trust.
 **Explicit reading fallback:** at task/worker start, after context loss and after
 source changes, inspect the selected host's link, compare its source path/hash
 with the full global instructions in context, and read current canonical
-`AGENTS.md` when freshness is unproved. Read adjacent `PREFERENCES.md` in full
+`global/AGENTS.md` when freshness is unproved. Read clone-root `PREFERENCES.md` in full
 when present; report unreadable files and discard deleted preferences. Load
 applicable project instructions and the complete Project Direction triad for
 repository work. Keep Skill bodies on demand. A worker also needs the exact
@@ -674,7 +679,7 @@ MIT. See `LICENSE`.
 
 ## Core and operating procedures
 
-`AGENTS.md` keeps alignment, judgment, authority, task routing and truthful
+`global/AGENTS.md` keeps alignment, judgment, authority, task routing and truthful
 reporting in the core. The model-invoked `operations` Skill selects the procedure
 needed for the current task and phase, including engineering methods and
 implementation, orchestration, verification, delivery and finalization. Agents load
@@ -684,9 +689,9 @@ The planner owns the outcome and delegates when it reduces total work or
 provides required independence. Choose after simplifying the solution.
 Exact approved prose retains the narrow review exception in verification.
 
-Global instruction installation links only `AGENTS.md`. Resolve its symlink to
-the canonical AgentsMD checkout and use `skills/operations/SKILL.md` there to
-keep the core and modules coherent. Installed Skill discovery also supplies the
+Global instruction installation links only `global/AGENTS.md`. Resolve its
+symlink, take the parent of `global/` as the canonical AgentsMD clone root, and
+use `skills/operations/SKILL.md` there to keep the core and modules coherent. Installed Skill discovery also supplies the
 operations package; check compatibility before combining sources. Resolve
 references from the actual selected Skill directory, never a target-project cwd
 or the directory containing the global symlink. Missing modules block only the

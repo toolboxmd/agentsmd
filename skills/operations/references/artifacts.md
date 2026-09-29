@@ -29,7 +29,7 @@ a duplicate merely to match the filename.
 | Validated project knowledge | Existing README, glossary, ADR, code or tests, according to the core's ownership rules |
 | Reusable verification driver and recipes | Existing project verification owner; otherwise `.toolboxmd/verification/` with `index.md` and conditional references |
 | A learned operating rule | Its existing canonical procedure, only within authorized scope |
-| Personal defaults | Canonical adjacent private `PREFERENCES.md`, never task reports |
+| Personal defaults | Canonical clone-root private `PREFERENCES.md`, never task reports |
 | Model Router jobs, reports and raw runner output | Model Router's existing state directory, linked by identity when needed |
 
 Do not move unrelated existing material as part of recording a new result.

@@ -86,6 +86,10 @@ def inspect_target(target: Path, source: Path | None = None) -> dict[str, Any]:
         report["status"] = "invalid-link-target"
         return report
 
+    if resolved.parent.name != "global":
+        report["status"] = "stale-source-layout"
+        return report
+
     target_digest = digest(resolved)
     report.update(
         {
@@ -127,14 +131,21 @@ def validate_source(source: Path) -> tuple[Path | None, dict[str, Any] | None]:
             "source": str(source),
             "resolved_source": str(resolved),
         }
+    if resolved.parent.name != "global":
+        return None, {
+            "error": "invalid-source-layout",
+            "source": str(source),
+            "resolved_source": str(resolved),
+        }
     return resolved, None
 
 
 def initialize_preferences(source: Path) -> dict[str, Any]:
-    destination = source.parent / "PREFERENCES.md"
+    source = source.resolve()
+    destination = source.parent.parent / "PREFERENCES.md"
     if os.path.lexists(destination):
         return {"path": str(destination), "action": "preserved"}
-    example = source.parent / "PREFERENCES.example.md"
+    example = source.parent.parent / "PREFERENCES.example.md"
     if not example.is_file():
         return {"path": str(destination), "action": "absent", "reason": "example-missing"}
     raw = example.read_bytes()
@@ -182,12 +193,12 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
         inspection["action"] = (
             "At task/worker start and restoration, compare this canonical source path "
             "and SHA-256 with the complete global instructions in context. Read the "
-            "current canonical AGENTS.md if freshness is unproved or changed. "
+            "current canonical global/AGENTS.md if freshness is unproved or changed. "
             "Inherited startup text and a correct link alone do not prove freshness. "
             "Keep skill bodies on demand; obtain the exact Issue, authority, base "
             "and owned workspace from the coordinator's task packet."
         )
-        path = source.parent / "PREFERENCES.md"
+        path = source.parent.parent / "PREFERENCES.md"
         preferences: dict[str, Any] = {"path": str(path), "boundary": boundary}
         try:
             raw = path.read_bytes()

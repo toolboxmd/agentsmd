@@ -182,7 +182,7 @@ class ElonGateTests(unittest.TestCase):
 
 class ElonContractTests(unittest.TestCase):
     def test_core_states_three_tests_and_the_enforced_record(self) -> None:
-        core = " ".join((ROOT / "AGENTS.md").read_text(encoding="utf-8").split())
+        core = " ".join((ROOT / "global/AGENTS.md").read_text(encoding="utf-8").split())
         for required in (
             "**Question the requirement.** Name who asked for each requirement and what breaks without it;",
             "**Work on the bottleneck.** Find where work waits and fix that first;",
