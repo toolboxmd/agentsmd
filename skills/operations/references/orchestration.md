@@ -66,7 +66,12 @@ when sufficient.
 
 Include the unit's outcome, allowed and forbidden writes, shared-resource limits,
 acceptance, proof seam, known gotchas, report shape, and bounded escalation
-condition. Do not dispatch unresolved ownership or acceptance. Before parallel
+condition. Do not dispatch unresolved ownership or acceptance. A child, a
+reviewer included, may start in the coordinator's checkout, which can be a live
+install such as the canonical AgentsMD clone. Name its worktree or temporary
+clone in every packet and forbid checkout, switch, reset, pull, and every other
+write in any main checkout; reviewers read with `gh pr diff`,
+`git -C <worktree>`, or `git show <sha>:<path>`. Before parallel
 work, read [bounded delegation](bounded-delegation.md) for alternative-versus-
 coverage aggregation, capacity, pilots, and failure recovery. For an authorized
 external intake or automation adapter, also read [external handoffs](external-handoffs.md).
