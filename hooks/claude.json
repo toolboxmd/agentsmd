@@ -1,0 +1,17 @@
+{
+  "description": "Claude Code only: point each session at the operations Skill, because Claude does not load it on its own (#174).",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/operations-routing\"",
+            "statusMessage": "Pointing at the operations Skill"
+          }
+        ]
+      }
+    ]
+  }
+}

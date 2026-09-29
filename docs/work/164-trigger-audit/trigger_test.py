@@ -53,6 +53,12 @@ timeout or abort.
   python3 trigger_test.py --host claude --model claude-opus-5-5 --effort medium \\
       --runs 5 --jobs 8 --record records.jsonl > results.tsv
   python3 trigger_test.py --score results.tsv
+
+Issue #174 additions: `--arms name=ref,...` archives any git ref as an arm
+(plain `main` and `branch` keep their refs); `--midtask` runs the mid-task
+cases, which score the read against the first `git commit` or `gh pr create`
+instead of the first edit; every run gets a `gh` stub on PATH that records
+nothing and never reaches GitHub; records carry the run's token usage.
 """
 import argparse
 import concurrent.futures
@@ -103,6 +109,8 @@ PROSE = "technical-writing/references/prose.md"
 MECHANICS = "writing-for-agents/SKILL-MECHANICS.md"
 TEST_DESIGN = "references/test-design.md"
 GLOSSARY_FORMAT = "domain-modeling/GLOSSARY-FORMAT.md"
+VERSION_CONTROL = "version-control/index.md"
+VERIFICATION = "references/verification.md"
 ENTRY = "operations/SKILL.md"
 
 APP = '''def greet(name):
@@ -178,6 +186,20 @@ CASES = [
     ("domain-modeling", "negative", [GLOSSARY_FORMAT],
      "divide() in {repo}/src/app.py should raise ValueError with a clear message when b is 0. Make that change."),
 ]
+
+# Mid-task cases: (target, kind, required files, prompt, moment). The required file
+# must be read before the first shell command matching the moment pattern.
+MIDTASK = [
+    ("version-control", "positive", [VERSION_CONTROL],
+     "greet() in {repo}/src/app.py returns 'Helo' instead of 'Hello'. Fix the typo and commit the fix.",
+     r"\bgit\b[^|;&]*\bcommit\b"),
+    ("verification", "positive", [VERIFICATION],
+     "divide() in {repo}/src/app.py should raise ValueError with a clear message when b is 0. Make that "
+     "change, commit it on a new branch and open a pull request with gh pr create.",
+     r"\bgh\s+pr\s+create\b"),
+]
+# Stands in for the GitHub CLI: prints a fake URL and never touches the network.
+GH_STUB = "#!/bin/sh\ncase \"$1 $2\" in 'pr create'|'issue create') echo https://github.com/example/greeter/pull/1;; esac\nexit 0\n"
 
 READERS = re.compile(r"\b(cat|sed|head|tail|nl|less|awk|bat|grep|rg|python3?)\b")
 SHELL_EDIT = re.compile(r"(sed -i|\bcat\s*>|\btee\b|>\s*[\w./-]+\.(py|md)\b|python3? -\s*<<|apply_patch)")
@@ -282,6 +304,43 @@ def expand_braces(command):
         command = command[:match.start()] + words + command[match.end():]
 
 
+def failed_calls(stream, host="claude"):
+    """Indexes (in tool_calls order) of calls the host refused or that failed.
+
+    Claude Code: tool uses listed in the result event's `permission_denials` or
+    answered by an error tool_result. OpenCode: parts whose state is `error`.
+    Other hosts report no per-call failure the scorer can rely on."""
+    if host not in ("claude", "opencode"):
+        return set()
+    order, failed = [], set()
+    for line in stream.splitlines():
+        try:
+            event = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(event, dict):
+            continue
+        if host == "opencode":
+            part = event.get("part") or {}
+            if event.get("type") == "tool_use" and part.get("callID") not in order:
+                order.append(part.get("callID"))
+                if (part.get("state") or {}).get("status") == "error":
+                    failed.add(part.get("callID"))
+            continue
+        if event.get("type") == "assistant":
+            for block in event.get("message", {}).get("content", []):
+                if block.get("type") == "tool_use" and block.get("id") not in order:
+                    order.append(block.get("id"))
+        elif event.get("type") == "user":
+            content = event.get("message", {}).get("content", [])
+            for block in content if isinstance(content, list) else []:
+                if block.get("type") == "tool_result" and block.get("is_error"):
+                    failed.add(block.get("tool_use_id"))
+        elif event.get("type") == "result":
+            failed.update(d.get("tool_use_id") for d in event.get("permission_denials") or [])
+    return {i for i, call_id in enumerate(order) if call_id in failed}
+
+
 def reads_file(call, f):
     name, path, command, skill = call
     command = expand_braces(command)
@@ -292,10 +351,12 @@ def reads_file(call, f):
 def score(stream, required, host="claude"):
     """Return (index of first edit or None, {file: index of first read or None}, entry index or None)."""
     first_edit, reads, entry = None, {f: None for f in required}, None
+    failed = failed_calls(stream, host)
     for i, call in enumerate(tool_calls(stream, host)):
         name, path, command, skill = call
         for f in required:
-            if reads[f] is None and reads_file(call, f):
+            # A refused or failed read is an attempt, not a read.
+            if reads[f] is None and i not in failed and reads_file(call, f):
                 reads[f] = i
         if entry is None and ((name == "Skill" and skill.split(":")[-1] == "operations")
                               or reads_file(call, ENTRY)):
@@ -355,11 +416,23 @@ def guard_self_check():
         shutil.rmtree(root, ignore_errors=True)
 
 
-def extract_sources():
-    """Archive origin/main and HEAD into a temporary directory; return it."""
+DEFAULT_REFS = {"main": "origin/main", "branch": "HEAD"}
+
+
+def parse_arms(spec):
+    """`main,branch` or `name=ref,...` -> {arm: ref}."""
+    arms = {}
+    for item in spec.split(","):
+        name, _, ref = item.partition("=")
+        arms[name] = ref or DEFAULT_REFS[name]
+    return arms
+
+
+def extract_sources(arms=DEFAULT_REFS):
+    """Archive each arm's git ref into a temporary directory; return it."""
     root = pathlib.Path(tempfile.mkdtemp(prefix=PREFIX + "src-"))
     try:
-        for arm, ref in (("main", "origin/main"), ("branch", "HEAD")):
+        for arm, ref in arms.items():
             (root / arm).mkdir()
             archive = subprocess.run(["git", "-C", str(BRANCH), "archive", ref],
                                      capture_output=True, check=True).stdout
@@ -397,7 +470,7 @@ def cleanup_self_check(host):
                 LOGIN.update(saved[3])
                 FILES = dict(saved[1], **{"README.md/blocked": ""})
             try:
-                run(host, "stub", "", "branch", CASES[0], 0)
+                run(host, "stub", "", next(a for a in SOURCES if not a.endswith("-sha")), CASES[0], 0)
             except (OSError, ValueError, subprocess.CalledProcessError):
                 pass
             else:
@@ -437,6 +510,10 @@ def make_home(host, arm):
                if not k.startswith(("CLAUDE_CODE_", "CLAUDECODE", "CODEX_", "GROK_", "OPENCODE_", "XDG_"))}
         env.pop("CLAUDE_CONFIG_DIR", None)
         env["HOME"] = str(home)
+        (home / "bin").mkdir()
+        (home / "bin/gh").write_text(GH_STUB)
+        (home / "bin/gh").chmod(0o755)
+        env["PATH"] = f"{home / 'bin'}{os.pathsep}{env['PATH']}"
         SETUP[host](home, plugin, env)
         return home, plugin, env
     except BaseException:
@@ -503,7 +580,9 @@ def setup_opencode(home, plugin, env):
     (config / "skills/operations").symlink_to(plugin / "skills/operations")
     (config / "plugins/agentsmd-project-direction.js").symlink_to(plugin / "opencode/agentsmd-project-direction.js")
     shutil.copy2(plugin / "global/AGENTS.md", config / "AGENTS.md")
-    allowed = {f"{p}/**": "allow" for p in {str(plugin), str(plugin.resolve())}}
+    # The Skill's base directory is the config link, so allow the config directory
+    # too (the live install allows every read).
+    allowed = {f"{p}/**": "allow" for p in {str(plugin), str(plugin.resolve()), str(config), str(config.resolve())}}
     (config / "opencode.json").write_text(json.dumps({
         "$schema": "https://opencode.ai/config.json",
         "permission": {"edit": "allow", "bash": "allow", "webfetch": "deny",
@@ -516,7 +595,8 @@ SETUP = {"claude": setup_claude, "codex": setup_codex, "grok": setup_grok, "open
 def command(host, model, effort, repo, plugin, prompt):
     if host == "claude":
         cmd = ["claude", "-p", "--model", model, "--output-format", "stream-json", "--verbose",
-               "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--plugin-dir", str(plugin),
+               "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--add-dir", str(plugin),
+               "--plugin-dir", str(plugin),
                "--no-session-persistence", "--max-turns", "40"]
         return cmd + (["--effort", effort] if effort else []) + [prompt]
     if host == "codex":
@@ -573,9 +653,54 @@ def anonymize(text, repo, plugin):
     return re.sub(r"<home>/\S*?/(agentsmd-[0-9a-f]+|plugin-[0-9a-f]+|agentsmd/\d+\.\d+\.\d+)/", "<plugin>/", text)
 
 
-def record(stream, condition, host, model, effort, arm, target, kind, index, required, verdicts, repo, plugin):
-    """Compact, anonymized per-run record: tool calls up to and including the first edit."""
+def usage(stream, host):
+    """Token usage of one run: {"input", "output"} (input includes cache reads and writes), plus cost when reported."""
+    total, cost = {"input": 0, "output": 0}, None
+    for line in stream.splitlines():
+        try:
+            event = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(event, dict):
+            continue
+        if host == "opencode" and event.get("type") == "step_finish":
+            part = event.get("part") or {}
+            tokens = part.get("tokens") or {}
+            cache = tokens.get("cache") or {}
+            total["input"] += tokens.get("input", 0) + cache.get("read", 0) + cache.get("write", 0)
+            total["output"] += tokens.get("output", 0) + tokens.get("reasoning", 0)
+            cost = (cost or 0) + (part.get("cost") or 0)
+        elif host == "codex" and event.get("type") == "turn.completed":
+            u = event.get("usage") or {}
+            total["input"] += u.get("input_tokens", 0)
+            total["output"] += u.get("output_tokens", 0)
+        elif host in ("claude", "grok") and isinstance(event.get("usage"), dict) and event.get("type") in (
+                "result", "stream_end", "end", "done", "completed"):
+            u = event["usage"]
+            total = {"input": sum(u.get(k) or 0 for k in ("input_tokens", "cache_creation_input_tokens",
+                                                           "cache_read_input_tokens", "prompt_tokens")),
+                     "output": sum(u.get(k) or 0 for k in ("output_tokens", "completion_tokens"))}
+            cost = event.get("total_cost_usd", cost)
+    if cost is not None:
+        total["cost_usd"] = round(cost, 4)
+    return total
+
+
+def moment_index(stream, host, pattern):
+    """Index of the first shell command matching pattern, or None."""
+    for i, (name, _, command_text, _) in enumerate(tool_calls(stream, host)):
+        if name == "Bash" and re.search(pattern, command_text):
+            return i
+    return None
+
+
+def record(stream, condition, host, model, effort, arm, target, kind, index, required, verdicts, repo, plugin,
+           moment=None):
+    """Compact, anonymized per-run record: tool calls up to and including the first edit
+    (for a mid-task case, up to and including the moment)."""
     first_edit, reads, entry = score(stream, required, host)
+    if moment is not None:
+        first_edit = moment_index(stream, host, moment)
     calls = []
     for i, (name, path, command_text, skill) in enumerate(tool_calls(stream, host)):
         if first_edit is not None and i > first_edit:
@@ -596,6 +721,10 @@ def record(stream, condition, host, model, effort, arm, target, kind, index, req
         item["effort"] = effort
     item["entry_loaded_at"] = entry
     item["tool_calls"] = sum(1 for _ in tool_calls(stream, host))
+    item["usage"] = usage(stream, host)
+    item["failed_calls"] = sorted(failed_calls(stream, host))
+    if moment is not None:
+        item["moment_at"] = item.pop("first_edit")
     if arm + "-sha" in SOURCES:
         item["source"] = SOURCES[arm + "-sha"][:7]
     return item
@@ -610,8 +739,9 @@ def verdicts_for(kind, required, first_edit, reads):
         read = reads[f]
         if kind == "positive":
             verdict = "fired" if read is not None and (first_edit is None or read < first_edit) else "skip"
-            if first_edit is None and read is None:
-                verdict = "skip-noedit"
+            if first_edit is None:
+                # No edit: nothing to score the read against.
+                verdict = "read-noedit" if read is not None else "skip-noedit"
         else:
             verdict = "opened" if read is not None else "clean"
         result[f] = verdict
@@ -666,7 +796,8 @@ def login_changes(before, after):
 
 
 def run_in(host, model, effort, arm, case, index, before, condition, repo, home, plugin, env):
-    target, kind, required, prompt = case
+    target, kind, required, prompt, *moment = case
+    moment = moment[0] if moment else None
     prompt = prompt.format(repo=repo.resolve())
     logins = {path: fingerprint(path) for path in login_sources(host)}
     stream = execute(host, command(host, model, effort, repo, plugin, prompt), repo, env)
@@ -676,14 +807,18 @@ def run_in(host, model, effort, arm, case, index, before, condition, repo, home,
         changed = sorted(k for k in set(before) | set(after) if before.get(k) != after.get(k))
         raise Escaped(f"{changed} changed during {host} {arm} {target} {kind} run {index}")
     first_edit, reads, entry = score(stream, required, host)
+    if moment is not None:
+        first_edit = moment_index(stream, host, moment)
     verdicts = verdicts_for(kind, required, first_edit, reads)
+    if moment is not None and first_edit is None:
+        verdicts = {f: "skip-nomoment" for f in required}
     if next(tool_calls(stream, host), None) is None:
         # No tool call at all: a provider error or rate limit, not a measurement.
         verdicts = {f: "no-output" for f in required}
     rows = ["\t".join([arm, target, kind, f, str(index), verdicts[f], str(first_edit), str(reads[f]),
                        str(entry), host, model]) for f in required]
     item = record(stream, condition, host, model, effort, arm, target, kind, index, required,
-                  verdicts, repo, plugin)
+                  verdicts, repo, plugin, moment)
     item["login_files_changed"] = login_changed
     return rows, item
 
@@ -735,9 +870,10 @@ def summarize_records(path, condition="plain-confined"):
             groups.setdefault((r["host"], r["model"], r.get("effort", "")), []).append(r)
     for (host, model, effort), rs in groups.items():
         valid = [r for r in rs if "no-output" not in r["verdict"].values()]
+        arms = list(dict.fromkeys(r["arm"] for r in rs))
         print(f"\n### {host}, `{model}`" + (f", effort {effort}" if effort else ""))
         print(f"\n{len(valid)} of {len(rs)} runs valid (a run with no tool call is excluded).\n")
-        print("| Measure | main | branch |\n| --- | --- | --- |")
+        print("| Measure | " + " | ".join(arms) + " |\n| --- |" + " --- |" * len(arms))
         measures = [
             ("Entry point loaded, naive prompts", "positive", lambda r: r["entry_loaded_at"] is not None),
             ("Entry point loaded, negative prompts", "negative", lambda r: r["entry_loaded_at"] is not None),
@@ -746,16 +882,26 @@ def summarize_records(path, condition="plain-confined"):
             ("Negative clean (target never opened)", "negative",
              lambda r: all(v == "clean" for v in r["verdict"].values())),
         ]
-        for label, kind, pred in measures:
-            cells = [[pred(r) for r in valid if r["arm"] == arm and r["kind"] == kind] for arm in ("main", "branch")]
-            print(f"| {label} | {sum(cells[0])}/{len(cells[0])} | {sum(cells[1])}/{len(cells[1])} |")
+        def row(label, cells):
+            print(f"| {label} | " + " | ".join(f"{sum(c)}/{len(c)}" for c in cells) + " |")
+
+        midtask = all("moment_at" in r for r in valid)
+        for label, kind, pred in [] if midtask else measures:
+            row(label, [[pred(r) for r in valid if r["arm"] == arm and r["kind"] == kind] for arm in arms])
         files = sorted({(r["target"], f) for r in valid if r["kind"] == "positive" for f in r["verdict"]})
         for target, f in files:
-            cells = [[r["verdict"][f] == "fired" for r in valid
-                      if r["arm"] == arm and r["kind"] == "positive" and r["target"] == target]
-                     for arm in ("main", "branch")]
-            print(f"| Naive, {target} `{f}` read before first edit | {sum(cells[0])}/{len(cells[0])} "
-                  f"| {sum(cells[1])}/{len(cells[1])} |")
+            moment = any("moment_at" in r for r in valid if r["target"] == target)
+            row(f"{'Mid-task' if moment else 'Naive'}, {target} `{f}` read before "
+                f"{'the moment' if moment else 'first edit'}",
+                [[r["verdict"][f] == "fired" for r in valid
+                  if r["arm"] == arm and r["kind"] == "positive" and r["target"] == target] for arm in arms])
+        if not any(r.get("usage") for r in valid):
+            continue  # records from before #174 carry no token usage
+        means = []
+        for arm in arms:
+            used = [r["usage"]["input"] + r["usage"]["output"] for r in valid if r["arm"] == arm and r.get("usage")]
+            means.append(f"{sum(used) // len(used):,}" if used else "n/a")
+        print("| Mean tokens per run (input incl. cache, plus output) | " + " | ".join(means) + " |")
 
 
 def main():
@@ -765,7 +911,8 @@ def main():
     parser.add_argument("--effort", default="")
     parser.add_argument("--runs", type=int, default=5)
     parser.add_argument("--jobs", type=int, default=8)
-    parser.add_argument("--arms", default="main,branch")
+    parser.add_argument("--arms", default="main,branch", help="comma-separated arms: main, branch, or name=ref")
+    parser.add_argument("--midtask", action="store_true", help="run the mid-task cases instead")
     parser.add_argument("--targets", help="comma-separated targets to run (default: all)")
     parser.add_argument("--score")
     parser.add_argument("--summary", help="print per-host tables from a records file")
@@ -778,10 +925,11 @@ def main():
     if args.summary:
         summarize_records(args.summary)
         return
-    cases = [c for c in CASES if not args.targets or c[0] in args.targets.split(",")]
+    cases = [c for c in (MIDTASK if args.midtask else CASES) if not args.targets or c[0] in args.targets.split(",")]
+    arms = parse_arms(args.arms)
     # Arms interleave, so a quota or rate limit reached mid-batch hits both alike.
-    jobs = [(arm, case, i) for case in cases for i in range(args.runs) for arm in args.arms.split(",")]
-    sources = extract_sources()
+    jobs = [(arm, case, i) for case in cases for i in range(args.runs) for arm in arms]
+    sources = extract_sources(arms)
     try:
         guard_self_check()
         cleanup_self_check(args.host)

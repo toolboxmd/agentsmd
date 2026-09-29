@@ -1,10 +1,11 @@
 {
   "name": "agentsmd",
-  "version": "14.3.1",
+  "version": "14.4.0",
   "description": "Portable agent rules, Project Direction, Delivery System profiles, owned workflow Skills, and deterministic version control.",
   "author": {
     "name": "lukaszmaj"
   },
   "repository": "https://github.com/toolboxmd/agentsmd",
-  "license": "MIT"
+  "license": "MIT",
+  "hooks": "./hooks/claude.json"
 }

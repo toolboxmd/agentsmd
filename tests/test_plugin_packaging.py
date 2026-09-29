@@ -279,6 +279,53 @@ class PluginPackagingTests(unittest.TestCase):
                     # At least 10% of the host limit stays free for other hooks.
                     self.assertLessEqual(size, limit * 0.9, f"{size} {unit}")
 
+    def test_operations_pointer_hook_is_registered_for_claude_code_only(self) -> None:
+        # Codex and Grok load the operations Skill themselves; Claude Code and
+        # OpenCode get the pointer (#174).
+        claude = json.loads((ROOT / ".claude-plugin/plugin.json").read_text())
+        self.assertEqual(claude["hooks"], "./hooks/claude.json")
+        for manifest in (".codex-plugin/plugin.json", ".grok-plugin/plugin.json"):
+            with self.subTest(manifest=manifest):
+                self.assertNotIn("hooks", json.loads((ROOT / manifest).read_text()))
+        self.assertNotIn("operations-routing", (ROOT / "hooks/hooks.json").read_text())
+        hooks = json.loads((ROOT / "hooks/claude.json").read_text())["hooks"]
+        self.assertEqual(list(hooks), ["SessionStart"])
+        self.assertEqual(len(hooks["SessionStart"]), 1)
+        entry = hooks["SessionStart"][0]
+        self.assertEqual(entry["matcher"], "^(startup|resume|clear|compact)$")
+        self.assertEqual(
+            [handler["command"] for handler in entry["hooks"]],
+            ['"${CLAUDE_PLUGIN_ROOT}/bin/operations-routing"'],
+        )
+        plugin = (ROOT / "opencode/agentsmd-project-direction.js").read_text()
+        self.assertIn('const ROUTING = ["bin", "operations-routing"];', plugin)
+
+    def test_operations_pointer_fits_the_headroom_left_for_other_hooks(self) -> None:
+        result = subprocess.run(
+            [str(ROOT / "bin/operations-routing")],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        output = json.loads(result.stdout)["hookSpecificOutput"]
+        self.assertEqual(output["hookEventName"], "SessionStart")
+        context = output["additionalContext"]
+        skill = (ROOT / "skills/operations/SKILL.md").resolve()
+        self.assertIn(f"invoke the `operations` Skill (or read {skill})", context)
+        for moment in ("first file edit", "commit", "GitHub Issue", "pull request"):
+            self.assertIn(moment, context)
+        # The Project Direction hook keeps 10% of each host limit free for
+        # other hooks; the pointer must fit there, so on OpenCode, where both
+        # reach one system prompt, the combined output stays under the limit.
+        for host, (unit, limit) in self.HOOK_LIMITS.items():
+            with self.subTest(host=host):
+                size = (
+                    -(-len(context.encode("utf-8")) // 4)
+                    if unit == "tokens"
+                    else len(context)
+                )
+                self.assertLessEqual(size, limit * 0.1, f"{size} {unit}")
+
     def test_three_host_identity(self) -> None:
         manifests = {
             "codex": json.loads((ROOT / ".codex-plugin/plugin.json").read_text()),

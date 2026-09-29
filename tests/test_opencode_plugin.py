@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "opencode/agentsmd-project-direction.js"
 LOADER = ROOT / "bin/project-direction"
+ROUTING = ROOT / "bin/operations-routing"
 NODE = shutil.which("node")
 LOG_PREFIX = "agentsmd-project-direction:"
 DRIVER = """
@@ -115,12 +116,18 @@ class OpenCodePluginTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         return json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
 
+    def routing_context(self) -> str:
+        result = subprocess.run([str(ROUTING)], capture_output=True, text=True, check=True)
+        return json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+
     def test_triad_repository_payload_reaches_the_system_prompt(self) -> None:
         report, stderr = self.transform(self.repository)
         self.assertNotIn(LOG_PREFIX, stderr)
         self.assertEqual(report["supported"], "1.18.32")
-        self.assertEqual(len(report["system"]), 1)
+        self.assertEqual(len(report["system"]), 2)
         self.assertEqual(report["system"][0], self.loaded_context(self.repository))
+        self.assertEqual(report["system"][1], self.routing_context())
+        self.assertIn("operations/SKILL.md", report["system"][1])
         payload = json.loads(report["system"][0].splitlines()[1])
         self.assertEqual(payload["status"], "ready")
         self.assertEqual(payload["repository_root"], str(self.repository))
@@ -129,8 +136,9 @@ class OpenCodePluginTests(unittest.TestCase):
     def test_directory_outside_a_repository_carries_the_loader_verdict(self) -> None:
         report, stderr = self.transform(self.outside)
         self.assertNotIn(LOG_PREFIX, stderr)
-        self.assertEqual(len(report["system"]), 1)
+        self.assertEqual(len(report["system"]), 2)
         self.assertEqual(report["system"][0], self.loaded_context(self.outside))
+        self.assertEqual(report["system"][1], self.routing_context())
         payload = json.loads(report["system"][0].splitlines()[1])
         self.assertEqual(payload["status"], "not_in_repository")
         self.assertNotIn("files", payload)
@@ -155,7 +163,10 @@ class OpenCodePluginTests(unittest.TestCase):
         link.symlink_to(PLUGIN)
         report, stderr = self.transform(self.repository, module=link)
         self.assertNotIn(LOG_PREFIX, stderr)
-        self.assertEqual(report["system"], [self.loaded_context(self.repository)])
+        self.assertEqual(
+            report["system"],
+            [self.loaded_context(self.repository), self.routing_context()],
+        )
 
     def test_unreachable_loader_leaves_the_system_prompt_unchanged(self) -> None:
         detached = self.base / "detached/agentsmd-project-direction.js"
@@ -176,8 +187,11 @@ class OpenCodePluginTests(unittest.TestCase):
         shutil.copyfile(PLUGIN, module)
         report, stderr = self.transform(self.repository, module=module, calls=2)
         self.assertEqual(report["system"], [])
-        self.assertEqual(len(stderr.splitlines()), 1)
-        self.assertIn("status 3", stderr)
+        # One line for Project Direction and one for the missing routing command.
+        lines = stderr.splitlines()
+        self.assertEqual(len(lines), 2, stderr)
+        self.assertIn("status 3", lines[0])
+        self.assertIn("operations pointer was not loaded", lines[1])
 
 
 if __name__ == "__main__":

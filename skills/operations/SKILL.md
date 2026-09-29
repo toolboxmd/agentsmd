@@ -50,7 +50,7 @@ not completing it. A clear microfix stays direct.
 | Choose or run proof, review, or claim readiness | [Verification](references/verification.md); [code review](workflows/code-review/index.md) for review findings |
 | Create or repair product-driving verification instructions | [Project verification](workflows/project-verification/index.md) |
 | Retain research, experiment, review, or other task evidence | [Artifact placement](references/artifacts.md) |
-| Before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions | [Writing for agents](workflows/writing-for-agents/index.md) and [prose](workflows/technical-writing/references/prose.md); [SKILL-MECHANICS.md](workflows/writing-for-agents/SKILL-MECHANICS.md) before editing a `SKILL.md` or a Skill description |
+| Before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions | [Writing for agents](workflows/writing-for-agents/index.md); [prose](workflows/technical-writing/references/prose.md) before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions; [SKILL-MECHANICS.md](workflows/writing-for-agents/SKILL-MECHANICS.md) before editing a `SKILL.md` or a Skill description |
 | Before editing a README, CHANGELOG, `docs/` page, or other human-facing documentation | [Technical writing](workflows/technical-writing/index.md) and [prose](workflows/technical-writing/references/prose.md) |
 | Learn from corrections, repeated friction, or requested reflection | [Reflection](workflows/reflection/index.md) |
 | Before editing `PREFERENCES.md` | [Preferences pruning](workflows/reflection/references/preferences-pruning.md) |
