@@ -37,19 +37,12 @@ preferences; keep a preference only for what cannot live at an owner, and remove
 it once the owner fix lands. Machine roles do not grant deployment permission. Keep private
 contents out of public artifacts.
 
-## Startup by role
+## Orientation
 
-Before acting, each role loads only this, beyond hook-supplied context:
-
-- Planner: project `AGENTS.md`, the Issue, and the `operations` reference for
-  the current phase.
-- Worker: its task packet (Issue, base, workspace, authority, proof commands)
-  and the `operations` reference for its phase.
-- Dispatcher: the Issue and the routing tool's instructions.
-- Reviewer: the Issue's acceptance criteria, the diff, and the required proof.
-
-Briefings pass references (Issue, paths, exact commands), never restated
-Project Direction or hashes.
+Orient only as far as the current action needs. Take task context (Issue,
+paths, commands, authority) from what you were given before exploring. Pull a
+procedure from the `operations` routing table when an action calls for it.
+Briefings and handoffs pass references, never restated direction or hashes.
 
 ## Partnership
 
