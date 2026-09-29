@@ -28,7 +28,8 @@ def context() -> str:
         "AgentsMD: at the start of every task, and again before each new kind of action "
         "(researching, an experiment, reproducing a defect, the first file edit, a commit, a GitHub "
         f"Issue or a pull request), use the `operations` Skill (or read {SKILL}) and read the "
-        "procedure its routing table links for that action. Do this for small tasks too.\n"
+        "procedure its routing table links for that action. Read it as its own step, before any "
+        "command for that action. Do this for small tasks too.\n"
     )
 
 
