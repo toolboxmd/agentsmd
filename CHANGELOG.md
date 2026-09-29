@@ -9,6 +9,12 @@ SemVer and identify one user-consumable repository state.
 
 - Procedure triggers for prose, skill mechanics, test design and glossary format name the edit and sit one hop from routing (#164)
 
+## [14.1.1] - 2026-09-29
+
+### Changed
+
+- Run the push version check only on main; the PR check covers branches
+
 ## [14.1.0] - 2026-09-29
 
 ### Added
