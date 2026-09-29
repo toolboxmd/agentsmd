@@ -81,6 +81,13 @@ response.
 ## Outcome
 <one narrow, complete, user-visible result>
 
+## Elon record
+
+- **Requirements and who asked:** <each requirement and its source>
+- **Deleted:** <what was cut>
+- **Bottleneck:** <where the work waits>
+- **Checked myself:** <what you ran or read>
+
 ## Acceptance criteria
 - [ ] Observable criterion
 

@@ -220,9 +220,12 @@ hooks:
   stays silent for an already loaded session/root/hash state.
 - `SubagentStart` loads the complete triad into each new worker.
 
-A fourth manifest entry, `PreToolUse`, serves Grok Build alone. It exits without
-output unless Grok's own hook environment is present, so Codex and Claude Code
-behavior is unchanged.
+A fourth manifest entry, `PreToolUse`, delivers direction on Grok Build alone.
+On every host it also runs the Elon gate: a `gh issue create` or `gh pr create`
+whose body lacks a non-empty Elon record field (Requirements and who asked,
+Deleted, Bottleneck, Checked myself) exits 2 with the missing fields on stderr,
+which blocks the call. Every other tool call passes without output. Issues and
+PRs created through the GitHub API or MCP tools are not checked.
 
 The loader resolves the Git root, reads the files in Vision, Mission, Objective
 order, and emits one bounded block with exact paths, SHA-256 hashes, and complete
@@ -484,10 +487,10 @@ mechanism, and the fallback that still applies:
 
 | Host | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
 | --- | --- | --- | --- | --- |
-| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` (registered, exits silently; that entry serves Grok Build alone) | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
-| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | `PreToolUse` (registered, exits silently; that entry serves Grok Build alone) | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading fallback for freshness, and for the two events not separately exercised live |
+| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
+| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading fallback for freshness, and for the two events not separately exercised live |
 | Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart` (stdout discarded), `UserPromptSubmit` (context discarded although allowed), `SubagentStart` (passive); the packaged plugin hook is inert because Grok 1.0.34 never executes plugin-provided hooks | Owned global hook file installed by `bin/agentsmd-grok-hook` | Explicit reading fallback for the first response, before the first tool call delivers |
-| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, `SubagentStart`, or `PreToolUse` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link) | Explicit reading fallback for freshness verification |
+| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, or `SubagentStart` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link); `tool.execute.before` runs the Elon gate | Explicit reading fallback for freshness verification |
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \

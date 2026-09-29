@@ -89,6 +89,37 @@ function loadContext(directory, sessionID) {
   return context;
 }
 
+const GH_CREATE = /\bgh\s+(issue|pr)\s+create\b/;
+
+// The loader owns the Elon gate; the plugin only forwards gh create calls to
+// it and turns its exit status 2 into a thrown error, which blocks the tool.
+function elonGate(directory, sessionID, tool, args) {
+  const text = JSON.stringify(args ?? {});
+  if (!GH_CREATE.test(text)) {
+    return null;
+  }
+  let result;
+  try {
+    result = spawnSync(loaderPath(), ["hook", "--host", "opencode"], {
+      input: JSON.stringify({
+        hook_event_name: "PreToolUse",
+        cwd: directory,
+        session_id: sessionID,
+        tool_name: tool,
+        tool_input: args ?? {},
+      }),
+      encoding: "utf8",
+      maxBuffer: MAX_OUTPUT_BYTES,
+    });
+  } catch (error) {
+    return null;
+  }
+  if (result && result.status === 2) {
+    return (result.stderr || "AgentsMD blocked this call: add the Elon record.").trim();
+  }
+  return null;
+}
+
 agentsmdProjectDirection.supportedOpenCodeVersion = SUPPORTED_OPENCODE_VERSION;
 
 export default async function agentsmdProjectDirection(context) {
@@ -102,6 +133,17 @@ export default async function agentsmdProjectDirection(context) {
       const loaded = loadContext(directory, sessionKey(input, directory));
       if (loaded) {
         output.system.push(loaded);
+      }
+    },
+    "tool.execute.before": async (input, output) => {
+      const blocked = elonGate(
+        directory,
+        sessionKey(input, directory),
+        input && input.tool,
+        output && output.args,
+      );
+      if (blocked) {
+        throw new Error(blocked);
       }
     },
   };

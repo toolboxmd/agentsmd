@@ -119,6 +119,13 @@ The problem from the user's perspective.
 
 The proposed solution from the user's perspective.
 
+## Elon record
+
+- **Requirements and who asked:** <each requirement and its source>
+- **Deleted:** <what was cut>
+- **Bottleneck:** <where the work waits>
+- **Checked myself:** <what you ran or read>
+
 ## Acceptance criteria
 
 - [ ] One externally meaningful result.

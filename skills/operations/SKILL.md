@@ -28,8 +28,8 @@ review becomes an authorized repair. Explicit workflow names select the same
 procedures; no separate invocation is needed.
 
 For material work, apply [Elon method](workflows/elon-method/index.md) before
-accepting requirements or an approach. Record the result, evidence, cuts, and
-smallest surviving solution in the existing task record. Loading the method is
+accepting requirements or an approach. Record the Elon record (Requirements and who
+asked, Deleted, Bottleneck, Checked myself) in the existing task record. Loading the method is
 not completing it. A clear microfix stays direct.
 
 | Current need | Read |

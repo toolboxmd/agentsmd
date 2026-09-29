@@ -33,7 +33,8 @@ Record, release policy, documentation, or current delivery state.
 
 - Before opening or updating a PR, read `CONTRIBUTING.md` when present. Open
   the PR body with the core's Human summary: **What changed**, **Why**, and
-  **So what**; keep proof and details below it.
+  **So what**; keep proof and details below it, including the Elon
+  record the hook requires.
 - A final approval PR is ready when every acceptance criterion is satisfied,
   required proof is current, the final diff passed self-review, independent
   review passed on the current head, and the version transition is committed.

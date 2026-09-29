@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.6.0] - 2026-09-29
+
+### Added
+
+- Elon method: three tests in the core and a hook that blocks gh Issue and PR creation without an Elon record (#161)
+
 ## [13.5.0] - 2026-09-29
 
 ### Added

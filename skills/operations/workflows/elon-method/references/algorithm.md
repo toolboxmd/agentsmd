@@ -18,8 +18,8 @@ Use this method to choose the work, not to narrate a checklist.
    Complete when every survivor has an evidence-linked reason to exist.
 3. Simplify or optimize only what survives deletion. Choose the smallest solution
    that meets the requirement. Before acceleration or automation, record the
-   requirement, supporting evidence, cuts, and smallest surviving solution in
-   the existing task record. Complete when the surviving path is the simplest
+   Elon record (Requirements and who asked, Deleted, Bottleneck, Checked
+   myself) in the existing task record. Complete when the surviving path is the simplest
    known to meet the requirement.
 4. Accelerate cycle time through the active constraint. Apply only when faster
    execution is needed. Use [Current constraint](current-constraint.md) to choose

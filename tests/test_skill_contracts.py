@@ -2223,11 +2223,10 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, readme)
-        # Both packaged-hook hosts register PreToolUse and exit silently on it.
+        # Both packaged-hook hosts register PreToolUse only for the Elon gate.
         self.assertEqual(
             readme.count(
-                "`PreToolUse` (registered, exits silently; that entry serves "
-                "Grok Build alone) | Packaged plugin hook"
+                "`PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook"
             ),
             2,
         )

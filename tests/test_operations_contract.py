@@ -266,8 +266,7 @@ class OperationsContractTests(unittest.TestCase):
             core,
         )
         self.assertIn(
-            "An Issue needs outcome, acceptance criteria, non-goals, blockers, proof and, for "
-            "material design, an Elon record: wanted result, evidence, cuts, smallest surviving solution.",
+            "An Issue needs outcome, acceptance criteria, non-goals, blockers, proof, and an Elon record.",
             core,
         )
         self.assertIn("A small direct microfix whose requirement and solution are clear stays direct.", core)
