@@ -135,6 +135,32 @@ class FailedReadTests(unittest.TestCase):
         self.assertEqual(self.verdict(stream, "opencode"), "fired")
 
 
+class OpenCodeReadScopeTests(unittest.TestCase):
+    """OpenCode may read the Skill through its config link, as the live install can (#174)."""
+
+    def test_config_directory_is_an_allowed_external_directory(self):
+        t = load_harness()
+        home = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-174-test-"))
+        self.addCleanup(shutil.rmtree, home, True)
+        plugin = home / "plugin"
+        (plugin / "skills/operations").mkdir(parents=True)
+        (plugin / "opencode").mkdir()
+        (plugin / "opencode/agentsmd-project-direction.js").write_text("")
+        (plugin / "global").mkdir()
+        (plugin / "global/AGENTS.md").write_text("# Contract\n")
+        login = home / "auth.json"
+        login.write_text("{}")
+        saved = dict(t.LOGIN)
+        self.addCleanup(t.LOGIN.update, saved)
+        t.LOGIN["opencode"] = login
+        t.setup_opencode(home, plugin, {})
+        config = json.loads((home / "opencode/opencode.json").read_text())
+        rules = config["permission"]["external_directory"]
+        self.assertEqual(rules["*"], "deny")
+        self.assertEqual(rules[f"{home / 'opencode'}/**"], "allow")
+        self.assertEqual(rules[f"{plugin}/**"], "allow")
+
+
 class NoEditVerdictTests(unittest.TestCase):
     """A positive run that never edits is not a hit (#174)."""
 

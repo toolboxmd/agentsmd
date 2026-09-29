@@ -580,7 +580,9 @@ def setup_opencode(home, plugin, env):
     (config / "skills/operations").symlink_to(plugin / "skills/operations")
     (config / "plugins/agentsmd-project-direction.js").symlink_to(plugin / "opencode/agentsmd-project-direction.js")
     shutil.copy2(plugin / "global/AGENTS.md", config / "AGENTS.md")
-    allowed = {f"{p}/**": "allow" for p in {str(plugin), str(plugin.resolve())}}
+    # The Skill's base directory is the config link, so allow the config directory
+    # too (the live install allows every read).
+    allowed = {f"{p}/**": "allow" for p in {str(plugin), str(plugin.resolve()), str(config), str(config.resolve())}}
     (config / "opencode.json").write_text(json.dumps({
         "$schema": "https://opencode.ai/config.json",
         "permission": {"edit": "allow", "bash": "allow", "webfetch": "deny",
