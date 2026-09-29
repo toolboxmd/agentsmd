@@ -473,8 +473,8 @@ def hook_output(
         payload["action"] = (
             "Combined context exceeds the safe inline budget. Read every listed "
             "Project Direction file and the private preferences file when present "
-            "in full before work. No file contents were injected. Apply the "
-            "canonical-source freshness check in instructions.action."
+            "in full before work. No file contents were injected. Follow "
+            "instructions.action for the global instructions."
         )
         context = direction_block(payload)
     return {

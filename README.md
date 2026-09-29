@@ -493,9 +493,9 @@ mechanism, and the fallback that still applies:
 | Host | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
 | --- | --- | --- | --- | --- |
 | Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
-| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading fallback for freshness, and for the two events not separately exercised live |
+| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading fallback when the hook reports a problem, and for the two events not separately exercised live |
 | Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart` (stdout discarded), `UserPromptSubmit` (context discarded although allowed), `SubagentStart` (passive); the packaged plugin hook is inert because Grok 1.0.34 never executes plugin-provided hooks | Owned global hook file installed by `bin/agentsmd-grok-hook` | Explicit reading fallback for the first response, before the first tool call delivers |
-| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, or `SubagentStart` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link); `tool.execute.before` runs the Elon gate | Explicit reading fallback for freshness verification |
+| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, or `SubagentStart` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link); `tool.execute.before` runs the Elon gate | Explicit reading fallback when the plugin reports a problem |
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
@@ -522,11 +522,11 @@ retains file paths/hashes and requires complete explicit reads; no partial triad
 or private contents are injected. Hooks cache only fingerprints, not
 private contents. The increased hook context allowance requires renewed trust.
 
-**Explicit reading fallback:** at task/worker start, after context loss and after
-source changes, inspect the selected host's link, compare its source path/hash
-with the full global instructions in context, and read current canonical
-`global/AGENTS.md` when freshness is unproved. Read clone-root `PREFERENCES.md` in full
-when present; report unreadable files and discard deleted preferences. Load
+**Explicit reading fallback:** the hook verifies the canonical `global/AGENTS.md`
+and reports the result in `instructions.action`. Read the current file only when
+that action reports a problem or no hook ran, for example before Grok's first
+tool call. Read clone-root `PREFERENCES.md` in full when no hook supplied it;
+report unreadable files and discard deleted preferences. Load
 applicable project instructions and the complete Project Direction triad for
 repository work. Keep Skill bodies on demand. A worker also needs the exact
 Issue scope, authority, base and exclusive workspace in its task packet.
@@ -540,8 +540,8 @@ behavioral compliance. Check each installed host separately:
   raw prompts. Codex builds native guidance once per run, per its
   [discovery contract](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
   Existing desktop child context was observed to retain old global text even
-  while a fresh CLI process loaded current text. The freshness boundary above
-  addresses that limitation without repeated whole-contract hook injection.
+  while a fresh CLI process loaded current text. The hook verifies the file on
+  disk, not the model context, so this stale-child case remains a known limit.
 - **Grok:** `grok inspect --json` exposes instruction sources and byte counts.
   Version 1.0.34 reports the global file; project discovery is trust-gated.
   Compare the native source and full expected byte count. Do not interpret an

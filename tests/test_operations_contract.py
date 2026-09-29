@@ -104,6 +104,13 @@ class OperationsContractTests(unittest.TestCase):
         coordination = words(SKILL.parent / "references/orchestration.md")
         self.assertIn("not restated Project Direction or instruction hashes", coordination)
         self.assertNotIn("Include canonical instruction path/SHA-256", coordination)
+        handoff = words(ROOT / "bin/agentsmd-opencode")
+        self.assertIn("read the current canonical global/AGENTS.md only when its instructions.action "
+                      "reports a problem or no report arrived", handoff)
+        self.assertNotIn("report source path/hash", handoff)
+        readme = words(ROOT / "README.md")
+        self.assertIn("Read the current file only when that action reports a problem or no hook ran", readme)
+        self.assertNotIn("compare its source path/hash", readme)
 
     def test_outside_text_is_data_not_instructions(self):
         judgment = words(ROOT / "global/AGENTS.md").split("## Judgment", 1)[1].split(" ## ", 1)[0]
