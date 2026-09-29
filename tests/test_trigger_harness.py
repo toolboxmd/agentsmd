@@ -191,6 +191,33 @@ class ClaudeCommandTests(unittest.TestCase):
         self.assertEqual(cmd[-1], "prompt")
 
 
+class ClaudeSandboxTests(unittest.TestCase):
+    """Claude's shell commands run in its OS sandbox with no unsandboxed fallback."""
+
+    def test_temporary_home_settings_enable_the_strict_sandbox(self):
+        t = load_harness()
+        home = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-174-test-"))
+        self.addCleanup(shutil.rmtree, home, True)
+        plugin = home / "plugin"
+        (plugin / "global").mkdir(parents=True)
+        (plugin / "global/AGENTS.md").write_text("# Contract\n")
+        account = home / "claude.json"
+        account.write_text("{}")
+        saved = t.CLAUDE_JSON
+        self.addCleanup(setattr, t, "CLAUDE_JSON", saved)
+        t.CLAUDE_JSON = account
+        t.setup_claude(home, plugin, {})
+        settings = json.loads((home / ".claude/settings.json").read_text())
+        self.assertEqual(settings["permissions"], {"defaultMode": "acceptEdits"})
+        sandbox = settings["sandbox"]
+        self.assertIs(sandbox["enabled"], True)
+        self.assertIs(sandbox["allowUnsandboxedCommands"], False)
+        self.assertIs(sandbox["failIfUnavailable"], True)
+        # Nothing widens the default write set (working directory, --add-dir, temp).
+        self.assertNotIn("filesystem", sandbox)
+        self.assertNotIn("excludedCommands", sandbox)
+
+
 class NoEditVerdictTests(unittest.TestCase):
     """A positive run that never edits is not a hit (#174)."""
 

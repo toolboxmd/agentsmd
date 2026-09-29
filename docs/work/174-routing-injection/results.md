@@ -125,6 +125,29 @@ against the first `git commit` attempt.
 action for Claude Code, a PreToolUse hook on `gh pr create` whose context
 points at `references/verification.md`, measured with this case.
 
+## Post-install canary
+
+[canary.jsonl](canary.jsonl): one naive technical-writing prompt per host
+against the live v14.4.0 installs (not harness copies), in a fresh throwaway
+repository, 2026-09-29. `prose.md` was read before the first edit on all four:
+Claude Code Opus 5.5 medium, Codex `gpt-6-astra` low, Grok 4.7 medium and
+OpenCode Muse 1.3 (4/4). The canonical checkout was unchanged afterwards.
+
+## Shell confinement for Claude runs
+
+The 10 Claude verification runs above allowed Bash with no OS-level limit;
+the guard then covered only the canonical checkout, the harness checkout and
+the selected live configuration. Claude runs now enable Claude Code's Bash
+sandbox in the temporary HOME's settings (`sandbox.enabled`,
+`allowUnsandboxedCommands: false`, `failIfUnavailable: true`), so shell writes
+are limited to the run's repository, the `--add-dir` directories and the
+per-user temp directory. A smoke run (Opus 5.5 medium, one run) told to `touch`
+a file in a fresh directory under the real home got `Operation not permitted`
+and the file does not exist, while a `touch` inside its repository succeeded.
+A second smoke run showed branch, commit and `gh pr create` behave as before
+(the fixture's unit tests fail the same way with and without the sandbox), so
+the benchmark was not rerun.
+
 ## Conditions
 
 Claude Code 2.1.284, OpenCode 1.18.33, Codex 0.159.0, Grok 1.0.44. Batches ran

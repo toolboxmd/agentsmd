@@ -526,11 +526,23 @@ def make_home(host, arm):
         raise
 
 
+# Bash is allowed in Claude runs, so every shell command runs in Claude Code's
+# OS-level sandbox (Seatbelt on macOS): writes only to the working directory (the
+# run's repository), the --add-dir directories (the repository and the plugin copy
+# in the temporary HOME) and the per-user temp directory. No unsandboxed retry, and
+# no fallback to running unsandboxed if the sandbox cannot start.
+# https://code.claude.com/docs/en/sandboxing
+CLAUDE_SETTINGS = {
+    "permissions": {"defaultMode": "acceptEdits"},
+    "sandbox": {"enabled": True, "allowUnsandboxedCommands": False, "failIfUnavailable": True},
+}
+
+
 def setup_claude(home, plugin, env):
     config = home / ".claude"
     config.mkdir()
     shutil.copy2(plugin / "global/AGENTS.md", config / "CLAUDE.md")
-    (config / "settings.json").write_text(json.dumps({"permissions": {"defaultMode": "acceptEdits"}}))
+    (config / "settings.json").write_text(json.dumps(CLAUDE_SETTINGS))
     # Login: account metadata only (no token), plus a link to the macOS keychain
     # directory so Claude reads the existing login itself. No credential is copied.
     keychains = KEYCHAINS
@@ -603,8 +615,8 @@ def command(host, model, effort, repo, plugin, prompt):
                "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--add-dir", str(plugin),
                "--plugin-dir", str(plugin),
                # acceptEdits denies every non-read shell command in -p; allow Bash
-               # so mid-task runs can branch, test and commit (the run stays
-               # confined to its temporary HOME and repository, as on the other hosts).
+               # so mid-task runs can branch, test and commit. CLAUDE_SETTINGS runs
+               # every shell command in Claude Code's sandbox.
                "--allowedTools", "Bash",
                "--no-session-persistence", "--max-turns", "40"]
         return cmd + (["--effort", effort] if effort else []) + [prompt]
