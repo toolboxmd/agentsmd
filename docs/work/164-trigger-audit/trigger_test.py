@@ -22,7 +22,8 @@ permissions, and names files by absolute in-repo path. After every run the
 canonical checkout and this checkout must show the same `git status
 --porcelain --ignored --untracked-files=all` and HEAD as before the batch, or
 the batch aborts; every batch first proves that the guard sees a new ignored
-file (--self-check runs only that). New files, including ignored ones, are
+file and that a setup failure leaves nothing behind (--self-check runs only
+those). New files, including ignored ones, are
 caught; content edits to an already-ignored file are not.
 
 Login: the temporary HOME gets the account metadata from ~/.claude.json (no
@@ -41,6 +42,7 @@ loaded and only the routing and procedure wording is under test.
 """
 import argparse
 import concurrent.futures
+import glob
 import json
 import pathlib
 import os
@@ -54,6 +56,7 @@ BRANCH = pathlib.Path(__file__).resolve().parents[3]
 CANONICAL = pathlib.Path.home() / "dev/toolboxmd/agentsmd"
 INSTALLED = pathlib.Path.home() / ".claude/plugins/cache/toolboxmd/agentsmd"
 GUARDED = [CANONICAL, BRANCH]
+CLAUDE_JSON = pathlib.Path.home() / ".claude.json"
 
 PROSE = "technical-writing/references/prose.md"
 MECHANICS = "writing-for-agents/SKILL-MECHANICS.md"
@@ -135,6 +138,15 @@ SHELL_EDIT = re.compile(r"(sed -i|\bcat\s*>|\btee\b|>\s*[\w./-]+\.(py|md)\b|pyth
 
 def make_repo():
     root = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-164-"))
+    try:
+        populate_repo(root)
+    except BaseException:
+        remove(root)
+        raise
+    return root
+
+
+def populate_repo(root):
     for rel, text in FILES.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -144,7 +156,6 @@ def make_repo():
     subprocess.run(["git", "add", "-A"], cwd=root, check=True)
     subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "init"],
                    cwd=root, check=True)
-    return root
 
 
 def tool_calls(stream):
@@ -219,9 +230,53 @@ def plugin_source(arm):
     return max(INSTALLED.iterdir(), key=lambda p: [int(x) for x in p.name.split(".")])
 
 
+def cleanup_self_check():
+    """Prove that a setup failure leaves no temporary repository, HOME or keychain link.
+
+    `claude` is replaced by a stub on PATH so no model can run; repository setup
+    fails after its directory exists, and HOME setup fails after the keychain link
+    exists (unreadable account file)."""
+    global CLAUDE_JSON, FILES
+    stub = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-164-stub-"))
+    saved = CLAUDE_JSON, FILES, os.environ["PATH"]
+    pattern = os.path.join(tempfile.gettempdir(), "agentsmd-164-*")
+    try:
+        (stub / "claude").write_text("#!/bin/sh\nexit 99\n")
+        (stub / "claude").chmod(0o755)
+        os.environ["PATH"] = f"{stub}{os.pathsep}{os.environ['PATH']}"
+        existing = set(glob.glob(pattern))
+        CLAUDE_JSON = stub / "missing.json"
+        for label in ("home", "repo"):
+            if label == "repo":
+                CLAUDE_JSON, FILES = saved[0], dict(saved[1], **{"README.md/blocked": ""})
+            try:
+                run("branch", CASES[0], 0)
+            except (OSError, ValueError):
+                pass
+            else:
+                raise RuntimeError(f"cleanup self-check: {label} setup did not fail")
+            left = set(glob.glob(pattern)) - existing - {str(stub)}
+            if left:
+                raise RuntimeError(f"cleanup self-check: {label} setup failure left {sorted(left)}")
+        keychains = pathlib.Path.home() / "Library/Keychains"
+        if keychains.is_symlink():
+            raise RuntimeError("cleanup self-check: the real keychain directory became a link")
+    finally:
+        CLAUDE_JSON, FILES, os.environ["PATH"] = saved
+        shutil.rmtree(stub, ignore_errors=True)
+
+
 def make_home(arm):
     """Temporary HOME whose Claude config holds only the plugin under test."""
     home = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-164-home-"))
+    try:
+        return home, populate_home(home, arm)
+    except BaseException:
+        remove(home)
+        raise
+
+
+def populate_home(home, arm):
     config = home / ".claude"
     config.mkdir()
     plugin = home / "plugin"
@@ -244,10 +299,10 @@ def make_home(arm):
     if keychains.is_dir():
         (home / "Library").mkdir()
         (home / "Library/Keychains").symlink_to(keychains)
-    real = json.loads((pathlib.Path.home() / ".claude.json").read_text())
+    real = json.loads(CLAUDE_JSON.read_text())
     (home / ".claude.json").write_text(json.dumps(
         {k: real[k] for k in ("oauthAccount", "userID") if k in real}))
-    return home, plugin
+    return plugin
 
 
 def anonymize(text, repo, plugin):
@@ -406,8 +461,9 @@ def main():
     cases = [c for c in CASES if not args.targets or c[0] in args.targets.split(",")]
     jobs = [(arm, case, i) for arm in args.arms.split(",") for case in cases for i in range(args.runs)]
     guard_self_check()
+    cleanup_self_check()
     if args.self_check:
-        print("guard self-check OK")
+        print("guard and cleanup self-checks OK")
         return
     before = snapshot()
     with concurrent.futures.ThreadPoolExecutor(args.jobs) as pool:
