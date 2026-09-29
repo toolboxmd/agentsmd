@@ -5,6 +5,8 @@
  * It runs `bin/project-direction hook --host opencode` beside this file with a
  * synthetic SessionStart input and appends the emitted context to the system
  * prompt. Any failure leaves the system prompt unchanged and logs one line.
+ * It also appends the pointer to the operations Skill from
+ * `bin/operations-routing`, because OpenCode does not always load it on its own.
  */
 
 import { spawnSync } from "node:child_process";
@@ -21,6 +23,7 @@ const SUPPORTED_OPENCODE_VERSION = "1.18.32";
 
 const LOG_PREFIX = "agentsmd-project-direction:";
 const LOADER = ["bin", "project-direction"];
+const ROUTING = ["bin", "operations-routing"];
 const MAX_OUTPUT_BYTES = 1048576;
 
 let reported = false;
@@ -35,11 +38,36 @@ function report(detail) {
   );
 }
 
-function loaderPath() {
+function loaderPath(command = LOADER) {
   // realpath resolves the owned installed link back to its canonical clone,
   // so the plugin always runs the loader of the same AgentsMD revision.
   const self = realpathSync(fileURLToPath(import.meta.url));
-  return join(dirname(dirname(self)), ...LOADER);
+  return join(dirname(dirname(self)), ...command);
+}
+
+let routing = null;
+let routingReported = false;
+
+function loadRouting() {
+  if (routing || routingReported) {
+    return routing;
+  }
+  try {
+    const result = spawnSync(loaderPath(ROUTING), [], {
+      encoding: "utf8",
+      maxBuffer: MAX_OUTPUT_BYTES,
+    });
+    const context = JSON.parse(result.stdout).hookSpecificOutput.additionalContext;
+    if (typeof context === "string" && context) {
+      routing = context;
+    }
+  } catch (error) {
+    routingReported = true;
+    process.stderr.write(
+      `${LOG_PREFIX} the operations pointer was not loaded (${error && error.message}).\n`,
+    );
+  }
+  return routing;
 }
 
 function sessionKey(input, directory) {
@@ -138,6 +166,10 @@ export default async function agentsmdProjectDirection(context) {
       const loaded = loadContext(directory, sessionKey(input, directory));
       if (loaded) {
         output.system.push(loaded);
+      }
+      const table = loadRouting();
+      if (table) {
+        output.system.push(table);
       }
     },
     "tool.execute.before": async (input, output) => {

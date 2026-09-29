@@ -6,5 +6,6 @@
     "name": "lukaszmaj"
   },
   "repository": "https://github.com/toolboxmd/agentsmd",
-  "license": "MIT"
+  "license": "MIT",
+  "hooks": "./hooks/claude.json"
 }

@@ -40,6 +40,8 @@ global baseline. This matches the discovery model documented for
   dependency-free loader.
 - `bin/project-direction` and `hooks/hooks.json`: deterministic Project
   Direction loading and supported lifecycle registration.
+- `bin/operations-routing` and `hooks/claude.json`: the session-start pointer
+  to the `operations` Skill for Claude Code and OpenCode.
 - `.github/workflows/`: read-only transition validation and policy-authorized
   exact-SHA GitHub Release automation.
 
@@ -49,6 +51,15 @@ AgentsMD exposes one model-invocable Skill, `operations`. Normal requests select
 its applicable procedure. The global contract requires selection at task start,
 after context loss, and when work changes phase. Only the selected procedure and
 its relevant references load; other workflows do not advertise descriptions.
+
+Codex and Grok Build load `operations` from its description on their own.
+Claude Code and OpenCode often do not, so on those two hosts
+`bin/operations-routing` adds a short pointer at session start: before the
+first file edit, commit, Issue or PR, invoke `operations` and read the procedure
+it links. Claude Code runs it from `hooks/claude.json`, which only the Claude
+manifest registers; OpenCode appends it through the plugin's system-prompt
+transform. [The #174 benchmark](docs/work/174-routing-injection/results.md)
+records why this pointer, not the whole routing table, ships.
 
 The [Skill Catalogue](SKILL_CATALOGUE.md) records retained methods, owners,
 licences, source revisions and exclusions. It is human reference, not startup
@@ -496,9 +507,9 @@ mechanism, and the fallback that still applies:
 | Host | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
 | --- | --- | --- | --- | --- |
 | Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
-| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`) | Explicit reading fallback when the hook reports a problem, and for the two events not separately exercised live |
+| Claude Code | `SessionStart` (verified on 2.1.278); `UserPromptSubmit` and `SubagentStart` share the same output contract | `PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook (`hooks/hooks.json`); the `operations` pointer from `hooks/claude.json` at `SessionStart` | Explicit reading fallback when the hook reports a problem, and for the two events not separately exercised live |
 | Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart` (stdout discarded), `UserPromptSubmit` (context discarded although allowed), `SubagentStart` (passive); the packaged plugin hook is inert because Grok 1.0.34 never executes plugin-provided hooks | Owned global hook file installed by `bin/agentsmd-grok-hook` | Explicit reading fallback for the first response, before the first tool call delivers |
-| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, or `SubagentStart` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link); `tool.execute.before` runs the Elon gate | Explicit reading fallback when the plugin reports a problem |
+| OpenCode | Every session, appended to the system prompt | No `SessionStart`, `UserPromptSubmit`, or `SubagentStart` lifecycle concept exists in OpenCode | Plugin `experimental.chat.system.transform` (owned plugin link), which also appends the `operations` pointer; `tool.execute.before` runs the Elon gate | Explicit reading fallback when the plugin reports a problem |
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
