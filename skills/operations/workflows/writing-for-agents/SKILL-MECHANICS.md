@@ -1,7 +1,9 @@
 # Skill mechanics
 
-Use the writing guidance in [common procedure](index.md); this reference covers packaging
-and invocation choices.
+Before writing a description or instructions, read
+[prose](../technical-writing/references/prose.md) and the
+[common procedure](index.md); this reference covers packaging and invocation
+choices.
 
 ## General Skill authoring
 
