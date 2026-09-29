@@ -76,8 +76,9 @@ grok plugin install agentsmd --trust
 "$AGENTSMD_DIR/bin/agentsmd-grok-hook" install --source "$AGENTSMD_DIR"
 ```
 
-Grok 1.0.34 did not execute plugin-provided hooks, so the third command writes
-one owned global hook file, `$GROK_HOME/hooks/agentsmd.json` (by default
+An earlier test on Grok 1.0.34 found that it did not execute plugin-provided
+hooks; later versions are untested. The third command therefore writes one
+owned global hook file, `$GROK_HOME/hooks/agentsmd.json` (by default
 `~/.grok/hooks/agentsmd.json`). It runs the loader from your clone on
 `PreToolUse` with a 15 second timeout. Grok trusts global hook files without a
 prompt. The file and a plugin hook share one session cache, so a session that
@@ -96,8 +97,9 @@ Claude marketplace clone can win instead
 opencode debug skill
 ```
 
-The first command links each Skill into
-`${OPENCODE_CONFIG_DIR:-$HOME/.config/opencode}/skills`. It never replaces an
+The first command links each Skill into the `skills` folder of OpenCode's
+configuration directory: `OPENCODE_CONFIG_DIR`, otherwise
+`$XDG_CONFIG_HOME/opencode`, otherwise `~/.config/opencode`. It never replaces an
 existing entry: it reports each foreign entry, installs the rest, and exits 2.
 Do not link the Skills into `~/.agents/skills` or `~/.claude/skills`; Codex and
 Grok Build scan those directories too, so a host that already has the plugin
