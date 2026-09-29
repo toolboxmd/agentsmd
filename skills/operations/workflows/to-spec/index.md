@@ -103,6 +103,10 @@ first unblocked Issue's implementation-authority boundary.
 ## Parent Issue template
 
 ```markdown
+**What:** <the result, one plain sentence>
+**Why:** <the problem or its root cause, one sentence>
+**So what:** <what happens next and who does it>
+
 ## Outcome
 
 The observable result this effort must deliver.

@@ -749,6 +749,30 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("Keep every detail", agents)
         self.assertNotIn("Let necessary information determine length", agents)
 
+    def test_issues_and_prs_open_with_human_summary(self) -> None:
+        agents = " ".join(read_text("AGENTS.md").split())
+        for required in (
+            "Start every Issue and PR you write with a Human summary of three lines:",
+            "**What** (the result, one plain sentence)",
+            "**Why** (the problem or its root cause, one sentence)",
+            "**So what** (what happens next and who does it; name the user only for a Human Gate or a user-owned decision)",
+            "Update the summary when the state changes",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, agents)
+        summary = "**What:** <the result, one plain sentence>"
+        for path, first_section in (
+            ("skills/operations/workflows/to-spec/index.md", "## Outcome"),
+            ("skills/operations/workflows/to-tickets/references/ticket-decomposition.md", "## Parent"),
+        ):
+            with self.subTest(template=path):
+                text = read_text(path)
+                self.assertIn("```markdown\n" + summary, text)
+                self.assertLess(text.index(summary), text.index(first_section, text.index(summary)))
+        delivery = " ".join(read_text("skills/operations/references/delivery.md").split())
+        self.assertIn("Open the PR body with the core's Human summary", delivery)
+        self.assertIn("**Human summary**", read_text("GLOSSARY.md"))
+
     def test_global_contract_defines_independent_partnership(self) -> None:
         agents = read_text("AGENTS.md")
         for required in (

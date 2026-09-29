@@ -31,7 +31,9 @@ Record, release policy, documentation, or current delivery state.
   impact and treat URL changes as migrations; the full SEO program remains a
   separate outcome.
 
-- Before opening or updating a PR, read `CONTRIBUTING.md` when present.
+- Before opening or updating a PR, read `CONTRIBUTING.md` when present. Open
+  the PR body with the core's Human summary: **What changed**, **Why**, and
+  **So what**; keep proof and details below it.
 - A final approval PR is ready when every acceptance criterion is satisfied,
   required proof is current, the final diff passed self-review, independent
   review passed on the current head, and the version transition is committed.

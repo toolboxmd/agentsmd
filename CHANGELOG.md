@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.5.0] - 2026-09-29
+
+### Added
+
+- Issues and PRs open with a three-line Human summary: What, Why, So what (#159)
+
 ## [13.4.0] - 2026-09-28
 
 ### Added
