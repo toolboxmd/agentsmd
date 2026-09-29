@@ -47,7 +47,7 @@ not completing it. A clear microfix stays direct.
 | Edit tracked files or select a workspace | [Implementation](references/implementation.md) |
 | Before editing or adding a test file | [Test design](references/test-design.md) |
 | Delegate or coordinate dependencies, recover a handoff | [Orchestration](references/orchestration.md) |
-| Choose or run proof, review, or claim readiness | [Verification](references/verification.md); [code review](workflows/code-review/index.md) for review findings |
+| Before opening or updating a PR, claiming readiness, or choosing or running proof or review | [Verification](references/verification.md); [code review](workflows/code-review/index.md) for review findings |
 | Create or repair product-driving verification instructions | [Project verification](workflows/project-verification/index.md) |
 | Retain research, experiment, review, or other task evidence | [Artifact placement](references/artifacts.md) |
 | Before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions | [Writing for agents](workflows/writing-for-agents/index.md); [prose](workflows/technical-writing/references/prose.md) before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions; [SKILL-MECHANICS.md](workflows/writing-for-agents/SKILL-MECHANICS.md) before editing a `SKILL.md` or a Skill description |
