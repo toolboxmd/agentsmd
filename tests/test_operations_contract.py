@@ -48,12 +48,20 @@ class OperationsContractTests(unittest.TestCase):
             "Before editing a README": {"workflows/technical-writing/references/prose.md"},
             "Before editing or adding a test file": {"references/test-design.md"},
             "Before editing `GLOSSARY.md`": {"workflows/domain-modeling/GLOSSARY-FORMAT.md"},
+            "Before editing `PREFERENCES.md`": {"workflows/reflection/references/preferences-pruning.md"},
         }
         lines = SKILL.read_text().splitlines()
         for trigger, targets in rows.items():
             row = [line for line in lines if line.startswith(f"| {trigger}")]
             self.assertEqual(len(row), 1, trigger)
             self.assertTrue(targets <= set(re.findall(r"\]\(([^)]+)\)", row[0])), trigger)
+
+    def test_preferences_pruning_keeps_the_budget_at_every_edit(self):
+        # Issue #175: preferences load into every session under a 4,000-character budget.
+        text = words(SKILL.parent / "workflows/reflection/references/preferences-pruning.md")
+        for required in ("4,000 characters", "after every edit", "Merge entries",
+                         "better owner", "`budgets.preferences`", "the user decides"):
+            self.assertIn(required, text)
 
     def test_installed_package_links_resolve_from_an_arbitrary_project_cwd(self):
         with tempfile.TemporaryDirectory() as temporary:

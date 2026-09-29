@@ -53,6 +53,7 @@ not completing it. A clear microfix stays direct.
 | Before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions | [Writing for agents](workflows/writing-for-agents/index.md) and [prose](workflows/technical-writing/references/prose.md); [SKILL-MECHANICS.md](workflows/writing-for-agents/SKILL-MECHANICS.md) before editing a `SKILL.md` or a Skill description |
 | Before editing a README, CHANGELOG, `docs/` page, or other human-facing documentation | [Technical writing](workflows/technical-writing/index.md) and [prose](workflows/technical-writing/references/prose.md) |
 | Learn from corrections, repeated friction, or requested reflection | [Reflection](workflows/reflection/index.md) |
+| Before editing `PREFERENCES.md` | [Preferences pruning](workflows/reflection/references/preferences-pruning.md) |
 | Change tracked files or make an explicit WIP checkpoint | [Version control](workflows/version-control/index.md) |
 | Use `.toolboxmd/delivery.json` or decide delivery configuration | [Delivery profile](workflows/delivery-profile/index.md) |
 | Deliver a PR, merge, release, promote an artifact, classify website impact | [Delivery](references/delivery.md) |

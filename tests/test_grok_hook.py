@@ -11,6 +11,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tests.direction_block import parse_block
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMAND = ROOT / "bin/agentsmd-grok-hook"
@@ -384,7 +385,7 @@ class GrokHookDeliveryTests(GrokHookFixture):
         context = output["hookSpecificOutput"]["additionalContext"]
         self.assertTrue(context.startswith(f"{BLOCK_START}\n"))
         self.assertTrue(context.endswith(f"\n{BLOCK_END}"))
-        payload = json.loads(context[len(BLOCK_START) + 1 : -(len(BLOCK_END) + 1)])
+        payload = parse_block(context)
         self.assertEqual(payload["status"], "ready")
         self.assertEqual(
             [item["content"] for item in payload["files"]],

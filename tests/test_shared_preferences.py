@@ -9,6 +9,8 @@ import tarfile
 import tempfile
 import unittest
 
+from tests.direction_block import parse_block
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -50,7 +52,7 @@ class SharedPreferencesTests(unittest.TestCase):
             'hook_event_name': event, **kwargs})
         if output is None:
             return None
-        return json.loads(output['hookSpecificOutput']['additionalContext'].splitlines()[1])
+        return parse_block(output['hookSpecificOutput']['additionalContext'])
 
     def test_four_native_targets_initialize_once_and_preserve_preferences(self):
         locations = {'codex': '.codex/AGENTS.md', 'grok': '.grok/AGENTS.md',
@@ -150,7 +152,7 @@ class SharedPreferencesTests(unittest.TestCase):
         self.assertEqual(inspected['preferences']['content'], 'custom Grok preferences')
         hooked = self.command('project-direction', 'hook', env=custom_env, input={
             'hook_event_name': 'SessionStart', 'cwd': str(self.project), 'session_id': 'grok-custom'})
-        payload = json.loads(hooked['hookSpecificOutput']['additionalContext'].splitlines()[1])
+        payload = parse_block(hooked['hookSpecificOutput']['additionalContext'])
         self.assertEqual(payload['preferences']['content'], 'custom Grok preferences')
         for value in (None, ''):
             with self.subTest(grok_home=value):
@@ -251,6 +253,23 @@ class SharedPreferencesTests(unittest.TestCase):
                                 cwd=self.project, text=True, capture_output=True, check=True)
         self.assertEqual(json.loads(result.stdout)['preferences']['content'], self.private.read_text())
 
+    def test_preferences_budget_reports_under_at_and_over_without_truncating(self):
+        self.install()
+        # Two-byte characters prove the budget counts characters, not bytes.
+        for length, state in ((3999, 'within_cap'), (4000, 'within_cap'), (4001, 'over_cap')):
+            with self.subTest(length=length):
+                self.private.write_text('é' * length, encoding='utf-8')
+                payload = self.hook('SessionStart')
+                self.assertEqual(payload['preferences']['content'], 'é' * length)
+                report = payload['budgets']['preferences']
+                self.assertEqual((report['characters'], report['cap'], report['state']),
+                                 (length, 4000, state))
+                if state == 'over_cap':
+                    self.assertIn('Over budget', report['action'])
+                    self.assertIn('PREFERENCES.md', report['action'])
+                else:
+                    self.assertNotIn('action', report)
+
     def test_preferences_never_silently_truncated_or_replaced_by_example(self):
         self.install()
         for raw, status in ((b'x' * 8192, 'ready'), (b'x' * 8193, 'oversized'), (b'\xff', 'unreadable')):
@@ -289,9 +308,9 @@ class SharedPreferencesTests(unittest.TestCase):
         self.install()
         subprocess.run(['git', 'init', '--quiet', str(self.project)], check=True)
         for name in ('VISION.md', 'MISSION.md', 'OBJECTIVE.md'):
-            (self.project / name).write_text('# Direction\n' + 'x' * 3000)
-        # Escaping each control byte expands JSON beyond the inline allowance.
-        self.private.write_text('\x01' * 8192)
+            (self.project / name).write_text('# Direction\n' + 'x' * 2000)
+        # Full preferences push the block past the 10,000-character host limit.
+        self.private.write_text('p' * 8192)
         payload = self.hook('SessionStart')
         self.assertEqual(payload['status'], 'read_required')
         self.assertEqual(payload['loaded_status'], 'ready')
@@ -301,7 +320,6 @@ class SharedPreferencesTests(unittest.TestCase):
         for item in payload['files']:
             self.assertNotIn('content', item)
             self.assertIn('sha256', item)
-        self.assertLess(len(json.dumps(payload).encode()), 14000)
         self.assertIsNone(self.hook())
         self.private.write_text('small defaults')
         self.assertEqual(self.hook()['status'], 'ready')

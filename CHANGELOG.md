@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.3.0] - 2026-09-29
+
+### Added
+
+- Context budgets: plain-section hook payload under every host's hook limit, 1,500-character direction cap and 4,000-character preferences budget reported by the loader (#175)
+
 ## [14.2.0] - 2026-09-29
 
 ### Added
