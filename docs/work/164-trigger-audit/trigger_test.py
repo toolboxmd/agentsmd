@@ -260,7 +260,8 @@ SWEEP = [
      {".toolboxmd/delivery.json": '{\n  "schema": 1,\n  "proof": {\n    "commands": []\n  }\n}\n'}),
     ("delivery", "positive", ["references/delivery.md"],
      "The divide fix on branch fix/divide in {repo} is done. Merge it into the main branch and release it as "
-     "v1.0.1.", ("edit", "bash:git (merge|tag)|gh (pr merge|release)"), {BRANCHES: ["fix/divide"]}),
+     "v1.0.1.", ("edit", r"bash:git merge (?!-base)|git tag (-[as] )?v?\d|gh (pr merge|release create)"),
+     {BRANCHES: ["fix/divide"]}),
     ("finalization", "positive", ["references/finalization.md"],
      "The Greeter 1.0 work in {repo} is complete. Close it out and retire the leftover task branches.",
      ("edit", "bash:git branch -[dD]|gh issue close|git worktree remove"),
@@ -276,7 +277,7 @@ SWEEP = [
       "STATUS.md": "# Status\n\nWorking on 1.0.\n"}),
     ("use-grok", "positive", ["use-grok/index.md"],
      "Consult Grok on whether greet() in {repo}/src/app.py should accept a list of names.",
-     ("bash:\\bgrok\\b", "end")),
+     (r"bash:\bgrok\s+(\\\s*)?(-p\b|--prompt)", "end")),
 ]
 SWEEP_FILES = [case[2][0] for case in SWEEP]
 # Shared negatives: prompts that match none of the rows above, scored against every
@@ -865,8 +866,8 @@ def record(stream, condition, host, model, effort, arm, target, kind, index, req
             calls.append([name])
     item = {"condition": condition, "host": HOST_LABEL.get(host, host), "model": model, "arm": arm,
             "target": target, "kind": kind, "run": index, "first_edit": first_edit,
-            "required_read_at": {f.split("/")[-1]: reads[f] for f in required},
-            "verdict": {f.split("/")[-1]: v for f, v in verdicts.items()}, "calls": calls}
+            "required_read_at": {record_key(f, required): reads[f] for f in required},
+            "verdict": {record_key(f, required): v for f, v in verdicts.items()}, "calls": calls}
     if effort:
         item["effort"] = effort
     item["entry_loaded_at"] = entry
@@ -881,6 +882,12 @@ def record(stream, condition, host, model, effort, arm, target, kind, index, req
 
 
 HOST_LABEL = {"claude": "claude-code"}
+
+
+def record_key(f, required):
+    """A required file's key in a record: its name, or its full suffix when names collide."""
+    name = f.split("/")[-1]
+    return name if sum(g.split("/")[-1] == name for g in required) == 1 else f
 
 
 def verdicts_for(kind, required, first_edit, reads):
@@ -961,7 +968,8 @@ def run_in(host, model, effort, arm, case, index, before, condition, repo, home,
         first_edit = moment_index(stream, host, moment)
     verdicts = verdicts_for(kind, required, first_edit, reads)
     if moment is not None and first_edit is None and kind == "positive":
-        verdicts = {f: "skip-nomoment" for f in required}
+        # The action never happened: a read still shows the procedure was followed.
+        verdicts = {f: "read-noaction" if reads[f] is not None else "skip-nomoment" for f in required}
     if next(tool_calls(stream, host), None) is None:
         # No tool call at all: a provider error or rate limit, not a measurement.
         verdicts = {f: "no-output" for f in required}

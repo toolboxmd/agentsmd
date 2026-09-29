@@ -252,6 +252,27 @@ class SweepMomentTests(unittest.TestCase):
         moment = self.t.moment_index(self.stream, "claude", ("end",))
         self.assertEqual(self.t.verdicts_for("positive", [PROSE], moment, reads)[PROSE], "fired")
 
+    def test_record_keys_stay_unique_when_file_names_collide(self):
+        key = self.t.record_key
+        required = ["research/index.md", "grilling/index.md", "references/delivery.md"]
+        self.assertEqual(key("research/index.md", required), "research/index.md")
+        self.assertEqual(key("references/delivery.md", required), "delivery.md")
+
+    def test_a_read_without_the_action_is_read_noaction(self):
+        t = self.t
+        stream = claude_stream(claude_call("r1", "Read", file_path="/p/workflows/" + PROSE))
+        case = ("row", "positive", [PROSE], "prompt", ("bash:git merge",))
+        repo = t.make_repo()
+        self.addCleanup(t.remove, repo)
+        saved = t.execute
+        self.addCleanup(setattr, t, "execute", saved)
+        t.execute = lambda *a, **k: stream
+        rows, item = t.run_in("claude", "m", "", "arm", case, 0, None, "c", repo, repo, repo, {})
+        self.assertEqual(item["verdict"], {"prose.md": "read-noaction"})
+        t.execute = lambda *a, **k: claude_stream(claude_call("b1", "Bash", command="ls"))
+        rows, item = t.run_in("claude", "m", "", "arm", case, 0, None, "c", repo, repo, repo, {})
+        self.assertEqual(item["verdict"], {"prose.md": "skip-nomoment"})
+
     def test_extra_files_and_branches_reach_the_fixture(self):
         repo = self.t.make_repo({"TODO.md": "# TODO\n", self.t.BRANCHES: ["task/docs"]})
         self.addCleanup(self.t.remove, repo)
