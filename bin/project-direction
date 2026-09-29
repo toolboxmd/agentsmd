@@ -28,8 +28,8 @@ SUPPORTED_EVENTS = (
 BLOCK_START = "<<<AGENTSMD_PROJECT_DIRECTION_V1>>>"
 BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1>>>"
 # File contents follow the JSON header as plain sections, so they carry no JSON
-# escaping. The nonce hashes the contents, so no content can forge a section
-# marker or the end of the block.
+# escaping. Every marker carries a nonce that no content contains, so no
+# content can forge a section marker or the end of the block.
 SECTION_MARKER = "<<<AGENTSMD_SECTION {nonce} {name}>>>"
 NONCED_BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1 {nonce}>>>"
 PREFERENCES_SECTION = "PREFERENCES.md"
@@ -495,6 +495,21 @@ def compact_instructions(instructions: dict[str, object]) -> None:
         instructions.pop("target_kind", None)
 
 
+def section_nonce(contents: list[str], attempt: int) -> str:
+    joined = "\0".join([str(attempt), *contents])
+    return hashlib.sha256(joined.encode("utf-8")).hexdigest()[:16]
+
+
+def unused_nonce(contents: list[str]) -> str:
+    """Return the first deterministic nonce that appears in no content."""
+    attempt = 0
+    nonce = section_nonce(contents, attempt)
+    while any(nonce in content for content in contents):
+        attempt += 1
+        nonce = section_nonce(contents, attempt)
+    return nonce
+
+
 def direction_block(payload: dict[str, object]) -> str:
     """Render a JSON header line, then each file content as a plain section."""
     header = json.loads(json.dumps(payload))
@@ -507,9 +522,7 @@ def direction_block(payload: dict[str, object]) -> str:
     lines = [BLOCK_START]
     end = BLOCK_END
     if sections:
-        nonce = hashlib.sha256(
-            "\0".join(content for _, content in sections).encode("utf-8")
-        ).hexdigest()[:16]
+        nonce = unused_nonce([content for _, content in sections])
         header["sections"] = nonce
         end = NONCED_BLOCK_END.format(nonce=nonce)
     lines.append(json.dumps(header, ensure_ascii=False, separators=(",", ":")))
