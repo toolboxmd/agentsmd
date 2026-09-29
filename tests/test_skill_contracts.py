@@ -2197,7 +2197,6 @@ class SkillContractTests(unittest.TestCase):
             "SubagentStart",
             "8,192 bytes per file",
             "16,384 bytes combined",
-            "intended base",
             'upstream',
             "ahead/behind",
             "`potentially_stale`",
@@ -2217,29 +2216,24 @@ class SkillContractTests(unittest.TestCase):
             "| Host | Delivering events | Ignored or inert events"
             " | Delivery mechanism | Fallback that still applies |",
             "| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` |",
-            "| Claude Code | `SessionStart` (verified on 2.1.278);",
+            "| Claude Code | `SessionStart`, `UserPromptSubmit`, `SubagentStart` |",
             "| Grok Build | `PreToolUse`, on the first tool call of a session |",
             "| OpenCode | Every session, appended to the system prompt |",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, readme)
-        # Both packaged-hook hosts register PreToolUse only for the Elon gate.
+        # On both packaged-hook hosts the loader answers PreToolUse only with the
+        # Elon gate; the hosts themselves do deliver PreToolUse output (#176).
         self.assertEqual(
             readme.count(
-                "`PreToolUse` delivers nothing; it only runs the Elon gate | Packaged plugin hook"
+                "The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook"
             ),
             2,
         )
+        self.assertNotIn("`PreToolUse` delivers nothing", readme)
         self.assertNotIn("| None identified |", readme)
         for required in (
-            "Claude Code SessionStart hook acceptance is verified on version",
-            "2.1.278",
-            "a `claude -p --plugin-dir <repo>` run with the plugin answered with the",
-            "repository Objective while a control run without the plugin answered",
-            "NONE",
-            "the debug log recorded the hook supplying 4,254 characters of additional",
-            "context",
-            "were not separately exercised live",
+            "`UserPromptSubmit` and `SubagentStart` delivery was not separately exercised live",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
