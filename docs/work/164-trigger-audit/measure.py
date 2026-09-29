@@ -11,7 +11,9 @@ A row "fires" in a session when a read of one of its required files happens at
 or before the step of the first triggering call. Row definitions live in ROWS;
 docs/work/164-trigger-audit/triggers.md explains each one.
 
-Usage: measure.py [--since YYYY-MM-DD] [--exclude SESSION_ID ...] [--json]
+With --ledger, reads the Agent Observer ledger instead (see load_ledger).
+
+Usage: measure.py [--since YYYY-MM-DD] [--until ISO] [--ledger [DB]] [--exclude SESSION_ID ...] [--json]
 """
 
 import argparse
@@ -321,6 +323,12 @@ def _cmd_from(args):
     return ""
 
 
+# A heredoc written to a file is content, not a command (the ledger omits it too)
+# (an interpreter heredoc such as `python3 - <<PY` is the program and stays)
+WRITE_HEREDOC = re.compile(r"^((?=[^\n]*(?:>|\btee\b))(?![^\n]*\b(?:python3?|node|bash|sh|ruby|perl)\s+-\s)"
+                           r"[^\n]*<<-?\s*['\"]?(\w+)['\"]?[^\n]*\n).*?^(\s*\2)$", re.S | re.M)
+
+
 def classify(step, name, args):
     """Map one generic tool call to Actions."""
     text = json.dumps(args) if not isinstance(args, str) else args
@@ -332,11 +340,11 @@ def classify(step, name, args):
         paths = _paths_from(args)
         if name == "apply_patch" or not paths:
             paths += re.findall(r"\*\*\* (?:Update|Add) File: ([^\n\\]+)", text)
-        return [Action(step, "edit", name, text, paths)]
+        return [Action(step, "edit", name, json.dumps(paths), paths)]  # written content is not a command
     if name in READ_TOOLS:
         return [Action(step, "read", name, text, _paths_from(args))]
     if name in CMD_TOOLS:
-        cmd = _cmd_from(args) or text
+        cmd = WRITE_HEREDOC.sub(r"\1[content omitted]\n\3", _cmd_from(args) or text)
         acts = [Action(step, "cmd", name, cmd)]
         acts += [Action(step, "edit", name, cmd, [p]) for p in bash_writes(cmd)]
         if SPAWN_CMD.search(cmd):
@@ -349,31 +357,40 @@ def bash_writes(cmd):
     return re.findall(r"(?:\bcat\s*>>?|\btee\s+(?:-a\s+)?)\s*['\"]?([~/\w.\-]+/[\w.\-/]+)", cmd)
 
 
+PATCH_BODY = re.compile(r"\*\*\* Begin Patch.*?(\*\*\* End Patch|$)", re.S)
+
+
 def codex_exec(step, blob):
     """Split a Codex code-mode exec blob into commands and patch edits."""
     acts = []
     for p in re.findall(r"\*\*\* (?:Update|Add) File: ([^\n\\]+)", blob):
         acts.append(Action(step, "edit", "apply_patch", blob[:2000], [p.strip()]))
     cmds = re.findall(r"cmd\s*:\s*(\"(?:[^\"\\]|\\.)*\"|`(?:[^`\\]|\\.)*`)", blob)
-    for c in cmds:
+    rest = PATCH_BODY.sub("", blob)
+    for raw in cmds:
         try:
-            c = json.loads(c) if c.startswith('"') else c[1:-1]
+            c = json.loads(raw) if raw.startswith('"') else raw[1:-1]
         except ValueError:
-            c = c[1:-1]
+            c = raw[1:-1]
         acts += classify(step, "exec_command", {"cmd": c})
+        rest = rest.replace(raw, json.dumps(WRITE_HEREDOC.sub(r"\1[content omitted]\n\3", c)))
     if "spawn_agent" in blob:
         acts.append(Action(step, "spawn", "spawn_agent", blob[:500]))
     if not acts:
         acts.append(Action(step, "cmd", "exec", blob))
-    # blob-level fallback so reads with workdir-relative paths still count
-    acts.append(Action(step, "cmd", "exec", blob))
+    # blob-level fallback so reads with workdir-relative paths still count;
+    # patch and file-writing heredoc bodies are content, not commands
+    acts.append(Action(step, "cmd", "exec", rest))
     return acts
 
 
 def load_claude(since_ts):
-    for f in glob.glob(os.path.join(HOME, ".claude/projects/**/*.jsonl"), recursive=True):
-        if os.path.getmtime(f) < since_ts:
+    seen = set()  # a symlinked project directory lists the same files twice
+    for f in sorted(glob.glob(os.path.join(HOME, ".claude/projects/**/*.jsonl"), recursive=True)):
+        real = os.path.realpath(f)
+        if real in seen or os.path.getmtime(f) < since_ts:
             continue
+        seen.add(real)
         acts, start, step, cwd = [], None, 0, ""
         sub = "/subagents/" in f
         try:
@@ -405,7 +422,7 @@ def load_claude(since_ts):
         if start is None or start < since_ts:
             continue
         sid = os.path.basename(f)[:-6]
-        yield dict(host="claude", id=sid, start=start, cwd=cwd, sub=sub, actions=acts)
+        yield dict(host="claude", id=sid, start=start, cwd=cwd, sub=sub, path=f, actions=acts)
 
 
 def load_codex(since_ts):
@@ -447,7 +464,7 @@ def load_codex(since_ts):
                 acts += classify(step, name, raw)
         if start is None or start < since_ts:
             continue
-        yield dict(host="codex", id=sid, start=start, cwd=cwd, sub=sub, actions=acts)
+        yield dict(host="codex", id=sid, start=start, cwd=cwd, sub=sub, path=f, actions=acts)
 
 
 def load_grok(since_ts):
@@ -526,6 +543,88 @@ def load_opencode(since_ts):
     con.close()
 
 
+LEDGER = os.path.join(HOME, ".local/state/agent-observer/observer.db")
+LEDGER_SUB_SOURCES = ("subagent",)
+
+
+def _ledger_args(harness, name, target):
+    """Rebuild the argument shape classify() expects from an Agent Observer target."""
+    if name in READ_TOOLS or (name in EDIT_TOOLS and name != "apply_patch"):
+        return {"file_path": target}
+    if name in CMD_TOOLS:
+        return {"command": target}
+    if name in ("Skill", "skill"):
+        return {"skill": target}
+    return target
+
+
+def load_ledger(since_ts, db=LEDGER):
+    """Agent Observer ledger (0.6.0+, privacy version 6), opened read-only.
+
+    One unit per session, and per source file for Codex: Agent Observer files a
+    Codex child-thread rollout that carries its parent's id under the parent
+    session, but each thread has its own context, and the native loader reads it
+    as its own unit. Claude copies (a symlinked project directory) count once,
+    as in load_claude. Tool calls come from
+    `tool_call` events with full targets; OpenCode Skill calls from
+    `skill_invoke`. Prompts are only the 300-character excerpt of genuine
+    main-session submissions, so prompt-triggered rows do not port.
+    Steps (assistant messages): time order. Grok calls in one message share a
+    timestamp. OpenCode numbers every part and a message's tool parts sit between
+    its step-start and step-finish parts, so consecutive ordinals share a step.
+    """
+    con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+    sessions = con.execute(
+        "select session_key, harness, native_id, started_at, project_dir,"
+        " parent_session_key is not null or role = 'subagent' from sessions"
+        " where harness in ('claude', 'codex', 'grok', 'opencode') and started_at >= ?",
+        (since_ts,)).fetchall()
+    for key, harness, native_id, start, cwd, sub in sessions:
+        rows = con.execute(
+            "select 'e', family, name, target, ts, ordinal_num, id, source_id from events"
+            " where session_key = ? and (family = 'tool_call' or"
+            " (family = 'skill_invoke' and session_key like 'opencode:%'))"
+            " union all select 's', kind, '', text_excerpt, ts, ordinal_num, rowid, source_id"
+            " from submissions where session_key = ? and is_genuine = 1"
+            " order by 5, 6, 7", (key, key)).fetchall()
+        by_source = defaultdict(list)
+        for r in rows:  # Claude copies of one file split their rows across sources
+            by_source[r[7] if harness == "codex" else None].append(r)
+        if not by_source:
+            by_source[None] = []
+        if harness == "claude" and ":agent:" in native_id:  # native file name is agent-<id>.jsonl
+            native_id = "agent-" + native_id.rsplit(":", 1)[1]
+        for source_id, src_rows in by_source.items():
+            thread = con.execute("select thread_source, path from sources where id = ?",
+                                 (source_id,)).fetchone() if source_id else None
+            thread = thread or (None, None)
+            acts, step, last = [], 0, None
+            for kind, family, name, target, ts, ordinal, _i, _s in src_rows:
+                if kind == "s":
+                    acts += prompt_actions(step, [target])
+                    continue
+                if harness == "grok":
+                    same = ts == last
+                    last = ts
+                elif harness == "opencode":
+                    same = last is not None and ordinal is not None and ordinal - last in (0, 1)
+                    last = ordinal
+                else:
+                    same = False
+                step += not same
+                if family == "skill_invoke":
+                    acts.append(Action(step, "skill", "skill", json.dumps({"skill": target or ""})))
+                elif harness == "codex" and name == "exec" and target:
+                    acts += codex_exec(step, target)
+                else:
+                    acts += classify(step, name or "", _ledger_args(harness, name, target or ""))
+            first_ts = min((r[4] for r in src_rows if r[4] is not None), default=start)
+            yield dict(host=harness, id=native_id, start=min(start, first_ts) if len(by_source) == 1 else first_ts,
+                       cwd=cwd or "", sub=bool(sub) or thread[0] in LEDGER_SUB_SOURCES,
+                       path=thread[1], actions=acts)
+    con.close()
+
+
 def _iso(s):
     try:
         return dt.datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp()
@@ -566,14 +665,24 @@ def main():
     ap.add_argument("--top-level", action="store_true", help="leave out subagent/child sessions")
     ap.add_argument("--include-tmp", action="store_true",
                     help="keep sessions whose cwd is under /tmp or /var/folders (eval and probe runs)")
+    ap.add_argument("--until", help="leave out sessions started at or after this ISO time (UTC unless offset given)")
+    ap.add_argument("--ledger", nargs="?", const=LEDGER, metavar="DB",
+                    help="read the Agent Observer ledger instead of native records (default path: %(const)s)")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--show", metavar="ROW", help="print each triggering session and call for one row")
     a = ap.parse_args()
     since_ts = dt.datetime.fromisoformat(a.since).replace(tzinfo=dt.timezone.utc).timestamp()
 
     coverage, sessions, dropped = defaultdict(lambda: [0, 0]), [], defaultdict(int)
-    for loader in (load_claude, load_codex, load_grok, load_opencode):
+    until_ts = None
+    if a.until:
+        until = dt.datetime.fromisoformat(a.until)
+        until_ts = (until if until.tzinfo else until.replace(tzinfo=dt.timezone.utc)).timestamp()
+    loaders = [lambda t: load_ledger(t, a.ledger)] if a.ledger else [load_claude, load_codex, load_grok, load_opencode]
+    for loader in loaders:
         for s in loader(since_ts):
+            if until_ts is not None and s["start"] >= until_ts:
+                continue
             if s["id"] in a.exclude or (a.top_level and s["sub"]):
                 continue
             if not a.include_tmp and EVAL_CWD.search(s["cwd"] or ""):

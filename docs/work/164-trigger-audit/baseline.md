@@ -33,7 +33,9 @@ Agent Observer (`agent-observer` 0.5.0, synced 2026-09-29) was checked first. It
 ledger imports all four hosts but truncates command targets at 500 characters
 and stores no arguments for Codex `exec` calls, so procedure reads and trigger
 commands cannot be matched from it. The script reads the native records
-directly instead. Grok is the thinnest source: most of its sessions in the
+directly instead. Agent Observer 0.6.0 keeps full arguments, and
+`measure.py --ledger` now reproduces the tool-triggered rows from it; see
+[Agent Observer source](#agent-observer-source). Grok is the thinnest source: most of its sessions in the
 window are Imagine media runs, and only a few rows see a Grok trigger at all.
 
 "Dropped as tmp/eval cwd" are sessions whose working directory is under `/tmp`
@@ -156,3 +158,118 @@ that needs the packet text per session, which this script does not classify.
 - Eight days of the window (2026-09-15 to 2026-09-22) predate the workflow
   move; legacy paths are matched, but those sessions saw separate skill
   descriptions instead of the routing table.
+
+## Agent Observer source
+
+`--ledger [DB]` reads the Agent Observer ledger (0.6.0 or later, which keeps
+full tool-call arguments, toolboxmd/agent-observer#36) instead of the native
+records. The rows and matching rules are the same; only the loader changes.
+
+```sh
+python3 measure.py --since 2026-09-15 --until 2026-09-29T20:00:00+00:00 --exclude c7f31b0b-... --ledger
+```
+
+Checked 2026-09-30 against a copy of the ledger synced with `agent-observer`
+0.6.0. Both runs cover sessions started 2026-09-15 to 2026-09-29 20:00 UTC;
+`--until` keeps sessions that were still being written out of both runs.
+
+**Result: every row triggered by a tool call reproduces within 0.5 percentage
+points of the native records on the same sessions, and within one point on the
+full run except `delivery-profile` (+1.2).** That row's gap comes from coverage:
+the ledger also imports 93 Codex sessions that Model Router and durable-runner
+keep under `~/.local/state/model-router` and `~/.local/share/durable-runner`,
+which the native loader does not read, and all six extra `delivery-profile`
+triggers are durable-runner sessions. The matched-units column compares the
+1,060 sessions (for Codex, rollout files) both sources hold.
+
+Rows triggered by prompts (`grilling`, `wayfinder`, `spec`, `review`,
+`review>method`, and the prompt half of `reflection`) do not port. By design the
+ledger keeps at most a 300-character excerpt of each genuine human submission in
+the main session, cut at the first tag-like marker, and no text of dispatched
+packets or subagent prompts. `review` falls from 72 trigger sessions to 23
+because most of its triggers are dispatched reviewer packets. Measure those rows
+from the native records.
+
+"Original script, same window" is the script before this change on the same
+sessions. The published baseline covers a shorter window (measured 2026-09-29
+around 10:00 UTC), so its counts are lower.
+
+| Row | Trigger | Published baseline | Original script, same window | Native, this script | Ledger | Δ skip, ledger vs native (pp) | Δ skip, matched units (pp) |
+| --- | --- | --- | --- | --- | --- | ---: | ---: |
+| `entry` | tool | 119/361 (67%) | 133/409 (67%) | 127/388 (67%) | 129/389 (67%) | -0.4 | -0.3 |
+| `elon` | tool | 25/43 (42%) | 28/53 (47%) | 26/47 (45%) | 25/45 (44%) | -0.2 | -0.2 |
+| `elon>algorithm` | tool | 19/43 (56%) | 20/53 (62%) | 19/47 (60%) | 18/45 (60%) | +0.4 | +0.4 |
+| `pd` | tool | 4/4 (0%) | 4/4 (0%) | 4/4 (0%) | 4/4 (0%) | +0.0 | +0.0 |
+| `pd>contracts` | tool | 3/4 (25%) | 3/4 (25%) | 3/4 (25%) | 3/4 (25%) | +0.0 | +0.0 |
+| `grilling` | prompt | 0/3 (100%) | 0/3 (100%) | 0/3 (100%) | 0/3 (100%) | +0.0 | +0.0 |
+| `domain` | tool | 2/32 (94%) | 2/32 (94%) | 2/32 (94%) | 2/32 (94%) | +0.0 | +0.0 |
+| `domain>glossary` | tool | 1/32 (97%) | 1/32 (97%) | 1/32 (97%) | 1/32 (97%) | +0.0 | +0.0 |
+| `domain>adr` | tool | 0 | 0 | 0 | 0 |  |  |
+| `wayfinder` | prompt | 1/6 (83%) | 1/6 (83%) | 1/6 (83%) | 1/2 (50%) | -33.3 | -33.3 |
+| `spec` | prompt | 3/9 (67%) | 3/9 (67%) | 3/9 (67%) | 3/9 (67%) | +0.0 | +0.0 |
+| `tickets>decomp` | tool | 5/31 (84%) | 6/37 (84%) | 5/34 (85%) | 5/33 (85%) | -0.4 | -0.4 |
+| `impl` | tool | 87/323 (73%) | 93/358 (74%) | 89/343 (74%) | 89/341 (74%) | -0.2 | -0.2 |
+| `impl>verif` | tool | 56/165 (66%) | 58/184 (68%) | 58/172 (66%) | 58/172 (66%) | +0.0 | +0.0 |
+| `test-design` | tool | 12/227 (95%) | 14/249 (94%) | 13/237 (95%) | 13/237 (95%) | +0.0 | +0.0 |
+| `orch` | tool | 20/115 (83%) | 25/132 (81%) | 21/124 (83%) | 22/124 (82%) | -0.8 | -0.1 |
+| `orch>bounded` | tool | 0/7 (100%) | 0/7 (100%) | 0/7 (100%) | 0/8 (100%) | +0.0 | +0.0 |
+| `verif` | tool | 34/105 (68%) | 39/140 (72%) | 38/122 (69%) | 39/123 (68%) | -0.6 | +0.0 |
+| `review` | prompt | 1/64 (98%) | 1/73 (99%) | 0/72 (100%) | 1/23 (96%) | -4.3 | -4.3 |
+| `review>method` | prompt | 1/64 (98%) | 1/73 (99%) | 0/72 (100%) | 1/23 (96%) | -4.3 | -4.3 |
+| `proj-verif` | tool | 1/1 (0%) | 1/1 (0%) | 0/1 (100%) | 0/1 (100%) | +0.0 | +0.0 |
+| `artifacts` | tool | 3/5 (40%) | 3/8 (62%) | 3/8 (62%) | 3/8 (62%) | +0.0 | +0.0 |
+| `wfa` | tool | 13/32 (59%) | 15/34 (56%) | 14/33 (58%) | 14/33 (58%) | +0.0 | +0.0 |
+| `wfa>mechanics` | tool | 6/15 (60%) | 7/16 (56%) | 7/16 (56%) | 7/16 (56%) | +0.0 | +0.0 |
+| `wfa>prose` | tool | 3/32 (91%) | 3/34 (91%) | 3/33 (91%) | 3/33 (91%) | +0.0 | +0.0 |
+| `tw` | tool | 4/76 (95%) | 5/80 (94%) | 5/79 (94%) | 5/79 (94%) | +0.0 | +0.0 |
+| `tw>prose` | tool | 2/76 (97%) | 3/80 (96%) | 2/79 (97%) | 2/79 (97%) | +0.0 | +0.0 |
+| `reflection` | prompt | 1/15 (93%) | 1/18 (94%) | 1/16 (94%) | 1/16 (94%) | +0.0 | +0.0 |
+| `vc` | tool | 95/186 (49%) | 99/229 (57%) | 97/209 (54%) | 97/209 (54%) | +0.0 | +0.0 |
+| `vc>bump` | tool | 0/4 (100%) | 0/4 (100%) | 0/4 (100%) | 0/4 (100%) | +0.0 | +0.0 |
+| `delivery-profile` | tool | 14/77 (82%) | 14/84 (83%) | 13/79 (84%) | 13/85 (85%) | +1.2 | +0.0 |
+| `delivery` | tool | 31/112 (72%) | 35/148 (76%) | 33/130 (75%) | 33/131 (75%) | +0.2 | +0.0 |
+| `delivery>final` | tool | 9/38 (76%) | 9/46 (80%) | 9/42 (79%) | 9/42 (79%) | +0.0 | +0.0 |
+| `final` | tool | 15/72 (79%) | 16/100 (84%) | 15/78 (81%) | 15/78 (81%) | +0.0 | +0.0 |
+| `repo-setup` | tool | 1/3 (67%) | 1/4 (75%) | 1/3 (67%) | 1/3 (67%) | +0.0 | +0.0 |
+| `grok` | tool | 10/15 (33%) | 10/18 (44%) | 10/18 (44%) | 10/18 (44%) | +0.0 | +0.0 |
+
+### Native loader fixes found by the comparison
+
+The per-session differences exposed four native miscounts. Each is fixed in
+the native loader so both sources apply one rule:
+
+- The glob follows symlinked Claude project directories. Since 2026-09-29
+  `-Users-lukaszmaj-dev-toolboxmd-chromeria` links to the `t3code` directory, so
+  46 sessions counted twice. Files are now read once by real path.
+- A Claude `Write` or `Edit` carried the written content as its text, so content
+  that mentioned `.toolboxmd/delivery.json` counted as a `delivery-profile`
+  trigger. Edits now carry only their paths.
+- A heredoc written to a file (`cat > f <<'EOF'`, `| tee f`) counted its body as
+  a command, so a script that listed procedure paths counted as reading them.
+  The body is now omitted, as the ledger does. An interpreter heredoc
+  (`python3 - <<'PY'`) stays: it is the program.
+- In Codex `exec` programs, `apply_patch` bodies and file-writing heredocs in the
+  whole-program fallback counted as reads. They are now stripped from that
+  fallback.
+
+### Ledger loader rules
+
+- One unit per session, and per rollout file for Codex. Agent Observer files a
+  Codex child-thread rollout that carries its parent's id under the parent
+  session; the native loader counts each file, and each thread has its own
+  context.
+- Steps follow time order. Grok calls in one assistant message share a
+  timestamp. OpenCode numbers every message part, so consecutive tool-part
+  ordinals form one message (needed for `orch>bounded`, parallel spawns).
+- OpenCode Skill calls come from `skill_invoke` events; their `tool_call` rows
+  carry no target.
+
+### Ledger limits
+
+- Prompt rows do not port (above).
+- Agent Observer redaction can omit more than it should. In two sessions a
+  heredoc rule treated later commands as file content: a Codex `exec` program
+  whose first command sits on one escaped line lost the `gh issue create` that
+  followed it. On this window neither case moves a row by more than 0.5 points.
+  Tracked in toolboxmd/agent-observer#39.
+
