@@ -44,7 +44,9 @@ host configuration files the same content, as before the batch, or the batch
 aborts. Every batch first proves that the guard sees a new ignored file and
 that a setup failure leaves nothing behind (--self-check runs only those). New
 files, including ignored ones, are caught; content edits to an already-ignored
-file are not. The run's process group is killed when it ends, and the temporary
+file are not. Each record's `login_files_changed` lists the linked real login
+files (SHA-256 and mtime, before and after the run) that changed; it is visible
+only and never blocks. The run's process group is killed when it ends, and the temporary
 HOME, links and repository are removed in a `finally`, also on failure,
 timeout or abort.
 
@@ -79,6 +81,7 @@ LOGIN = {
     "grok": REAL_HOME / ".grok/auth.json",
     "opencode": REAL_HOME / ".local/share/opencode/auth.json",
 }
+KEYCHAINS = REAL_HOME / "Library/Keychains"  # Claude Code's login, linked as a directory
 # Live host configuration that a run must not change (logins excluded: a token
 # refresh through the link is the host's own doing).
 LIVE_CONFIG = [
@@ -448,7 +451,7 @@ def setup_claude(home, plugin, env):
     (config / "settings.json").write_text(json.dumps({"permissions": {"defaultMode": "acceptEdits"}}))
     # Login: account metadata only (no token), plus a link to the macOS keychain
     # directory so Claude reads the existing login itself. No credential is copied.
-    keychains = REAL_HOME / "Library/Keychains"
+    keychains = KEYCHAINS
     if keychains.is_dir():
         (home / "Library").mkdir()
         (home / "Library/Keychains").symlink_to(keychains)
@@ -555,6 +558,7 @@ def execute(host, cmd, cwd, env):
             pass
         proc.wait()
         thread.join(5)
+        proc.stdout.close()
     return "".join(lines)
 
 
@@ -635,10 +639,38 @@ def run(host, model, effort, arm, case, index, before=None, condition="plain-con
         remove(home)
 
 
+def login_sources(host):
+    """The real login files or directories linked into a run's temporary home."""
+    return [KEYCHAINS] if host == "claude" else [LOGIN[host]]
+
+
+def fingerprint(path):
+    """SHA-256 and mtime of a file, or of each top-level file of a directory; None if missing."""
+    def one(f):
+        return hashlib.sha256(f.read_bytes()).hexdigest(), f.stat().st_mtime_ns
+    try:
+        if path.is_dir():
+            return sorted((f.name, *one(f)) for f in path.iterdir() if f.is_file())
+        return one(path) if path.is_file() else None
+    except OSError as error:  # unreadable: record that it could not be compared
+        return f"unreadable: {error.__class__.__name__}"
+
+
+def login_changes(before, after):
+    """Labels of linked login sources whose fingerprint differs; visible only, never blocking.
+
+    Runs share the real login files, so under --jobs > 1 a change can come from a
+    concurrent run of the same host (a token refresh) rather than this one."""
+    return sorted("~/" + str(path.relative_to(REAL_HOME)) if path.is_relative_to(REAL_HOME) else str(path)
+                  for path in before if before[path] != after.get(path))
+
+
 def run_in(host, model, effort, arm, case, index, before, condition, repo, home, plugin, env):
     target, kind, required, prompt = case
     prompt = prompt.format(repo=repo.resolve())
+    logins = {path: fingerprint(path) for path in login_sources(host)}
     stream = execute(host, command(host, model, effort, repo, plugin, prompt), repo, env)
+    login_changed = login_changes(logins, {path: fingerprint(path) for path in logins})
     after = snapshot() if before is not None else None
     if after != before:
         changed = sorted(k for k in set(before) | set(after) if before.get(k) != after.get(k))
@@ -650,8 +682,10 @@ def run_in(host, model, effort, arm, case, index, before, condition, repo, home,
         verdicts = {f: "no-output" for f in required}
     rows = ["\t".join([arm, target, kind, f, str(index), verdicts[f], str(first_edit), str(reads[f]),
                        str(entry), host, model]) for f in required]
-    return rows, record(stream, condition, host, model, effort, arm, target, kind, index, required,
-                        verdicts, repo, plugin)
+    item = record(stream, condition, host, model, effort, arm, target, kind, index, required,
+                  verdicts, repo, plugin)
+    item["login_files_changed"] = login_changed
+    return rows, item
 
 
 def summarize(path):
