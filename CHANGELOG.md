@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.4.0] - 2026-09-29
+
+### Added
+
+- Session-start pointer to the operations Skill on Claude Code and OpenCode; prose named before agent-instruction edits (#174)
+
 ## [14.3.1] - 2026-09-29
 
 ### Changed

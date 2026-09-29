@@ -1,106 +1,97 @@
 # Operations pointer on Claude Code and OpenCode (Issue #174)
 
-Per-run evidence: [records.jsonl](records.jsonl) (naive and negative prompts)
-and [midtask.jsonl](midtask.jsonl) (mid-task moments), in the #164 record
-format; runs made before the rebase onto `68bb877` carry
-`login_files_changed: null` (unknown). Regenerate the tables with
-`python3 ../164-trigger-audit/trigger_test.py --summary <file>`. Evidence only,
-not a release gate.
+Per-run evidence: [records.jsonl](records.jsonl), 180 runs with the fixed
+harness. Regenerate the tables with
+`python3 ../164-trigger-audit/trigger_test.py --summary records.jsonl`.
+Evidence only, not a release gate. Superseded pre-fix runs are kept in
+[records-prefix.jsonl](records-prefix.jsonl) and
+[midtask-prefix.jsonl](midtask-prefix.jsonl); see "Pre-fix numbers" below.
 
 Run 2026-09-29 with [trigger_test.py](../164-trigger-audit/trigger_test.py),
 5 runs per case per arm, one fresh throwaway repository per run, the #164
-confinement (temporary HOME, guard on the canonical checkout, this checkout and
-the live host configuration). Arms, each a git ref archived as the plugin:
+confinement. Haiku is out of scope by user decision (2026-09-29).
 
-| Arm | Ref | Change on top of #168 | Added context |
+| Arm | Ref | Change on top of main (`42152be`, v14.3.1) |
+| --- | --- | --- |
+| base | `42152be` | none |
+| B2 | `3dee7d6` | session-start pointer (417 characters, Claude Code and OpenCode only) plus the writing-for-agents row with `prose` in its own before-clause |
+| B3 | `cbf7357` | B2 plus the `SKILL-MECHANICS.md` opening that names `prose` (the shipped state) |
+
+## Result: 20/20 on every host in scope
+
+Target procedure read before the first edit, naive prompts:
+
+| Host, model | base | shipped (B2 rows, B3 for writing-for-agents) | Negatives clean |
 | --- | --- | --- | --- |
-| base | `ad66028` | none (#168's wording) | 0 |
-| A | `db9d5a5` | SessionStart hook injects the `operations` SKILL.md body plus one line naming its directory; OpenCode appends it through the plugin transform | 5,589 characters (about 1,400 tokens) |
-| B | `0fca9bb` | same registration, but the hook only says to invoke `operations` before the first edit, commit, Issue or PR | 417 characters (about 105 tokens) |
-| C | `e6032ad` | no hook; the Skill description names those moments | description only (all hosts) |
+| Claude Code, Opus 5.5, medium | 3/20 | **20/20** (B2 20/20; B3 writing-for-agents 5/5) | 20/20 (B2), 5/5 (B3) |
+| OpenCode, Muse 1.3 (Go route) | 16/20 (#164) | **20/20** (B3, all four targets) | 20/20 |
+| Codex, `gpt-6-astra`, low | 20/20 (#164) | writing-for-agents **5/5** (B2 and B3); other rows unchanged since #164 | 5/5 each |
+| Grok Build, `grok-4.7`, medium | 20/20 (#164) | writing-for-agents **5/5** (B2 and B3); other rows unchanged since #164 | 5/5 each |
 
-## Decision: ship B
+Codex and Grok get no pointer. For them only the writing-for-agents row and
+`SKILL-MECHANICS.md` changed, so that case is the regression check; the other
+three rows are byte-identical to the ones #164 measured at 20/20.
 
-No arm reaches 20/20 on every host. B is the best or tied-best arm on every
-host it touches, at a quarter of A's context, and leaves Codex and Grok
-unchanged. C ties B on Opus and OpenCode but changes the description on all four
-hosts and does nothing on Haiku (0/20).
-
-| Host, model | base | A | B | C |
-| --- | --- | --- | --- | --- |
-| Claude Code, Opus 5.5, medium | 1/20 | 15/20 | 17/20 | 17/20 |
-| Claude Code, Haiku (floor) | 0/20 | 0/20 | 4/20 | 0/20 |
-| OpenCode, Muse 1.3 (Go route) | 16/20 (#164) | 19/20 | 19/20 | 18/20 |
-| Codex, `gpt-6-astra`, low | 20/20 (#164) | not run | not run | 20/20 |
-| Grok Build, `grok-4.7`, medium | 20/20 (#164) | not run | not run | 20/20 |
-
-Cells: target procedure read before the first edit, naive prompts. Negative
-prompts stayed clean (target never opened) in every cell: 20/20 each. Codex
-and Grok rows for A and B are not run because neither arm reaches them; with B
-shipped they run #168's wording unchanged, measured 20/20 in #164.
-
-### Why 20/20 is not reached
-
-- **Opus misses one file, not the entry point.** With B, Opus invokes
-  `operations` in 20/20 naive runs. All three misses are the writing-for-agents
-  case, which needs two files: Opus reads `SKILL-MECHANICS.md` and
-  `writing-for-agents/index.md`, then edits without `prose.md` (A 0/5, B 2/5,
-  C 2/5). The routing row lists `prose` as a second link. Fixing that is a
-  routing-content change, a non-goal here.
-- **Haiku ignores the guidance.** Even with the whole table in context (A) it
-  reads a target in 0/20; B gets 4/20, all test-design. More text at session
-  start does not move it.
-- **OpenCode's one B miss** is writing-for-agents `prose.md` too.
+With the pointer, Opus invokes `operations` in 20/20 naive runs (base 4/20).
+The base arm is 3/20 here against 1/20 in the pre-fix batch, and its misses are
+the model editing without opening the Skill.
 
 ### Token cost per run
 
-Mean tokens per run (input including cache, plus output), naive and negative
-prompts together. Run-to-run spread is larger than the injected context, so
-these show no measurable cost beyond the added context itself.
+The pointer adds 417 characters (about 105 tokens) at session start. Mean
+tokens per run (input including cache, plus output), naive and negative
+prompts together: Opus base 150,264, B2 182,323. Reading the procedures is
+the extra work the change asks for; the pointer itself is a small part of the
+difference.
 
-| Host, model | base | A | B | C |
-| --- | --- | --- | --- | --- |
-| Claude Code, Opus 5.5 | 137,813 | 143,236 | 135,431 | 147,253 |
-| Claude Code, Haiku | 118,478 | 134,094 | 142,696 | 122,175 |
-| OpenCode, Muse 1.3 | not run | 171,261 | 242,125 | 201,777 |
-| Codex, `gpt-6-astra` | not run | not run | not run | 156,186 |
-| Grok, `grok-4.7` | not run | not run | not run | 250,938 |
+| Host, model | base | B2 | B3 |
+| --- | --- | --- | --- |
+| Claude Code, Opus 5.5 (all cases) | 150,264 | 182,323 | 220,378 (writing-for-agents only) |
+| OpenCode, Muse 1.3 | not run | 252,247 (writing-for-agents only) | 232,852 (all cases) |
+| Codex, `gpt-6-astra` (writing-for-agents) | not run | 173,287 | 192,131 |
+| Grok, `grok-4.7` (writing-for-agents) | not run | 284,978 | 278,897 |
 
-## Mid-task moments
+## Harness fixes (why earlier numbers were invalid)
 
-The required file must be read before the first `git commit` (version-control
-`index.md`) or the first `gh pr create` (`references/verification.md`). A `gh`
-stub on PATH answers with a fake URL, so nothing reaches GitHub. Claude Code and
-OpenCode ran base and B; Codex and Grok ran base, which B leaves unchanged.
+- **Claude Code could not read the plugin copy.** The command allowed only the
+  run's repository (`--add-dir <repo>`), so `claude -p --permission-mode
+  acceptEdits` refused every procedure read, and the scorer counted the refused
+  attempt as a read. Runs now add `--add-dir <plugin copy>`. The live Claude
+  setting is `bypassPermissions`, so live use was not affected.
+- **OpenCode could not read through its Skill link.** The Skill's base
+  directory is the config-directory link, which the harness's
+  `external_directory` rule denied; the model then retried through the plugin
+  path. The config directory is now allowed too, as the live `"permission":
+  "allow"` does.
+- **Refused or failed reads no longer count.** Claude tool uses in the result
+  event's `permission_denials` or answered by an error, and OpenCode parts in
+  state `error`, are attempts, not reads. Records list them as `failed_calls`.
+- **A positive run with no edit is `read-noedit` (or `skip-noedit`)**, not
+  `fired`.
 
-| Host, model | Version control before `git commit`: base / B | Verification before `gh pr create`: base / B |
-| --- | --- | --- |
-| Claude Code, Opus 5.5, medium | 0/5 / 5/5 | not reached (0/5 / 0/5) |
-| OpenCode, Muse 1.3 | 3/5 / 5/5 | 5/5 / 5/5 |
-| Codex, `gpt-6-astra`, low | 4/5 | 5/5 |
-| Grok Build, `grok-4.7`, medium | 5/5 | 4/5 |
+Deterministic tests in `tests/test_trigger_harness.py` pin these.
 
-Claude never ran `gh pr create` in either arm (10 of 10 `skip-nomoment`): it
-checked `git remote -v`, found no remote in the fixture, and stopped after
-creating the branch. The verification moment on Claude is therefore unmeasured,
-not a skip. Proposal only, not built: if a fixture with a remote shows Claude
-skipping `verification.md`, add a PreToolUse hook on `gh pr create` that points
-at it. Every other host read the procedure before the moment in at least 4/5.
+## Pre-fix numbers
 
-## Harness changes
+Superseded. The first #174 batch compared arms A (whole SKILL.md body injected),
+B (pointer only) and C (description only) on Claude Code and OpenCode with the
+defects above. The Claude cells counted refused reads as hits (10 of arm B's
+17 Opus "hits" never edited), and OpenCode reads through the Skill link were
+denied, so neither comparison is valid. The records are kept in
+`records-prefix.jsonl`. That batch still showed the pointer gets Opus to load
+`operations` (20/20 against 1/20), which is why B was carried forward, and that
+Codex and Grok reach 20/20 without it.
 
-`trigger_test.py` now archives any git ref as an arm (`--arms name=ref,...`),
-runs the mid-task cases with `--midtask`, puts the `gh` stub on PATH for every
-run, and records token usage per run. Summary tables add a mean-token row when
-the records carry usage.
+The pre-fix mid-task batch (`midtask-prefix.jsonl`: version-control before
+`git commit`, verification before `gh pr create`) was not rerun. Its Claude
+and OpenCode cells share the defects and are not evidence. On Codex and Grok,
+unaffected, the procedure was read before the moment in 4/5 or 5/5 per case.
+On Claude the verification moment was never reached: the fixture has no git
+remote and Opus stopped before `gh pr create`.
 
-## Conditions and aborted batches
+## Conditions
 
-Claude Code 2.1.284, OpenCode 1.18.33, Codex 0.159.0, Grok 1.0.44, the same
-confinement as #164. The first mid-task batch aborted on the guard on all four
-hosts when the canonical checkout was fast-forwarded to v14.2.0 and Grok's live
-plugin was reinstalled mid-batch (reflog 18:52:10, Grok registry 18:52:33); it
-was discarded and rerun. In the rerun, OpenCode aborted again when v14.3.0 was
-installed; its partial verification runs were discarded and that case was rerun
-from a separate temporary worktree of this branch. No run wrote outside its
-repository.
+Claude Code 2.1.284, OpenCode 1.18.33, Codex 0.159.0, Grok 1.0.44. Batches ran
+19:41-19:49 (base and B2, 110 runs) and 19:50-20:00 (B3, 70 runs) from a
+temporary worktree of this branch, with the canonical checkout held still. No
+abort; no run wrote outside its repository.

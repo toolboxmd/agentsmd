@@ -59,7 +59,7 @@ first file edit, commit, Issue or PR, invoke `operations` and read the procedure
 it links. Claude Code runs it from `hooks/claude.json`, which only the Claude
 manifest registers; OpenCode appends it through the plugin's system-prompt
 transform. [The #174 benchmark](docs/work/174-routing-injection/results.md)
-records why this pointer, not the whole routing table, ships.
+records the effect on each host.
 
 The [Skill Catalogue](SKILL_CATALOGUE.md) records retained methods, owners,
 licences, source revisions and exclusions. It is human reference, not startup
