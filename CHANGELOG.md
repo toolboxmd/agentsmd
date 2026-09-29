@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [13.4.0] - 2026-09-28
+
+### Added
+
+- Shorter core contract: brief messages with evidence in the Issue or PR, no process narration, smallest-scope and recommendation rules, stop making excuses (#157)
+
 ## [13.3.1] - 2026-09-28
 
 ### Changed

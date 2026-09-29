@@ -731,6 +731,24 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, agents)
 
+    def test_global_contract_keeps_messages_brief_and_evidence_in_the_record(self) -> None:
+        agents = " ".join(read_text("AGENTS.md").split())
+        for required in (
+            "Stop making excuses: when something goes wrong, say what failed and fix it.",
+            "Always choose the smallest-scope solution that achieves what the user is actually trying to achieve.",
+            "Default to at most three sentences: the result, then only what needs the user's decision or action.",
+            "Procedures that require a report mean that record, not the chat reply.",
+            "Read-only work (reviews, audits, questions) reports to the user and writes nothing to Issues or PRs unless asked.",
+            "Do not narrate process.",
+            "When several agents run, give one line per outcome that changed.",
+            "Report what you found, not what you plan to check.",
+            "recommend one option: the smallest that achieves it.",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, agents)
+        self.assertNotIn("Keep every detail", agents)
+        self.assertNotIn("Let necessary information determine length", agents)
+
     def test_global_contract_defines_independent_partnership(self) -> None:
         agents = read_text("AGENTS.md")
         for required in (
