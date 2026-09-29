@@ -101,11 +101,11 @@ class InstructionActionTests(unittest.TestCase):
                 self.assertEqual(report["action"], REREAD)
                 target.unlink()
 
-    def hook(self, host, event, session="session", cache=None):
+    def hook(self, host, event, session="session", cache=None, cwd=None):
         env = dict(os.environ, AGENTSMD_PROJECT_DIRECTION_DATA=str(cache or self.root / "cache"))
         if host == "grok":
             env["GROK_HOOK_NAME"] = "agentsmd"
-        event_input = {"cwd": str(self.root), "hook_event_name": event}
+        event_input = {"cwd": str(cwd or self.root), "hook_event_name": event}
         if session is not None:
             event_input["session_id"] = session
         if event == "PreToolUse":
@@ -148,6 +148,37 @@ class InstructionActionTests(unittest.TestCase):
                 blocker.write_text("")
                 self.assertEqual(self.hook(host, start, f"{host}-blocked", cache=blocker), REREAD)
             instructions.default_target(host).unlink()
+
+    def test_hosts_and_repositories_sharing_a_session_id_keep_their_own_start(self):
+        pairs = (
+            (("codex", "SessionStart", "SubagentStart"), ("claude", "SessionStart", "SubagentStart")),
+            (("grok", "PreToolUse", "PreToolUse"), ("opencode", "SessionStart", "SessionStart")),
+        )
+        for first, second in pairs:
+            self.source.write_text("# Shared contract\n")
+            self.other.write_text("# Different contract\n")
+            self.link(first[0], self.source)
+            self.link(second[0], self.other)
+            with self.subTest(hosts=(first[0], second[0])):
+                # One cache directory, one session id, different start hashes.
+                for host, start, _ in (first, second):
+                    self.assertEqual(self.hook(host, start, "shared"), UNCHANGED)
+                for host, _, later in (first, second):
+                    # Grok's repeated PreToolUse with an unchanged payload stays silent.
+                    expected = None if host == "grok" else UNCHANGED
+                    self.assertEqual(self.hook(host, later, "shared"), expected)
+                self.source.write_text(f"# Changed for {first[0]}\n")
+                self.assertEqual(self.hook(first[0], first[2], "shared"), CHANGED)
+                self.other.write_text(f"# Changed for {second[0]}\n")
+                self.assertEqual(self.hook(second[0], second[2], "shared"), CHANGED)
+            for host in (first[0], second[0]):
+                instructions.default_target(host).unlink()
+        with self.subTest(state="other-repository"):
+            self.link("claude", self.source)
+            elsewhere = self.root / "elsewhere"
+            elsewhere.mkdir()
+            self.assertEqual(self.hook("claude", "SessionStart", "repo"), UNCHANGED)
+            self.assertEqual(self.hook("claude", "SubagentStart", "repo", cwd=elsewhere), REREAD)
 
 
 if __name__ == "__main__":

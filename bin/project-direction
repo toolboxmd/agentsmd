@@ -507,8 +507,8 @@ def cache_directory() -> Path:
     return Path(tempfile.gettempdir()) / "agentsmd-project-direction"
 
 
-def cache_path(session_id: str) -> Path:
-    key = hashlib.sha256(session_id.encode("utf-8")).hexdigest()
+def cache_path(session_key: str) -> Path:
+    key = hashlib.sha256(session_key.encode("utf-8")).hexdigest()
     return cache_directory() / f"{key}.json"
 
 
@@ -519,17 +519,17 @@ def fingerprint(payload: dict[str, object]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def cached_value(session_id: str, key: str) -> str | None:
+def cached_value(session_key: str, key: str) -> str | None:
     try:
-        cached = json.loads(cache_path(session_id).read_text(encoding="utf-8"))
+        cached = json.loads(cache_path(session_key).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError, TypeError):
         return None
     value = cached.get(key) if isinstance(cached, dict) else None
     return value if isinstance(value, str) else None
 
 
-def write_cached(session_id: str, key: str, value: str) -> None:
-    destination = cache_path(session_id)
+def write_cached(session_key: str, key: str, value: str) -> None:
+    destination = cache_path(session_key)
     try:
         cached = json.loads(destination.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
@@ -818,20 +818,25 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
     )
     payload.update(context_payload(host, require_unambiguous))
     session_id = event_input.get("session_id")
-    if not isinstance(session_id, str):
-        session_id = None
+    # Hosts and repositories share the fallback cache directory and may reuse
+    # session ids, so the record belongs to all three.
+    session_key = (
+        json.dumps([host, str(root or cwd), session_id])
+        if isinstance(session_id, str)
+        else None
+    )
     instructions = payload["instructions"]
-    if instructions.get("healthy") and session_id is not None:
+    if instructions.get("healthy") and session_key is not None:
         # The host loads the global rules when a session starts. Grok discards
         # SessionStart and the OpenCode plugin sends a synthetic SessionStart on
         # every request, so both record only their first delivering event.
         current_sha = instructions["sha256"]
-        start_sha = cached_value(session_id, "global_sha256")
+        start_sha = cached_value(session_key, "global_sha256")
         start_event = "PreToolUse" if grok else "SessionStart"
         first_only = grok or host == "opencode"
         if event == start_event and (start_sha is None or not first_only):
             try:
-                write_cached(session_id, "global_sha256", current_sha)
+                write_cached(session_key, "global_sha256", current_sha)
                 start_sha = current_sha
             except OSError:
                 start_sha = None
@@ -846,14 +851,14 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
     )
     if (
         event == delivering_event
-        and session_id is not None
-        and cached_value(session_id, "fingerprint") == current_fingerprint
+        and session_key is not None
+        and cached_value(session_key, "fingerprint") == current_fingerprint
     ):
         return 0
     cache_warning = None
-    if event in recording_events and session_id is not None:
+    if event in recording_events and session_key is not None:
         try:
-            write_cached(session_id, "fingerprint", current_fingerprint)
+            write_cached(session_key, "fingerprint", current_fingerprint)
         except OSError:
             cache_warning = (
                 "AgentsMD Project Direction loaded, but its cache state was "
