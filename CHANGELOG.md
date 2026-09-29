@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.1] - 2026-09-29
+
+### Changed
+
+- README rewritten for AgentsMD as it works today: install, update, verify and session behavior per host (#176)
+
 ## [14.5.0] - 2026-09-29
 
 ### Added
