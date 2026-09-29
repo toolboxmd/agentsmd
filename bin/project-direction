@@ -648,9 +648,10 @@ def tool_strings(value: object) -> list[str]:
 
 
 def field_label(field: str) -> re.Pattern[str]:
+    """Match a field line: `**F:** v`, `**F**: v` or `F: v`, optionally a list item."""
+    name = re.escape(field)
     return re.compile(
-        r"^\s*(?:[-*]\s*)?\*{0,2}" + re.escape(field)
-        + r"\*{0,2}\s*:?\s*\*{0,2}\s*:?\s*(.*)$",
+        r"^\s*(?:[-*+]\s+)?(?:\*\*" + name + r":\*\*|\*\*" + name + r"\*\*:|" + name + r":)\s*(.*)$",
         re.IGNORECASE,
     )
 
@@ -676,24 +677,26 @@ def field_value(body: str, field: str) -> str:
     return ""
 
 
-def shell_segments(command: str) -> list[tuple[str, str]]:
-    """Split a shell command into simple commands, each with its heredoc text.
+def shell_segments(command: str) -> list[tuple[str, str, bool]]:
+    """Split a shell command into simple commands, each with its heredoc text
+    and whether a pipe feeds it from the previous one.
 
     Quotes, escapes and heredocs are respected; `&&`, `||`, `;`, `|` and
-    unquoted newlines end a segment.
+    unquoted newlines end a segment. A heredoc belongs to the segment that
+    declares it, even when later segments share its line.
     """
-    segments: list[tuple[str, str]] = []
+    segments: list[str] = []
+    piped: set[int] = set()
+    heredocs: dict[int, list[str]] = {}
     current: list[str] = []
-    heredoc: list[str] = []
-    pending: list[tuple[str, bool]] = []
+    pending: list[tuple[str, bool, int]] = []
     quote = ""
     index = 0
     length = len(command)
 
     def close() -> None:
-        segments.append(("".join(current), "\n".join(heredoc)))
+        segments.append("".join(current))
         current.clear()
-        heredoc.clear()
 
     while index < length:
         char = command[index]
@@ -719,13 +722,14 @@ def shell_segments(command: str) -> list[tuple[str, str]]:
         if command.startswith("<<", index) and not command.startswith("<<<", index):
             match = re.match(r"<<(-?)\s*(['\"]?)([A-Za-z0-9_]+)\2", command[index:])
             if match:
-                pending.append((match.group(3), match.group(1) == "-"))
+                pending.append((match.group(3), match.group(1) == "-", len(segments)))
                 index += match.end()
                 continue
         if char == "\n" and pending:
-            # Heredoc bodies start on the next line and belong to this segment.
+            # Heredoc bodies start on the next line.
+            close()
             index += 1
-            for word, strip_tabs in pending:
+            for word, strip_tabs, owner in pending:
                 body: list[str] = []
                 while index < length:
                     newline = command.find("\n", index)
@@ -734,9 +738,8 @@ def shell_segments(command: str) -> list[tuple[str, str]]:
                     if (line.lstrip("\t") if strip_tabs else line) == word:
                         break
                     body.append(line)
-                heredoc.append("\n".join(body))
+                heredocs.setdefault(owner, []).append("\n".join(body))
             pending.clear()
-            close()
             continue
         separator = next((s for s in SEPARATORS if command.startswith(s, index)), None)
         if separator is None and char == "&":
@@ -747,12 +750,40 @@ def shell_segments(command: str) -> list[tuple[str, str]]:
                 separator = "&"
         if separator:
             close()
+            if separator in ("|", "|&"):
+                piped.add(len(segments))
             index += len(separator)
             continue
         current.append(char)
         index += 1
     close()
-    return segments
+    return [(text, "\n".join(heredocs.get(i, [])), i in piped) for i, text in enumerate(segments)]
+
+
+def heredoc_writes(words: list[str]) -> list[str]:
+    """Return the files `cat > FILE` or `tee FILE` fill from a heredoc on stdin."""
+    if not words or os.path.basename(words[0]) not in ("cat", "tee"):
+        return []
+    operands: list[str] = []
+    targets: list[str] = []
+    index = 1
+    while index < len(words):
+        word = words[index]
+        index += 1
+        match = re.match(r"^(\d*|&)(>>|>\||>|<)(.*)$", word)
+        if not match:
+            if not word.startswith("-"):
+                operands.append(word)
+            continue
+        target = match.group(3)
+        if not target and index < len(words):
+            target = words[index]
+            index += 1
+        if match.group(2) != "<" and match.group(1) in ("", "1", "&") and not target.startswith("&"):
+            targets.append(target)
+    if os.path.basename(words[0]) == "tee":
+        return operands
+    return [] if operands else targets
 
 
 def option_value(words: list[str], index: int, long: str, short: str) -> tuple[str | None, int]:
@@ -785,30 +816,39 @@ def gh_create(words: list[str]) -> str | None:
     return None
 
 
-def create_body(words: list[str], heredoc: str, directory: Path) -> str | None:
-    """Return the body a `gh issue|pr create` call supplies, if the hook can see it."""
+def create_body(words: list[str], heredoc: str, directory: Path,
+                written: dict[str, str]) -> tuple[str | None, str | None]:
+    """Return the body a `gh issue|pr create` call supplies, if the hook can see it,
+    and the `--body-file` path when that file neither exists nor is written earlier
+    in the same command."""
     body = None
     index = 0
     while index < len(words):
         value, used = option_value(words, index, "--body-file", "-F")
         if used:
             if value is None:
-                return None
+                return None, None
             if value == "-":
-                return heredoc or None
-            path = Path(value).expanduser()
-            path = path if path.is_absolute() else directory / path
+                return heredoc or None, None
+            path = resolve(directory, value)
+            if path in written:
+                return written[path], None
             try:
-                return path.read_text(encoding="utf-8", errors="replace")
+                return Path(path).read_text(encoding="utf-8", errors="replace"), None
             except OSError:
-                return None
+                return None, value
         value, used = option_value(words, index, "--body", "-b")
         if used:
             body = value
             index += used
             continue
         index += 1
-    return body
+    return body, None
+
+
+def resolve(directory: Path, value: str) -> str:
+    path = Path(value).expanduser()
+    return os.path.normpath(path if path.is_absolute() else directory / path)
 
 
 def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
@@ -817,30 +857,50 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
         if "gh" not in text or "create" not in text:
             continue
         directory = Path(cwd)
-        for segment, heredoc in shell_segments(text):
+        # Body files the command itself writes from a heredoc before `gh` runs.
+        written: dict[str, str] = {}
+        stdout = ""
+        for segment, heredoc, piped in shell_segments(text):
             try:
                 words = shlex.split(segment, posix=True)
             except ValueError:
                 words = segment.split()
+            # `cat <<'EOF' | gh ... --body-file -` feeds the heredoc through the pipe.
+            heredoc, stdout = heredoc or (stdout if piped else ""), ""
+            if heredoc and words and os.path.basename(words[0]) == "cat" and not heredoc_writes(words):
+                stdout = heredoc
             if len(words) >= 2 and words[0] == "cd":
                 target = Path(words[1]).expanduser()
                 directory = target if target.is_absolute() else directory / target
                 continue
+            if heredoc:
+                for target in heredoc_writes(words):
+                    written[resolve(directory, target)] = heredoc
             kind = gh_create(words)
             if kind is None:
                 continue
-            body = create_body(words, heredoc, directory)
+            body, absent = create_body(words, heredoc, directory, written)
             missing = [f for f in ELON_FIELDS if not field_value(body or "", f)]
             if missing:
                 noun = "Issue" if kind == "issue" else "PR"
+                absent_note = (
+                    f"Body file {absent} does not exist before the command and "
+                    "is not written by it; create it first or pass the body with "
+                    "--body-file -. " if absent else ""
+                )
                 return (
                     f"AgentsMD blocked `gh {kind} create`: every {noun} needs an "
                     "Elon record in its body, one line per field: "
-                    + ", ".join(f"**{f}:**" for f in ELON_FIELDS)
-                    + ". Missing or empty: " + ", ".join(missing) + ". "
-                    "Apply the Elon method, then pass the body inline with "
-                    "--body, as a heredoc with --body-file -, or as a file with "
-                    "--body-file; the hook cannot read piped variables. "
+                    + ", ".join(ELON_FIELDS)
+                    + ". Label each field as `**Deleted:** value`, "
+                    "`**Deleted**: value` or `Deleted: value`, optionally as a "
+                    "list item, with the value on the same or the next line. "
+                    "Missing or empty: " + ", ".join(missing) + ". " + absent_note
+                    + "Apply the Elon method, then pass the body inline with "
+                    "--body, as a heredoc with --body-file -, or with --body-file "
+                    "naming a file that exists or that the same command writes "
+                    "first with `cat > FILE <<'EOF'` or `tee FILE <<'EOF'`; the "
+                    "hook cannot read piped variables. "
                     "Do not create it another way."
                 )
     return None

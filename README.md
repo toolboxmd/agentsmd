@@ -263,9 +263,12 @@ and [the #182 sweep](docs/work/182-routing-sweep/results.md) record its effect.
 **The Elon gate.** On every host, a `gh issue create` or `gh pr create` whose
 body lacks a non-empty field for **Requirements and who asked**, **Deleted**,
 **Bottleneck**, or **Checked myself** is blocked (exit 2), and the missing
-fields are named. The hook reads bodies passed with `--body`, `--body-file`, or
-a heredoc. Issues and PRs created through the GitHub API or MCP tools are not
-checked.
+fields are named. Each field line reads `**Deleted:** value`,
+`**Deleted**: value`, or `Deleted: value`, optionally as a list item. The hook
+reads bodies passed with `--body`, a heredoc with `--body-file -`, or
+`--body-file` naming a file that exists or that the same command first writes
+with `cat > FILE <<'EOF'` or `tee FILE <<'EOF'`. Issues and PRs created through
+the GitHub API or MCP tools are not checked.
 
 **Explicit reading fallback.** The hook verifies the canonical
 `global/AGENTS.md` and reports the result in `instructions.action`. Read the
