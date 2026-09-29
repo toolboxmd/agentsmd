@@ -67,8 +67,9 @@ Humans read slowly compared with agents. Every message costs the user attention.
   asked.
 - Start every Issue and PR you write with a Human summary of three lines:
   **What** (the result, one plain sentence), **Why** (the problem or its root
-  cause, one sentence), **Needs you** (the decision or action the user owns,
-  or `Nothing`). A reader must be able to stop there. Agent detail follows.
+  cause, one sentence), **So what** (what happens next and who does it; name
+  the user only for a Human Gate or a user-owned decision). A reader must be
+  able to stop there. Agent detail follows.
   Update the summary when the state changes, such as a new blocker or decision.
 - Do not narrate process. Skip worker, reviewer, retry, and dispatcher
   play-by-play and routine steps. Send an update only when something finishes,

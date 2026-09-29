@@ -105,7 +105,7 @@ first unblocked Issue's implementation-authority boundary.
 ```markdown
 **What:** <the result, one plain sentence>
 **Why:** <the problem or its root cause, one sentence>
-**Needs you:** <the decision or action the user owns, or `Nothing`>
+**So what:** <what happens next and who does it>
 
 ## Outcome
 

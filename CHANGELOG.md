@@ -7,7 +7,7 @@ SemVer and identify one user-consumable repository state.
 
 ### Added
 
-- Issues and PRs open with a three-line Human summary: What, Why, Needs you (#159)
+- Issues and PRs open with a three-line Human summary: What, Why, So what (#159)
 
 ## [13.4.0] - 2026-09-28
 

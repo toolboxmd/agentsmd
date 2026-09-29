@@ -755,7 +755,7 @@ class SkillContractTests(unittest.TestCase):
             "Start every Issue and PR you write with a Human summary of three lines:",
             "**What** (the result, one plain sentence)",
             "**Why** (the problem or its root cause, one sentence)",
-            "**Needs you** (the decision or action the user owns, or `Nothing`)",
+            "**So what** (what happens next and who does it; name the user only for a Human Gate or a user-owned decision)",
             "Update the summary when the state changes",
         ):
             with self.subTest(required=required):
