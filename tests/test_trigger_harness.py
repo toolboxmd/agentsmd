@@ -79,6 +79,91 @@ class LoginFilesChangedTests(unittest.TestCase):
         self.assertEqual(self.t.login_sources("claude"), [self.t.KEYCHAINS])
 
 
+PROSE = "technical-writing/references/prose.md"
+
+
+def claude_stream(*events):
+    return "\n".join(json.dumps(e) for e in events)
+
+
+def claude_call(call_id, name, **arguments):
+    return {"type": "assistant", "message": {"content": [
+        {"type": "tool_use", "id": call_id, "name": name, "input": arguments}]}}
+
+
+def claude_result(call_id, error):
+    return {"type": "user", "message": {"content": [
+        {"type": "tool_result", "tool_use_id": call_id, "is_error": error, "content": "x"}]}}
+
+
+class FailedReadTests(unittest.TestCase):
+    """A refused or failed read is an attempt, not a read (#174)."""
+
+    def setUp(self):
+        self.t = load_harness()
+        self.read = claude_call("r1", "Read", file_path="/p/skills/operations/workflows/" + PROSE)
+        self.edit = claude_call("e1", "Edit", file_path="/repo/README.md")
+
+    def verdict(self, stream, host="claude"):
+        first_edit, reads, _ = self.t.score(stream, [PROSE], host)
+        return self.t.verdicts_for("positive", [PROSE], first_edit, reads)[PROSE]
+
+    def test_a_successful_read_before_the_edit_fires(self):
+        stream = claude_stream(self.read, claude_result("r1", False), self.edit)
+        self.assertEqual(self.verdict(stream), "fired")
+
+    def test_a_read_in_permission_denials_is_not_counted(self):
+        stream = claude_stream(self.read, claude_result("r1", True), self.edit, {
+            "type": "result", "permission_denials": [
+                {"tool_name": "Read", "tool_use_id": "r1", "tool_input": {}}]})
+        self.assertEqual(self.t.failed_calls(stream), {0})
+        self.assertEqual(self.verdict(stream), "skip")
+
+    def test_a_read_answered_by_an_error_is_not_counted(self):
+        stream = claude_stream(self.read, claude_result("r1", True), self.edit)
+        self.assertEqual(self.verdict(stream), "skip")
+
+    def test_a_failed_opencode_read_is_not_counted(self):
+        def part(call_id, tool, status, **arguments):
+            return {"type": "tool_use", "part": {"callID": call_id, "tool": tool,
+                                                 "state": {"status": status, "input": arguments}}}
+        stream = claude_stream(part("c1", "read", "error", filePath="/p/" + PROSE),
+                               part("c2", "edit", "completed", filePath="/repo/README.md"))
+        self.assertEqual(self.verdict(stream, "opencode"), "skip")
+        stream = claude_stream(part("c1", "read", "completed", filePath="/p/" + PROSE),
+                               part("c2", "edit", "completed", filePath="/repo/README.md"))
+        self.assertEqual(self.verdict(stream, "opencode"), "fired")
+
+
+class NoEditVerdictTests(unittest.TestCase):
+    """A positive run that never edits is not a hit (#174)."""
+
+    def setUp(self):
+        self.t = load_harness()
+
+    def test_a_read_without_an_edit_is_read_noedit(self):
+        verdicts = self.t.verdicts_for("positive", [PROSE], None, {PROSE: 3})
+        self.assertEqual(verdicts[PROSE], "read-noedit")
+
+    def test_no_read_and_no_edit_is_skip_noedit(self):
+        verdicts = self.t.verdicts_for("positive", [PROSE], None, {PROSE: None})
+        self.assertEqual(verdicts[PROSE], "skip-noedit")
+
+    def test_the_summary_does_not_count_read_noedit_as_a_hit(self):
+        record = {"condition": "plain-confined", "source": "abc1234", "host": "claude-code",
+                  "model": "m", "arm": "B", "target": "technical-writing", "kind": "positive",
+                  "verdict": {"prose.md": "read-noedit"}, "entry_loaded_at": 0,
+                  "login_files_changed": None}
+        path = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-174-test-")) / "records.jsonl"
+        self.addCleanup(shutil.rmtree, path.parent, True)
+        path.write_text(json.dumps(record) + "\n")
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            self.t.summarize_records(path)
+        self.assertIn("| Target read before first edit (naive, every required file) | 0/1 |",
+                      out.getvalue())
+
+
 class CommittedRecordsTests(unittest.TestCase):
     """The committed records carry login_files_changed; null means unknown."""
 

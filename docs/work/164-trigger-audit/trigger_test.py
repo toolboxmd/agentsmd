@@ -304,6 +304,43 @@ def expand_braces(command):
         command = command[:match.start()] + words + command[match.end():]
 
 
+def failed_calls(stream, host="claude"):
+    """Indexes (in tool_calls order) of calls the host refused or that failed.
+
+    Claude Code: tool uses listed in the result event's `permission_denials` or
+    answered by an error tool_result. OpenCode: parts whose state is `error`.
+    Other hosts report no per-call failure the scorer can rely on."""
+    if host not in ("claude", "opencode"):
+        return set()
+    order, failed = [], set()
+    for line in stream.splitlines():
+        try:
+            event = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(event, dict):
+            continue
+        if host == "opencode":
+            part = event.get("part") or {}
+            if event.get("type") == "tool_use" and part.get("callID") not in order:
+                order.append(part.get("callID"))
+                if (part.get("state") or {}).get("status") == "error":
+                    failed.add(part.get("callID"))
+            continue
+        if event.get("type") == "assistant":
+            for block in event.get("message", {}).get("content", []):
+                if block.get("type") == "tool_use" and block.get("id") not in order:
+                    order.append(block.get("id"))
+        elif event.get("type") == "user":
+            content = event.get("message", {}).get("content", [])
+            for block in content if isinstance(content, list) else []:
+                if block.get("type") == "tool_result" and block.get("is_error"):
+                    failed.add(block.get("tool_use_id"))
+        elif event.get("type") == "result":
+            failed.update(d.get("tool_use_id") for d in event.get("permission_denials") or [])
+    return {i for i, call_id in enumerate(order) if call_id in failed}
+
+
 def reads_file(call, f):
     name, path, command, skill = call
     command = expand_braces(command)
@@ -314,10 +351,12 @@ def reads_file(call, f):
 def score(stream, required, host="claude"):
     """Return (index of first edit or None, {file: index of first read or None}, entry index or None)."""
     first_edit, reads, entry = None, {f: None for f in required}, None
+    failed = failed_calls(stream, host)
     for i, call in enumerate(tool_calls(stream, host)):
         name, path, command, skill = call
         for f in required:
-            if reads[f] is None and reads_file(call, f):
+            # A refused or failed read is an attempt, not a read.
+            if reads[f] is None and i not in failed and reads_file(call, f):
                 reads[f] = i
         if entry is None and ((name == "Skill" and skill.split(":")[-1] == "operations")
                               or reads_file(call, ENTRY)):
@@ -554,7 +593,8 @@ SETUP = {"claude": setup_claude, "codex": setup_codex, "grok": setup_grok, "open
 def command(host, model, effort, repo, plugin, prompt):
     if host == "claude":
         cmd = ["claude", "-p", "--model", model, "--output-format", "stream-json", "--verbose",
-               "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--plugin-dir", str(plugin),
+               "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--add-dir", str(plugin),
+               "--plugin-dir", str(plugin),
                "--no-session-persistence", "--max-turns", "40"]
         return cmd + (["--effort", effort] if effort else []) + [prompt]
     if host == "codex":
@@ -680,6 +720,7 @@ def record(stream, condition, host, model, effort, arm, target, kind, index, req
     item["entry_loaded_at"] = entry
     item["tool_calls"] = sum(1 for _ in tool_calls(stream, host))
     item["usage"] = usage(stream, host)
+    item["failed_calls"] = sorted(failed_calls(stream, host))
     if moment is not None:
         item["moment_at"] = item.pop("first_edit")
     if arm + "-sha" in SOURCES:
@@ -696,8 +737,9 @@ def verdicts_for(kind, required, first_edit, reads):
         read = reads[f]
         if kind == "positive":
             verdict = "fired" if read is not None and (first_edit is None or read < first_edit) else "skip"
-            if first_edit is None and read is None:
-                verdict = "skip-noedit"
+            if first_edit is None:
+                # No edit: nothing to score the read against.
+                verdict = "read-noedit" if read is not None else "skip-noedit"
         else:
             verdict = "opened" if read is not None else "clean"
         result[f] = verdict
