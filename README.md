@@ -230,7 +230,8 @@ PRs created through the GitHub API or MCP tools are not checked.
 
 The loader resolves the Git root, reads the files in Vision, Mission, Objective
 order, and emits one bounded block: a JSON header line, then each complete file
-as a plain section marked with a nonce derived from the contents. Missing, blank, unreadable, unsafe, or oversized direction produces
+as a plain section marked with a nonce derived from the contents; the closing
+marker carries the same nonce, so file text cannot end the block. Missing, blank, unreadable, unsafe, or oversized direction produces
 one explicit uninitialized state. It never emits a partial or truncated triad.
 Keep the three files at most 1,500 characters together; the loader reports the
 total in `budgets.direction` and loads an over-cap triad in full. The hard

@@ -16,7 +16,6 @@ from tests.direction_block import parse_block
 ROOT = Path(__file__).resolve().parents[1]
 COMMAND = ROOT / "bin/agentsmd-grok-hook"
 BLOCK_START = "<<<AGENTSMD_PROJECT_DIRECTION_V1>>>"
-BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1>>>"
 STUB_LOADER = "#!/bin/sh\nexit 0\n"
 
 
@@ -384,7 +383,6 @@ class GrokHookDeliveryTests(GrokHookFixture):
         )
         context = output["hookSpecificOutput"]["additionalContext"]
         self.assertTrue(context.startswith(f"{BLOCK_START}\n"))
-        self.assertTrue(context.endswith(f"\n{BLOCK_END}"))
         payload = parse_block(context)
         self.assertEqual(payload["status"], "ready")
         self.assertEqual(

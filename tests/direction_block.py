@@ -8,16 +8,25 @@ BLOCK_START = "<<<AGENTSMD_PROJECT_DIRECTION_V1>>>"
 BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1>>>"
 
 
+def block_end(nonce: str) -> str:
+    return f"<<<END_AGENTSMD_PROJECT_DIRECTION_V1 {nonce}>>>"
+
+
 def parse_block(context: str) -> dict:
     """Return the JSON header with each section restored as a content field."""
-    if not context.startswith(BLOCK_START + "\n") or not context.endswith(
-        "\n" + BLOCK_END
-    ):
-        raise ValueError("missing block delimiters")
-    body = context[len(BLOCK_START) + 1 : -(len(BLOCK_END) + 1)]
-    header_line, _, rest = body.partition("\n")
+    if not context.startswith(BLOCK_START + "\n"):
+        raise ValueError("missing block start")
+    header_line, _, rest = context[len(BLOCK_START) + 1 :].partition("\n")
     payload = json.loads(header_line)
     nonce = payload.pop("sections", None)
+    # With sections, only the end marker carrying the nonce closes the block.
+    end = BLOCK_END if nonce is None else block_end(nonce)
+    if rest == end:
+        rest = ""
+    elif rest.endswith("\n" + end):
+        rest = rest[: -(len(end) + 1)]
+    else:
+        raise ValueError("missing block end")
     if nonce is None:
         if rest:
             raise ValueError("sections without a nonce")
