@@ -123,6 +123,20 @@ class FailedReadTests(unittest.TestCase):
         stream = claude_stream(self.read, claude_result("r1", True), self.edit)
         self.assertEqual(self.verdict(stream), "skip")
 
+    def test_a_shell_read_with_a_nonzero_exit_still_counts(self):
+        # `cat prose.md; ls missing` reads the file and still exits non-zero.
+        shell = claude_call("b1", "Bash", command="cat /p/workflows/" + PROSE + "; ls missing")
+        stream = claude_stream(shell, claude_result("b1", True), self.edit)
+        self.assertEqual(self.t.failed_calls(stream), set())
+        self.assertEqual(self.verdict(stream), "fired")
+
+    def test_a_denied_shell_read_is_not_counted(self):
+        shell = claude_call("b1", "Bash", command="cat /p/workflows/" + PROSE)
+        stream = claude_stream(shell, claude_result("b1", True), self.edit, {
+            "type": "result", "permission_denials": [
+                {"tool_name": "Bash", "tool_use_id": "b1", "tool_input": {}}]})
+        self.assertEqual(self.verdict(stream), "skip")
+
     def test_a_failed_opencode_read_is_not_counted(self):
         def part(call_id, tool, status, **arguments):
             return {"type": "tool_use", "part": {"callID": call_id, "tool": tool,
@@ -159,6 +173,22 @@ class OpenCodeReadScopeTests(unittest.TestCase):
         self.assertEqual(rules["*"], "deny")
         self.assertEqual(rules[f"{home / 'opencode'}/**"], "allow")
         self.assertEqual(rules[f"{plugin}/**"], "allow")
+
+
+class ClaudeCommandTests(unittest.TestCase):
+    """Claude runs can read the plugin copy and run shell commands (#174)."""
+
+    def test_claude_command_allows_the_plugin_copy_and_bash(self):
+        t = load_harness()
+        repo, plugin = pathlib.Path("/tmp/repo"), pathlib.Path("/tmp/home/plugin")
+        cmd = t.command("claude", "claude-opus-5-5", "medium", repo, plugin, "prompt")
+        pairs = list(zip(cmd, cmd[1:]))
+        self.assertIn(("--permission-mode", "acceptEdits"), pairs)
+        self.assertIn(("--add-dir", str(repo)), pairs)
+        self.assertIn(("--add-dir", str(plugin)), pairs)
+        self.assertIn(("--allowedTools", "Bash"), pairs)
+        self.assertNotIn("--dangerously-skip-permissions", cmd)
+        self.assertEqual(cmd[-1], "prompt")
 
 
 class NoEditVerdictTests(unittest.TestCase):

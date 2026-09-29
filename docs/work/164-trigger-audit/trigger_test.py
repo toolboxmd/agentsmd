@@ -307,12 +307,14 @@ def expand_braces(command):
 def failed_calls(stream, host="claude"):
     """Indexes (in tool_calls order) of calls the host refused or that failed.
 
-    Claude Code: tool uses listed in the result event's `permission_denials` or
-    answered by an error tool_result. OpenCode: parts whose state is `error`.
+    Claude Code: tool uses listed in the result event's `permission_denials`, and
+    non-shell tool uses answered by an error tool_result (a shell command's
+    error only means some part of it exited non-zero; its reads may have
+    succeeded). OpenCode: parts whose state is `error`.
     Other hosts report no per-call failure the scorer can rely on."""
     if host not in ("claude", "opencode"):
         return set()
-    order, failed = [], set()
+    order, failed, shell = [], set(), set()
     for line in stream.splitlines():
         try:
             event = json.loads(line)
@@ -331,10 +333,13 @@ def failed_calls(stream, host="claude"):
             for block in event.get("message", {}).get("content", []):
                 if block.get("type") == "tool_use" and block.get("id") not in order:
                     order.append(block.get("id"))
+                    if block.get("name") in SHELL_TOOLS:
+                        shell.add(block.get("id"))
         elif event.get("type") == "user":
             content = event.get("message", {}).get("content", [])
             for block in content if isinstance(content, list) else []:
-                if block.get("type") == "tool_result" and block.get("is_error"):
+                if (block.get("type") == "tool_result" and block.get("is_error")
+                        and block.get("tool_use_id") not in shell):
                     failed.add(block.get("tool_use_id"))
         elif event.get("type") == "result":
             failed.update(d.get("tool_use_id") for d in event.get("permission_denials") or [])
@@ -597,6 +602,10 @@ def command(host, model, effort, repo, plugin, prompt):
         cmd = ["claude", "-p", "--model", model, "--output-format", "stream-json", "--verbose",
                "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--add-dir", str(plugin),
                "--plugin-dir", str(plugin),
+               # acceptEdits denies every non-read shell command in -p; allow Bash
+               # so mid-task runs can branch, test and commit (the run stays
+               # confined to its temporary HOME and repository, as on the other hosts).
+               "--allowedTools", "Bash",
                "--no-session-persistence", "--max-turns", "40"]
         return cmd + (["--effort", effort] if effort else []) + [prompt]
     if host == "codex":
