@@ -138,6 +138,111 @@ class ElonGateTests(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertBlocked(self.hook({"command": command}))
 
+    # Regressions for #172: a body file written earlier in the same command.
+    def test_body_file_written_by_a_heredoc_in_the_same_command(self) -> None:
+        target = self.cwd / "rollup.md"
+        for write in (f"cat > {target} <<'EOF'", f"cat <<'EOF' > {target}", f"cat >{target} <<EOF",
+                      f"tee {target} <<'EOF' >/dev/null", "cat > rollup.md <<-EOF"):
+            create = f"gh issue create -R o/r --title x --body-file {target}"
+            # The heredoc body starts on the line after the one that declares it.
+            for command in (write + "\n" + RECORD + "EOF\n" + create,
+                            write + " && " + create + "\n" + RECORD + "EOF",
+                            write + "; " + create + "\n" + RECORD + "EOF"):
+                with self.subTest(command=command):
+                    self.assertEqual(self.hook({"command": command}).returncode, 0, command)
+                    self.assertFalse(target.exists())
+                    missing = command.replace(RECORD, RECORD.replace("- **Bottleneck:** agents skip the procedure\n", ""))
+                    self.assertBlocked(self.hook({"command": missing}), "Bottleneck")
+
+    def test_heredoc_written_to_another_path_does_not_count(self) -> None:
+        command = "cat > other.md <<'EOF'\n" + RECORD + "EOF\ngh pr create --body-file body.md"
+        result = self.hook({"command": command})
+        self.assertBlocked(result)
+        self.assertIn("body.md does not exist", result.stderr)
+        self.assertIn("--body-file -", result.stderr)
+
+    def test_only_the_heredoc_that_feeds_stdin_counts(self) -> None:
+        # Regression from the independent review of PR #187: bash feeds only the
+        # last stdin heredoc to the command; another fd or a later `<` replaces it.
+        for write in ("cat > b.md <<'FIRST' <<'SECOND'\n" + RECORD + "FIRST\nSECOND",
+                      "cat > b.md 3<<'EOF'\n" + RECORD + "EOF",
+                      "cat > b.md <<'EOF' < /dev/null\n" + RECORD + "EOF",
+                      "cat > b.md <<'EOF' <<< ''\n" + RECORD + "EOF"):
+            for create in ("gh issue create --body-file b.md", None):
+                command = write + "\n" + (create or "")
+                if create is None:
+                    head, _, rest = write.partition("\n")
+                    command = head + " | gh issue create --body-file -\n" + rest
+                with self.subTest(command=command):
+                    self.assertBlocked(self.hook({"command": command}))
+        last = "cat > b.md <<'FIRST' <<'SECOND'\nnothing\nFIRST\n" + RECORD + "SECOND\ngh issue create --body-file b.md"
+        self.assertEqual(self.hook({"command": last}).returncode, 0)
+        stdin = "gh issue create --body-file - <<'EOF' < /dev/null\n" + RECORD + "EOF"
+        self.assertBlocked(self.hook({"command": stdin}))
+
+    def test_later_writes_replace_the_body_file(self) -> None:
+        # Regressions from the second independent review of PR #187: the file
+        # holds what the last write left, and only the last stdout target is filled.
+        full = "cat > b.md <<'EOF'\n" + RECORD + "EOF\n"
+        create = "gh issue create --body-file b.md"
+        (self.cwd / "b.md").write_text(RECORD, encoding="utf-8")
+        for command in ("cat > b.md > /dev/null <<'EOF'\n" + RECORD + "EOF\n" + create,
+                        full + "cat > b.md <<'EMPTY'\nEMPTY\n" + create,
+                        full + "printf '%s' \"$X\" > b.md\n" + create,
+                        full + "echo x 2> b.md\n" + create,
+                        ": > b.md && " + create,
+                        "cat > b.md\n" + create):
+            with self.subTest(command=command):
+                self.assertBlocked(self.hook({"command": command}))
+        for command in ("cat > /dev/null > b.md <<'EOF'\n" + RECORD + "EOF\n" + create,
+                        ": > b.md\n" + full + create,
+                        "cat <<'EOF' | tee b.md\n" + RECORD + "EOF\n" + create,
+                        "cat > b.md <<'EOF' 2>/dev/null\n" + RECORD + "EOF\n" + create,
+                        "echo start >> log.txt && " + create):
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}).returncode, 0, command)
+        appended = "cat > b.md <<'EOF'\n- **Deleted:** x\nEOF\ncat >> b.md <<'EOF'\n" + RECORD + "EOF\n" + create
+        self.assertEqual(self.hook({"command": appended}).returncode, 0)
+
+    def test_body_file_written_after_cd_in_the_same_command(self) -> None:
+        (self.cwd / "sub").mkdir()
+        command = "cd sub && cat > b.md <<'EOF'\n" + RECORD + "EOF\ngh issue create --body-file ./b.md"
+        self.assertEqual(self.hook({"command": command}).returncode, 0)
+
+    def test_stdin_heredoc_and_inline_body_forms(self) -> None:
+        stdin = "gh issue create --title x --body-file - <<'EOF'\n{}EOF"
+        chained = "gh issue create --body-file - <<'EOF' && echo done\n{}EOF"
+        piped = "cat <<'EOF' | gh issue create --body-file -\n{}EOF"
+        inline = "gh pr create --title x --body {}"
+        for template, quote in ((stdin, str), (chained, str), (piped, str), (inline, shlex.quote)):
+            with self.subTest(template=template):
+                self.assertEqual(self.hook({"command": template.format(quote(RECORD))}).returncode, 0)
+                partial = RECORD.replace("- **Deleted:** the per-prompt reminder\n", "")
+                self.assertBlocked(self.hook({"command": template.format(quote(partial))}), "Deleted")
+
+    def test_accepted_label_forms(self) -> None:
+        fields = ("Requirements and who asked", "Deleted", "Bottleneck", "Checked myself")
+        accepted = ("- **{}:** v", "- **{}**: v", "**{}:** v", "* **{}**: v", "{}: v", "- {}: v",
+                    "**{}:**\n  v")
+        for form in accepted:
+            with self.subTest(form=form):
+                body = "\n".join(form.format(f) for f in fields)
+                self.assertEqual(self.hook({"command": "gh issue create --body " + shlex.quote(body)}).returncode,
+                                 0, body)
+        rejected = ("- **{}** v", "{} v", "### {}\nv", "- **{}s:** v")
+        for form in rejected:
+            with self.subTest(form=form):
+                body = "\n".join(form.format(f) for f in fields)
+                self.assertBlocked(self.hook({"command": "gh issue create --body " + shlex.quote(body)}),
+                                   *fields)
+
+    def test_block_message_documents_the_accepted_forms(self) -> None:
+        result = self.hook({"command": "gh issue create --body hi"})
+        self.assertBlocked(result)
+        self.assertIn("**Deleted:** value", result.stderr)
+        self.assertIn("**Deleted**: value", result.stderr)
+        self.assertIn("Deleted: value", result.stderr)
+
     @unittest.skipIf(NODE is None, "node is not on PATH")
     def test_opencode_plugin_fails_closed_without_loader(self) -> None:
         plugin_dir = self.cwd / "orphan/opencode"
