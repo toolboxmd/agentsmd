@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.1.1] - 2026-09-29
+
+### Changed
+
+- Run the push version check only on main; the PR check covers branches
+
 ## [14.1.0] - 2026-09-29
 
 ### Added
