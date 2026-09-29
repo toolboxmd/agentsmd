@@ -46,7 +46,7 @@ that a setup failure leaves nothing behind (--self-check runs only those). New
 files, including ignored ones, are caught; content edits to an already-ignored
 file are not. Each record's `login_files_changed` lists the linked real login
 files (SHA-256 and mtime, before and after the run) that changed; it is visible
-only and never blocks. The run's process group is killed when it ends, and the temporary
+only and never blocks, and null means unknown (records made before c35c736). The run's process group is killed when it ends, and the temporary
 HOME, links and repository are removed in a `finally`, also on failure,
 timeout or abort.
 
@@ -714,11 +714,23 @@ def summarize(path):
     print()
 
 
+def login_status(record):
+    """`unknown` when `login_files_changed` is null (runs before c35c736 did not record
+    it), `unchanged` for an empty list, `changed` for a non-empty list."""
+    value = record["login_files_changed"]
+    if value is None:
+        return "unknown"
+    if isinstance(value, list) and all(isinstance(v, str) for v in value):
+        return "changed" if value else "unchanged"
+    raise ValueError(f"login_files_changed must be null or a list of paths, not {value!r}")
+
+
 def summarize_records(path, condition="plain-confined"):
     """Markdown tables per host and model from records.jsonl (runs with a `source` field)."""
     groups = {}
     for line in open(path):
         r = json.loads(line)
+        login_status(r)  # validates the field; the tables do not depend on it
         if r.get("condition") == condition and "source" in r and "discarded" not in r:
             groups.setdefault((r["host"], r["model"], r.get("effort", "")), []).append(r)
     for (host, model, effort), rs in groups.items():

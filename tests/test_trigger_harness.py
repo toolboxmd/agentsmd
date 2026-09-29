@@ -1,6 +1,8 @@
 """Deterministic checks for the #164 trigger-test harness (no model runs)."""
 
+import contextlib
 import importlib.util
+import io
 import json
 import os
 import pathlib
@@ -75,6 +77,36 @@ class LoginFilesChangedTests(unittest.TestCase):
         for host in self.t.SETUP:
             self.assertTrue(self.t.login_sources(host), host)
         self.assertEqual(self.t.login_sources("claude"), [self.t.KEYCHAINS])
+
+
+class CommittedRecordsTests(unittest.TestCase):
+    """The committed records carry login_files_changed; null means unknown."""
+
+    def setUp(self):
+        self.t = load_harness()
+        self.records = HARNESS.parent / "records.jsonl"
+
+    def test_login_status_reads_null_as_unknown(self):
+        status = self.t.login_status
+        self.assertEqual(status({"login_files_changed": None}), "unknown")
+        self.assertEqual(status({"login_files_changed": []}), "unchanged")
+        self.assertEqual(status({"login_files_changed": ["~/.codex/auth.json"]}), "changed")
+        with self.assertRaises(ValueError):
+            status({"login_files_changed": "yes"})
+
+    def test_every_committed_record_has_a_valid_login_field(self):
+        lines = self.records.read_text().splitlines()
+        self.assertEqual(len(lines), 600)
+        for line in lines:
+            self.assertIn(self.t.login_status(json.loads(line)), ("unknown", "unchanged", "changed"))
+
+    def test_results_tables_regenerate_from_the_records(self):
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            self.t.summarize_records(self.records)
+        tables = out.getvalue().strip().replace("\n### ", "\n#### ")
+        tables = tables[4:] if tables.startswith("### ") else tables
+        self.assertIn("#### " + tables, (HARNESS.parent / "results.md").read_text())
 
 
 if __name__ == "__main__":

@@ -173,6 +173,8 @@ triad, as the global contract requires, so nothing could be measured.
   temp directory for that clone and read contract and README files from the
   batch's source archive. No run read a target file from there, and none wrote
   outside its repository, but those runs spent calls on the search.
+- **Login-change recording started at `c35c736`.** All 600 records here are
+  earlier, so their `login_files_changed` is `null` (unknown), not "unchanged".
 - **Claude and Grok records predate two scoring fixes** (brace expansion, full
   commands). Both hosts read through their Read tools; their records show no
   shell read of a target through a brace list.
