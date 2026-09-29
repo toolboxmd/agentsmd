@@ -3,8 +3,8 @@
 
 Proof comes from the Issue/authorized task, project instructions, selected
 procedure or external Skill, and risk. Use TDD for bug reproductions and high-risk behavioral seams; otherwise
-test the highest practical seam. Read [test design](test-design.md) when designing
-behavioral proof; it owns faithful seams, independent oracles, and failing-before
+test the highest practical seam. Before editing a test file or designing
+behavioral proof, read [test design](test-design.md); it owns faithful seams, independent oracles, and failing-before
 evidence. Use [code-review](../workflows/code-review/index.md) for review method and impact analysis. Self-review the complete diff for acceptance, rules,
 scope, secrets, generated files, and unrelated changes. Verify the final artifact
 when lower-level checks cannot prove required behavior.

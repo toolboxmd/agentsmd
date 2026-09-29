@@ -12,7 +12,7 @@ metadata:
 Write for the decisions an agent must make: select the right path, perform it,
 and recognize completion. Keep reasoning and examples that prevent a plausible
 wrong interpretation. Word count alone cannot prove better behavior.
-Before choosing frontmatter or invocation, read [SKILL-MECHANICS.md](SKILL-MECHANICS.md).
+Before editing a `SKILL.md` or a Skill description, read [SKILL-MECHANICS.md](SKILL-MECHANICS.md).
 
 ## Behavior and order
 
@@ -20,7 +20,7 @@ Identify the reader, loading moment, and decision or action the document changes
 Separate required steps from reference material. Order dependencies correctly;
 keep conditions, definitions, and exceptions beside their rules.
 
-For substantive prose editing, use the shared
+Before writing or editing instruction sentences, read the shared
 [prose guidance](../technical-writing/references/prose.md). Replace vague advice
 such as "be thorough" with an action. Keep explicit prohibitions where boundaries
 matter, with an allowed path when needed: "Preserve dirty files; use a separate

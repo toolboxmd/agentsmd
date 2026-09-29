@@ -76,7 +76,7 @@ Choose technical work by the claim being changed, while retaining the lane above
 | Choose an API, boundary, state model, or migration | [software-design](../workflows/software-design/index.md) |
 | Explain a defect, reproduce it, verify another fix, or improve performance | [diagnosis](../workflows/diagnosis/index.md) |
 | Preserve behavior while restructuring or migrating callers | [software-design](../workflows/software-design/index.md), [change existing systems](../workflows/software-design/references/change-existing-systems.md) |
-| Select behavioral proof or pin a regression | [Test design](test-design.md) |
+| Before editing or adding a test file, or when selecting behavioral proof | [Test design](test-design.md) |
 | Repair missing or stale product-driving instructions | [project-verification](../workflows/project-verification/index.md) |
 
 Search duplicate work by cause, signature, affected version, and concrete existing
