@@ -34,7 +34,7 @@ class OperationsContractTests(unittest.TestCase):
         for row in text.splitlines():
             if row.startswith("| ") and "references/" in row:
                 self.assertGreater(len(row.split("|")[1].strip()), 10)
-        self.assertIn("load only its applicable linked reference", words(ROOT / "AGENTS.md"))
+        self.assertIn("load only its applicable linked reference", words(ROOT / "global/AGENTS.md"))
         self.assertIn("Reuse unchanged reference contents already in context", words(SKILL))
         self.assertIn("blocks only the dependent action", words(SKILL))
 
@@ -67,28 +67,28 @@ class OperationsContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             source = root / "canonical"
-            source.mkdir()
-            shutil.copy2(ROOT / "AGENTS.md", source / "AGENTS.md")
+            (source / "global").mkdir(parents=True)
+            shutil.copy2(ROOT / "global/AGENTS.md", source / "global/AGENTS.md")
             shutil.copytree(ROOT / "skills/operations", source / "skills/operations")
             target = root / "global/AGENTS.md"
             cwd = root / "unrelated-project"
             cwd.mkdir()
             result = subprocess.run(
-                [str(ROOT / "bin/agentsmd-global-instructions"), "install", "--source", str(source / "AGENTS.md"), "--target", str(target)],
+                [str(ROOT / "bin/agentsmd-global-instructions"), "install", "--source", str(source / "global/AGENTS.md"), "--target", str(target)],
                 cwd=cwd, text=True, capture_output=True, check=True,
             )
             report = json.loads(result.stdout)
             self.assertEqual(report["action"], "installed")
-            entry = target.resolve().parent / "skills/operations/SKILL.md"
+            entry = target.resolve().parent.parent / "skills/operations/SKILL.md"
             self.assertEqual(entry.read_bytes(), SKILL.read_bytes())
             self.assertFalse((target.parent / "skills/operations/SKILL.md").exists())
             for link in links(entry):
                 self.assertTrue((entry.parent / link).is_file())
-            self.assertIn("same revision", words(ROOT / "AGENTS.md"))
-            self.assertIn("older incompatible module", words(ROOT / "AGENTS.md"))
+            self.assertIn("same revision", words(ROOT / "global/AGENTS.md"))
+            self.assertIn("older incompatible module", words(ROOT / "global/AGENTS.md"))
 
     def test_direct_work_boundary_keeps_cost_judgment_and_proof(self):
-        core = words(ROOT / "AGENTS.md")
+        core = words(ROOT / "global/AGENTS.md")
         for clause in (
             "Make the smallest possible change to achieve the wanted result.",
             "Delegate when it reduces total work or provides required independence.",
@@ -106,7 +106,7 @@ class OperationsContractTests(unittest.TestCase):
         self.assertNotIn("maximum reasoning", verification)
 
     def test_planner_delegates_through_routing_tool_without_silent_substitution(self):
-        core = words(ROOT / "AGENTS.md")
+        core = words(ROOT / "global/AGENTS.md")
         for clause in (
             "The planner is the top-level agent the user works with",
             "owns reasoning, specs, integration, acceptance, and the outcome",
@@ -123,7 +123,7 @@ class OperationsContractTests(unittest.TestCase):
         self.assertIn("never waives required proof", words(SKILL.parent / "references/verification.md"))
         self.assertIn("Submit that packet through the routing tool", words(SKILL.parent / "references/orchestration.md"))
         layered = [
-            ROOT / "AGENTS.md",
+            ROOT / "global/AGENTS.md",
             SKILL,
             SKILL.parent / "references/bounded-delegation.md",
             SKILL.parent / "references/orchestration.md",
@@ -151,7 +151,7 @@ class OperationsContractTests(unittest.TestCase):
         self.assertIn("A test that every compatible addition must edit mirrors the implementation", design)
 
     def test_context_reuse_and_proof_ownership_preserve_freshness(self):
-        core = words(ROOT / "AGENTS.md")
+        core = words(ROOT / "global/AGENTS.md")
         self.assertIn('Honor explicit local Project Direction opt-outs for their stated scope', core)
         self.assertIn("Reuse unchanged full contents on follow-ups; reload after change or context loss", core)
         context = words(ROOT / "skills/operations/workflows/project-direction/references/context.md")
@@ -172,7 +172,7 @@ class OperationsContractTests(unittest.TestCase):
         self.assertNotIn("Start each unblocked implementation Issue in a fresh context", core)
 
     def test_final_approval_separates_internal_and_intended_base_authority(self):
-        core = words(ROOT / "AGENTS.md")
+        core = words(ROOT / "global/AGENTS.md")
         self.assertIn("Use one final approval PR per outcome; decompose through reviewed component PRs", core)
         self.assertIn("Final PR merges require human approval for the task and intended base", core)
         orchestration = words(SKILL.parent / "references/orchestration.md")
@@ -253,11 +253,11 @@ class OperationsContractTests(unittest.TestCase):
         ):
             with self.subTest(clause=clause):
                 self.assertIn(clause, words(references / "implementation.md"))
-        documents = [ROOT / "AGENTS.md", *references.glob("*.md")]
+        documents = [ROOT / "global/AGENTS.md", *references.glob("*.md")]
         self.assertEqual([d for d in documents if sweep in words(d)], [references / "implementation.md"])
 
     def test_elon_method_triggers_on_decisions_without_direction_gate(self):
-        core = words(ROOT / "AGENTS.md")
+        core = words(ROOT / "global/AGENTS.md")
         self.assertIn(
             "Before recommending or accepting a material requirement, solution design, architecture, "
             "process design, or recurring-loop automation, in conversation or an artifact, select "
@@ -276,7 +276,7 @@ class OperationsContractTests(unittest.TestCase):
             words(method / "index.md"),
         )
         self.assertIn("Apply with Project Direction when loaded.", words(method / "references/algorithm.md"))
-        for document in (ROOT / "AGENTS.md", method / "index.md", method / "references/algorithm.md"):
+        for document in (ROOT / "global/AGENTS.md", method / "index.md", method / "references/algorithm.md"):
             self.assertNotIn("after Project Direction is loaded", words(document).lower())
             self.assertNotIn("after complete current Project Direction loads", words(document))
 
@@ -302,7 +302,7 @@ class OperationsContractTests(unittest.TestCase):
             "orchestration": "Keep a dependent Issue natively blocked",
             "delivery": "Every deployable artifact is built once",
         }
-        documents = [ROOT / "AGENTS.md", *SKILL.parent.glob("references/*.md")]
+        documents = [ROOT / "global/AGENTS.md", *SKILL.parent.glob("references/*.md")]
         for owner, marker in markers.items():
             found = [document for document in documents if marker in words(document)]
             self.assertEqual(found, [SKILL.parent / f"references/{owner}.md"])

@@ -92,7 +92,7 @@ and reconsideration boundaries documented in the distillation.
 | `setup-matt-pocock-skills` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/engineering/setup-matt-pocock-skills` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | AgentsMD fixes GitHub Issues and glossary behavior directly. |
 | `teach` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/teach` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Its broad knowledge-document role is outside the active glossary contract. |
 | `grill-me` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/grill-me` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | The retained `grilling` procedure owns exhaustive decision discovery. |
-| `wait-what` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/wait-what` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | The compact Re-pitch behavior lives in `AGENTS.md`. |
+| `wait-what` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/wait-what` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | The compact Re-pitch behavior lives in `global/AGENTS.md`. |
 
 ## Upstream references
 

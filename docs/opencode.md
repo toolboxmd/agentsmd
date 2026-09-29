@@ -41,14 +41,14 @@ discovery checks and the explicit reading fallback.
 ## Install, update, status and uninstall
 
 Use `AGENTSMD_DIR` for an extracted released artifact or stable canonical
-checkout of a released tag. The source must be a regular `AGENTS.md` outside
+checkout of a released tag. The source must be a regular `global/AGENTS.md` outside
 plugin caches. Release identity is verified through the distribution workflow;
 the link command verifies path ownership and bytes, not GitHub release status.
 
 ```sh
-"$AGENTSMD_DIR/bin/agentsmd-opencode" install --source "$AGENTSMD_DIR/AGENTS.md"
-"$AGENTSMD_DIR/bin/agentsmd-opencode" status --source "$AGENTSMD_DIR/AGENTS.md"
-"$AGENTSMD_DIR/bin/agentsmd-opencode" update --source "$AGENTSMD_DIR/AGENTS.md"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" install --source "$AGENTSMD_DIR/global/AGENTS.md"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" status --source "$AGENTSMD_DIR/global/AGENTS.md"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" update --source "$AGENTSMD_DIR/global/AGENTS.md"
 ```
 
 Commands emit JSON including source and target hashes when readable. Install
@@ -67,15 +67,15 @@ identify the previous canonical release explicitly:
 
 ```sh
 "$AGENTSMD_DIR/bin/agentsmd-opencode" update \
-  --source "$AGENTSMD_DIR/AGENTS.md" --previous-source "$PREVIOUS_AGENTSMD_DIR/AGENTS.md"
-"$AGENTSMD_DIR/bin/agentsmd-opencode" uninstall --source "$AGENTSMD_DIR/AGENTS.md"
+  --source "$AGENTSMD_DIR/global/AGENTS.md" --previous-source "$PREVIOUS_AGENTSMD_DIR/global/AGENTS.md"
+"$AGENTSMD_DIR/bin/agentsmd-opencode" uninstall --source "$AGENTSMD_DIR/global/AGENTS.md"
 ```
 
 Update refuses any target that is not the exact previous owned link. Uninstall
 removes only the exact supplied owned link, including a broken owned link.
 There is no force replacement option in this adapter. For an authorized
 migration, the common `agentsmd-global-instructions install --host opencode
---source "$AGENTSMD_DIR/AGENTS.md" --replace` preserves a recoverable backup. Source files, shared Skills, `opencode.json`,
+--source "$AGENTSMD_DIR/global/AGENTS.md" --replace` preserves a recoverable backup. Source files, shared Skills, `opencode.json`,
 `opencode.jsonc`, preferences and credentials remain in place. Start a fresh
 OpenCode session after a supported install or update.
 
@@ -231,7 +231,7 @@ project instruction composition, full Project Direction hashes, shared Skill
 discovery, fixture read/write result and exact HEAD. That fixture proves only
 the exercised integration. User-owned behavioral Live Verification through
 ordinary work on real projects remains separately pending until user evidence
-exists, as defined by `AGENTS.override.md`.
+exists, as defined by root `AGENTS.md`.
 
 OpenCode does not reproduce Codex app-native task coordination, memory,
 connectors, computer/browser UI tools or lifecycle hooks. The plugin covers

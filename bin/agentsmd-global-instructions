@@ -176,7 +176,10 @@ def parser() -> argparse.ArgumentParser:
     install_command = subcommands.add_parser(
         "install", help="Install or repair a stable global instruction link."
     )
-    install_command.add_argument("--source", type=absolute, required=True)
+    install_command.add_argument(
+        "--source", type=absolute, required=True,
+        help="Canonical clone global/AGENTS.md; use --replace to migrate an old root link.",
+    )
     install_command.add_argument("--target", type=absolute)
     install_command.add_argument("--host", choices=HOSTS, default="codex")
     install_command.add_argument(

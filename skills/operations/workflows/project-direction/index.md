@@ -41,4 +41,4 @@ other two. Git owns history; add no direction-history ledger.
 
 Keep task outcomes, criteria, proof, blockers, implementation plans, tickets, and
 delivery/release state in Issues or approved Specs. Direction text cannot override
-`AGENTS.md` or authorize crossing Human Gates.
+`global/AGENTS.md` or authorize crossing Human Gates.

@@ -19,7 +19,7 @@ class GlobalInstructionsTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
-        self.source = self.root / "canonical-clone/AGENTS.md"
+        self.source = self.root / "canonical-clone/global/AGENTS.md"
         self.source.parent.mkdir(parents=True)
         self.source.write_text("# Current AgentsMD contract\n", encoding="utf-8")
         self.target = self.root / "codex/AGENTS.md"

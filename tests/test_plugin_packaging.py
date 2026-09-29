@@ -108,7 +108,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "skills/operations/workflows/project-direction/references/context.md",
                 ],
                 "requirements": [
-                    "AGENTS.md",
+                    "global/AGENTS.md",
                     ".version-policy.json",
                     ".toolboxmd/delivery.json",
                     "schemas/delivery-v1.schema.json",

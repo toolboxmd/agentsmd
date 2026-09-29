@@ -537,7 +537,7 @@ class SkillContractTests(unittest.TestCase):
 
     def test_project_direction_skill_preserves_user_owned_strategy(self) -> None:
         skill = read_text("skills/operations/workflows/project-direction/index.md")
-        normalized = " ".join((skill + read_text("AGENTS.md")).split())
+        normalized = " ".join((skill + read_text("global/AGENTS.md")).split())
         for required in (
             'triad together',
             'unsupported strategy unknown',
@@ -639,7 +639,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("ungrounded Mission", cases)
 
     def test_global_contract_requires_complete_current_project_direction(self) -> None:
-        agents = read_text("AGENTS.md")
+        agents = read_text("global/AGENTS.md")
         context = read_text("skills/operations/workflows/project-direction/references/context.md")
         normalized = " ".join((agents + context).split())
         for required in (
@@ -702,7 +702,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertLessEqual(total, 16384)
 
     def test_global_contract_uses_new_glossary_names(self) -> None:
-        agents = read_text("AGENTS.md")
+        agents = read_text("global/AGENTS.md")
         self.assertIn("`GLOSSARY.md`", agents)
         self.assertIn("`GLOSSARY-MAP.md`", agents)
         self.assertIn("read-only", agents)
@@ -714,11 +714,11 @@ class SkillContractTests(unittest.TestCase):
 
     def test_global_contract_leaves_measurement_to_agent_observer(self) -> None:
         # Agent Observer attributes work from host state; agents run no capture.
-        self.assertNotIn("Agent Observer", read_text("AGENTS.md"))
+        self.assertNotIn("Agent Observer", read_text("global/AGENTS.md"))
         self.assertNotIn("Agent Observer", read_text("GLOSSARY.md"))
 
     def test_global_contract_resolves_reachable_decision_unknowns(self) -> None:
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("global/AGENTS.md").split())
         for required in (
             "Unsupported claims stay unknown.",
             "When an unknown would change a recommendation or decision and the "
@@ -732,7 +732,7 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, agents)
 
     def test_global_contract_keeps_messages_brief_and_evidence_in_the_record(self) -> None:
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("global/AGENTS.md").split())
         for required in (
             "Stop making excuses: when something goes wrong, say what failed and fix it.",
             "Always choose the smallest-scope solution that achieves what the user is actually trying to achieve.",
@@ -750,7 +750,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("Let necessary information determine length", agents)
 
     def test_issues_and_prs_open_with_human_summary(self) -> None:
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("global/AGENTS.md").split())
         for required in (
             "Start every Issue and PR you write with a Human summary of three lines:",
             "**What** (the result, one plain sentence)",
@@ -774,7 +774,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("**Human summary**", read_text("GLOSSARY.md"))
 
     def test_global_contract_defines_independent_partnership(self) -> None:
-        agents = read_text("AGENTS.md")
+        agents = read_text("global/AGENTS.md")
         for required in (
             "Align on ends. Think independently about means.",
             "Optimize for the user's confirmed values, mission, outcomes",
@@ -786,7 +786,7 @@ class SkillContractTests(unittest.TestCase):
             self.assertIn(required, agents)
 
     def test_global_contract_routes_material_algorithm_work(self) -> None:
-        agents = read_text("AGENTS.md")
+        agents = read_text("global/AGENTS.md")
         normalized = " ".join(agents.split())
         for required in (
             "select the Elon method procedure through `operations`",
@@ -860,7 +860,7 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, constraint)
         self.assertNotIn("Speed anywhere except that limiter is waste", constraint)
-        agents = " ".join(read_text("AGENTS.md").split())
+        agents = " ".join(read_text("global/AGENTS.md").split())
         for signal in ("current-constraint reference before acceleration or parallel work",):
             self.assertIn(signal, agents)
 

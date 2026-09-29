@@ -40,7 +40,7 @@ Do not automatically append a backlog after a read-only reflection.
 
 | Content | Owner |
 | --- | --- |
-| Personal working defaults | Adjacent private `PREFERENCES.md` under the canonical instructions |
+| Personal working defaults | Private `PREFERENCES.md` at the canonical AgentsMD clone root |
 | Agreed project language | Project glossary through [domain-modeling](../../domain-modeling/index.md) |
 | Costly architectural decision | ADR under the existing eligibility rule |
 | Reusable workflow | Its owning procedure, external Skill, or canonical operating reference |

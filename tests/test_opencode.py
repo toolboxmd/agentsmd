@@ -24,8 +24,8 @@ class OpenCodeTests(unittest.TestCase):
         self.config = self.root / "xdg"
         self.target = self.config / "opencode/AGENTS.md"
         self.target.parent.mkdir(parents=True)
-        self.source = self.root / "release/AGENTS.md"
-        self.source.parent.mkdir()
+        self.source = self.root / "release/global/AGENTS.md"
+        self.source.parent.mkdir(parents=True)
         self.source.write_text("canonical contract\n")
         self.env = {**os.environ, "HOME": str(self.home), "XDG_CONFIG_HOME": str(self.config),
                     "XDG_DATA_HOME": str(self.root / "data"), "XDG_CACHE_HOME": str(self.root / "cache"),
@@ -56,8 +56,8 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(report["after"]["target_sha256"], report["after"]["source_sha256"])
         self.assertEqual(self.manage("install")[1]["action"], "unchanged")
         self.assertEqual(self.manage("status")[1]["status"], "owned-link")
-        newer = self.root / "new-release/AGENTS.md"
-        newer.parent.mkdir()
+        newer = self.root / "new-release/global/AGENTS.md"
+        newer.parent.mkdir(parents=True)
         newer.write_text("new canonical contract")
         self.assertEqual(self.call("update", "--source", newer)[0], 2)
         self.assertEqual(self.call("update", "--source", newer, "--previous-source", self.source)[0], 0)
@@ -112,7 +112,7 @@ class OpenCodeTests(unittest.TestCase):
         self.assertEqual(self.call("install", "--source", self.source, env=env)[0], 2)
 
     def test_cache_and_symlink_source_rejected(self):
-        cached = self.root / "plugins/cache/release/AGENTS.md"
+        cached = self.root / "plugins/cache/release/global/AGENTS.md"
         cached.parent.mkdir(parents=True)
         cached.write_text("cached")
         self.assertEqual(self.call("install", "--source", cached)[0], 2)
@@ -122,7 +122,7 @@ class OpenCodeTests(unittest.TestCase):
         self.assertFalse(os.path.lexists(self.target))
 
     def test_status_and_uninstall_reject_source_alias_into_cache(self):
-        cached = self.root / "plugins/cache/release/AGENTS.md"
+        cached = self.root / "plugins/cache/release/global/AGENTS.md"
         cached.parent.mkdir(parents=True)
         cached.write_text("cached")
         alias = self.root / "alias/AGENTS.md"
@@ -133,6 +133,33 @@ class OpenCodeTests(unittest.TestCase):
             self.assertEqual(self.call(action, "--source", alias)[0], 2)
             self.assertEqual(os.readlink(self.target), str(alias))
         self.assertEqual(cached.read_text(), "cached")
+
+    def test_legacy_root_source_is_rejected_but_can_be_migrated_or_removed(self):
+        legacy = self.root / "release/AGENTS.md"
+        legacy.write_text("old global contract")
+        for command in ("install", "status", "update"):
+            self.assertEqual(self.call(command, "--source", legacy)[0], 2)
+        self.assertFalse(os.path.lexists(self.target))
+        self.target.symlink_to(legacy)
+        self.assertEqual(self.manage("update", "--previous-source", legacy)[0], 0)
+        self.assertEqual(self.target.resolve(), self.source)
+        self.assertEqual(legacy.read_text(), "old global contract")
+        self.assertEqual(self.manage("uninstall")[0], 0)
+        self.target.symlink_to(legacy)
+        self.assertEqual(self.call("uninstall", "--source", legacy)[0], 0)
+        self.assertFalse(os.path.lexists(self.target))
+
+    def test_preferences_follow_the_resolved_clone_through_a_directory_alias(self):
+        clone = self.source.parent.parent
+        (clone / "PREFERENCES.example.md").write_text("canonical defaults")
+        alias = self.root / "alias/global"
+        alias.parent.mkdir()
+        alias.symlink_to(self.source.parent, target_is_directory=True)
+        code, report = self.call("install", "--source", alias / "AGENTS.md")
+        self.assertEqual(code, 0, report)
+        self.assertEqual(report["preferences"]["path"], str(clone / "PREFERENCES.md"))
+        self.assertEqual((clone / "PREFERENCES.md").read_text(), "canonical defaults")
+        self.assertFalse((alias.parent / "PREFERENCES.md").exists())
 
     def test_update_exact_broken_previous_release(self):
         previous = self.root / "removed/AGENTS.md"

@@ -11,7 +11,7 @@ metadata:
 # Operations
 
 Select by the user's outcome and the current action, without a mode command.
-The core `AGENTS.md` owns direction, authority, user work, and required context.
+The core `global/AGENTS.md` owns direction, authority, user work, and required context.
 This entry point selects procedures; it grants no permission.
 
 Resolve this file from installed discovery or the canonical AgentsMD source
