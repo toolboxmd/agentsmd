@@ -8,6 +8,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -191,6 +192,92 @@ class PluginPackagingTests(unittest.TestCase):
             with self.subTest(event=event):
                 self.assertEqual(len(count), 1)
                 self.assertEqual(len(count[0]["hooks"]), 1)
+
+    # Per-hook output limits (#175). Claude Code keeps 10,000 characters of
+    # additionalContext and silently replaces the rest with a file path and a
+    # preview (anthropics/claude-code#94358). Codex spills a hook message past
+    # about 2,500 tokens, counted as UTF-8 bytes / 4 (developers.openai.com/codex/hooks;
+    # codex-rs/utils/string/src/truncate.rs). Grok clips hook context at 10,000
+    # characters (measured in #108). OpenCode documents no cap for its system
+    # transform (opencode.ai/docs/plugins), so the shared floor applies.
+    HOOK_LIMITS = {
+        "claude": ("characters", 10000),
+        "codex": ("tokens", 2500),
+        "grok": ("characters", 10000),
+        "opencode": ("characters", 10000),
+    }
+
+    def test_project_direction_output_at_its_caps_leaves_headroom_per_host(self) -> None:
+        prose = "Agents keep direction short so every host sees all of it.\n"
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary).resolve()
+            source = base / "agentsmd/global/AGENTS.md"
+            source.parent.mkdir(parents=True)
+            source.write_text("# Shared contract\n")
+            preferences = "# Personal preferences\n\n" + prose * 80
+            (base / "agentsmd/PREFERENCES.md").write_text(preferences[:3999] + "\n")
+            repository = base / "project"
+            repository.mkdir()
+            for name, size in (("VISION.md", 400), ("MISSION.md", 500), ("OBJECTIVE.md", 600)):
+                text = f"# {name[:-3].title()}\n\n" + prose * 12
+                (repository / name).write_text(text[: size - 1] + "\n")
+            for command in (
+                ["init", "--quiet"],
+                ["add", "."],
+                ["-c", "user.name=t", "-c", "user.email=t@example.invalid",
+                 "commit", "--quiet", "-m", "direction"],
+            ):
+                subprocess.run(["git", "-C", str(repository), *command], check=True)
+            homes = {
+                "codex": ("CODEX_HOME", "AGENTS.md"),
+                "claude": ("CLAUDE_CONFIG_DIR", "CLAUDE.md"),
+                "grok": ("GROK_HOME", "AGENTS.md"),
+                "opencode": ("OPENCODE_CONFIG_DIR", "AGENTS.md"),
+            }
+            environment = {
+                key: value for key, value in os.environ.items()
+                if key not in {"AGENTSMD_HOST", "GROK_HOOK_NAME", "XDG_CONFIG_HOME"}
+            }
+            for host, (variable, name) in homes.items():
+                home = base / f"{host}-home"
+                home.mkdir()
+                (home / name).symlink_to(source)
+                environment[variable] = str(home)
+            for host, (unit, limit) in self.HOOK_LIMITS.items():
+                with self.subTest(host=host):
+                    grok = host == "grok"
+                    event = {
+                        "cwd": str(repository),
+                        "session_id": f"{host}-session",
+                        "hook_event_name": "PreToolUse" if grok else "SessionStart",
+                        "tool_name": "read_file",
+                        "tool_input": {},
+                    }
+                    host_environment = dict(
+                        environment,
+                        AGENTSMD_PROJECT_DIRECTION_DATA=str(base / f"{host}-cache"),
+                    )
+                    if grok:
+                        host_environment["GROK_HOOK_NAME"] = "agentsmd"
+                    result = subprocess.run(
+                        [str(ROOT / "bin/project-direction"), "hook", "--host", host],
+                        input=json.dumps(event), text=True, capture_output=True,
+                        env=host_environment, check=True,
+                    )
+                    context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+                    header = json.loads(context.splitlines()[1])
+                    # Both files sit at their caps and still arrive in full.
+                    self.assertEqual(header["status"], "ready")
+                    self.assertEqual(header["budgets"]["direction"]["characters"], 1500)
+                    self.assertEqual(header["budgets"]["preferences"]["characters"], 4000)
+                    self.assertIn(prose.strip(), context)
+                    size = (
+                        -(-len(context.encode("utf-8")) // 4)
+                        if unit == "tokens"
+                        else len(context)
+                    )
+                    # At least 10% of the host limit stays free for other hooks.
+                    self.assertLessEqual(size, limit * 0.9, f"{size} {unit}")
 
     def test_three_host_identity(self) -> None:
         manifests = {

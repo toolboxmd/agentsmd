@@ -229,10 +229,13 @@ which blocks the call. Every other tool call passes without output. Issues and
 PRs created through the GitHub API or MCP tools are not checked.
 
 The loader resolves the Git root, reads the files in Vision, Mission, Objective
-order, and emits one bounded block with exact paths, SHA-256 hashes, and complete
-contents. Missing, blank, unreadable, unsafe, or oversized direction produces
+order, and emits one bounded block: a JSON header line, then each complete file
+as a plain section marked with a nonce derived from the contents; the closing
+marker carries the same nonce, so file text cannot end the block. Missing, blank, unreadable, unsafe, or oversized direction produces
 one explicit uninitialized state. It never emits a partial or truncated triad.
-The limits are 8,192 bytes per file and 16,384 bytes combined. Direction-file
+Keep the three files at most 1,500 characters together; the loader reports the
+total in `budgets.direction` and loads an over-cap triad in full. The hard
+limits are 8,192 bytes per file and 16,384 bytes combined. Direction-file
 contents are repository data, not executable policy and not authority to cross
 Human Gates.
 
@@ -341,8 +344,8 @@ plugin cache path, which both the installer and the loader reject. Grok trusts
 global hook files automatically, so no trust prompt applies; project files under
 `.grok/hooks` still need trust. Start a fresh session for the file to load. Grok
 sets `GROK_HOOK_NAME` for global hooks as well as plugin hooks, and that
-variable is what activates the loader's Grok path, its 10,000 character cap and
-its `GROK_HOME` source resolution. Remove the file once Grok executes plugin
+variable is what activates the loader's Grok path and its `GROK_HOME` source
+resolution. Remove the file once Grok executes plugin
 hooks:
 
 ```sh
@@ -509,17 +512,20 @@ Git and when invoked from a plugin cache. It never reads project-local preferenc
 example. Its JSON contains private text: do not publish raw output.
 `preferences.status` is `ready` with complete contents, `absent` for shared
 defaults, or an explicit failure. Files over 8,192 bytes return `oversized`
-and require an explicit full read; they are never silently truncated.
+and require an explicit full read; they are never silently truncated. Keep the
+file within its 4,000-character budget; the hook reports its size in
+`budgets.preferences`, and every edit follows the preferences pruning reference.
 
 On supported Codex lifecycle boundaries, the existing Project Direction loader
 also supplies canonical source path/hash and preferences. Unchanged prompts
 stay silent. Source/content changes, deletion, startup, resume, clear,
 root-task compaction and new workers refresh context. Private subagent
-compaction still needs explicit reading. Combined serialized context is limited
-to 14,000 UTF-8 bytes, conservatively below the 16,000-token hook allowance.
-If JSON escaping or combined contents exceed that budget, `read_required`
-retains file paths/hashes and requires complete explicit reads; no partial triad
-or private contents are injected. Hooks cache only fingerprints, not
+compaction still needs explicit reading. The rendered block is limited to
+10,000 UTF-8 bytes on every host: Claude Code and Grok cut hook context at
+10,000 characters, and Codex at about 2,500 tokens counted as bytes / 4. Past
+it, `read_required` retains file names and hashes, reports the size in
+`context`, and requires complete explicit reads; no partial triad or private
+contents are injected. Hooks cache only fingerprints, not
 private contents. The increased hook context allowance requires renewed trust.
 
 **Explicit reading fallback:** the hook verifies the canonical `global/AGENTS.md`

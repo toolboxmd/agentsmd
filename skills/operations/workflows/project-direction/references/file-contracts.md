@@ -19,6 +19,10 @@ Check that Mission credibly advances Vision and Objective concretely advances
 Mission. Objective completion must not pretend to complete Vision. No file may
 contradict a confirmed user decision or locked ADR.
 
-Use UTF-8, no blank files or unresolved placeholders. Limits are 8,192 bytes per
-file and 16,384 combined; never truncate or partially load to fit. Keep current
-direction only; Git owns history.
+Use UTF-8, no blank files or unresolved placeholders. Keep the three files at
+most 1,500 characters together: the hook loads them on every session, and every
+extra character crowds the host's context limit. The loader reports the total
+against this cap and loads an over-cap triad in full; propose cuts, and rewrite
+only with the user's confirmation. Hard limits are 8,192 bytes per file and
+16,384 combined; never truncate or partially load to fit. Keep current direction
+only; Git owns history.
