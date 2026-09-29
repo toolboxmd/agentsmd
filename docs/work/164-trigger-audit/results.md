@@ -1,25 +1,191 @@
 # Before-and-after trigger test (Issue #164, step 3)
 
 Per-run evidence: [records.jsonl](records.jsonl), one line per run (condition,
-host, arm, target, run, verdict, and the ordered tool calls with anonymized
-paths up to the first edit), derived from the streams with
-`trigger_test.py --record-from`. Raw streams are not committed.
+host, model, arm, target, run, verdict, and the ordered tool calls with
+anonymized paths up to the first edit). Raw streams are not committed.
+`trigger_test.py --summary records.jsonl` regenerates the tables below.
 
-Run 2026-09-29 with [trigger_test.py](trigger_test.py): `claude -p --model haiku`,
-5 runs per cell, one fresh throwaway git repository per run. Arm `main` is the
-installed AgentsMD 14.0.0 (identical to `origin/main` `53296e5` under
-`skills/`); arm `branch` is this branch's rewording. Evidence only, not a
-release gate.
+## Four-host benchmark (the user's models)
 
-- **Naive prompt**: asks for the edit without naming the file. Counts when the
-  file is read before the first Edit/Write (scored from `stream-json`).
-- **Negative prompt**: an edit where the file must not be opened. Counts when
-  it is never read.
-- **Plain**: the prompt as written. **Entry loaded** (`--entry`): the prompt is
-  prefixed with `/agentsmd:operations`, so the routing table is in context and
-  only the routing and procedure wording is under test.
+Run 2026-09-29 with [trigger_test.py](trigger_test.py), 5 runs per cell, one
+fresh throwaway git repository per run, plain prompts only (no forced entry
+point). Arm `main` is `git archive origin/main` (`53296e5`); arm `branch` is
+`git archive HEAD` of this branch (`ae9e261`). Evidence only, not a release
+gate.
 
-## Results
+- **Entry point loaded**: the run called the `operations` Skill or read
+  `operations/SKILL.md`, at any point.
+- **Target read before first edit**: every required file was read before the
+  first file edit (naive prompts).
+- **Negative clean**: the required file was never opened (negative prompts).
+
+### Summary
+
+| Host, model | Entry point loaded, naive: main / branch | Target read before first edit: main / branch | Negatives clean: main / branch |
+| --- | --- | --- | --- |
+| Claude Code, Opus 5.5, medium | 0/20 / 0/20 | 0/20 / 0/20 | 20/20 / 20/20 |
+| Codex, `gpt-6-astra`, low | 20/20 / 20/20 | 15/20 / 20/20 | 20/20 / 20/20 |
+| Codex, `gpt-6-luna`, high | 20/20 / 20/20 | 9/20 / 20/20 | 20/20 / 20/20 |
+| Grok Build, `grok-4.7`, medium | 20/20 / 20/20 | 15/20 / 20/20 | 20/20 / 20/20 |
+| OpenCode, Muse 1.3 (Go route) | 16/20 / 16/20 | 0/20 / 16/20 | 20/20 / 20/20 |
+
+**Finding: where the entry point loads, the branch wording makes the target
+read happen**, on every host that loads it: Codex, Grok and OpenCode reach
+20/20, 20/20, 20/20 and 16/20 on the branch, against 15, 9, 15 and 0 of 20 on
+main. The branch fixed writing-for-agents `prose.md` everywhere (0/5 to 5/5).
+No negative prompt opened a target file on any host or arm (200/200 clean).
+OpenCode's branch reads match its entry-point loads: the 4 naive runs that
+never loaded `operations` also never read the target.
+
+**Claude Code Opus 5.5 is the exception: it never loaded the entry point on a
+naive prompt** (0/40), so the wording could not act; it edited directly. It
+loaded `operations` on 15 of 40 negative prompts (plain code edits), then never
+read a target there either, correctly. Moving Claude needs a change to what
+makes it load the entry point (the Skill description or the global contract),
+not to the procedure wording tested here.
+
+### Per host and model
+
+#### claude-code, `claude-opus-5-5`, effort medium
+
+80 of 80 runs valid (a run with no tool call is excluded).
+
+| Measure | main | branch |
+| --- | --- | --- |
+| Entry point loaded, naive prompts | 0/20 | 0/20 |
+| Entry point loaded, negative prompts | 7/20 | 8/20 |
+| Target read before first edit (naive, every required file) | 0/20 | 0/20 |
+| Negative clean (target never opened) | 20/20 | 20/20 |
+| Naive, domain-modeling `GLOSSARY-FORMAT.md` read before first edit | 0/5 | 0/5 |
+| Naive, technical-writing `prose.md` read before first edit | 0/5 | 0/5 |
+| Naive, test-design `test-design.md` read before first edit | 0/5 | 0/5 |
+| Naive, writing-for-agents `SKILL-MECHANICS.md` read before first edit | 0/5 | 0/5 |
+| Naive, writing-for-agents `prose.md` read before first edit | 0/5 | 0/5 |
+
+#### codex, `gpt-6-astra`, effort low
+
+80 of 80 runs valid (a run with no tool call is excluded).
+
+| Measure | main | branch |
+| --- | --- | --- |
+| Entry point loaded, naive prompts | 20/20 | 20/20 |
+| Entry point loaded, negative prompts | 20/20 | 20/20 |
+| Target read before first edit (naive, every required file) | 15/20 | 20/20 |
+| Negative clean (target never opened) | 20/20 | 20/20 |
+| Naive, domain-modeling `GLOSSARY-FORMAT.md` read before first edit | 5/5 | 5/5 |
+| Naive, technical-writing `prose.md` read before first edit | 5/5 | 5/5 |
+| Naive, test-design `test-design.md` read before first edit | 5/5 | 5/5 |
+| Naive, writing-for-agents `SKILL-MECHANICS.md` read before first edit | 5/5 | 5/5 |
+| Naive, writing-for-agents `prose.md` read before first edit | 0/5 | 5/5 |
+
+#### codex, `gpt-6-luna`, effort high
+
+80 of 80 runs valid (a run with no tool call is excluded).
+
+| Measure | main | branch |
+| --- | --- | --- |
+| Entry point loaded, naive prompts | 20/20 | 20/20 |
+| Entry point loaded, negative prompts | 19/20 | 19/20 |
+| Target read before first edit (naive, every required file) | 9/20 | 20/20 |
+| Negative clean (target never opened) | 20/20 | 20/20 |
+| Naive, domain-modeling `GLOSSARY-FORMAT.md` read before first edit | 3/5 | 5/5 |
+| Naive, technical-writing `prose.md` read before first edit | 5/5 | 5/5 |
+| Naive, test-design `test-design.md` read before first edit | 1/5 | 5/5 |
+| Naive, writing-for-agents `SKILL-MECHANICS.md` read before first edit | 5/5 | 5/5 |
+| Naive, writing-for-agents `prose.md` read before first edit | 0/5 | 5/5 |
+
+#### grok, `grok-4.7`, effort medium
+
+80 of 80 runs valid (a run with no tool call is excluded).
+
+| Measure | main | branch |
+| --- | --- | --- |
+| Entry point loaded, naive prompts | 20/20 | 20/20 |
+| Entry point loaded, negative prompts | 20/20 | 20/20 |
+| Target read before first edit (naive, every required file) | 15/20 | 20/20 |
+| Negative clean (target never opened) | 20/20 | 20/20 |
+| Naive, domain-modeling `GLOSSARY-FORMAT.md` read before first edit | 5/5 | 5/5 |
+| Naive, technical-writing `prose.md` read before first edit | 5/5 | 5/5 |
+| Naive, test-design `test-design.md` read before first edit | 5/5 | 5/5 |
+| Naive, writing-for-agents `SKILL-MECHANICS.md` read before first edit | 5/5 | 5/5 |
+| Naive, writing-for-agents `prose.md` read before first edit | 0/5 | 5/5 |
+
+#### opencode, `opencode-go/muse-spark-1.3-contributor`
+
+80 of 80 runs valid (a run with no tool call is excluded).
+
+| Measure | main | branch |
+| --- | --- | --- |
+| Entry point loaded, naive prompts | 16/20 | 16/20 |
+| Entry point loaded, negative prompts | 13/20 | 12/20 |
+| Target read before first edit (naive, every required file) | 0/20 | 16/20 |
+| Negative clean (target never opened) | 20/20 | 20/20 |
+| Naive, domain-modeling `GLOSSARY-FORMAT.md` read before first edit | 0/5 | 2/5 |
+| Naive, technical-writing `prose.md` read before first edit | 0/5 | 5/5 |
+| Naive, test-design `test-design.md` read before first edit | 0/5 | 4/5 |
+| Naive, writing-for-agents `SKILL-MECHANICS.md` read before first edit | 0/5 | 5/5 |
+| Naive, writing-for-agents `prose.md` read before first edit | 0/5 | 5/5 |
+
+### Conditions and confinement
+
+Each run gets a temporary HOME and host configuration directory holding only
+the arm's global contract (a copy), a copy of the arm's plugin or Skills, and
+links to the host's existing login, removed in a `finally`. Nothing was
+installed into the live host configuration.
+
+| Host | Plugin or Skills loaded from | Permissions and sandbox | Login |
+| --- | --- | --- | --- |
+| Claude Code 2.1.284 | `--plugin-dir <copy>` | `acceptEdits`, `--add-dir <repo>` | link to `~/Library/Keychains` plus account metadata (no token) |
+| Codex 0.159.0 | local marketplace in a temp `CODEX_HOME`, `codex plugin add` | `-s workspace-write`; plugin hooks run (`--dangerously-bypass-hook-trust` stands in for the live trusted hook hash) | `auth.json` link |
+| Grok 1.0.44 | `grok plugin install <copy> --trust` in a temp `GROK_HOME`, plus the live-style Project Direction hook file pointed at the copy | `--always-approve` (the live setting) inside `--sandbox workspace` | `auth.json` link |
+| OpenCode 1.18.33 | Skill and plugin links into the copy in a temp `OPENCODE_CONFIG_DIR`; XDG dirs under the temp HOME | edits and shell allowed, external directories denied except the copy | `auth.json` link |
+
+Before its first batch every host passed the guard self-check (a new ignored
+file is detected) and the cleanup self-check (a setup failure leaves no
+temporary directory or login link). After every run the canonical checkout and
+this checkout must match their pre-batch `git status --porcelain --ignored
+--untracked-files=all` and HEAD, and the live host configuration files their
+pre-batch content, or the batch aborts. No run wrote outside its repository.
+
+The fixture repository now carries a minimal `VISION.md`, `MISSION.md` and
+`OBJECTIVE.md`. Without them Codex stopped before any edit to ask for the
+triad, as the global contract requires, so nothing could be measured.
+
+### What could not be tested, and caveats
+
+- **OpenCode free route.** `opencode/muse-spark-1.3-contributor-free` returned
+  `Rate limit exceeded` for 36 of 40 branch runs after the main arm had run
+  (arms were not yet interleaved), then `OpenCode's free tier can only be used
+  from within OpenCode`. That batch was discarded. The table uses the same
+  model on the Go route, `opencode-go/muse-spark-1.3-contributor`, with default
+  variant (no effort was specified). The harness now interleaves arms and
+  scores a run with no tool call as `no-output` instead of a miss.
+- **Discarded or aborted batches, not in the records.** A first Claude batch and
+  a first Codex batch aborted when the harness's own record append (and a stray
+  `__pycache__` from a debug import) changed this checkout; a first Codex
+  `gpt-6-astra` batch was misscored (reads through shell brace lists such as
+  `references/{implementation,test-design}.md` were missed; scoring now expands
+  them and records keep full commands); a first `gpt-6-luna` batch aborted when
+  another session wrote `tmp/diagrams/` into the canonical checkout (not a run:
+  the Codex sandbox blocks writes outside the run's repository).
+- **Global contract is a copy, not a link.** Live installs link it to the
+  canonical clone. In 34 of 80 `gpt-6-luna` runs the model searched the system
+  temp directory for that clone and read contract and README files from the
+  batch's source archive. No run read a target file from there, and none wrote
+  outside its repository, but those runs spent calls on the search.
+- **Claude and Grok records predate two scoring fixes** (brace expansion, full
+  commands). Both hosts read through their Read tools; their records show no
+  shell read of a target through a brace list.
+- Grok does not run plugin hooks, so Project Direction reached it through the
+  hook file, as on the live machine.
+
+## Earlier Haiku pilot (not a benchmark)
+
+The rows below are from `claude -p --model haiku` against the installed
+AgentsMD 14.0.0 (identical to `origin/main` `53296e5` under `skills/`), before
+the fixture carried a direction triad. They are kept as history.
+
+### Results
 
 | Target | File | Plain, naive: main / branch | Entry loaded, naive: main / branch | Negative, never opened (all conditions, both arms) |
 | --- | --- | --- | --- | --- |
@@ -36,9 +202,7 @@ loaded; with it loaded, the branch read the required file before the first edit
 in 10 of 25 naive runs against 0 of 25 on main, with no over-triggering on the
 negative prompts. Writing-for-agents `prose.md` still never fired.
 
-Codex was not tested: no per-run way to load the branch was used here.
-
-## Escape and confinement
+### Escape and confinement
 
 The first entry-loaded batch let runs escape their throwaway repository. With
 `/agentsmd:operations` loaded, the Skill's base directory (the plugin path) was
