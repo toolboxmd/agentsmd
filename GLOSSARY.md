@@ -263,3 +263,9 @@ _Avoid_: fourth package kind
 The single lazily created home for retained task-specific findings and experiments,
 linked from the owning Issue; it is not an active tracker or a second knowledge owner.
 _Avoid_: reflection diary, local backlog
+
+**Human summary**:
+The three lines that open every agent-written Issue and PR, What, Why, and
+Needs you, so a human can tell what it is about and whether it needs them
+without reading further.
+_Avoid_: TL;DR, executive summary
