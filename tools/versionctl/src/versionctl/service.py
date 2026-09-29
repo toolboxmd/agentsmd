@@ -76,11 +76,16 @@ class VersionService:
         current_tag_target = self.repo.tag_target(current_tag_name)
         latest_tag = tags[-1] if tags else None
         ahead, behind, upstream = self.repo.cached_divergence()
+        merge_head = self.repo.merge_head() if staged else None
 
         if ci:
             assert base is not None
             changed = self.repo.diff_paths(base)
             base_version = self._snapshot_version_at(base)
+        elif staged and merge_head:
+            # A merge commit is judged like CI judges the branch: against the merged-in base.
+            changed = self.repo.staged_paths_against(merge_head)
+            base_version = self._snapshot_version_at(merge_head)
         elif staged:
             changed = list(status["staged"])
             base_version = head_version
@@ -114,7 +119,7 @@ class VersionService:
                         base_version is None
                         or base_version.transition_impact(current) is not None
                     )
-                    and self.policy.version_source in status["staged"]
+                    and self.policy.version_source in (changed if merge_head else status["staged"])
                 )
                 bump_required = not transition_valid
                 if bump_required:
