@@ -550,7 +550,8 @@ ELON_FIELDS = (
 )
 PLACEHOLDER = re.compile(r"^<[^>]*>$")
 HEADING = re.compile(r"^\s*#{1,6}\s")
-SEPARATORS = ("&&", "||", ";", "|", "\n")
+SEPARATORS = ("&&", "||", "|&", ";", "|", "\n")
+VALUE_FLAGS = ("-R", "--repo", "--hostname")
 
 
 def tool_strings(value: object) -> list[str]:
@@ -655,6 +656,12 @@ def shell_segments(command: str) -> list[tuple[str, str]]:
             close()
             continue
         separator = next((s for s in SEPARATORS if command.startswith(s, index)), None)
+        if separator is None and char == "&":
+            # A lone `&` backgrounds a command; `>&`, `<&` and `&>` are redirections.
+            before = command[index - 1] if index else ""
+            after = command[index + 1] if index + 1 < length else ""
+            if before not in "<>" and after != ">":
+                separator = "&"
         if separator:
             close()
             index += len(separator)
@@ -681,7 +688,15 @@ def gh_create(words: list[str]) -> str | None:
     for index, word in enumerate(words):
         if os.path.basename(word) != "gh":
             continue
-        rest = [w for w in words[index + 1:] if not w.startswith("-")]
+        rest: list[str] = []
+        skip = False
+        for word in words[index + 1:]:
+            if skip:
+                skip = False
+            elif word in VALUE_FLAGS:
+                skip = True
+            elif not word.startswith("-"):
+                rest.append(word)
         if len(rest) >= 2 and rest[0] in ("issue", "pr") and rest[1] == "create":
             return rest[0]
     return None

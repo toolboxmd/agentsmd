@@ -125,6 +125,19 @@ class ElonGateTests(unittest.TestCase):
         body = RECORD.replace("**Bottleneck:** agents skip the procedure", "**Bottleneck:**\n#161 is the waiting PR")
         self.assertEqual(self.hook({"command": "gh issue create --body " + shlex.quote(body)}).returncode, 0)
 
+    # Regressions from the Luna max re-review of PR #163.
+    def test_background_operator_splits_commands(self) -> None:
+        command = "gh issue create --body hi & gh issue create --body " + shlex.quote(RECORD)
+        self.assertBlocked(self.hook({"command": command}))
+        redirect = "gh issue create --body " + shlex.quote(RECORD) + " 2>&1 >/dev/null"
+        self.assertEqual(self.hook({"command": redirect}).returncode, 0)
+
+    def test_global_value_flags_before_the_subcommand(self) -> None:
+        for command in ("gh --repo toolboxmd/agentsmd issue create --body hi",
+                        "gh -R toolboxmd/agentsmd pr create --body hi"):
+            with self.subTest(command=command):
+                self.assertBlocked(self.hook({"command": command}))
+
     @unittest.skipIf(NODE is None, "node is not on PATH")
     def test_opencode_plugin_fails_closed_without_loader(self) -> None:
         plugin_dir = self.cwd / "orphan/opencode"
