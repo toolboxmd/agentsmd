@@ -261,7 +261,8 @@ SWEEP = [
     ("delivery", "positive", ["references/delivery.md"],
      "The divide fix on branch fix/divide in {repo} is done. Merge it into the main branch and release it as "
      "v1.0.1.", ("edit", r"bash:git merge (?!-base)|git tag (-[as] )?v?\d|gh (pr merge|release create)"),
-     {BRANCHES: ["fix/divide"]}),
+     {BRANCHES: {"fix/divide": {"src/app.py": APP.replace(
+         "    return a / b", "    if b == 0:\n        raise ValueError(\"b must not be 0\")\n    return a / b")}}}),
     ("finalization", "positive", ["references/finalization.md"],
      "The Greeter 1.0 work in {repo} is complete. Close it out and retire the leftover task branches.",
      ("edit", "bash:git branch -[dD]|gh issue close|git worktree remove"),
@@ -309,9 +310,10 @@ def make_repo(extras=None):
 
 
 def populate_repo(root, extras=None):
-    """The fixture, plus a case's extra files; the key BRANCHES lists branches to create."""
+    """The fixture, plus a case's extra files; the key BRANCHES maps branches to create to
+    the files of one commit on each (empty for a branch at the initial commit)."""
     extras = dict(extras or {})
-    branches = extras.pop(BRANCHES, [])
+    branches = extras.pop(BRANCHES, {})
     for rel, text in {**FILES, **extras}.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -321,8 +323,16 @@ def populate_repo(root, extras=None):
     subprocess.run(["git", "add", "-A"], cwd=root, check=True)
     subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "init"],
                    cwd=root, check=True)
-    for branch in branches:
+    for branch, files in (branches.items() if isinstance(branches, dict) else ((b, {}) for b in branches)):
         subprocess.run(["git", "branch", branch], cwd=root, check=True)
+        if files:
+            subprocess.run(["git", "checkout", "-q", branch], cwd=root, check=True)
+            for rel, text in files.items():
+                (root / rel).write_text(text)
+            subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+            subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", f"work on {branch}"],
+                           cwd=root, check=True)
+            subprocess.run(["git", "checkout", "-q", "-"], cwd=root, check=True)
 
 
 def _path(args):
