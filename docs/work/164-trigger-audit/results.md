@@ -1,5 +1,10 @@
 # Before-and-after trigger test (Issue #164, step 3)
 
+Per-run evidence: [records.jsonl](records.jsonl), one line per run (condition,
+host, arm, target, run, verdict, and the ordered tool calls with anonymized
+paths up to the first edit), derived from the streams with
+`trigger_test.py --record-from`. Raw streams are not committed.
+
 Run 2026-09-29 with [trigger_test.py](trigger_test.py): `claude -p --model haiku`,
 5 runs per cell, one fresh throwaway git repository per run. Arm `main` is the
 installed AgentsMD 14.0.0 (identical to `origin/main` `53296e5` under
@@ -59,8 +64,13 @@ into `trigger_test.py`:
 - `--permission-mode acceptEdits --add-dir <temp repo>` instead of skipping
   permissions;
 - absolute in-repo paths in every prompt;
-- after every run, `git status --porcelain` and `HEAD` of the canonical checkout
-  and this checkout must match the pre-batch snapshot, or the batch aborts.
+- after every run, `git status --porcelain --ignored --untracked-files=all` and
+  `HEAD` of the canonical checkout and this checkout must match the pre-batch
+  snapshot, or the batch aborts; each batch first proves the guard detects a new
+  ignored file;
+- the temporary repository, HOME and keychain link are removed in a `finally`
+  after every run, also on failure or abort (added after review; the earlier
+  batches left their temporary directories behind).
 
 The other three targets' rows come from the unconfined batches, with relative
 paths in the prompts and the real HOME; their transcripts show no writes outside

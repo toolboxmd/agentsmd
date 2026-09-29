@@ -4,25 +4,37 @@
 Each case runs `claude -p --model haiku` in a fresh throwaway git repository
 under the system temp directory, once per arm:
 
-  main    the installed AgentsMD plugin (no --plugin-dir)
-  branch  --plugin-dir pointing at this checkout
+  main    a copy of the newest installed AgentsMD plugin
+  branch  a copy of this checkout
 
 A positive case fires when the required file is read before the first file
-edit. A negative case passes when the file is never read. Raw streams stay in
-the temp directory; only scores are printed.
+edit. A negative case passes when the file is never read. Scores go to stdout;
+with --record, one compact line per run (tool calls up to the first edit,
+paths anonymized, no prompts or file contents) is appended to a JSONL file.
+Raw streams are never kept: they may hold private context.
 
 Confinement (added after a run escaped into the canonical checkout on
-2026-09-29): each run gets a temporary HOME and CLAUDE_CONFIG_DIR that hold only
-a copy of the plugin under test and the global contract, runs with
+2026-09-29): each run gets a temporary HOME whose `.claude` (CLAUDE_CONFIG_DIR
+left unset, so it resolves there) holds only the global contract, and a copy of
+the plugin under test loaded with --plugin-dir. It runs with
 `--permission-mode acceptEdits --add-dir <temp repo>` instead of skipping
 permissions, and names files by absolute in-repo path. After every run the
-canonical checkout (and this checkout) must show the same `git status
---porcelain` and HEAD as before the batch, or the batch aborts. Login reuses
-the macOS keychain through a link (see make_home); no credential is copied.
+canonical checkout and this checkout must show the same `git status
+--porcelain --ignored --untracked-files=all` and HEAD as before the batch, or
+the batch aborts; every batch first proves that the guard sees a new ignored
+file (--self-check runs only that). New files, including ignored ones, are
+caught; content edits to an already-ignored file are not.
 
-  python3 trigger_test.py --runs 5 --jobs 8 > results.tsv
-  python3 trigger_test.py --runs 5 --jobs 8 --entry > results-entry.tsv
+Login: the temporary HOME gets the account metadata from ~/.claude.json (no
+token) and a symlink to ~/Library/Keychains so Claude reads the existing login
+itself. No credential is copied. The link, the temporary HOME and the temporary
+repository exist only for the run's lifetime: they are removed in a `finally`,
+also on failure, timeout or abort.
+
+  python3 trigger_test.py --runs 5 --jobs 8 --record records.jsonl > results.tsv
+  python3 trigger_test.py --runs 5 --jobs 8 --entry --record records.jsonl > results-entry.tsv
   python3 trigger_test.py --score results.tsv
+  python3 trigger_test.py --record-from results.tsv plain-unconfined > records.jsonl
 
 --entry prefixes each prompt with `/agentsmd:operations`, so the entry point is
 loaded and only the routing and procedure wording is under test.
@@ -172,17 +184,33 @@ class Escaped(Exception):
     pass
 
 
-def snapshot():
-    """Status and HEAD of every checkout a run must not touch."""
+def snapshot(roots=None):
+    """Status (including ignored files) and HEAD of every checkout a run must not touch."""
     state = {}
-    for root in GUARDED:
+    for root in GUARDED if roots is None else roots:
         if (root / ".git").exists():
             git = ["git", "-C", str(root)]
             state[str(root)] = (
-                subprocess.run(git + ["status", "--porcelain"], capture_output=True, text=True).stdout,
+                subprocess.run(git + ["status", "--porcelain", "--ignored", "--untracked-files=all"],
+                               capture_output=True, text=True, check=True).stdout,
                 subprocess.run(git + ["rev-parse", "HEAD"], capture_output=True, text=True).stdout,
             )
     return state
+
+
+def guard_self_check():
+    """Prove that the guard sees a new ignored file; raise if it does not."""
+    root = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-164-guard-"))
+    try:
+        subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+        (root / ".gitignore").write_text("ignored/\n")
+        before = snapshot([root])
+        (root / "ignored").mkdir()
+        (root / "ignored/escape.md").write_text("x")
+        if snapshot([root]) == before:
+            raise RuntimeError("guard self-check failed: a new ignored file was not detected")
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
 
 
 def plugin_source(arm):
@@ -222,10 +250,69 @@ def make_home(arm):
     return home, plugin
 
 
-def run(arm, case, index, entry=False, before=None):
+def anonymize(text, repo, plugin):
+    for real, label in ((repo, "<repo>"), (plugin, "<plugin>"), (plugin.parent, "<home>"),
+                        (pathlib.Path.home(), "~")):
+        for form in sorted({str(real), str(real.resolve()), "/private" + str(real)}, key=len, reverse=True):
+            text = text.replace(form, label)
+    return text
+
+
+def record(stream, condition, arm, target, kind, index, required, verdicts, repo, plugin):
+    """Compact, anonymized per-run record: tool calls up to and including the first edit."""
+    first_edit, reads = score(stream, required)
+    calls = []
+    for i, (name, args) in enumerate(tool_calls(stream)):
+        if first_edit is not None and i > first_edit:
+            break
+        if name in ("Read", "Edit", "Write", "MultiEdit"):
+            calls.append([name, anonymize(str(args.get("file_path", "")), repo, plugin)])
+        elif name == "Bash":
+            calls.append([name, anonymize(" ".join(str(args.get("command", "")).split())[:200], repo, plugin)])
+        else:
+            calls.append([name])
+    return {"condition": condition, "host": "claude-code", "model": "haiku", "arm": arm,
+            "target": target, "kind": kind, "run": index, "first_edit": first_edit,
+            "required_read_at": {f.split("/")[-1]: reads[f] for f in required},
+            "verdict": {f.split("/")[-1]: v for f, v in verdicts.items()}, "calls": calls}
+
+
+def verdicts_for(kind, required, first_edit, reads):
+    result = {}
+    for f in required:
+        read = reads[f]
+        if kind == "positive":
+            verdict = "fired" if read is not None and (first_edit is None or read < first_edit) else "skip"
+            if first_edit is None and read is None:
+                verdict = "skip-noedit"
+        else:
+            verdict = "opened" if read is not None else "clean"
+        result[f] = verdict
+    return result
+
+
+def remove(path):
+    if path is None:
+        return
+    link = path / "Library/Keychains"
+    if link.is_symlink():
+        link.unlink()
+    shutil.rmtree(path, ignore_errors=True)
+
+
+def run(arm, case, index, entry=False, before=None, condition=None):
+    repo = home = None
+    try:
+        repo = make_repo()
+        home, plugin = make_home(arm)
+        return run_in(arm, case, index, entry, before, condition, repo, home, plugin)
+    finally:
+        remove(repo)
+        remove(home)
+
+
+def run_in(arm, case, index, entry, before, condition, repo, home, plugin):
     target, kind, required, prompt = case
-    repo = make_repo()
-    home, plugin = make_home(arm)
     prompt = prompt.format(repo=repo.resolve())
     cmd = ["claude", "-p", "--model", "haiku", "--output-format", "stream-json", "--verbose",
            "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--plugin-dir", str(plugin),
@@ -243,24 +330,36 @@ def run(arm, case, index, entry=False, before=None):
         stream = result.stdout
     except subprocess.TimeoutExpired as error:
         stream = error.stdout.decode() if isinstance(error.stdout, bytes) else (error.stdout or "")
-    (repo / ".stream.jsonl").write_text(stream)
     if before is not None and snapshot() != before:
-        raise Escaped(f"guarded checkout changed during {arm} {target} {kind} run {index}: {repo}")
-    plugin = next((p.get("path") for line in stream.splitlines()[:20] if '"init"' in line
+        raise Escaped(f"guarded checkout changed during {arm} {target} {kind} run {index}")
+    loaded = next((p.get("path") for line in stream.splitlines()[:20] if '"init"' in line
                    for p in json.loads(line).get("plugins", []) if p.get("name") == "agentsmd"), "?")
     first_edit, reads = score(stream, required)
-    rows = []
-    for f in required:
-        read = reads[f]
-        if kind == "positive":
-            verdict = "fired" if read is not None and (first_edit is None or read < first_edit) else "skip"
-            if first_edit is None and read is None:
-                verdict = "skip-noedit"
-        else:
-            verdict = "opened" if read is not None else "clean"
-        rows.append("\t".join([arm, target, kind, f, str(index), verdict, str(first_edit), str(read),
-                               plugin, str(repo)]))
-    return rows
+    verdicts = verdicts_for(kind, required, first_edit, reads)
+    rows = ["\t".join([arm, target, kind, f, str(index), verdicts[f], str(first_edit), str(reads[f]),
+                       anonymize(loaded, repo, plugin), "<repo>"]) for f in required]
+    condition = condition or ("entry" if entry else "plain") + "-confined"
+    return rows, record(stream, condition, arm, target, kind, index, required, verdicts, repo, plugin)
+
+
+def records_from(tsv, condition, discard=()):
+    """Records for runs whose streams are still on disk (runs made before --record existed)."""
+    cases = {(c[0], c[1]): c for c in CASES}
+    seen = set()
+    for line in open(tsv):
+        arm, target, kind, _, index, _, _, _, loaded, repo = line.rstrip("\n").split("\t")
+        if (repo, arm) in seen:
+            continue
+        seen.add((repo, arm))
+        required = cases[(target, kind)][2]
+        stream = (pathlib.Path(repo) / ".stream.jsonl").read_text()
+        first_edit, reads = score(stream, required)
+        item = record(stream, condition, arm, target, kind, int(index), required,
+                      verdicts_for(kind, required, first_edit, reads),
+                      pathlib.Path(repo), pathlib.Path(loaded))
+        if target in discard:
+            item["discarded"] = "escaped its repository; rerun confined"
+        yield item
 
 
 def summarize(path):
@@ -289,21 +388,38 @@ def main():
     parser.add_argument("--arms", default="main,branch")
     parser.add_argument("--targets", help="comma-separated targets to run (default: all)")
     parser.add_argument("--score")
+    parser.add_argument("--record", help="append one JSON line per run to this file")
+    parser.add_argument("--record-from", nargs=2, metavar=("TSV", "CONDITION"),
+                        help="print records for a batch whose streams are still on disk")
+    parser.add_argument("--discard", default="", help="with --record-from: targets to mark discarded")
+    parser.add_argument("--self-check", action="store_true", help="only prove the guard sees ignored files")
     parser.add_argument("--entry", action="store_true",
                         help="prefix each prompt with /agentsmd:operations to load the entry point")
     args = parser.parse_args()
     if args.score:
         summarize(args.score)
         return
+    if args.record_from:
+        for item in records_from(*args.record_from, discard=args.discard.split(",")):
+            print(json.dumps(item))
+        return
     cases = [c for c in CASES if not args.targets or c[0] in args.targets.split(",")]
     jobs = [(arm, case, i) for arm in args.arms.split(",") for case in cases for i in range(args.runs)]
+    guard_self_check()
+    if args.self_check:
+        print("guard self-check OK")
+        return
     before = snapshot()
     with concurrent.futures.ThreadPoolExecutor(args.jobs) as pool:
         futures = [pool.submit(run, *job, entry=args.entry, before=before) for job in jobs]
         try:
             for future in futures:
-                for row in future.result():
+                rows, item = future.result()
+                for row in rows:
                     print(row, flush=True)
+                if args.record:
+                    with open(args.record, "a") as out:
+                        out.write(json.dumps(item) + "\n")
         except Escaped as error:
             for pending in futures:
                 pending.cancel()
