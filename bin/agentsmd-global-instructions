@@ -16,7 +16,7 @@ from typing import Any
 
 from agentsmd_instructions import (
     HOSTS, absolute, default_target, digest, initialize_preferences,
-    inspect_target, target_is_in_cache, target_location, validate_source,
+    guard_checkout, inspect_target, target_is_in_cache, target_location, validate_source,
 )
 
 
@@ -206,7 +206,7 @@ def main() -> int:
                     return emit(error, 2)
             else:
                 source = None
-            report = inspect_target(arguments.target, source)
+            report = guard_checkout(inspect_target(arguments.target, source))
             return emit(report, 0 if report["healthy"] else 2)
         return install(
             arguments.source,

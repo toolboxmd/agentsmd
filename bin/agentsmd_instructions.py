@@ -2,6 +2,8 @@
 from __future__ import annotations
 import hashlib
 import os
+import shlex
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -104,6 +106,65 @@ def inspect_target(target: Path, source: Path | None = None) -> dict[str, Any]:
         report["source_sha256"] = digest(source)
         if resolved != source.resolve():
             report.update(status="divergent-link", healthy=False)
+    return report
+
+
+def _git(root: Path, *arguments: str) -> subprocess.CompletedProcess[str] | None:
+    try:
+        return subprocess.run(["git", "-C", str(root), *arguments],
+                              capture_output=True, text=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
+def guard_checkout(report: dict[str, Any]) -> dict[str, Any]:
+    """Mark a healthy report unhealthy when its source clone left main or a release tag.
+
+    A thread can check out another commit in the live clone; the link still
+    resolves, so only the clone's Git state shows the damage.
+    """
+    if not report.get("healthy"):
+        return report
+    root = Path(str(report["resolved_target"])).parent.parent
+    if not (root / ".git").exists():
+        return report
+    quoted = shlex.quote(str(root))
+    git = f"git -C {quoted}"
+    branch = _git(root, "symbolic-ref", "-q", "--short", "HEAD")
+    deleted = _git(root, "ls-files", "--deleted")
+    if (branch is None or branch.returncode > 1 or
+            deleted is None or deleted.returncode != 0):
+        # A Git clone whose state cannot be read is not proven safe.
+        report.update(
+            healthy=False, status="source-checkout-unverified",
+            action=(
+                f"Git could not read the canonical AgentsMD clone {root}. Run "
+                f"`{git} status` and fix what it reports, then rerun inspect. "
+                + REREAD_ACTION))
+        return report
+    if branch.stdout.strip() != "main":
+        tag = _git(root, "describe", "--tags", "--exact-match", "HEAD")
+        if tag is None or tag.returncode != 0:
+            head = _git(root, "rev-parse", "--short", "HEAD")
+            report.update(
+                healthy=False, status="source-checkout-off-release",
+                checkout_head=(branch.stdout.strip() or
+                               (head.stdout.strip() if head else "unknown")),
+                action=(
+                    f"The canonical AgentsMD clone {root} is not on main or a release "
+                    "tag, so every host reads another revision. Do not work in it. "
+                    f"Restore it with `{git} switch main` (a clone that tracks main) or "
+                    f"`{git} checkout \"$({git} describe --tags --abbrev=0 origin/main)\"` "
+                    "(a release-tag install), then rerun inspect. " + REREAD_ACTION))
+            return report
+    if deleted.stdout.strip():
+        report.update(
+            healthy=False, status="source-checkout-files-missing",
+            missing_files=deleted.stdout.strip("\n").split("\n")[:20],
+            action=(
+                f"Tracked files are missing from the canonical AgentsMD clone {root}. "
+                f"Restore them with `{git} ls-files -z --deleted | xargs -0 {git} "
+                "restore --`, then rerun inspect. " + REREAD_ACTION))
     return report
 
 
@@ -211,6 +272,11 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
                         "action": "Set AGENTSMD_HOST or pass --host for this process; configured native sources differ or cannot be verified. " + REREAD_ACTION},
                         "preferences": {"status": "source-unavailable", "boundary": boundary,
                                         "action": "Suspend previously loaded preferences until the host source is selected."}}
+        guard_checkout(inspection)
+        if not inspection["healthy"]:
+            return {"instructions": inspection, "preferences": {
+                "status": "source-unavailable", "boundary": boundary,
+                "action": "Restore the canonical clone first; suspend previously loaded preferences until resolved."}}
         source = Path(inspection["resolved_target"])
         # Without a session record nothing proves which revision is in context;
         # the hook replaces this with session_action.

@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.6] - 2026-09-29
+
+### Changed
+
+- Report the canonical AgentsMD clone as unhealthy when it leaves main or a release tag or loses tracked files, with exact restore commands (#191)
+
 ## [14.5.5] - 2026-09-29
 
 ### Changed
