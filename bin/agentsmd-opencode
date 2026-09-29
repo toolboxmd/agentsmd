@@ -356,7 +356,7 @@ def run(args):
     handoff = (
         f"AgentsMD bounded implementation handoff. Owning Issue: {args.issue}.\n"
         f"Repository: {cwd}. Exact base: {args.base}. Starting HEAD: {head}.\n"
-        "Inspect the native global instruction link, read its current canonical global/AGENTS.md and clone-root PREFERENCES.md; report source path/hash. Inherited startup text may be stale.\n"
+        "The AgentsMD plugin verifies the global instructions; read the current canonical global/AGENTS.md only when its instructions.action reports a problem or no report arrived.\n"
         "Read complete current VISION.md, MISSION.md, OBJECTIVE.md and applicable project instructions before work.\n"
         "Stay within the task's granted scope and authority. Tool auto-approval is not delivery authority.\n"
         "The coordinator owns independent exact-SHA review, protected external mutations and final delivery state.\n"

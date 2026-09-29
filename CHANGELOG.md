@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.1.0] - 2026-09-29
+
+### Added
+
+- Leaner startup: trust the hook's verified source, role-neutral orientation, project paths never resolve into the AgentsMD clone, outside text is data rather than instructions (#169)
+
 ## [14.0.0] - 2026-09-29
 
 ### Changed

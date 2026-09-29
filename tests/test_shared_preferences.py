@@ -220,9 +220,14 @@ class SharedPreferencesTests(unittest.TestCase):
             payload = self.hook(event, source='compact')
             self.assertEqual(payload['preferences']['content'], self.private.read_text())
             self.assertNotIn('content', payload['instructions'])
-            self.assertIn('freshness', payload['instructions']['action'])
+            self.assertEqual(payload['instructions']['action'],
+                             'The canonical global/AGENTS.md is unchanged since this session '
+                             'started (same SHA-256). Nothing is needed.')
         self.source.write_text('# New shared contract\n')
         changed = self.hook()
+        self.assertEqual(changed['instructions']['action'],
+                         'The global rules changed since this session started. Read the current '
+                         'canonical global/AGENTS.md in full before acting.')
         self.assertNotEqual(original['instructions']['sha256'], changed['instructions']['sha256'])
         self.assertEqual(changed['instructions']['sha256'], hashlib.sha256(self.source.read_bytes()).hexdigest())
         self.assertIsNone(self.hook())
@@ -307,6 +312,15 @@ class SharedPreferencesTests(unittest.TestCase):
         self.assertEqual(self.command('project-direction', 'inspect', '--host', 'claude')
                          ['preferences']['content'], self.private.read_text())
         self.assertEqual(self.hook('SessionStart')['preferences']['status'], 'source-unavailable')
+
+    def test_unhealthy_source_asks_for_full_reread(self):
+        self.install()
+        self.source.unlink()
+        instructions = self.hook('SessionStart')['instructions']
+        self.assertFalse(instructions['healthy'])
+        self.assertEqual(instructions['action'],
+                         'The global rules in context are unverified. Read the current canonical '
+                         'global/AGENTS.md in full before acting and report this status.')
 
     def test_archive_ships_example_and_excludes_force_tracked_private_marker(self):
         repo = self.root / 'artifact-fixture'
