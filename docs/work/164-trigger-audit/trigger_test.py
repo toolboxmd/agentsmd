@@ -597,6 +597,10 @@ def command(host, model, effort, repo, plugin, prompt):
         cmd = ["claude", "-p", "--model", model, "--output-format", "stream-json", "--verbose",
                "--permission-mode", "acceptEdits", "--add-dir", str(repo), "--add-dir", str(plugin),
                "--plugin-dir", str(plugin),
+               # acceptEdits denies every non-read shell command in -p; allow Bash
+               # so mid-task runs can branch, test and commit (the run stays
+               # confined to its temporary HOME and repository, as on the other hosts).
+               "--allowedTools", "Bash",
                "--no-session-persistence", "--max-turns", "40"]
         return cmd + (["--effort", effort] if effort else []) + [prompt]
     if host == "codex":

@@ -161,6 +161,22 @@ class OpenCodeReadScopeTests(unittest.TestCase):
         self.assertEqual(rules[f"{plugin}/**"], "allow")
 
 
+class ClaudeCommandTests(unittest.TestCase):
+    """Claude runs can read the plugin copy and run shell commands (#174)."""
+
+    def test_claude_command_allows_the_plugin_copy_and_bash(self):
+        t = load_harness()
+        repo, plugin = pathlib.Path("/tmp/repo"), pathlib.Path("/tmp/home/plugin")
+        cmd = t.command("claude", "claude-opus-5-5", "medium", repo, plugin, "prompt")
+        pairs = list(zip(cmd, cmd[1:]))
+        self.assertIn(("--permission-mode", "acceptEdits"), pairs)
+        self.assertIn(("--add-dir", str(repo)), pairs)
+        self.assertIn(("--add-dir", str(plugin)), pairs)
+        self.assertIn(("--allowedTools", "Bash"), pairs)
+        self.assertNotIn("--dangerously-skip-permissions", cmd)
+        self.assertEqual(cmd[-1], "prompt")
+
+
 class NoEditVerdictTests(unittest.TestCase):
     """A positive run that never edits is not a hit (#174)."""
 
