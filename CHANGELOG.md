@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.3.1] - 2026-09-29
+
+### Changed
+
+- Vision, Mission and Objective fit the 1,500-character direction cap (#175)
+
 ## [14.3.0] - 2026-09-29
 
 ### Added
