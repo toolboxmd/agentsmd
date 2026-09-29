@@ -137,6 +137,16 @@ class FailedReadTests(unittest.TestCase):
                 {"tool_name": "Bash", "tool_use_id": "b1", "tool_input": {}}]})
         self.assertEqual(self.verdict(stream), "skip")
 
+    def test_a_shell_read_after_cd_counts(self):
+        shell = claude_call("b1", "Bash", command="cd /p/workflows/technical-writing/references && cat prose.md")
+        stream = claude_stream(shell, claude_result("b1", False), self.edit)
+        self.assertEqual(self.verdict(stream), "fired")
+
+    def test_a_shell_command_naming_only_the_file_does_not_count(self):
+        shell = claude_call("b1", "Bash", command="cat prose.md")
+        stream = claude_stream(shell, claude_result("b1", False), self.edit)
+        self.assertEqual(self.verdict(stream), "skip")
+
     def test_a_failed_opencode_read_is_not_counted(self):
         def part(call_id, tool, status, **arguments):
             return {"type": "tool_use", "part": {"callID": call_id, "tool": tool,

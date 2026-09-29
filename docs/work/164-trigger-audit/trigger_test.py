@@ -452,8 +452,11 @@ def failed_calls(stream, host="claude"):
 def reads_file(call, f):
     name, path, command, skill = call
     command = expand_braces(command)
+    # A shell read may reach the file through `cd <dir> && cat <name>`, so every part
+    # of the path must appear, not necessarily joined.
     return ((name == "Read" and path.endswith(f))
-            or (name == "Bash" and f in command and READERS.search(command) is not None))
+            or (name == "Bash" and READERS.search(command) is not None
+                and (f in command or all(part in command for part in f.split("/")))))
 
 
 def score(stream, required, host="claude"):
