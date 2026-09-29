@@ -7,7 +7,7 @@ SemVer and identify one user-consumable repository state.
 
 ### Changed
 
-- Elon gate reads a --body-file written by a heredoc earlier in the same command, checks only the heredoc that reaches stdin, and accepts only the documented field label forms (#172)
+- Document that Grok loads a repository's own AGENTS.md only in a trusted folder, and how to trust it (#167)
 
 ## [14.5.2] - 2026-09-29
 

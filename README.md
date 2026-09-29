@@ -85,6 +85,24 @@ prompt. The file and a plugin hook share one session cache, so a session that
 reaches both still receives Project Direction once. `status` reports the file
 and `uninstall` removes it only when AgentsMD owns it.
 
+Grok loads a repository's own `AGENTS.md` only after you trust that folder.
+Without trust, an interactive session asks "Do you trust the contents of this
+directory?" and quits on No, while `grok -p` silently skips the file. Trust
+each repository once from its main checkout:
+
+```sh
+cd /path/to/repository
+grok --trust inspect
+```
+
+The output shows `Project trusted: yes` and lists the repository's
+`AGENTS.md` under Project Instructions (on macOS it may print as `Agents.md`).
+Answering Yes to the interactive prompt does the same. Grok records the grant
+in `$GROK_HOME/trusted_folders.toml`; it covers the repository's
+subdirectories and Git worktrees, and also enables the repository's own MCP
+servers, hooks and Skills. Review an unfamiliar repository before trusting it.
+Grok 1.0.44 behaves this way.
+
 Grok must resolve `agentsmd` to its own plugin; a same-named package in the
 Claude marketplace clone can win instead
 ([toolboxmd/marketplace#52](https://github.com/toolboxmd/marketplace/issues/52)).
@@ -164,7 +182,8 @@ Then check the host itself:
   `/agentsmd:operations` is available.
 - **Grok Build:** `grok inspect --json` lists the global `AGENTS.md` under
   `projectInstructions`, the `pre_tool_use` hook from `~/.grok/hooks`, and the
-  `agentsmd` plugin.
+  `agentsmd` plugin. Run inside a repository, it also shows
+  `"projectTrusted": true` and lists the repository's `AGENTS.md`.
 - **OpenCode:** `opencode debug skill` lists `operations`.
 
 A healthy link and a loaded hook do not prove the model follows the contract.
