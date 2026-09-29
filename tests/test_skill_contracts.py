@@ -2207,6 +2207,20 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
 
+    def test_readme_trusts_each_repository_for_grok_project_rules(self) -> None:
+        # Grok 1.0.44 skips a repository's own AGENTS.md until the folder is
+        # trusted; grok -p skips it silently (#167).
+        normalized = " ".join(read_text("README.md").split())
+        for required in (
+            "grok --trust inspect",
+            "`grok -p` silently skips the file",
+            "`Project trusted: yes`",
+            '`"projectTrusted": true`',
+            "subdirectories and Git worktrees",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
+
     def test_readme_records_per_host_lifecycle_delivery(self) -> None:
         readme = read_text("README.md")
         normalized = " ".join(readme.split())

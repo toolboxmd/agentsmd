@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.3] - 2026-09-29
+
+### Changed
+
+- Document that Grok loads a repository's own AGENTS.md only in a trusted folder, and how to trust it (#167)
+
 ## [14.5.2] - 2026-09-29
 
 ### Changed
