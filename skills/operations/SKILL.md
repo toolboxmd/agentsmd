@@ -36,10 +36,10 @@ not completing it. A clear microfix stays direct.
 | --- | --- |
 | Initialize or reload Project Direction | [Context](workflows/project-direction/references/context.md) |
 | Repair or change Project Direction | [Project Direction](workflows/project-direction/index.md) |
-| Research facts, mechanics, history, prior work, or explain a system | [Research](workflows/research/index.md) |
+| Before researching facts, mechanics, history, or prior work, or explaining how a system works (not for a direct answer from the code at hand) | [Research](workflows/research/index.md) |
 | Choose interfaces, state, architecture, migration, or concurrent behavior | [Software design](workflows/software-design/index.md) |
-| Resolve a question with a disposable experiment or UI/logic demo | [Prototype](workflows/prototype/index.md) |
-| Reproduce a defect, test a fix, investigate runtime behavior or performance | [Diagnosis](workflows/diagnosis/index.md) |
+| Before running a disposable experiment or building a UI/logic demo to resolve a question | [Prototype](workflows/prototype/index.md) |
+| Before running, reproducing, or testing anything for a defect, a fix, or runtime behavior or performance | [Diagnosis](workflows/diagnosis/index.md) |
 | Resolve unresolved human-owned choices, or the user asks to be grilled or stress-test their thinking | [Grilling](workflows/grilling/index.md); [grill with docs](workflows/grill-with-docs/index.md) when terminology or ADR work is needed |
 | Before editing `GLOSSARY.md`, `GLOSSARY-MAP.md`, or an ADR, or when agreeing a term | [Domain modeling](workflows/domain-modeling/index.md); [GLOSSARY-FORMAT.md](workflows/domain-modeling/GLOSSARY-FORMAT.md) before editing a glossary |
 | Map dependent unresolved decisions | [Wayfinder](workflows/wayfinder/index.md) |
@@ -47,7 +47,7 @@ not completing it. A clear microfix stays direct.
 | Edit tracked files or select a workspace | [Implementation](references/implementation.md) |
 | Before editing or adding a test file | [Test design](references/test-design.md) |
 | Delegate or coordinate dependencies, recover a handoff | [Orchestration](references/orchestration.md) |
-| Choose or run proof, review, or claim readiness | [Verification](references/verification.md); [code review](workflows/code-review/index.md) for review findings |
+| Before opening or updating a PR, claiming readiness, or choosing or running proof or review | [Verification](references/verification.md); [code review](workflows/code-review/index.md) for review findings |
 | Create or repair product-driving verification instructions | [Project verification](workflows/project-verification/index.md) |
 | Retain research, experiment, review, or other task evidence | [Artifact placement](references/artifacts.md) |
 | Before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions | [Writing for agents](workflows/writing-for-agents/index.md); [prose](workflows/technical-writing/references/prose.md) before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions; [SKILL-MECHANICS.md](workflows/writing-for-agents/SKILL-MECHANICS.md) before editing a `SKILL.md` or a Skill description |

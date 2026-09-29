@@ -137,6 +137,16 @@ class FailedReadTests(unittest.TestCase):
                 {"tool_name": "Bash", "tool_use_id": "b1", "tool_input": {}}]})
         self.assertEqual(self.verdict(stream), "skip")
 
+    def test_a_shell_read_after_cd_counts(self):
+        shell = claude_call("b1", "Bash", command="cd /p/workflows/technical-writing/references && cat prose.md")
+        stream = claude_stream(shell, claude_result("b1", False), self.edit)
+        self.assertEqual(self.verdict(stream), "fired")
+
+    def test_a_shell_command_naming_only_the_file_does_not_count(self):
+        shell = claude_call("b1", "Bash", command="cat prose.md")
+        stream = claude_stream(shell, claude_result("b1", False), self.edit)
+        self.assertEqual(self.verdict(stream), "skip")
+
     def test_a_failed_opencode_read_is_not_counted(self):
         def part(call_id, tool, status, **arguments):
             return {"type": "tool_use", "part": {"callID": call_id, "tool": tool,
@@ -225,6 +235,69 @@ class ClaudeSandboxTests(unittest.TestCase):
         repo = t.make_repo()
         self.addCleanup(t.remove, repo)
         self.assertFalse(repo.resolve().is_relative_to(t.REAL_HOME))
+
+
+class SweepMomentTests(unittest.TestCase):
+    """Sweep moments and fixtures (#182)."""
+
+    def setUp(self):
+        self.t = load_harness()
+        self.stream = claude_stream(
+            claude_call("r1", "Read", file_path="/p/workflows/" + PROSE),
+            claude_call("b1", "Bash", command="git tag v1.0.1"),
+            claude_call("a1", "Agent", prompt="x"),
+            claude_call("e1", "Edit", file_path="/repo/README.md"))
+
+    def test_the_earliest_alternative_wins(self):
+        m = self.t.moment_index
+        self.assertEqual(m(self.stream, "claude", ("edit",)), 3)
+        self.assertEqual(m(self.stream, "claude", ("edit", "bash:git (merge|tag)")), 1)
+        self.assertEqual(m(self.stream, "claude", ("edit", "tool:Agent|Task")), 2)
+        self.assertEqual(m(self.stream, "claude", ("end",)), 4)
+        self.assertEqual(m(self.stream, "claude", "git tag"), 1)  # a plain regex is a shell moment
+        self.assertIsNone(m(self.stream, "claude", ("bash:gh release",)))
+
+    def test_a_read_before_the_end_of_an_answer_only_run_fires(self):
+        first, reads, _ = self.t.score(self.stream, [PROSE], "claude")
+        moment = self.t.moment_index(self.stream, "claude", ("end",))
+        self.assertEqual(self.t.verdicts_for("positive", [PROSE], moment, reads)[PROSE], "fired")
+
+    def test_record_keys_stay_unique_when_file_names_collide(self):
+        key = self.t.record_key
+        required = ["research/index.md", "grilling/index.md", "references/delivery.md"]
+        self.assertEqual(key("research/index.md", required), "research/index.md")
+        self.assertEqual(key("references/delivery.md", required), "delivery.md")
+
+    def test_a_read_without_the_action_is_read_noaction(self):
+        t = self.t
+        stream = claude_stream(claude_call("r1", "Read", file_path="/p/workflows/" + PROSE))
+        case = ("row", "positive", [PROSE], "prompt", ("bash:git merge",))
+        repo = t.make_repo()
+        self.addCleanup(t.remove, repo)
+        saved = t.execute
+        self.addCleanup(setattr, t, "execute", saved)
+        t.execute = lambda *a, **k: stream
+        rows, item = t.run_in("claude", "m", "", "arm", case, 0, None, "c", repo, repo, repo, {})
+        self.assertEqual(item["verdict"], {"prose.md": "read-noaction"})
+        t.execute = lambda *a, **k: claude_stream(claude_call("b1", "Bash", command="ls"))
+        rows, item = t.run_in("claude", "m", "", "arm", case, 0, None, "c", repo, repo, repo, {})
+        self.assertEqual(item["verdict"], {"prose.md": "skip-nomoment"})
+
+    def test_extra_files_and_branches_reach_the_fixture(self):
+        repo = self.t.make_repo({"TODO.md": "# TODO\n", self.t.BRANCHES: ["task/docs"]})
+        self.addCleanup(self.t.remove, repo)
+        self.assertEqual((repo / "TODO.md").read_text(), "# TODO\n")
+        branches = __import__("subprocess").run(["git", "-C", str(repo), "branch", "--list", "task/docs"],
+                                                capture_output=True, text=True).stdout
+        self.assertIn("task/docs", branches)
+
+    def test_every_sweep_row_links_an_existing_procedure(self):
+        skill = ROOT / "skills/operations"
+        files = [str(p.relative_to(skill)) for p in skill.rglob("*.md")]
+        self.assertEqual(len(self.t.SWEEP_FILES), 21)
+        for suffix in self.t.SWEEP_FILES:
+            self.assertEqual(sum(f.endswith(suffix) for f in files), 1, suffix)
+            self.assertIn(suffix, (skill / "SKILL.md").read_text())
 
 
 class NoEditVerdictTests(unittest.TestCase):

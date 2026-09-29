@@ -311,8 +311,9 @@ class PluginPackagingTests(unittest.TestCase):
         self.assertEqual(output["hookEventName"], "SessionStart")
         context = output["additionalContext"]
         skill = (ROOT / "skills/operations/SKILL.md").resolve()
-        self.assertIn(f"invoke the `operations` Skill (or read {skill})", context)
-        for moment in ("first file edit", "commit", "GitHub Issue", "pull request"):
+        self.assertIn(f"use the `operations` Skill (or read {skill})", context)
+        for moment in ("start of every task", "researching", "an experiment", "reproducing a defect",
+                       "first file edit", "commit", "GitHub Issue", "pull request"):
             self.assertIn(moment, context)
         # The Project Direction hook keeps 10% of each host limit free for
         # other hooks; the pointer must fit there, so on OpenCode, where both

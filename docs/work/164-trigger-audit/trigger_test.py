@@ -201,6 +201,95 @@ MIDTASK = [
 # Stands in for the GitHub CLI: prints a fake URL and never touches the network.
 GH_STUB = "#!/bin/sh\ncase \"$1 $2\" in 'pr create'|'issue create') echo https://github.com/example/greeter/pull/1;; esac\nexit 0\n"
 
+# Stands in for the Grok CLI when another host is tested: answers without a model call.
+GROK_STUB = "#!/bin/sh\necho 'Grok (stub): accept a list, but keep greet(name) working.'\nexit 0\n"
+BRANCHES = "::branches"
+
+# Routing-row sweep (#182): one naive prompt per operations row not measured before,
+# as (row, "positive", [linked procedure], prompt, moment, extra fixture files).
+# A read counts when it comes before the moment (see moment_index).
+EDIT = ("edit",)
+ANSWER = ("edit", "end")
+SWEEP = [
+    ("context", "positive", ["project-direction/references/context.md"],
+     "Reload this project's Project Direction from {repo} and tell me whether it is current and complete.", ANSWER),
+    ("project-direction", "positive", ["project-direction/index.md"],
+     "Change the objective in {repo}/OBJECTIVE.md: Greeter now aims to ship 2.0 with greetings in five languages.", EDIT),
+    ("research", "positive", ["research/index.md"],
+     "Research how greet() in {repo}/src/app.py came to spell 'Helo': look at the code and the git history and "
+     "explain what you find. Do not change anything.", ANSWER),
+    ("software-design", "positive", ["software-design/index.md"],
+     "Choose the interface and state for localized greetings in {repo}/src/app.py (function signatures, where "
+     "languages live, how one is chosen), then implement it.", EDIT),
+    ("prototype", "positive", ["prototype/index.md"],
+     "Before we pick an approach, answer with a disposable experiment: is an f-string or str.format faster for "
+     "greet() in {repo}/src/app.py? Leave src/app.py unchanged.", ("edit", "bash:python3? ", "end")),
+    ("diagnosis", "positive", ["diagnosis/index.md"],
+     "Users report that divide(1, 0) from {repo}/src/app.py crashes. Reproduce the defect and find its cause, "
+     "then fix it.", ("edit", "bash:python3? ")),
+    ("grilling", "positive", ["grilling/index.md"],
+     "Grill me on my plan to rewrite Greeter ({repo}) in Rust next month. Stress-test my thinking.", ANSWER),
+    ("wayfinder", "positive", ["wayfinder/index.md"],
+     "Before Greeter ({repo}) can ship 2.0 we must decide on i18n, an API break and packaging, and these "
+     "decisions depend on each other. Map the unresolved decisions and their dependencies.", ANSWER),
+    ("to-spec", "positive", ["to-spec/index.md"],
+     "Produce a specification for localized greetings in Greeter ({repo}) and decompose it into tickets.",
+     ("edit", "bash:gh issue create", "end")),
+    ("implementation", "positive", ["references/implementation.md"],
+     "Add a subtract(a, b) function to {repo}/src/app.py.", EDIT),
+    ("orchestration", "positive", ["references/orchestration.md"],
+     "Split this into parallel work and delegate it: one agent adds a multiply(a, b) function to "
+     "{repo}/src/app.py while another documents it in {repo}/README.md. Coordinate them.",
+     ("edit", "tool:Agent|Task")),
+    ("project-verification", "positive", ["project-verification/index.md"],
+     "Create product-driving verification instructions for Greeter ({repo}): how an agent should run and check "
+     "the product end to end.", EDIT),
+    ("artifacts", "positive", ["references/artifacts.md"],
+     "Time greet() in {repo}/src/app.py over 100000 calls and retain the result as task evidence in the "
+     "repository.", EDIT),
+    ("reflection", "positive", ["reflection/index.md"],
+     "You keep committing to {repo} without running the tests first, and I have corrected you three times. "
+     "Reflect on that and fix it where it belongs.", ANSWER),
+    ("preferences-pruning", "positive", ["reflection/references/preferences-pruning.md"],
+     "Tidy {repo}/PREFERENCES.md: remove what no longer earns its place.", EDIT,
+     {"PREFERENCES.md": "# Personal preferences\n\n- Use tabs.\n- Always run tests before committing.\n"
+                        "- Remind me about the 2025 migration.\n- Prefer short commit messages.\n"}),
+    ("delivery-profile", "positive", ["delivery-profile/index.md"],
+     "Add the test command `python3 -m unittest` to the delivery configuration in "
+     "{repo}/.toolboxmd/delivery.json.", EDIT,
+     {".toolboxmd/delivery.json": '{\n  "schema": 1,\n  "proof": {\n    "commands": []\n  }\n}\n'}),
+    ("delivery", "positive", ["references/delivery.md"],
+     "The divide fix on branch fix/divide in {repo} is done. Merge it into the main branch and release it as "
+     "v1.0.1.", ("edit", r"bash:git merge (?!-base)|git tag (-[as] )?v?\d|gh (pr merge|release create)"),
+     {BRANCHES: {"fix/divide": {"src/app.py": APP.replace(
+         "    return a / b", "    if b == 0:\n        raise ValueError(\"b must not be 0\")\n    return a / b")}}}),
+    ("finalization", "positive", ["references/finalization.md"],
+     "The Greeter 1.0 work in {repo} is complete. Close it out and retire the leftover task branches.",
+     ("edit", "bash:git branch -[dD]|gh issue close|git worktree remove"),
+     {BRANCHES: ["task/docs", "task/tests"]}),
+    ("repository-setup", "positive", ["references/repository-setup.md"],
+     "The repository settings for {repo} have drifted: the default branch, required checks and branch protection "
+     "no longer match what we use. Bring the repository setup back in line.",
+     ("edit", "bash:gh (api|repo edit)")),
+    ("reconciliation", "positive", ["references/reconciliation.md"],
+     "{repo} still has TODO.md and STATUS.md from an old workflow. Reconcile these legacy files.",
+     ("edit", "bash:git rm|\\brm "),
+     {"TODO.md": "# TODO\n\n- Add subtract()\n- Translate greetings\n",
+      "STATUS.md": "# Status\n\nWorking on 1.0.\n"}),
+    ("use-grok", "positive", ["use-grok/index.md"],
+     "Consult Grok on whether greet() in {repo}/src/app.py should accept a list of names.",
+     (r"bash:\bgrok\s+(\\\s*)?(-p\b|--prompt)", "end")),
+]
+SWEEP_FILES = [case[2][0] for case in SWEEP]
+# Shared negatives: prompts that match none of the rows above, scored against every
+# row's procedure (implementation.md is legitimate on the edit prompt).
+SWEEP += [
+    ("sweep-negative-question", "negative", SWEEP_FILES,
+     "What does add(2, 3) return in {repo}/src/app.py? Answer from the code only.", ANSWER),
+    ("sweep-negative-edit", "negative", [f for f in SWEEP_FILES if f != "references/implementation.md"],
+     "Add a one-line docstring to add() in {repo}/src/app.py. Nothing else.", EDIT),
+]
+
 READERS = re.compile(r"\b(cat|sed|head|tail|nl|less|awk|bat|grep|rg|python3?)\b")
 SHELL_EDIT = re.compile(r"(sed -i|\bcat\s*>|\btee\b|>\s*[\w./-]+\.(py|md)\b|python3? -\s*<<|apply_patch)")
 READ_TOOLS = {"Read", "read_file", "read"}
@@ -210,18 +299,22 @@ SHELL_TOOLS = {"Bash", "bash", "run_terminal_command", "shell"}
 SKILL_TOOLS = {"Skill", "skill"}
 
 
-def make_repo():
+def make_repo(extras=None):
     root = pathlib.Path(tempfile.mkdtemp(prefix=PREFIX))
     try:
-        populate_repo(root)
+        populate_repo(root, extras)
     except BaseException:
         remove(root)
         raise
     return root
 
 
-def populate_repo(root):
-    for rel, text in FILES.items():
+def populate_repo(root, extras=None):
+    """The fixture, plus a case's extra files; the key BRANCHES maps branches to create to
+    the files of one commit on each (empty for a branch at the initial commit)."""
+    extras = dict(extras or {})
+    branches = extras.pop(BRANCHES, {})
+    for rel, text in {**FILES, **extras}.items():
         path = root / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text)
@@ -230,6 +323,16 @@ def populate_repo(root):
     subprocess.run(["git", "add", "-A"], cwd=root, check=True)
     subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "init"],
                    cwd=root, check=True)
+    for branch, files in (branches.items() if isinstance(branches, dict) else ((b, {}) for b in branches)):
+        subprocess.run(["git", "branch", branch], cwd=root, check=True)
+        if files:
+            subprocess.run(["git", "checkout", "-q", branch], cwd=root, check=True)
+            for rel, text in files.items():
+                (root / rel).write_text(text)
+            subprocess.run(["git", "add", "-A"], cwd=root, check=True)
+            subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", f"work on {branch}"],
+                           cwd=root, check=True)
+            subprocess.run(["git", "checkout", "-q", "-"], cwd=root, check=True)
 
 
 def _path(args):
@@ -349,8 +452,11 @@ def failed_calls(stream, host="claude"):
 def reads_file(call, f):
     name, path, command, skill = call
     command = expand_braces(command)
+    # A shell read may reach the file through `cd <dir> && cat <name>`, so every part
+    # of the path must appear, not necessarily joined.
     return ((name == "Read" and path.endswith(f))
-            or (name == "Bash" and f in command and READERS.search(command) is not None))
+            or (name == "Bash" and READERS.search(command) is not None
+                and (f in command or all(part in command for part in f.split("/")))))
 
 
 def score(stream, required, host="claude"):
@@ -518,6 +624,9 @@ def make_home(host, arm):
         (home / "bin").mkdir()
         (home / "bin/gh").write_text(GH_STUB)
         (home / "bin/gh").chmod(0o755)
+        if host != "grok":  # the Grok host needs the real CLI; elsewhere a stub spends no credits
+            (home / "bin/grok").write_text(GROK_STUB)
+            (home / "bin/grok").chmod(0o755)
         env["PATH"] = f"{home / 'bin'}{os.pathsep}{env['PATH']}"
         SETUP[host](home, plugin, env)
         return home, plugin, env
@@ -722,12 +831,31 @@ def usage(stream, host):
     return total
 
 
-def moment_index(stream, host, pattern):
-    """Index of the first shell command matching pattern, or None."""
-    for i, (name, _, command_text, _) in enumerate(tool_calls(stream, host)):
-        if name == "Bash" and re.search(pattern, command_text):
-            return i
-    return None
+def moment_index(stream, host, spec):
+    """Index of the case's moment, or None.
+
+    spec is a shell-command regex, or a tuple of alternatives, the earliest of which
+    wins: "edit" (first file edit), "bash:<regex>", "tool:<name regex>", or "end"
+    (after the last call, for rows whose action is the answer itself)."""
+    calls = list(tool_calls(stream, host))
+    hits = []
+    for alternative in ([spec] if isinstance(spec, str) else spec):
+        if alternative == "end":
+            hits.append(len(calls))
+            continue
+        for i, (name, path, command_text, _) in enumerate(calls):
+            if alternative == "edit":
+                hit = ((name == "Edit" and "/.claude/" not in path)
+                       or (name == "Bash" and SHELL_EDIT.search(command_text) is not None))
+            elif alternative.startswith("tool:"):
+                hit = re.fullmatch(alternative[5:], name) is not None
+            else:
+                pattern = alternative[5:] if alternative.startswith("bash:") else alternative
+                hit = name == "Bash" and re.search(pattern, command_text) is not None
+            if hit:
+                hits.append(i)
+                break
+    return min(hits) if hits else None
 
 
 def record(stream, condition, host, model, effort, arm, target, kind, index, required, verdicts, repo, plugin,
@@ -751,8 +879,8 @@ def record(stream, condition, host, model, effort, arm, target, kind, index, req
             calls.append([name])
     item = {"condition": condition, "host": HOST_LABEL.get(host, host), "model": model, "arm": arm,
             "target": target, "kind": kind, "run": index, "first_edit": first_edit,
-            "required_read_at": {f.split("/")[-1]: reads[f] for f in required},
-            "verdict": {f.split("/")[-1]: v for f, v in verdicts.items()}, "calls": calls}
+            "required_read_at": {record_key(f, required): reads[f] for f in required},
+            "verdict": {record_key(f, required): v for f, v in verdicts.items()}, "calls": calls}
     if effort:
         item["effort"] = effort
     item["entry_loaded_at"] = entry
@@ -767,6 +895,12 @@ def record(stream, condition, host, model, effort, arm, target, kind, index, req
 
 
 HOST_LABEL = {"claude": "claude-code"}
+
+
+def record_key(f, required):
+    """A required file's key in a record: its name, or its full suffix when names collide."""
+    name = f.split("/")[-1]
+    return name if sum(g.split("/")[-1] == name for g in required) == 1 else f
 
 
 def verdicts_for(kind, required, first_edit, reads):
@@ -797,7 +931,7 @@ def remove(path):
 def run(host, model, effort, arm, case, index, before=None, condition="plain-confined"):
     repo = home = None
     try:
-        repo = make_repo()
+        repo = make_repo(case[5] if len(case) > 5 else None)
         home, plugin, env = make_home(host, arm)
         return run_in(host, model, effort, arm, case, index, before, condition, repo, home, plugin, env)
     finally:
@@ -832,8 +966,8 @@ def login_changes(before, after):
 
 
 def run_in(host, model, effort, arm, case, index, before, condition, repo, home, plugin, env):
-    target, kind, required, prompt, *moment = case
-    moment = moment[0] if moment else None
+    target, kind, required, prompt, *rest = case
+    moment = rest[0] if rest else None
     prompt = prompt.format(repo=repo.resolve())
     logins = {path: fingerprint(path) for path in login_sources(host)}
     stream = execute(host, command(host, model, effort, repo, plugin, prompt), repo, env)
@@ -846,8 +980,9 @@ def run_in(host, model, effort, arm, case, index, before, condition, repo, home,
     if moment is not None:
         first_edit = moment_index(stream, host, moment)
     verdicts = verdicts_for(kind, required, first_edit, reads)
-    if moment is not None and first_edit is None:
-        verdicts = {f: "skip-nomoment" for f in required}
+    if moment is not None and first_edit is None and kind == "positive":
+        # The action never happened: a read still shows the procedure was followed.
+        verdicts = {f: "read-noaction" if reads[f] is not None else "skip-nomoment" for f in required}
     if next(tool_calls(stream, host), None) is None:
         # No tool call at all: a provider error or rate limit, not a measurement.
         verdicts = {f: "no-output" for f in required}
@@ -949,6 +1084,7 @@ def main():
     parser.add_argument("--jobs", type=int, default=8)
     parser.add_argument("--arms", default="main,branch", help="comma-separated arms: main, branch, or name=ref")
     parser.add_argument("--midtask", action="store_true", help="run the mid-task cases instead")
+    parser.add_argument("--sweep", action="store_true", help="run the routing-row sweep cases instead (#182)")
     parser.add_argument("--targets", help="comma-separated targets to run (default: all)")
     parser.add_argument("--score")
     parser.add_argument("--summary", help="print per-host tables from a records file")
@@ -961,7 +1097,8 @@ def main():
     if args.summary:
         summarize_records(args.summary)
         return
-    cases = [c for c in (MIDTASK if args.midtask else CASES) if not args.targets or c[0] in args.targets.split(",")]
+    pool = SWEEP if args.sweep else MIDTASK if args.midtask else CASES
+    cases = [c for c in pool if not args.targets or c[0] in args.targets.split(",")]
     arms = parse_arms(args.arms)
     # Arms interleave, so a quota or rate limit reached mid-batch hits both alike.
     jobs = [(arm, case, i) for case in cases for i in range(args.runs) for arm in arms]

@@ -25,10 +25,11 @@ def context() -> str:
             "Invoke the operations Skill before the first edit."
         )
     return (
-        "AgentsMD: before the first file edit, commit, GitHub Issue or pull request of a task, "
-        f"invoke the `operations` Skill (or read {SKILL}) and read the procedure its routing "
-        "table links for that action, such as the writing, test, glossary, version-control or "
-        "verification procedure. Do this for small tasks too; it takes one read.\n"
+        "AgentsMD: at the start of every task, and again before each new kind of action "
+        "(researching, an experiment, reproducing a defect, the first file edit, a commit, a GitHub "
+        f"Issue or a pull request), use the `operations` Skill (or read {SKILL}) and read the "
+        "procedure its routing table links for that action. Read it as its own step, before any "
+        "command for that action. Do this for small tasks too.\n"
     )
 
 

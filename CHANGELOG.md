@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.0] - 2026-09-29
+
+### Added
+
+- Operations pointer applies at every task start and before each new kind of action; verification, research, prototype and diagnosis rows name the action (#182)
+
 ## [14.4.2] - 2026-09-29
 
 ### Changed
