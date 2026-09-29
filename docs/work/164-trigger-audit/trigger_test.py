@@ -1021,9 +1021,10 @@ def summarize(path):
 
 
 def login_status(record):
-    """`unknown` when `login_files_changed` is null (runs before c35c736 did not record
-    it), `unchanged` for an empty list, `changed` for a non-empty list."""
-    value = record["login_files_changed"]
+    """`unknown` when `login_files_changed` is null or absent (runs before c35c736 and
+    the post-install canary did not record it), `unchanged` for an empty list,
+    `changed` for a non-empty list."""
+    value = record.get("login_files_changed")
     if value is None:
         return "unknown"
     if isinstance(value, list) and all(isinstance(v, str) for v in value):
@@ -1037,8 +1038,12 @@ def summarize_records(path, condition="plain-confined"):
     for line in open(path):
         r = json.loads(line)
         login_status(r)  # validates the field; the tables do not depend on it
-        if r.get("condition") == condition and "source" in r and "discarded" not in r:
+        if "discarded" in r:
+            continue
+        if r.get("condition") == condition and "source" in r:
             groups.setdefault((r["host"], r["model"], r.get("effort", "")), []).append(r)
+        elif r.get("condition") == "live-install":  # post-install canary: one run per host, pooled
+            groups.setdefault(("every host", "live install", ""), []).append({**r, "arm": "live-install"})
     for (host, model, effort), rs in groups.items():
         valid = [r for r in rs if "no-output" not in r["verdict"].values()]
         arms = list(dict.fromkeys(r["arm"] for r in rs))
