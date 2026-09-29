@@ -89,6 +89,42 @@ function loadContext(directory, sessionID) {
   return context;
 }
 
+// A coarse filter; the loader parses the shell command and decides.
+const MAY_CREATE = /\bgh\b[\s\S]*\bcreate\b/;
+
+// The loader owns the Elon gate; the plugin only forwards possible gh create
+// calls to it and turns its exit status 2 into a thrown error, which blocks the
+// tool. A loader that cannot run blocks too, so the gate never fails open.
+function elonGate(directory, sessionID, tool, args) {
+  const text = JSON.stringify(args ?? {});
+  if (!MAY_CREATE.test(text)) {
+    return null;
+  }
+  let result;
+  try {
+    result = spawnSync(loaderPath(), ["hook", "--host", "opencode"], {
+      input: JSON.stringify({
+        hook_event_name: "PreToolUse",
+        cwd: directory,
+        session_id: sessionID,
+        tool_name: tool,
+        tool_input: args ?? {},
+      }),
+      encoding: "utf8",
+      maxBuffer: MAX_OUTPUT_BYTES,
+    });
+  } catch (error) {
+    return `AgentsMD could not run its Elon check (${error && error.message}); fix the AgentsMD install before creating Issues or PRs.`;
+  }
+  if (result.error || result.status === null) {
+    return `AgentsMD could not run its Elon check (${result.error ? result.error.message : "loader was killed"}); fix the AgentsMD install before creating Issues or PRs.`;
+  }
+  if (result.status === 2) {
+    return (result.stderr || "AgentsMD blocked this call: add the Elon record.").trim();
+  }
+  return null;
+}
+
 agentsmdProjectDirection.supportedOpenCodeVersion = SUPPORTED_OPENCODE_VERSION;
 
 export default async function agentsmdProjectDirection(context) {
@@ -102,6 +138,17 @@ export default async function agentsmdProjectDirection(context) {
       const loaded = loadContext(directory, sessionKey(input, directory));
       if (loaded) {
         output.system.push(loaded);
+      }
+    },
+    "tool.execute.before": async (input, output) => {
+      const blocked = elonGate(
+        directory,
+        sessionKey(input, directory),
+        input && input.tool,
+        output && output.args,
+      );
+      if (blocked) {
+        throw new Error(blocked);
       }
     },
   };

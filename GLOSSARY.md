@@ -269,3 +269,9 @@ The three lines that open every agent-written Issue and PR, What, Why, and
 So what, so a human can tell what it is about and what happens next without
 reading further.
 _Avoid_: TL;DR, executive summary
+
+**Elon record**:
+The four lines every Issue and PR carries: Requirements and who asked, Deleted,
+Bottleneck, Checked myself. The Project Direction hook blocks `gh` creation
+without them.
+_Avoid_: Algorithm record, design rationale

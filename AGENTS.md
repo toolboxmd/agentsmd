@@ -121,14 +121,28 @@ the user wants solved.
 
 ### Elon method
 
+Three tests, whenever you decide what to build or accept a claim:
+
+- **Question the requirement.** Name who asked for each requirement and what
+  breaks without it; delete what nobody can defend. Example: a config flag,
+  retry wrapper, or fallback that no request or observed failure needs.
+- **Work on the bottleneck.** Find where work waits and fix that first; effort
+  elsewhere changes nothing. Example: a PR waiting two days for review while
+  agents write more code.
+- **Go and see.** Run it, open it, read the real output. A summary, a green
+  check, or a worker's "done" is a claim until you look. Example: a worker
+  reports passing tests, but its transcript shows no test run.
+
 Before recommending or accepting a material requirement, solution design,
 architecture, process design, or recurring-loop automation, in conversation or
 an artifact, select the Elon method procedure through `operations`. Project
 Direction informs it when loaded; it is not a precondition. Also use it for stalled work and for inherited
 assumptions or cost claims. Load its current-constraint reference before
-acceleration or parallel work. Record the wanted result, evidence, cuts, and
-smallest surviving solution in the task record; loading the procedure alone
-does not count. Reuse that decision until evidence changes. A small direct
+acceleration or parallel work. Record the result as an Elon record in the task
+record, one line per field: **Requirements and who asked**, **Deleted**,
+**Bottleneck**, **Checked myself**; loading the procedure alone does not count.
+Every Issue and PR carries it; the Project Direction hook blocks `gh issue
+create` and `gh pr create` when a field is missing or empty. Reuse that decision until evidence changes. A small direct
 microfix whose requirement and solution are clear stays direct.
 
 ## Project Direction
@@ -162,9 +176,9 @@ new names. Read relevant ADRs before changing locked decisions.
 Before mutating, check status, branch, HEAD, remotes, intended base, and
 divergence, and apply Authority and continuation. For tracked substantive work,
 find or create the GitHub Issue in the owning repository and use a task branch.
-An Issue needs outcome, acceptance criteria, non-goals, blockers, proof and, for
-material design, an Elon record: wanted result, evidence, cuts, smallest
-surviving solution. Use one final approval PR per outcome; decompose through reviewed
+An Issue needs outcome, acceptance criteria, non-goals, blockers, proof, and an
+Elon record. Create and edit Issues and PRs with `gh issue` and `gh pr` in the
+shell, not the raw API or another GitHub tool, so the Elon gate sees them. Use one final approval PR per outcome; decompose through reviewed
 component PRs. Read-only work, spikes, WIP checkpoints, and explicitly local
 microfixes skip the Issue-to-PR lane. Natural requests and phase changes
 select `operations` procedures without a mode command. Planning procedures
