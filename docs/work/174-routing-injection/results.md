@@ -125,6 +125,43 @@ against the first `git commit` attempt.
 action for Claude Code, a PreToolUse hook on `gh pr create` whose context
 points at `references/verification.md`, measured with this case.
 
+## Post-install canary
+
+[canary.jsonl](canary.jsonl): one naive technical-writing prompt per host
+against the live v14.4.0 installs (not harness copies), in a fresh throwaway
+repository, 2026-09-29. `prose.md` was read before the first edit on all four:
+Claude Code Opus 5.5 medium, Codex `gpt-6-astra` low, Grok 4.7 medium and
+OpenCode Muse 1.3 (4/4). The canonical checkout was unchanged afterwards.
+
+## Shell confinement for Claude runs
+
+The 10 Claude verification runs above allowed Bash with no OS-level limit;
+the guard then covered only the canonical checkout, the harness checkout and
+the selected live configuration. Claude runs now enable Claude Code's Bash
+sandbox in the temporary HOME's settings (`sandbox.enabled`,
+`allowUnsandboxedCommands: false`, `failIfUnavailable: true`, and
+`filesystem.denyRead` of the real home and the temporary HOME's keychain link
+with `allowRead` of the temporary HOME). Shell writes are limited to the run's
+repository, the `--add-dir` directories and the per-user temp directory; shell
+reads of the real home and the linked login are denied.
+
+Smoke runs (Opus 5.5 medium, harness setup):
+
+- `cat` of a file in a fresh directory under the real home, `touch` there, and
+  `ls` of the temporary HOME's keychain link: all `Operation not permitted`,
+  and no file was created.
+- `head` of the repository's README and of the plugin copy's `SKILL.md`, and
+  `touch` in the repository: all succeeded.
+- `git checkout -b`, `git commit`, a python import, a `cat` of a procedure and
+  `gh pr create` behave as without the sandbox, so the benchmark was not rerun.
+
+Known allowances: shell writes to the per-user temp directory; Claude's own
+process (not sandboxed) reads its login through the keychain link; commands
+cannot run tools installed under the real home (for example `node` from
+`~/.nvm`), which the fixture does not use. The harness creates plain
+repositories with `git init`, not linked worktrees, so the sandbox's allowance
+for a linked worktree's shared `.git` directory does not apply.
+
 ## Conditions
 
 Claude Code 2.1.284, OpenCode 1.18.33, Codex 0.159.0, Grok 1.0.44. Batches ran

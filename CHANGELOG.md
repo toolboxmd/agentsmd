@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.4.2] - 2026-09-29
+
+### Changed
+
+- Trigger harness: Claude shell commands run in Claude Code's sandbox; live canary record (#174)
+
 ## [14.4.1] - 2026-09-29
 
 ### Changed

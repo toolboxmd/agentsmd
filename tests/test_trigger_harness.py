@@ -191,6 +191,42 @@ class ClaudeCommandTests(unittest.TestCase):
         self.assertEqual(cmd[-1], "prompt")
 
 
+class ClaudeSandboxTests(unittest.TestCase):
+    """Claude's shell commands run in its OS sandbox with no unsandboxed fallback."""
+
+    def test_temporary_home_settings_enable_the_strict_sandbox(self):
+        t = load_harness()
+        home = pathlib.Path(tempfile.mkdtemp(prefix="agentsmd-174-test-"))
+        self.addCleanup(shutil.rmtree, home, True)
+        plugin = home / "plugin"
+        (plugin / "global").mkdir(parents=True)
+        (plugin / "global/AGENTS.md").write_text("# Contract\n")
+        account = home / "claude.json"
+        account.write_text("{}")
+        saved = t.CLAUDE_JSON
+        self.addCleanup(setattr, t, "CLAUDE_JSON", saved)
+        t.CLAUDE_JSON = account
+        t.setup_claude(home, plugin, {})
+        settings = json.loads((home / ".claude/settings.json").read_text())
+        self.assertEqual(settings["permissions"], {"defaultMode": "acceptEdits"})
+        sandbox = settings["sandbox"]
+        self.assertIs(sandbox["enabled"], True)
+        self.assertIs(sandbox["allowUnsandboxedCommands"], False)
+        self.assertIs(sandbox["failIfUnavailable"], True)
+        # Nothing widens the default write set (working directory, --add-dir, temp).
+        self.assertEqual(set(sandbox["filesystem"]), {"denyRead", "allowRead"})
+        self.assertNotIn("excludedCommands", sandbox)
+        # Reads: the real home and the keychain link are denied; the temporary HOME
+        # (plugin copy) is re-allowed, and the repository lies outside the real home.
+        self.assertEqual(sandbox["filesystem"]["denyRead"],
+                         [str(t.REAL_HOME), str(home / "Library/Keychains")])
+        self.assertEqual(sandbox["filesystem"]["allowRead"], [str(home)])
+        self.assertFalse(home.resolve().is_relative_to(t.REAL_HOME))
+        repo = t.make_repo()
+        self.addCleanup(t.remove, repo)
+        self.assertFalse(repo.resolve().is_relative_to(t.REAL_HOME))
+
+
 class NoEditVerdictTests(unittest.TestCase):
     """A positive run that never edits is not a hit (#174)."""
 
