@@ -256,6 +256,58 @@ class VersionCtlIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(unmarked.returncode, 21, unmarked.stderr or unmarked.stdout)
 
+    def test_pre_commit_judges_merge_against_merged_in_base(self) -> None:
+        with self.subTest("bumped-branch-merges-bumped-base"):
+            repo = self.repo()
+            repo.seed()
+            self._bumped_commit(repo, "feature", "feature.md", "minor")
+            self._bumped_commit(repo, "main", "fix.md", "patch")
+            repo.git("checkout", "feature")
+            repo.git("merge", "--no-commit", "--no-ff", "main", check=False)
+            repo.git("checkout", "--ours", "VERSION", "CHANGELOG.md", "pyproject.toml")
+            repo.git("add", ".")
+            self.assertEqual(repo.read("VERSION"), "0.2.0\n")
+            merged = repo.run("hook-check", "pre-commit", "--json")
+            self.assertEqual(merged.returncode, 0, merged.stderr or merged.stdout)
+
+        with self.subTest("unbumped-branch-merges-bumped-base"):
+            repo = self.repo()
+            repo.seed()
+            repo.git("checkout", "-b", "feature")
+            repo.write("feature.md", "Unbumped capability.\n")
+            repo.git("add", "feature.md")
+            repo.git("commit", "-m", "feat: unbumped capability")
+            self._bumped_commit(repo, "main", "fix.md", "patch")
+            repo.git("checkout", "feature")
+            repo.git("merge", "--no-commit", "--no-ff", "main")
+            blocked = repo.run("hook-check", "pre-commit", "--json")
+            self.assertEqual(blocked.returncode, 16, blocked.stderr or blocked.stdout)
+            self.assertEqual(
+                json.loads(blocked.stdout)["issues"][0]["details"]["contentChanges"],
+                ["feature.md"],
+            )
+
+        with self.subTest("merge-adds-unbumped-content"):
+            repo = self.repo()
+            repo.seed()
+            repo.git("branch", "feature")
+            self._bumped_commit(repo, "main", "fix.md", "patch")
+            repo.git("checkout", "feature")
+            repo.git("merge", "--no-commit", "--no-ff", "main")
+            repo.write("extra.md", "Added during the merge.\n")
+            repo.git("add", "extra.md")
+            blocked = repo.run("hook-check", "pre-commit", "--json")
+            self.assertEqual(blocked.returncode, 16, blocked.stderr or blocked.stdout)
+
+    def _bumped_commit(self, repo: FixtureRepository, branch: str, path: str, impact: str) -> None:
+        exists = repo.git("rev-parse", "--verify", branch, check=False).returncode == 0
+        repo.git("checkout", *([] if exists else ["-b"]), branch)
+        repo.write(path, f"{path} content.\n")
+        prepared = repo.run("prepare", impact, "--reason", f"Add {path}", "--json")
+        self.assertEqual(prepared.returncode, 0, prepared.stderr)
+        repo.git("add", ".")
+        repo.git("commit", "-m", f"feat: add {path}")
+
     def test_dirty_stale_reused_and_distribution_failures(self) -> None:
         with self.subTest("dirty-tree"):
             repo = self.repo()

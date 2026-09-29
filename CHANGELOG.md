@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.2] - 2026-09-29
+
+### Changed
+
+- versionctl pre-commit hook judges a merge commit against the merged-in base, so merging the base into a bumped branch needs no second bump, and an unbumped branch can no longer pass by inheriting the base's bump (#178)
+
 ## [14.5.1] - 2026-09-29
 
 ### Changed
