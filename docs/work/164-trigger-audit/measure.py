@@ -569,8 +569,10 @@ def load_ledger(since_ts, db=LEDGER):
     `tool_call` events with full targets; OpenCode Skill calls from
     `skill_invoke`. Prompts are only the 300-character excerpt of genuine
     main-session submissions, so prompt-triggered rows do not port.
-    Steps (assistant messages): time order. Grok calls in one message share a
-    timestamp. OpenCode numbers every part and a message's tool parts sit between
+    Steps (assistant messages): time order. Claude Code writes each tool_use
+    block as its own record (0 of 22,594 records since 2026-09-15 hold two), so
+    each Claude call is its own step here as in load_claude. Grok calls in one
+    message share a timestamp. OpenCode numbers every part and a message's tool parts sit between
     its step-start and step-finish parts, so consecutive ordinals share a step.
     """
     con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
