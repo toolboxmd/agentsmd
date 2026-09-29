@@ -180,6 +180,30 @@ class ElonGateTests(unittest.TestCase):
         stdin = "gh issue create --body-file - <<'EOF' < /dev/null\n" + RECORD + "EOF"
         self.assertBlocked(self.hook({"command": stdin}))
 
+    def test_later_writes_replace_the_body_file(self) -> None:
+        # Regressions from the second independent review of PR #187: the file
+        # holds what the last write left, and only the last stdout target is filled.
+        full = "cat > b.md <<'EOF'\n" + RECORD + "EOF\n"
+        create = "gh issue create --body-file b.md"
+        (self.cwd / "b.md").write_text(RECORD, encoding="utf-8")
+        for command in ("cat > b.md > /dev/null <<'EOF'\n" + RECORD + "EOF\n" + create,
+                        full + "cat > b.md <<'EMPTY'\nEMPTY\n" + create,
+                        full + "printf '%s' \"$X\" > b.md\n" + create,
+                        full + "echo x 2> b.md\n" + create,
+                        ": > b.md && " + create,
+                        "cat > b.md\n" + create):
+            with self.subTest(command=command):
+                self.assertBlocked(self.hook({"command": command}))
+        for command in ("cat > /dev/null > b.md <<'EOF'\n" + RECORD + "EOF\n" + create,
+                        ": > b.md\n" + full + create,
+                        "cat <<'EOF' | tee b.md\n" + RECORD + "EOF\n" + create,
+                        "cat > b.md <<'EOF' 2>/dev/null\n" + RECORD + "EOF\n" + create,
+                        "echo start >> log.txt && " + create):
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}).returncode, 0, command)
+        appended = "cat > b.md <<'EOF'\n- **Deleted:** x\nEOF\ncat >> b.md <<'EOF'\n" + RECORD + "EOF\n" + create
+        self.assertEqual(self.hook({"command": appended}).returncode, 0)
+
     def test_body_file_written_after_cd_in_the_same_command(self) -> None:
         (self.cwd / "sub").mkdir()
         command = "cd sub && cat > b.md <<'EOF'\n" + RECORD + "EOF\ngh issue create --body-file ./b.md"
