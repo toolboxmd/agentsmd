@@ -683,13 +683,14 @@ def shell_segments(command: str) -> list[tuple[str, str, bool]]:
 
     Quotes, escapes and heredocs are respected; `&&`, `||`, `;`, `|` and
     unquoted newlines end a segment. A heredoc belongs to the segment that
-    declares it, even when later segments share its line.
+    declares it, even when later segments share its line. As in the shell, only
+    the last heredoc on stdin reaches the command; `3<<EOF` feeds another fd.
     """
     segments: list[str] = []
     piped: set[int] = set()
-    heredocs: dict[int, list[str]] = {}
+    heredocs: dict[int, str] = {}
     current: list[str] = []
-    pending: list[tuple[str, bool, int]] = []
+    pending: list[tuple[str, bool, int, bool]] = []
     quote = ""
     index = 0
     length = len(command)
@@ -722,14 +723,23 @@ def shell_segments(command: str) -> list[tuple[str, str, bool]]:
         if command.startswith("<<", index) and not command.startswith("<<<", index):
             match = re.match(r"<<(-?)\s*(['\"]?)([A-Za-z0-9_]+)\2", command[index:])
             if match:
-                pending.append((match.group(3), match.group(1) == "-", len(segments)))
+                # Digits that start a word before `<<` name the fd it feeds.
+                digits = 0
+                while digits < len(current) and current[-1 - digits].isdigit():
+                    digits += 1
+                fd = "".join(current[len(current) - digits:])
+                stdin = True
+                if digits and (digits == len(current) or current[-1 - digits].isspace()):
+                    stdin = fd == "0"
+                    del current[len(current) - digits:]
+                pending.append((match.group(3), match.group(1) == "-", len(segments), stdin))
                 index += match.end()
                 continue
         if char == "\n" and pending:
             # Heredoc bodies start on the next line.
             close()
             index += 1
-            for word, strip_tabs, owner in pending:
+            for word, strip_tabs, owner, stdin in pending:
                 body: list[str] = []
                 while index < length:
                     newline = command.find("\n", index)
@@ -738,7 +748,8 @@ def shell_segments(command: str) -> list[tuple[str, str, bool]]:
                     if (line.lstrip("\t") if strip_tabs else line) == word:
                         break
                     body.append(line)
-                heredocs.setdefault(owner, []).append("\n".join(body))
+                if stdin:
+                    heredocs[owner] = "\n".join(body)
             pending.clear()
             continue
         separator = next((s for s in SEPARATORS if command.startswith(s, index)), None)
@@ -757,7 +768,7 @@ def shell_segments(command: str) -> list[tuple[str, str, bool]]:
         current.append(char)
         index += 1
     close()
-    return [(text, "\n".join(heredocs.get(i, [])), i in piped) for i, text in enumerate(segments)]
+    return [(text, heredocs.get(i, ""), i in piped) for i, text in enumerate(segments)]
 
 
 def heredoc_writes(words: list[str]) -> list[str]:
@@ -781,9 +792,16 @@ def heredoc_writes(words: list[str]) -> list[str]:
             index += 1
         if match.group(2) != "<" and match.group(1) in ("", "1", "&") and not target.startswith("&"):
             targets.append(target)
+    if stdin_redirected(words):
+        return []
     if os.path.basename(words[0]) == "tee":
         return operands
     return [] if operands else targets
+
+
+def stdin_redirected(words: list[str]) -> bool:
+    """Return whether a `< FILE` redirection replaces a heredoc on stdin."""
+    return any(re.match(r"^0?(?:<<<|<(?!<))", word) for word in words)
 
 
 def option_value(words: list[str], index: int, long: str, short: str) -> tuple[str | None, int]:
@@ -829,7 +847,7 @@ def create_body(words: list[str], heredoc: str, directory: Path,
             if value is None:
                 return None, None
             if value == "-":
-                return heredoc or None, None
+                return (None if stdin_redirected(words) else heredoc or None), None
             path = resolve(directory, value)
             if path in written:
                 return written[path], None
@@ -867,7 +885,8 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
                 words = segment.split()
             # `cat <<'EOF' | gh ... --body-file -` feeds the heredoc through the pipe.
             heredoc, stdout = heredoc or (stdout if piped else ""), ""
-            if heredoc and words and os.path.basename(words[0]) == "cat" and not heredoc_writes(words):
+            if (heredoc and words and os.path.basename(words[0]) == "cat"
+                    and not heredoc_writes(words) and not stdin_redirected(words)):
                 stdout = heredoc
             if len(words) >= 2 and words[0] == "cd":
                 target = Path(words[1]).expanduser()

@@ -161,6 +161,25 @@ class ElonGateTests(unittest.TestCase):
         self.assertIn("body.md does not exist", result.stderr)
         self.assertIn("--body-file -", result.stderr)
 
+    def test_only_the_heredoc_that_feeds_stdin_counts(self) -> None:
+        # Regression from the independent review of PR #187: bash feeds only the
+        # last stdin heredoc to the command; another fd or a later `<` replaces it.
+        for write in ("cat > b.md <<'FIRST' <<'SECOND'\n" + RECORD + "FIRST\nSECOND",
+                      "cat > b.md 3<<'EOF'\n" + RECORD + "EOF",
+                      "cat > b.md <<'EOF' < /dev/null\n" + RECORD + "EOF",
+                      "cat > b.md <<'EOF' <<< ''\n" + RECORD + "EOF"):
+            for create in ("gh issue create --body-file b.md", None):
+                command = write + "\n" + (create or "")
+                if create is None:
+                    head, _, rest = write.partition("\n")
+                    command = head + " | gh issue create --body-file -\n" + rest
+                with self.subTest(command=command):
+                    self.assertBlocked(self.hook({"command": command}))
+        last = "cat > b.md <<'FIRST' <<'SECOND'\nnothing\nFIRST\n" + RECORD + "SECOND\ngh issue create --body-file b.md"
+        self.assertEqual(self.hook({"command": last}).returncode, 0)
+        stdin = "gh issue create --body-file - <<'EOF' < /dev/null\n" + RECORD + "EOF"
+        self.assertBlocked(self.hook({"command": stdin}))
+
     def test_body_file_written_after_cd_in_the_same_command(self) -> None:
         (self.cwd / "sub").mkdir()
         command = "cd sub && cat > b.md <<'EOF'\n" + RECORD + "EOF\ngh issue create --body-file ./b.md"
