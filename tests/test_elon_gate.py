@@ -90,6 +90,59 @@ class ElonGateTests(unittest.TestCase):
                 result = self.hook(tool_input)
                 self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
 
+    # Regressions from the Luna max review of PR #163.
+    def test_quoted_subcommand_is_still_checked(self) -> None:
+        self.assertBlocked(self.hook({"command": 'gh "issue" create --title x --body "hello"'}))
+
+    def test_each_chained_command_is_checked_on_its_own(self) -> None:
+        command = ("gh issue create --title first --body missing && gh pr create --title second --body "
+                   + shlex.quote(RECORD))
+        self.assertBlocked(self.hook({"command": command}))
+        both = "gh issue create --body " + shlex.quote(RECORD) + " ; gh pr create --body " + shlex.quote(RECORD)
+        self.assertEqual(self.hook({"command": both}).returncode, 0)
+
+    def test_attached_body_file_forms(self) -> None:
+        command = "gh issue create --title x -F=- <<'EOF'\n" + RECORD + "EOF"
+        self.assertEqual(self.hook({"command": command}).returncode, 0)
+        (self.cwd / "r.md").write_text(RECORD, encoding="utf-8")
+        self.assertEqual(self.hook({"command": "gh pr create -Fr.md"}).returncode, 0)
+
+    def test_piped_variable_body_blocks_with_guidance(self) -> None:
+        result = self.hook({"command": "printf '%s\\n' \"$ELON\" | gh issue create --title x --body-file -"})
+        self.assertBlocked(result)
+        self.assertIn("cannot read piped variables", result.stderr)
+
+    def test_body_file_follows_cd_in_the_same_command(self) -> None:
+        (self.cwd / "sub").mkdir()
+        (self.cwd / "sub/record.md").write_text(RECORD, encoding="utf-8")
+        self.assertEqual(self.hook({"command": "cd sub && gh issue create --body-file record.md"}).returncode, 0)
+
+    def test_quoted_double_angle_does_not_truncate_the_body(self) -> None:
+        body = RECORD.replace("the per-prompt reminder", "reminder << literal")
+        self.assertEqual(self.hook({"command": "gh issue create --body " + shlex.quote(body)}).returncode, 0)
+
+    def test_hash_reference_is_a_value_not_a_heading(self) -> None:
+        body = RECORD.replace("**Bottleneck:** agents skip the procedure", "**Bottleneck:**\n#161 is the waiting PR")
+        self.assertEqual(self.hook({"command": "gh issue create --body " + shlex.quote(body)}).returncode, 0)
+
+    @unittest.skipIf(NODE is None, "node is not on PATH")
+    def test_opencode_plugin_fails_closed_without_loader(self) -> None:
+        plugin_dir = self.cwd / "orphan/opencode"
+        plugin_dir.mkdir(parents=True)
+        shutil.copy(PLUGIN, plugin_dir / PLUGIN.name)
+        driver = self.cwd / "orphan.mjs"
+        driver.write_text(
+            "import { pathToFileURL } from 'node:url';\n"
+            "const [modulePath, directory] = process.argv.slice(2);\n"
+            "const hooks = await (await import(pathToFileURL(modulePath).href)).default({ directory });\n"
+            "try { await hooks['tool.execute.before']({ tool: 'bash' }, { args: { command: 'gh issue create --body hi' } });\n"
+            "  process.stdout.write('allowed'); } catch (e) { process.stdout.write('blocked:' + e.message); }\n",
+            encoding="utf-8",
+        )
+        out = subprocess.run([NODE, str(driver), str(plugin_dir / PLUGIN.name), str(self.cwd)],
+                             capture_output=True, text=True, env=self.env, check=True).stdout
+        self.assertTrue(out.startswith("blocked:AgentsMD could not run its Elon check"), out)
+
     @unittest.skipIf(NODE is None, "node is not on PATH")
     def test_opencode_plugin_throws_on_blocked_call(self) -> None:
         driver = self.cwd / "driver.mjs"

@@ -89,13 +89,15 @@ function loadContext(directory, sessionID) {
   return context;
 }
 
-const GH_CREATE = /\bgh\s+(issue|pr)\s+create\b/;
+// A coarse filter; the loader parses the shell command and decides.
+const MAY_CREATE = /\bgh\b[\s\S]*\bcreate\b/;
 
-// The loader owns the Elon gate; the plugin only forwards gh create calls to
-// it and turns its exit status 2 into a thrown error, which blocks the tool.
+// The loader owns the Elon gate; the plugin only forwards possible gh create
+// calls to it and turns its exit status 2 into a thrown error, which blocks the
+// tool. A loader that cannot run blocks too, so the gate never fails open.
 function elonGate(directory, sessionID, tool, args) {
   const text = JSON.stringify(args ?? {});
-  if (!GH_CREATE.test(text)) {
+  if (!MAY_CREATE.test(text)) {
     return null;
   }
   let result;
@@ -112,9 +114,12 @@ function elonGate(directory, sessionID, tool, args) {
       maxBuffer: MAX_OUTPUT_BYTES,
     });
   } catch (error) {
-    return null;
+    return `AgentsMD could not run its Elon check (${error && error.message}); fix the AgentsMD install before creating Issues or PRs.`;
   }
-  if (result && result.status === 2) {
+  if (result.error || result.status === null) {
+    return `AgentsMD could not run its Elon check (${result.error ? result.error.message : "loader was killed"}); fix the AgentsMD install before creating Issues or PRs.`;
+  }
+  if (result.status === 2) {
     return (result.stderr || "AgentsMD blocked this call: add the Elon record.").trim();
   }
   return null;

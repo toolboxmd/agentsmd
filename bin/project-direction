@@ -548,8 +548,9 @@ ELON_FIELDS = (
     "Bottleneck",
     "Checked myself",
 )
-GH_CREATE = re.compile(r"\bgh\s+(issue|pr)\s+create\b")
 PLACEHOLDER = re.compile(r"^<[^>]*>$")
+HEADING = re.compile(r"^\s*#{1,6}\s")
+SEPARATORS = ("&&", "||", ";", "|", "\n")
 
 
 def tool_strings(value: object) -> list[str]:
@@ -562,14 +563,18 @@ def tool_strings(value: object) -> list[str]:
     return []
 
 
-def field_value(body: str, field: str) -> str:
-    lines = body.splitlines()
-    label = re.compile(
-        r"^\s*(?:[-*]\s*)?(?:#+\s*)?\*{0,2}" + re.escape(field) + r"\*{0,2}\s*:?\s*\*{0,2}\s*:?\s*(.*)$",
+def field_label(field: str) -> re.Pattern[str]:
+    return re.compile(
+        r"^\s*(?:[-*]\s*)?\*{0,2}" + re.escape(field)
+        + r"\*{0,2}\s*:?\s*\*{0,2}\s*:?\s*(.*)$",
         re.IGNORECASE,
     )
+
+
+def field_value(body: str, field: str) -> str:
+    lines = body.splitlines()
     for index, line in enumerate(lines):
-        match = label.match(line)
+        match = field_label(field).match(line)
         if not match:
             continue
         rest = match.group(1).strip()
@@ -577,8 +582,9 @@ def field_value(body: str, field: str) -> str:
             for following in lines[index + 1:]:
                 if not following.strip():
                     continue
-                if any(re.match(r"^\s*(?:[-*]\s*)?(?:#+\s*)?\*{0,2}" + re.escape(f), following, re.IGNORECASE)
-                       for f in ELON_FIELDS) or following.lstrip().startswith("#"):
+                if HEADING.match(following) or any(
+                    field_label(other).match(following) for other in ELON_FIELDS
+                ):
                     break
                 rest = following.strip().lstrip("-* ").strip()
                 break
@@ -586,55 +592,160 @@ def field_value(body: str, field: str) -> str:
     return ""
 
 
-def create_body(command: str, cwd: str) -> str | None:
-    """Return the body text a `gh issue|pr create` command supplies, if any."""
-    try:
-        words = shlex.split(command.split("<<", 1)[0], comments=False, posix=True)
-    except ValueError:
-        words = command.split()
-    body = None
-    for index, word in enumerate(words):
-        value = None
-        if word in ("--body", "-b", "--body-file", "-F") and index + 1 < len(words):
-            value = words[index + 1]
-        elif word.startswith(("--body=", "--body-file=")):
-            value = word.split("=", 1)[1]
-        else:
+def shell_segments(command: str) -> list[tuple[str, str]]:
+    """Split a shell command into simple commands, each with its heredoc text.
+
+    Quotes, escapes and heredocs are respected; `&&`, `||`, `;`, `|` and
+    unquoted newlines end a segment.
+    """
+    segments: list[tuple[str, str]] = []
+    current: list[str] = []
+    heredoc: list[str] = []
+    pending: list[tuple[str, bool]] = []
+    quote = ""
+    index = 0
+    length = len(command)
+
+    def close() -> None:
+        segments.append(("".join(current), "\n".join(heredoc)))
+        current.clear()
+        heredoc.clear()
+
+    while index < length:
+        char = command[index]
+        if quote:
+            current.append(char)
+            if char == "\\" and quote == '"' and index + 1 < length:
+                current.append(command[index + 1])
+                index += 2
+                continue
+            if char == quote:
+                quote = ""
+            index += 1
             continue
-        if word.startswith(("--body-file", "-F")):
+        if char in "'\"":
+            quote = char
+            current.append(char)
+            index += 1
+            continue
+        if char == "\\" and index + 1 < length:
+            current.append(command[index:index + 2])
+            index += 2
+            continue
+        if command.startswith("<<", index) and not command.startswith("<<<", index):
+            match = re.match(r"<<(-?)\s*(['\"]?)([A-Za-z0-9_]+)\2", command[index:])
+            if match:
+                pending.append((match.group(3), match.group(1) == "-"))
+                index += match.end()
+                continue
+        if char == "\n" and pending:
+            # Heredoc bodies start on the next line and belong to this segment.
+            index += 1
+            for word, strip_tabs in pending:
+                body: list[str] = []
+                while index < length:
+                    newline = command.find("\n", index)
+                    line = command[index:] if newline < 0 else command[index:newline]
+                    index = length if newline < 0 else newline + 1
+                    if (line.lstrip("\t") if strip_tabs else line) == word:
+                        break
+                    body.append(line)
+                heredoc.append("\n".join(body))
+            pending.clear()
+            close()
+            continue
+        separator = next((s for s in SEPARATORS if command.startswith(s, index)), None)
+        if separator:
+            close()
+            index += len(separator)
+            continue
+        current.append(char)
+        index += 1
+    close()
+    return segments
+
+
+def option_value(words: list[str], index: int, long: str, short: str) -> tuple[str | None, int]:
+    word = words[index]
+    if word in (long, short):
+        return (words[index + 1] if index + 1 < len(words) else None), 2
+    if word.startswith(long + "="):
+        return word[len(long) + 1:], 1
+    if word.startswith(short) and len(word) > len(short):
+        return word[len(short):].removeprefix("="), 1
+    return None, 0
+
+
+def gh_create(words: list[str]) -> str | None:
+    """Return `issue` or `pr` when words run `gh issue|pr create`."""
+    for index, word in enumerate(words):
+        if os.path.basename(word) != "gh":
+            continue
+        rest = [w for w in words[index + 1:] if not w.startswith("-")]
+        if len(rest) >= 2 and rest[0] in ("issue", "pr") and rest[1] == "create":
+            return rest[0]
+    return None
+
+
+def create_body(words: list[str], heredoc: str, directory: Path) -> str | None:
+    """Return the body a `gh issue|pr create` call supplies, if the hook can see it."""
+    body = None
+    index = 0
+    while index < len(words):
+        value, used = option_value(words, index, "--body-file", "-F")
+        if used:
+            if value is None:
+                return None
             if value == "-":
-                # Heredoc or pipe: the body is inside the command text itself.
-                return command
-            path = Path(value) if os.path.isabs(value) else Path(cwd) / value
+                return heredoc or None
+            path = Path(value).expanduser()
+            path = path if path.is_absolute() else directory / path
             try:
                 return path.read_text(encoding="utf-8", errors="replace")
             except OSError:
                 return None
-        body = value
+        value, used = option_value(words, index, "--body", "-b")
+        if used:
+            body = value
+            index += used
+            continue
+        index += 1
     return body
 
 
 def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
     """Return a block message when a gh create call lacks the Elon record."""
     for text in tool_strings(event_input.get("tool_input")):
-        match = GH_CREATE.search(text)
-        if not match:
+        if "gh" not in text or "create" not in text:
             continue
-        kind = "Issue" if match.group(1) == "issue" else "PR"
-        body = create_body(text[match.start():], cwd)
-        missing = [f for f in ELON_FIELDS if not field_value(body or "", f)]
-        if not missing:
-            return None
-        return (
-            f"AgentsMD blocked `gh {match.group(1)} create`: every {kind} needs an "
-            "Elon record in its body, one line per field: "
-            + ", ".join(f"**{f}:**" for f in ELON_FIELDS)
-            + ". Missing or empty: " + ", ".join(missing) + ". "
-            "Apply the Elon method, add those fields to the body with real "
-            "content, and rerun. Do not create it another way."
-        )
+        directory = Path(cwd)
+        for segment, heredoc in shell_segments(text):
+            try:
+                words = shlex.split(segment, posix=True)
+            except ValueError:
+                words = segment.split()
+            if len(words) >= 2 and words[0] == "cd":
+                target = Path(words[1]).expanduser()
+                directory = target if target.is_absolute() else directory / target
+                continue
+            kind = gh_create(words)
+            if kind is None:
+                continue
+            body = create_body(words, heredoc, directory)
+            missing = [f for f in ELON_FIELDS if not field_value(body or "", f)]
+            if missing:
+                noun = "Issue" if kind == "issue" else "PR"
+                return (
+                    f"AgentsMD blocked `gh {kind} create`: every {noun} needs an "
+                    "Elon record in its body, one line per field: "
+                    + ", ".join(f"**{f}:**" for f in ELON_FIELDS)
+                    + ". Missing or empty: " + ", ".join(missing) + ". "
+                    "Apply the Elon method, then pass the body inline with "
+                    "--body, as a heredoc with --body-file -, or as a file with "
+                    "--body-file; the hook cannot read piped variables. "
+                    "Do not create it another way."
+                )
     return None
-
 
 def report_input_error(detail: str) -> int:
     json.dump(
