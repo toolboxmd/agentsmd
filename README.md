@@ -54,9 +54,10 @@ its relevant references load; other workflows do not advertise descriptions.
 
 Codex and Grok Build load `operations` from its description on their own.
 Claude Code and OpenCode often do not, so on those two hosts
-`bin/operations-routing` adds a short pointer at session start: before the
-first file edit, commit, Issue or PR, invoke `operations` and read the procedure
-it links. Claude Code runs it from `hooks/claude.json`, which only the Claude
+`bin/operations-routing` adds a short pointer at session start: at the start of
+every task and before each new kind of action (researching, an experiment,
+reproducing a defect, the first file edit, a commit, an Issue or a PR), use
+`operations` and read the procedure it links. Claude Code runs it from `hooks/claude.json`, which only the Claude
 manifest registers; OpenCode appends it through the plugin's system-prompt
 transform. [The #174 benchmark](docs/work/174-routing-injection/results.md)
 records the effect on each host.
