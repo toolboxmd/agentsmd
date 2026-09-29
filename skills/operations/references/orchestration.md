@@ -56,11 +56,11 @@ policy; prior branch names alone do not establish current identity.
 
 ## Workers and recovery
 
-Seed a fresh child with repository, complete Issue, exact base/dependencies, full
-current Project Direction and applicable instructions, durable decisions, authority,
-and exclusive workspace. Include canonical instruction path/SHA-256; the child
-verifies the live source and reads current instructions/adjacent private preferences
-when freshness is unproved. Startup text alone is insufficient. Never publish
+Seed a fresh child with repository, complete Issue, exact base/dependencies,
+applicable instructions, durable decisions, authority, and exclusive workspace.
+Pass references (Issue, paths, exact commands), not restated Project Direction or
+instruction hashes; the child's hook supplies both, and the child rereads current
+instructions only when its hook reports a problem or did not run. Never publish
 private preferences. Use repository/GitHub evidence instead of prior transcripts
 when sufficient.
 

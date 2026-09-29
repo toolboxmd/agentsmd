@@ -158,6 +158,16 @@ def initialize_preferences(source: Path) -> dict[str, Any]:
     return {"path": str(destination), "action": "created"}
 
 
+VERIFIED_ACTION = (
+    "Verified: the global rules in context match this canonical global/AGENTS.md "
+    "path and SHA-256. No comparison or reread is needed."
+)
+REREAD_ACTION = (
+    "The global rules in context are unverified. Read the current canonical "
+    "global/AGENTS.md in full before acting and report this status."
+)
+
+
 def context_payload(host: str = "codex", require_unambiguous: bool = False) -> dict[str, Any]:
     """Resolve only the selected native global link, never cwd or plugin cache."""
     boundary = (
@@ -169,6 +179,7 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
         target = default_target(host)
         inspection = inspect_target(target)
         if not inspection["healthy"]:
+            inspection["action"] = REREAD_ACTION
             return {"instructions": inspection, "preferences": {
                 "status": "source-unavailable", "boundary": boundary,
                 "action": "Inspect the native global link; suspend previously loaded preferences until resolved. Do not substitute project-local preferences or the example."}}
@@ -186,18 +197,11 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
                         other_inspection["resolved_target"] != inspection["resolved_target"]):
                     return {"instructions": {
                         "status": "source-ambiguous", "healthy": False,
-                        "action": "Set AGENTSMD_HOST or pass --host for this process; configured native sources differ or cannot be verified."},
+                        "action": "Set AGENTSMD_HOST or pass --host for this process; configured native sources differ or cannot be verified. " + REREAD_ACTION},
                         "preferences": {"status": "source-unavailable", "boundary": boundary,
                                         "action": "Suspend previously loaded preferences until the host source is selected."}}
         source = Path(inspection["resolved_target"])
-        inspection["action"] = (
-            "At task/worker start and restoration, compare this canonical source path "
-            "and SHA-256 with the complete global instructions in context. Read the "
-            "current canonical global/AGENTS.md if freshness is unproved or changed. "
-            "Inherited startup text and a correct link alone do not prove freshness. "
-            "Keep skill bodies on demand; obtain the exact Issue, authority, base "
-            "and owned workspace from the coordinator's task packet."
-        )
+        inspection["action"] = VERIFIED_ACTION
         path = source.parent.parent / "PREFERENCES.md"
         preferences: dict[str, Any] = {"path": str(path), "boundary": boundary}
         try:
@@ -222,5 +226,5 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
                     preferences.update(status="unreadable", detail="not valid UTF-8")
         return {"instructions": inspection, "preferences": preferences}
     except (OSError, ValueError, RuntimeError) as error:
-        return {"instructions": {"status": "unreadable", "detail": str(error)},
+        return {"instructions": {"status": "unreadable", "detail": str(error), "action": REREAD_ACTION},
                 "preferences": {"status": "source-unavailable", "boundary": boundary}}

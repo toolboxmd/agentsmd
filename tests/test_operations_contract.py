@@ -87,6 +87,24 @@ class OperationsContractTests(unittest.TestCase):
             self.assertIn("same revision", words(ROOT / "global/AGENTS.md"))
             self.assertIn("older incompatible module", words(ROOT / "global/AGENTS.md"))
 
+    def test_startup_trusts_healthy_hook_and_scopes_each_role(self):
+        core = words(ROOT / "global/AGENTS.md")
+        for clause in (
+            "Reread that file only when the hook reports a problem or no hook ran (for example, Grok's first response)",
+            "Before acting, each role loads only this, beyond hook-supplied context:",
+            "- Planner: project `AGENTS.md`, the Issue, and the `operations` reference for the current phase.",
+            "- Worker: its task packet (Issue, base, workspace, authority, proof commands) and the `operations` reference for its phase.",
+            "- Dispatcher: the Issue and the routing tool's instructions.",
+            "- Reviewer: the Issue's acceptance criteria, the diff, and the required proof.",
+            "Briefings pass references (Issue, paths, exact commands), never restated Project Direction or hashes.",
+            "The AgentsMD clone holds only AgentsMD's own files; always resolve project paths from the project working directory, and never write project work into the clone.",
+        ):
+            self.assertIn(clause, core)
+        self.assertNotIn("compare path and SHA-256", core)
+        coordination = words(SKILL.parent / "references/orchestration.md")
+        self.assertIn("not restated Project Direction or instruction hashes", coordination)
+        self.assertNotIn("Include canonical instruction path/SHA-256", coordination)
+
     def test_direct_work_boundary_keeps_cost_judgment_and_proof(self):
         core = words(ROOT / "global/AGENTS.md")
         for clause in (
