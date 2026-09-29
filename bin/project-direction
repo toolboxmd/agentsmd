@@ -14,7 +14,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from agentsmd_instructions import HOSTS, context_payload, default_target
+from agentsmd_instructions import HOSTS, context_payload, default_target, session_action
 
 REQUIRED_FILES = ("VISION.md", "MISSION.md", "OBJECTIVE.md")
 MAX_FILE_BYTES = 8192
@@ -519,23 +519,27 @@ def fingerprint(payload: dict[str, object]) -> str:
     return hashlib.sha256(encoded).hexdigest()
 
 
-def cached_fingerprint(session_id: str) -> str | None:
+def cached_value(session_id: str, key: str) -> str | None:
     try:
         cached = json.loads(cache_path(session_id).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError, TypeError):
         return None
-    value = cached.get("fingerprint") if isinstance(cached, dict) else None
+    value = cached.get(key) if isinstance(cached, dict) else None
     return value if isinstance(value, str) else None
 
 
-def write_fingerprint(session_id: str, value: str) -> None:
+def write_cached(session_id: str, key: str, value: str) -> None:
     destination = cache_path(session_id)
+    try:
+        cached = json.loads(destination.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        cached = {}
+    if not isinstance(cached, dict):
+        cached = {}
+    cached[key] = value
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = destination.with_name(f".{destination.name}.{os.getpid()}.tmp")
-    temporary.write_text(
-        json.dumps({"fingerprint": value}, separators=(",", ":")),
-        encoding="utf-8",
-    )
+    temporary.write_text(json.dumps(cached, separators=(",", ":")), encoding="utf-8")
     os.replace(temporary, destination)
 
 
@@ -813,8 +817,26 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
         else not_in_repository_payload(cwd)
     )
     payload.update(context_payload(host, require_unambiguous))
-    current_fingerprint = fingerprint(payload)
     session_id = event_input.get("session_id")
+    if not isinstance(session_id, str):
+        session_id = None
+    instructions = payload["instructions"]
+    if instructions.get("healthy") and session_id is not None:
+        # The host loads the global rules when a session starts. Grok discards
+        # SessionStart and the OpenCode plugin sends a synthetic SessionStart on
+        # every request, so both record only their first delivering event.
+        current_sha = instructions["sha256"]
+        start_sha = cached_value(session_id, "global_sha256")
+        start_event = "PreToolUse" if grok else "SessionStart"
+        first_only = grok or host == "opencode"
+        if event == start_event and (start_sha is None or not first_only):
+            try:
+                write_cached(session_id, "global_sha256", current_sha)
+                start_sha = current_sha
+            except OSError:
+                start_sha = None
+        instructions["action"] = session_action(start_sha, current_sha)
+    current_fingerprint = fingerprint(payload)
     # Grok discards SessionStart, UserPromptSubmit and SubagentStart output, so
     # its session fingerprint belongs to the first PreToolUse that reaches the
     # model. Every other host keeps the prompt-boundary fingerprint.
@@ -824,14 +846,14 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
     )
     if (
         event == delivering_event
-        and isinstance(session_id, str)
-        and cached_fingerprint(session_id) == current_fingerprint
+        and session_id is not None
+        and cached_value(session_id, "fingerprint") == current_fingerprint
     ):
         return 0
     cache_warning = None
-    if event in recording_events and isinstance(session_id, str):
+    if event in recording_events and session_id is not None:
         try:
-            write_fingerprint(session_id, current_fingerprint)
+            write_cached(session_id, "fingerprint", current_fingerprint)
         except OSError:
             cache_warning = (
                 "AgentsMD Project Direction loaded, but its cache state was "

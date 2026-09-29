@@ -158,14 +158,25 @@ def initialize_preferences(source: Path) -> dict[str, Any]:
     return {"path": str(destination), "action": "created"}
 
 
-VERIFIED_ACTION = (
-    "Verified: the global rules in context match this canonical global/AGENTS.md "
-    "path and SHA-256. No comparison or reread is needed."
+UNCHANGED_ACTION = (
+    "The canonical global/AGENTS.md is unchanged since this session started "
+    "(same SHA-256). Nothing is needed."
+)
+CHANGED_ACTION = (
+    "The global rules changed since this session started. Read the current "
+    "canonical global/AGENTS.md in full before acting."
 )
 REREAD_ACTION = (
     "The global rules in context are unverified. Read the current canonical "
     "global/AGENTS.md in full before acting and report this status."
 )
+
+
+def session_action(start_sha256: str | None, current_sha256: str) -> str:
+    """Compare the file with its SHA-256 recorded when the session started."""
+    if start_sha256 is None:
+        return REREAD_ACTION
+    return UNCHANGED_ACTION if start_sha256 == current_sha256 else CHANGED_ACTION
 
 
 def context_payload(host: str = "codex", require_unambiguous: bool = False) -> dict[str, Any]:
@@ -201,7 +212,9 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
                         "preferences": {"status": "source-unavailable", "boundary": boundary,
                                         "action": "Suspend previously loaded preferences until the host source is selected."}}
         source = Path(inspection["resolved_target"])
-        inspection["action"] = VERIFIED_ACTION
+        # Without a session record nothing proves which revision is in context;
+        # the hook replaces this with session_action.
+        inspection["action"] = REREAD_ACTION
         path = source.parent.parent / "PREFERENCES.md"
         preferences: dict[str, Any] = {"path": str(path), "boundary": boundary}
         try:

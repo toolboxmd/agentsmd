@@ -540,8 +540,10 @@ behavioral compliance. Check each installed host separately:
   raw prompts. Codex builds native guidance once per run, per its
   [discovery contract](https://learn.chatgpt.com/docs/agent-configuration/agents-md).
   Existing desktop child context was observed to retain old global text even
-  while a fresh CLI process loaded current text. The hook verifies the file on
-  disk, not the model context, so this stale-child case remains a known limit.
+  while a fresh CLI process loaded current text. The loader records the global
+  file's SHA-256 when each session starts and, on later events, reports whether
+  the file changed since then; a changed file requires a full reread. It checks
+  the file, not the model context.
 - **Grok:** `grok inspect --json` exposes instruction sources and byte counts.
   Version 1.0.34 reports the global file; project discovery is trust-gated.
   Compare the native source and full expected byte count. Do not interpret an

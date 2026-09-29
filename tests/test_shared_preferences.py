@@ -221,10 +221,13 @@ class SharedPreferencesTests(unittest.TestCase):
             self.assertEqual(payload['preferences']['content'], self.private.read_text())
             self.assertNotIn('content', payload['instructions'])
             self.assertEqual(payload['instructions']['action'],
-                             'Verified: the global rules in context match this canonical '
-                             'global/AGENTS.md path and SHA-256. No comparison or reread is needed.')
+                             'The canonical global/AGENTS.md is unchanged since this session '
+                             'started (same SHA-256). Nothing is needed.')
         self.source.write_text('# New shared contract\n')
         changed = self.hook()
+        self.assertEqual(changed['instructions']['action'],
+                         'The global rules changed since this session started. Read the current '
+                         'canonical global/AGENTS.md in full before acting.')
         self.assertNotEqual(original['instructions']['sha256'], changed['instructions']['sha256'])
         self.assertEqual(changed['instructions']['sha256'], hashlib.sha256(self.source.read_bytes()).hexdigest())
         self.assertIsNone(self.hook())
