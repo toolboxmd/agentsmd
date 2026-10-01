@@ -51,7 +51,7 @@ class OperationsContractTests(unittest.TestCase):
             "Before editing `PREFERENCES.md`": {"workflows/reflection/references/preferences-pruning.md"},
             # Issue #164, 2026-10-01: real sessions skipped these at the named action.
             "Before delegating to another agent": {"references/orchestration.md"},
-            "Before committing tracked changes": {"workflows/version-control/index.md"},
+            "Before editing tracked files, committing": {"workflows/version-control/index.md"},
             "Before opening or merging a PR": {"references/delivery.md"},
         }
         lines = SKILL.read_text().splitlines()

@@ -371,5 +371,56 @@ class CommittedRecordsTests(unittest.TestCase):
                       out.getvalue())
 
 
+class MultiTurnScoringTests(unittest.TestCase):
+    """Review findings on PR #200: only a read that returned the file counts; Codex item ids restart per process."""
+
+    VC = "skills/operations/workflows/version-control/index.md"
+    HEADINGS = {"version-control/index.md": "# Version Control"}
+
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("multiturn", HARNESS.parent / "multiturn.py")
+        self.m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.m)
+
+    @staticmethod
+    def codex(item_id, command, exit_code, output):
+        return json.dumps({"type": "item.completed", "item": {
+            "id": item_id, "type": "command_execution", "command": command, "exit_code": exit_code,
+            "status": "completed", "aggregated_output": output}})
+
+    def commit_verdict(self, lines, host="codex"):
+        stream = "\n".join(lines)
+        end = len(self.m.tool_calls(stream, host))  # every call belongs to the commit turn
+        result = self.m.score_session(stream, [0, 0, 0, end, end], host, self.HEADINGS)
+        return result["turns"]["commit"]["verdict"]["version-control/index.md"]
+
+    def test_failed_or_echoed_codex_read_before_commit_is_a_skip(self):
+        for command, code, output in ((f"cat undefined/{self.VC}", 1, "No such file or directory"),
+                                      (f"echo cat {self.VC}", 0, f"cat {self.VC}")):
+            with self.subTest(command=command):
+                lines = [self.codex("item_1", command, code, output),
+                         self.codex("item_2", "git commit -m x", 0, "")]
+                self.assertEqual(self.commit_verdict(lines), "skip")
+
+    def test_codex_read_that_returned_the_file_fires(self):
+        lines = [self.codex("item_1", f"cat {self.VC}", 0, "# Version Control\n"),
+                 self.codex("item_2", "git commit -m x", 0, "")]
+        self.assertEqual(self.commit_verdict(lines), "fired")
+
+    def test_codex_items_of_a_resumed_process_are_not_dropped(self):
+        lines = [json.dumps({"type": "thread.started"}), self.codex("item_1", "ls", 0, ""),
+                 json.dumps({"type": "thread.started"}), self.codex("item_1", "git commit -m x", 0, "")]
+        self.assertEqual([c[2] for c in self.m.tool_calls("\n".join(lines), "codex")], ["ls", "git commit -m x"])
+
+    def test_claude_read_needs_its_tool_result(self):
+        read = json.dumps({"type": "assistant", "message": {"content": [
+            {"type": "tool_use", "id": "r", "name": "Read", "input": {"file_path": f"/p/{self.VC}"}},
+            {"type": "tool_use", "id": "c", "name": "Bash", "input": {"command": "git commit -m x"}}]}})
+        result = json.dumps({"type": "user", "message": {"content": [
+            {"type": "tool_result", "tool_use_id": "r", "content": "1\t# Version Control"}]}})
+        self.assertEqual(self.commit_verdict([read], "claude"), "skip")
+        self.assertEqual(self.commit_verdict([read, result], "claude"), "fired")
+
+
 if __name__ == "__main__":
     unittest.main()

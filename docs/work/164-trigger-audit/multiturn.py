@@ -154,7 +154,7 @@ def claude_session(cmd, cwd, env, prompts):
     cmd[cmd.index("-p") + 1:cmd.index("-p") + 1] = ["--input-format", "stream-json"]
     proc = subprocess.Popen(cmd, cwd=cwd, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                             stderr=subprocess.DEVNULL, text=True, start_new_session=True)
-    lines, starts, results = [], [], []
+    lines, starts, results, complete = [], [], [], []
     done = threading.Event()
 
     def reader():
@@ -165,7 +165,7 @@ def claude_session(cmd, cwd, env, prompts):
             except ValueError:
                 continue
             if isinstance(event, dict) and event.get("type") == "result":
-                results.append(len(lines))
+                results.append(not event.get("is_error"))
                 done.set()
         done.set()
 
@@ -183,6 +183,7 @@ def claude_session(cmd, cwd, env, prompts):
                 done.wait(5)
             if len(results) == count:
                 break
+            complete.append(results[-1])
         proc.stdin.close()
         proc.wait(60)
     except (BrokenPipeError, subprocess.TimeoutExpired):
@@ -194,53 +195,147 @@ def claude_session(cmd, cwd, env, prompts):
             pass
         proc.wait()
         thread.join(5)
-    return lines, starts
+    return lines, starts, complete + [False] * (len(prompts) - len(complete))
+
+
+def execute(host, cmd, cwd, env):
+    """trigger_test.execute, plus whether the process ended on its own with exit code 0."""
+    proc = subprocess.Popen(cmd, cwd=cwd, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                            stderr=subprocess.DEVNULL, text=True, start_new_session=True)
+    lines, last = [], [time.monotonic()]
+
+    def reader():
+        for line in proc.stdout:
+            lines.append(line)
+            last[0] = time.monotonic()
+
+    thread = threading.Thread(target=reader, daemon=True)
+    thread.start()
+    start, silence, killed = time.monotonic(), tt.SILENCE.get(host, tt.TIMEOUT), False
+    try:
+        while proc.poll() is None:
+            now = time.monotonic()
+            if now - start > tt.TIMEOUT or now - last[0] > silence:
+                killed = True
+                break
+            time.sleep(1)
+    finally:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        proc.wait()
+        thread.join(5)
+        proc.stdout.close()
+    return "".join(lines), not killed and proc.returncode == 0
+
+
+# Event that marks a finished turn in each host's stream (Claude: its result event, checked above).
+TURN_DONE = {"codex": '"type": "turn.completed"', "grok": '"type": "result"', "opencode": '"type": "step_finish"'}
 
 
 def session(host, model, effort, arm, repo, plugin, env, prompts):
-    """Return (stream text, list of call indexes where each turn starts)."""
+    """Return (stream text, call indexes where each turn starts, whether each turn completed).
+
+    A turn completed when the host finished it on its own: Claude's result event without an error;
+    elsewhere exit code 0 before the watchdog, with the host's end-of-turn event (Grok's result
+    event must not be an error)."""
     if host == "claude":
         cmd = turn_command(host, model, effort, repo, plugin, "PROMPT", True, arm)
-        lines, starts = claude_session(cmd, repo, env, prompts)
+        lines, starts, complete = claude_session(cmd, repo, env, prompts)
         stream = "".join(lines)
-        bounds = [sum(1 for _ in tt.tool_calls("".join(lines[:s]), host)) for s in starts]
-        return stream, bounds
-    stream, bounds = "", []
+        bounds = [sum(1 for _ in tool_calls("".join(lines[:s]), host)) for s in starts]
+        return stream, bounds, complete
+    stream, bounds, complete = "", [], []
     for n, prompt in enumerate(prompts):
         bounds.append(sum(1 for _ in tool_calls(stream, host)))
-        stream += tt.execute(host, turn_command(host, model, effort, repo, plugin, prompt, n == 0, arm), repo, env)
-    return stream, bounds
+        text, ok = execute(host, turn_command(host, model, effort, repo, plugin, prompt, n == 0, arm), repo, env)
+        done = re.sub(r'":\s*"', '": "', text)
+        ok = ok and TURN_DONE[host] in done and not (host == "grok" and '"is_error": true' in done)
+        stream += text
+        complete.append(ok)
+    return stream, bounds, complete
 
 
 def tool_calls(stream, host):
-    """trigger_test's calls, plus Codex's non-shell tool items (spawned agents, MCP tools) by name."""
-    if host != "codex":
-        yield from tt.tool_calls(stream, host)
-        return
-    seen = set()
+    return [call for call, _ in parse(stream, host)]
+
+
+def _text(content):
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        return "\n".join(_text(c.get("text", c.get("content", ""))) if isinstance(c, dict) else str(c) for c in content)
+    return "" if content is None else json.dumps(content)
+
+
+def parse(stream, host):
+    """[(call, output)]: trigger_test's calls in order (plus Codex's non-shell tool items by name), each
+    with the text its tool returned, or "" when none was recorded."""
+    events = []
     for line in stream.splitlines():
         try:
             event = json.loads(line)
         except ValueError:
             continue
-        if not isinstance(event, dict):
-            continue
-        if event.get("type") == "thread.started":
-            seen = set()  # each resumed `codex exec` numbers its items from item_0 again
-        item = event.get("item") or {}
-        if event.get("type") not in ("item.started", "item.completed") or item.get("id") in seen:
-            continue
-        kind = item.get("type")
-        if kind == "command_execution":
-            seen.add(item.get("id"))
-            yield "Bash", "", str(item.get("command", "")), ""
-        elif kind == "file_change":
-            seen.add(item.get("id"))
-            for change in item.get("changes") or [{}]:
-                yield "Edit", str(change.get("path", "")), "", ""
-        elif kind and kind not in ("agent_message", "reasoning", "todo_list", "error", "web_search"):
-            seen.add(item.get("id"))
-            yield str(item.get("tool") or item.get("name") or kind), "", "", ""
+        if isinstance(event, dict):
+            events.append(event)
+    if host == "codex":
+        items, order, thread = {}, [], 0
+        for event in events:
+            if event.get("type") == "thread.started":
+                thread += 1  # each resumed `codex exec` numbers its items from item_0 again
+            item = event.get("item") or {}
+            if event.get("type") not in ("item.started", "item.completed"):
+                continue
+            key = (thread, item.get("id"))
+            if key not in items:
+                order.append(key)
+            items[key] = item
+        result = []
+        for key in order:
+            item = items[key]
+            kind = item.get("type")
+            if kind == "command_execution":
+                done = item.get("status") == "completed" and item.get("exit_code") is not None
+                result.append((("Bash", "", str(item.get("command", "")), ""),
+                               str(item.get("aggregated_output") or "") if done else ""))
+            elif kind == "file_change":
+                for change in item.get("changes") or [{}]:
+                    result.append((("Edit", str(change.get("path", "")), "", ""), ""))
+            elif kind and kind not in ("agent_message", "reasoning", "todo_list", "error", "web_search"):
+                result.append(((str(item.get("tool") or item.get("name") or kind), "", "", ""), ""))
+        return result
+    calls = list(tt.tool_calls(stream, host))
+    if host == "opencode":
+        outputs, order = {}, []
+        for event in events:
+            part = event.get("part") or {}
+            if event.get("type") == "tool_use":
+                if part.get("callID") not in outputs:
+                    order.append(part.get("callID"))
+                state = part.get("state") or {}
+                outputs[part.get("callID")] = _text(state.get("output")) if state.get("status") == "completed" else ""
+        return list(zip(calls, [outputs[k] for k in order] + [""] * (len(calls) - len(order))))
+    ids, outputs = [], {}
+    for event in events:
+        content = (event.get("message") or {}).get("content")
+        for block in content if isinstance(content, list) else []:
+            if not isinstance(block, dict):
+                continue
+            if event.get("type") == "assistant" and block.get("type") == "tool_use" and block.get("id") not in ids:
+                ids.append(block.get("id"))
+            elif event.get("type") == "user" and block.get("type") == "tool_result" and not block.get("is_error"):
+                outputs[block.get("tool_use_id")] = _text(block.get("content"))
+    return list(zip(calls, [outputs.get(i, "") for i in ids] + [""] * (len(calls) - len(ids))))
+
+
+def heading(plugin, f):
+    """First Markdown heading of a procedure in the arm's copy, or None (control arm)."""
+    for path in sorted((pathlib.Path(plugin) / "skills/operations").rglob(pathlib.Path(f).name)):
+        if str(path).endswith(f):
+            return next((l.strip() for l in path.read_text().splitlines() if l.startswith("# ")), None)
+    return None
 
 
 def first_hit(calls, spec, start, end):
@@ -265,11 +360,14 @@ def first_hit(calls, spec, start, end):
     return min(hits) if hits else None
 
 
-def score_session(stream, bounds, host):
-    calls = list(tool_calls(stream, host))
-    failed = tt.failed_calls(stream, host) if host != "codex" else set()
+def score_session(stream, bounds, host, headings):
+    """A read counts when the call names the file and its returned text contains the file's first
+    heading: a failed, refused or merely echoed read does not."""
+    parsed = parse(stream, host)
+    calls = [call for call, _ in parsed]
     files = sorted({f for *_, req in TURNS for f in req} | set(REWORDED))
-    reads = {f: next((i for i, c in enumerate(calls) if i not in failed and tt.reads_file(c, f)), None)
+    reads = {f: next((i for i, (c, out) in enumerate(parsed)
+                      if headings.get(f) and tt.reads_file(c, f) and headings[f] in out), None)
              for f in files}
     entry = next((i for i, (name, _, _, skill) in enumerate(calls)
                   if (name == "Skill" and skill.split(":")[-1] == "operations") or tt.reads_file(calls[i], tt.ENTRY)),
@@ -307,7 +405,9 @@ def run_one(host, model, effort, arm, index, before):
         home, plugin, env = make_home(host, arm)
         prompts = [p.format(repo=repo.resolve()) for _, p, _, _ in TURNS]
         started = time.time()
-        stream, bounds = session(host, model, effort, arm, repo, plugin, env, prompts)
+        stream, bounds, complete = session(host, model, effort, arm, repo, plugin, env, prompts)
+        files = sorted({f for *_, req in TURNS for f in req} | set(REWORDED))
+        headings = {f: heading(plugin, f) for f in files}
         after = tt.snapshot()
         if after != before:
             changed = sorted(k for k in set(before) | set(after) if before.get(k) != after.get(k))
@@ -315,9 +415,10 @@ def run_one(host, model, effort, arm, index, before):
         item = {"host": tt.HOST_LABEL.get(host, host), "model": model, "effort": effort or None, "arm": arm,
                 "source": tt.SOURCES.get(arm + "-sha", "")[:7] or None, "run": index,
                 "seconds": round(time.time() - started), "turns_started": len(bounds),
-                "usage": tt.usage(stream, host), **score_session(stream, bounds, host)}
+                "turns_completed": complete, "usage": tt.usage(stream, host),
+                **score_session(stream, bounds, host, headings)}
         item["call_list"] = [[n, tt.anonymize(t, repo, plugin)] for n, t in item["call_list"]]
-        item["valid"] = len(bounds) == len(TURNS) and item["calls"] > 0
+        item["valid"] = len(complete) == len(TURNS) and all(complete) and item["calls"] > 0
         return item
     finally:
         tt.remove(repo)

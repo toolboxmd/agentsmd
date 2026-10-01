@@ -54,7 +54,7 @@ not completing it. A clear microfix stays direct.
 | Before editing a README, CHANGELOG, `docs/` page, or other human-facing documentation | [Technical writing](workflows/technical-writing/index.md) and [prose](workflows/technical-writing/references/prose.md) |
 | Learn from corrections, repeated friction, or requested reflection | [Reflection](workflows/reflection/index.md) |
 | Before editing `PREFERENCES.md` | [Preferences pruning](workflows/reflection/references/preferences-pruning.md) |
-| Before committing tracked changes, bumping a version, or making an explicit WIP checkpoint | [Version control](workflows/version-control/index.md) |
+| Before editing tracked files, committing, bumping a version, or making an explicit WIP checkpoint | [Version control](workflows/version-control/index.md) |
 | Use `.toolboxmd/delivery.json` or decide delivery configuration | [Delivery profile](workflows/delivery-profile/index.md) |
 | Before opening or merging a PR, releasing, promoting an artifact, or classifying website impact | [Delivery](references/delivery.md) |
 | Close a terminal outcome or retire task resources | [Finalization](references/finalization.md) |
