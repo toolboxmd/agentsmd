@@ -443,6 +443,15 @@ class MultiTurnScoringTests(unittest.TestCase):
                 self.codex("item_2", "git commit -m x", 0, "")]
         self.assertEqual(self.commit_verdict(late), "skip")
 
+    def test_a_help_lookup_is_not_the_action(self):
+        create = r"\bgh\s+pr\s+create\b"
+        self.assertFalse(self.m.runs(create, "git status && gh pr create --help 2>&1 | head -80"))
+        self.assertFalse(self.m.runs(create, "gh pr create -h"))
+        self.assertTrue(self.m.runs(create, "gh pr create --help; gh pr create --title x --body y"))
+        self.assertTrue(self.m.runs(create, 'gh pr create --title "Raise -h flag" --body-file b.md'))
+        self.assertTrue(self.m.runs(create, """/bin/zsh -lc 'gh pr create --title x --body-file b.md'"""))
+        self.assertFalse(self.m.runs(create, """/bin/zsh -lc 'gh pr create --help'"""))
+
     def test_grok_turn_completes_only_with_an_error_free_result(self):
         for text, done in (('{"type":"result","is_error":true}', False),
                            ('{"type": "result", "is_error": true}', False),

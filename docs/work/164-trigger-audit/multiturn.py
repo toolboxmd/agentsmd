@@ -365,6 +365,21 @@ def heading(plugin, f):
     return None
 
 
+HELP = re.compile(r"\s(--help|-h)(?=[\s'\"]|$)")
+
+
+def runs(pattern, command):
+    """The shell command performs the action: a match whose own command segment asks only for help
+    (`gh pr create --help`, Grok's habit before the real call) does not count."""
+    for match in re.finditer(pattern, command):
+        segment = re.split(r"[|;&\n]", command[match.end():], maxsplit=1)[0]
+        # Quoted words (a title or body that says -h) are not flags; Codex wraps the whole command in
+        # `zsh -lc "..."`, so only the segment after the match is unquoted.
+        if not HELP.search(re.sub(r"'[^']*'|\"[^\"]*\"", "''", segment)):
+            return True
+    return False
+
+
 def first_hit(calls, spec, start, end):
     """Index of the first call in [start, end) matching any alternative of spec; "end" means end."""
     hits = []
@@ -380,7 +395,7 @@ def first_hit(calls, spec, start, end):
             elif alternative.startswith("tool:"):
                 hit = re.fullmatch(alternative[5:], name) is not None
             else:
-                hit = name == "Bash" and re.search(alternative[5:], command) is not None
+                hit = name == "Bash" and runs(alternative[5:], command)
             if hit:
                 hits.append(i)
                 break
