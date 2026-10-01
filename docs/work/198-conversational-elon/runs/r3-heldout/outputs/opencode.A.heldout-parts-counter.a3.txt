@@ -1,0 +1,17 @@
+For that setup I wouldn't use either - Retool + Supabase or Next.js would make the counter slower, not faster.
+
+You have: 1 user, 1 laptop, 240 unique codes, ~40 read-only lookups/day, Excel already installed and already the authoritative list.
+
+Both proposed stacks add a second copy of the data, sync to maintain, login/hosting/internet dependency, and ongoing cost/maintenance, for zero new capability. You don't need multi-user access, payments, stock writes, or remote access.
+
+Stay in Excel and fix the scrolling:
+
+1. Turn your list into a Table (Ctrl/Cmd+T) with `PartCode | Shelf | Price`, freeze the header.
+2. Add a `Lookup` sheet with an input cell, e.g. A2 for the code, then:
+   `=XLOOKUP(A2,Parts[PartCode],Parts[Shelf],"Not found")`
+   `=XLOOKUP(A2,Parts[PartCode],Parts[Price],"Not found")`
+3. Add Data Validation on A2 as a List from `Parts[PartCode]` so you get autocomplete/dropdown and no typos.
+
+That gives you type code -> see shelf + price instantly, no scroll, no new system to keep in sync.
+
+Only revisit a portal/database if you get a second counter, need shared writes, or need access off that laptop.

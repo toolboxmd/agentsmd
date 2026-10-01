@@ -1,0 +1,31 @@
+I'd skip Retool, Supabase and Next.js here and build the lookup inside the Excel workbook you already have. It should take about 15 minutes and cost nothing.
+
+**Why not a web stack**
+
+- **Two copies of the data.** Your workbook is the master list and you edit it directly. A database would need every change copied over, or a sync job. If you forget, the counter shows the wrong price.
+- **More to look after.** You'd have hosting, logins, a subscription or deployment, and something that can break or go offline. All of that just to search 240 rows on one laptop.
+- **Nothing to gain.** You only need to look things up. There's no stock tracking, no sales, no second user and no remote access, which is where those tools would earn their keep.
+
+**What I'd build: a lookup sheet in the same workbook**
+
+1. **Turn your list into a Table.** Click inside the data, press Ctrl+T, and name it `Parts` (Table Design → Table Name). The formulas will then pick up rows you add later.
+2. **Add a sheet called `Lookup`** and make it big and readable:
+   - `A1`: "Part code", `B1`: where you type the code (highlight it)
+   - `A2`: "Shelf", `B2`:
+     `=IF(B1="","",XLOOKUP(TRIM(B1),Parts[Code],Parts[Shelf],"NOT FOUND"))`
+   - `A3`: "Price", `B3`:
+     `=IF(B1="","",XLOOKUP(TRIM(B1),Parts[Code],Parts[Price],"NOT FOUND"))`
+     Format B3 as currency.
+
+   Use your real column names in place of `Code`, `Shelf` and `Price`. If your Excel is older and doesn't have XLOOKUP, use `INDEX(Parts[Shelf],MATCH(TRIM(B1),Parts[Code],0))` instead.
+3. **Keep the cursor in the input box.** Select B1, open Format Cells → Protection, and untick "Locked". Then protect only the Lookup sheet (Review → Protect Sheet) and allow just "Select unlocked cells". Now you type a code, press Enter, read the result, and type the next code straight away, with no clicking. Your parts sheet stays fully editable.
+4. **Optional: partial matches.** If slips are sometimes hard to read, add a list below the results that shows every code containing what you typed:
+   `=FILTER(Parts, ISNUMBER(SEARCH(B1, Parts[Code])), "")`
+
+**One thing to check:** if any codes have leading zeros or mix numbers and letters, make sure the Code column is stored as text. Otherwise "00123" won't match.
+
+Your workflow becomes: open the workbook, stay on the Lookup tab, type the code, press Enter, read the shelf and price. You keep editing the parts list exactly as you do now.
+
+I'd only reconsider a database or web app if things change, for example a second person or device needs it, or you start tracking stock or sales.
+
+If you send me the column headers (or the workbook's path on the laptop), I can write the exact formulas for your layout.

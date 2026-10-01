@@ -1,0 +1,33 @@
+Use the Excel workbook already on the counter laptop. Add a Counter sheet that looks up the code you type and shows the shelf and the price.
+
+That fits this counter: one person, one machine, about 40 lookups a day, 240 parts, and the workbook stays the list you edit. The lookup only reads that list. Retool with Supabase, or a Next.js portal, is a shared web app with its own database. You would copy the rows out of Excel and keep that copy updated every time a shelf or a price changes. Accounts, hosting, and a second list do not make this lookup faster.
+
+Put it together in the same file:
+
+1. On the parts sheet, select the rows and headers and press Ctrl+T. Name the table `Parts`, with columns `PartCode`, `Shelf`, and `Price`. Store part codes as text so leading zeros stay intact.
+
+2. Add a sheet named `Counter`. Use one cell, such as B3, for the code from the slip. Make that cell and the result cells large enough to read from the counter.
+
+3. Shelf:
+
+```excel
+=XLOOKUP(B3, Parts[PartCode], Parts[Shelf], "No match")
+```
+
+4. Price:
+
+```excel
+=XLOOKUP(B3, Parts[PartCode], Parts[Price], "No match")
+```
+
+Format the price cell as currency.
+
+5. Keep adding rows and changing prices on `Parts`. `Counter` only reads that table.
+
+Type the code, press Enter, and the shelf and price appear. On an older Excel without XLOOKUP, use:
+
+```excel
+=IFERROR(INDEX(Parts[Shelf], MATCH(B3, Parts[PartCode], 0)), "No match")
+```
+
+Use the same pattern for `Price`. Exact match is the right default for a code copied from a repair slip.

@@ -1,0 +1,1 @@
+You are trying to look up shelf location and price from a part code as fast as possible at the counter. Neither Retool plus Supabase nor Next.js helps here because your 240 row Excel file is already the single user source on that laptop and lookups are read only. Add a small lookup sheet in the same workbook where you type the code and it returns location and price with XLOOKUP.

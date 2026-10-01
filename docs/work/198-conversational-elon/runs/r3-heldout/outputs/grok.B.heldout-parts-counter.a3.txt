@@ -1,0 +1,5 @@
+You want to type a part code and see its shelf and selling price right away, about 40 times a day.
+
+Keep the Excel workbook you already update: add a Lookup sheet with the code in B2, the shelf in B3 as `=XLOOKUP(B2, code_column, shelf_column, "Not found")`, and the price in B4 as `=XLOOKUP(B2, code_column, price_column, "Not found")`, with those ranges pointed at the columns on your 240-row list.
+
+Retool with Supabase, or a Next.js portal, would add hosting, accounts, and a second copy of that list for a read-only lookup that only runs on the counter laptop.

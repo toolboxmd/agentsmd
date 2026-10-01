@@ -1,0 +1,13 @@
+I’d keep this in Excel. With 240 parts, one laptop and read-only lookups, Retool/Supabase or Next.js would add hosting, maintenance and a second copy of data to keep synchronized.
+
+I’d add a **Counter lookup** sheet to your existing workbook:
+
+- One large input cell for the part code.
+- Two large result cells showing **shelf location** and **selling price**, using `XLOOKUP`.
+- A clear “Part not found” message for unknown codes.
+
+Your existing parts sheet stays the authoritative list. I’d format it as an Excel Table so the lookup automatically includes new rows, and store codes as text to preserve any leading zeros. Updates to locations or prices would appear in the lookup immediately.
+
+At the counter, you’d type the code, press Enter and read the result—no scrolling. No macros, database or internet connection needed.
+
+I’d only consider a web stack if you later need access from multiple devices or workflows such as stock changes and sales recording. For today’s problem, an Excel lookup sheet is the simplest fit.

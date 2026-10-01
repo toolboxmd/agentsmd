@@ -1,0 +1,5 @@
+What you are trying to achieve is typing a code 40 times a day and instantly seeing shelf and price without scrolling.
+
+Use neither. Stay in the Excel workbook you already maintain. Retool plus Supabase or a Next.js portal would duplicate your 240 row list into a second system to sync, host and keep online, for a read only lookup used by one person on one laptop.
+
+Smallest fix: add a `Lookup` sheet to that workbook. Put the entry cell in A2, then in B2 use XLOOKUP against your parts table for shelf, and in C2 XLOOKUP for price, with IFNA for "not found". Keep the parts table as the only list with unique codes. If you tell me the sheet name and column names I will give you the exact two formulas to paste.

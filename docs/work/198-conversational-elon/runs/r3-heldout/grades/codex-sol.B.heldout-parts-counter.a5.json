@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a 'Counter' sheet to the existing workbook with a code-entry cell and exact-match formulas that return shelf location and price from the existing list, plus a 'Code not found' message, rejecting Retool/Supabase and Next.js.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is correctly small and rejects both proposed stacks, but none of the four labelled record lines appear.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.heldout-parts-counter.a5",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

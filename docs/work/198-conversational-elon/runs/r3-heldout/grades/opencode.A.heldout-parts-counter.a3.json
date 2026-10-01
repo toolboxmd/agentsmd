@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Keep the existing Excel workbook as the source, turn the list into a Table, and add a lookup sheet that uses XLOOKUP on the typed part code to return the shelf location and price, with data validation on the input cell.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a correctly sized lookup inside the existing workbook that rejects both stacks, but the reply has none of the four required labelled lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.heldout-parts-counter.a3",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

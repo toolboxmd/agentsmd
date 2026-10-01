@@ -1,0 +1,17 @@
+Neither — for this setup you don't need Retool + Supabase or Next.js.
+
+With 240 rows, 1 user, 1 laptop, Excel already installed and authoritative, and read-only lookups ~40x/day, both options add cost and failure modes for no gain:
+- duplicate source of truth to sync from Excel to Supabase
+- internet / login / hosting dependency at the counter
+- maintenance, backups, subscriptions to manage
+
+Do this in Excel instead:
+
+1. Format your list as a Table with Code, Location, Price.
+2. Add a `Lookup` sheet: A2 = code you type, B2/C2 = result.
+  `=XLOOKUP($A$2, Parts[Code], Parts[Location], "Not found")`
+  `=XLOOKUP($A$2, Parts[Code], Parts[Price], "Not found")`
+
+That's instant, offline, no sync, and you keep updating the workbook directly as now.
+
+If you want, tell me your exact sheet/column names and I'll give you the copy-paste formulas.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a code-entry cell and XLOOKUP formulas to the existing Excel workbook so the shelf location and price come back for the typed part code, with no new app or database.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked**: You asked for the shelf and selling price from a part code typed off a paper slip, about 40 times a day. You suggested Retool with Supabase or a Next.js portal; the counter loses nothing if those are skipped, because this lookup only reads the 240-row Excel list you already update on the only laptop involved.",
+  "Deleted": "**Deleted**: Retool, Supabase, a Next.js portal, and any hosted database or second copy of the parts list.",
+  "Bottleneck": "**Bottleneck**: Scrolling 240 rows to find one code. The workbook already open on the counter laptop is where that wait sits.",
+  "Checked myself": "**Checked myself**: What you told me: Excel is on the counter laptop; the workbook has 240 unique part codes with shelf locations and prices; you update that file directly; the lookup does not change stock, record sales, or take payments; nobody else needs access; every lookup happens on that laptop."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come first and are specific, Retool, Supabase and Next.js are deleted by name and never offered again, and the fix is an XLOOKUP inside the existing workbook.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.heldout-parts-counter.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

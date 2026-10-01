@@ -1,0 +1,8 @@
+Requirements and who asked: You asked for fast lookup of shelf location and price from part code for 40 solo counter lookups per day from your 240-row Excel list.
+Deleted: Retool, Supabase, Next.js portal, hosted database, auth, deployment and maintenance.
+Bottleneck: Scrolling 240 rows per lookup on the counter laptop.
+Checked myself: You told me single user, same laptop, Excel installed, unique codes, authoritative Excel you update directly, read-only lookup with no stock, sales or payments.
+
+What you are trying to achieve in one line: type a code from the slip and instantly see shelf and price without scrolling.
+
+I recommend neither stack: add a "Counter" sheet in your existing workbook with one input cell for the code and two XLOOKUP formulas for shelf and price, which rejects Retool/Supabase/Next.js as extra cost and upkeep with no gain here.

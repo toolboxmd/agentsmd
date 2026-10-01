@@ -1,0 +1,5 @@
+You need to type a part code and immediately see its shelf location and selling price. I recommend keeping this in Excel: your existing workbook already owns the data, and a separate portal would add hosting, maintenance and synchronization without helping this one-laptop task.
+
+I’d add a small lookup sheet with one code-entry cell and two results, shelf and price, using exact-match `XLOOKUP` formulas against the existing list. Format the entry cell as text to preserve leading zeros, show “Code not found” for unknown codes, and make the results large enough to read at the counter.
+
+That removes the scrolling while keeping your normal workbook updates as the only data maintenance. Retool/Supabase or Next.js would become worth considering if you later need access from multiple devices or people.

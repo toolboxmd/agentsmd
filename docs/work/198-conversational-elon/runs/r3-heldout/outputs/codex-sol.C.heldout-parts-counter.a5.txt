@@ -1,0 +1,6 @@
+**Requirements and who asked:** You need to enter a part code and see its shelf location and selling price on the counter laptop.
+**Deleted:** Retool, Supabase, a Next.js portal, and a second database.
+**Bottleneck:** Scrolling through rows, rather than searching the existing list.
+**Checked myself:** Your description only; I have not inspected the workbook or tested it.
+
+You want faster counter lookups; I recommend Excel’s built-in Find in your existing authoritative workbook. Configure it once with **Match entire cell contents**, then use **Ctrl+F → type the code → Enter → Esc** and read the shelf and price from the matching row. That needs no new stack, hosting, synchronization, or maintenance.

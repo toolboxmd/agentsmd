@@ -1,0 +1,13 @@
+**Requirements and who asked:** You need to enter a part code about 40 times a day and quickly see its shelf location and selling price.
+**Deleted:** Retool, Supabase, and Next.js: this task needs no separate app, database, hosting, or synchronization.
+**Bottleneck:** Scrolling through the workbook to find each code.
+**Checked myself:** From your description, Excel is installed, the workbook contains 240 unique codes, and you maintain it directly; I have not inspected it.
+
+You want faster counter lookups; I recommend adding a lookup sheet to your existing Excel workbook.
+
+Convert the existing list into an Excel table named `Parts`, with columns named `Code`, `Shelf`, and `Price`. On a new `Lookup` sheet, use `B2` for the typed code and these two formulas for the results:
+
+- Shelf: `=XLOOKUP(B2,Parts[Code],Parts[Shelf],"Code not found",0)`
+- Price: `=XLOOKUP(B2,Parts[Code],Parts[Price],"Code not found",0)`
+
+Format the price result as currency and treat codes as text so leading zeros are preserved. Your existing list remains authoritative, and table updates feed the lookup automatically.

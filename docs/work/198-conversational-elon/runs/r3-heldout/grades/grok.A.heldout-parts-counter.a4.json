@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a Counter sheet to the existing Excel workbook that uses XLOOKUP (or INDEX/MATCH) to look up an exact part code in the Parts table and show its shelf and price.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends an exact-match lookup inside the existing workbook and rejects both proposed stacks, but none of the four labelled record lines appear.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.heldout-parts-counter.a4",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,21 @@
+Use the Excel workbook on the counter laptop. Add a lookup sheet in front of the parts list you already keep.
+
+**Set it up**
+
+1. On the sheet with the 240 parts, use three headers: Part Code, Shelf, and Price. Select that range and choose Insert, then Table. Name the table Parts. Store part codes as text so leading zeros and mixed codes match what you type from the slip.
+
+2. Add a sheet named Counter.
+   - A1: `Part code`. B1 is the cell you type into.
+   - A2: `Shelf`. B2: `=XLOOKUP(B1, Parts[Part Code], Parts[Shelf], "Not found")`
+   - A3: `Price`. B3: `=XLOOKUP(B1, Parts[Part Code], Parts[Price], "Not found")`
+   - Format B3 as currency. Make B1, B2, and B3 a large font so the shelf is readable from the counter.
+
+3. Keep editing shelves and prices in the Parts table as you do now. Counter only reads that table. Type a code, press Enter, and the shelf and price appear. A code that is missing shows "Not found".
+
+That is the whole system: one file, no login, and it works with the laptop offline. If your column headers differ, use those names inside the brackets.
+
+**Retool and Next.js**
+
+Both mean a second copy of these 240 rows. You would load the workbook into Supabase or another database, then keep that copy matched every time you change a shelf or a price. Retool adds a subscription and a hosted app. Next.js adds a project to build, host, and open in a browser. Either fits later if other people need lookups from other machines, or if a lookup has to change stock, record a sale, or take a payment.
+
+For this counter — you, this laptop, a read of shelf and price — the lookup sheet is the stack.

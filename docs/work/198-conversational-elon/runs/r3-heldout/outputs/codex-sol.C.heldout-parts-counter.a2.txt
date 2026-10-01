@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need to enter a part code and see its shelf location and selling price, about 40 times daily.
+**Deleted:** Retool, Supabase and a Next.js portal add systems to maintain without a requirement that needs them.
+**Bottleneck:** Scrolling to find a code, rather than the size of the 240-row list.
+**Checked myself:** You’ve told me Excel is installed, codes are unique, and the workbook is authoritative; I haven’t inspected it.
+
+You need faster counter lookups. I recommend keeping this entirely in Excel: add a lookup sheet with one code-entry cell and two large results for shelf and price, using exact-match formulas against your existing list.
+
+Format the entry cell as text to preserve leading zeros, show “Code not found” for unmatched entries, and protect the result formulas against accidental edits. You keep updating the same parts list, and the lookup reads it directly.

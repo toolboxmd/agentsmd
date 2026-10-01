@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends using Excel's Find, with Match entire cell contents turned on, in the existing workbook to locate the exact part code and read the shelf and price from the selected row, and to keep editing that workbook directly.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked**: You asked whether to use Retool with Supabase or a Next.js portal for counter lookups. The need is about 40 read-only lookups a day, on one laptop, of shelf and price from the 240-row Excel workbook you already update.",
+  "Deleted": "**Deleted**: Retool, Supabase, Next.js, hosting, a database, and logins. The workbook is already the list, only you look parts up, and another system would have to be kept in step with that file.",
+  "Bottleneck": "**Bottleneck**: Scrolling to find a code. That search is the delay.",
+  "Checked myself": "**Checked myself**: Your description: Excel is on the counter laptop, 240 unique part codes with shelf and price, you edit that workbook, lookups do not change stock or take payment, and nobody else needs access. I have not opened the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends an exact-match Find in the existing workbook; all four labelled lines come before it, are specific to this decision, and none of the removed tools are offered again.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.heldout-parts-counter.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

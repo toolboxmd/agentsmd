@@ -1,0 +1,15 @@
+You want to type a code and see the shelf and price instantly; I'd use neither stack and add a lookup box to the workbook you already have. Retool/Supabase or Next.js would create a second copy of the 240 rows that you'd need to keep in sync, plus hosting, logins and possibly a subscription. A formula reads your authoritative list directly and takes about five minutes to set up.
+
+Setup, assuming your parts sheet is named `Parts` with code in column A, shelf in B and price in C (adjust to match):
+
+1. Add a new sheet named `Lookup` and drag it to the first tab position.
+2. In `A1` type `Part code`, and leave `B1` as the cell where you type codes.
+3. In `A2` type `Shelf`, and in `B2` enter:
+   `=IF(B1="","",XLOOKUP(TRIM(B1),Parts!A:A,Parts!B:B,"Not found"))`
+4. In `A3` type `Price`, and in `B3` enter:
+   `=IF(B1="","",XLOOKUP(TRIM(B1),Parts!A:A,Parts!C:C,"Not found"))`
+5. Make row 1 to 3 large (font size 28 or so) and save.
+
+At the counter, click `B1`, type the code, and press Enter to see the shelf and price. Lookups ignore capitalization, and any edits you make to `Parts` show up immediately.
+
+If `XLOOKUP` gives a `#NAME?` error, your Excel is older. In that case use `=IFERROR(VLOOKUP(TRIM(B1),Parts!A:C,2,FALSE),"Not found")` for the shelf, and change the `2` to `3` for the price.

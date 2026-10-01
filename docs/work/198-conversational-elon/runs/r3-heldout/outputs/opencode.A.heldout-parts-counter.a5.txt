@@ -1,0 +1,16 @@
+For this one, don't use either — stick with Excel.
+
+Retool + Supabase or a Next.js portal would make you slower, not faster for what you described:
+* 1 user, 1 laptop, 40 lookups/day, 240 rows, read-only
+* Excel is already the authoritative list and you update it directly
+* Either stack adds hosting, login, internet dependency, and a second copy of the data to keep in sync with Excel, for no extra benefit
+
+What you need is just instant lookup in the workbook you already have:
+
+1. Format your list as a Table (select it, Ctrl+T) with e.g. `Code | Location | Price`
+2. Add a `Lookup` sheet with a big input cell, e.g. A2 for the code you type
+3. In B2 and C2: `=XLOOKUP($A$2, Parts!$A:$A, Parts!$B:$B, "Not found")` and same for price column
+
+Type the code from the slip in A2 and you'll get location + price with no scrolling.
+
+If you want, tell me the sheet name and exact column headers and I'll give you the copy-paste formulas.

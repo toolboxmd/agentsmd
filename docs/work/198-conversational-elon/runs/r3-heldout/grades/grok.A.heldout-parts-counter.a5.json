@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a Counter sheet to the existing Excel workbook that uses XLOOKUP on a Parts table to show shelf and price for a typed part code, and it defers Retool/Supabase and Next.js until other users or transactional needs arise.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a SMALL in-workbook lookup that rejects the proposed stacks, but none of the four labelled record lines appear, so every record check fails.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.heldout-parts-counter.a5",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

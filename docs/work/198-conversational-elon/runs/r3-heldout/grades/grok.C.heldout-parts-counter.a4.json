@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a Lookup sheet inside the existing workbook where the user types a part code into one cell and two XLOOKUP formulas return shelf and price from the existing columns, showing \"Not found\" when the code is missing.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You asked which stack should show shelf and selling price when you type a part code. The need is about 40 read-only lookups a day on the counter laptop, from the Excel list you already update.",
+  "Deleted": "**Deleted:** Retool, Supabase, and a Next.js portal. They add a second copy of the list, accounts, and a host, and every lookup stays on that one laptop.",
+  "Bottleneck": "**Bottleneck:** Scrolling 240 rows to find a code. The list and Excel are already on the counter.",
+  "Checked myself": "**Checked myself:** What you told me: 240 unique part codes with shelf and price, Excel is the list you edit, Excel is installed on the counter laptop, the lookup is read-only, and only you use it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends an in-workbook XLOOKUP, explicitly removes all three proposed tools, and every record line is specific and comes before the recommendation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.heldout-parts-counter.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

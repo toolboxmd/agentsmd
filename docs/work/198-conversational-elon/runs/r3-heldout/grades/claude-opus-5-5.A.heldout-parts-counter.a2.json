@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add an exact-code XLOOKUP lookup sheet inside the existing authoritative Excel workbook that shows the shelf and price, and do not adopt Retool/Supabase or Next.js.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The workbook-only lookup is right, but none of the four labelled record lines appear.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.heldout-parts-counter.a2",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a lookup sheet to the existing Excel workbook: a text-formatted part-code input cell, exact-match XLOOKUP results for shelf location and selling price, and a \"Code not found\" message. It explicitly rejects Retool/Supabase and Next.js.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is the right small solution, but the reply has none of the four required labelled lines, so every record predicate fails.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.heldout-parts-counter.a1",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

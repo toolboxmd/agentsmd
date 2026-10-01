@@ -1,0 +1,11 @@
+**Requirements and who asked**: You need the shelf and the selling price for a part code about 40 times a day, off the paper slip. You asked which stack to build. The list is your Excel workbook, 240 unique codes, which you already update on the counter laptop. Lookups are read-only and only you do them.
+
+**Deleted**: Retool, Supabase, Next.js, a separate database, accounts, and hosting. Those add a second copy of the list you already edit and a service to keep running.
+
+**Bottleneck**: Scrolling the sheet to match a code from the slip to one of 240 rows.
+
+**Checked myself**: What you told me: Excel is on the counter laptop, that workbook is the list you update, the codes are unique, and every lookup happens on that machine. I have not opened the file.
+
+You want to type a part code and see shelf and price, with this workbook staying the list you edit.
+
+Use that workbook. If the code is in column A, the shelf in B, and the price in C, type the code in F2, put `=XLOOKUP(F2,A2:A241,B2:B241,"Not found")` in G2, and put `=XLOOKUP(F2,A2:A241,C2:C241,"Not found")` in H2. Type the code from the slip and the shelf and price fill in. Point the ranges at your real columns if they sit elsewhere.

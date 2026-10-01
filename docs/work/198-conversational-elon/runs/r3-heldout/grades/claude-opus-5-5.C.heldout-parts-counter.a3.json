@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a Lookup sheet to the existing authoritative workbook, with an XLOOKUP formula (or VLOOKUP as a fallback) that returns shelf location and price for a typed part code, and no new app, database or sync.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You need to type a part code from the slip and see its shelf location and price, about 40 times a day, on the counter laptop only, read-only, from the Excel workbook you already maintain.",
+  "Deleted": "**Deleted:** Retool, Supabase, the Next.js portal, and any database, hosting, login or sync. Nothing here needs them, and each would add a second copy of your list to keep in step with Excel.",
+  "Bottleneck": "**Bottleneck:** Scrolling through 240 rows to find each code, not the tool holding the data.",
+  "Checked myself": "**Checked myself:** Only what you told me: Excel is installed, the workbook is authoritative with unique codes, and nobody else needs access. I have not seen your workbook's sheet or column layout."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four records appear before a native in-workbook lookup that names and removes both proposed stacks, and Checked myself states its inspection limits.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.heldout-parts-counter.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a Lookup sheet to the existing workbook that uses XLOOKUP (or INDEX/MATCH fallback) on the typed part code to show shelf location and price, and explicitly rejects Retool and Next.js.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "Correct small in-workbook lookup with web stack deferred to named future needs, but none of the four labelled record lines are present.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.heldout-parts-counter.a4",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

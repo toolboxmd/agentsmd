@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a Counter Lookup sheet to the existing authoritative workbook that uses exact-match XLOOKUP (or INDEX/MATCH) against the parts table to show shelf location and selling price for a typed part code, with a not-found message, and explicitly reject Retool/Supabase and Next.js for now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a correct in-workbook exact lookup with the web stack deferred to a named future need, but none of the four labelled record lines appear.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.heldout-parts-counter.a3",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

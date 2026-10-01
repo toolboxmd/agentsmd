@@ -1,0 +1,5 @@
+You're trying to type a part code and see its shelf and selling price, about 40 times a day, from the workbook you already keep current.
+
+Use that Excel file on the counter laptop: add a Lookup sheet with one cell for the code, then `=XLOOKUP(that cell, code column, shelf column, "Not found")` and the same formula aimed at the price column (use VLOOKUP if this Excel has no XLOOKUP).
+
+Retool, Supabase, and a Next.js portal would make a second copy of the 240 rows for a read-only search that never leaves this machine, so leave them out.

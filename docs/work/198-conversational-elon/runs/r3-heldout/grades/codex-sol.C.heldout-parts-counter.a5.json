@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Use Excel's built-in Find, set to Match entire cell contents, in the existing authoritative workbook to jump to the exact part code and read its shelf location and price.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You need to enter a part code and see its shelf location and selling price on the counter laptop.",
+  "Deleted": "**Deleted:** Retool, Supabase, a Next.js portal, and a second database.",
+  "Bottleneck": "**Bottleneck:** Scrolling through rows, rather than searching the existing list.",
+  "Checked myself": "**Checked myself:** Your description only; I have not inspected the workbook or tested it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Recommends an exact-match Find in the existing workbook, and all four record lines are specific, come before the recommendation, and stay consistent with it.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.heldout-parts-counter.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

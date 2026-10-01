@@ -1,0 +1,26 @@
+I'd skip both Retool/Supabase and Next.js. **Add a lookup sheet to your existing workbook instead.** You'd have it working in about ten minutes, and it fixes the actual problem, which is scrolling.
+
+**Why not a new stack**
+
+- **Your workbook is the master list, and you edit it directly.** A database behind Retool or Next.js would be a second copy. You'd need an import or sync step, and if that step ever lagged, the counter would show an old price.
+- **The job is small.** You have 240 rows, one user, one laptop, and read-only lookups. Hosting, logins, subscriptions and deployments would add cost and things to break, with nothing gained.
+- **Excel can already do this.** It can find a code instantly. It just isn't set up for it yet.
+
+**How to set it up**
+
+1. **Make the parts list a Table.** Click anywhere in the data, press **Ctrl+T**, and confirm "My table has headers". In Table Design, name it `Parts`. New rows you add later are then picked up automatically. The steps below assume headers named `Code`, `Shelf` and `Price`; adjust them to match yours.
+2. **Add a sheet called `Lookup`** and put it first in the workbook:
+   - `A1`: `Part code`, `B1`: leave empty (you type here)
+   - `A2`: `Shelf`, `B2`: `=XLOOKUP(TRIM(B1), Parts[Code], Parts[Shelf], "Not found")`
+   - `A3`: `Price`, `B3`: `=XLOOKUP(TRIM(B1), Parts[Code], Parts[Price], "")`
+   - Use a large font, and set B3 to currency format.
+3. **Make it quick to use.** Save the workbook with the Lookup sheet active and B1 selected, so it opens ready to type. Each lookup is then: type the code, press Enter, read the result, then click B1 (or press the up arrow) for the next one. You could also pin the workbook to the taskbar.
+
+Some notes:
+- If your Excel is older than 2021 and has no XLOOKUP, use `=IFERROR(INDEX(Parts[Shelf], MATCH(TRIM(B1), Parts[Code], 0)), "Not found")`, and the same pattern for the price.
+- The lookup ignores upper/lower case, and `TRIM` handles stray spaces. If some codes are stored as numbers and others as text, tell me and I'll adjust the formula.
+- For a one-off search without any setup, **Ctrl+F** in the current sheet already beats scrolling.
+
+**When a bigger stack would make sense:** if you later need several people or devices doing lookups, stock deductions, sales records, or payments. At that point a real database with an app on top would be worth it. Nothing you've described needs that today.
+
+If you send me the workbook's column headers, or tell me where the file is on the laptop, I can write the exact formulas for your layout. I can also add the Lookup sheet for you if you'd like.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a lookup sheet to the existing authoritative Excel workbook: one part-code input cell, exact-match lookup formulas returning shelf location and price, a 'Code not found' result, and codes kept as text.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You need to enter a part code and see its shelf location and selling price, about 40 times a day.",
+  "Deleted": "**Deleted:** Retool, Supabase and Next.js; this task needs no database, hosting or shared access.",
+  "Bottleneck": "**Bottleneck:** Scrolling to find the matching row.",
+  "Checked myself": "**Checked myself:** You\u2019ve told me Excel is installed and the authoritative workbook has 240 unique codes; I haven\u2019t inspected it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply keeps the lookup inside the existing workbook, and all four record lines are specific to this decision and appear before the recommendation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.heldout-parts-counter.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

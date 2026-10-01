@@ -1,0 +1,17 @@
+**Requirements and who asked:** You need to type a part code from the slip and see its shelf location and price, about 40 times a day, on the counter laptop only, read-only, from the Excel workbook you already maintain.
+**Deleted:** Retool, Supabase, the Next.js portal, and any database, hosting, login or sync. Nothing here needs them, and each would add a second copy of your list to keep in step with Excel.
+**Bottleneck:** Scrolling through 240 rows to find each code, not the tool holding the data.
+**Checked myself:** Only what you told me: Excel is installed, the workbook is authoritative with unique codes, and nobody else needs access. I have not seen your workbook's sheet or column layout.
+
+You want to look up a part in seconds without changing how you keep the list. Add a lookup box to the workbook you already have.
+
+1. Add a sheet called `Lookup`.
+2. In `A1` type `Code`. You'll type part codes into `B1`.
+3. In `A2` paste this formula (assuming your parts sheet is `Parts` with codes in column A, location in B and price in C; change the names and letters to match yours):
+   ```
+   =XLOOKUP(TRIM(B1),Parts!A:A,Parts!B:C,"Not found")
+   ```
+   The location shows in `A2` and the price in `B2`.
+4. Make `B1` large and bold, and save with the `Lookup` sheet active so it opens there.
+
+At the counter you click `B1`, type the code and press Enter. Any change you make to the parts sheet shows up immediately because the formula reads it directly. If you see `#NAME?`, your Excel is older than XLOOKUP. In that case put `=VLOOKUP(TRIM(B1),Parts!A:C,2,FALSE)` in `A2` for the location and the same formula ending in `3,FALSE` in `B2` for the price.

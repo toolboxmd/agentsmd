@@ -1,0 +1,5 @@
+You want to type a part code and see its shelf and price from the workbook you already keep on the counter laptop.
+
+Put the code in an empty cell and use XLOOKUP to return the shelf and the price from those columns, so you keep editing the same file and every lookup stays in Excel on that machine.
+
+Retool with Supabase, or a Next.js portal, would copy the 240 rows into another system and add hosting and sign-in for a read this sheet already does.

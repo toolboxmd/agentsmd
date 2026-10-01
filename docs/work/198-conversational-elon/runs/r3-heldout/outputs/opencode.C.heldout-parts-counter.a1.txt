@@ -1,0 +1,7 @@
+Requirements and who asked: You asked for fast code to shelf and price lookup 40 times per day, with your Excel list staying the list you edit directly.
+Deleted: Retool, Supabase, Next.js portal, hosting, sync, and multi-user access.
+Bottleneck: Scrolling 240 rows to match a code from a paper slip.
+Checked myself: You told me 240 unique codes, Excel on the counter laptop, single user, read-only use.
+
+You are trying to type a code and see shelf and price without changing your list.
+Add a Counter sheet in the same workbook with one input cell plus formulas to pull location and price from the 240 rows, so there is nothing new to run or maintain. Retool backed by Supabase or a Next.js portal would add hosting, sync and upkeep for the same lookup, so I do not recommend them.

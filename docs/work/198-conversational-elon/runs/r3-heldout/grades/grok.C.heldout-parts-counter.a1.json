@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Use Excel's Find (Ctrl+F) in the existing authoritative workbook to type the part code and jump to the matching row showing shelf and price, with no new app or service.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You asked to type a part code and see its shelf and selling price, about 40 times a day, on the counter laptop. You suggested Retool with Supabase or a Next.js portal; no separate requirement for a new app exists.",
+  "Deleted": "**Deleted:** Retool, Supabase, and Next.js. A hosted app would duplicate the 240-row list you already edit in Excel and add accounts, hosting, and sync for a read-only lookup only you do on that laptop.",
+  "Bottleneck": "**Bottleneck:** Scrolling the sheet to find each code.",
+  "Checked myself": "**Checked myself:** You said the workbook is the authoritative list (unique part codes, shelf locations, and prices), you update it directly, Excel is installed on the counter laptop, lookups do not change stock or take payment, and nobody else needs access. I have not opened the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Record precedes a concrete native Excel Find recommendation, explicitly removes all proposed stack components, and cites only supplied facts plus an inspection limit.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.heldout-parts-counter.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

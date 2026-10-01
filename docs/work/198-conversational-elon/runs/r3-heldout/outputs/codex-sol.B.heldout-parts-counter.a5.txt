@@ -1,0 +1,5 @@
+You need to type a part code and immediately see its shelf location and selling price, while continuing to maintain your existing Excel list.
+
+I recommend a lookup sheet in that workbook: Retool with Supabase or Next.js would add hosting, data synchronization and maintenance without improving this single-laptop workflow.
+
+Put one clearly marked code-entry cell on a “Counter” sheet, with large shelf and price results powered by exact-match formulas referencing your existing list, plus a clear “Code not found” message; keep part codes as text so leading zeros are preserved.

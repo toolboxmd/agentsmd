@@ -1,0 +1,14 @@
+I’d keep this in Excel. For 240 parts on one laptop, Retool/Supabase or Next.js would add hosting, maintenance and a second copy of data to keep in sync without improving the counter lookup.
+
+I’d add a **“Counter lookup” sheet** to your existing workbook:
+
+- One clearly marked cell where you type the part code.
+- Large, easy-to-read results for **shelf location** and **selling price**.
+- An exact-match lookup with a clear “Part not found” message.
+- Protected formula cells so you can’t accidentally overwrite them.
+
+Your existing parts sheet stays the authoritative list. I’d turn its rows into an Excel Table so the lookup automatically includes new parts, then use `XLOOKUP` to retrieve the shelf and price. Part codes should be stored as text to preserve leading zeros; prices should use your currency format. If your Excel version lacks `XLOOKUP`, `INDEX`/`MATCH` will do the same job.
+
+You’d open the workbook at the counter, type a code, read the result, and replace the code for the next customer. It works offline and requires no database or deployment.
+
+I’d consider a separate app when you need multiple counters, remote access, or stock and sales workflows. For your current setup, Excel is the stack I’d choose.

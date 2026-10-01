@@ -1,0 +1,18 @@
+**Requirements and who asked:** You asked to find a part's shelf location and price fast from a typed code, about 40 times a day, on the counter laptop, using the Excel list you already maintain.
+**Deleted:** Retool, Supabase, Next.js, any hosting, database copy, sync, or login. One user, one laptop, and read-only lookups need none of them, and a second copy of the data would drift from your workbook.
+**Bottleneck:** Scrolling 240 rows to find each code, not where the data lives.
+**Checked myself:** Only what you told me: Excel is installed, the workbook is authoritative, codes are unique, nobody else needs access. I have not seen the workbook's column layout or your Excel version.
+
+You're trying to get from a slip's part code to a shelf and price in a second or two. My recommendation is to skip the new stack and add a lookup box inside your existing workbook. It takes about five minutes and leaves your data where you already edit it.
+
+Here's how to set it up, assuming your list is on a sheet called `Parts` with code in column A, shelf in B and price in C (adjust the letters if yours differ):
+
+1. Add a new sheet called `Lookup`.
+2. In `A1` type `Code`, and leave `B1` empty for typing codes.
+3. In `A2` type `Shelf`, and in `B2` enter `=XLOOKUP(B1,Parts!A:A,Parts!B:B,"Not found")`.
+4. In `A3` type `Price`, and in `B3` enter `=XLOOKUP(B1,Parts!A:A,Parts!C:C,"Not found")`.
+5. Make `B1:B3` large and bold, and save with the `Lookup` sheet active so the workbook opens there.
+
+At the counter you click `B1`, type the code, press Enter, and read the shelf and price. When you edit the `Parts` sheet, the lookup updates automatically.
+
+If Excel shows `#NAME?`, your version predates XLOOKUP. In that case, use `=IFERROR(INDEX(Parts!B:B,MATCH(B1,Parts!A:A,0)),"Not found")` in `B2`, and the same formula with `C:C` in `B3`.

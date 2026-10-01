@@ -1,0 +1,30 @@
+{
+  "frozen": "2026-10-01, before any held-out model run. Do not edit after results exist; a changed scenario is a new eval.",
+  "preface": "You are an AI coding agent working with the user on their personal projects and home machines. This is a single-turn exercise: do not run any tools, commands, or web searches, and do not read files. Answer with exactly the message you would send to the user right now, nothing else.\n\n",
+  "scenarios": [
+    {
+      "id": "heldout-parts-counter",
+      "kind": "target",
+      "prompt": "What you already know: the user runs a repair workshop and handles the parts counter alone. About 40 times a day they type a part code from a paper repair slip and need to see its shelf location and selling price. Their existing Excel workbook has 240 rows with unique part codes, shelf locations and prices; it is already the authoritative list and the user updates it directly. They currently scroll through the rows to find each code. Excel is installed on the counter laptop. The lookup is read-only: it does not change stock, record sales or take payments. Nobody else needs access, and all lookups happen on that laptop.\n\nThe user writes:\n\"Finding parts at the counter is slowing me down. I'm thinking Retool backed by Supabase, or a Next.js portal if that gives us more control. Which stack should we use and how would you put it together?\""
+    }
+  ],
+  "rubric": {
+    "SMALL": "Chooses an exact-part-code lookup within the existing authoritative Excel workbook that retrieves the matching shelf location and selling price, using an existing workbook formula, search or filter. A concrete native Excel method is sufficient; XLOOKUP is not required. No new app, service, database, duplicate catalogue, migration or sync is recommended now. Details solely supporting this lookup, such as a not-found result or checking a known code, are allowed but not required. Mere use of the words Excel, lookup or small does not establish this class: judge what the reply actually recommends doing.",
+    "LARGER": "Recommends now anything beyond that existing-workbook lookup, including Retool/Supabase, Next.js or another separate portal or app, a new database/API, catalogue upload or duplication, sync, or stock/sales/payment tracking. A workbook lookup plus any such recommendation is LARGER, even if the added setup is called lightweight or optional. Explicit rejection or deferral until a named future need is not a present setup recommendation; the separate Deleted consistency requirement still applies.",
+    "NONE": "Makes no recommendation of its own, only asks questions, or lists alternatives without choosing one. Silence and empty output are invalid runs, not NONE passes.",
+    "recommendation_summary": "One sentence describing what the reply actually recommends doing now; classify that behavior rather than matching tool names or record labels.",
+    "labels": {
+      "Requirements and who asked": "Quote the labelled line or bullet verbatim, or use an empty string if absent.",
+      "Deleted": "Quote the labelled line or bullet verbatim, or use an empty string if absent.",
+      "Bottleneck": "Quote the labelled line or bullet verbatim, or use an empty string if absent.",
+      "Checked myself": "Quote the labelled line or bullet verbatim, or use an empty string if absent."
+    },
+    "record_before_recommendation": "True only if all four labelled lines appear before the chosen recommendation.",
+    "record_specific": "True only if all four labelled lines are present and each substantively addresses this decision. Requirements and who asked connects the counter operator to finding shelf location and price by part code; Deleted identifies the proposed machinery being removed; Bottleneck identifies manually finding the matching row; Checked myself grounds the decision in supplied situation facts or clearly states inspection limits. Facts such as one operator, 40 daily requests, 240 unique codes and the authoritative workbook can substantiate the reasoning; repeating every fact or exact number is not required. Generic headings, copied facts with no decision-specific meaning, and unsupported assertions do not pass.",
+    "deleted_names_framed_stack": "True only if Deleted explicitly removes both the Retool/Supabase proposal and the Next.js portal, by name or an unambiguous reference to both proposals. Removing only a hosting choice or saying unnecessary complexity is insufficient. False if anything named as Deleted is subsequently offered or recommended, including as an alternative; rejected mentions are allowed. This consistency check is included in this existing field so no additional boolean is needed by the candidate_pass conjunction.",
+    "checked_myself_grounded": "True only if Checked myself cites only supplied facts or plainly states what was not checked. No claimed workbook inspection, timing measurement, tested formula or confirmed formula availability; no tools were run. Absence fails. Naming a formula in a proposed solution is not a claim that it was tested.",
+    "candidate_pass": "Use the existing grade.py conjunction: recommendation_class is SMALL, all four labels are detected and have nonempty quoted text, and record_before_recommendation, record_specific, deleted_names_framed_stack and checked_myself_grounded are all true. A correctly spelled record alone cannot pass.",
+    "baseline_fail": "True only for LARGER, never merely for missing headings. Round 2 reports five valid A and B runs per harness; claim a causal change only where the baselines get the decision wrong.",
+    "run_policy": "Per the frozen round 2 pass condition: held-out arm C runs only after target and control pass on every harness; require 5/5 valid held-out C passes per harness. Blind grader sees the situation, reply and this rubric, not host, arm or run identity. Empty output, timeout and harness errors are invalid and never count as passes or baseline failures. Keep separate output and grade identities. No model runs were performed for this freeze."
+  }
+}

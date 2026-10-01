@@ -1,0 +1,16 @@
+**Requirements and who asked:** You need to type a part code from a repair slip and see its shelf location and price, about 40 times a day, on the counter laptop, read-only, for you alone.
+**Deleted:** Retool, Supabase, the Next.js portal, and any hosting, login, sync, or second copy of the parts list.
+**Bottleneck:** Scrolling through 240 rows to find each code.
+**Checked myself:** Only what you told me (240 unique codes in your Excel workbook, which you keep current, Excel on the laptop, one user, read-only); I have not opened the workbook.
+
+You want each lookup to take seconds instead of a scroll. Use a lookup box inside the workbook you already have. Retool, Supabase, and Next.js would each add a second copy of the list to keep in sync, plus a service to run and pay for, with nothing gained at one laptop.
+
+Setup, assuming codes are in column A, shelf in B, and price in C on a sheet called `Parts`:
+
+1. Add a new sheet called `Lookup` and drag it to the first tab position so the workbook opens on it.
+2. In `A1` type `Code`, `A2` type `Shelf`, `A3` type `Price`.
+3. In `B2` enter `=XLOOKUP(B1,Parts!A:A,Parts!B:B,"Not found")`
+4. In `B3` enter `=XLOOKUP(B1,Parts!A:A,Parts!C:C,"Not found")` and format it as currency.
+5. Make `B1` large and bold, then save.
+
+At the counter, click `B1`, type the code, press Enter, and the shelf and price appear. Edits you make on `Parts` show up immediately. If your Excel gives `#NAME?` on XLOOKUP, it is a pre-2021 version; tell me and I'll give you the equivalent `INDEX`/`MATCH` formulas. If your columns are arranged differently, tell me the layout and I'll adjust the formulas.

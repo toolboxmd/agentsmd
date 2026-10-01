@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.heldout-parts-counter.a2",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "heldout-parts-counter",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 60.4,
+ "valid": true
+}

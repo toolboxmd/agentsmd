@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding one lookup sheet to the existing workbook, with an input cell and XLOOKUP that returns the shelf location and price for an exact part code; it builds no new app or service.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for faster counter lookup of location and price by part code, 40 times per day, read only.",
+  "Deleted": "Retool app, Supabase database and sync, Next.js portal and hosting.",
+  "Bottleneck": "Time spent scrolling 240 rows to find each code at the counter.",
+  "Checked myself": "You told me single user, one laptop with Excel installed, 240 unique codes already authoritative in Excel, no stock change or shared access needed."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines come before the recommendation and are specific to this decision. The deleted stack is only mentioned again when it is rejected, and the recommendation is an XLOOKUP inside the existing workbook.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.heldout-parts-counter.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

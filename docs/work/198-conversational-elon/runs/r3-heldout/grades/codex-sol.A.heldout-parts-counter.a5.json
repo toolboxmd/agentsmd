@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a 'Counter lookup' sheet to the existing authoritative workbook that uses an exact-match XLOOKUP (or INDEX/MATCH) on the part code to show shelf location and selling price, with a not-found message, and no separate app or database.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a workbook-native lookup that qualifies as SMALL, but the reply has none of the four labelled record lines, so all record predicates fail.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.heldout-parts-counter.a5",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a Lookup sheet to the existing workbook, where XLOOKUP formulas (or INDEX/MATCH as a fallback) return the shelf and price for a typed part code, with no new stack.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You asked to find a part's shelf location and price fast from a typed code, about 40 times a day, on the counter laptop, using the Excel list you already maintain.",
+  "Deleted": "**Deleted:** Retool, Supabase, Next.js, any hosting, database copy, sync, or login. One user, one laptop, and read-only lookups need none of them, and a second copy of the data would drift from your workbook.",
+  "Bottleneck": "**Bottleneck:** Scrolling 240 rows to find each code, not where the data lives.",
+  "Checked myself": "**Checked myself:** Only what you told me: Excel is installed, the workbook is authoritative, codes are unique, nobody else needs access. I have not seen the workbook's column layout or your Excel version."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts all four record lines first, then recommends a lookup inside the existing workbook, and offers nothing it listed as deleted.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.heldout-parts-counter.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

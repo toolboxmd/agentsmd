@@ -1,0 +1,16 @@
+**Requirements and who asked:** You asked to type a part code at the counter and immediately see its shelf location and price, on the one laptop, from the Excel workbook you already maintain.
+**Deleted:** Retool, Supabase, Next.js, any database, hosting, login or data sync. Nothing here is shared, written to, or used off that laptop.
+**Bottleneck:** Scrolling through 240 rows to find each code, about 40 times a day.
+**Checked myself:** Nothing; this is based on what you told me (240 unique codes, Excel installed, read-only, single user).
+
+You want each lookup to take seconds, so add a lookup box to the workbook you already have. A separate app would mean copying your list into a second place and keeping the two in sync, for no gain.
+
+Setup, assuming codes are in column A, shelf in B and price in C on a sheet called `Parts`:
+
+1. Add a sheet called `Lookup` and keep it as the open tab.
+2. In `A1` type `Code`, `A2` type `Shelf`, `A3` type `Price`.
+3. In `B2`: `=XLOOKUP(B1,Parts!A:A,Parts!B:B,"Not found")`
+4. In `B3`: `=XLOOKUP(B1,Parts!A:A,Parts!C:C,"Not found")`
+5. At the counter, click `B1`, type the code, press Enter.
+
+Edits you make on `Parts` show up straight away. If Excel rejects `XLOOKUP` (it's missing from older versions), use `=IFERROR(INDEX(Parts!B:B,MATCH(B1,Parts!A:A,0)),"Not found")` instead, and use column `C` for the price. Send me the real sheet and column names and I'll adjust the formulas.

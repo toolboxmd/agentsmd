@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a Lookup sheet to the existing workbook where XLOOKUP formulas return the shelf location and price for an exact typed part code, and it rejects Retool, Supabase and Next.js.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You need a typed part code to show its shelf location and price, about 40 times a day, on the counter laptop, read-only, from the workbook you already maintain.",
+  "Deleted": "**Deleted:** Retool, Supabase, Next.js, any database, hosting, login, and data sync. Nobody else needs access, nothing gets written, and the workbook stays the authoritative list.",
+  "Bottleneck": "**Bottleneck:** Scrolling through 240 rows to find each code.",
+  "Checked myself": "**Checked myself:** Only what you told me: 240 unique codes, Excel installed, single user, single laptop. I haven't seen the workbook's layout or Excel version."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends an exact-match XLOOKUP inside the existing workbook, the four labelled lines are specific and come before the recommendation, and the only fallback offered is a VLOOKUP formula in the same workbook.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.heldout-parts-counter.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

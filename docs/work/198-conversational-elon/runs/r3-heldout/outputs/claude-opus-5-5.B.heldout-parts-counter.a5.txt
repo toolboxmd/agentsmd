@@ -1,0 +1,17 @@
+You need a faster way to type a code and see location and price. I'd skip both Retool/Supabase and Next.js and add a lookup box to the workbook you already have. Either stack would create a second copy of the list that you'd have to keep in sync with Excel, plus hosting, logins and possibly a monthly bill, all for a single user on a single laptop.
+
+**Setting it up (about 10 minutes):**
+
+1. Click any cell in your parts list and press **Ctrl+T** to turn it into a Table. On the Table Design tab, name it `Parts`. New rows you add later are then included automatically.
+2. Add a new sheet called `Lookup` and keep it as the tab the workbook opens on.
+3. Put a label in `A1` ("Part code") and leave `B1` as the cell you type into.
+4. Add the location and price formulas. These assume your columns are headed `Code`, `Location` and `Price`, so rename them in the formulas if your headers differ:
+   - `B2`: `=XLOOKUP(B1, Parts[Code], Parts[Location], "Not found")`
+   - `B3`: `=XLOOKUP(B1, Parts[Code], Parts[Price], "")`
+5. Make `B1` large and bold, and format `B3` as currency.
+
+At the counter, you type the code in `B1`, press Enter, and read the answer. Pressing the up arrow takes you back to `B1` for the next code.
+
+If you get `#NAME?`, your Excel version is older than 2021. In that case use `=IFERROR(INDEX(Parts[Location], MATCH(B1, Parts[Code], 0)), "Not found")`, and the same with `Parts[Price]`.
+
+If you send me the column headers, or a copy of the workbook with prices removed, I'll give you the exact formulas.

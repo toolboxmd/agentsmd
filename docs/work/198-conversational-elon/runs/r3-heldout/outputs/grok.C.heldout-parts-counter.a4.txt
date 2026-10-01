@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked which stack should show shelf and selling price when you type a part code. The need is about 40 read-only lookups a day on the counter laptop, from the Excel list you already update.
+**Deleted:** Retool, Supabase, and a Next.js portal. They add a second copy of the list, accounts, and a host, and every lookup stays on that one laptop.
+**Bottleneck:** Scrolling 240 rows to find a code. The list and Excel are already on the counter.
+**Checked myself:** What you told me: 240 unique part codes with shelf and price, Excel is the list you edit, Excel is installed on the counter laptop, the lookup is read-only, and only you use it.
+
+You want to type a part code and see its shelf and selling price while that workbook stays the only list.
+
+Add a Lookup sheet in the same file: one cell where you type the code, and two XLOOKUP formulas that return shelf and price from your existing code, shelf, and price columns, showing "Not found" when the code is missing.

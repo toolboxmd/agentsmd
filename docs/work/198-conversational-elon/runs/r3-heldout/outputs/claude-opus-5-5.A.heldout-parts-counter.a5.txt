@@ -1,0 +1,21 @@
+I'd skip both. A web stack isn't needed here, and Excel can do this in about ten minutes.
+
+Your workbook is already the authoritative list, you edit it directly, only you use it, and it all happens on one laptop. Retool + Supabase or Next.js would add a second copy of the data that needs syncing, plus hosting, logins and something else to maintain. You'd get no faster lookups for that cost.
+
+**What I'd set up instead: a lookup sheet in the same workbook**
+
+1. **Make the parts list an Excel Table.** Click inside the data and press Ctrl+T. Name it `Parts` (Table Design → Table Name). New rows you add are then picked up automatically.
+2. **Add a sheet called `Lookup`**:
+   - `A1`: `Part code`, `B1`: the cell you type into (make it large and bold)
+   - `A2`: `Shelf`, `B2`: `=XLOOKUP(TRIM($B$1), Parts[Part Code], Parts[Shelf], "Not found")`
+   - `A3`: `Price`, `B3`: `=XLOOKUP(TRIM($B$1), Parts[Part Code], Parts[Price], "Not found")`
+   - Change the column names to match your headers. Format `B3` as currency.
+3. **Save the workbook with `Lookup` as the active sheet** so it opens there. At the counter you type the code in B1, press Enter, and read the shelf and price.
+
+Matching ignores upper/lower case, and `TRIM` handles stray spaces. If your Excel is older than 2021 and doesn't have XLOOKUP, use `=IFERROR(INDEX(Parts[Shelf], MATCH(TRIM($B$1), Parts[Part Code], 0)), "Not found")` instead.
+
+**Even quicker, with no setup:** Ctrl+F, type the code, press Enter. That alone beats scrolling.
+
+**When a web app would make sense:** if other staff or devices need lookups, you want the app to record sales or stock, or the list grows well past what's comfortable in a spreadsheet. None of those apply right now, and the Table can serve as the data source later if they do.
+
+If you tell me your column headers and Excel version, I'll give you exact formulas you can paste in.

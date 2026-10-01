@@ -23,6 +23,8 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
 SCENARIOS = HERE / "scenarios.json"
 FROZEN_SHA = "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b"
+HELDOUT = HERE / "heldout.json"  # frozen in #198 comment 5935480165; same envelope, rubric is grader-only
+HELDOUT_SHA = "cfcf4d894a2614a39e6426c2e042692ab83688450f82687b8bea33ca51e42522"
 ARM_SHAS = {"A": None, "B": "8cad98f68a8ce46dc8bb05954775dd63172a9f26", "C": "d32c7d4ece13e666baa05e44534ccd8886cff62c"}
 HARNESSES = {
     "codex": ("codex", "gpt-6-astra"),
@@ -240,6 +242,11 @@ def main():
         raise SystemExit("scenarios.json changed after freeze")
     data = json.loads(raw)
     prompts = {s["id"]: data["preface"] + s["prompt"] for s in data["scenarios"]}
+    held = HELDOUT.read_bytes()
+    if hashlib.sha256(held).hexdigest() != HELDOUT_SHA:
+        raise SystemExit("heldout.json changed after freeze")
+    held = json.loads(held)
+    prompts.update({s["id"]: held["preface"] + s["prompt"] for s in held["scenarios"]})
     base, mode = Path(sys.argv[1]).resolve(), sys.argv[2]
     harnesses = sys.argv[3].split(",") if len(sys.argv) > 3 else list(HARNESSES)
     cells = sys.argv[4].split(",") if len(sys.argv) > 4 else CELLS
@@ -257,7 +264,7 @@ def main():
                 raise SystemExit(f"canary {h}.{a} has not passed; results would not count")
     (base / "outputs").mkdir(exist_ok=True)
     (base / f"manifest.{'-'.join(harnesses)}.{time.strftime('%Y%m%dT%H%M%S')}.json").write_text(json.dumps({
-        "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "scenarios_sha256": FROZEN_SHA,
+        "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "scenarios_sha256": FROZEN_SHA, "heldout_sha256": HELDOUT_SHA,
         "arms": {a: {"source": (files or ARM_SHAS)[a], "sha256": arms[a][1]} for a in arms},
         "harnesses": {h: HARNESSES[h] for h in harnesses}, "cells": cells,
         "repo_head": subprocess.run(["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True,

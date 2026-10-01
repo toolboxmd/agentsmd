@@ -1,0 +1,44 @@
+Use the Excel workbook already on the counter laptop. Add one lookup sheet to that file.
+
+That workbook is the list you edit: 240 unique part codes, with shelf and price. You are the only person looking parts up, you do it on that laptop, and each lookup only needs to show a shelf and a price. A sheet in the same file reads those rows directly, so a price or shelf change shows up the next time you type the code.
+
+Retool with Supabase, or a Next.js portal, would copy those rows into a separate app you would host, keep in sync, and reach over the network. Accounts, shared access, stock changes, and payments are outside what the counter does.
+
+Put the lookup sheet together like this:
+
+1. Open the workbook. Select the parts list, including the header row, and choose Insert → Table. Name the table `Parts`. Below, the headers are `Code`, `Shelf`, and `Price`. Use your real header names in the formulas if they differ.
+
+2. Add a sheet named `Counter`.
+
+3. In A1 type `Part code`. B1 stays empty. That is the box you type into.
+
+4. In A3 type `Shelf`. In B3 enter:
+
+```excel
+=XLOOKUP(B1, Parts[Code], Parts[Shelf], "No match")
+```
+
+5. In A4 type `Price`. In B4 enter:
+
+```excel
+=XLOOKUP(B1, Parts[Code], Parts[Price], "No match")
+```
+
+Format B4 as currency.
+
+6. Set B3 and B4 in a large font so you can read the shelf while you hold the slip.
+
+7. Unlock B1, then protect the Counter sheet so the formulas stay put. Leave the Parts sheet editable.
+
+8. Save the file on the counter laptop.
+
+To look up a part, click B1, type the code from the slip, and press Enter. Shelf and price appear. Type the next code over the previous one.
+
+If Excel does not recognize `XLOOKUP`, use:
+
+```excel
+=INDEX(Parts[Shelf], MATCH(B1, Parts[Code], 0))
+=INDEX(Parts[Price], MATCH(B1, Parts[Code], 0))
+```
+
+Store part codes as text so leading zeros stay intact, and keep each code unique. The match is on the whole code and ignores capitalization.

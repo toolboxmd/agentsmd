@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a Lookup sheet to the existing Excel workbook, with XLOOKUP formulas that return the shelf location and price for a typed part code, and no new app, service or database.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "**Requirements and who asked:** You need to type a part code from a repair slip and see its shelf location and price, about 40 times a day, on the counter laptop, read-only, for you alone.",
+  "Deleted": "**Deleted:** Retool, Supabase, the Next.js portal, and any hosting, login, sync, or second copy of the parts list.",
+  "Bottleneck": "**Bottleneck:** Scrolling through 240 rows to find each code.",
+  "Checked myself": "**Checked myself:** Only what you told me (240 unique codes in your Excel workbook, which you keep current, Excel on the laptop, one user, read-only); I have not opened the workbook."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines come before a lookup inside the existing workbook, and no deleted item is offered again later (the INDEX/MATCH fallback is still Excel).",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.heldout-parts-counter.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

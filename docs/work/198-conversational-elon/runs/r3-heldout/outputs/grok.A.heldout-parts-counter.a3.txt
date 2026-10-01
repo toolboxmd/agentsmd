@@ -1,0 +1,16 @@
+Use the Excel workbook you already have. A lookup cell on a second sheet is the whole counter tool: you type the part code, and the shelf and price appear beside it.
+
+The workbook is already the list you trust and edit, the codes are unique, and every lookup is a read-only check on that same laptop. A Retool app on Supabase, or a Next.js portal, would copy those 240 rows into another system you would then have to keep in sync.
+
+Put it together in the current file:
+
+1. Turn the parts list into an Excel Table named `Parts` with columns `PartCode`, `Shelf`, and `Price`. Keep editing that table as you do now.
+2. Add a sheet named `Counter`. Leave the cursor in `B2`, labeled “Part code”.
+3. In `B3`, labeled “Shelf”:
+   `=XLOOKUP(B2, Parts[PartCode], Parts[Shelf], "Not found")`
+4. In `B4`, labeled “Price”:
+   `=XLOOKUP(B2, Parts[PartCode], Parts[Price], "Not found")`
+   Format `B4` as currency.
+5. For each slip, type the code in `B2`, read the shelf and price, then clear `B2` for the next one.
+
+A mistyped code shows “Not found” in both cells. The lookup only reads the table, so stock, sales, and payments stay out of it, and it works with the laptop offline.

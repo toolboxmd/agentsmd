@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Keep the existing workbook and add a Counter sheet with one input cell that uses XLOOKUP to return the shelf location and price for a typed part code.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Requirements and who asked: You asked to look up shelf and price 40 times/day on the counter laptop while Excel stays the authoritative list.",
+  "Deleted": "Deleted: Retool, Supabase, Next.js portal, hosted database, sync, and multi-user access.",
+  "Bottleneck": "Bottleneck: Scrolling 240 rows to find each code at the counter.",
+  "Checked myself": "Checked myself: You told me single laptop with Excel, 240 unique codes, read-only lookup, you update it directly."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines come before a single in-workbook XLOOKUP recommendation, and the deleted stack is never reoffered.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.heldout-parts-counter.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

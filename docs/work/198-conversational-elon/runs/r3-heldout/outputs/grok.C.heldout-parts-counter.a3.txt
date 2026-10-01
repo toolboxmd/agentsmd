@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked whether to use Retool with Supabase or a Next.js portal for counter lookups. The need is about 40 read-only lookups a day, on one laptop, of shelf and price from the 240-row Excel workbook you already update.
+**Deleted**: Retool, Supabase, Next.js, hosting, a database, and logins. The workbook is already the list, only you look parts up, and another system would have to be kept in step with that file.
+**Bottleneck**: Scrolling to find a code. That search is the delay.
+**Checked myself**: Your description: Excel is on the counter laptop, 240 unique part codes with shelf and price, you edit that workbook, lookups do not change stock or take payment, and nobody else needs access. I have not opened the file.
+
+You are trying to type a part code from a paper slip and see its shelf location and selling price.
+
+Use Find in that workbook, with Match entire cell contents turned on, type the code, and read shelf and price on the row it selects. Keep editing those same rows when prices or locations change.

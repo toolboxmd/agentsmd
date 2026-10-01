@@ -1,0 +1,7 @@
+Requirements and who asked: User asked for fast counter lookup of shelf and price by part code, read-only, single laptop.
+Deleted: Retool, Supabase, Next.js portal, any hosted database or sync.
+Bottleneck: Scrolling 240 rows 40 times a day to find one code.
+Checked myself: User told me Excel is authoritative with 240 unique codes, Excel is installed, and use is single user on one laptop.
+
+Your goal is to type a code 40 times a day and see shelf and price in seconds with no extra upkeep.
+Use your existing workbook with a lookup row at the top using XLOOKUP and keep it as the only system. I am rejecting Retool with Supabase and a Next.js portal because they add hosting and upkeep for a job your laptop Excel already covers.

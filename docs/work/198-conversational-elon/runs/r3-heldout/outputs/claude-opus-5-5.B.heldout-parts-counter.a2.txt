@@ -1,0 +1,15 @@
+You want to type a code and see shelf and price instantly. I'd skip Retool, Supabase and Next.js and add a lookup sheet to the workbook you already maintain. A separate app would create a second copy of the list that drifts whenever you edit Excel, and it adds hosting, logins and possibly fees for a one-person, one-laptop, read-only task.
+
+**Setup (about 5 minutes)**, assuming your parts sheet is named `Parts` with code in A, shelf in B, price in C:
+
+1. Add a sheet named `Lookup` and drag it to the first tab position.
+2. In `A1` type `Part code`, in `A2` type `Shelf`, in `A3` type `Price`.
+3. In `B2`: `=IF(B1="","",XLOOKUP(B1,Parts!A:A,Parts!B:B,"Not found"))`
+4. In `B3`: `=IF(B1="","",XLOOKUP(B1,Parts!A:A,Parts!C:C,"Not found"))`
+5. Make `B1:B3` a large font, select `B1`, and save.
+
+At the counter you type the code into `B1` and press Enter. Shelf and price appear, and any edit to the `Parts` sheet shows up immediately.
+
+If XLOOKUP gives a `#NAME?` error, your Excel is older. Use `=IFERROR(INDEX(Parts!B:B,MATCH(B1,Parts!A:A,0)),"Not found")` in `B2`, and the same with `C:C` in `B3`.
+
+If your column layout is different, tell me which columns hold code, shelf and price and I'll adjust the formulas.

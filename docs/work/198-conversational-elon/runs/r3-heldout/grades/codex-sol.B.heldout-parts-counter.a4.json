@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Recommends adding a lookup sheet inside the existing Excel workbook with a code-entry cell and exact-match XLOOKUP formulas returning shelf location and price, with a not-found message, and defers Retool/Supabase or Next.js until multi-device or multi-user needs arise.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes a correct small in-workbook recommendation, but it has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.heldout-parts-counter.a4",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,14 @@
+For this setup, use neither — stick with Excel.
+
+With 1 user, 1 laptop, 240 rows, 40 read-only lookups/day, and Excel already as the authoritative list, Retool + Supabase or a Next.js portal adds hosting, sync, internet-dependency, and maintenance with no payoff. You'd have to duplicate the Excel to the cloud and keep it in sync.
+
+Faster fix on the counter laptop:
+
+1. Turn your list into an Excel Table (select it > Insert > Table) with columns e.g. `Code | Location | Price`.
+2. Add a new sheet called `Lookup` with:
+   - A2: input cell for the typed code
+   - B2: `=XLOOKUP(TRIM(UPPER(A2)), Parts[Code], Parts[Location], "Not found")`
+   - C2: `=XLOOKUP(TRIM(UPPER(A2)), Parts[Code], Parts[Price], "Not found")`
+3. Keep `Lookup` open at the counter. Type code > location + price show instantly.
+
+That keeps one source of truth, works offline, and is faster than scrolling or than maintaining a separate app.

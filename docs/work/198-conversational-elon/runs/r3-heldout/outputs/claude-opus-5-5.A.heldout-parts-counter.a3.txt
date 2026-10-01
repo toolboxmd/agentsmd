@@ -1,0 +1,35 @@
+I'd skip both stacks. For this job, a lookup sheet inside the workbook you already maintain will be faster at the counter and has nothing to keep in sync.
+
+**Why not Retool/Supabase or Next.js**
+
+- Your Excel file is already the master list, and you edit it directly. A database would become a second copy. You'd either have to update two places or build an import step, and the counter would show stale prices whenever you forgot.
+- It's one person on one laptop doing read-only lookups across 240 rows. Hosting, logins and deployment add cost and things that can break, but they wouldn't make lookups faster.
+- Excel can already do "type a code, see shelf and price" instantly.
+
+**How I'd set it up (about 10 minutes)**
+
+1. **Make the parts list a Table.** Click inside the data, press `Ctrl+T`, and confirm "My table has headers." In *Table Design*, name it `Parts`. New rows you add later are picked up automatically.
+
+2. **Add a sheet called `Lookup`** and put it first so the workbook opens on it:
+   - `A1`: `Part code`, `B1`: the input cell (big font, highlighted)
+   - `A3`: `Shelf`, `B3`:
+     ```
+     =XLOOKUP(TRIM(B1), Parts[Code], Parts[Shelf], "Not found")
+     ```
+   - `A4`: `Price`, `B4`:
+     ```
+     =XLOOKUP(TRIM(B1), Parts[Code], Parts[Price], "")
+     ```
+   Change `Code`, `Shelf` and `Price` to your actual column headers. XLOOKUP ignores upper/lower case, and `TRIM` handles stray spaces.
+
+3. **Make it quick to use.** Under *Review → Protect Sheet*, unlock only `B1` and protect the sheet. That way the cursor always lands on the input cell and you can't overwrite a formula by accident. Format `B4` as currency. Your counter routine becomes: type code → Enter → read shelf and price → type the next code over it.
+
+**Things to check**
+
+- If some codes look like numbers (e.g. `00412`), make sure the Code column is formatted as Text. Otherwise leading zeros get dropped and lookups miss.
+- XLOOKUP needs Excel 2021 or Microsoft 365. On an older version, use `=IFERROR(INDEX(Parts[Shelf], MATCH(TRIM(B1), Parts[Code], 0)), "Not found")` instead.
+- Optional: if you often only half-remember a code, I can add a partial-match list using `FILTER` that shows every part containing what you've typed.
+
+**When a web stack would make sense:** a second counter or staff member, phone access in the workshop, or the lookup needing to record sales or change stock. If any of that is coming, tell me and we can plan the move then, likely with the database becoming the master list instead of Excel.
+
+Want me to write out the exact formulas once you tell me your column headers?

@@ -1,0 +1,5 @@
+What you are trying to do is type a code 40 times a day on that counter laptop and instantly see shelf location and price.
+
+I recommend staying in Excel with a simple lookup sheet, not Retool plus Supabase or Next.js. Those stacks would add cost, internet dependence, and a second database to keep in sync with your 240 row workbook for a read-only job one person does on one laptop.
+
+Tell me your sheet name and the three column letters for code, shelf, and price and I will give you the exact input cell plus XLOOKUP setup.

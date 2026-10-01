@@ -1,0 +1,5 @@
+You want to type a part code and see its shelf and selling price about 40 times a day, from the 240-row Excel list you already update on the counter laptop.
+
+Use that workbook: add a Counter sheet, type the code in one cell, and put two XLOOKUP formulas beside it that read your part-code column and return the shelf and the price, with a clear "no such code" when the slip does not match (use VLOOKUP if this Excel is an older copy).
+
+Retool with Supabase, or a Next.js portal, would mean a second copy of those rows, hosting, and a login, for a read-only lookup that only you do on a laptop that already has Excel.

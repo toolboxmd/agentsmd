@@ -1,0 +1,5 @@
+You need to type a part code and immediately see its shelf location and selling price. I recommend keeping this in Excel and adding a dedicated lookup sheet in the existing workbook.
+
+Put one large input cell at the top, with shelf and price displayed beneath it. Use exact-match `XLOOKUP` formulas against the existing parts table, show “Code not found” for an unknown code, and format codes as text to preserve leading zeros. Your updates to the parts list would appear in the lookup automatically.
+
+Retool with Supabase or a Next.js portal would add a database, hosting and a way to keep data synchronized without improving this single-laptop workflow. The bottleneck is scrolling, so the smallest useful fix is a clear lookup screen in the workbook you already maintain.

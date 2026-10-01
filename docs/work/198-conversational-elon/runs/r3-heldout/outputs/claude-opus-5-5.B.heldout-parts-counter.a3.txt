@@ -1,0 +1,15 @@
+You want to type a part code and instantly see its shelf and price. I'd use neither Retool nor Next.js: a lookup box in the workbook you already maintain does that with no new system to sync, host or pay for.
+
+**Setup (about 5 minutes)**, assuming your sheet is named `Parts` with codes in column A, shelf in B and price in C:
+
+1. Add a new sheet called `Lookup` and put it first.
+2. In `A1` type `Part code`, and leave `B1` empty for typing codes.
+3. In `A2` type `Shelf`, and in `B2` enter:
+   `=XLOOKUP(TRIM(B1),Parts!A:A,Parts!B:B,"Not found")`
+4. In `A3` type `Price`, and in `B3` enter:
+   `=XLOOKUP(TRIM(B1),Parts!A:A,Parts!C:C,"Not found")`
+5. Make `B1:B3` a large font, and format `B3` as currency.
+
+At the counter, click `B1`, type the code and press Enter. Shelf and price appear right away. XLOOKUP ignores upper/lower case, and `TRIM` handles stray spaces. Your edits to the `Parts` sheet show up immediately because there is only one copy of the list.
+
+The web stacks would make sense if other people or other devices needed access, or if the tool had to change stock or record sales. None of that applies today. If your Excel is too old to have XLOOKUP, tell me the version and I'll give you the `INDEX/MATCH` equivalent.

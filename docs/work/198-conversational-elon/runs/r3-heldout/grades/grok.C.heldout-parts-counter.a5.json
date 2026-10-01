@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding XLOOKUP formulas to the user's existing Excel workbook, so that typing a part code returns its shelf location and price, and drops all new apps and services.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the shelf and the selling price for a part code about 40 times a day, off the paper slip. You asked which stack to build. The list is your Excel workbook, 240 unique codes, which you already update on the counter laptop. Lookups are read-only and only you do them.",
+  "Deleted": "Retool, Supabase, Next.js, a separate database, accounts, and hosting. Those add a second copy of the list you already edit and a service to keep running.",
+  "Bottleneck": "Scrolling the sheet to match a code from the slip to one of 240 rows.",
+  "Checked myself": "What you told me: Excel is on the counter laptop, that workbook is the list you update, the codes are unique, and every lookup happens on that machine. I have not opened the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines appear before the workbook lookup recommendation and each one addresses this decision; the reply names Retool, Supabase and Next.js as deleted, never offers them again, and says it has not opened the file.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.heldout-parts-counter.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

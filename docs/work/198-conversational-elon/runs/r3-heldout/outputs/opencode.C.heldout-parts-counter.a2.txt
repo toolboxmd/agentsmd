@@ -1,0 +1,7 @@
+**Requirements and who asked**: You asked for faster counter lookup of location and price by part code, 40 times per day, read only.
+**Deleted**: Retool app, Supabase database and sync, Next.js portal and hosting.
+**Bottleneck**: Time spent scrolling 240 rows to find each code at the counter.
+**Checked myself**: You told me single user, one laptop with Excel installed, 240 unique codes already authoritative in Excel, no stock change or shared access needed.
+
+You want to type a code and instantly see location and price with no extra upkeep.
+I recommend one lookup sheet in your existing workbook with one input cell plus XLOOKUP for location and price, nothing new to run or maintain. A Retool backed by Supabase build and a Next.js portal would add cost, internet dependence and sync drift for a lookup Excel already does, so I do not recommend them.

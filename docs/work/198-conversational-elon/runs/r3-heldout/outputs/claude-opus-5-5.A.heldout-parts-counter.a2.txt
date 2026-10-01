@@ -1,0 +1,39 @@
+I'd skip both Retool/Supabase and Next.js. Your workbook is already the master list, only you use it, and it's all on one laptop. A web stack would add a second copy of the data to keep in sync, plus a login, an internet dependency and possibly a monthly bill. What's actually slow is the scrolling, and a lookup cell inside the same workbook fixes that.
+
+## Setup (about 10 minutes)
+
+**1. Turn your list into a table.** Click any cell in your parts data, press **Ctrl+T**, and confirm "My table has headers." In **Table Design**, name it `Parts`. I'll assume the columns are `Code`, `Shelf` and `Price`; swap in your real header names. New rows you add later are included automatically.
+
+**2. Add a lookup sheet.** Create a new sheet called `Lookup` and drag it to be the first tab.
+
+| Cell | Contents |
+|---|---|
+| A1 | `Part code` |
+| B1 | *(you type the code here)* |
+| A3 | `Shelf` |
+| B3 | `=XLOOKUP(TRIM(B1), Parts[Code], Parts[Shelf], "Not found")` |
+| A4 | `Price` |
+| B4 | `=XLOOKUP(TRIM(B1), Parts[Code], Parts[Price], "")` |
+
+Make B3 and B4 a large font so you can read them at a glance. Format B4 as currency.
+
+**3. Keep the cursor in the input box.** Go to File → Options → Advanced and untick **"After pressing Enter, move selection."** Then your routine is: type the code, press Enter, read the result, type the next code over it. You never touch the mouse.
+
+## Optional extras
+
+- **Partial or typo-tolerant search.** Put this in A6 to list every part whose code contains what you typed:
+  `=IF(B1="", "", FILTER(Parts, ISNUMBER(SEARCH(TRIM(B1), Parts[Code])), "No matches"))`
+- **Older Excel without XLOOKUP** (pre-2021): use
+  `=IFERROR(INDEX(Parts[Shelf], MATCH(TRIM(B1), Parts[Code], 0)), "Not found")`
+- **Watch for codes that look like numbers.** If some codes are stored as numbers (e.g. `00123` became `123`), lookups can miss. Format the Code column as Text and re-enter those codes.
+
+## When a bigger stack would make sense
+
+I'd revisit Retool or Next.js if any of these become true:
+- Someone else needs to look up parts from another device.
+- The lookup starts changing stock or recording sales.
+- You want a phone or tablet at the bench.
+
+Until then, Excel is the simpler and more reliable choice.
+
+If you tell me your exact column headers and Excel version, I can give you formulas you can paste straight in.

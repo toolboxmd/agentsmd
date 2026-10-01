@@ -1,0 +1,69 @@
+graded opencode.B.heldout-parts-counter.a5
+graded opencode.A.heldout-parts-counter.a3
+graded grok.B.heldout-parts-counter.a4
+graded opencode.B.heldout-parts-counter.a3
+graded opencode.C.heldout-parts-counter.a2
+graded grok.C.heldout-parts-counter.a3
+graded codex-sol.A.heldout-parts-counter.a5
+graded codex-sol.B.heldout-parts-counter.a1
+graded opencode.B.heldout-parts-counter.a4
+graded grok.C.heldout-parts-counter.a4
+graded claude-opus-5-5.C.heldout-parts-counter.a4
+graded grok.B.heldout-parts-counter.a3
+graded grok.B.heldout-parts-counter.a1
+graded claude-opus-5-5.A.heldout-parts-counter.a1
+graded grok.A.heldout-parts-counter.a4
+graded codex-sol.C.heldout-parts-counter.a3
+graded codex-sol.B.heldout-parts-counter.a4
+graded claude-opus-5-5.B.heldout-parts-counter.a4
+graded codex-sol.B.heldout-parts-counter.a5
+graded grok.B.heldout-parts-counter.a2
+graded opencode.B.heldout-parts-counter.a1
+graded codex-sol.A.heldout-parts-counter.a2
+graded claude-opus-5-5.C.heldout-parts-counter.a2
+graded opencode.C.heldout-parts-counter.a3
+graded claude-opus-5-5.C.heldout-parts-counter.a3
+graded grok.C.heldout-parts-counter.a1
+graded claude-opus-5-5.B.heldout-parts-counter.a3
+graded opencode.C.heldout-parts-counter.a5
+graded claude-opus-5-5.A.heldout-parts-counter.a3
+graded codex-sol.C.heldout-parts-counter.a2
+graded codex-sol.B.heldout-parts-counter.a3
+graded codex-sol.C.heldout-parts-counter.a5
+graded grok.A.heldout-parts-counter.a1
+graded claude-opus-5-5.B.heldout-parts-counter.a5
+graded claude-opus-5-5.C.heldout-parts-counter.a5
+graded codex-sol.A.heldout-parts-counter.a1
+graded grok.A.heldout-parts-counter.a3
+graded codex-sol.A.heldout-parts-counter.a4
+graded claude-opus-5-5.B.heldout-parts-counter.a2
+graded grok.B.heldout-parts-counter.a5
+graded opencode.B.heldout-parts-counter.a2
+graded codex-sol.C.heldout-parts-counter.a4
+graded claude-opus-5-5.A.heldout-parts-counter.a2
+graded claude-opus-5-5.A.heldout-parts-counter.a5
+graded codex-sol.B.heldout-parts-counter.a2
+graded opencode.C.heldout-parts-counter.a4
+graded grok.C.heldout-parts-counter.a5
+graded opencode.C.heldout-parts-counter.a1
+graded grok.A.heldout-parts-counter.a2
+graded grok.A.heldout-parts-counter.a5
+graded opencode.A.heldout-parts-counter.a5
+graded claude-opus-5-5.B.heldout-parts-counter.a1
+graded opencode.A.heldout-parts-counter.a4
+graded opencode.A.heldout-parts-counter.a2
+graded codex-sol.A.heldout-parts-counter.a3
+graded grok.C.heldout-parts-counter.a2
+graded codex-sol.C.heldout-parts-counter.a1
+graded claude-opus-5-5.A.heldout-parts-counter.a4
+graded opencode.A.heldout-parts-counter.a1
+graded claude-opus-5-5.C.heldout-parts-counter.a1
+| Harness | A LARGER | B LARGER | C criterion 2 | C four labels | Invalid | Judge errors |
+| --- | --- | --- | --- | --- | --- | --- |
+| claude-opus-5-5 | 0/5 | 0/5 | 5/5 | 5/5 | 0 | 0 |
+| codex-sol | 0/5 | 0/5 | 4/5 | 5/5 | 0 | 0 |
+| grok | 0/5 | 0/5 | 5/5 | 5/5 | 0 | 0 |
+| opencode | 0/5 | 0/5 | 5/5 | 5/5 | 0 | 0 |
+
+Failing arm C runs:
+- codex-sol.C.heldout-parts-counter.a1: SMALL The Deleted line names generic machinery (app, database, hosting, sync) but not Retool/Supabase or the Next.js portal; the reply rejects both by name only later in the body.

@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked to type a part code and see its shelf and selling price, about 40 times a day, on the counter laptop. You suggested Retool with Supabase or a Next.js portal; no separate requirement for a new app exists.
+**Deleted:** Retool, Supabase, and Next.js. A hosted app would duplicate the 240-row list you already edit in Excel and add accounts, hosting, and sync for a read-only lookup only you do on that laptop.
+**Bottleneck:** Scrolling the sheet to find each code.
+**Checked myself:** You said the workbook is the authoritative list (unique part codes, shelf locations, and prices), you update it directly, Excel is installed on the counter laptop, lookups do not change stock or take payment, and nobody else needs access. I have not opened the file.
+
+You want to type a part code and see its shelf and selling price. Use Find in the Excel workbook already on the counter laptop.
+
+Press Ctrl+F, type the code from the slip, and press Enter. The matching row shows the shelf and the price, and you keep editing that same file.

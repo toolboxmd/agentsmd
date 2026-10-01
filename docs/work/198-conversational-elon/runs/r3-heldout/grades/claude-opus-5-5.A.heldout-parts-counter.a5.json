@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends turning the existing parts list into an Excel Table and adding a Lookup sheet in the same workbook. That sheet uses XLOOKUP (or INDEX/MATCH) on the typed part code to return shelf and price. It also suggests Ctrl+F as a no-setup alternative, and rejects Retool/Supabase and Next.js for now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a correct in-workbook exact-code lookup, but none of the four labelled record lines are present.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.heldout-parts-counter.a5",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.A.heldout-parts-counter.a4",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "heldout-parts-counter",
+ "attempt": 4,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 16.9,
+ "valid": true
+}

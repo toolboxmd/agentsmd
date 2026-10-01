@@ -1,0 +1,13 @@
+I’d keep this in Excel. With 240 parts, one laptop, and read-only lookups, Retool/Supabase or Next.js would add a second place to maintain data and extra setup without helping the counter workflow.
+
+I’d add a **“Counter lookup” sheet** to your existing workbook:
+
+- One large input cell where you type the part code.
+- Large, clear results for **shelf location** and **selling price**, using Excel’s `XLOOKUP` against your existing parts list.
+- A clear **“Code not found”** message for an unmatched code.
+- Part codes stored as text so leading zeros stay intact.
+- Protected result cells to prevent accidental edits, with the input cell left editable.
+
+Your existing list stays authoritative, and edits to shelves or prices appear immediately in the lookup. It works locally without internet, hosting, or another login.
+
+I’d test it with a few real slips, including codes with leading zeros and a missing code. If your Excel version doesn’t support `XLOOKUP`, we can use `INDEX`/`MATCH` for the same workflow.

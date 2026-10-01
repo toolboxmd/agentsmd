@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need to enter a part code and immediately see its shelf location and selling price.
+**Deleted:** A separate app, database, hosting and synchronization.
+**Bottleneck:** Scrolling through the existing list about 40 times a day.
+**Checked myself:** You told me Excel is installed, the workbook contains 240 unique codes, and all lookups happen on one laptop.
+
+You want faster counter lookups; I recommend a lookup sheet in your existing Excel workbook. Retool with Supabase and a Next.js portal would add maintenance without solving an additional need.
+
+Put it together with one large part-code input cell and two clearly labeled results: **Shelf** and **Selling price**. Use exact-match lookup formulas against the existing authoritative list, preserve codes as text so leading zeros survive, and show “Code not found” for unknown entries.
+
+Keep updating the list as you do today; the lookup reads it directly, so there is no second copy to maintain.

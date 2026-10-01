@@ -1,0 +1,16 @@
+Don't use either — for this setup both would make you slower, not faster.
+
+Retool + Supabase or a Next.js portal only makes sense for multi-user, shared, transactional apps. You have the opposite: 1 user, 1 laptop, 240 rows, read-only lookup, Excel is already the source of truth and installed.
+
+Either web stack would add hosting/cost, login, internet dependency at the counter, and a second copy of the parts list to keep in sync with Excel. You'd gain control you don't need and lose the instant, offline lookup you do need.
+
+Do this in your existing workbook instead:
+
+1. Keep your current sheet as-is as `Parts` — codes, shelf, price. Convert it to an Excel Table if it isn't already.
+2. Add a `Counter` sheet with one input cell for the part code, and two output cells using XLOOKUP for shelf location and price, with `IFNA(..., "Not found")` for mistypes.
+3. Normalize input with `TRIM(UPPER(...))` so ` ab123 ` still finds `AB123`.
+4. Add Data Validation on the input cell from your code column for autocomplete / typo prevention.
+
+That gives you: type code -> location + price instantly, no scrolling, no sync, works offline on the counter laptop.
+
+If you tell me your sheet name and which columns are code / shelf / price, I'll give you the exact formulas to paste in.

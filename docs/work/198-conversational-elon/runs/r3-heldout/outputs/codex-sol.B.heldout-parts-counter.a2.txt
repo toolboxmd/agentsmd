@@ -1,0 +1,5 @@
+You need to type a part code and immediately see its shelf location and selling price. I recommend keeping this in Excel: your workbook already owns the data, and a separate app would add hosting and synchronization without helping this counter workflow.
+
+I’d add a small lookup sheet with one clearly marked code-entry cell and two large results, using `XLOOKUP` against your existing parts table. It would show “Code not found” for an unknown code and treat codes as text to preserve leading zeros; your normal workbook edits would appear in lookups immediately.
+
+Retool with Supabase or Next.js becomes worth considering if you later need access from other devices or people. For this setup, an Excel lookup is the smallest solution that removes the scrolling.

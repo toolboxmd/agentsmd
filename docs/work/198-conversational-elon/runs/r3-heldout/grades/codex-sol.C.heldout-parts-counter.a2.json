@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a lookup sheet inside the existing Excel workbook, with a code-entry cell and exact-match formulas against the current parts list that return shelf location and price, plus a not-found message and formula protection.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need to enter a part code and see its shelf location and selling price, about 40 times daily.",
+  "Deleted": "Retool, Supabase and a Next.js portal add systems to maintain without a requirement that needs them.",
+  "Bottleneck": "Scrolling to find a code, rather than the size of the 240-row list.",
+  "Checked myself": "You\u2019ve told me Excel is installed, codes are unique, and the workbook is authoritative; I haven\u2019t inspected it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Each record line is specific and appears before the recommendation, which is an in-workbook exact-match lookup that removes the framed stack and adds no new systems.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.heldout-parts-counter.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

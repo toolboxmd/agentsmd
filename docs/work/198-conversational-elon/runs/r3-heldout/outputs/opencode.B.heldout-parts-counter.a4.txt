@@ -1,0 +1,5 @@
+What you are trying to achieve is faster code to shelf and price lookup for 240 parts, alone, on one laptop, with Excel staying as the source of truth.
+
+I recommend neither Retool plus Supabase nor Next.js. Both would duplicate your list, need sync and hosting, and add failure points for a read only lookup Excel already handles.
+
+Add a small lookup sheet with one input cell that uses XLOOKUP against your master table, so you type the code once and get location and price instantly. If you share your column layout I will give you the exact formulas.

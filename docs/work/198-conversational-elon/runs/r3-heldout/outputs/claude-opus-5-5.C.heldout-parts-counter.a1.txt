@@ -1,0 +1,18 @@
+**Requirements and who asked:** You need a typed part code to show its shelf location and price, about 40 times a day, on the counter laptop, read-only, from the workbook you already maintain.
+**Deleted:** Retool, Supabase, Next.js, any database, hosting, login, and data sync. Nobody else needs access, nothing gets written, and the workbook stays the authoritative list.
+**Bottleneck:** Scrolling through 240 rows to find each code.
+**Checked myself:** Only what you told me: 240 unique codes, Excel installed, single user, single laptop. I haven't seen the workbook's layout or Excel version.
+
+You want to type a code and get its location and price immediately. The smallest fix is a lookup box inside the workbook you already have.
+
+1. Add a sheet named `Lookup` and keep it as the first tab.
+2. In `A1` type `Part code`, and leave `B1` empty for typing codes.
+3. In `B2` enter:
+   `=XLOOKUP(B1, Parts!A:A, Parts!B:B, "Not found")`
+4. In `B3` enter:
+   `=XLOOKUP(B1, Parts!A:A, Parts!C:C, "Not found")`
+5. Change `Parts` and the columns to match your sheet name and layout. The formulas assume codes in A, shelf in B, and price in C.
+
+At the counter, click `B1`, type the code, and press Enter. Edits you make to the parts list show up right away because the formulas read it directly.
+
+I'm rejecting Retool, Supabase, and Next.js. They would add a second copy of your data to keep in sync, plus hosting and accounts. They would also be slower to open than Excel, and none of that helps a one-person, read-only lookup. If `B2` shows `#NAME?`, your Excel is older than 2021. Tell me and I'll give you the equivalent `VLOOKUP` formulas.

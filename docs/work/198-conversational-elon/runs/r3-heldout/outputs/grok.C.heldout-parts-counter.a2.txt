@@ -1,0 +1,11 @@
+**Requirements and who asked**: You asked for the shelf and selling price from a part code typed off a paper slip, about 40 times a day. You suggested Retool with Supabase or a Next.js portal; the counter loses nothing if those are skipped, because this lookup only reads the 240-row Excel list you already update on the only laptop involved.
+
+**Deleted**: Retool, Supabase, a Next.js portal, and any hosted database or second copy of the parts list.
+
+**Bottleneck**: Scrolling 240 rows to find one code. The workbook already open on the counter laptop is where that wait sits.
+
+**Checked myself**: What you told me: Excel is on the counter laptop; the workbook has 240 unique part codes with shelf locations and prices; you update that file directly; the lookup does not change stock, record sales, or take payments; nobody else needs access; every lookup happens on that laptop.
+
+You want the shelf and price for a code you type, from the list you already keep.
+
+On that workbook, outside the data rows, use one cell for the code. Next to it, use `=XLOOKUP(F2,A:A,B:B,"Not found")` for the shelf and `=XLOOKUP(F2,A:A,C:C,"Not found")` for the price when the code is typed in F2 and codes, shelves, and prices are in A, B, and C. Point those ranges at your real columns, type the code from the slip, and keep editing the 240 rows in the same file.

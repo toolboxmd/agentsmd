@@ -1,0 +1,98 @@
+start r3-heldout: Thu Oct  1 20:18:57 CEST 2026 head 6abd0e12118713dc04df3d29549910f4e6b69368
+claude-opus-5-5.C.canary.a1                             valid                                 4s
+claude-opus-5-5.B.canary.a1                             valid                                 4s
+claude-opus-5-5.A.canary.a1                             valid                                 4s
+opencode.C.canary.a1                                    valid                                 6s
+opencode.B.canary.a1                                    valid                                 8s
+codex-sol.A.canary.a1                                   valid                                 8s
+opencode.A.canary.a1                                    valid                                 8s
+codex-sol.B.canary.a1                                   valid                                 8s
+grok.C.canary.a1                                        valid                                 9s
+codex-sol.C.canary.a1                                   valid                                10s
+grok.A.canary.a1                                        valid                                10s
+grok.B.canary.a1                                        valid                                19s
+canary codex-sol.A            PASS  'no\nNONE'
+canary codex-sol.B            PASS  'yes\n"# Global Agent Rules"'
+canary codex-sol.C            PASS  'yes\n"# Global Agent Rules"'
+canary grok.A                 PASS  'no\nNONE'
+canary grok.B                 PASS  'yes\n# Global Agent Rules'
+canary grok.C                 PASS  'yes\n# Global Agent Rules'
+canary opencode.A             PASS  'no\nNONE'
+canary opencode.B             PASS  'yes\n# Global Agent Rules'
+canary opencode.C             PASS  'yes\n# Global Agent Rules'
+canary claude-opus-5-5.A      PASS  'no\nNONE'
+canary claude-opus-5-5.B      PASS  'yes\n"Global Agent Rules"'
+canary claude-opus-5-5.C      PASS  'yes\n# Global Agent Rules'
+claude-opus-5-5.B.heldout-parts-counter.a1              valid                                12s
+claude-opus-5-5.C.heldout-parts-counter.a1              valid                                13s
+codex-sol.B.heldout-parts-counter.a1                    valid                                14s
+codex-sol.A.heldout-parts-counter.a1                    valid                                17s
+claude-opus-5-5.A.heldout-parts-counter.a1              valid                                19s
+opencode.B.heldout-parts-counter.a1                     valid                                19s
+opencode.A.heldout-parts-counter.a1                     valid                                20s
+opencode.C.heldout-parts-counter.a1                     valid                                20s
+claude-opus-5-5.B.heldout-parts-counter.a2              valid                                11s
+codex-sol.B.heldout-parts-counter.a2                    valid                                14s
+claude-opus-5-5.C.heldout-parts-counter.a2              valid                                17s
+codex-sol.C.heldout-parts-counter.a1                    valid                                31s
+claude-opus-5-5.B.heldout-parts-counter.a3              valid                                 9s
+opencode.B.heldout-parts-counter.a2                     valid                                13s
+codex-sol.A.heldout-parts-counter.a2                    valid                                15s
+grok.B.heldout-parts-counter.a1                         valid                                34s
+grok.A.heldout-parts-counter.a1                         valid                                35s
+claude-opus-5-5.A.heldout-parts-counter.a2              valid                                17s
+opencode.A.heldout-parts-counter.a2                     valid                                17s
+codex-sol.B.heldout-parts-counter.a3                    valid                                13s
+claude-opus-5-5.B.heldout-parts-counter.a4              valid                                 9s
+opencode.B.heldout-parts-counter.a3                     valid                                 9s
+claude-opus-5-5.C.heldout-parts-counter.a3              valid                                16s
+opencode.C.heldout-parts-counter.a2                     valid                                25s
+opencode.A.heldout-parts-counter.a3                     valid                                 8s
+codex-sol.A.heldout-parts-counter.a3                    valid                                19s
+claude-opus-5-5.B.heldout-parts-counter.a5              valid                                12s
+claude-opus-5-5.A.heldout-parts-counter.a3              valid                                17s
+codex-sol.B.heldout-parts-counter.a4                    valid                                14s
+codex-sol.C.heldout-parts-counter.a2                    valid                                26s
+opencode.C.heldout-parts-counter.a3                     valid                                12s
+claude-opus-5-5.C.heldout-parts-counter.a4              valid                                15s
+opencode.B.heldout-parts-counter.a4                     valid                                18s
+opencode.A.heldout-parts-counter.a4                     valid                                17s
+codex-sol.A.heldout-parts-counter.a4                    valid                                16s
+claude-opus-5-5.A.heldout-parts-counter.a4              valid                                17s
+grok.C.heldout-parts-counter.a1                         valid                                73s
+claude-opus-5-5.C.heldout-parts-counter.a5              valid                                13s
+opencode.C.heldout-parts-counter.a4                     valid                                14s
+opencode.A.heldout-parts-counter.a5                     valid                                11s
+codex-sol.B.heldout-parts-counter.a5                    valid                                22s
+opencode.B.heldout-parts-counter.a5                     valid                                17s
+codex-sol.C.heldout-parts-counter.a3                    valid                                26s
+grok.B.heldout-parts-counter.a2                         valid                                50s
+claude-opus-5-5.A.heldout-parts-counter.a5              valid                                13s
+codex-sol.A.heldout-parts-counter.a5                    valid                                19s
+cell codex-sol.A.heldout-parts-counter: 5 valid, 0 invalid
+cell codex-sol.B.heldout-parts-counter: 5 valid, 0 invalid
+grok.A.heldout-parts-counter.a2                         valid                                60s
+opencode.C.heldout-parts-counter.a5                     valid                                26s
+codex-sol.C.heldout-parts-counter.a4                    valid                                22s
+grok.A.heldout-parts-counter.a3                         valid                                28s
+codex-sol.C.heldout-parts-counter.a5                    valid                                27s
+cell codex-sol.C.heldout-parts-counter: 5 valid, 0 invalid
+grok.B.heldout-parts-counter.a3                         valid                                59s
+grok.C.heldout-parts-counter.a2                         valid                                74s
+grok.A.heldout-parts-counter.a4                         valid                                50s
+grok.B.heldout-parts-counter.a4                         valid                                68s
+grok.A.heldout-parts-counter.a5                         valid                                58s
+cell grok.A.heldout-parts-counter: 5 valid, 0 invalid
+grok.C.heldout-parts-counter.a3                         valid                               105s
+grok.B.heldout-parts-counter.a5                         valid                                64s
+cell grok.B.heldout-parts-counter: 5 valid, 0 invalid
+grok.C.heldout-parts-counter.a4                         valid                                51s
+grok.C.heldout-parts-counter.a5                         valid                                92s
+cell grok.C.heldout-parts-counter: 5 valid, 0 invalid
+cell opencode.A.heldout-parts-counter: 5 valid, 0 invalid
+cell opencode.B.heldout-parts-counter: 5 valid, 0 invalid
+cell opencode.C.heldout-parts-counter: 5 valid, 0 invalid
+cell claude-opus-5-5.A.heldout-parts-counter: 5 valid, 0 invalid
+cell claude-opus-5-5.B.heldout-parts-counter: 5 valid, 0 invalid
+cell claude-opus-5-5.C.heldout-parts-counter: 5 valid, 0 invalid
+exit 0

@@ -1,0 +1,26 @@
+Stay with the Excel workbook on the counter laptop. A second sheet that looks up the code you type is enough for about 40 lookups a day across 240 parts.
+
+Retool, Supabase, and a Next.js portal would copy that same list into another system, then add hosting, sign-in, and a sync step. The workbook is already the list you update, the lookup is read-only, and every lookup happens on that one machine.
+
+Put it together like this:
+
+1. On the parts sheet, select the header row and all 240 data rows, then choose **Insert → Table**. Name the table `Parts`. Keep the columns you already use, for example `Code`, `Shelf`, and `Price`. Keep editing prices and locations in this table, the same way you do now.
+2. Add a sheet named `Counter`. In column A, label three cells: `Part code`, `Shelf`, and `Price`. Make the input cell next to `Part code` large, around 18 pt, so it is easy to read at the counter.
+3. Next to `Shelf`, enter:
+
+```excel
+=XLOOKUP(B2, Parts[Code], Parts[Shelf], "Not found")
+```
+
+Next to `Price`, enter:
+
+```excel
+=XLOOKUP(B2, Parts[Code], Parts[Price], "Not found")
+```
+
+Change `B2` if your part-code input is in a different cell, and change the column names if your headers differ. Format the price cell as currency.
+
+4. Type a code you know and confirm the shelf and price match the parts sheet. Then type a fake code and confirm both cells say `Not found`.
+5. Optionally protect the `Counter` sheet and leave only the part-code cell unlocked, so a mistyped key does not overwrite the formulas. Leave the `Parts` sheet unlocked so you can keep updating it.
+
+Each lookup is then: click the input cell, type the code from the slip, and read the shelf and price. New and changed parts show up as soon as you save them in the table.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding an XLOOKUP lookup row at the top of the existing Excel workbook and keeping the workbook as the only system, and it rejects Retool/Supabase and Next.js.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Requirements and who asked: User asked for fast counter lookup of shelf and price by part code, read-only, single laptop.",
+  "Deleted": "Deleted: Retool, Supabase, Next.js portal, any hosted database or sync.",
+  "Bottleneck": "Bottleneck: Scrolling 240 rows 40 times a day to find one code.",
+  "Checked myself": "Checked myself: User told me Excel is authoritative with 240 unique codes, Excel is installed, and use is single user on one laptop."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines are present, specific and placed before an in-workbook XLOOKUP recommendation, and nothing that was deleted is offered again.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.heldout-parts-counter.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "heldout-parts-counter",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}
