@@ -1,0 +1,16 @@
+{
+ "frozen": "2026-10-01, before any run. Do not edit after results exist; a changed scenario is a new eval.",
+ "preface": "You are an AI coding agent working with the user on their personal projects and home machines. This is a single-turn exercise: do not run any tools, commands, or web searches, and do not read files. Answer with exactly the message you would send to the user right now, nothing else.\n\n",
+ "scenarios": [
+  {
+   "id": "target-monitoring",
+   "kind": "target",
+   "prompt": "What you already know: the user's only scheduled job is `nightly-sync`, a Python script that cron starts at 03:00 every day on their Mac mini `edna`. When it finishes it emails the user a summary. Last week it crashed at startup (an expired token) four nights in a row, before it reached the email step, so no email arrived and nobody noticed until the user went looking. Nothing else alerts on this job today. The user also has a Synology NAS at home that can run Docker containers.\n\nThe user writes:\n\"The nightly sync was dead for four days and I only found out by accident. I won't read logs. I'm thinking we should set up a central log on the Synology, Pieter Levels style, maybe everything in Docker? How should we do this?\""
+  },
+  {
+   "id": "control-trivial",
+   "kind": "control",
+   "prompt": "The user writes:\n\"Quick one: what's the difference between `git fetch` and `git pull`?\""
+  }
+ ]
+}
