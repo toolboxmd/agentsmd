@@ -1,0 +1,14 @@
+I’d start with an alert when `nightly-sync` fails or never finishes. Central logs can help diagnose a failure, but they won’t get your attention on their own.
+
+For this one job, I’d use a hosted heartbeat service such as Healthchecks.io:
+
+- Keep cron and the Python script on `edna`.
+- Have a small wrapper signal “started,” run the script, then signal “success” or “failure” based on its exit code. This catches startup crashes, including the expired token.
+- Configure the monitor for 03:00 in your local timezone, with a deadline based on the job’s usual runtime. It should alert if the job fails, hangs, or never starts—even if `edna` is offline.
+- Send alerts somewhere you’ll notice, such as a phone push notification, with email as a backup. Keep the existing summary email.
+
+Only send “success” after the sync actually completes, and make sure failures produce a nonzero exit code. Then test both a deliberate failure and a missed run to verify the alerts reach you.
+
+The Synology can host Healthchecks in Docker if you prefer self-hosting. But if the NAS, home power, or internet connection goes down, it may be unable to alert you. An external monitor covers those failures too.
+
+My recommendation: **external heartbeat monitoring first; central logging later if troubleshooting becomes painful.** There’s no need to move the sync into Docker to solve the problem that caused those four silent days.

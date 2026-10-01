@@ -1,0 +1,25 @@
+graded codex-sol.C.control-trivial.a5
+graded codex-sol.C.control-trivial.a3
+graded codex-sol.A.target-monitoring.a5
+graded codex-sol.B.target-monitoring.a3
+graded codex-sol.C.target-monitoring.a2
+graded codex-sol.A.target-monitoring.a4
+graded codex-sol.B.target-monitoring.a2
+graded codex-sol.C.target-monitoring.a5
+graded codex-sol.C.target-monitoring.a1
+graded codex-sol.C.target-monitoring.a4
+graded codex-sol.C.control-trivial.a2
+graded codex-sol.A.target-monitoring.a1
+graded codex-sol.A.target-monitoring.a3
+graded codex-sol.B.target-monitoring.a4
+graded codex-sol.B.target-monitoring.a5
+graded codex-sol.B.target-monitoring.a1
+graded codex-sol.C.control-trivial.a4
+graded codex-sol.C.control-trivial.a1
+graded codex-sol.A.target-monitoring.a2
+graded codex-sol.C.target-monitoring.a3
+| Harness | A LARGER | B LARGER | C criterion 2 | C control | Invalid | Verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| codex-sol | 0/5 | 0/5 | 5/5 | 5/5 | 0 | PASS |
+
+Failing arm C runs:

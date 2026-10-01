@@ -1,0 +1,5 @@
+You want an alert when `nightly-sync` fails or misses a night, without reading logs.
+
+I recommend a hosted heartbeat monitor such as Healthchecks.io: configure the daily 03:00 schedule with a deadline based on normal runtime plus a grace period, and have the cron wrapper report success only after the script finishes successfully. The monitor emails you if that signal never arrives, covering startup crashes and failures of `edna` itself.
+
+Central logs on the Synology could help diagnose failures later, but this incident calls for detecting missing success; Docker and a logging stack add work without solving that by themselves.

@@ -1,0 +1,17 @@
+{
+ "answers_question": true,
+ "record_present": false,
+ "note": "The reply explains fetch vs. pull correctly and directly, and none of the labelled record lines appear.",
+ "control_pass": true,
+ "run_id": "codex-sol.C.control-trivial.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "control-trivial",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

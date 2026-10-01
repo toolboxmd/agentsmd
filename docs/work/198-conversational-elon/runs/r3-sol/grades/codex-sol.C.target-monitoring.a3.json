@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single hosted heartbeat monitor (Healthchecks.io), pinged by a small cron wrapper around `nightly-sync`, that emails the user when the expected completion signal does not arrive within a grace period.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to hear when `nightly-sync` fails, without reading logs.",
+  "Deleted": "Central logging and moving everything into Docker for this fix.",
+  "Bottleneck": "The script sends email only if it reaches that step; nothing independently notices a failed or missing run.",
+  "Checked myself": "From your report: cron runs it at 03:00 on `edna`, and four startup failures produced no notification."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one dead-man alert, with the wrapper only sending its signal, and drops central logging and Docker.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-monitoring.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

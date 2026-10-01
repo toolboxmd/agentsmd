@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.A.target-monitoring.a2",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-monitoring",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "start with a **dead-man\u2019s-switch alert for `nightly-sync`**. Central logs can help diagnose failures, but they won\u2019t tell you the job silently stopped unless we add monitoring.\n\nKeep cron and the Python script on `edna`. Wrap the script so the monitoring works even when Python crashes at startup:\n\n- Send a \u201cstarted\u201d ping when cron launches it.\n- Send a \u201csuccess\u201d ping only if the script exits successfully.\n- Send a \u201cfailure\u201d ping if it exits with an error.\n\nSet the monitor to expect the daily 03:00 run, with a grace period based on its usual duration. It should email you if the job fails, never starts, or starts but never finishes. That would have caught the expired token on the first night, independently of the script\u2019s summary email.\n\n**My recommendation is hosted Healthchecks.io for that alert.** It stays outside your home network, so it can also notice when `edna`, your internet connection, or your NAS goes down. We should deliberately test a failed run and a missing run before relying on it.\n\nIf you want everything self-hosted, Healthchecks can run in Docker on the Synology. That works, but a NAS or home-network outage could take down both the job and its monitor; you\u2019d still want an external check watching the monitor.\n\nFor one scheduled job, I\u2019d defer the central logging stack. Keep a rotating log on `edna` for troubleshooting, and put a short error excerpt in the failure notification. You shouldn\u2019t have to read logs to find out whether your sync ran.\ntokens used\n2,324\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": null
+ },
+ "seconds": 21.5,
+ "valid": true
+}

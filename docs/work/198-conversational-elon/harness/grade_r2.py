@@ -48,7 +48,7 @@ def summary(base):
         return
     print("| Harness | A LARGER | B LARGER | C criterion 2 | C control | Invalid | Verdict |")
     print("| --- | --- | --- | --- | --- | --- | --- |")
-    for h in HARNESSES:
+    for h in [x for x in HARNESSES + sorted({k[0] for k in cells} - set(HARNESSES)) if any(k[0] == x for k in cells)]:
         a, b, c = (cells[(h, x, "target-monitoring")] for x in "ABC")
         ctl = cells[(h, "C", "control-trivial")]
         inv = sum(cells[k]["invalid"] for k in cells if k[0] == h)

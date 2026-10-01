@@ -1,0 +1,3 @@
+`git fetch` downloads new commits and updates remote-tracking branches such as `origin/main`, without changing your current branch or files.
+
+`git pull` runs fetch, then integrates the remote changes into your current branch using merge or rebase, depending on your configuration. It can change your files and cause conflicts.

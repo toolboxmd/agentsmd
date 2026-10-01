@@ -1,0 +1,15 @@
+I’d start with a **missing-run alert**. A central log helps investigate a failure, but it won’t tell you the sync has been dead for four days unless something watches it.
+
+For `nightly-sync`, I’d use a hosted heartbeat service such as Healthchecks.io:
+
+- Cron on `edna` runs a small wrapper at 03:00. The wrapper signals “started,” runs the Python script, then signals success or failure based on its exit code.
+- The service alerts you immediately on failure, and also alerts if the job never starts or never finishes within its expected window.
+- Alerts go somewhere you’ll notice—email initially, or push notifications if that’s more reliable for you.
+
+The wrapper matters: an expired token can crash Python before its email code runs, while the wrapper can still report the failure. The external deadline catches cases where the Mac is off, cron stops working, or the wrapper itself fails.
+
+I’d keep a local log for diagnosis and include the last few error lines in failure notifications, with credentials redacted. You shouldn’t need to read logs to know there’s a problem.
+
+The Synology can collect logs later if you want one place to investigate several machines. You can also run a heartbeat monitor there in Docker, but then it needs its own external check; otherwise a NAS outage can silence your alerts too.
+
+For this one job, my recommendation is **keep cron on `edna`, add the wrapper and an external heartbeat monitor, then deliberately test both a crash and a missed run**. No need to move the sync into Docker or build a central logging stack to solve this failure.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single hosted heartbeat check (e.g. Healthchecks.io) that `nightly-sync` pings only after it succeeds, with a daily deadline plus grace period and email alerts when the ping is missing.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` stops working, without reading logs.",
+  "Deleted": "Central logging and moving the job into Docker.",
+  "Bottleneck": "The script must finish before it can send its existing email.",
+  "Checked myself": "Only your supplied facts; I haven\u2019t inspected the machines or verified a service."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert, sets aside central logging and Docker, and puts all four record lines before the recommendation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-monitoring.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

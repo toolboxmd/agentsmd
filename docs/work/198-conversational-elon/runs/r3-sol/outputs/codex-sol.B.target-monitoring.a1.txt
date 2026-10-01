@@ -1,0 +1,3 @@
+You want to hear when `nightly-sync` fails or never runs, without checking logs.
+I recommend a heartbeat monitor such as Healthchecks.io: have a wrapper around the Python script report start, success, and failure, and configure the monitor to email you if the job fails or misses its expected completion deadline after 03:00.
+That catches the expired-token crash, a stuck run, and `edna` being offline; central logs can help diagnose failures later, but Synology and Docker add work without solving the missing-alert problem by themselves.

@@ -1,0 +1,14 @@
+I’d start with a **dead-man’s-switch alert for `nightly-sync`**. A central log can help diagnose failures, but it won’t tell you that the job never ran unless you add monitoring.
+
+For this one job, I’d use a hosted service such as Healthchecks.io:
+
+- Keep cron and the Python script on `edna`.
+- Have cron run a small wrapper that sends a “started” ping, runs the script, then sends “success” only if it exits successfully—or “failure” if it crashes.
+- Set the monitor to expect the job daily at 03:00 in your local timezone, with enough grace time for its normal runtime.
+- Send alerts to your phone or email when it fails or misses its deadline. That catches an expired token, a stopped cron, or an offline Mac—even when the script never reaches its email step.
+
+Keep the existing summary email for successful runs. Monitoring should be independent of that email path.
+
+The Synology can run **self-hosted Healthchecks in Docker** if you prefer, and we can collect logs there later. But if your home power or internet goes down, a monitor on the NAS may be unable to alert you. An external monitor covers that gap and needs less maintenance.
+
+My recommendation: **add the external heartbeat monitor first, deliberately test a failed run and a missing run, and verify the alerts reach you.** Keep the sync where it is; Docker and central logging can wait until there’s a concrete need.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a hosted heartbeat monitor such as Healthchecks.io, with a wrapper around the Python script that pings start, success and failure, so the user gets an email if `nightly-sync` fails or misses its deadline after 03:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends one hosted heartbeat alert and sets aside central logs, Synology and Docker as not solving the problem, but it has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-monitoring.a1",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

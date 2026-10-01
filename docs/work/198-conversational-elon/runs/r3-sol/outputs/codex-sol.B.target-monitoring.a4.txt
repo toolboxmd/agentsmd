@@ -1,0 +1,3 @@
+You want to be alerted when `nightly-sync` stops completing, without having to read logs.
+
+I recommend an external heartbeat monitor: the script sends a ping only after a successful sync, and the monitor emails you if that ping hasn’t arrived by 03:00 plus the normal runtime and a small grace period. That catches startup crashes and cron failing to run at all; central logs on the Synology would still need this missing-run detection, so a heartbeat is the smallest fix.

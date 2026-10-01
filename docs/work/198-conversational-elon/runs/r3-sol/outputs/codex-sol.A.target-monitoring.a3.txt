@@ -1,0 +1,13 @@
+I’d start with a missed-run alert for `nightly-sync`. A central log can help diagnose failures, but it won’t tell you the job has stopped unless something checks for that.
+
+Use a heartbeat service such as Healthchecks.io:
+
+- Expect completion daily after the 03:00 run, with a grace period based on its usual runtime.
+- Have a small wrapper send a “started” ping, run the Python script, then send “success” or “failure” based on its exit code. That catches startup crashes like the expired token.
+- Enable alerts to a channel you’ll notice. If cron never starts the wrapper, or `edna` goes offline, the missing heartbeat still triggers an alert.
+
+Keep the summary email, but treat it as a report rather than the failure detector.
+
+For this one job, I’d leave Python and cron on `edna`; Docker won’t solve silent failures. You can run Healthchecks in Docker on the Synology if you want everything at home, but then a NAS or home-network outage can also silence your monitoring. My recommendation is an externally hosted heartbeat monitor first, with logs on the NAS later if you need them for troubleshooting.
+
+The acceptance test is simple: deliberately fail the script, then skip a scheduled run, and confirm you receive an alert in both cases.

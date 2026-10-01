@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up an external heartbeat monitor: a cron wrapper on `edna` pings it on success, reports failure right away, and the monitor alerts if the 03:00 run's completion is overdue. Keep cron and hold off on central logging.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends a single heartbeat or dead-man alert, puts Synology logging off until it's needed for diagnosis, and has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-monitoring.a3",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

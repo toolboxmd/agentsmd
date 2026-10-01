@@ -1,0 +1,5 @@
+You want an alert when `nightly-sync` fails or doesn’t run, without having to read logs.
+
+I recommend a hosted heartbeat monitor such as Healthchecks.io: a small wrapper around the cron command sends start, success, and failure signals, and the monitor emails you if the job fails or misses its daily completion deadline, allowing for its normal runtime. That catches startup crashes, expired tokens, and `edna` being offline without depending on the script reaching its email step.
+
+Central logs on the Synology could help with diagnosis later, but they don’t solve unnoticed failures by themselves; for this one job, heartbeat monitoring is the smallest useful fix, with no Docker setup needed.

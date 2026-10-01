@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want an alert when `nightly-sync` fails or never runs, without reading logs.
+**Deleted:** Central logging and Docker for this job; neither alone alerts on a missing successful run.
+**Bottleneck:** The script must finish before it can email you, so startup failures stay silent.
+**Checked myself:** Your supplied facts only: daily cron on `edna`, four startup crashes, and no independent alert.
+
+You want failures to become visible automatically; I recommend one completion heartbeat monitor using Healthchecks.io. Have the cron wrapper ping it only after successful completion, and configure an email alert when that heartbeat is missing after 03:00 plus the job’s normal runtime and a buffer, using `edna`’s timezone.

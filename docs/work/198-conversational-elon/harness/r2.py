@@ -13,7 +13,7 @@ exits and harness errors are invalid, kept, and retried until VALID_TARGET valid
 
 Usage: r2.py RUN_DIR canary | run [harnesses] [cells] [NAME=PATH,...]
   cells: comma list of ARM:SCENARIO[:VALID], default A,B,C target and C control, 5 valid each.
-  NAME=PATH or NAME=git:SHA: arms from a candidate file or global/AGENTS.md at a commit; when given,
+  NAME=, NAME=PATH or NAME=git:SHA: arms (NAME= means no rules file) from a candidate file or global/AGENTS.md at a commit; when given,
   only these arms are used.
 """
 import concurrent.futures as cf, hashlib, json, os, re, shutil, subprocess, sys, tempfile, threading, time
@@ -26,6 +26,7 @@ FROZEN_SHA = "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b"
 ARM_SHAS = {"A": None, "B": "8cad98f68a8ce46dc8bb05954775dd63172a9f26", "C": "d32c7d4ece13e666baa05e44534ccd8886cff62c"}
 HARNESSES = {
     "codex": ("codex", "gpt-6-astra"),
+    "codex-sol": ("codex", "gpt-6.1-sol"),
     "grok": ("grok", "grok-4.7"),
     "opencode": ("opencode", "opencode/muse-spark-1.3-contributor-free"),
     "claude-sonnet-5": ("claude", "claude-sonnet-5"),
@@ -42,7 +43,7 @@ ERROR = re.compile(r"rate.?limit|quota|unauthori[sz]ed|authenticat|api error|int
 REAL = Path.home()
 DROP = ("CLAUDE_CODE_", "CLAUDECODE", "CLAUDE_PID", "CLAUDE_EFFORT", "CLAUDE_AGENT_SDK", "CLAUDE_CONFIG_DIR",
         "ANTHROPIC_", "AGENTSMD_", "GROK_SESSION_ID", "GROK_AGENT", "CODEX_", "OPENCODE_", "XDG_")
-CODEX_CONFIG = '''model = "gpt-6-astra"
+CODEX_CONFIG = '''model = "{model}"
 model_reasoning_effort = "medium"
 cli_auth_credentials_store = "file"
 approval_policy = "never"
@@ -65,7 +66,7 @@ def claude_token():
     return json.loads(raw)["claudeAiOauth"]["accessToken"]
 
 
-def setup(host, rules, home, work):
+def setup(host, model, rules, home, work):
     """Isolated HOME; returns the environment. rules is the arm file path or None."""
     env = {k: v for k, v in os.environ.items() if not k.startswith(DROP)}
     env.update(HOME=str(home), PWD=str(work))  # OpenCode reads PWD, not the real cwd
@@ -80,7 +81,7 @@ def setup(host, rules, home, work):
         ch.mkdir(parents=True)
         shutil.copyfile(REAL / ".codex/auth.json", ch / "auth.json")
         (ch / "auth.json").chmod(0o600)
-        (ch / "config.toml").write_text(CODEX_CONFIG)
+        (ch / "config.toml").write_text(CODEX_CONFIG.replace("{model}", model))
         if rules:
             shutil.copy(rules, ch / "AGENTS.md")
         env.update(CODEX_HOME=str(ch))
@@ -143,7 +144,7 @@ def attempt(base, arms, harness, arm, scenario, prompt, n, kind="outputs"):
             "arm_sha256": arms[arm][1], "scenario": scenario, "attempt": n}
     started = time.time()
     try:
-        env = setup(host, arms[arm][0], home, work)
+        env = setup(host, model, arms[arm][0], home, work)
         p = subprocess.run(command(host, model, prompt, last), cwd=work, env=env, capture_output=True, text=True,
                            timeout=TIMEOUT, stdin=subprocess.DEVNULL)
         text = ANSI.sub("", last.read_text() if last.exists() else p.stdout).strip()
@@ -179,7 +180,7 @@ def load_arms(base, files=None):
     (base / "arms").mkdir(exist_ok=True)
     arms = {}
     for arm, sha in (files or ARM_SHAS).items():
-        if sha is None:
+        if not sha:  # no rules file (ARM_SHAS None, or NAME= with an empty path)
             arms[arm] = (None, None)
             continue
         rev = sha[4:] if files and sha.startswith("git:") else None if files else sha

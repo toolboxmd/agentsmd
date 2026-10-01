@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to hear when `nightly-sync` fails, without reading logs.
+**Deleted:** Central logging and moving everything into Docker.
+**Bottleneck:** The job sends email only if it survives long enough; nothing notices missing runs.
+**Checked myself:** Only your supplied facts; I haven’t inspected either machine.
+
+To catch missed syncs with the least maintenance, I recommend one managed heartbeat monitor, such as Healthchecks.io. Keep cron on `edna`, send a success heartbeat only after the sync completes, and configure the monitor to email you if that heartbeat misses the normal completion deadline, with a grace period.
+
+That catches the expired-token startup crash, a hung script, and `edna` being offline; the Synology needs no new role.

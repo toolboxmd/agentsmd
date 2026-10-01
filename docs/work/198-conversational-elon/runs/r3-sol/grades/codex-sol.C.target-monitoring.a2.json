@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single Healthchecks.io completion heartbeat, pinged by the cron wrapper only after `nightly-sync` succeeds, that emails the user if no ping arrives after 03:00 plus the normal runtime and a buffer.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want an alert when `nightly-sync` fails or never runs, without reading logs.",
+  "Deleted": "Central logging and Docker for this job; neither alone alerts on a missing successful run.",
+  "Bottleneck": "The script must finish before it can email you, so startup failures stay silent.",
+  "Checked myself": "Your supplied facts only: daily cron on `edna`, four startup crashes, and no independent alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert, rejects the logging and Docker setup, and puts all four specific record lines before the recommendation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-monitoring.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

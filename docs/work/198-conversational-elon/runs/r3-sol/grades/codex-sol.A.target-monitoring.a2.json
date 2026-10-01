@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends wrapping `nightly-sync` with start, success and failure pings to hosted Healthchecks.io, so the user gets an email when the job fails, never starts or never finishes, and putting off central logging.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The one alert is the only thing to set up now: self-hosted Docker is offered only as an alternative the user could choose, central logging is put off, and the rotating log on edna is framed as something to keep rather than build, though that point is borderline. None of the four labelled lines appear.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.target-monitoring.a2",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}
