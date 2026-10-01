@@ -9,6 +9,12 @@ SemVer and identify one user-consumable repository state.
 
 - Elon gate reads only the shell command; PRs carry their Agent Observer cost
 
+## [14.5.9] - 2026-10-01
+
+### Changed
+
+- Project Direction writes a direction change the user already decided in conversation without a second wording confirmation, then reports the exact diff (#196)
+
 ## [14.5.8] - 2026-10-01
 
 ### Changed

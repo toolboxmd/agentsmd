@@ -28,12 +28,18 @@ alignment and drift handling.
    only the task, ask for the broader milestone instead of promoting the task into
    `OBJECTIVE.md`. Do not ask the user to restate proven facts.
 5. Draft complete proposed meaning: long-range Vision, grounded present Mission,
-   one milestone Objective. Show exact contents of every affected file and obtain
-   explicit confirmation before writing. Prior confirmation of those exact contents
-   suffices; silence, general plan approval, or inspection permission does not.
-6. Write only confirmed content, preserving unchanged files byte-for-byte. Reread
-   all three, verify size limits, and report coherence and currentness. Never claim
-   current direction after writing without this reread.
+   one milestone Objective. When the user explicitly decided the change in meaning
+   in conversation (stated it, or said yes to a proposed change in meaning), that
+   decision is the explicit confirmation: write your wording without asking them to
+   confirm it. Otherwise, including undecided meaning, a new Vision, or replacing an
+   Objective without a user decision, show exact contents of every affected file and
+   obtain explicit confirmation before writing. Prior confirmation of those exact
+   contents suffices. Silence, general plan approval, or inspection permission never
+   counts as a decision or a confirmation.
+6. Write only decided or confirmed content, preserving unchanged files byte-for-byte.
+   Reread all three, verify size limits, and report coherence and currentness. After
+   writing a decided change, also report the exact diff and how to correct or revert
+   it. Never claim current direction after writing without this reread.
 
 Review triggers are defined by the context reference.
 Do not silently rewrite when a trigger fires. Test every changed file against the
