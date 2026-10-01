@@ -1,0 +1,14 @@
+I’d start with an alert when `nightly-sync` fails or never finishes. A central log can help diagnose the problem, but it won’t get your attention unless something watches it.
+
+For this one job, I’d use a hosted dead-man’s-switch service such as Healthchecks.io:
+
+- Cron on `edna` sends a “started” ping at 03:00, then runs the Python script.
+- A wrapper sends “success” only if the script exits successfully, or “failure” if it exits with an error. This catches startup crashes like the expired token.
+- The service alerts you if the job fails, never starts, or runs past its expected completion time. Set its timezone explicitly and allow a grace period based on the job’s usual runtime.
+- Send alerts somewhere you’ll notice—email is fine if you reliably check it; push notifications are another option. Keep the existing summary email.
+
+I’d keep the monitor outside your home: it can still alert when `edna`, your internet connection, or the whole house goes down. Hosting it in Docker on the Synology is possible, but an outage affecting both machines could silence the monitoring too.
+
+Keep a local, rotated log for troubleshooting. We can add central logging on the Synology later if you have more services to investigate; it isn’t necessary to solve this failure.
+
+Before calling it done, deliberately test a startup failure and a missed run, and confirm both alerts arrive. The outcome should be: **you hear about trouble without opening a log.**

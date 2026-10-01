@@ -1,0 +1,8 @@
+You want to wake up knowing nightly-sync failed, without ever opening logs.
+
+Requirements and who asked: you asked to catch a 4 night silent failure with no log reading, using edna cron at 03:00 plus email on finish that you already have.
+Deleted: central log on Synology, Dockerize everything, Pieter Levels style dashboard. Nobody would read it and it would not have paged on a startup crash.
+Bottleneck: your only alert depends on the job finishing, so an early crash means silence.
+Checked myself: you told me nightly-sync on edna crashed at startup 4 nights on expired token before email, with no other alert, and your Synology can run Docker.
+
+So I recommend this: leave the job on edna, add a wrapper that emails on any failure including startup, and have success ping a tiny Healthchecks container on the Synology that emails you if no ping arrives by 04:30. Want me to set that up with email alerts to your current address?

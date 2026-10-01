@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-sonnet-5.A.canary.a1",
+ "harness": "claude-sonnet-5",
+ "host": "claude-sonnet-5",
+ "model": "claude-sonnet-5",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "canary",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 3.4,
+ "valid": true
+}

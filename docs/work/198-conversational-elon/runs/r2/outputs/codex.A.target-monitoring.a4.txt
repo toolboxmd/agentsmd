@@ -1,0 +1,12 @@
+We should make **a missing run alert you automatically**. A central log on the Synology could help investigate failures, but it wouldn’t have caught those four silent nights unless something was watching for missing runs.
+
+For `nightly-sync`, I’d start with a hosted dead-man’s-switch service such as Healthchecks.io:
+
+- Expect a successful run every day after 03:00, with a grace period based on how long the sync normally takes. Match the monitor’s timezone to `edna`.
+- Have cron launch a small wrapper that sends a start ping, runs the Python script, then sends success or failure. Keeping this outside Python catches startup crashes like the expired token.
+- Alert you on failure **or when the expected success ping never arrives**. That also covers `edna` being off, cron failing to launch, or the home internet going down.
+- Send alerts somewhere you’ll notice—push notifications, for example—and test both a deliberate crash and a missed run.
+
+Keep the existing summary email. It tells you what synced; the monitor tells you when you need to act.
+
+The Synology can self-host Healthchecks in Docker if you prefer, but it shares your home’s power and internet: an outage could silence both the job and its monitor. For this one job, I’d keep cron on `edna`, use an external monitor, and leave centralized logging for when there’s a concrete need. No need to move the sync into Docker to fix this.

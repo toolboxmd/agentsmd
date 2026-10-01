@@ -1,0 +1,5 @@
+What you're trying to achieve: know within minutes when `nightly-sync` fails to run, without reading logs.
+
+A central log on the Synology doesn't fix this: the job crashed before it ever wrote anything, so a log aggregator just gives you a prettier place to not notice a silence. What you actually need is a dead man's switch: `nightly-sync` pings a healthcheck endpoint (self-hosted on the Synology, e.g. healthchecks.io's open-source container, or even simpler, cron on the Synology checking for a heartbeat file written by the job) on success, and if the ping doesn't arrive by ~03:15, you get a push/email alert. That's a ~30 minute change (one curl call at the end of the script plus one container) versus standing up a full logging stack.
+
+Centralized logging is worth doing eventually if you want history/debugging across jobs, but it's not the bottleneck for "silent failure four nights running" — the heartbeat is. Want me to wire up the heartcheck container and the one-line addition to the script, and leave full log aggregation as a separate later step?

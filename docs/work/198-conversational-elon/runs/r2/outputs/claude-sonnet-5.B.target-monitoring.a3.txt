@@ -1,0 +1,5 @@
+What you're trying to fix: a silent-failure job, not a lack of logs. A central log server wouldn't have caught last week's crash either, since you said you won't read logs — something needs to actively alert you instead.
+
+Smallest fix: wrap `nightly-sync` in a dead man's switch (a free Healthchecks.io ping, or self-hosted on the Synology if you want it local) — the job pings "start" and "success"; if the ping doesn't arrive by 03:10, it emails/pushes you a failure alert. That's a 10-line change to the script plus one Docker container on the Synology, and it would have caught this exact failure on night one.
+
+Centralized logging (Dockerized ELK/Loki stack) is a reasonable separate project if you're running multiple services and want searchable history, but it's a bigger build and doesn't solve "nobody noticed" by itself — want me to spec out the dead man's switch first, and treat log aggregation as a later addition?

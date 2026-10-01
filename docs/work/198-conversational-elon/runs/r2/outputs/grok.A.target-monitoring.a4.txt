@@ -1,0 +1,74 @@
+Run a heartbeat on the Synology, in one Docker container, and make `nightly-sync` earn that heartbeat only by finishing cleanly. If the ping is missing after 03:00, the NAS emails you. You never have to open a log.
+
+That is the whole design. The success email you already get is sent by the job, so a crash at startup (expired token, Mac asleep, cron not started) produces silence. A watcher on `edna` has the same blind spot. The watcher has to live on the NAS, and silence has to count as failure.
+
+Healthchecks does this in one container. Each run posts its output there, so the "central log" is the body of that ping. The email is what you actually read. The same container covers the next job later: another check, another URL.
+
+**On the Synology**
+
+In Container Manager, create a project from this compose file. Use the NAS LAN address and the same timezone as `edna` (`systemsetup -gettimezone` on the mini).
+
+```yaml
+services:
+  healthchecks:
+    image: healthchecks/healthchecks:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - /volume1/docker/healthchecks:/data
+    environment:
+      TZ: America/Los_Angeles
+      SECRET_KEY: "replace-with-a-long-random-string"
+      SITE_ROOT: http://192.168.1.20:8000
+      REGISTRATION_OPEN: "true"
+      DB: sqlite
+      DB_NAME: /data/hc.sqlite
+      DEFAULT_FROM_EMAIL: nightly-sync@your-domain
+      EMAIL_HOST: smtp.your-provider
+      EMAIL_PORT: "587"
+      EMAIL_HOST_USER: your-smtp-user
+      EMAIL_HOST_PASSWORD: your-smtp-password
+      EMAIL_USE_TLS: "true"
+```
+
+Open `http://192.168.1.20:8000` only on the LAN. Create your account, set `REGISTRATION_OPEN` to `false`, and restart the container. Add one check:
+
+- Name: `nightly-sync`
+- Schedule: `0 3 * * *`, timezone same as `edna`
+- Grace time: 30 minutes
+- Alert: email, to the address that already gets the summary
+
+Use "Send test notification" and confirm that mail arrives before touching the Mac. Leave port 8000 off the router. The ping URL contains a long UUID and is the secret.
+
+**On edna**
+
+Keep the Python job where it is. Point cron at a wrapper with full paths, because cron's `PATH` is nearly empty:
+
+```bash
+#!/bin/bash
+OUT=$(mktemp)
+/usr/bin/python3 /path/to/nightly-sync.py >"$OUT" 2>&1
+CODE=$?
+/usr/bin/curl -fsS --retry 5 --max-time 15 \
+  --data-binary @"$OUT" -o /dev/null \
+  "http://192.168.1.20:8000/ping/YOUR-UUID/$CODE"
+rm -f "$OUT"
+exit "$CODE"
+```
+
+```cron
+0 3 * * * /bin/bash /path/to/nightly-sync-wrap.sh
+```
+
+Exit code 0 marks the check up. Any other code marks it down immediately, and the email includes the script output, traceback and all. If the mini is off, asleep, or never reaches curl, no ping arrives and Healthchecks emails you at 03:30 anyway. Leave the existing "sync finished" summary as it is. That mail means success. A subject from Healthchecks means it did not check in.
+
+Wake the mini before the job. In System Settings, allow it to wake for network or power-adapter events, or set a repeating wake a few minutes before 03:00. A sleeping Mac fails this check the same way a bad token does, which is what you want.
+
+**Prove it once**
+
+1. The Healthchecks test email arrives.
+2. Run the wrapper with a deliberately bad token. A failure email shows up within a minute, with the Python error in the body, and the check on the NAS shows down.
+3. Run it once for real after renewing the token. The check flips to up, and the usual summary still arrives.
+
+Renew the token separately. The watcher only makes the next expiry a morning email instead of a four-day gap.

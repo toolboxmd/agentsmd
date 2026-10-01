@@ -1,0 +1,3 @@
+You want to know when `nightly-sync` fails without reading logs; I recommend a dead-man’s-switch alert as the smallest fix. Have the job ping a hosted monitor only after a successful run, and have that monitor email you if the ping is missing after 03:00 plus a reasonable runtime allowance, so a startup crash or an offline `edna` still triggers an alert.
+
+Central logs on the Synology could help investigate failures later, but they won’t tell you the job never ran unless we add monitoring, and this one job doesn’t need Docker or a logging stack.

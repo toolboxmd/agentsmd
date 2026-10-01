@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a hosted dead-man's-switch monitor such as Healthchecks.io: the `nightly-sync` script sends start, success and failure pings, and the service alerts on a failure or on no successful run by the deadline. It also says to keep the summary email and a rotating local log, and to test the alerts.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends one alert: a hosted heartbeat. It explicitly turns down central logging and keeps self-hosting on the Synology only as an option, but it has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex.A.target-monitoring.a3",
+ "host": "codex",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,7 @@
+What you're trying to achieve: know within minutes if nightly-sync fails, without reading logs.
+
+A central log on Synology doesn't solve that by itself — you'd still have to read it. That's a bottleneck, not the fix. The actual gap is that nothing checks "did this job report in," so a crash-at-startup fails silently.
+
+Smallest fix: a dead man's switch. nightly-sync pings a monitoring URL (Healthchecks.io, or self-hosted via Docker on the Synology) at success, and you get an alert if the ping doesn't arrive by 03:15. This catches the exact failure mode you hit (crash before the email step) with no log-reading involved.
+
+Centralized logging in Docker is a reasonable separate project if you want history/debugging across jobs, but it's not what would have caught last week's outage — recommend doing the dead man's switch first, logging later if you still want it. Want me to set up the ping call in nightly-sync and a free Healthchecks.io check?

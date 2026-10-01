@@ -1,0 +1,5 @@
+What you actually need: an alert when the job fails to run, not a log you have to read. Centralized logging on the Synology doesn't fix that, since you won't read it and it won't notice silence either.
+
+Smallest fix: add a dead man's switch. Have `nightly-sync` ping a healthcheck (self-hosted on the Synology via Docker, e.g. healthchecks.io's container, or the hosted free tier) at the start, before the token step, and have the check alert you if no ping arrives by 03:10. That catches exactly the failure you had, costs one curl call, and needs no log shipping or dashboard.
+
+If you still want central logs later for other reasons, that's a separate project; I wouldn't bundle it with fixing this alerting gap.

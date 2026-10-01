@@ -1,0 +1,17 @@
+Don't do central logging in Docker for this — it wouldn't have caught it.
+
+Your failure mode was: success = email, early crash = silence. A Synology log you have to go read is the same problem, just moved. You said you won't read logs.
+
+What you need is alert-on-absence, not a log store:
+
+1. Create one heartbeat check with 24h period + ~2-3h grace. Use external SaaS like Healthchecks.io / Cronitor to start — don't self-host it on the Synology yet, it's in the same power/network failure domain as `edna`.
+2. Wrap `nightly-sync` cron: ping `/start` on start, ping success/fail on exit.
+3. Set it to push to you — email/push you actually see — on miss or fail.
+
+That's 5 minutes and covers startup crash, token expiry, cron not firing, hang, and whole-house outage.
+
+Pieter Levels-style is actually the opposite of what you're proposing: single box, no Docker, least infra. Don't build infra here.
+
+Also fix the script to catch auth errors at startup, send failure email, and exit non-zero.
+
+Do alerting first. Add central logs later only if you need them.

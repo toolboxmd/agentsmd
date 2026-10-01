@@ -1,0 +1,28 @@
+A central log probably wouldn't have caught this. You said you won't read logs, and on those four nights the script died before writing anything useful. The real problem is that **silence looked the same as success**. The fix is to make silence itself trigger an alert.
+
+## What I'd suggest: a dead man's switch
+
+Have the job check in with a monitor every time it succeeds. If the check-in doesn't arrive by a deadline, the monitor emails or pushes to your phone. This catches every failure mode at once: crash at startup, expired token, cron not firing, edna asleep or powered off, network down.
+
+**Concretely:**
+
+1. **Use [Healthchecks.io](https://healthchecks.io)** (free tier is plenty for one job). Create a check with schedule `0 3 * * *` and a grace period of about an hour, so you'd be alerted around 04:00 if nothing arrived.
+2. **Wrap the cron entry** so the outcome is reported regardless of what the Python does:
+   ```
+   0 3 * * * /path/to/nightly-sync.sh && curl -fsS -m 10 --retry 3 https://hc-ping.com/<uuid> || curl -fsS -m 10 --retry 3 https://hc-ping.com/<uuid>/fail
+   ```
+   A crash then alerts you immediately via `/fail`, and if the job never runs at all, the missing ping alerts you after the grace period. Optionally, I can also add a ping at the start of the script so you get run durations and can spot hangs.
+3. **Turn on alerts** to whatever you actually look at (email, Pushover, Telegram, etc.).
+
+## Why external rather than the Synology
+
+You *can* self-host Healthchecks in Docker on the NAS. But then the watcher lives in your house too: a power cut, router problem, or NAS update silences both the job and its alarm. For a single job, an external free service is more reliable and needs no maintenance. If you'd rather keep it self-hosted, it's doable, ideally with an external uptime check on the NAS itself.
+
+## Two smaller things worth fixing
+
+- **The expired token:** I could add a startup check that warns a week before the token expires, so this particular failure doesn't happen again.
+- **Mac sleep:** if edna ever sleeps at 03:00, cron jobs are skipped. The heartbeat would catch that, but it may also be worth checking Energy settings or moving the job to launchd.
+
+A central log on the Synology could still be nice later for debugging *after* an alert fires. It just shouldn't be the thing you rely on to notice failures.
+
+Want me to set up the wrapper and the token-expiry check? You'd create the Healthchecks account and give me the ping URL, since that's an external signup I'd rather you do yourself.

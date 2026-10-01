@@ -1,0 +1,6 @@
+**Requirements and who asked**: You want to hear that nightly-sync died without reading logs. You suggested a central log on the Synology, Pieter Levels style, maybe everything in Docker. The need is an alert. The log server and Docker are a means you proposed.
+**Deleted**: A central log, the Synology, Docker, and a separate heartbeat service. You will not read logs, and those pieces do not page you when the script dies before its summary email. The crash you hit is visible as a non-zero exit, so a second monitor is extra.
+**Bottleneck**: The only alert is the summary email inside the Python job, after startup. The expired token crashed it before that email, four nights, and nothing else watches.
+**Checked myself**: You said `nightly-sync` is the only scheduled job, cron starts it at 03:00 on the Mac mini `edna`, it emails a summary when it finishes, an expired token crashed it at startup four nights with no email, and nothing else alerts. The Synology can run Docker. I have not seen the script or the crontab.
+
+You want a notice when the sync does not finish. Wrap the 03:00 cron in one shell line that runs the script and emails you if it exits non-zero, on a mail path the sync token cannot take down, and renew the token. A failure that exits 0, a hang, or edna being off will still stay quiet.

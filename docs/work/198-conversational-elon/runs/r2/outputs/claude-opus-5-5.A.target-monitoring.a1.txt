@@ -1,0 +1,21 @@
+A central log wouldn't have caught this. You'd have had four nights of crash logs sitting on the Synology, and since you won't read logs, you'd still have found out by accident. The failure was that **silence looked the same as success**. What you need is something that notices when the "it worked" signal *doesn't* arrive and then contacts you.
+
+That's a **dead man's switch** (heartbeat monitor):
+
+1. At the very end of `nightly-sync`, after the summary email goes out, the script pings a URL.
+2. A monitoring service expects that ping daily around 03:00, with a grace period of maybe an hour.
+3. If the ping doesn't arrive, it alerts you by email, push notification, Telegram or similar.
+
+This catches every way the job can fail: crash at startup (like last week), a hang, cron not firing, `edna` asleep or powered off, network down, or the email step itself breaking. You don't need to predict the failure. You only need to notice the missing success.
+
+**Where to run the monitor:** I'd use hosted **Healthchecks.io**. The free tier easily covers one job, and it runs outside your house. If you self-host it on the Synology (it does run in Docker), then a power cut, router outage or NAS update takes down the job *and* the thing watching it, and you're back to silence. The monitor should fail independently of what it monitors.
+
+**What I'd change in the script:**
+- Send a `/start` ping at launch, a success ping at the end, and a `/fail` ping from a top-level exception handler. Then a crash alerts you within minutes, not only after the grace period runs out, and Healthchecks will show the last bit of the error output.
+- Keep the success ping as the last thing the script does, so "pinged" really means "finished."
+
+**Separate thing to check:** cron on macOS doesn't run jobs that were missed while the Mac was asleep. If `edna` ever sleeps, switching to a launchd job would be more reliable. The heartbeat would catch that problem either way.
+
+Centralized logs on the Synology are fine to add later if you want history for debugging. They're a nice extra for investigating failures, but they won't tell you that something failed.
+
+Do you want me to add the Healthchecks pings to `nightly-sync`? You'd need to create the free account and check, then give me the ping URL. I'd keep it in config rather than hardcoding it in the script.

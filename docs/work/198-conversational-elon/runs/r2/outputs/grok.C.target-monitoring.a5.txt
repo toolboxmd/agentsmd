@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want to know when nightly-sync dies without reading logs. You proposed a central log on the Synology, Pieter Levels style, maybe all of it in Docker.
+**Deleted:** Central log, Docker, and relocating the job onto the Synology. A log does not notify you, and you won't read one. The outage was a startup crash on edna before the email step.
+**Bottleneck:** The only notice is sent by the Python process that already died, so a failed start stays silent.
+**Checked myself:** Only your description. I have not inspected edna, cron, or the NAS.
+
+You want a same-morning notice when the 03:00 sync does not succeed. Have cron call a small wrapper that runs the Python script and, on any non-zero exit, mails you with FAILED in the subject using the mail path that already sends the summary. Renew the token if it is still expired; this wrapper stays quiet if edna itself is off or cannot send mail.

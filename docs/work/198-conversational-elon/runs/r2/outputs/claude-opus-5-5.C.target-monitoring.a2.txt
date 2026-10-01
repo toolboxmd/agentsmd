@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked to find out within a day when `nightly-sync` doesn't succeed, without reading logs.
+**Deleted:** The central log on the Synology and the Docker stack. You won't read logs, and a log store doesn't alert anyone, so it wouldn't have caught last week's outage.
+**Bottleneck:** Your only signal is the success email, so a failure looks exactly like a quiet night.
+**Checked myself:** Only what you've told me: one cron job on `edna` at 03:00, a summary email at the end, four startup crashes from an expired token, and no other alerting. I haven't looked at the script or the crontab.
+
+What you're after is a nudge whenever a night goes by without a successful sync. The smallest fix is a dead man's switch. Add one `curl` ping to a free healthchecks.io check as the script's last step, and it emails you if no ping arrives by about 04:00. That covers crashes, cron not firing, and `edna` being off. The only thing sent out is the ping, with no data.
+
+If you want this, create the healthchecks.io check and give me its ping URL, and I'll add the line to `nightly-sync`.

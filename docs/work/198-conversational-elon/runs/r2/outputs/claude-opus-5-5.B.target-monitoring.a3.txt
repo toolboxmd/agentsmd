@@ -1,0 +1,5 @@
+You need to hear about it when the sync doesn't succeed, and a central log won't do that, because it still only helps someone who reads it.
+
+I recommend a dead man's switch instead. Add one HTTP ping to Healthchecks.io (free tier) as the script's last step, and set the check to alert you if no ping arrives by about 05:00. That one alarm covers a startup crash like last week's, cron not firing, and `edna` being off.
+
+You can self-host Healthchecks in Docker on the Synology, but then a NAS outage silently kills the alarm too, so I'd keep it hosted. To set it up, create the check in your Healthchecks.io account and send me its ping URL, and I'll add the call to `nightly-sync`.

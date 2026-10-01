@@ -1,0 +1,9 @@
+A central log won't actually fix this, though — the real problem isn't visibility, it's that a *failure to run* produces no signal at all, and a log you have to go open is just a slower version of the same trap you're in now ("I won't read logs" applies to a Synology dashboard too). Centralized logging is great for debugging *why* something failed after you already know it failed; it doesn't tell you it failed.
+
+What actually catches "crashed before it could even email you" is a **dead man's switch**: the job pings a monitor on success, and if the ping doesn't arrive by some deadline, *the monitor* emails/texts/pushes you. That's inversion of the alerting you have today (job reports success) to the one you need (absence is itself the alert). A few ways to get that, roughly in order of effort:
+
+1. **Hosted dead-man's-switch** (healthchecks.io, Cronitor, etc.) — add one curl call at the end of `nightly-sync`, free tier is plenty for one job, takes ~10 minutes, zero infra to run. This alone would have caught your four dead nights on night one.
+2. **Self-hosted version of the same idea on the Synology** — healthchecks.io is open-source and Dockerizable, or something lighter like Uptime Kuma (which also does push-based "heartbeat" monitors) in a container on the NAS. More in line with the "own your stack" instinct, slightly more to maintain.
+3. **Centralized logs** (Loki+Grafana, or just Dozzle for a quick container log viewer) — worth doing too, but as the *second* layer, for "ok it failed, why" — not as the thing that tells you it failed.
+
+My suggestion: wire up healthchecks.io (or self-host it on the Synology if you want everything local) for the heartbeat/alerting layer first since that's what actually closes the gap you hit, then layer centralized logging on top if/when you add more scheduled jobs worth correlating. Want me to write the healthchecks integration into `nightly-sync` and sketch the Synology Docker compose for self-hosting it?

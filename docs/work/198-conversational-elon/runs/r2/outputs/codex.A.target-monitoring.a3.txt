@@ -1,0 +1,13 @@
+I’d start with a **missing-run alert for `nightly-sync`**. Central logs can help diagnose failures, but collecting logs alone wouldn’t have told you the job was dead.
+
+Use a dead-man’s-switch service such as Healthchecks.io:
+
+- Expect a successful run every day after 03:00, allowing enough time for normal completion.
+- Wrap the Python script so it sends a start ping, a success ping when it finishes, and a failure ping if it exits with an error—including an expired token at startup.
+- Have the monitoring service alert you if it receives a failure **or no successful completion by the deadline**. That also catches cron failing to start the job, or `edna` being offline.
+
+Keep the summary email, but make failure alerts independent of the script’s email step. Email is fine if you reliably notice it; otherwise use a push notification.
+
+You can run Healthchecks in Docker on the Synology if you want to self-host. My preference here is a hosted monitor: it can still notify you when your home power or internet goes down. A monitor on the NAS needs its own external check to cover that.
+
+For this one job, I’d skip a central logging stack for now. Keep a rotating local log for troubleshooting, and test the alerts by deliberately causing a startup failure and then skipping a run. You shouldn’t have to read logs to know whether the sync happened.

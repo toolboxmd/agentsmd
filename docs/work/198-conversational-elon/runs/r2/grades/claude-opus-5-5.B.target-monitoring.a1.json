@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a Healthchecks.io dead man's switch ping as the last step of `nightly-sync`, with a daily check and 1-hour grace period that alerts the user if no ping arrives.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends a single hosted heartbeat, treats self-hosting only as a conditional alternative, and has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-monitoring.a1",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

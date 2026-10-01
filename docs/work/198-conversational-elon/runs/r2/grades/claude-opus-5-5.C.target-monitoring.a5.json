@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a single hosted Healthchecks.io dead man's switch: the script pings it at the end of each successful run, and the user gets an email or push if no ping arrives.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to be told when the sync fails. Nobody asked for log storage.",
+  "Deleted": "Central log on the Synology, Docker, and log aggregation. You won't read logs, and a log can't tell you about a run that never happened.",
+  "Bottleneck": "Nothing alerts on *absence*. The only signal is the success email, so a dead job is silent.",
+  "Checked myself": "Only what you told me: cron runs it at 03:00 on `edna`, the email is the last step, it crashed before that step four nights running, and nothing else alerts. I haven't seen the script or crontab."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert, rejects the Synology/Docker logging stack, and places all four specific record lines before the recommendation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

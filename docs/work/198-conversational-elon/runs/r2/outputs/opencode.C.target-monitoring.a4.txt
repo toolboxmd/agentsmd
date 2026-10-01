@@ -1,0 +1,8 @@
+What you are trying to achieve is a next-morning alert when nightly-sync fails, with no log reading.
+
+Requirements and who asked: fail alert without reading logs (you); use existing edna + Synology (you).
+Deleted: central log on Synology, Dockerize everything, success emails - upkeep with no alert when a startup crash skips email.
+Bottleneck: crash happens before the email step, so detection waits until you happen to look.
+Checked myself: only what you told me - 03:00 cron on edna, 4x startup crash on expired token, no email sent, no other alert.
+
+I recommend keeping the job on edna and running one Healthchecks container on Synology, pinging it at end of the script with exit-code handling, and letting Healthchecks email you on miss or failure.

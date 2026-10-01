@@ -1,0 +1,17 @@
+{
+ "answers_question": true,
+ "record_present": false,
+ "note": "The reply correctly explains fetch versus pull, including the merge/rebase behavior, and contains none of the labelled record lines.",
+ "control_pass": true,
+ "run_id": "claude-opus-5-5.C.control-trivial.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "control-trivial",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

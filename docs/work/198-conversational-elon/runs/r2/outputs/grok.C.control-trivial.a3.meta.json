@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.C.control-trivial.a3",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "C",
+ "arm_sha256": "67c6dc60dceb5d5ce24f28edcce20f0a70ef60b330fc1dd0529033197bfd1b1e",
+ "scenario": "control-trivial",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 9.4,
+ "valid": true
+}

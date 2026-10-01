@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails, without reading logs.
+**Deleted:** Central log collection and Dockerizing the sync job; neither detects a missing run by itself.
+**Bottleneck:** The job sends its own notification, so a startup crash also silences the alert.
+**Checked myself:** Only your account: four startup failures, no email, and no independent monitoring.
+
+I recommend a small independent heartbeat monitor on the Synology, with Docker only as its packaging if needed. Have a wrapper around the cron command report failures immediately and send a success heartbeat only after the sync succeeds; the monitor emails you if no success arrives by a deadline after the normal 03:00 run, catching crashes, missed cron runs, and an offline `edna`.
+
+Fix the expired token, keep the existing summary email, and test both a forced startup failure and a skipped run before calling this done.

@@ -1,0 +1,5 @@
+You need something that tells you when the job *doesn't* run, and a central log won't do that. The failure was silence, and a log you don't read stays silent too.
+
+I recommend a dead man's switch. Add a ping to Healthchecks.io (free tier) as the script's last step; if no ping arrives by about 04:00, it emails or pushes you. That one check catches crashes, expired tokens, cron not firing, and `edna` being off, for one line of code and no new infrastructure.
+
+You could self-host Healthchecks in Docker on the Synology, but then a dead NAS fails silently too, so I'd only do that if you want to avoid a third-party service. If Healthchecks.io is fine, create a daily check with a 1-hour grace period, send me the ping URL, and I'll wire it into `nightly-sync`.

@@ -1,0 +1,7 @@
+What you're trying to achieve: know within minutes if nightly-sync fails to run or fails to complete, without reading logs.
+
+A central log server doesn't solve that; a silent log pile is exactly what already failed you (the crash would've just been a log line nobody looked at). The actual bottleneck is "no alert on failure," not "no central logging."
+
+Smallest fix: wrap the cron invocation in a shell trap that fires a push/email (healthchecks.io style dead-man's-switch, or just `curl` a Synology-hosted endpoint on success, alert if it doesn't check in by 03:15) — a few lines, no Docker, no log infra. Centralized Docker logging on the Synology is a reasonable later project if you want it for its own sake, but don't let it stand in for the alert you actually need.
+
+Want me to draft the cron wrapper + dead-man's-switch approach?

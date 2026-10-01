@@ -1,0 +1,5 @@
+What you're actually trying to fix: a silent failure before the job reaches its own success signal, not a lack of logs. A central log server wouldn't have caught this either, since you said you won't read logs, so nothing would have looked at it.
+
+Deleted: centralized logging stack (Loki/ELK/etc.) in Docker on the Synology. It's the wrong fix for this failure mode and adds a service you'd now need to maintain.
+
+Recommendation: add a dead man's switch. Have `nightly-sync` ping a healthcheck URL (self-hosted on the Synology via the `healthchecks` Docker image, or the free tier of healthchecks.io) as its very first line, before the token logic runs, and configure it to alert you by email/push if no ping arrives by 03:10. That directly covers "crashed before reaching the email step" with about 5 minutes of work and no new infrastructure to babysit.

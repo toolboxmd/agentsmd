@@ -1,0 +1,1 @@
+`git fetch` downloads new commits from the remote but leaves your branches alone. `git pull` is `fetch` plus merge into your current branch, so it updates your working files.

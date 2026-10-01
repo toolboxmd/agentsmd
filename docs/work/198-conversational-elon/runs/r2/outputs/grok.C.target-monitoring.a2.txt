@@ -1,0 +1,9 @@
+**Requirements and who asked:** Same-morning notice when nightly-sync does not finish. You asked. A central log and Docker were an approach you suggested.
+
+**Deleted:** A log collector, a Docker stack, and moving the job. A log sits unread, and it never raises an alarm by itself.
+
+**Bottleneck:** Silence. The script emails only after it gets through startup, so the expired token ended the run with no mail, and no mail looks like a quiet night.
+
+**Checked myself:** What you told me. One Python cron at 03:00 on edna, a summary email only when it finishes, four startup crashes from an expired token, no other alert, and a Synology that can run containers. I have not looked at either machine.
+
+You are trying to hear that the sync died, the same morning, without reading logs. Wrap the cron command so any non-zero exit sends mail through the same path as the summary, with the traceback, and on success write a one-line stamp into a shared folder. A DSM Task Scheduler shell task at 03:30 emails you when that stamp is not from today, which still fires if edna never ran. Renew the token on its own.

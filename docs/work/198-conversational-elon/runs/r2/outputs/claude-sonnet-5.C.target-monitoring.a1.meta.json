@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-sonnet-5.C.target-monitoring.a1",
+ "harness": "claude-sonnet-5",
+ "host": "claude-sonnet-5",
+ "model": "claude-sonnet-5",
+ "arm": "C",
+ "arm_sha256": "67c6dc60dceb5d5ce24f28edcce20f0a70ef60b330fc1dd0529033197bfd1b1e",
+ "scenario": "target-monitoring",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 7.2,
+ "valid": true
+}

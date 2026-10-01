@@ -1,0 +1,13 @@
+I’d start with a **missing-run alert**. A central log is useful for investigating failures, but it won’t tell you anything unless someone reads it or you add alerting.
+
+For `nightly-sync`, I’d use a hosted heartbeat service such as Healthchecks.io:
+
+- Configure it to expect a successful run every day after 03:00, using `edna`’s timezone and a grace period based on the job’s normal runtime.
+- Have cron launch a small wrapper that sends a start ping, runs the Python script, and sends success only if it exits successfully. A nonzero exit sends a failure ping.
+- Enable email alerts for failures and overdue runs, then deliberately test both.
+
+That covers the expired-token crash, a hung script, cron failing to launch, and `edna` being offline. Your existing summary email can stay; the monitor independently notices when success never arrives.
+
+**Docker on the Synology is optional.** You could self-host Healthchecks there, but if your home power or internet goes down, it may also lose the ability to alert you. For this one job, I’d keep the watchdog outside the house and skip a central logging stack for now.
+
+If you later want searchable logs, we can send them to the NAS. The first thing to ship is an alert that reaches you when the nightly sync doesn’t finish.

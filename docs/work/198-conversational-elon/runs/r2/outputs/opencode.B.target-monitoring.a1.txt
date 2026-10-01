@@ -1,0 +1,1 @@
+You want to know by morning if nightly-sync failed without ever opening logs. A central log on the Synology still requires you to look, and Docker adds maintenance without fixing the silent crash before the email step. Want to keep the script on edna and add a missing-or-failed alert that notifies you instead?

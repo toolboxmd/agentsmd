@@ -1,0 +1,71 @@
+The four missed nights happened because a missing summary email looked like a quiet success. The script only emails after it finishes, and the expired token killed it before that. A central log on the Synology would have stored the traceback, and you still would not have looked at it.
+
+Use a check-in that must arrive every night. If 03:00 passes with no check-in, a different machine emails you. That watcher cannot be the Python script.
+
+**On the Synology**, run one Healthchecks container. One service, one check, one ping URL. That is the small version of this.
+
+In Container Manager, this project is enough (sqlite, no separate database):
+
+```yaml
+services:
+  healthchecks:
+    image: linuxserver/healthchecks:latest
+    container_name: healthchecks
+    restart: unless-stopped
+    ports:
+      - "8080:8000"
+    environment:
+      - PUID=<your-user-uid>
+      - PGID=<your-user-gid>
+      - TZ=<your-timezone>
+      - SITE_ROOT=http://<nas-lan-ip>:8080
+      - SUPERUSER_EMAIL=<you>
+      - SUPERUSER_PASSWORD=<long-password>
+    volumes:
+      - /volume1/docker/healthchecks:/config
+```
+
+Create one check named `nightly-sync`:
+- Schedule: `0 3 * * *`
+- Grace: 30 minutes, so a slow success does not page you, and a missing run pages you around 03:30
+- Period: 24 hours
+
+Point the integration at the same email you already read. Open the integration's test button and confirm a message actually arrives before you trust it. Leave the container on the LAN. The ping URL is an unguessable id. The web UI stays behind its own login.
+
+**On edna**, the ping has to live outside the Python. A token check inside the script fails the same way it did last week.
+
+`/usr/local/bin/nightly-sync-wrap`:
+
+```zsh
+#!/bin/zsh
+PING="http://<nas-lan-ip>:8080/ping/<uuid>"
+LOG="$HOME/Library/Logs/nightly-sync.log"
+mkdir -p "${LOG:h}"
+/usr/bin/python3 /path/to/nightly-sync >>"$LOG" 2>&1
+code=$?
+if (( code == 0 )); then
+  curl -fsS --retry 5 --max-time 10 "$PING" >/dev/null || true
+else
+  tail -n 50 "$LOG" | curl -fsS --retry 5 --max-time 10 --data-binary @- "$PING/fail" >/dev/null || true
+fi
+exit $code
+```
+
+Use the same Python you already run from cron, with absolute paths. Crontab becomes:
+
+```
+0 3 * * * /usr/local/bin/nightly-sync-wrap
+```
+
+What each failure does:
+- Startup crash, including an expired token: the wrapper posts the last 50 log lines to the fail URL, and the email contains that text within a minute.
+- Mac asleep, cron disabled, wrapper missing: no ping arrives, and Healthchecks emails you when the grace period ends.
+- Normal run: one quiet ping. The existing summary email can stay as it is.
+
+Keep the mini awake across 03:00 (Energy Saver / `pmset`, no automatic sleep). The grace-period mail still covers a machine that slept through the job.
+
+After it is up, run the wrapper once by hand, confirm the check flips to up, then hit the fail URL once and confirm the email shows the log tail.
+
+A shared-folder stamp is the same design with no container: the wrapper writes today's date onto the NAS, and a Synology Task Scheduler job at 03:45 emails you when that date is not today. Healthchecks is the better fit once you want the error text in the mail and a grace period you do not have to script.
+
+The log file on edna is there for after the email arrives. A Loki or Grafana stack is a later project, and it is not what would have caught this.

@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want to know within a day when `nightly-sync` doesn't succeed, without reading logs.
+**Deleted:** The central Synology log and the move to Docker. You won't read logs, a log can't report a run that never happened, and nothing needs to move off `edna`.
+**Bottleneck:** Failure is silent. The only signal is the success email, so a crash means no message at all.
+**Checked myself:** Only what you told me: one cron job at 03:00 on `edna`, four startup crashes from an expired token before the email step, and no other alerting. I haven't looked at the script or crontab yet.
+
+I recommend a dead man's switch: the script pings a free healthchecks.io check when it finishes, and if no ping arrives by about 04:00, you get an email. That catches crashes, a dead token, cron not firing, and `edna` being off, which a log or a wrapper on the same machine can't. If you create the account and give me the ping URL, I'll add the one-line ping to the script and run it once to confirm the alert fires.

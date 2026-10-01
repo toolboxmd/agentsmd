@@ -1,0 +1,15 @@
+Set up a dead-man's switch on the Synology, and leave the sync on `edna`. The four quiet nights happened because the only signal is a success email sent by the same script, after the step that crashed. A central log would store that crash and still wait for you to open it.
+
+Pieter Levels style here is one small Docker service and a URL. Run [Healthchecks](https://github.com/healthchecks/healthchecks) in Container Manager. One container, SQLite on a volume, a single check named `nightly-sync`, period 24 hours, grace about 45 minutes after 03:00. Send the alarm as a phone push (a second small container, [ntfy](https://ntfy.sh), or Pushover). An email that actually arrives on failure is worth adding too. The push is what you will notice.
+
+The script learns three pings, in this order:
+
+1. Its first action, before the token or any other work, is `GET` on the `/start` URL.
+2. The success URL is hit only after a real finished sync. That is the only ping that means "alive".
+3. Any exception hits `/fail`, then the script exits non-zero.
+
+Healthchecks pages you when the success ping never shows up, and when the job reports failure. That covers the expired token, a crash before the mail step, a Mac that slept through 03:00, and a cron entry that never fired. The message is one line: `nightly-sync` did not check in.
+
+Keep the job on `edna`. The NAS is the watcher because it is still up when the Mini sleeps or the script dies at startup. Also keep the Mini awake on power at 03:00 so the job has a chance to run. The switch will tell you if that part is still wrong.
+
+I can write the compose file and the few lines at the top and bottom of the Python script next.

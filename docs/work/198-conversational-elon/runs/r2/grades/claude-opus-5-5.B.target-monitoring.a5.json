@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a Healthchecks.io dead-man ping as the last step of `nightly-sync`, so the user gets an alert if no ping arrives by about 04:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends one hosted heartbeat alert and rejects both the central log and self-hosting on the Synology, but it has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-monitoring.a5",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

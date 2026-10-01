@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Have nightly-sync write a timestamp file only on a clean finish, add a second cron job an hour later (on edna, or on the Synology's Task Scheduler) that emails the user if the timestamp is missing or stale, test it by forcing a miss, and refresh the expired token.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to hear that nightly-sync failed, because you will not read logs. You floated a central log on the Synology, Pieter Levels style, maybe in Docker. The requirement with an owner is the notice; a log has none.",
+  "Deleted": "Central logging, a Docker log stack, and dashboards.",
+  "Bottleneck": "The email is sent only after a clean finish. A crash at startup is indistinguishable from a good night.",
+  "Checked myself": "What you told me: the only cron is nightly-sync at 03:00 on edna, the summary email happens only if the script finishes, an expired token killed it at startup four nights with no mail, nothing else alerts, and the Synology can run Docker. I have not seen the script, cron, or the NAS."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one dead-man-style check, offering the Synology Task Scheduler only as an alternative host for that same check, plus a token fix rather than new monitoring.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-monitoring.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

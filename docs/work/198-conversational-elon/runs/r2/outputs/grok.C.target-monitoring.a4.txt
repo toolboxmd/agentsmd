@@ -1,0 +1,11 @@
+**Requirements and who asked:** You want to hear that nightly-sync failed, because you will not read logs. You floated a central log on the Synology, Pieter Levels style, maybe in Docker. The requirement with an owner is the notice; a log has none.
+
+**Deleted:** Central logging, a Docker log stack, and dashboards.
+
+**Bottleneck:** The email is sent only after a clean finish. A crash at startup is indistinguishable from a good night.
+
+**Checked myself:** What you told me: the only cron is nightly-sync at 03:00 on edna, the summary email happens only if the script finishes, an expired token killed it at startup four nights with no mail, nothing else alerts, and the Synology can run Docker. I have not seen the script, cron, or the NAS.
+
+You want a message when the sync does not succeed.
+
+Write a timestamp only after a clean finish, add a second cron on edna an hour later that emails you when that file is missing or not from this morning, and force one miss so you see the mail arrive. Use Synology Task Scheduler for that check if you also want the mail when edna is off, and refresh the token so the sync itself works again.

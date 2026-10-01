@@ -1,0 +1,1 @@
+`git fetch` downloads new commits and branch pointers from the remote without changing your working branch. `git pull` does a fetch followed by a merge into your current branch, or a rebase if configured. Use fetch to inspect first, pull to update directly.

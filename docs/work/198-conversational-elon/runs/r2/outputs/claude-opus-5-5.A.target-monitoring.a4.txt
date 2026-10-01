@@ -1,0 +1,13 @@
+A central log on the Synology wouldn't have caught this. The job failed by going silent, and a log only helps if someone reads it. You've said you won't, and that's reasonable for a single nightly job.
+
+What you need is a **dead man's switch**: something that expects to hear from `nightly-sync` every night and alerts you when it doesn't. This catches every failure mode: a crash at startup, a hang, cron not firing, or `edna` being asleep, off, or offline.
+
+**What I'd suggest**
+
+1. **Heartbeat with alert-on-silence.** Use [healthchecks.io](https://healthchecks.io), which has a free tier that covers this easily. Create one check with a daily schedule of 03:00 and a grace period of about an hour. At the end of a successful run, the script sends a request to its unique URL. If no request arrives by about 04:00, you get an email or push notification. I'd also have the script ping `/start` when it begins and `/fail` if it catches an exception, so you get the error text right away.
+2. **Fail loudly on known problems.** Add a startup check for the token's expiry date. If it expires within, say, 7 days, send a warning ping or email. Last week's outage would then have been a heads-up the week before.
+3. **Keep the summary email.** It still shows what the job did. It just shouldn't be the only way you'd find out it ran.
+
+**On the Synology/Docker idea:** you could self-host Healthchecks in Docker on the NAS, but then the monitor shares your home power, network, and outgoing email with the thing it's watching. If the house loses internet, both go quiet and nothing tells you. For a single job, the hosted version is more reliable and less work. A central log on the NAS is still worth having later if you add more jobs and want history when something goes wrong, but it doesn't replace the alert.
+
+If this sounds right, I can add the start/success/fail pings and the token-expiry check to the script. You'd create the healthchecks.io account and give me the ping URL, since I shouldn't sign up for services on your behalf. After that, we'd force a failure once to confirm the alert actually reaches you.

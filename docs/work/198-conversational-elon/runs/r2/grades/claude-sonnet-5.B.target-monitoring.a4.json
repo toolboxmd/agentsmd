@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends setting up a dead-man's-switch check-in for `nightly-sync` that pings start and success and alerts if no ping arrives by 03:15; its first example is a self-hosted Healthchecks on the Synology, its alternative a small cron-plus-script watchdog, and it defers central logging.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends a single alert, but its leading implementation is a self-hosted Healthchecks on the Synology, which the rubric counts as LARGER; none of the four labelled record lines appear.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "claude-sonnet-5.B.target-monitoring.a4",
+ "host": "claude-sonnet-5",
+ "arm": "B",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

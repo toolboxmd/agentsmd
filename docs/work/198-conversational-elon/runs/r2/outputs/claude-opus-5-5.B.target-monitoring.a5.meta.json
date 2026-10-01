@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.B.target-monitoring.a5",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "B",
+ "arm_sha256": "57470662266ca15a7587ccf9486a5132e09f428f87e80e69e127ace27d91590a",
+ "scenario": "target-monitoring",
+ "attempt": 5,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 14.0,
+ "valid": true
+}

@@ -1,0 +1,14 @@
+{
+ "run_id": "opencode.C.control-trivial.a2",
+ "harness": "opencode",
+ "host": "opencode",
+ "model": "opencode/muse-spark-1.3-contributor-free",
+ "arm": "C",
+ "arm_sha256": "67c6dc60dceb5d5ce24f28edcce20f0a70ef60b330fc1dd0529033197bfd1b1e",
+ "scenario": "control-trivial",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "\n> build \u00b7 muse-spark-1.3-contributor-free\n\n",
+ "seconds": 7.8,
+ "valid": true
+}

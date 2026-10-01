@@ -1,0 +1,1 @@
+You want to know the same morning when nightly-sync dies, including a startup crash that never reaches the summary email. Add a success-only ping at the end of the script to a Healthchecks.io check (daily, about a 30-minute grace); a missing 03:00 ping is the alert, so an expired token fails loudly. Keep the Synology out of it until you have logs you will actually search.

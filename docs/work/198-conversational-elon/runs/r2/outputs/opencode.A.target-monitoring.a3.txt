@@ -1,0 +1,19 @@
+Don't build that — a central log on the Synology wouldn't have caught this.
+
+Your failure mode was silence: `nightly-sync` on `edna` crashed before the email step, so 4 nights with no email = no signal. A log server you never read has the same problem, plus it shares fate with your home — if the mini is down, or the Synology/power/internet is down, it can't alert you either. And Docker + central logging for 1 cron job is a lot of maintenance for zero alerting.
+
+Pieter Levels-style here would be: keep it boring, alert on absence.
+
+What you want is target/heartbeat monitoring, not logs:
+
+1. `nightly-sync` pings a check on start + on successful finish (just a `curl` — 2 lines).
+2. That check expects a successful ping by e.g. 04:30 every day.
+3. If it's late/missing/failed, *the monitor* emails/pushes you on a channel separate from the job's own summary email.
+
+This catches: token expired at startup, cron didn't run, Mac was asleep/off, script hung, script errored before email.
+
+Don't self-host it on the Synology for this one. It's in the same LAN/power outage domain as `edna`, so the exact case you most need an alert for is when it also can't alert.
+
+Use a hosted dead-man's switch — Healthchecks.io, Better Stack, Dead Man's Snitch all have a free tier that covers 1 job. Create a daily check with 24h period + ~1h grace, add the ping to the script wrapper so even an early crash still reports, and set the alert to something you'll actually see.
+
+Want me to wire the ping into `nightly-sync` and set up the check definition?

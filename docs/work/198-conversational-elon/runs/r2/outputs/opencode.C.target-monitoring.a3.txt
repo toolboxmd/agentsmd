@@ -1,0 +1,8 @@
+Requirements and who asked: You asked for notice of silent nightly-sync failure with no log reading.
+Deleted: Central log on Synology, moving everything to Docker, Pieter Levels style log tailing.
+Bottleneck: Crash before email makes success and failure both look like silence.
+Checked myself: Single cron job on edna at 03:00, email only on finish, 4x startup token crash with no signal, nothing else watches it, you will not read logs.
+
+You want to know by morning if nightly-sync did not succeed without checking anything manually.
+
+I recommend against a central log because you would still have to read it. Keep the job on edna and run one Healthchecks container on the Synology as a dead-man switch: ping start and success from the script, let it push/email you when success is missing for 24h.

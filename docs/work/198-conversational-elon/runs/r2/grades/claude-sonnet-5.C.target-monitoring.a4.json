@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Wrap the nightly-sync cron invocation on edna so it pings a Healthchecks.io-style dead-man's-switch endpoint on exit, which alerts the user by email or push if the ping is missing or reports failure.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "you asked for \"I only found out by accident\" to stop happening. That means an alert on failure, not a dashboard.",
+  "Deleted": "centralized logging stack (Loki/Grafana/ELK style) on the Synology \u2014 nobody asked for log *browsing*, you asked not to have to look.",
+  "Bottleneck": "nightly-sync has no failure signal independent of its own success path (it emails only after finishing). Fix that seam, not storage.",
+  "Checked myself": "you told me it crashed at startup four nights before the email step, and nothing else alerts on this job today \u2014 that's the actual gap."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one dead-man alert and rejects the Synology/Docker log stack; leaving 'self-hosted or hosted' to the user is borderline, but self-hosting is not itself recommended and the reply stresses no new host or Docker.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-sonnet-5.C.target-monitoring.a4",
+ "host": "claude-sonnet-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a hosted healthchecks.io dead man's switch that `nightly-sync` pings when it finishes, so the user gets an email alert if no ping arrives by about 04:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know within a day when `nightly-sync` doesn't succeed, without reading logs.",
+  "Deleted": "The central Synology log and the move to Docker. You won't read logs, a log can't report a run that never happened, and nothing needs to move off `edna`.",
+  "Bottleneck": "Failure is silent. The only signal is the success email, so a crash means no message at all.",
+  "Checked myself": "Only what you told me: one cron job at 03:00 on `edna`, four startup crashes from an expired token before the email step, and no other alerting. I haven't looked at the script or crontab yet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert and explicitly drops the Synology log and Docker setup.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

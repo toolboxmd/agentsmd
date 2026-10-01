@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-monitoring.a3",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-monitoring",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 104.5,
+ "valid": true
+}

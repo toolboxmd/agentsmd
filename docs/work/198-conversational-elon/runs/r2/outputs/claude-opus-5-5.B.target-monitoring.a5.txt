@@ -1,0 +1,7 @@
+Recommend a "missed-check-in" alarm. That way you hear about it when `nightly-sync` doesn't succeed, without reading anything. A central log on the Synology wouldn't have caught last week's outage, because a log still needs someone to look at it.
+
+**How it works:** the script sends a ping to Healthchecks.io (free tier) as its very last step. If no ping arrives by about 04:00, the service emails or notifies you.
+
+**Why not self-host on the Synology:** the external service catches every way this can fail: a crash, cron not firing, or `edna` being asleep or offline. A copy running on the NAS would go silent along with your home network or the NAS itself.
+
+**Next step:** if you're fine with Healthchecks.io (it only ever sees the ping, none of your data), create the free account, set up a check, and send me its ping URL. I'll add the few lines to the script.

@@ -1,0 +1,5 @@
+What you're actually trying to achieve: know within minutes when `nightly-sync` fails to start, not discover it four days later. A central log server doesn't solve that by itself; you still wouldn't read it, and this failure never even reached the logging step.
+
+Smallest fix: wrap the cron invocation so any non-zero exit or missing email triggers an alert you can't miss (ntfy/Healthchecks.io-style dead-man's switch, or just a `||` mail-on-failure in the cron line). That catches the expired-token case directly and costs under an hour.
+
+The Synology/Docker log stack is a reasonable separate project if you want history across more jobs later, but it's not the bottleneck here and I'd recommend not blocking the actual fix on it. Want me to set up the dead-man's switch first?

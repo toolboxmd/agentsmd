@@ -1,0 +1,8 @@
+You are trying to get told by morning if nightly-sync failed or never ran, without opening logs.
+
+Requirements and who asked: you asked for silent-failure notice with no log reading; you suggested a central log on Synology and Dockerizing everything.
+Deleted: Synology central log, Dockerizing / moving the job.
+Bottleneck: missing or crashed runs look like silence today, last one stayed silent for 4 days.
+Checked myself: nightly-sync runs on edna by cron at 03:00, emails a summary only on finish, crashed at startup 4 nights on expired token before email, no other alerting, Synology can run Docker, you will not read logs.
+
+I recommend we keep the job on edna and fix the silence: wrap it so any startup crash emails failure right away, plus add one dead-man check from the Synology that emails you if no success signal arrives by 04:30.

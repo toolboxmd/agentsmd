@@ -1,0 +1,11 @@
+A centralized log on the Synology would be nice to look at, but it wouldn't have caught this specific failure — you said you won't read logs, and a log dashboard only helps if someone's watching it. What actually failed here is that the job died before the "it worked" signal (the email) ever got sent, and nothing was watching for *absence* of that signal.
+
+The fix that directly addresses this: a dead man's switch. `nightly-sync` pings a monitoring endpoint (e.g. Healthchecks.io, or a self-hosted equivalent like Cronitor/Uptime Kuma — the latter you could run in Docker on the Synology if you want it local) as its very last line, after the email goes out. You set the check's expected schedule to "daily by 03:30" or similar. If the ping doesn't arrive, it alerts you — push notification, email, whatever you want — instead of you finding out by accident.
+
+Two smaller things worth doing at the same time since you're in there:
+1. Wrap the whole script in a try/except that pings a *failure* endpoint (or just logs + alerts) on any exception, including the token error — so even if it dies at startup again, you hear about it immediately rather than waiting for a missed check-in.
+2. Fix the actual expired token so it stops happening, obviously.
+
+If you still want centralized logging for debugging *after* you get alerted (so you're not SSHing into edna to find out why), that's a reasonable second layer — Dozzle or Loki+Grafana in Docker on the Synology both work and are low-effort. But I'd treat that as a "nice for debugging" layer, not the fix for "nobody knew for four days." The dead man's switch is the fix for that.
+
+Want me to help you wire up a Healthchecks.io ping (or Uptime Kuma container) into the script?

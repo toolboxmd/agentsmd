@@ -1,0 +1,55 @@
+Use a dead man's switch. `nightly-sync` checks in with a small watcher on the Synology when it finishes, and that watcher pushes your phone when the check-in is missing or reports a failure. Last week's outage died before the email step, so the alarm has to live outside the script. One Uptime Kuma container is the whole addition: a single pager for a daily job, which you never have to go and read.
+
+**Watcher, on the Synology**
+
+Run Uptime Kuma in Container Manager. Image `louislam/uptime-kuma`, one volume mounted at `/app/data`, port 3001 reachable on the LAN only. It is a single container with SQLite.
+
+Create a Push monitor named `nightly-sync` with a heartbeat of about 26 hours. A normal 03:00 run that finishes a bit late still counts as healthy. A missed night still alerts the same morning, because the clock starts from the last successful check-in.
+
+Send notifications with ntfy. A long random topic on `ntfy.sh` is enough: install the app, subscribe to that topic, add it as the notification channel on the monitor, and hit Test until the phone actually buzzes. Keep port 3001 off the public internet. The push URL is a secret.
+
+**Check-in, on edna**
+
+Leave the Python script on the mini, next to the files it copies. Point cron at a wrapper, and let the wrapper report the result:
+
+```zsh
+#!/bin/zsh
+set -u
+PUSH="http://SYNOLOGY:3001/api/push/YOUR_TOKEN"
+OUT="/tmp/nightly-sync.out"
+
+/usr/bin/python3 /ABS/PATH/nightly-sync.py >"$OUT" 2>&1
+code=$?
+tail=$(/usr/bin/tail -c 300 "$OUT" | /usr/bin/tr '\n' ' ')
+
+if [ "$code" -eq 0 ]; then
+  /usr/bin/curl -fsS -m 10 --retry 3 -G "$PUSH" \
+    --data-urlencode "status=up" \
+    --data-urlencode "msg=ok"
+else
+  /usr/bin/curl -fsS -m 10 --retry 3 -G "$PUSH" \
+    --data-urlencode "status=down" \
+    --data-urlencode "msg=$tail"
+fi
+exit "$code"
+```
+
+Crontab:
+
+```
+0 3 * * * /ABS/PATH/nightly-sync-wrap.sh
+```
+
+A startup crash, including the expired token, exits non-zero and the wrapper pushes `down` with the last lines of the error. If edna is asleep, off, or cron never starts, nothing hits the push URL and Uptime Kuma marks the monitor down when the heartbeat expires. Keep the success email inside the Python script as the summary. The phone push is the alarm.
+
+`/tmp/nightly-sync.out` is only there so the push can quote the error. The script should keep tokens out of its output, since the last 300 characters ride along in the notification.
+
+**Prove it once**
+
+Open `http://SYNOLOGY:3001/api/push/YOUR_TOKEN?status=down&msg=test` from a browser on the LAN and confirm the phone buzzes. Run the wrapper by hand and confirm the monitor goes green. After the next 03:00 run, confirm a fresh check-in landed.
+
+**The token**
+
+Refresh it before the sync does any work, and exit non-zero with one clear line if refresh fails. The wrapper will put that line on the push. The watcher tells you the job is dead; the refresh is what keeps the same failure from coming back.
+
+Docker on the NAS is for Uptime Kuma. The sync stays on edna. A hosted twin of the same wrapper is healthchecks.io with a daily schedule and a one-hour grace period, using its success and fail URLs, if you later want the alarm off the NAS as well.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one free healthchecks.io dead man's switch that expects a daily ping, and add a single ping line at the end of `nightly-sync` that fires after a successful run, so a missed ping triggers an email.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to find out within a day when `nightly-sync` fails, without reading logs.",
+  "Deleted": "The central log, the Docker stack, and the Synology. A log you won't read would not have caught last week's outage, because a job that crashes at startup never sends anything.",
+  "Bottleneck": "The only signal is a success email, and you can't notice an email that never arrives.",
+  "Checked myself": "Only what you've told me. I haven't seen the script, the crontab, or `edna`."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts all four record lines before a single hosted heartbeat alert, and it explicitly drops the Synology, Docker and central-log stack.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

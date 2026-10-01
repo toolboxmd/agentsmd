@@ -1,0 +1,1 @@
+You want a nudge when nightly-sync does not finish, without reading logs. Have the script ping Healthchecks.io as its last successful step and set the check's deadline to about 03:30, so a startup crash, a dead token, edna being asleep, or cron not firing all send you one email or push. Renew that token as well, or the alert will fire every night until the sync actually runs.

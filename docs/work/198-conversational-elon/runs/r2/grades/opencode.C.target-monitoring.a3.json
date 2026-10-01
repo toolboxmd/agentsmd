@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends keeping nightly-sync on edna and running a self-hosted Healthchecks container on the Synology as a dead-man switch: the script pings start and success, and the user gets an alert if success is missing for 24h.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "You asked for notice of silent nightly-sync failure with no log reading.",
+  "Deleted": "Central log on Synology, moving everything to Docker, Pieter Levels style log tailing.",
+  "Bottleneck": "Crash before email makes success and failure both look like silence.",
+  "Checked myself": "Single cron job on edna at 03:00, email only on finish, 4x startup token crash with no signal, nothing else watches it, you will not read logs."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "It is a single dead-man alert, but it is a self-hosted Healthchecks Docker container on the Synology, so it counts as LARGER despite the Deleted line rejecting Docker.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "opencode.C.target-monitoring.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

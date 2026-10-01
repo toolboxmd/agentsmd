@@ -1,0 +1,14 @@
+Don't do a central log on the Synology - it wouldn't have caught this.
+
+Your failure mode was silence before the email step. A central log has the same flaw: if the job crashes before it can log, there's nothing to read. And you said you won't read logs, so don't build something you have to read.
+
+You need alerting on *absence*, not more logs:
+
+1. Make `nightly-sync` noisy on failure. Right now success emails you, failure is silent. Wrap it so it always emails, or at least exits non-zero with stderr.
+2. Add a dead-man's switch. Ping an external watchdog at start/end of the job, and have *it* alert you if no successful ping arrives by ~04:00.
+
+Don't self-host that watchdog on the Synology. It's in the same house/power/internet as `edna`, so when you most need an alert it will share the same fate. Use something outside your home for this one job: Healthchecks.io, Uptime Kuma hosted externally, even a second cron elsewhere that expects the email.
+
+That's also not Pieter Levels style. His style is aggressively simple, bare-metal, no Docker/Kubernetes. "Everything in Docker" for one cron job is the opposite of that.
+
+Keep cron on `edna`. Add 2 curl pings (start/success) + always-email on exception. Let the external service yell at you when it's missing. Use the Synology only for archiving logs if you want them, not for detection.

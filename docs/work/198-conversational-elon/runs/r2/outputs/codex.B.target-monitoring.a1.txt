@@ -1,0 +1,5 @@
+You want to know when `nightly-sync` fails without checking logs. I recommend a dead-man’s-switch monitor: expect a success signal after each nightly run and alert you if it never arrives, covering startup crashes and `edna` being offline.
+
+Keep cron and Python on `edna`; add a success ping only after the sync completes, and use a hosted service such as Healthchecks.io to email you when that ping misses its deadline, set from the job’s normal runtime. The monitor sends the alert independently, so an expired token cannot prevent it.
+
+A central log on the Synology would help investigate failures, but collecting logs alone would not have caught this silently missed run; Docker and a logging stack add work without solving your immediate problem.

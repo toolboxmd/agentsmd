@@ -1,0 +1,77 @@
+The four silent nights were a missing heartbeat. Run Healthchecks on the Synology in one container, and have `nightly-sync` ping it when it finishes. If the success ping is missing after 03:00, Healthchecks pushes your phone. That is the Pieter Levels pattern: one small service, a URL the job hits, an alarm when the hit never comes.
+
+A log collected on the NAS would have stayed quiet through the same outage, because the token crash happened before the mail step and the log still has to be opened. Put the exception text in the failure ping instead, so the push itself says `expired token`.
+
+The sync stays on `edna`. Docker is only for the watcher, which has to live on a different machine than the job.
+
+**On the Synology**
+
+A single Container Manager project, SQLite on a volume:
+
+```yaml
+services:
+  healthchecks:
+    image: healthchecks/healthchecks:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8000"
+    volumes:
+      - hc:/data
+    environment:
+      DB: sqlite
+      DB_NAME: /data/hc.sqlite
+      SECRET_KEY: <long random string>
+      SITE_ROOT: http://<nas-lan-ip>:8080
+      REGISTRATION_OPEN: "False"
+
+volumes:
+  hc: {}
+```
+
+The image’s Docker readme is the source for those variable names if a tag has renamed one. Create your user on first launch, then leave registration closed. Keep the admin UI on the LAN.
+
+Add one check:
+
+- Name: `nightly-sync`
+- Schedule: `0 3 * * *`, in the Mac mini’s timezone
+- Grace: 20 minutes
+
+At 03:20 with no success ping, the check goes down and the alert fires.
+
+Send the alert out through a Telegram bot, Pushover, or an ntfy topic with a long random name. The NAS makes an outbound call, so the phone gets it when you are away. Put `$BODY` in the notification template so the exception text is in the push.
+
+**On `edna`**
+
+Keep the summary email. Add this around the existing work, and keep the ping URL next to the API token, outside the repo:
+
+```python
+import urllib.request
+
+PING = "http://<nas-lan-ip>:8080/ping/<uuid>"
+
+def ping(suffix="", body=""):
+    data = body.encode() if body else None
+    req = urllib.request.Request(PING + suffix, data=data, method="POST")
+    try:
+        urllib.request.urlopen(req, timeout=10).read()
+    except Exception:
+        pass
+
+def main():
+    ping("/start")
+    try:
+        run_sync()
+    except Exception as exc:
+        ping("/fail", f"{type(exc).__name__}: {exc}")
+        raise
+    else:
+        ping()
+```
+
+`/start` means cron launched it. `/fail` carries the reason, which is what those four mornings were missing. A success ping means the run finished. If Python dies before `main`, cron never fires, or the mini is asleep, there is still no success ping, and the 20-minute grace alerts you anyway. The helper swallows its own errors so a blip on the NAS cannot fail an otherwise good sync.
+
+**Prove it today**
+
+Open the check’s fail URL once and wait for the phone to buzz. Then open the success URL and confirm the check is up again. Tomorrow morning, confirm last night’s run is green and the summary email still arrived.
+
+The hole that remains is both machines failing at once. The success email still covers a good run when the NAS is down. The same ping design works against the hosted healthchecks.io URL if you want the alarm in place before the container is up.

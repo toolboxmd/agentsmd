@@ -1,0 +1,19 @@
+Don't build a central log for this - it wouldn't have saved you.
+
+That 4-day outage wasn't a logging problem, it was an alerting problem. Email-on-success + you never read logs = silent failure by design. A Synology log in Docker has the same flaw: you'd still have to go look, plus now you have to maintain Loki/Grafana/retention/backups, and it's in the same house/power/internet as `edna` so they fail together.
+
+Pieter Levels style would actually be the opposite: dumber, not bigger.
+
+What you want is a dead-man's switch:
+
+1. Wrap `nightly-sync` so *any* crash still notifies. Right now the email is after the work, so a startup crash skips it. Put a try/except around main that sends email/push on failure, not just on success.
+
+2. Add a heartbeat for when it never runs at all. At the very end of the script, add one line:
+`curl -m 10 https://hc-ping.com/your-id`
+Then set that check to expect a ping by e.g. 04:00 and alert you if it's late or missing. That catches expired token, cron dead, `edna` off, wifi down - all the cases where no email can ever be sent.
+
+Use hosted Healthchecks.io / Better Stack / UptimeRobot for that, not your NAS. You want the watcher *outside* the thing it's watching. If you really want to use the Synology, run Healthchecks or Uptime Kuma in Docker there as a second opinion, but don't make it your only alerter - home monitoring home is correlated failure.
+
+So: keep the job on `edna`, 5 lines of change, one external check. No central log, no Docker fleet for one cron job.
+
+Want me to wire that in? I'd need to see the current script's main/email part and where you want alerts to go.

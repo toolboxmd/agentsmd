@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends setting up a hosted heartbeat check (Healthchecks.io or Cronitor) that the `nightly-sync` cron job pings on start and on success or failure, with push alerts on a miss or failure, and also changing the script to catch auth errors, send its own failure email and exit non-zero.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "It rightly rejects the Synology/Docker log setup, but the script's own failure email is a second alert path on top of the heartbeat, so it is LARGER; none of the four labelled lines appear.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

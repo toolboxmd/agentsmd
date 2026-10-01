@@ -1,0 +1,11 @@
+**Goal:** find out when `nightly-sync` doesn't succeed, without reading anything.
+
+A central log won't do that, because it only stores failures you'd still have to go read. I'd skip the log and Docker and add a dead man's switch instead:
+
+- The script pings a check URL, such as a free Healthchecks.io check, only after it succeeds.
+- If no ping arrives by about 04:00, the service emails or notifies you.
+- This catches the expired-token crash, cron not firing, and `edna` being off or asleep.
+
+I'd host the check outside your house rather than on the Synology. A monitor at home goes quiet too if the power or internet there drops.
+
+If you're okay creating a Healthchecks.io account, send me the ping URL and I'll add the one-line ping to the script.

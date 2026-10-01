@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a single curl ping to a free healthchecks.io check as the last step of nightly-sync, so the user gets an email if no ping arrives by about 04:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to find out within a day when `nightly-sync` doesn't succeed, without reading logs.",
+  "Deleted": "The central log on the Synology and the Docker stack. You won't read logs, and a log store doesn't alert anyone, so it wouldn't have caught last week's outage.",
+  "Bottleneck": "Your only signal is the success email, so a failure looks exactly like a quiet night.",
+  "Checked myself": "Only what you've told me: one cron job on `edna` at 03:00, a summary email at the end, four startup crashes from an expired token, and no other alerting. I haven't looked at the script or the crontab."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted dead man's switch and explicitly drops the Synology/Docker log stack, and all four record lines come first and are specific to this case.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

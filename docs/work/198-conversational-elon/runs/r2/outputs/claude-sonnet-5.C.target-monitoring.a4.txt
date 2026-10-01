@@ -1,0 +1,10 @@
+What you're trying to achieve: get notified *when the nightly sync fails*, not just build a nicer place to store logs you've said you won't read.
+
+A central log on the Synology wouldn't have caught this. The job never got far enough to log anything useful, and you already said you won't read logs, so a log aggregator (Docker, Dozzle, whatever) solves a problem you don't have while leaving the actual one in place: silence on failure. Four Elon lines:
+
+- **Requirements and who asked:** you asked for "I only found out by accident" to stop happening. That means an alert on failure, not a dashboard.
+- **Deleted:** centralized logging stack (Loki/Grafana/ELK style) on the Synology — nobody asked for log *browsing*, you asked not to have to look.
+- **Bottleneck:** nightly-sync has no failure signal independent of its own success path (it emails only after finishing). Fix that seam, not storage.
+- **Checked myself:** you told me it crashed at startup four nights before the email step, and nothing else alerts on this job today — that's the actual gap.
+
+Recommendation: wrap the cron invocation on edna in a trivial dead-man's-switch — on exit, ping a free Healthchecks.io-style endpoint (self-hosted or hosted, your call) with success/fail status, and let that service email/push you if the ping doesn't arrive by a set time. That's a few lines in the script, no new host, no Docker stack, and it alerts on crash, hang, or silent cron failure, not just on the summary email. Want me to write that wrapper?

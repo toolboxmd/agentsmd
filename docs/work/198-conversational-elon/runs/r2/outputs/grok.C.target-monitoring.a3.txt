@@ -1,0 +1,9 @@
+**Requirements and who asked:** You want to know when nightly-sync on edna is dead, after four nights of an expired-token crash sent no summary email. A Pieter Levels-style central log on the Synology, possibly all in Docker, is the build you suggested.
+
+**Deleted:** The Synology central log and any Docker log stack. You will not read logs, so that system would not have told you, and it would be another service that can die unnoticed.
+
+**Bottleneck:** The script emails only after it finishes. A crash before that step is silence, and nothing treats silence as a failure.
+
+**Checked myself:** Your account of cron at 03:00 on edna, the summary email only at the end, four startup crashes, and no other alert. I have not opened the script or the NAS.
+
+You want a same-morning alert when the sync dies before it can mail you. Wrap the cron command so any non-zero exit sends a short failure email by a path that does not use the sync token. If that token is also your mail credential, tell me and we use a few lines on the Synology that mail you when today's success stamp is missing.

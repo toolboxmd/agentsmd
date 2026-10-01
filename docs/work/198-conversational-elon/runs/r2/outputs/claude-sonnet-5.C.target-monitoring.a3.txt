@@ -1,0 +1,10 @@
+What you're trying to achieve: know within minutes when `nightly-sync` fails, without reading logs.
+
+A central Synology log stack doesn't fix this: the job crashed before it ever logged or emailed anything, so centralized logging only helps if you read it, which you said you won't. The actual gap is a missing "it didn't even start/finish" check, and the smallest fix for that is a dead-man's-switch: cron on `edna` pings a heartbeat URL (healthchecks.io, self-hosted on Synology Docker, or even a tiny cron job on the NAS checking a timestamp file) at the end of the script, and alerts you by push/email when the ping doesn't arrive by 03:15.
+
+- **Requirements and who asked:** you want to be notified when the job fails, not read logs, and asked about centralizing logs toward that end.
+- **Deleted:** full ELK/Loki-style log aggregation stack, Dockerizing everything — neither one would have caught this specific failure mode and you don't want to read logs anyway.
+- **Bottleneck:** the missing check isn't "where do logs live," it's "nobody/nothing watches for the job not running at all."
+- **Checked myself:** from what you told me — crash was pre-email, at startup, four nights straight, nothing else alerts on this job today.
+
+Recommend: add a dead-man's-switch (healthchecks.io free tier, or self-hosted equivalent in a single Docker container on the Synology) with a one-line curl at both the start and end of the script, plus a `curl --retry` wrapped failure-notify if the script exits non-zero. Want me to write that into the script?

@@ -1,0 +1,5 @@
+You want to know when `nightly-sync` fails without having to check logs. I recommend a dead-man’s-switch alert: an external service expects a success ping after the 03:00 run and emails you if it misses its deadline, including when the script crashes at startup or `edna` is offline.
+
+Central logs on the Synology would help investigate failures, but collecting logs alone would not have alerted you; Docker adds no necessary benefit for this one job. Keep cron, add a success ping after the sync completes, and set the alert deadline from its normal finishing time plus a buffer, then deliberately skip a ping to verify the alert reaches you.
+
+Would you prefer an external monitoring service, which can also notice a home outage, or monitoring on the Synology, which depends on your home network staying up?

@@ -1,0 +1,23 @@
+A central log won't fix this. The sync didn't fail loudly. It failed silently: it crashed before the step that tells you anything. A log on the Synology would have recorded those four crashes, and you'd still have had to go read it. You've said you won't, and that's reasonable.
+
+What you need is an alert when the success signal **doesn't arrive**. This is called a dead man's switch:
+
+1. `nightly-sync` pings a URL when it finishes successfully.
+2. A separate service expects that ping every day by about 04:00.
+3. If the ping doesn't come, for any reason, the service emails or pushes to you.
+
+"Any reason" covers the cases you can't predict: the expired token, a Python exception, cron not firing, `edna` asleep or off at 03:00, a network outage. You don't have to anticipate each failure. You only notice that success didn't happen.
+
+**My recommendation:** use hosted [Healthchecks.io](https://healthchecks.io). The free tier covers this easily, and setup is about 10 minutes. The change to your crontab line looks like this:
+
+```
+0 3 * * * /path/to/nightly-sync && curl -fsS -m 10 --retry 3 https://hc-ping.com/<your-uuid>
+```
+
+I'd also add a `/fail` ping in the script's exception handler, so a crash alerts you right away instead of at the grace deadline.
+
+**On the Synology/Docker idea:** Healthchecks is open source, and you *can* self-host it in Docker on the NAS. The catch is that the watcher then lives in your house too. If the NAS is down or your internet is out, the alert stays silent as well, which is the same blind spot again. Running the check off-site is what makes it independent. If you later want a central log for poking around, that's a fine weekend project, but it's separate from this fix and doesn't replace it.
+
+**Optional extra:** since the token expiry is a known failure, the script could warn you a week before the token expires. That turns that particular failure into a reminder instead of an outage.
+
+Want me to wire this up? I'd add the success and fail pings to the script, update the crontab on `edna`, and then do a test run by deliberately breaking it once so you see the alert arrive. You'd only need to create the Healthchecks account and give me the ping URL.

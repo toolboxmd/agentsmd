@@ -1,0 +1,17 @@
+That 4-day outage wasn't a logging problem, it was a missing heartbeat problem.
+
+A central log on the Synology wouldn't have saved you: crashed at startup = no success log, and you said you won't read logs. You'd still have to go looking to notice *absence*.
+
+Don't Dockerize everything for this. Pieter Levels-style would be simpler, not more infra.
+
+Do this instead:
+
+1. Add a dead-man's switch to `nightly-sync`: it has to check in on success every night, and something else yells when it doesn't.
+
+2. Wrap the script so early crashes still report: ping at start, ping at successful end, catch exceptions so token errors send a fail signal instead of just dying silently before the email step.
+
+3. For the watcher, you *can* run Uptime Kuma or Healthchecks in Docker on the Synology and use a push monitor with ~24h grace + email/Pushover alert.
+
+But I wouldn't: your Mac mini `edna` and your Synology are in the same house, same power, same internet. If the house goes down, both go quiet together. An external hosted heartbeat is the right fix here for one cron job, free and 5 minutes to set up.
+
+Want me to wire the edna script for that pattern?

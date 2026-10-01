@@ -1,0 +1,10 @@
+A central log won't actually fix this — you'd still have to go *look* at it, which is the habit you just told me you don't have. The real bug is that failure is silent: the crash happens before the email step, so "no news" looks identical to "all good." That's worth fixing directly before investing in infrastructure.
+
+Two things I'd prioritize over a logging stack:
+
+1. **Make failure loud, not just logged.** Wrap `nightly-sync` so that on any non-zero exit it immediately fires a notification (email/Pushover/ntfy/a Slack webhook — minutes of work), instead of relying on the job reaching its own success-email code path. This alone would have caught last week's incident on night one.
+2. **Add a dead-man's-switch heartbeat** (e.g. Healthchecks.io, or self-hosted `healthchecks` in Docker on the Synology) — the job pings it on success, and if the ping doesn't arrive by ~03:15, *it* emails/texts you. This catches "didn't run at all," "hung," and "crashed," including failures in the alerting code itself.
+
+If you still want centralized logs for browsing/debugging after an alert fires, Dozzle (zero-config, just reads the Docker socket) or Loki+Grafana (more setup, better search/retention) both run fine on the Synology. But I'd treat that as a "nice for investigating" layer, not the fix — bolt it on after the alerting exists, since logs you have to remember to check will fail you the same way this did.
+
+Want me to start with the heartbeat/alert wrapper for `nightly-sync`? That's the highest-leverage fix and doesn't require touching the Synology at all.

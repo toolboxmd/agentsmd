@@ -1,0 +1,7 @@
+A central log is nice to have eventually, but it wouldn't have caught this specific failure — the problem wasn't that logs were hard to find, it's that a crashed job stays silent. A log server only helps if someone's watching it; what you actually want is something that notices absence.
+
+Cheapest fix that solves your actual problem: a dead man's switch. Have `nightly-sync` ping a URL (healthchecks.io has a free tier, or self-host something similar on the Synology in Docker) as its very first line, before any token/auth logic — then it pings regardless of whether the rest of the script works. If the ping doesn't arrive by, say, 03:15, it emails/texts you. That alone would've caught the token expiry on night one instead of night four, with no log reading required.
+
+The centralized logging stack (Loki/Promtail + Grafana, or Dozzle for a quick win) is a good project if you want historical visibility across jobs later, but it's solving "logs are scattered," not "jobs fail silently." I'd do the dead man's switch first since it's ~10 minutes of work, then layer logging on top if you still want it.
+
+Want me to write the healthchecks ping into `nightly-sync` and sketch the Synology container for it?

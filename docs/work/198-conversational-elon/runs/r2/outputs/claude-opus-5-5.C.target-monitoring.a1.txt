@@ -1,0 +1,8 @@
+**Requirements and who asked:** you want to know within a day when `nightly-sync` doesn't finish, without reading logs.
+**Deleted:** central log on the Synology, Docker stack, self-hosted monitoring. You said you won't read logs, and a log can't report a run that never happened.
+**Bottleneck:** nothing raises an alarm when the success email *doesn't* arrive. Silence looks the same as "fine."
+**Checked myself:** nothing on the machines; this is based only on what you told me (cron at 03:00 on `edna`, success email, four silent nights from an expired token, no other alerting).
+
+You're trying to get told when the sync stops working. I recommend a dead-man's switch: a free hosted check such as healthchecks.io that expects a ping every day and emails or pushes you if it doesn't arrive by about 05:00. That's one HTTP ping at the end of the script. It catches every failure mode, including a crash, an expired token, a hang, cron not firing, or `edna` being off or offline. Hosting it on the Synology would just add another box that can fail silently.
+
+If you create the check and send me its ping URL, I'll add the ping to `nightly-sync`.

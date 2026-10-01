@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want an alert when `nightly-sync` fails, without reading logs.
+**Deleted:** Central logging and Docker from this fix; neither is needed to detect a missed run.
+**Bottleneck:** The job sends its own email, so a startup crash also disables its notification.
+**Checked myself:** Nothing directly; your account establishes four missed runs and no independent alert.
+
+You want silence to trigger an alert. I recommend an external heartbeat monitor: after a successful sync, the script sends it a small HTTP request. The monitor expects that daily after 03:00, with a grace period for normal runtime, and emails you if it never arrives.
+
+Keep cron on `edna`. Hosting the monitor outside your home also covers the Mac or home connection going down. Before calling it done, deliberately miss a heartbeat and verify that the alert reaches you.

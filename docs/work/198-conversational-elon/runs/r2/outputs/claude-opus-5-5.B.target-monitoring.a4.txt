@@ -1,0 +1,9 @@
+You want to hear about it when the sync doesn't succeed, without reading anything. A central log won't do that: you'd still have to look at it, and a job that never starts writes nothing.
+
+I recommend a dead man's switch instead. The job pings a URL when it succeeds, and if no ping arrives by about 04:00 you get an email or push alert. That catches crashes, expired tokens, cron not firing, and `edna` being off or asleep.
+
+Use hosted healthchecks.io (free tier) rather than self-hosting it on the Synology. That way the alert still fires if the NAS or your home network is down too.
+
+The change is one HTTP call after the summary email in `nightly-sync`, plus a check set to "daily at 03:00, 1h grace." No Docker needed.
+
+What I need from you: create the healthchecks.io account and check (it's your account and alert channel), then send me the ping URL. I'll wire it in and trigger a test failure so you can see the alert arrive.

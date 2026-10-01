@@ -1,0 +1,5 @@
+What you want is an active nudge when nightly-sync does not finish, without opening logs.
+
+Do not build a central log on the Synology or move everything to Docker for this. That adds a new system to maintain and you would still have to look at it, so those four silent nights would happen again. The Pieter Levels move is less infra, not more.
+
+Use a dead-man switch instead: have the script ping a heartbeat check on start and on clean exit, and have the checker message you if no clean exit by about 04:30. That plus a top-level try/except that emails on startup crash would have caught the expired token on night one. If you want it at home I would run one Uptime Kuma container on the Synology, otherwise a free Healthchecks.io check is simpler and still works if home internet is down - which do you want?

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one externally hosted dead-man's-switch monitor that `nightly-sync` pings only after a successful run, which emails the user if the ping doesn't arrive by the deadline.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker are unnecessary for that outcome.",
+  "Bottleneck": "The script sends its own email, so a startup crash also silences the alert.",
+  "Checked myself": "From what you told me, cron runs it at 03:00 on `edna`, four startup crashes went unnoticed, and no independent alert exists."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single external heartbeat alert, keeps the Synology out of it, and has all four record lines before the recommendation, each tied to the facts of this case.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.C.target-monitoring.a2",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

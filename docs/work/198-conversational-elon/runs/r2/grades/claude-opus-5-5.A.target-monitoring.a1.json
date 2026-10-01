@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends one hosted Healthchecks.io heartbeat check for `nightly-sync`: the script sends start, success and fail pings, and Healthchecks alerts the user when the success ping doesn't arrive.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends only the hosted heartbeat alert, with central logging deferred, self-hosting rejected and launchd mentioned only if edna sleeps, but none of the four labelled record lines are present.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-monitoring.a1",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

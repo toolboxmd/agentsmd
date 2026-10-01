@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends wrapping `nightly-sync` so it pings an external hosted heartbeat/dead-man's switch at start, on success, and on caught exceptions, with an alert when the check-in is missed, instead of central logging or Docker.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends one external heartbeat alert, mentions self-hosted Uptime Kuma or Healthchecks only to reject them, and has none of the four labelled lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-monitoring.a4",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,5 @@
+You want to know by morning if nightly-sync did not succeed, without checking anything manually.
+
+I recommend against a central log on the Synology and against moving everything to Docker. That would not have caught this failure because you still would have had to read the log to notice four missing runs.
+
+The smallest fix that would have caught it: run one heartbeat monitor in Docker on the Synology, have nightly-sync ping it only on success, and alert you when no success arrives by 04:00. Do you want that alert by email or something louder?

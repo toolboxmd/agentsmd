@@ -1,0 +1,26 @@
+A central log wouldn't have saved you here, and you've said you won't read logs anyway. What failed last week was that **silence looked the same as success**. The only signal was "email arrived," and nothing noticed when it stopped.
+
+What you need is a **dead man's switch**: something that expects to hear from the job every night and alerts you when it doesn't.
+
+### What I'd do
+
+1. **Make the script check in when it succeeds.** At the very end of `nightly-sync`, after the email step, send one HTTP request to a heartbeat URL. I'd also wrap the main body so any uncaught exception hits a `/fail` URL. That way you get alerted immediately instead of an hour later.
+2. **Let the monitor alert on missing check-ins.** Configure it as "expect a ping daily around 03:00, grace period about 1 hour." If nothing arrives by about 04:00, you get an email or push notification.
+
+This catches every way the job can die: a crash at startup like the expired token, a hang, cron not firing, `edna` asleep or powered off, or the network down. All of them end in "no ping," so all of them alert you.
+
+### Where the monitor should live
+
+- **Hosted [healthchecks.io](https://healthchecks.io)** is my recommendation. The free tier easily covers one job. Because it runs outside your house, it still alerts you if the Mac mini, the NAS, or your home internet is the thing that died.
+- **Self-hosted Healthchecks in Docker on the Synology** also works and is a nice project. The catch is that it fails silently in the same scenarios you care about: if the NAS or your connection is down, nobody tells you. If you go this route, I'd still put one hosted check on the NAS itself.
+
+The only data that leaves your network is a ping to a URL. No log contents are sent unless you choose to attach them.
+
+### Optional extras
+
+- **Warn before the token expires.** If the token has an expiry date you can read, the script can send a warning a week ahead, so this particular failure never happens again.
+- **Centralized logs on the Synology** (Dozzle or Loki/Grafana in Docker) are fine later for debugging *after* an alert. They don't do the noticing, though, so I wouldn't start there.
+
+### Next step
+
+If you go with healthchecks.io, create a check, choose how you want to be notified, and send me the ping URL. I'll add the success ping and the failure ping to `nightly-sync`. If you'd rather self-host on the Synology, I can write the Docker Compose setup instead. Which would you like?

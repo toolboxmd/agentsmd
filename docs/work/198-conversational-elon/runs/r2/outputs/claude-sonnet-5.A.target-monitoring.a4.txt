@@ -1,0 +1,10 @@
+A central log won't actually fix this — the real bug is that the job has zero failure detection, and a log is something you'd still have to go read (which you've said you won't do). Centralizing logs is nice for debugging *after* you know something's wrong, but it wouldn't have told you about the four dead nights any faster.
+
+What actually solves "I won't read logs" is a **dead man's switch**: the job pings a monitor on success, and if the ping doesn't arrive by ~03:30, you get alerted. That's a few lines added to the script, no new infrastructure, and it would have caught the expired-token crash on night one.
+
+So I'd suggest two independent pieces, not one dependent on the other:
+
+1. **Alerting (the actual fix):** self-hosted Uptime Kuma or healthchecks.io on the Synology (Docker, one container). `nightly-sync` hits a URL at the end; Kuma pages/emails/Pushovers you if it's late. ~30 min setup.
+2. **Centralized logs (nice-to-have, optional):** if you still want the Pieter Levels style aggregated view, a lightweight stack like Dozzle (zero-config, just reads Docker logs) or Promtail+Loki+Grafana on the Synology. This is for when you *want* to dig in, not for catching failures.
+
+Want me to write the Uptime Kuma docker-compose for the Synology and the ~5-line Python snippet (try/except wrapping the whole script, hitting the ping URL in a `finally`) to wire `nightly-sync` into it first? That's the piece with actual leverage here.

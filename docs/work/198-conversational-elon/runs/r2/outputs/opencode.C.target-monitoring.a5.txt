@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked to know by morning if nightly-sync failed or never finished, without reading logs.
+**Deleted**: Central log on Synology and moving everything to Docker, both suggested by you, because a log you will not read would not have alerted on those four silent nights and adds a second system to maintain for one cron job.
+**Bottleneck**: The email only sends on the success path, so a startup crash is silent and nothing checks for absence.
+**Checked myself**: You told me nightly-sync is the only job, cron on edna at 03:00, email on finish, expired token killed it four nights before email, nothing else alerts, and you will not read logs.
+
+What you are trying to achieve is a loud alert when nightly-sync does not succeed.
+
+I recommend a hosted dead-man heartbeat, not central logging: keep cron on edna, add a success ping at the end of the script plus a fail ping on nonzero exit, and configure the host to message you when the success ping is late past 04:30. That would have caught the token crash on night one with no log reading.

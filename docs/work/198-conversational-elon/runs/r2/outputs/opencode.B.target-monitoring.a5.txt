@@ -1,0 +1,1 @@
+You want to know by breakfast if nightly-sync failed, without reading logs. A central log on the Synology in Docker does not fix that because no one watches it, and it adds maintenance while leaving startup crashes silent. I recommend the smallest fix first: always email on crash plus alert on missing success, so should I sketch that wrapper instead of central logging?
