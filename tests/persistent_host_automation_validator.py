@@ -65,7 +65,7 @@ SECRET_PATTERNS = (
             r"refresh[_-]?token|service[_-]?(?:credential|secret|token)|"
             r"(?:credential|secret|token)[_-]?value|password|"
             r"private[_-]?key)\b\s*[:=]\s*"
-            r"[\"']?(?!<|redacted|example|placeholder|none|null)"
+            r"[\"']?(?!<|redacted|example|placeholder|your[_-]|none|null)"
             r"[A-Za-z0-9+/_=-]{12,}"
         ),
     ),

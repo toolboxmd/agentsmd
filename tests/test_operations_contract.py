@@ -324,10 +324,16 @@ class OperationsContractTests(unittest.TestCase):
         # Issue #198: the conversational trigger sits in the Judgment sentence models already follow,
         # the record comes first, and nothing it deletes may be offered.
         for clause in (
+            "Before recommending a tool, service, host, or architecture, write the four Elon record lines "
+            "first (see Judgment).",
             "Before you recommend or compare a tool, product, service, host, architecture, process, or new "
-            "job or loop, in conversation too, first write the four Elon record lines (see Elon method);",
-            "**Checked myself** names only what you observed or were told.",
-            "never offer anything **Deleted** names, even as an alternative.",
+            "job or loop, in conversation too, first write the four Elon record lines, each on its own line "
+            "(see Elon method); **Checked myself** names only what you observed or were told.",
+            "the smallest that achieves it, meaning the fewest new things the user must run, maintain, or "
+            "watch, with one mechanism per need.",
+            "Never offer anything **Deleted** names, even as an alternative or as a smaller use, part, "
+            "packaging, or place to run it, and never leave the user a choice between your option and a "
+            "larger one: name the larger one only to reject it.",
             "In conversation the reply is the task record, with the lines first.",
         ):
             with self.subTest(clause=clause):

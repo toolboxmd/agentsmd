@@ -742,7 +742,7 @@ class SkillContractTests(unittest.TestCase):
             "Do not narrate process.",
             "When several agents run, give one line per outcome that changed.",
             "Report what you found, not what you plan to check.",
-            "recommend one option: the smallest that achieves it.",
+            "recommend one option: the smallest that achieves it",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, agents)
