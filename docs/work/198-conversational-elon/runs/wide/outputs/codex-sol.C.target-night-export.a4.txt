@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need the correct report by 08:00 and something shippable this week; exact start time is flexible.
+**Deleted:** Airflow, Kubernetes, separate workers, and a deployment platform add no needed capability here.
+**Bottleneck:** The laptop is often asleep when the export should run.
+**Checked myself:** No independent checks in this exercise; you report a working three-minute command, no downstream jobs, safe reruns, and an existing always-on Linux machine.
+
+You’re trying to make the nightly report reliably available by 08:00. I recommend moving the existing command to that Linux machine and using its native scheduler.
+
+For a systemd-based machine, ship one timer and one service that runs Python and exits: no separate workers, with deployment consisting of the script, dependencies, and those two unit files. Schedule it comfortably before 08:00, retain failure logs, and verify the scheduled run produces the report at its intended destination; keeping the command independently runnable preserves flexibility if real orchestration needs appear later.

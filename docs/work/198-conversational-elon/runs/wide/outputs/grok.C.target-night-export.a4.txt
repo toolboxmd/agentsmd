@@ -1,0 +1,6 @@
+**Requirements and who asked**: A finished export before 08:00, asked by you because overnight runs go missing. An Airflow-on-Kubernetes split of workers, scheduler, and deployment, asked by you to match peers and future-proof it.
+**Deleted**: Airflow, Kubernetes, and that split. The report still arrives by 08:00 without them: one three-minute command, safe to rerun, with no downstream jobs.
+**Bottleneck**: The command never starts because the laptop is asleep.
+**Checked myself**: Your account of the three-minute rerunnable export, missing overnight runs, correct output when it runs, the always-on Linux machine you already administer, and the 08:00 deadline with no required start time.
+
+You want that report present each morning. Schedule the same command with cron on that Linux machine, at a fixed time before 08:00, and append stdout and stderr to a log file. That is the deployment to ship this week.

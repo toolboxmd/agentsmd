@@ -1,0 +1,11 @@
+**Requirements and who asked:** You asked for squads and chapters, Jira Align, and quarterly planning workshops, launched this week, so the team ships faster. Without a second authorized approver, a finished change still waits out your absence, which is the three-day delay on the last six.
+
+**Deleted:** Squads and chapters, Jira Align, and quarterly planning workshops. Those six changes were already coded in under a day, and the wait was approval sitting on one absent reviewer.
+
+**Bottleneck:** Review assignment. All six waited three days because you were the sole assigned reviewer and you were away, while two other engineers are already qualified and authorized to approve them.
+
+**Checked myself:** You reported those six durations, the sole-reviewer assignment, your absence on those days, and the two authorized engineers.
+
+You are trying to get finished changes approved when you are away.
+
+This week, in the tracker you already use, name those two engineers as backup reviewers on each change, and either of them approves when you are out. Tell the team today and add one of them to every review that is waiting on you.

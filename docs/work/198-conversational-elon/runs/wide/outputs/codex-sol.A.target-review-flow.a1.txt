@@ -1,0 +1,13 @@
+Your recent delays point to reviewer coverage: all six changes took less than a day to code, then waited three days because the sole assigned reviewer was away. Two other engineers already have approval authority. Start there this week; Jira Align and a squad/chapter reorganization won’t resolve that bottleneck.
+
+For your four-engineer team, launch this operating model:
+
+- **Provide reviewer coverage.** Assign a qualified primary and backup reviewer to each PR. Either may approve, subject to your existing approval requirements. When the primary is absent, route directly to the backup.
+- **Rotate review duty weekly.** One engineer handles review requests, with another covering absences and PRs authored by the duty reviewer. Reserve two short review windows each working day.
+- **Set a response expectation.** Give ready PRs an initial review within one working day. If that deadline is at risk, reassign to an available qualified reviewer.
+- **Use the existing tracker.** Make “ready for review” and the responsible reviewer visible. At a ten-minute daily check, address stalled reviews before starting more work.
+- **Keep planning lightweight.** Hold a weekly priority and capacity check. Keep changes small enough to review promptly.
+
+Today, agree on the rotation and reassign any waiting PRs. Tomorrow, start the review windows. On Friday, check whether any ready PR waited because its reviewer was unavailable.
+
+Over the next two weeks, track time from “ready for review” to approval, total time to ship, and defects or rework. Aim to bring approval waits below one working day without weakening review quality. Use those results to decide whether further process or tooling investment is needed.

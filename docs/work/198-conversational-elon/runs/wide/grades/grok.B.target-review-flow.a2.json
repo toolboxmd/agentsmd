@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends one action for this week: set the existing tracker so that, whenever the lead is out, one of the two qualified and authorized engineers is assigned as reviewer the day coding finishes. It offers no optional additions. It says squads, chapters, Jira Align and quarterly workshops leave the review wait in place, but it does not use any of the four required labels.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is small and correctly aimed, but none of the four labels appear, so the record, Deleted and Checked myself fields all fail even though the text rejects the stack and cites the supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-review-flow.a2",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

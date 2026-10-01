@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship a single PostgreSQL COUNT of unpaid invoices in the existing application instead of loading invoice rows and building objects. The database does the counting at request time, so the count reflects committed invoices. Kafka, CQRS, Redis and any new service or topic are removed, with no optional present additions. No latency or equivalence check is proposed. The reply also does not say directly that no services or topics will ship this week, although the Deleted line implies it.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to finish within one second and match invoices committed at request time. You asked for a CQRS projection, Kafka, and Redis because the cluster budget is approved and peers are moving to event-driven systems.",
+  "Deleted": "Kafka, CQRS, Redis, and any new service or topic. The budget and the peer trend do not make this count faster or current, and a projection can lag committed invoices.",
+  "Bottleneck": "The endpoint loads invoice rows, builds invoice objects, and counts them in application memory, then returns only that count. Nothing else reads it.",
+  "Checked myself": "Only what you told me: one application, PostgreSQL, that endpoint, the slow count, and the Kafka request. I have not inspected the code, schema, or database."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded COUNT recommendation that keeps request-time committed-data semantics, and the Deleted line names Kafka, CQRS and Redis and rejects them.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

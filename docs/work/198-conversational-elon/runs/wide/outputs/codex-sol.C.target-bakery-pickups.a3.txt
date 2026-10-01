@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup; you proposed Odoo to prevent missed pickups.
+**Deleted:** A synced sales, inventory and manufacturing rollout as the fix for this incident.
+**Bottleneck:** Today’s preparation is waiting while later pickups get prepared; the existing list already contains pickup dates and status.
+**Checked myself:** From your account, staff can read the shared list, payments and stock reconcile, and today’s cakes remain unmade.
+
+To get today’s cakes ready, use the existing list as a preparation queue: identify every unfinished order due today, confirm pickup times, assign each to a named preparer, and work earliest pickup first; flag any cake that cannot be ready in time to you immediately.
+
+I would pause the Odoo implementation and use next week’s partner appointment to establish what the current system actually cannot do, because the evidence points to preparation priority rather than missing sales or stock synchronization.

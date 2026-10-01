@@ -1,0 +1,3 @@
+You need this week’s delivery to preserve each exact approved document, approver identity, and approval time for seven years, with no self-approval. An APPROVED column and naming convention cannot meet that contract while authors can edit the released files, and typed initials do not verify who approved.
+
+I recommend keeping the folder for drafts and adding a controlled release archive that requires authenticated approval by someone other than the author, records the approval time against the exact released version, and locks that version and approval record against alteration or deletion for seven years.

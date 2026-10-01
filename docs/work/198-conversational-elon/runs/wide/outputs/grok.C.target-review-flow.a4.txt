@@ -1,0 +1,7 @@
+**Requirements and who asked**: You asked for an operating model you can launch this week so the team ships faster. The squad, chapter, Jira Align, and quarterly workshop ideas came from you, from Spotify and peer adoption, and from budget you can spend.
+**Deleted**: Spotify squads and chapters, Jira Align, and quarterly planning workshops. The last six changes show no failure that those would fix.
+**Bottleneck**: Approval. Coding on each of those six took less than a day, then each waited three days because the lead was the only assigned reviewer and was away.
+**Checked myself**: What you told me: four engineers in one time zone, statuses in the existing tracker, those six changes, and two other engineers already qualified and authorized to approve them.
+
+You are trying to stop a finished change from waiting while the lead is away.
+This week, make either of those two engineers sufficient to approve in the tracker you already use, and assign one of them to every open change that lists only the lead.

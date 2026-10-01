@@ -1,0 +1,7 @@
+**Requirements and who asked**: You asked for an Airbyte, Snowflake, dbt, and Power BI pipeline this week to future-proof the monthly board report, because peers use that stack and you have budget. The report needs one month of net sales summed by region.
+**Deleted**: Airbyte, Snowflake, dbt, and Power BI. Peer adoption and a budget are the only reasons given for them.
+**Bottleneck**: Hand-totaling one local Excel table once a month.
+**Checked myself**: You told me the export is one local table with region, date, and signed net amount, refunds already negative, and that the workbook fits on your computer. I have not opened the file.
+
+You are trying to produce monthly net sales by region for the board.
+Build that total with one pivot on the export: region on the rows, sum of the signed net amount as the values, and the report month on the date filter. Refresh the pivot when the next accounting file arrives.

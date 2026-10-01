@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends now: replace the fetch-and-count with a single PostgreSQL count(*) query, add a partial index on unpaid invoices, and verify with EXPLAIN ANALYZE and p95/p99 latency against the one-second target. This keeps exact request-time committed-data freshness. It explicitly advises against Kafka, CQRS and Redis. A trigger-maintained counter is offered only as a later Postgres step if the count is still slow. A CQRS outline is offered only if the user accepts eventual consistency, which the reply notes contradicts the stated requirement. No unmet needs, though it asks to see the schema to finalize the query.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply chooses a bounded in-Postgres aggregate fix but contains none of the four required labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-invoice-count.a1",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

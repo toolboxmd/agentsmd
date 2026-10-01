@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends that, when this year's statement arrives, the agent turn it into an .ics file. The file creates all-day 'Decide' events 14 days before each notice deadline, with an optional backstop event on the deadline itself, and the user imports it into their phone calendar. Gmail agent, vector DB, n8n and Telegram are argued against. A minimal n8n+Telegram version is offered only if the user still wants to build it as a learning project, and the agent does not recommend it. The reply also suggests checking for notice deadlines in the next few weeks. It does not verify phone notification settings.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends calendar reminders built once from the statement and treats the n8n/Telegram build as an optional learning project, but none of the four required labelled record lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-renewal-admin.a3",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

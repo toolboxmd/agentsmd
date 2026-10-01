@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now on an Excel table feeding a PivotTable, with regions as rows, dates grouped by year and month, and signed net amounts summed so refunds reduce sales, plus a monthly reconciliation of regional totals against the source. No stack component is offered now. More infrastructure is mentioned only as a conditional future path, and no unmet needs are left.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want monthly net sales by region for the board, with a pipeline we can establish this week.",
+  "Deleted": "Airbyte, Snowflake, dbt and Power BI; the current report needs none of them.",
+  "Bottleneck": "Building regional sums by hand.",
+  "Checked myself": "You told me the source is one local Excel table, fits comfortably on your computer, and includes signed refunds; I have not inspected it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes a bounded PivotTable in the existing workbook, rejects the named stack, and bases its claims on supplied facts while stating it did not inspect the data.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-board-report.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

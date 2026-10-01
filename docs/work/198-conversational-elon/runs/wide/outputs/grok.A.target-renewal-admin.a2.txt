@@ -1,0 +1,17 @@
+Use four pieces with one job each. The phone calendar stays the thing you act on. Nothing cancels a contract or pays a bill.
+
+**Structured list (source of truth).** After the yearly statement arrives, keep one row per contract: name, provider, renewal date, last date to give notice, decision date (that notice date minus 14 days), and status (`pending`, `renew`, `cancel`, `done`). Put this in a sheet or table that n8n can read and write. These dates do not change for the rest of the year, so scheduling reads this table only.
+
+**Gmail agent (once a year, plus filing).** When the statement email arrives, have it pull each contract’s renewal date and notice deadline from the message or PDF and propose rows. You confirm the list once before anything is saved. Later it can file insurer mail against the matching row. It does not send mail to insurers.
+
+**Vector database (policy lookup only).** Store the statement and policy text so you can ask things like “what is the notice period on the home policy?” Answers about wording come from here. Reminder dates always come from the confirmed table.
+
+**n8n (the only orchestrator).** Three workflows:
+
+1. **Ingest.** Gmail trigger → extract candidate rows → you confirm in Telegram → write the table → create calendar events.
+2. **Decide.** Each morning, if a row’s decision date is today and status is still `pending`, send one Telegram message: contract, renewal date, notice deadline, and three replies: Renew, Cancel, Snooze. Those replies only update the row and the calendar event.
+3. **Last call.** On the notice deadline, if status is still `pending`, send one more Telegram ping. Still no email to the insurer and no payment.
+
+**Calendar (daily surface).** For each contract, add an all-day event on the decision date titled “Decide: {contract} — notice by {date},” with provider and renewal date in the notes, plus a second all-day event on the notice deadline titled “Last day to give notice: {contract}.”
+
+**Telegram bot (nudge and decision capture).** It delivers those two messages and writes your reply back through n8n. Snooze moves only the decision date by a few days and updates that one calendar event. Renew, Cancel, and Done are labels for you. You still contact the insurer yourself.

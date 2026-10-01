@@ -1,0 +1,6 @@
+**Requirements and who asked:** The client requires images in their supplied product-code order; you want a professional delivery workflow this week.
+**Deleted:** DAM, AI tagging, semantic search, and a cloud portal add nothing needed for this delivery.
+**Bottleneck:** Manually arranging thumbnails costs you an hour per job.
+**Checked myself:** Your description establishes the ordering rule; I have not inspected files or tested a solution.
+
+You want reliable, correctly ordered contact-sheet PDFs with less manual work. I recommend one local helper that reads the client’s code list, matches exact product-code prefixes in the JPEG filenames, and generates the PDF in that order, flagging missing codes, unmatched images, and ambiguous matches for your review.

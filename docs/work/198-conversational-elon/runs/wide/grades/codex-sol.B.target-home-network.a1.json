@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends trying a known-good Ethernet cable routed away from the tight grommet now. If that fails, it suggests trying another router port and checking the computer's Ethernet link and error logs during a dropout. It says the UniFi/Grafana budget isn't yet shown to solve the fault and recommends no new equipment now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a sound, bounded cable check that puts off the network rebuild, but the reply has none of the four required labeled lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-home-network.a1",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

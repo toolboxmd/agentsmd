@@ -1,0 +1,13 @@
+For this job, I’d use your phone calendar. The dates stay fixed for the year, so agents and a vector database would add cost and maintenance without improving the reminders.
+
+When the annual statement arrives:
+
+1. Add an event for each contract **14 days before its notice deadline**, titled “Decide whether to renew [contract].”
+2. Include the notice deadline, renewal date, and a link to the statement in the event notes.
+3. Set an alert for that day and a follow-up before the notice deadline.
+
+You make the decision and handle any notice or payment yourself.
+
+If you want to use some of your automation budget, keep the workflow small: **Gmail receives the statement → AI extracts the contracts and dates into a draft → you verify them → n8n creates the calendar events.** Check the extracted dates against the statement before creating reminders.
+
+There’s no need for a vector database here, and Telegram would duplicate a reminder system you already check daily. Start with calendar reminders; automate the annual entry step only if it proves tedious.

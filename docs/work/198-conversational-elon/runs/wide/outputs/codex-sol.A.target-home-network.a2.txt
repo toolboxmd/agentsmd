@@ -1,0 +1,9 @@
+I’d test the desk’s Ethernet cable before buying equipment to fix the drops. Since two other devices stay connected through the same router, the evidence points toward the desk’s connection rather than a whole-network problem. The old cable through a tight grommet is the first suspect, though it isn’t proven.
+
+1. Run a known-good Cat6 cable directly from the desk computer to the router, bypassing the grommet. Use it for several calls.
+2. If drops continue, try another router port, then another Ethernet adapter on the computer.
+3. If the replacement cable fixes it, install a permanent run without pinching or tight bends.
+
+For the upgrade, a sensible layout is **ISP modem/ONT → UniFi gateway → managed switch → desk and other wired devices**, with access points wired to the switch. Add switches where you need more ports; size the gateway for your internet speed and switches for port count and PoE needs.
+
+Grafana can help track outages and correlate them with link changes or port errors where those metrics are available. But neither a dashboard nor a new gateway will repair a damaged desk cable. Prove that connection first, then build the upgrade around your capacity and monitoring needs.

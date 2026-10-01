@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need the nightly report ready by 08:00. The missing runs happen because the laptop sleeps, and successful runs are already correct.
+**Deleted:** Airflow, Kubernetes, and the worker/scheduler/deployment split. Nothing in this job needs them: it is one 3-minute command with no downstream jobs, and a rerun is safe.
+**Bottleneck:** The job runs on a machine that is often asleep at night.
+**Checked myself:** Nothing on the machines. This is based only on what you told me: the command works, the Linux box is always on and you administer it, and the start time doesn't matter.
+
+You're trying to get a correct report every morning by 08:00. The smallest fix is to move the existing command to your always-on Linux machine and run it nightly with a cron entry, for example `0 2 * * * cd /path/to/export && /path/to/venv/bin/python export.py >> ~/export.log 2>&1`. That gives you one crontab line and nothing new to run or maintain.
+
+I'd reject Airflow on Kubernetes even with the budget. It would add a cluster, a scheduler, workers, and a deployment pipeline you'd have to run and watch, and none of that fixes anything this job has actually needed. If you add dependent jobs later, that's the time to revisit.

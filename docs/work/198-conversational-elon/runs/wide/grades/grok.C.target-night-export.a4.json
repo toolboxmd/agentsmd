@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Schedule the existing command with cron on the always-on Linux machine at a fixed time before 08:00, and append stdout and stderr to a log file. It adds nothing optional. It does not mention confirming the interpreter, data access or paths on that machine.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "A finished export before 08:00, asked by you because overnight runs go missing. An Airflow-on-Kubernetes split of workers, scheduler, and deployment, asked by you to match peers and future-proof it.",
+  "Deleted": "Airflow, Kubernetes, and that split. The report still arrives by 08:00 without them: one three-minute command, safe to rerun, with no downstream jobs.",
+  "Bottleneck": "The command never starts because the laptop is asleep.",
+  "Checked myself": "Your account of the three-minute rerunnable export, missing overnight runs, correct output when it runs, the always-on Linux machine you already administer, and the 08:00 deadline with no required start time."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines appear before the bounded cron recommendation; Checked myself relies only on facts the user supplied and claims no tests.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-night-export.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

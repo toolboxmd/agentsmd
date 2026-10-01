@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: swap the desk's Ethernet cable for a known-good one, route it so the grommet doesn't pinch it, and watch whether calls stay stable. Optional additions: none. Not covered: the reply gives no next step if the new cable doesn't fix the drops. The UniFi gateway, managed switches and Grafana dashboard are explicitly rejected as fixes for now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at the desk; a broader network upgrade has no demonstrated need yet.",
+  "Deleted": "UniFi gateway, managed switches, and Grafana as fixes for these dropouts.",
+  "Bottleneck": "The desk\u2019s Ethernet connection is the first suspect; the cable is untested.",
+  "Checked myself": "Only your reported observations: two other devices stay connected, and the older desk cable passes through a tight grommet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply rejects the network stack, recommends a bounded cable swap, and bases its reasoning only on the facts the user reported, with no claimed tests.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

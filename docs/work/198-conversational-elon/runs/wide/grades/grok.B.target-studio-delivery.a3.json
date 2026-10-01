@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: build a small local script that reads the client's ordered code list, sorts the final JPEGs by the code at the start of each filename, and writes the contact-sheet PDF. Optional additions: none; the reply says to hold the DAM budget until a client actually needs tagging, search or a review portal, which is a conditional later step. Unmet needs: none of the four labelled record lines are present, and there is no grounded self-check.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is small and follows the client's code order, and the DAM is deferred only until a real need arises, but the reply has none of the four required record labels.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-studio-delivery.a3",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

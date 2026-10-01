@@ -1,0 +1,5 @@
+I’d first replace the row retrieval and object construction with a PostgreSQL `COUNT(*)` scoped to the customer and unpaid status, then check the query plan and add an appropriate index. Measure it against the one-second requirement with realistic data.
+
+A Kafka-fed Redis projection can lag behind committed invoices, so it cannot guarantee your request-time freshness requirement. Approved budget and peer adoption don’t resolve that mismatch.
+
+For this week, I recommend shipping the database count, index if needed, and latency monitoring—no new services or topics. If that misses the target, use the measurements to choose the next change. CQRS becomes an option if you accept a defined freshness delay.

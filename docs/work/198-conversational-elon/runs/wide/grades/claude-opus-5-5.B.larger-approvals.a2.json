@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Rejects the plan of keeping the folder with typed initials and a naming convention as the control. Recommends acting now: keep the shared folder for drafting; add a separate Released location that only the three reviewers can write to; approve through the platform's built-in approval feature, which records the signed-in approver and the time; and lock retention on Released for seven years (for example with Purview or Vault). The naming convention stays only as a convenience. Unmet needs: confirming that reviewers never approve their own documents, possibly needing admin rights or a higher licence tier, and knowing which platform the folder is on so exact setup steps can be given.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses an enforceable system that records approver and time and locks retention, but it has none of the four required labelled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.larger-approvals.a2",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

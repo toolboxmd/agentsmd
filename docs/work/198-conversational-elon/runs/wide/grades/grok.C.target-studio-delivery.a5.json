@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends one local script that reads the client's code list in order, copies the matching JPEG into a delivery folder with sequence prefixes, builds the contact-sheet PDF from that sequence, and flags any code with zero or multiple matching files. It adds no DAM, AI tagging, semantic search or cloud portal, either now or as an option. Next step: save the code list as a text file and run the script on the next job.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires each job's final JPEGs in the supplied product-code order, plus a contact-sheet PDF. You asked for a DAM with AI tagging, semantic search, and a cloud review portal because other studios are buying them.",
+  "Deleted": "DAM, AI tagging, semantic search, and a cloud review portal. The order is already an exact code list, and every delivered filename already starts with its code.",
+  "Bottleneck": "The hour per delivery spent dragging thumbnails into that order.",
+  "Checked myself": "What you described: one folder of final JPEGs per job, each filename starts with its product code, the client supplies an ordered list of exact codes, and the contact-sheet PDF is written after the manual sort."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded local script that follows the client's code order, and the reply names and removes the whole DAM stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-studio-delivery.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

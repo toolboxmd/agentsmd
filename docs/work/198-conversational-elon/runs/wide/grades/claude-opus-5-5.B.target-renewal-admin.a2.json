@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the agent says to make one phone-calendar event per contract, dated 14 days before each notice deadline, with the renewal date and notice deadline in the event notes. It offers to turn this year's statement into an .ics file in one pass, and to repeat that step each January. It rejects the n8n/Gmail-agent/vector-database/Telegram stack and suggests no extra tools. The one gap is that it never mentions checking that calendar notifications are switched on.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes the small calendar-only recommendation, but none of the four required labeled record lines appear, so every record predicate is false.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-renewal-admin.a2",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,10 @@
+You want a reminder two weeks before each notice deadline so you can decide on every renewal in time. For that, I'd skip the agent stack: n8n, a Gmail agent, a vector database, and a Telegram bot would all be maintaining a problem that a calendar already solves.
+
+**What I recommend instead:** when the statement arrives each January, add one event per contract to your phone calendar, dated two weeks before its notice deadline. Name it something like "Decide: home insurance renewal (notice by 15 Mar)". That's about 15 minutes a year. It uses the app you already check daily, and nothing can cancel or pay on its own.
+
+**Why not the stack:**
+- **Vector database:** it's for searching lots of unstructured text. You have one short list of fixed dates.
+- **Gmail agent:** the statement comes once a year, so there's nothing to monitor in between.
+- **n8n plus Telegram:** this adds a second reminder channel, hosting, credentials, and failure points. A silent workflow failure would mean a missed deadline you'd never notice.
+
+If typing the dates in is the annoying part, send me the statement's contract names and dates. I'll turn them into a calendar file you can import in one tap.

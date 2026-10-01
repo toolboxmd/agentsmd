@@ -1,0 +1,5 @@
+I’d first move the count into PostgreSQL with `SELECT COUNT(*)` and an index suited to the unpaid filter. The endpoint only returns a count, so fetching rows and constructing invoice objects adds unnecessary work. Check the query plan and benchmark it against the one-second target.
+
+A Kafka-fed Redis projection can lag behind committed invoices, so it won’t meet your request-time freshness requirement without extra synchronization or a database fallback. The approved budget doesn’t resolve that mismatch.
+
+For this week, I’d ship the query change, any needed index, and latency measurement in the existing application—no new services or topics. If that still misses one second, we can evaluate a counter updated in the same PostgreSQL transaction as invoice changes. CQRS and Redis become candidates if you can accept an explicit freshness delay.

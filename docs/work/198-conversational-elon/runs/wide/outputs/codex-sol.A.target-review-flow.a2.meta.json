@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.A.target-review-flow.a2",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-review-flow",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "apters, and Jira Align can wait until there\u2019s evidence they solve another problem.\n\nFor your four-engineer team:\n\n- **Assign a primary and backup reviewer to each PR.** Either can approve independently. Use the two engineers already qualified and authorized to approve these changes.\n- **Name a daily review owner.** Rotate this role among qualified approvers. They check the existing tracker each morning and after lunch, and ensure waiting PRs reach an available reviewer.\n- **Make absence handoffs automatic.** When the primary is away, the backup takes ownership immediately. Planned leave includes a handoff of outstanding reviews.\n- **Set a review response target.** Start review within four working hours. If that window passes, the review owner routes it to another authorized approver. This is a response target, not a deadline to approve.\n- **Keep work moving through completion.** Before starting another change, engineers check whether they can unblock a waiting review. Preserve your existing quality checks and approval requirements.\n\nToday, agree on the rotation and assign backups to open PRs. Tomorrow, start the routine using your current tracker. On Friday, spend 20 minutes checking review wait time, completed changes, and any rework or defects.\n\nRun this for two weeks. Aim to bring approval waiting below one working day without increasing rework. Fund additional tooling or planning workshops when you can identify a remaining constraint they would address.\ntokens used\n2,309\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": null
+ },
+ "seconds": 20.9,
+ "valid": true
+}

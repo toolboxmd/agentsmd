@@ -1,0 +1,14 @@
+You want each delivery in the client's code order with a contact sheet, without the hour of dragging thumbnails. A DAM won't fix that: AI tagging, semantic search and a review portal don't know the client's order, and your code list plus filename prefixes already contain it. I recommend a small script instead, which I can build today:
+
+- It reads the client's code list and matches each JPEG by its filename prefix.
+- It puts the images in that order in a delivery folder.
+- It flags any code with no image and any image not on the list.
+- It writes the contact-sheet PDF in the same order.
+
+That turns the hour into one command that runs in under a minute. Keep the DAM budget until you hit a problem it actually solves, such as searching across years of archive.
+
+To build it I need three things:
+
+1. One real code list from a past job, and the format it usually arrives in (spreadsheet, CSV, PDF, or email text).
+2. The path to that job's JPEG folder.
+3. Whether the client wants the files renamed with a sequence number (for example `001_CODE.jpg`), or just ordered in the PDF.

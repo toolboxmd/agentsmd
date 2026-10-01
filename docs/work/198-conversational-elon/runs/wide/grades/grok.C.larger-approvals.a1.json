@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Action now: keep the shared folder for drafts only. A reviewer who did not write the document copies the unchanged file into a reviewer-only area that authors cannot edit or delete. The reviewer's login and the system time are stored with the file, and both are kept for seven years. Optional additions: none. Unmet needs: none flagged, though the reply does not name a specific tool or explain how the system records login and time.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years; authors must not approve their own documents, and later edits must not change that retained version. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.",
+  "Deleted": "Typed initials and a naming convention as the approval control. Anyone who can edit the folder can enter any initials and overwrite the file afterward, so a column and a filename do not preserve the approved bytes, the approver, or the time.",
+  "Bottleneck": "The twelve authors can edit the only shared copy, so an approved document never becomes a version they cannot change.",
+  "Checked myself": "Your statement of the contract rules, the writable shared folder, and the twelve authors and three remote reviewers. I have not seen the contract or the folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply rejects typed initials and naming conventions and picks a protected reviewer-only store that keeps the exact file, the non-author reviewer's login and the time for seven years.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-approvals.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

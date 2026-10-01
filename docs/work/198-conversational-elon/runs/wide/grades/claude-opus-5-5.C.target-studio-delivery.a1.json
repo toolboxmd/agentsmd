@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends one small local script, run per job. It reads the client's ordered code list, matches each code to the JPEG whose filename starts with that code, and writes the contact-sheet PDF in the client's order. It also stops and lists any code with no image or more than one image, plus any image that matches no code, which guards against prefix collisions like AB12 vs AB123. There are no optional additions. The DAM, AI tagging, semantic search and cloud review portal are explicitly removed. The only open need is a real code list and sample filenames, so the script can be built against actual data.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client asked for images in their supplied product-code order; you need the contact-sheet PDF. Nobody has asked for tagging, search, or a review portal.",
+  "Deleted": "DAM, AI tagging, semantic search, cloud review portal.",
+  "Bottleneck": "The hour per delivery spent manually dragging thumbnails into the client's order.",
+  "Checked myself": "Only what you've told me: each filename starts with its product code, one folder per job, and an ordered code list from the client. I haven't seen any files."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A bounded local script that follows the client's code order, with all four record lines present, specific, before the recommendation, and grounded in supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-studio-delivery.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

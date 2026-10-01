@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship no new services or topics this week. Replace the in-memory object counting with a PostgreSQL COUNT(*) query, check the query plan, add an index if it is needed, and confirm the one-second target under representative load. The reply raises request-time freshness as the reason the async Kafka-to-Redis projection doesn't fit. It offers no optional additions now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is the right small fix and keeps request-time semantics, but the reply has none of the four required labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-invoice-count.a3",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

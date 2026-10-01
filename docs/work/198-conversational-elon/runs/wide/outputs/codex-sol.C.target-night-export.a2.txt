@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want a reliable report by 08:00 and something we can ship this week.
+**Deleted:** Airflow, Kubernetes, and separate workers add machinery this export does not need.
+**Bottleneck:** The laptop is often asleep when the export should run.
+**Checked myself:** From the facts you supplied: the command works, takes three minutes, has no downstream jobs, and is safe to rerun; you already administer an always-on Linux machine.
+
+To reliably deliver the report by 08:00, deploy the existing command on that Linux machine as one systemd service with a timer scheduled for 07:30, with missed-run catch-up enabled and logs retained. Keeping the Python command independently runnable preserves future options while keeping this week’s deployment small.

@@ -1,0 +1,10 @@
+We can keep the folder for working drafts, but initials in an APPROVED column and a naming convention won’t meet the signed contract. They don’t reliably identify the approver, prevent self-approval, or preserve the exact approved version against later edits.
+
+For this week’s delivery, I’d keep the authoring workflow and add a controlled release archive that:
+
+- Captures each exact approved version and protects it from alteration or deletion for seven years.
+- Records approval through a named reviewer’s authenticated account, with the approval time linked to that version.
+- Prevents authors from approving their own documents.
+- Requires a new approval and archive entry for every subsequent revision.
+
+The APPROVED column can still show status. I’d ship only documents that have passed those controls; if we can’t establish them before delivery, we should resolve that with the customer before releasing.

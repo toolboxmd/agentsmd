@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked how to split workers, scheduler, and deployment for Airflow on Kubernetes, citing peers and budget, to future-proof the nightly export and ship this week. The requirement that survives is one correct report by 08:00; no one named another job or a dependency.
+**Deleted:** Airflow, Kubernetes, a worker/scheduler/deployment split, and a new platform for future jobs that do not exist yet.
+**Bottleneck:** Missed starts while the laptop sleeps. The export itself already works.
+**Checked myself:** About three minutes, no downstream jobs, safe to rerun over that night's file, deadline 08:00, start time unimportant, always-on Linux machine already in your care.
+
+You are trying to get this export done before 08:00 on nights the laptop is asleep, and to ship that this week.
+Run the existing Python command from one cron entry on that Linux machine, scheduled overnight.
+Airflow on Kubernetes is rejected because it adds a scheduler, workers, and a deployment to operate for a single command.

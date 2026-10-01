@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends a small local script for each job. It reads the client's code list, matches each code to its JPEG by filename prefix, and copies the files into a delivery folder with sequence-numbered names. It then writes the contact-sheet PDF in the same order and reports any codes with no image and any images with no code. It explicitly declines the DAM, adds no optional services, and asks for a sample code list, sample filenames and the client's preference on sequence prefixes before building.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client wants images in their supplied code order; you want to stop losing an hour per delivery to manual ordering and the contact sheet.",
+  "Deleted": "DAM, AI tagging, semantic search, and a cloud review portal. Nobody asked for them, and your filenames already start with the exact codes, so ordering is a lookup, not a search problem.",
+  "Bottleneck": "Hand-dragging thumbnails into order and then building the PDF, about an hour per job.",
+  "Checked myself": "Only what you've told me. I haven't seen your folders, filenames, or the client's code list."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "This is a bounded local fix that follows the client's code list; all four record lines come before the recommendation, and the stack is rejected by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-studio-delivery.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

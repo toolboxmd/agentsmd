@@ -1,0 +1,5 @@
+This week, keep the accounting export on your computer and automate the monthly regional sum there.
+
+The workbook already has region, date, and a signed net amount. Refunds are negative, so each board figure is the sum of that amount for one region and one calendar month. Build a PivotTable on the export: rows for region, columns for month, values as the sum of net amount. When the next file arrives, drop it in and refresh. That is the pipeline.
+
+Airbyte, Snowflake, dbt, and Power BI pay off when you have several systems, shared history, and metrics more than one person maintains. One local workbook does not need a connector, a warehouse, or a model project. Hold that budget until a second source appears or the file no longer opens comfortably on your machine.

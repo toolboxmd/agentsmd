@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends building one small local script now: it reads the client's ordered code list, matches each code to its JPEG by filename prefix, copies the files into a delivery folder with sequence prefixes, and builds the contact-sheet PDF in the client's order. It stops on missing, duplicate or unmatched images. No optional additions are offered. Unmet needs: it has not yet seen a real code list, real filenames or the current PDF method, and it asks for one past job to test against.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client asked for images in their supplied code order. You deliver a contact-sheet PDF. Nobody asked for the DAM, AI tagging, semantic search or review portal; the reason given is that other studios are buying them.",
+  "Deleted": "DAM, AI tagging, semantic search, cloud review portal.",
+  "Bottleneck": "The hour you spend dragging thumbnails into the client's order for each delivery.",
+  "Checked myself": "You told me that filenames start with the product code, that the client sends an ordered code list, and that the finals sit in one folder. I have not seen a real code list, real filenames, or how you build the PDF today."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes a bounded local script that follows the client's list order, and its four record lines are specific, grounded in supplied facts and come before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-studio-delivery.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

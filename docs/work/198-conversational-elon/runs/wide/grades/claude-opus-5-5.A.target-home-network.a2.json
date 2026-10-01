@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: replace the old desk cable with a new Cat6 patch lead routed away from the tight grommet, use the desk for normal calls for a few days, and check the negotiated link speed and interface errors. Optional additions: the agent offers to help read the network logs or write a small ping script that records gaps. Later steps: if drops continue, try another router port, then a USB Ethernet adapter and the power-saving settings. A UniFi gateway, switch and Grafana layout is described for afterwards, to be decided 'on its own merits' once the cable test is done. Unmet needs: none of the four required record labels appears.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply picks a bounded cable swap, puts the UniFi stack after that test, and is missing all four required record labels.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-home-network.a2",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends replacing the desk's Ethernet cable, routing it so it isn't pinched or tightly bent, and then testing several calls. If drops continue, the next steps are to try a different router port and check the computer's Ethernet adapter. It removes the UniFi gateway, managed switches and Grafana rollout from this fix and adds nothing optional for now. The exact fault is still unconfirmed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at the desk; you also requested future-proofing, but no evidence yet shows a network-wide limitation.",
+  "Deleted": "The UniFi gateway, managed switches and Grafana rollout from this call-drop fix.",
+  "Bottleneck": "The desk\u2019s Ethernet path is the first suspect; the exact fault is unconfirmed.",
+  "Checked myself": "Only your reported facts: two other devices stay connected during the dropout, and the old desk cable passes through a tight grommet without a replacement test."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts all four record lines before a bounded cable-swap recommendation, names the stack it rejects, and grounds its claims only in the facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

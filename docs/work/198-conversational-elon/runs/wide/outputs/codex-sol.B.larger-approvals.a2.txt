@@ -1,0 +1,3 @@
+The folder, typed initials, and naming convention cannot satisfy the signed contract because authors can change approved files and initials do not verify who approved them or when.
+You need enforceable approval and retention controls before this week’s delivery.
+I recommend keeping the folder for drafting and adding a controlled release archive that blocks self-approval, records the authenticated reviewer and approval time, and preserves the exact approved version against edits and deletion for seven years.

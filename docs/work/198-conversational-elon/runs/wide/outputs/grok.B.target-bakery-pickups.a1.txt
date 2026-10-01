@@ -1,0 +1,5 @@
+You want every cake due today prepared before its pickup.
+
+Sort the shared counter list so today's cakes stay first and get made before any later order. Payments, stock, and who can see the list are already fine.
+
+Keep next week's partner to a short map of how sales, inventory, and manufacturing would feed that same due-today queue, and go live only after one real pickup day shows today's cakes finished first.

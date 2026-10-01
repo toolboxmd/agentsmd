@@ -1,0 +1,5 @@
+Keep the spreadsheet for visibility, but red overlap formatting and reminders won’t meet your requirement. Two agents can both see an item as available and save overlapping bookings before either notices the colour.
+
+I recommend making one shared reservation service the authority for confirming bookings. It must check and save atomically, with a database constraint that rejects overlapping reservations for the same item—even when agents submit simultaneously. The spreadsheet can remain a view or feed into that service.
+
+If that can’t ship this week, use one designated person to confirm every reservation from both offices, and treat agents’ entries as requests until confirmed. Add the colours as a useful warning, but that temporary process still won’t provide the automatic save-time guarantee you require.

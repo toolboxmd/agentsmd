@@ -1,0 +1,12 @@
+**Requirements and who asked:** you need the report by 08:00 every night (you); runs must stop going missing (observed failure); "future-proof" (you, with no concrete failure or new job behind it yet).
+**Deleted:** Airflow, Kubernetes, and any worker/scheduler split. One 3-minute job with no downstream jobs gives them nothing to orchestrate.
+**Bottleneck:** the laptop sleeps overnight, so the job never starts. The export itself is correct when it runs.
+**Checked myself:** nothing observed directly; I'm relying on what you told me about the command, the sleeping laptop, the missing runs, and the always-on Linux machine you already run.
+
+What you're trying to achieve: a correct report every morning by 08:00 without depending on the laptop being awake.
+
+My recommendation is to move the existing command to your always-on Linux machine and run it with a systemd timer, for example at 02:00 with `Persistent=true`. That way a run missed by a reboot fires at the next boot, and since reruns are safe, a manual rerun is always a fine fix. It adds nothing new for you to maintain, and you can ship it today rather than this week.
+
+Airflow on Kubernetes would mean running a cluster, a scheduler, a metadata database and workers just to start one command. That is the wrong trade until you have real dependencies between jobs. Spending the budget on it doesn't make this job more reliable; moving it off the laptop does.
+
+One thing I can't confirm from here: whether the export's credentials, Python environment and output location work on the Linux machine. Check that with one manual run there before enabling the timer.

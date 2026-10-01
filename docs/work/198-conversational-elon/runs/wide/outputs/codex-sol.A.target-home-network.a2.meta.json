@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.A.target-home-network.a2",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-home-network",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "elopment features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.A.target-home-network.a2-gm6x500v/home/.codex/config.toml.\ncodex\nI\u2019d test the desk\u2019s Ethernet cable before buying equipment to fix the drops. Since two other devices stay connected through the same router, the evidence points toward the desk\u2019s connection rather than a whole-network problem. The old cable through a tight grommet is the first suspect, though it isn\u2019t proven.\n\n1. Run a known-good Cat6 cable directly from the desk computer to the router, bypassing the grommet. Use it for several calls.\n2. If drops continue, try another router port, then another Ethernet adapter on the computer.\n3. If the replacement cable fixes it, install a permanent run without pinching or tight bends.\n\nFor the upgrade, a sensible layout is **ISP modem/ONT \u2192 UniFi gateway \u2192 managed switch \u2192 desk and other wired devices**, with access points wired to the switch. Add switches where you need more ports; size the gateway for your internet speed and switches for port count and PoE needs.\n\nGrafana can help track outages and correlate them with link changes or port errors where those metrics are available. But neither a dashboard nor a new gateway will repair a damaged desk cable. Prove that connection first, then build the upgrade around your capacity and monitoring needs.\ntokens used\n2,211\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": null
+ },
+ "seconds": 15.3,
+ "valid": true
+}

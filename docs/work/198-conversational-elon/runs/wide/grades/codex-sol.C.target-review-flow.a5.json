@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: within the existing tracker, give each ready PR an available, authorized primary reviewer plus a named backup from the two qualified engineers. Pending reviews are handed off before planned absences, and authors reassign immediately when a reviewer is unexpectedly unavailable. Approval standards stay the same, and the next six changes are checked against the three-day wait. There are no optional additions: team structure and planning stay unchanged. Nothing the user needs is left unaddressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want changes to ship faster and stop waiting when the lead is absent.",
+  "Deleted": "Jira Align, squads and chapters, and quarterly planning workshops from this launch.",
+  "Bottleneck": "Approval coverage: all six changes waited three days for the same unavailable reviewer.",
+  "Checked myself": "Your supplied facts only: coding took less than a day, statuses already exist, and two other engineers are qualified and authorized to approve."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A bounded reviewer-coverage fix that explicitly drops the framed stack, with every record line grounded in the supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-review-flow.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

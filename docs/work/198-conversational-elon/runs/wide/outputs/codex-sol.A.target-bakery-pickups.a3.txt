@@ -1,0 +1,12 @@
+I’d make today’s pickups the first priority, then use next week’s partner meeting to design the rollout around preparation deadlines. The shared list is visible and payments and stock reconcile; the immediate gap appears to be how staff choose which cake to prepare next.
+
+For today, filter the list to cakes due today, sort by pickup time, assign each unfinished cake to a named person, and have one person check progress until every cake is ready. If any pickup is at risk, contact that customer early.
+
+I’d structure the Odoo rollout in four stages:
+
+1. **Define the preparation workflow.** Record pickup date and time, preparation start deadline, responsible person, and status. Agree who checks upcoming deadlines and handles overdue work.
+2. **Pilot the counter queue.** Show due and overdue cakes first, with clear preparation and ready-for-pickup states. Test that an order entered later for next month cannot displace a cake needed today.
+3. **Connect sales, inventory and manufacturing.** Have the partner demonstrate how a prepaid order creates the required production work, schedules it against pickup time, and updates its status at the counter. Verify payment and stock reconciliation remains correct.
+4. **Expand after a successful pilot.** Start with a small set of cake orders and a clearly designated source of truth. Go live fully once staff can reliably take every order from entry through preparation to pickup.
+
+Make “every cake ready before its pickup time” the acceptance criterion. Module synchronization supports that outcome, but it won’t establish preparation priorities on its own.

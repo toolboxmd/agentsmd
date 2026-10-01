@@ -1,0 +1,8 @@
+**Requirements and who asked:** The owner requires conflicting reservations to be rejected at save time, including simultaneous submissions.
+**Deleted:** Colours and reminders as the conflict-prevention mechanism.
+**Bottleneck:** Two agents can both save unless checking availability and reserving the item happen as one indivisible operation.
+**Checked myself:** You reported six agents, two offices, and a double booking last week; I have not inspected the spreadsheet.
+
+You want to prevent two customers being promised the same physical item for overlapping dates. I recommend keeping the spreadsheet only if every reservation save can pass through one shared, enforced check that accepts one submission and rejects the conflicting one, with no bypass.
+
+Red formatting cannot meet the owner’s requirement. This week’s acceptance test should be two agents submitting overlapping bookings together: exactly one succeeds.

@@ -1,0 +1,5 @@
+You want to decide about each renewal two weeks before its notice deadline, using the phone calendar you already check daily.
+
+I recommend one annual setup: copy and verify the dates from the statement, then create a calendar reminder for each contract **14 days before its notice deadline**, with the notice deadline and renewal date in the notes and a notification enabled.
+
+Because those dates stay fixed for the year, n8n, a Gmail agent, a vector database and a Telegram bot would add maintenance without improving the reminder; keep the budget and leave cancellation and payment decisions with you.

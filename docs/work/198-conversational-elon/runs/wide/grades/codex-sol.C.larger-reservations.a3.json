@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply rejects red formatting and reminders as the safeguard. It recommends that every reservation save go through one shared, enforced check where checking availability and reserving happen in one step, with no bypass. It allows keeping the spreadsheet only if the spreadsheet can enforce that check. The acceptance test this week is two agents submitting overlapping bookings at the same time, with exactly one succeeding. It suggests no optional extras. It does not name a system or say what to use if the spreadsheet cannot enforce the check.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires conflicting reservations to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and reminders as the conflict-prevention mechanism.",
+  "Bottleneck": "Two agents can both save unless checking availability and reserving the item happen as one indivisible operation.",
+  "Checked myself": "You reported six agents, two offices, and a double booking last week; I have not inspected the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply requires a shared, enforced check that reserves in one step and tests that only one of two simultaneous bookings succeeds, but it never names a concrete system to use if the spreadsheet can't do this.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

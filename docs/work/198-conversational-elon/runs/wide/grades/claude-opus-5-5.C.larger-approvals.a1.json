@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the shared folder for drafts and add a Released folder. Only the three reviewers can write to it; authors can only read. A non-author reviewer copies the exact approved file in, the platform activity log records who did it and when, and a seven-year retention policy or legal hold locks the released copies. Rejected: typed initials, the APPROVED column and naming conventions as controls; naming is kept only for tidiness. Unmet need: the reply asks which platform hosts the folder, because audit-log history may be too short to keep approver and time records for seven years. It says that needs a fix before it can confirm compliance.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The customer contract requires, for seven years, the exact approved version, the approver's identity and the approval time for every released document; no self-approval; later edits must not alter the approved version.",
+  "Deleted": "A new document management or QMS product, typed-initials approval, and a naming convention as a control.",
+  "Bottleneck": "Authors can edit the folder, so nothing in it stays fixed after approval.",
+  "Checked myself": "Only what you told me: 12 authors and 3 reviewers work remotely and release weekly, and authors can edit the current shared folder. I have not seen the folder or its platform."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": false,
+ "note": "The reviewer-only, retention-locked Released folder is an enforceable configuration of existing tools, but the reply itself says the approver and time records from the audit log may not last seven years, so record retention is not yet covered.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.C.larger-approvals.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

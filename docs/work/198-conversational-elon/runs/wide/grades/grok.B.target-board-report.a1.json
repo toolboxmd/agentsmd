@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: build a reusable rollup in the existing workbook with Excel Power Query, or a short script rerun on each export, grouping by region and month and summing signed net amounts so refunds stay included. Optional additions: none. Airbyte, Snowflake, dbt and Power BI are put off until a second data source arrives or the file outgrows one machine. Unmet needs: none beyond the record labels.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation itself is a bounded fix inside the workbook, with the stack deferred only on stated conditions, but none of the four required record labels appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-board-report.a1",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

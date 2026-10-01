@@ -1,0 +1,5 @@
+You want double bookings stopped at save time, and red formatting alone won't do that. It only flags a clash after both bookings are saved, and two agents saving at the same moment will both succeed. Last week's problem can still happen.
+
+I recommend shipping the colours this week as a stopgap, and telling the owner plainly that it does not meet their rule. Alongside that, the smallest thing that does meet it is a small database that refuses overlapping dates for the same item. In PostgreSQL that is one exclusion constraint on item identifier plus date range, and the database enforces it even when two saves arrive together. Agents would book through a simple form instead of typing into the sheet, and the sheet can stay as a read-only view.
+
+Should I sketch that table and form, or does the owner need to approve the change from the spreadsheet first?

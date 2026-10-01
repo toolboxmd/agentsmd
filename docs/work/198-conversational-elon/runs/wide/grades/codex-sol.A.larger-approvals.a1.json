@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Keep the shared folder for drafting only. Add a controlled release step now: a reviewer other than the author approves through an individually authenticated account, and each release stores the exact approved file, the approver identity and the approval time in a separate archive. Authors cannot alter that archive, and retention controls keep it for seven years. Later edits need a new approval. The APPROVED column can stay as a status indicator only. The reply says the protections still need to be checked before shipping. It names no specific tool or configuration.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply turns down the initials and naming-convention plan and chooses a controlled release archive that has every LARGER capability, but none of the four required record labels appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.larger-approvals.a1",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

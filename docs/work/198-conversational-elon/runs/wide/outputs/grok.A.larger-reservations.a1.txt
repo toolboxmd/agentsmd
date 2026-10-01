@@ -1,0 +1,7 @@
+Keep the sheet as a view if you want, but ship a save that refuses the second booking. Red conditional formatting and a reminder still let both reservations through. Last week’s double booking is what that looks like with six agents in two offices: both can save the same item for overlapping dates before either cell turns red.
+
+The owner’s rule is a reject at save time, including when two agents submit together. That needs one record per physical item and a check that runs inside the save, not after it. Lock that item, compare the requested dates with existing reservations, and if they overlap, refuse the save and name the booking that already holds it. One commit wins and the other is rejected, even if both agents hit save at the same moment.
+
+A spreadsheet formula cannot do that. Two edits can both read the item as free and then both write. A small bookings table can: item id, start, end, customer, with a constraint that one item cannot have overlapping dates. The sheet can stay as a colored export of that data once the reject is in place.
+
+I would not spend this week on colours as the control. I would add the lock-and-reject save first, then colour the sheet from the data it already protected. I can sketch that table and the exact save rule next if you want it.

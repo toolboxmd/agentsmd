@@ -1,0 +1,3 @@
+I recommend shipping no new services or topics for this count: an asynchronous CQRS projection can lag behind committed invoices, so it cannot guarantee the freshness you require.
+You need an accurate count within one second; the smallest solution is a PostgreSQL `COUNT(*)` query that avoids fetching rows and constructing invoice objects.
+Check its query plan, add an appropriate index if needed, and measure latency under representative load before claiming the one-second target is met.

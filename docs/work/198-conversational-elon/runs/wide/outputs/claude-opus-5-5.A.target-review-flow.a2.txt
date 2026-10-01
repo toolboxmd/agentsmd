@@ -1,0 +1,35 @@
+I'd hold off on squads/chapters and Jira Align. Your last six changes each took under a day to code, then waited three days for approval. Every one had you as the only reviewer while you were away. The bottleneck is a single-reviewer dependency, and new tooling or planning workshops won't fix it. With four engineers in one time zone, you can fix it this week at no cost.
+
+## The operating model
+
+**1. Any one of three qualified reviewers can approve**
+- Make you and the two qualified engineers a reviewer group, using a team or CODEOWNERS entry in your repo host.
+- Require **one** approval from the group, not approval from you specifically.
+- Auto-assign reviews round-robin so the load is spread out by default.
+
+**2. Review response target**
+- Reviewers respond within **4 working hours** of a PR being ready. A response means approve, request changes, or hand it off.
+- Since you're all in one time zone, this works without on-call schedules.
+
+**3. Absence rule**
+- When anyone is out, they mark it in the tracker or calendar, and auto-assignment skips them.
+- The author doesn't wait for or ping someone who is away.
+
+**4. Escalation for anything you must see**
+- If some changes truly need your sign-off (security, architecture), list those paths explicitly in CODEOWNERS.
+- Everything else goes through the shared group. Keep that list short.
+
+**5. Measure it**
+- Track time from "PR ready" to "approved" in your existing tracker for the next 2–3 weeks.
+- Compare against the current three days. If it drops to hours, you have your answer.
+
+## Rollout this week
+- **Day 1:** Agree the rule with the team in a 15-minute conversation: who approves, the response target, and the absence rule.
+- **Day 1–2:** Configure the reviewer group, required approvals, and auto-assignment.
+- **Day 2 onward:** Re-assign any PRs currently waiting on you to the other two reviewers.
+- **In 2–3 weeks:** Review the cycle-time numbers.
+
+## When to revisit the bigger ideas
+Squads, chapters, and Jira Align address coordination across many teams. That becomes worth funding at roughly 3+ teams or 25+ engineers, or when you can't see dependencies across teams. If you want to spend money now, small things like PR review reminders in chat or a cycle-time dashboard will pay off more than portfolio tooling.
+
+If you tell me your repo host (GitHub, GitLab, Bitbucket), I can draft the CODEOWNERS file and branch protection settings for you.

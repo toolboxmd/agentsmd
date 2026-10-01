@@ -1,0 +1,11 @@
+**Requirements and who asked:** A monthly board figure for net sales by region, from one local Excel export with region, date, and signed net amount. You asked for that figure. You also asked for Airbyte, Snowflake, dbt, and Power BI this week because peers use them and you have budget.
+
+**Deleted:** Airbyte, Snowflake, dbt, and Power BI. The export is already on your computer and fits there, so there is nothing to sync, warehouse, model, or publish.
+
+**Bottleneck:** The regional month totals are still built by hand. A PivotTable on that same sheet removes the wait.
+
+**Checked myself:** Your description of the single local workbook, the three columns, refunds stored as negatives, and the hand totals. I did not open the file.
+
+You want the same monthly net-sales-by-region total each time the export arrives.
+
+Add a PivotTable on the sheet: region on rows, month from the date on columns, sum of the signed amount as values. Refresh it when accounting sends the next file.

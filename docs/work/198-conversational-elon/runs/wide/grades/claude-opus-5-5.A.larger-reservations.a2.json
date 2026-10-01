@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Ship red overlap formatting and a daily-reviewed Conflicts view this week, labelled as an interim detection measure. The chosen fix is to move booking into a Google Sheets form or sidebar backed by a script. The script takes a lock, checks the item's dates for overlaps, and either writes the row or rejects the booking; booking columns are protected so only the script can write to them. This rejects simultaneous conflicting submissions at save time. A Postgres exclusion constraint is offered as a later option. Unmet needs: which spreadsheet platform is used, the column layout, and whether end dates are inclusive. The reply also notes the script only works if nobody bypasses the form.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply rejects colours as the safeguard and picks a locked server-side script that turns away concurrent conflicting bookings, but it has none of the four required record labels.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.larger-reservations.a2",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

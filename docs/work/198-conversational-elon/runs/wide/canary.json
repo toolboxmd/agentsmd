@@ -1,0 +1,56 @@
+{
+ "codex-sol.A": {
+  "pass": true,
+  "expected": "NONE",
+  "reply": "no\nNONE",
+  "attempts": 2
+ },
+ "codex-sol.B": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n\"# Global Agent Rules\"",
+  "attempts": 2
+ },
+ "codex-sol.C": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n\"# Global Agent Rules\"",
+  "attempts": 2
+ },
+ "grok.A": {
+  "pass": true,
+  "expected": "NONE",
+  "reply": "no\nNONE",
+  "attempts": 2
+ },
+ "grok.B": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n# Global Agent Rules",
+  "attempts": 2
+ },
+ "grok.C": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n# Global Agent Rules",
+  "attempts": 2
+ },
+ "claude-opus-5-5.A": {
+  "pass": true,
+  "expected": "NONE",
+  "reply": "no\nNONE",
+  "attempts": 2
+ },
+ "claude-opus-5-5.B": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n\"# Global Agent Rules\"",
+  "attempts": 2
+ },
+ "claude-opus-5-5.C": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n\"# Global Agent Rules\"",
+  "attempts": 2
+ }
+}

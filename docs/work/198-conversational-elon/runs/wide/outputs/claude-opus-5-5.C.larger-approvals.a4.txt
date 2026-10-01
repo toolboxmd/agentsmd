@@ -1,0 +1,13 @@
+**Requirements and who asked:** The customer contract requires three things for seven years: the exact approved version of each document, the approver's identity, and the approval time. It also requires that no author approves their own document, and that later edits never change the approved copy.
+**Deleted:** The typed-initials column and the naming convention as controls. Any of the 12 authors can type anyone's initials, edit the cell, or overwrite the file, so neither proves who approved, when, or what. Also deleted: a new document management or e-signature product.
+**Bottleneck:** The contract fails today because authors can write to where approved documents live.
+**Checked myself:** Only what you told me. I have not seen which platform hosts the folder or what retention and audit features it has.
+
+You need contract-compliant approvals live this week with the least new process. I don't recommend shipping the initials column, because it would fail the first customer audit on every requirement.
+
+Instead, keep your current folder for drafts and add one **Released** folder:
+- Only the three reviewers can write to it. Authors get read-only access, so they cannot approve their own work.
+- To approve, a reviewer saves the exact file there, ideally as a PDF. The platform then records the reviewer's account and a server timestamp.
+- Turn on a seven-year retention lock for that folder so the approved copy cannot be edited or deleted. Keep the platform's audit log for the same period.
+
+The unknown is whether your platform supports a retention lock and a seven-year audit log. Microsoft 365 and Google Workspace both do on business plans. Which one is the folder on, and is any reviewer also an author?

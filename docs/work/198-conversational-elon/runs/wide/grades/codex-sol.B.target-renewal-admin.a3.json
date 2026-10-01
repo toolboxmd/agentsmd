@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends one annual setup now: take the dates from the statement, check them, and create a phone-calendar reminder for each contract 14 days before its notice deadline, with the notice deadline and renewal date in the notes and a notification turned on. It rejects n8n, the Gmail agent, the vector database and the Telegram bot as maintenance that would not improve the reminder. Cancellation and payment decisions stay with the user, and no optional additions are offered. One gap: it never states that the notification settings have not been checked.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is the right small fix, but none of the four required record labels appear, so the label-based checks all fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-renewal-admin.a3",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

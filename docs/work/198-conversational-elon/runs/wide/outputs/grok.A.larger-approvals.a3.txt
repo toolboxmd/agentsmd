@@ -1,0 +1,16 @@
+The shared folder, an APPROVED column of typed initials, and a naming convention leave the signed requirements unmet. I would not ship that as the control for this week’s delivery.
+
+The contract requires every released document to keep its exact approved content, the approver’s identity, and the approval time for seven years. The author cannot be the approver, and later edits must leave that approved copy unchanged.
+
+All twelve authors can still edit the shared folder. Anyone with access can type or change any initials, and those initials are not bound to one frozen file or to a system-recorded time. A naming convention can be overwritten on the next save. A later edit still replaces the file that would be treated as the approved version, and nothing stops an author from approving their own document.
+
+Keep that folder for drafts. For this week’s delivery, add a release archive that authors cannot edit or delete:
+
+1. The author finishes a draft and records their name as the author.
+2. One of the three reviewers, someone other than that author, checks the document.
+3. That reviewer copies that exact file into the archive and stores a checksum of the file, their own login identity, and the system time of the approval with it.
+4. Send the customer the archive copy.
+5. Any later change is a new draft and needs a new approval. The earlier file and its approval record stay as they were.
+6. Retain the archive and approval records for seven years, with routine edit and delete blocked.
+
+Identity and time have to come from the reviewer’s own authenticated action, such as a commit, an approval action, or a message from that account saved with the file. The three reviewers can run this on top of the folder the authors already use, in time for the delivery.

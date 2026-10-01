@@ -1,0 +1,21 @@
+Yes, ship the red highlighting this week as a stopgap. But it **does not meet the owner's requirement**, and I'd tell them that plainly so nobody assumes the double-booking problem is solved.
+
+**Why colours aren't enough**
+
+- **Nothing is rejected.** Formatting only highlights a clash after it's saved. The booking still goes in, and the customer may already have been promised the item.
+- **It relies on someone noticing.** Six agents in two offices, under time pressure, will miss a red cell sometimes. Last week's incident is exactly that kind of miss.
+- **Simultaneous submits still collide.** If two agents book the same item at the same moment, both saves succeed. The red shows up only afterwards.
+
+**What I'd recommend**
+
+1. **This week (stopgap):**
+   - Add the overlap highlighting, keyed on item ID plus date ranges.
+   - Add a simple "Conflicts" view or filter that lists every clash.
+   - Have one person check it at set times, e.g. mid-morning and end of day.
+   - Tell agents not to confirm with the customer until the row has been saved and shows no red.
+
+2. **Next (actually meets the requirement):** move bookings into a small database that refuses overlapping reservations itself. For example, PostgreSQL can enforce "no two bookings for the same item with overlapping dates" as a constraint. Two agents submitting together then get one success and one clear "already booked" error, every time. Agents would use a simple booking form, and you can still export to a spreadsheet for viewing and reporting.
+
+3. **If you must stay in Google Sheets for now:** bookings could go through a form backed by a script. The script takes a lock, checks for overlaps, and only then writes the row, so clashes are rejected even when two agents submit together. This is weaker than a database constraint, though. Anyone typing directly into the sheet bypasses it, so you'd need to lock editing down.
+
+I can set up the conditional formatting rule now, and in parallel sketch the database or form option so you can show the owner a realistic timeline. Which spreadsheet are you using: Google Sheets or Excel?

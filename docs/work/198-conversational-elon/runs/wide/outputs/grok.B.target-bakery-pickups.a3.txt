@@ -1,0 +1,1 @@
+You want every cake due today finished before its pickup. Sort the shared order list by pickup date, soonest first, and prepare from the top. I would pause the Odoo partner: payments and stock already reconcile, and the list is already at the counter, so the miss was making later orders before today's.

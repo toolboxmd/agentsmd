@@ -1,0 +1,5 @@
+Your goal is to deliver a contact-sheet PDF in the client’s exact product-code order without spending an hour arranging thumbnails.
+
+This week, I recommend a small local tool that reads the client’s ordered code list, matches it to JPEG filename prefixes, flags missing or ambiguous matches, and generates the PDF in that order; validate it on a real job before using it for delivery.
+
+Defer the DAM purchase until you have a demonstrated need for asset discovery or online review: AI tagging and semantic search do not solve this ordering problem.

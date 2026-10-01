@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply says to work from the existing shared list as a daily preparation queue. Staff pick out every unfinished order due today, confirm pickup times, give each cake to a named preparer, bake earliest pickup first and tell the owner about any cake that can't be ready in time. It recommends pausing the Odoo rollout and using next week's partner appointment only to find out what the current system can't do. No ERP or sync work is recommended now, and no unmet needs are named.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup; you proposed Odoo to prevent missed pickups.",
+  "Deleted": "A synced sales, inventory and manufacturing rollout as the fix for this incident.",
+  "Bottleneck": "Today\u2019s preparation is waiting while later pickups get prepared; the existing list already contains pickup dates and status.",
+  "Checked myself": "From your account, staff can read the shared list, payments and stock reconcile, and today\u2019s cakes remain unmade."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives a bounded due-today preparation queue built from the existing list, drops the synced Odoo rollout and bases its checks only on facts the user supplied, credited to the user's account.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-bakery-pickups.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

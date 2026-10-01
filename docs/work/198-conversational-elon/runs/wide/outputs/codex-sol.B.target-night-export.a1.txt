@@ -1,0 +1,3 @@
+The goal is a correct report by 08:00; laptop sleep is the likely cause of missed runs, and Airflow on Kubernetes adds complexity this workload does not currently need.
+I recommend shipping the existing Python command on your always-on Linux machine: one systemd service runs the export, one systemd timer schedules it at 07:00 with `Persistent=true` to catch missed starts, and deployment consists of the script, its environment, and those two unit files.
+Keep the command independently runnable and safe to rerun; add separate workers or orchestration when dependencies, concurrency, or observed failures justify them.

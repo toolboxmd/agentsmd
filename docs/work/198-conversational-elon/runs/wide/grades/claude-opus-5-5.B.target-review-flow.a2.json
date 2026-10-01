@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends launching three interchangeable reviewers (the lead plus the two qualified engineers), with requests rotating or going to whoever is free. It adds a 4-working-hour review deadline after which any of the three can pick up the PR, and it tracks ready-to-approved wait time in the existing tracker. It skips squads, chapters, Jira Align and workshops for now and would revisit tooling only if wait time stays high after a couple of weeks. It ends by asking the user to confirm the lead will no longer be the default sole approver. Unmet need: it has no labeled decision record.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix itself is a bounded reviewer-coverage change, but the reply has none of the four required labeled record lines, so every record check fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-review-flow.a2",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

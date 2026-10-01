@@ -1,0 +1,16 @@
+I’d build this week’s workflow around the client’s ordered product-code list. That list and your filename prefixes already provide the information needed to automate the hour you spend arranging thumbnails.
+
+A small local delivery tool could:
+
+- Read the client’s code list and the job’s JPEG folder.
+- Match filenames to exact product codes, flagging missing products, unmatched files and products with multiple images.
+- Generate a contact-sheet PDF in the client’s order, with product codes beneath the thumbnails.
+- Save a delivery manifest so the order is explicit and repeatable.
+
+If a product has several images, we’ll need a consistent rule for their order, such as a filename suffix. The tool should flag ambiguity before producing the final PDF.
+
+This week, I’d build that flow, check it against a completed delivery, then use it on a live job. Keep the original JPEG filenames intact.
+
+A DAM may still be useful for searching your archive or managing client reviews, but AI tagging and semantic search won’t improve this exact-code ordering task. I’d assess those needs separately before spending the budget.
+
+What format does the client’s ordered list arrive in—Excel, CSV, PDF or email text—and can you share a few example codes and filenames?

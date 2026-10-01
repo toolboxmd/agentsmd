@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply says to make the two other qualified engineers default reviewers, where any one approval merges. It adds a rotation or auto-assign, keeps a short list of changes only the lead can approve, and sets a 4-hour review expectation with backup pickup. It also reassigns the PRs currently waiting on the lead and tracks review time in the existing tracker. It defers Jira Align and the quarterly workshops unless a planning or coordination problem shows up. As an optional extra it offers a short norms session or a rotation bot. That meets the user's need for changes to stop waiting while the lead is away.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is a bounded reviewer-coverage change and the stack is only a conditional later step, but none of the four required labeled lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-review-flow.a3",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

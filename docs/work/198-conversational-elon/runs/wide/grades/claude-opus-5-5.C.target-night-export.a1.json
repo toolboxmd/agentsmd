@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the agent recommends moving the existing command to the always-on Linux machine and running it from one cron entry, for example at 03:00, which leaves time to rerun it by hand. It adds nothing optional: it explicitly skips Airflow and Kubernetes. Still unmet: the agent needs the user's approval and the hostname before installing, and the interpreter and paths on that machine haven't been checked.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the nightly report ready by 08:00, and runs are being missed because the laptop sleeps. \"Future-proofed\" and \"Airflow on Kubernetes\" come from what peers use, not from any failure we've seen.",
+  "Deleted": "Airflow, Kubernetes, separate workers and scheduler, and new deployment infrastructure. A three-minute job with no downstream jobs and safe reruns needs none of them.",
+  "Bottleneck": "The job runs on a machine that is asleep at night. The code works.",
+  "Checked myself": "Nothing on the machines. This is all from what you told me: the command works, the laptop sleeps, you already run an always-on Linux box, and reruns are safe."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a cron-on-existing-server recommendation, and the Airflow/Kubernetes stack is explicitly removed.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-night-export.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

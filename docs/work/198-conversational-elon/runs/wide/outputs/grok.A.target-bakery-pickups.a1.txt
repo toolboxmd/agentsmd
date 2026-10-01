@@ -1,0 +1,23 @@
+Structure the rollout around one rule: the counter shows cakes by pickup date, with anything due today and still unmade at the top. Sales, inventory, and manufacturing only go live once that queue is what the bakers work from.
+
+**Before the partner arrives**
+
+Keep the shared order list. Sort it by pickup date, then by preparation status, so today's unmade cakes sit above anything entered later for next month. Use that sorted list as the kitchen queue until Odoo matches it. Payments and stock can stay as they are.
+
+**What to configure, in this order**
+
+1. **Sales.** One confirmed order per prepaid cake, with customer and a required pickup date. The date the order was typed in is only a record of when it was entered. The kitchen sequence uses the pickup date.
+2. **Manufacturing.** A bill of materials for each cake. Confirming the sale creates a manufacturing order scheduled to finish before that pickup. The counter view defaults to orders due today and anything overdue, sorted by pickup time. Orders for next month stay on the books and off today's make list.
+3. **Inventory.** Put ingredients on those bills of materials so finishing a cake consumes stock the same way you already reconcile it. Turn this on only after the recipes and the counter queue are stable.
+4. **Counter.** One shared screen everyone preparing cakes already stands at: customer, pickup time, and preparation status. Mark the cake done there when it is finished. That screen is the same filtered list, not a second copy of the order book.
+
+**Sequence with the partner**
+
+- Days 1–2: walk through the current fields, statuses, and a normal pickup day. Agree that a later order is prepared only after today's queue is clear.
+- Days 3–4: load products and sales orders in a test database, including one cake due today and one due next month that was entered afterward.
+- Day 5: turn on manufacturing orders and the counter filter. Replay this morning: the today cake stays first, and the next-month cake does not get made.
+- The next service days: run Odoo beside the shared list. Each morning, compare "due today and unmade" in both places before baking starts. Stop double entry after two or three days match and no same-day cake is skipped.
+
+**Go-live check**
+
+A cake due today appears on the counter as soon as the order is confirmed, ahead of any order with a later pickup date. Everyone at the counter sees the same status. A cake for next month can be entered and stays off today's make list.

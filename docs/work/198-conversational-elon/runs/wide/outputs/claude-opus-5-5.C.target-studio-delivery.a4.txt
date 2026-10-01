@@ -1,0 +1,14 @@
+**Requirements and who asked:** The client asked for images in their supplied code order. You need a contact-sheet PDF with each delivery. You asked to cut the hour spent per delivery.
+**Deleted:** DAM, AI tagging, semantic search, and the cloud review portal. No client requirement needs them, and the exact product code at the start of each filename already identifies every image.
+**Bottleneck:** The hour of hand-dragging thumbnails into the client's order before building the PDF.
+**Checked myself:** Only what you've told me: the client sends an ordered list of exact codes, each final JPEG's filename starts with its code, and each job's JPEGs sit in one folder. I haven't seen a real list or folder.
+
+You want each delivery in the client's code order with a contact sheet, without the manual hour. I recommend one small local script that does three things:
+
+1. Reads the client's code list.
+2. Matches each code to its JPEGs by filename prefix. It treats `AB12` and `AB123` as different codes.
+3. Writes the contact-sheet PDF in that order.
+
+It also stops and lists any code with no image and any image with no code, so a delivery is never silently wrong. I can build it this week, and it will turn your hour into a single command per job with nothing new to maintain.
+
+To build it, send me one real client code list in the format you receive it (CSV, spreadsheet, or email text) and that job's folder path. Also tell me whether the delivered files themselves need renaming with sequence numbers, or whether only the PDF needs to follow the client's order.

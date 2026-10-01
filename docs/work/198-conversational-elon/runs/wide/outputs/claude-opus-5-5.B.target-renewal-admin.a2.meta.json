@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.B.target-renewal-admin.a2",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "B",
+ "arm_sha256": "57470662266ca15a7587ccf9486a5132e09f428f87e80e69e127ace27d91590a",
+ "scenario": "target-renewal-admin",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 8.6,
+ "valid": true
+}

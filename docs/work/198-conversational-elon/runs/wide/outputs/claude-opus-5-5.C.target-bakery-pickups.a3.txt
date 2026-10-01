@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup.
+**Deleted:** Odoo sales, inventory and manufacturing modules and the counter sync. Payments and stock already reconcile correctly, and the shared list already holds pickup date and status where the bakers can read it.
+**Bottleneck:** Prep order. Cakes were made in the order they were entered, not by pickup date, so next month's orders got made before today's.
+**Checked myself:** Only what you told me: the list's fields, that it is readable at the counter, this morning's miss, and that payments and stock are fine. I have not seen the list itself.
+
+You want no pickup missed, and Odoo would not fix that: the data is already there, but nobody works it in date order. My recommendation is to sort the existing list by pickup date, earliest first, and set one rule: bake from the top, and never start a later date while an earlier one is unmade. Add a quick morning check that every row due today is marked in progress or done.
+
+I'd postpone or cancel next week's implementation partner booking, since it costs money and adds a system for a problem it doesn't address. That's your call. Tell me which app the list lives in and I'll set up the sort and the today view.

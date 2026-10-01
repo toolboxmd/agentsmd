@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Do now: keep the current folder for drafts and add a separate Released folder. Only the three reviewers can write to it; authors get read-only access. A reviewer approves by saving the exact file there, ideally as a PDF, so the platform records the reviewer's account and a server timestamp. Set a seven-year retention lock on the folder and keep the platform's audit log for the same period. Optional additions: none. Unmet needs: it is not yet confirmed that the platform supports a retention lock and a seven-year audit log, or that no reviewer is also an author. The reply asks the user about both.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The customer contract requires three things for seven years: the exact approved version of each document, the approver's identity, and the approval time. It also requires that no author approves their own document, and that later edits never change the approved copy.",
+  "Deleted": "The typed-initials column and the naming convention as controls. Any of the 12 authors can type anyone's initials, edit the cell, or overwrite the file, so neither proves who approved, when, or what. Also deleted: a new document management or e-signature product.",
+  "Bottleneck": "The contract fails today because authors can write to where approved documents live.",
+  "Checked myself": "Only what you told me. I have not seen which platform hosts the folder or what retention and audit features it has."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply rejects the initials column and chooses an enforced setup of existing tools: reviewer-only write access, platform-recorded identity and time, and a retention lock covering seven years.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-approvals.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,8 @@
+**Requirements and who asked:** The client asked for images in their supplied product-code order; you need the contact-sheet PDF. Nobody has asked for tagging, search, or a review portal.
+**Deleted:** DAM, AI tagging, semantic search, cloud review portal.
+**Bottleneck:** The hour per delivery spent manually dragging thumbnails into the client's order.
+**Checked myself:** Only what you've told me: each filename starts with its product code, one folder per job, and an ordered code list from the client. I haven't seen any files.
+
+You want to deliver each job in the client's order without the hour of manual sorting. I recommend one small local script that you run per job. It reads the client's code list, matches each code to the JPEG whose filename starts with it, and writes the contact-sheet PDF in that order. It also stops with a clear list if any code has no image, more than one image, or if an image matches no code. That last check matters because a code like `AB12` could otherwise also match `AB123.jpg`.
+
+Send me one real code list and a sample of filenames from a job, and I can have it working today.

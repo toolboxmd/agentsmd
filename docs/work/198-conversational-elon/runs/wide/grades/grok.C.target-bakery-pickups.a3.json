@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends sorting the existing shared list by pickup date and finishing today's cakes before anyone starts a later order. It recommends postponing the Odoo partner. It adds nothing else, and no unmet needs remain.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The owner needs every cake due today prepared before pickup. You asked for an Odoo sales, inventory, and manufacturing sync because other shops are moving and a partner is booked next week.",
+  "Deleted": "The Odoo rollout. Payments and stock already reconcile, the shared list already has pickup date and preparation status, and everyone making cakes can already read it.",
+  "Bottleneck": "Preparation order. Cakes due today stayed unmade while orders for next month were prepared.",
+  "Checked myself": "Only what you told me about the list, the reconciliation, the counter access, and this morning's miss. I have not seen the list or the shop."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a small sort-by-pickup-date fix, and the reply drops Odoo by name with no present add-on.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-bakery-pickups.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

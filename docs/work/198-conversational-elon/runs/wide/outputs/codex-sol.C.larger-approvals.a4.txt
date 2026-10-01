@@ -1,0 +1,8 @@
+**Requirements and who asked:** The signed customer contract requires the exact approved version, approver identity and approval time retained for seven years, with no self-approval or later alteration.
+**Deleted:** Typed initials and naming conventions as approval evidence.
+**Bottleneck:** Authors can edit the folder, so it cannot protect the approved record.
+**Checked myself:** You supplied the contract requirements and folder permissions; I have not verified the system’s capabilities.
+
+You need compliant document releases before this week’s delivery. The proposed APPROVED column cannot establish approver identity or preserve the approved version.
+
+I recommend keeping the folder for drafting and adding one protected release archive that retains each exact approved version, records an authenticated reviewer’s identity and approval time, blocks self-approval, and prevents alteration or deletion for seven years; its capabilities must be verified before releasing customer documents.

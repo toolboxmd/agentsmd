@@ -1,0 +1,69 @@
+{
+ "started": "2026-10-01T21:15:14+0200",
+ "scenarios_sha256": "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b",
+ "heldout_sha256": "cfcf4d894a2614a39e6426c2e042692ab83688450f82687b8bea33ca51e42522",
+ "wide_sha256": "7f41c21d6d5c78a760193ab231eb5893db29f7e16dbc50a948dfe3e200dbff8b",
+ "arms": {
+  "A": {
+   "source": "",
+   "sha256": null
+  },
+  "B": {
+   "source": "git:8cad98f68a8ce46dc8bb05954775dd63172a9f26",
+   "sha256": "57470662266ca15a7587ccf9486a5132e09f428f87e80e69e127ace27d91590a"
+  },
+  "C": {
+   "source": "git:6814ae7",
+   "sha256": "55740c72f4475929e5712e3974ef783095118a063f74c223b91805a2802f42cd"
+  }
+ },
+ "harnesses": {
+  "codex-sol": [
+   "codex",
+   "gpt-6.1-sol"
+  ],
+  "grok": [
+   "grok",
+   "grok-4.7"
+  ],
+  "claude-opus-5-5": [
+   "claude",
+   "claude-opus-5-5"
+  ]
+ },
+ "cells": [
+  "C:target-home-network",
+  "C:target-bakery-pickups",
+  "C:target-invoice-count",
+  "C:target-board-report",
+  "C:target-night-export",
+  "C:target-renewal-admin",
+  "C:target-review-flow",
+  "C:target-studio-delivery",
+  "C:larger-reservations",
+  "C:larger-approvals",
+  "C:control-weekday",
+  "C:control-subtraction",
+  "A:target-home-network:3",
+  "A:target-bakery-pickups:3",
+  "A:target-invoice-count:3",
+  "A:target-board-report:3",
+  "A:target-night-export:3",
+  "A:target-renewal-admin:3",
+  "A:target-review-flow:3",
+  "A:target-studio-delivery:3",
+  "A:larger-reservations:3",
+  "A:larger-approvals:3",
+  "B:target-home-network:3",
+  "B:target-bakery-pickups:3",
+  "B:target-invoice-count:3",
+  "B:target-board-report:3",
+  "B:target-night-export:3",
+  "B:target-renewal-admin:3",
+  "B:target-review-flow:3",
+  "B:target-studio-delivery:3",
+  "B:larger-reservations:3",
+  "B:larger-approvals:3"
+ ],
+ "repo_head": "4695c8338da3b0cf11483ff4d938083ea358f875"
+}

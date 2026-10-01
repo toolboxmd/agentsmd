@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends a shared reservation service that checks and saves each booking atomically, so that for the same item and overlapping dates one submission succeeds and the other is rejected, even when both are submitted together. All agents must save through that service. The spreadsheet stays for visibility only. For this week, it suggests highlighting as an interim warning and routing confirmations through one person, and it says plainly that this does not meet the requirement.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommendation meets every LARGER capability, including atomic concurrent rejection, but the reply has none of the four required labels, and it offers highlighting now as an interim measure.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.larger-reservations.a2",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

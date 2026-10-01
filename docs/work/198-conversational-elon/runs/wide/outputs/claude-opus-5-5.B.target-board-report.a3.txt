@@ -1,0 +1,3 @@
+You're trying to get correct monthly net sales by region in front of the board without hand-building the sums each month. For one local Excel table that fits on your machine, I'd skip Airbyte, Snowflake, dbt and Power BI. They add licences, a warehouse, credentials and upkeep without fixing a problem you have yet. This week I'd set up a PivotTable (or Power Query plus a pivot) in the workbook. It would group by region and month and sum the signed amount, so refunds net out automatically, and you'd refresh it in one click when the new export lands.
+
+If something specific is pushing you toward the bigger stack, such as several source systems, many people editing, or audit requirements, tell me which, because that would change the recommendation.

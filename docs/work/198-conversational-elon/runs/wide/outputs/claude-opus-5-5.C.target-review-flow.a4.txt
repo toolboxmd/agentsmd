@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked that changes stop waiting for approval when the lead is absent, so the team ships faster.
+**Deleted:** Spotify squads and chapters, Jira Align, quarterly planning workshops, and new tooling spend. None of them addresses approval waits; four engineers in one time zone already have a working tracker.
+**Bottleneck:** Approval. In each of the last six changes, coding took under a day, then the change waited three days because the lead, the only assigned reviewer, was away.
+**Checked myself:** Only what you told me: the six changes, the sole-reviewer assignment, the lead's absence, and that two other engineers are qualified and authorized to approve.
+
+Goal: changes get approved within a day even when the lead is out.
+
+Recommendation, launchable today at no cost: assign the lead and both qualified engineers as reviewers on every change, and let any one of the three approve. In your existing tracker, watch the next few changes' wait from "ready for review" to "approved". If waits still exceed a day, the next fix is agreeing who reviews which day, not a new framework.

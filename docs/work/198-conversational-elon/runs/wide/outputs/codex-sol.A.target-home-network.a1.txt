@@ -1,0 +1,11 @@
+The dropout pattern points first to the desk’s Ethernet connection: two other devices keep their calls connected through the same router. A UniFi upgrade may be useful, but it’s unlikely to fix a damaged desk cable.
+
+I’d do this first:
+
+1. Temporarily run a known-good Ethernet cable directly from the desk computer to the router, bypassing the tight grommet.
+2. Use it for several calls. If the drops stop, replace the old cable permanently and route it without pinching or sharp bends.
+3. If drops continue, try another router port, then a different Ethernet adapter on the desk computer.
+
+For the eventual upgrade, keep the layout simple: **internet modem/ONT → UniFi gateway → managed switch → desk and other wired devices**, with Wi-Fi access points connected to the switch. Choose port speeds and PoE capacity around devices you expect to add.
+
+Grafana can help track WAN outages and switch-port errors, but it won’t repair a faulty connection. Establish a reliable desk connection first, then use the approved budget for capacity, coverage, and monitoring where they’ll actually help.

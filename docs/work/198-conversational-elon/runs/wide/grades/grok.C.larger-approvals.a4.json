@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: a reviewer other than the author saves each exact released file into an archive that no one can edit or delete for seven years. The reviewer's account and the save time serve as the approval and time record. The reply rejects the typed-initials column and the naming convention as approval controls, and offers no optional additions. One need is unmet: the reply never says how authors are stopped from saving to the archive themselves, so separation from authors rests on who does the saving rather than on access rights. It also asks the user to confirm the archive before this week's delivery.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years; authors must not approve their own documents, and later edits must not change that retained version. You asked for those controls before this week's delivery and prefer to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention.",
+  "Deleted": "Typed-initials approval column; naming convention as the approval control; a new document-management product.",
+  "Bottleneck": "Authors can edit the shared folder, so a released file and a typed approval can both be changed after release.",
+  "Checked myself": "What you told me about the contract, twelve remote authors, three reviewers, weekly releases, and author edit access. I have not seen the contract or the folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Each exact file goes into a seven-year archive no one can edit or delete, and the saving reviewer's account and time are the record; author separation relies on who saves rather than on access rights, but still meets the LARGER bar.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-approvals.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

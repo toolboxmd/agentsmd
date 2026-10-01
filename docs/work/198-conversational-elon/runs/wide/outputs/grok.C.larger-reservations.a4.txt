@@ -1,0 +1,15 @@
+**Requirements and who asked**
+The owner requires a conflicting reservation to be rejected at save time, even when two agents submit together. You asked to keep the booking spreadsheet, mark overlaps in red, and remind agents to check them, in something you can ship this week.
+
+**Deleted**
+Red conditional formatting, a check reminder, and a separate booking product. Colours and a reminder leave both reservations stored. A new product adds a system you would have to run when one locked save on the current list is enough.
+
+**Bottleneck**
+The save. Two of the six agents can confirm the same item for overlapping dates at the same moment, and the promise is already made before anyone sees a colour.
+
+**Checked myself**
+You told me each physical item has one identifier, two customers were promised the same item for overlapping dates last week, six agents work at once from two offices, and the owner requires the conflict rejected at save. I have not opened the spreadsheet.
+
+You want the second overlapping reservation of an item to fail when it is saved, including when both agents save together.
+
+Use one save for every agent: it locks that item, checks the dates against the reservations already stored, and rejects the new one when the dates overlap. Keep the spreadsheet as the list they read, with every booking entered only through that save.

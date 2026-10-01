@@ -1,0 +1,20 @@
+You need the report ready by 08:00 every day, and the missing runs most likely come from the laptop being asleep, not from the export itself, since successful runs are correct. Airflow on Kubernetes wouldn't fix anything here that a simpler move doesn't. I recommend running the same command from a systemd timer on your always-on Linux machine. That ships today, and nothing in Kubernetes would be left to maintain.
+
+```ini
+# /etc/systemd/system/night-export.service
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /path/to/export.py
+
+# /etc/systemd/system/night-export.timer
+[Timer]
+OnCalendar=*-*-* 02:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+`Persistent=true` catches up a run that was missed while the machine was down, and reruns are safe for this job. Add failure alerting (`OnFailure=` or a check for today's file at 07:00) so a broken run gets noticed before 08:00.
+
+Airflow becomes worth its scheduler, workers, and metadata DB when you have dependent jobs, many pipelines, or a team that needs a shared UI. One independent three-minute job has none of those. If you still want Airflow for other reasons, tell me what it should cover beyond this export so the design fits that.

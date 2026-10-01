@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Rejects the user's APPROVED-column, typed-initials and naming-convention plan. For this week, it recommends one archive folder on the same storage. A non-author reviewer copies the exact approved file into it, and only the three reviewers can write or delete there. The copy is kept for seven years along with the reviewer's account identity and the storage write time. It adds nothing optional. Unmet or unverified: the reply admits it has not checked the current folder's permissions or retention. The non-author rule rests on authors and reviewers being separate groups rather than on a system check. Reviewers keep delete rights, so the record is protected by access control, not by immutability.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years, and it forbids authors approving their own documents or later edits changing that retained version. You asked to meet that before this week's delivery by keeping the shared folder, adding an APPROVED column people type initials into, and agreeing a naming convention.",
+  "Deleted": "Typed initials, an editable APPROVED column, and a naming convention as the control. A new document-management or e-signature product.",
+  "Bottleneck": "The twelve authors can still edit the shared folder, so the approved file stays exact only when a reviewer who is not the author writes it once into a place authors cannot change, and that write supplies the identity and the time.",
+  "Checked myself": "Your statement of the contract terms, the twelve remote authors, the three reviewers, weekly releases, and authors' edit access to the current folder. I have not inspected that folder's permissions or retention."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "A reviewer-only archive with account identity, write time and seven-year retention is an enforceable setup built from existing tools, but its protection relies on access control and reviewers can still delete.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-approvals.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

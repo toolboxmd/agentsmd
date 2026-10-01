@@ -1,0 +1,1 @@
+You want a correct monthly net-sales-by-region figure from one local Excel export. This week, add a pivot table on that workbook: region on rows, month on columns, and the sum of the signed net amount as the value, so refunds reduce each region's total. Spend the Airbyte, Snowflake, dbt, and Power BI budget when a second source arrives or the file no longer fits on your computer.

@@ -1,0 +1,12 @@
+**Requirements and who asked:** The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. You asked to keep the spreadsheet and ship this week.
+**Deleted:** The manual "remember to check the colours" step as the safeguard, because the requirement says the system rejects the conflict, not that a person notices it.
+**Bottleneck:** Six agents in two offices can save to a shared store at the same moment, and nothing makes the overlap check and the save one step.
+**Checked myself:** Only what you told me: six concurrent agents, one identifier per item, last week's double booking, and the owner's save-time rule. I have not seen the spreadsheet.
+
+Goal: make it impossible to save a second booking for the same item on overlapping dates, even when two agents submit together.
+
+Red formatting doesn't meet that requirement. It only colours a conflict after both bookings are saved, which is exactly what happened last week. Spreadsheet data validation won't fix it either, because I can't confirm it holds when two people edit at once.
+
+My recommendation is a small Postgres table of bookings with an exclusion constraint on item identifier plus date range. The database rejects the second conflicting save atomically, no matter how many agents submit together. Agents enter bookings through a simple form, and the spreadsheet can stay as a read-only view.
+
+The colours are fine as a stopgap this week if you tell the owner they only flag conflicts and don't prevent them. Shall I draft the table and constraint so you can see how small it is?

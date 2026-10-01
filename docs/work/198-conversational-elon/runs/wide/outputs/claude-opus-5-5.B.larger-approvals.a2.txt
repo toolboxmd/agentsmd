@@ -1,0 +1,13 @@
+I'd advise against shipping that as the control. Typed initials in a folder authors can edit don't prove who approved, can't stop authors approving their own work, and the approved file can still be changed afterwards. That fails all three contract requirements the first time the customer audits.
+
+You want to meet the contract this week with the least change to how people work. The smallest setup that does that:
+
+- **Keep the shared folder** for drafting.
+- **Add a separate Released location** that only the three reviewers can write to.
+- **Approve with the platform's built-in approval feature**, such as Microsoft Approvals or Google Drive approvals. The system then records the signed-in approver and the time.
+- **Lock retention on Released for seven years**, using Microsoft Purview or Google Vault, so later edits can't change the approved version.
+- **Keep the naming convention** as a convenience, not as the control.
+
+This only prevents self-approval if reviewers never approve documents they wrote, so confirm that rule holds. The retention lock may also need an admin or a higher license tier.
+
+Which platform is the folder on (SharePoint/OneDrive, Google Drive, Dropbox, or something else), and do you have admin access? With that I can give you exact setup steps.

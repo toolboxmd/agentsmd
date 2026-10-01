@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: replace the desk's Ethernet cable with a new Cat6 patch cable and route it so the grommet does not bend or crush it. If drops continue, try a different router port, then a USB Ethernet adapter. No new network gear or dashboard is added now. The reply notes that future-proofing has no current failure behind it and leaves it out.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable calls at the desk (you); future-proofing (your home-network group's trend, with no failure here behind it).",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard. Two other devices on the same router keep their calls during the drops, so none of these replaces the part that is failing.",
+  "Bottleneck": "The desk's own connection: an old Ethernet cable pinched in a tight grommet, plus the router port it uses and the computer's network adapter.",
+  "Checked myself": "Nothing observed directly. You told me the desk is wired, other devices stay connected during drops, and the cable is old, squeezed, and not yet swapped."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply records all four lines before the recommendation, rejects the UniFi/switch/Grafana stack by name, and proposes a bounded cable swap with later port and adapter checks only if drops continue.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-home-network.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.B.larger-reservations.a3",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "B",
+ "arm_sha256": "57470662266ca15a7587ccf9486a5132e09f428f87e80e69e127ace27d91590a",
+ "scenario": "larger-reservations",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 37.6,
+ "valid": true
+}

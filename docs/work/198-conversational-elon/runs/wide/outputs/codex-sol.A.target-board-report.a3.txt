@@ -1,0 +1,11 @@
+We can automate the report this week. For one local Excel table that fits comfortably on your computer, I’d start with a small local pipeline; Airbyte, Snowflake and dbt would add maintenance without solving a current constraint.
+
+The pipeline would:
+- Read the Excel export and validate region, date and signed net amount.
+- Sum net sales by month and region, preserving negative refunds.
+- Reconcile the regional totals to the source and flag missing regions or invalid dates.
+- Produce a repeatable board-report table, with Power BI for presentation if useful.
+
+Power Query can handle this inside Excel or Power BI. We’d document the month and region rules, keep the original exports, and verify the first run against your manual report.
+
+That gives you a reliable foundation we can later move to Snowflake and dbt if data volume, multiple sources or shared access justify it. Airbyte becomes useful when we need automated ingestion from those sources.

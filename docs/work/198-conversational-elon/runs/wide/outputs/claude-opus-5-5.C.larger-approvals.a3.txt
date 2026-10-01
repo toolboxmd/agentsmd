@@ -1,0 +1,20 @@
+**Requirements and who asked:** the customer contract requires each released document's exact approved version, approver identity and approval time to be kept for seven years, with no self-approval and no later edits to the approved version. You need this before this week's delivery.
+**Deleted:** naming convention as a control, a new document management system.
+**Bottleneck:** authors can write to the same place approvals would be recorded.
+**Checked myself:** only what you told me. I haven't seen the folder or the platform it runs on.
+
+You're trying to pass the customer's audit this week without changing how your team works more than you have to.
+
+I'd advise against the initials column, because it fails the contract:
+
+- **Identity:** any author can type a reviewer's initials.
+- **Time:** a typed entry doesn't reliably record when approval happened.
+- **Retained version:** anyone can overwrite the approved file in place.
+
+A naming convention only helps if everyone follows it, so it can't count as a control.
+
+My recommendation is to keep the folder for drafts and add one "Released" folder that only the three reviewers can write to. Releasing a document means a reviewer copies the approved file into it. The platform's own logs then record the reviewer's identity and the time. A retention lock keeps each copy unchanged for seven years.
+
+Authors can't write to Released, so they can't approve their own documents, and edits to drafts don't touch what was released. Your team keeps working the way it does now.
+
+Which platform is the folder on (SharePoint, Google Drive, a file server)? That decides whether the audit log and retention lock already exist or need a setting turned on.

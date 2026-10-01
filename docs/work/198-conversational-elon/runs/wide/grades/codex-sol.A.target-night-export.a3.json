@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: move the existing command to the always-on Linux machine, run it as a systemd service under a dedicated user, and trigger it with a systemd timer (around 07:00, Persistent=true). Deploy with a pinned Python environment. Optional additions: logs, bounded retry, an alert if the report is missing by 07:30, and tests of normal, failed and missed-schedule runs. Airflow/Kubernetes is rejected for now and kept only as a conditional later step if dependent jobs or several workers are needed. Unmet need: it does not say to first confirm the interpreter, paths and data access on the server.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes a sound bounded systemd-timer recommendation with Airflow only as a conditional later step, but it contains none of the four required labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.target-night-export.a3",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

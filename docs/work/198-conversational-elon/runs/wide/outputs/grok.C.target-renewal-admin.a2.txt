@@ -1,0 +1,6 @@
+**Requirements and who asked**: You asked how a budgeted n8n workflow, Gmail agent, vector database, and Telegram bot should fit together for renewal reminders. The year requires one decision per contract, two weeks before its notice deadline, taken from a single statement whose dates stay fixed.
+**Deleted**: n8n, the Gmail agent, the vector database, and the Telegram bot. A handful of fixed dates needs no inbox agent, no search index, no workflow host, and no second reminder channel. You already use the phone calendar daily, and you ruled out automatic cancellation and payments.
+**Bottleneck**: The once-a-year transfer of each notice deadline onto that calendar, shifted two weeks earlier.
+**Checked myself**: Your description of the yearly statement, fixed dates, two-week decision point, daily phone-calendar use, and no automatic cancellation or payments. No live calendar or statement was opened.
+
+You want each renewal decision to show up on the phone calendar two weeks before the notice deadline. When the statement arrives, add one event per contract on that earlier date, with the contract name, renewal date, and notice deadline in the event. When the event appears, decide and handle notice or payment yourself.

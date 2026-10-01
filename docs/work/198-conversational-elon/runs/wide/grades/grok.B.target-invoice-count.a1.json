@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's action now is to count unpaid invoices in PostgreSQL with one aggregate query instead of loading rows into memory, and to add an index on that filter if it is still slow. It ships no Kafka, CQRS or Redis services or topics this week, because a Redis projection can lag behind commits and break request-time freshness. It offers no optional additions and leaves no unmet needs, though it gives no verification step.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply gives a sound, bounded fix but has none of the four labeled record lines, so every record predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-invoice-count.a1",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

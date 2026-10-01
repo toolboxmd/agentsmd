@@ -1,0 +1,37 @@
+n8n should run two workflows around one fixed list of contracts. Your phone calendar is the daily reminder. Telegram is where you record the decision. Gmail reads the yearly statement and the paperwork. The vector database supplies a short brief when a decision is due.
+
+**What each part owns**
+
+- A simple table n8n can read is the record for the year. Each row has the contract, the provider, the renewal date, the last date to give notice, the decision date, the status, and your decision note. The decision date is the notice deadline minus 14 days.
+- The Gmail agent runs once a year. It reads the statement and any policy documents you have labeled, and it returns one proposed row per contract. It also passes those documents to the vector database.
+- The vector database stores the statement, policy wording, and related email threads, tagged by contract. n8n queries it only when it builds a decision reminder.
+- n8n confirms the draft with you, writes the table, creates the calendar events, and sends the Telegram reminders. Cancellation and payment stay with you. A Telegram reply only updates the row.
+- The phone calendar gets one event per contract on the decision date. The title names the contract and the notice deadline. The notes include the renewal date and your current status. This is the reminder you already see every day.
+- The Telegram bot sends one message on that same morning: contract, notice deadline, renewal date, and a short brief drawn from the vector database. You reply renew, shop around, or give notice. n8n stores the reply.
+
+**Workflow 1, at the start of the year**
+
+1. The statement arrives in Gmail.
+2. n8n starts the Gmail agent.
+3. The agent returns a draft list of contracts, renewal dates, and notice deadlines.
+4. Telegram shows you the draft.
+5. You correct any row that is wrong and confirm the list.
+6. n8n writes the rows and sets each decision date to 14 days before that contract’s notice deadline.
+7. n8n creates one calendar event on each decision date, on the calendar account your phone already syncs.
+8. The documents are indexed in the vector database under the matching contract.
+
+After confirmation, the dates stay fixed for the year. A change is an edit you confirm yourself.
+
+**Workflow 2, on each decision date**
+
+1. That morning, n8n loads the contract.
+2. It retrieves the matching excerpts from the vector database and builds a short brief: the premium, the notice rule, and anything you saved from last year.
+3. Telegram sends the reminder and the brief.
+4. The calendar event is already on your phone for that day.
+5. You reply on Telegram.
+6. n8n writes the decision on the row and adds it to the calendar event.
+7. You contact the provider, give notice, or pay yourself.
+
+If the row is still pending on the morning of the notice deadline, n8n sends one further Telegram message naming that day as the last day to give notice.
+
+That split keeps the agents stateless. n8n is the only component that knows the dates and the status. The calendar matches the habit you already have. Telegram captures the decision in one reply. The vector database answers what the policy says, at the moment you have to choose.

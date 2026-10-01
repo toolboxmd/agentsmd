@@ -1,0 +1,12 @@
+You want the customer's approval controls in place for this week's delivery with as little change as possible. I don't recommend shipping the initials column, because it fails three of the contract's requirements:
+
+- **Approver identity:** any of the 12 authors can type a reviewer's initials.
+- **Self-approval:** nothing stops an author from approving their own document.
+- **Retained version:** authors can still edit an approved file afterwards, and the column records no reliable approval time.
+
+The smallest fix that meets the contract keeps your folder for drafts and adds two things:
+
+1. **A separate "Released" location.** Only the three reviewers can write to it, and authors can only read.
+2. **The platform's built-in approval or versioning.** It records the logged-in approver and the timestamp, and a 7-year retention policy goes on the Released location.
+
+Which platform hosts the shared folder (SharePoint/OneDrive, Google Drive, Dropbox, or something else)? The exact setup depends on it, and on the common ones this can likely be configured before the delivery.

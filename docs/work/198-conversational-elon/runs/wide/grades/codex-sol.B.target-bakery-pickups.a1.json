@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's action for today is to put today's orders first, confirm pickup times, give each cake to a named preparer, have one person check each cake is finished before pickup, and make next month's cakes only after today's are covered. For next week it recommends a staged Odoo rollout with the booked partner. That rollout starts with a counter preparation queue sorted by pickup deadline, piloted through one full pickup cycle. Sales and inventory are added later only if a gap is shown, and one authoritative order list is kept throughout. Unmet: it never says to build the due-today view from the existing shared list, and it has none of the four required record labels.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The bounded fix for today comes bundled with a present recommendation to pilot an Odoo preparation queue with the partner next week, and none of the four record labels appear.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-bakery-pickups.a1",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

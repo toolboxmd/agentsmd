@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Rejects the initials column and naming convention as the approval control. Keeps the shared folder for drafts and adds a controlled release archive now. The archive preserves each exact approved version unaltered for seven years, records approval through a named reviewer's authenticated account with the time tied to that version, blocks self-approval and requires re-approval for every revision. The APPROVED column stays only as a status display. If these controls can't be in place before this week's delivery, the reply says to settle that with the customer before releasing.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommendation has every required LARGER capability, but none of the four labeled record lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.larger-approvals.a3",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

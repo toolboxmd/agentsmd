@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: replace the desk's old, pinched Ethernet cable with a new Cat6 cable routed so it isn't squeezed, then test with a call or two. Optional additions now: none. The UniFi gateway, managed switches and Grafana dashboard are dropped. Only if the drops come back would the next step be to check the desk computer's network port and adapter. Nothing needed is left unaddressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable video calls at the one desk that drops them.",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard. None of them fixes this drop, and each adds something to run and maintain.",
+  "Bottleneck": "The desk's own link. Other devices on the same router stay connected during a dropout, so the router and internet line are not the cause.",
+  "Checked myself": "Only what you told me: the desk uses Ethernet, its cable is several years old and pinched in a tight grommet, and no other cable has been tried."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded cable swap, names and removes the rebuild stack, and grounds its record in the supplied facts, calling the cable the 'most likely cause' rather than a proven one.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-home-network.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

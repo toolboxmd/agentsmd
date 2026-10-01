@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Keep the shared folder for drafting only, and add one protected release archive now. The archive must retain each exact approved version, record an authenticated reviewer's identity and approval time, block self-approval, and prevent alteration or deletion for seven years. Its capabilities must be verified before customer documents are released. There are no optional additions, and the only unmet need is that verification.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires the exact approved version, approver identity and approval time retained for seven years, with no self-approval or later alteration.",
+  "Deleted": "Typed initials and naming conventions as approval evidence.",
+  "Bottleneck": "Authors can edit the folder, so it cannot protect the approved record.",
+  "Checked myself": "You supplied the contract requirements and folder permissions; I have not verified the system\u2019s capabilities."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses a controlled archive with every required capability, rejects initials and naming conventions as approval evidence, and grounds its record in supplied facts with stated limits.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-approvals.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

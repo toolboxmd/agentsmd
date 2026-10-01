@@ -1,0 +1,13 @@
+**Requirements and who asked:** You need monthly net sales by region for the board, with refunds netted in. "Peers are adopting a modern data stack" is not a requirement; nothing you described breaks without one.
+**Deleted:** Airbyte, Snowflake, dbt, Power BI. You have one source, one local Excel table, and data that fits on your laptop, so there is nothing for them to extract, warehouse, model or visualize.
+**Bottleneck:** Building the monthly regional sums by hand, which costs time and invites errors.
+**Checked myself:** Only what you told me: one Excel export with region, date and signed net amount, including negative refunds, built by hand each month. I have not opened the workbook.
+
+You're trying to stop hand-building a correct monthly regional summary. I recommend a single PivotTable in the export workbook, which you can have working today:
+
+1. Format the export as an Excel Table (Ctrl+T) so new rows are picked up automatically.
+2. Insert a PivotTable from it with Region as rows and Date as columns, grouped by Months and Years.
+3. Set the value to **Sum** of net amount, not Count. Refunds net out correctly because they are already negative.
+4. Each month, paste the new export into the table and click Refresh All.
+
+I'd reject the full stack: it adds four paid services to run and watch with no gain for this report. Real triggers to revisit would be a second data source, data too big for Excel, or a need for unattended refresh. Tell me where the workbook lives and I'll set up the PivotTable and check one month's totals against your last manual report.

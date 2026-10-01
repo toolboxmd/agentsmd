@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship no new services or topics now. Replace the in-memory count with one PostgreSQL count(*) query that keeps request-time committed semantics. Add a partial index only if EXPLAIN ANALYZE on production-sized data still shows the query taking over one second. Table size and the query plan are still unknown.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to return within one second and include every invoice committed at request time. The Kafka, CQRS, and Redis requirements come from peer trends and an approved budget, not from this endpoint's needs.",
+  "Deleted": "Kafka topics, the CQRS projection, and Redis. A projection is updated asynchronously, so it can miss just-committed invoices and would break your freshness requirement.",
+  "Bottleneck": "The endpoint loads every unpaid invoice row and builds an object for each one, only to count them.",
+  "Checked myself": "I haven't checked anything myself. Everything above comes from your description: one app on PostgreSQL, the endpoint counts in memory, it returns only the count, nothing else reads it, and users say it's slow."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, and it chooses an aggregate PostgreSQL query with only a conditional index.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-invoice-count.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

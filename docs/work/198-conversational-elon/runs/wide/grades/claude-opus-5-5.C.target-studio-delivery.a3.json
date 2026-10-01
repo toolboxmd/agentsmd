@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends building one small local script now. It matches each client code to its JPEG by exact filename prefix and writes the contact-sheet PDF in the client's supplied order. It also flags codes with no image and images not on the list. It adds no DAM, AI tagging, semantic search or cloud portal, not even as an option. Still needed: a sample client code list and an existing contact sheet to match the layout.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client wants images in their supplied product-code order; you produce a contact-sheet PDF per delivery as your current practice.",
+  "Deleted": "DAM, AI tagging, semantic search, and cloud review portal, since no stated client need calls for them and the filenames already carry exact codes.",
+  "Bottleneck": "The hour of manual thumbnail dragging per delivery.",
+  "Checked myself": "Only what you've told me; I haven't seen a job folder, a client code list, or one of your contact sheets."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and are specific to this job. The reply proposes a bounded local script that follows the client's code order and rejects the DAM stack by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-studio-delivery.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

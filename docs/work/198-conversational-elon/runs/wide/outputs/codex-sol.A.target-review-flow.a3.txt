@@ -1,0 +1,13 @@
+The immediate bottleneck is approval coverage: the last six changes took less than a day to code, then waited three days because their sole reviewer was away. Launch a reviewer coverage model this week; squads, chapters, Jira Align, and quarterly workshops can wait until there’s evidence they solve another constraint.
+
+For your four-engineer team:
+
+- **Keep one team and the existing tracker.** Use its current statuses to see what is ready for review and how long it has waited.
+- **Assign a primary and backup reviewer to every PR.** Use the two other qualified, authorized engineers as backups for these changes. One authorized approval is sufficient; the lead’s approval is not an additional requirement.
+- **Make absence handoffs automatic.** When the primary reviewer is away, the backup takes ownership immediately. Reassign any changes currently waiting on the absent lead today.
+- **Set a review expectation.** Ready PRs get a first review within one working day. If the primary cannot meet that window, they hand off to the backup.
+- **Check the review queue briefly each day.** Rotate responsibility for spotting unowned or aging reviews and arranging coverage. Finish reviews before starting more work when approval is holding up shipping.
+
+This week, agree on the reviewer roster and handoff rule, update assignments, and start tracking time from “ready for review” to approval alongside coding time. After one week, inspect whether any PR still waited because its reviewer was absent; after two weeks, compare approval waiting time with the previous three-day pattern.
+
+Fund larger tooling or planning changes only once you identify a coordination problem the existing tracker and this small team cannot handle. The change you can make now is to ensure shipping never depends on one person being present.

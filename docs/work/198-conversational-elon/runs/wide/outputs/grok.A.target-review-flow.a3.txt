@@ -1,0 +1,18 @@
+The wait is who can approve. Launch a review-coverage rule in the tracker you already have, this week.
+
+On the last six changes, coding took less than a day and approval took three. Each one had the lead as the only reviewer, and the lead was away. Two other engineers are already qualified and authorized to approve that work. Four people in one time zone do not need a new structure to ship those changes.
+
+**Operating model**
+
+- **One approval is enough.** A change is approved when any one of the lead or those two engineers approves it.
+- **Assign two reviewers every time.** Pick two from that set of three when the change is ready. If the lead is out, assign the other two, and mark the lead absent in the tracker so new reviews do not land only on them.
+- **Review within one working day.** If a reviewer has not responded by the end of the next working day, the author reassigns that review to the remaining authorized engineer the same day.
+- **Keep the current tracker and statuses.** Add the second reviewer and the absence coverage to the workflow you already use.
+
+**This week**
+
+1. Tell the team the rule and name the three people who can approve.
+2. Apply it to every open change and to the next ones that finish coding.
+3. On the next six completed changes, compare ready-for-review to approval. The target is about one working day.
+
+Squads, chapters, Jira Align, and quarterly workshops can wait. They do not change who is assigned to approve a pull request, so they do not remove this wait. Spend the week on the second approver.

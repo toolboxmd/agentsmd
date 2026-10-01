@@ -1,0 +1,11 @@
+**Requirements and who asked:** You need the unpaid-invoice count to finish within one second and match invoices committed in PostgreSQL at request time. You asked for a CQRS projection, Kafka, and Redis because that cluster budget is approved and peers are moving to event-driven systems.
+
+**Deleted:** Kafka, CQRS, Redis, and every new service and topic. The endpoint returns only this count and has no other reader; a projection would show the count after the commit, which misses request time. The budget and the peer trend are not requirements for this result.
+
+**Bottleneck:** The endpoint loads invoice rows, builds invoice objects, and counts those objects in memory.
+
+**Checked myself:** I was told there is one application and PostgreSQL, the endpoint returns only the count, and users say that count is slow. I have not inspected the endpoint, the unpaid rule, or a measured runtime.
+
+You are trying to return the unpaid-invoice count within one second from invoices committed at request time.
+
+Run one aggregate in the existing PostgreSQL database, from the current endpoint, using the same unpaid rule, and return that number. That is the only thing to ship this week.

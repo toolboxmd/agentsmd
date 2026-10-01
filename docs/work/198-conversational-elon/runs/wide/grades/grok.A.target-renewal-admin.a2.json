@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends building the full stack right away: n8n as the orchestrator with three workflows (ingest, a daily decide check, a last call), a Gmail agent that extracts dates from the yearly statement and keeps filing insurer mail, a vector database for policy lookups, and a Telegram bot for nudges and capturing decisions. It also creates calendar events on each decision date (two weeks before the notice deadline) and on each notice deadline. No automatic cancellation or payment. It names no unmet needs.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The calendar events alone would do the job, but the reply adds n8n, a recurring Gmail agent, a vector DB and a Telegram bot now, and it has none of the four record labels.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-renewal-admin.a2",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

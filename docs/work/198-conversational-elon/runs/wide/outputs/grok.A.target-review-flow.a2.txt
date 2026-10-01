@@ -1,0 +1,13 @@
+The model to launch this week is a backup-approver rule on the tracker you already use.
+
+The last six changes were coded in under a day, then each waited three days because you were the only assigned reviewer and you were away. Two other engineers are already qualified and authorized to approve that work.
+
+Put this in place now:
+
+- On every change, assign you and one of those two engineers as approvers.
+- When you are out, either of them approves and the change merges the same day. Their approval is enough.
+- Expect a review decision the same business day whenever someone authorized is in.
+- Keep status in the current tracker. No new tool.
+- On the next few changes, measure time from ready-for-review to merge. While you are absent, that wait should fall from three days to the same day.
+
+Squads, chapters, Jira Align, and quarterly planning workshops are a later decision. They leave this wait in place. A four-person team in one time zone can run the backup rule this week.

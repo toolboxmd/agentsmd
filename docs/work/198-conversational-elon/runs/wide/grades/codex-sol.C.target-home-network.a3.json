@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: connect the desk computer directly to the existing router with a known-good Ethernet cable, bypassing the tight grommet, and test calls. No optional additions are offered. The gateway, managed switches and dashboard are removed from this fix. No future capacity need is established, so future-proofing is noted but not acted on.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at the desk; you also requested future-proofing, but no specific future capacity need is established.",
+  "Deleted": "The gateway, managed switches, and dashboard from this call-drop fix.",
+  "Bottleneck": "Evidence points toward the desk\u2019s connection; the old, tightly routed cable remains untested.",
+  "Checked myself": "Only your report: the desk uses Ethernet, while two other devices on the same router stay connected during dropouts."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded known-good-cable trial, the stack is explicitly deleted, and the cable is treated as a suspect rather than a proven cause.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

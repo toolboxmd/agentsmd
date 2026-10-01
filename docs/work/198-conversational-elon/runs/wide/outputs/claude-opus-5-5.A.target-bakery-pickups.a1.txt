@@ -1,0 +1,26 @@
+Before structuring an Odoo rollout, look at what actually went wrong this morning. Payments and stock reconcile fine, and everyone can already read the list at the counter. The failure was **order of work**: cakes were made in the order they were entered, not the order they're due. Odoo can fix that, but so can a much smaller change, and you can make it today.
+
+**Fix today**
+
+- Sort the shared list by **pickup date**, not entry order, and make that the default view at the counter.
+- Add a "Due today / tomorrow, not yet prepared" filter or section at the top. Staff work from that view first.
+- Add a quick morning check: someone confirms every order due today is marked in progress or done before starting anything with a later date.
+
+That directly addresses this morning's miss without waiting for next week.
+
+**If you go ahead with Odoo**
+
+You've booked the partner, so use the engagement well. I'd scope it around the real problem rather than switching on three modules at once:
+
+1. **Phase 1, production queue (Manufacturing, plus Sales as the order source).** Each prepaid order creates a manufacturing order whose scheduled date comes from the pickup date. The counter screen shows that queue sorted by due date, with overdue and due-today items highlighted. Make this the acceptance test for the partner: *a cake due today can never sit below one due next month.*
+2. **Phase 2, Inventory, only once Phase 1 is stable.** Your stock reconciliation already works, so moving it adds risk without fixing anything. Bring it in later if you want ingredient reservations tied to orders.
+3. **Cutover.** Run Odoo alongside the current list for a week or two. Each morning, check that the "due today" lists match. Switch only after that.
+
+**Questions for the partner**
+
+- What does the counter display look like, and does it default to sorting by pickup date?
+- How are orders with a pickup date but no prep yet flagged?
+- What happens to existing future orders during migration?
+- What are the ongoing licence and support costs for a small shop?
+
+If the pickup-date view solves the problem on its own, you could also scale the Odoo project back to whatever other benefits you want from it. Either way, I'd make the list change today. I'm happy to draft the column and filter setup if you tell me what the list runs on (spreadsheet, app, paper).

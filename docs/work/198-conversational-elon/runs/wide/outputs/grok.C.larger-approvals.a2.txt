@@ -1,0 +1,13 @@
+**Requirements and who asked**: The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years; authors must not approve their own documents, and later edits must leave that version unchanged. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.
+
+**Deleted**: Typed initials in an APPROVED column, and a naming convention used as the approval record. Authors can edit that folder, so anyone, including the author, can enter or change initials and can change the file after approval.
+
+**Bottleneck**: The released file stays where all twelve authors can edit it. The delivery needs one copy that a reviewer who is not the author writes once, and that authors cannot change.
+
+**Checked myself**: The contract terms and the setup you described. I have not seen the folder or its permissions.
+
+The approach you prefer to ship does not meet the contract for this week's delivery.
+
+Keep the current folder for drafting. Add one approval folder that only the three reviewers can write to, with delete and overwrite removed, and keep it for seven years. A reviewer who did not write the document copies the exact file there under a name that includes the document and the approval time; that reviewer's account and the write time are the approver and the time.
+
+If the shared drive cannot limit writes to those three reviewers, tell me what access it can actually set.

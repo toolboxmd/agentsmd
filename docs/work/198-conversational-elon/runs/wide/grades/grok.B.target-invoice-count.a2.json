@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do this now: replace the in-memory object counting with a single SQL COUNT over unpaid rows in PostgreSQL. Add an index only if the query plan shows the filter needs one, then measure the endpoint against the one-second limit. Ship no Kafka topics, CQRS projection or Redis this week, because they would lag behind commits. No optional additions are offered and no needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is the bounded SQL-aggregate fix and keeps request-time freshness, but the reply has none of the four labeled record lines, so every label predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-invoice-count.a2",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

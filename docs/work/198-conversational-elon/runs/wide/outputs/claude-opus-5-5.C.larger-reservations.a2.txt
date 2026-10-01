@@ -1,0 +1,10 @@
+**Requirements and who asked:** The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. You want to keep the spreadsheet and ship this week.
+**Deleted:** Red overlap formatting plus a reminder. It only flags a conflict after both bookings are saved and depends on someone noticing, which is how last week's double booking happened.
+**Bottleneck:** Six agents in two offices write to the same sheet, and nothing makes the overlap check and the save happen as one step.
+**Checked myself:** Only what you've told me. I haven't seen the spreadsheet or which product it runs in.
+
+You're trying to make it impossible to promise one item to two customers for overlapping dates, without replacing your tools.
+
+Colours alone can't meet the owner's rule, but you can keep the spreadsheet. I recommend making the sheet read-only for agents and having them add bookings through a small booking form. The form takes a lock, checks that item's existing dates, and refuses to save if they overlap. With the lock, if two agents submit together, one booking saves and the other is rejected. If the sheet is in Google Sheets, this is a short Apps Script with `LockService`, and we could realistically ship it this week.
+
+Which spreadsheet product are you using? Excel/365 handles simultaneous saves differently, so the answer changes how I build it.

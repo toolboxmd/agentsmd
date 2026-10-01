@@ -1,0 +1,11 @@
+I'd skip Airflow and Kubernetes here. The goal is a correct report every morning by 08:00, and the only failure we've seen is the laptop sleeping through the run. Moving the command to the always-on Linux machine fixes that directly and can ship today.
+
+**What I recommend:** a systemd timer on the Linux box.
+- `OnCalendar=02:00` gives plenty of margin for a 3-minute job before 08:00.
+- `Persistent=true` makes it run on next boot if the machine was down at 02:00.
+- `Restart=on-failure` with a short `RestartSec` lets it retry automatically, which is safe because rerunning just replaces that night's output.
+- `OnFailure=` sends you an alert, so a missing report is something you hear about rather than discover at 08:00.
+
+**Why not Airflow on Kubernetes:** a single job with no downstream tasks gets nothing from a scheduler, workers, or a cluster. It would add an always-on control plane, a metadata database, upgrades, and new ways to fail, and none of that touches the sleep problem. Budget is not the constraint here; the extra moving parts are. "Future-proofed" mostly means the export is a plain command with no laptop dependencies. That is already the case, so wrapping it in an Airflow DAG later would take about an hour. Airflow starts to earn its cost when you have several jobs that depend on each other, need backfills, or are shared across a team.
+
+If that works for you, I'll read your persistent host automation ADR first, then set up the unit and timer on the Linux box and do a test run. I'll need the hostname and the path to the command there.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: use Excel Power Query on the existing export to validate the fields, group net amounts by month and region with refunds kept negative, reconcile totals to the source, and refresh a board summary. The first automated month is checked against the hand-built report. Optional addition: Power BI is offered as part of the current pipeline if interactive views or shared dashboards are wanted. Deferred: Airbyte, Snowflake and dbt until multiple sources, data volume or access needs justify them. Unmet: none of the four required record lines appear.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The core fix is a bounded aggregation in the workbook, but Power BI is offered as an optional present addition, which makes this LARGER, and none of the four required labels are present.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.target-board-report.a1",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

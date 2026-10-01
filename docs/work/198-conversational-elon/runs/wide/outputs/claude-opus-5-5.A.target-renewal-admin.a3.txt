@@ -1,0 +1,37 @@
+Honestly, I'd skip most of that stack. Your problem is simpler than what those AI assistant builds are designed for.
+
+**What you actually need**
+
+- The dates arrive **once a year**, in **one statement**, and **don't change**.
+- You need a nudge **two weeks before each notice deadline**.
+- You already check your **phone calendar every day**.
+- You **don't want anything acting on your behalf**.
+
+That's a calendar reminder. Nothing needs to watch your inbox, store embeddings, or reason about anything between January and December.
+
+**What I'd suggest instead**
+
+Once a year, when the statement arrives:
+
+1. You give me the statement, either the PDF or the pasted text.
+2. I generate a single `.ics` file. Each contract gets:
+   - an all-day **"Decide: [contract] renewal"** event 14 days before the notice deadline, with the notice date, renewal date, and contract name in the notes
+   - optionally, a second event on the notice deadline itself as a backstop
+3. You import the file into your phone calendar once. That takes about two minutes.
+
+Cost is zero, there's nothing to maintain, and nothing runs with access to your Gmail or money. If a reminder fires and you want to cancel, you do it yourself, which matches what you want.
+
+**Why the full stack is a poor fit here**
+
+- **Gmail agent:** you'd be granting read access to your whole inbox to parse one email a year. That's a big privacy and security surface for very little gain.
+- **Vector database:** that's for searching lots of unstructured text by meaning. You have a short table of dates.
+- **n8n + Telegram:** these work, but you'd be adding a second notification channel next to the calendar you already trust. You'd also have a self-hosted service that has to stay up all year to fire a dozen reminders. If it quietly breaks in March, you won't find out until you've missed a deadline.
+
+**If you still want to build it** (as a learning project, say), the smallest sensible version is:
+- one n8n workflow on a daily cron
+- reading from a simple sheet or JSON with `contract, renewal_date, notice_date`
+- sending a Telegram message when `today == notice_date - 14 days`
+
+You'd enter the dates by hand each January. Leave out the Gmail agent and the vector DB.
+
+Want me to set up the `.ics` generator? It could be a small script you rerun each year, or I can produce the file directly from this year's statement. Since it's October, it would also be worth checking whether any notice deadlines are coming up in the next few weeks.

@@ -1,0 +1,5 @@
+You want dependable calls at that desk. I recommend first replacing its Ethernet cable with a known-good one, routed without the tight bend, then testing calls before designing the UniFi setup.
+
+The other two devices staying connected points toward the desk’s cable, router port, or computer rather than a network-wide failure. The old, pinched cable is the cheapest suspect to test; if drops continue, try another router port, then investigate the computer’s Ethernet adapter.
+
+UniFi and Grafana may serve broader network goals, but the evidence so far does not show they would fix these drops. Budget approval and your group’s adoption do not establish that they are needed for dependable calls.

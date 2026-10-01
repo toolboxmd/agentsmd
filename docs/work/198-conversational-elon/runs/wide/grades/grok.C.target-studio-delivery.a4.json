@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now, build one local script. It reads the client's ordered code list from a text file, takes each JPEG whose filename starts with that code in the client's order, and writes the contact-sheet PDF from that same sequence. The reply offers no optional additions. One small gap: it says the script copies matching JPEGs but doesn't say where they go or how ordering is kept on the files themselves, though the PDF follows the client's order.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires the images in the product-code order they supply, plus the contact-sheet PDF you already make. You want that delivery done this week without the hour of dragging. The DAM, AI tagging, semantic search, and cloud review portal come from other studios' spending and your budget. Nothing in this delivery breaks without them.",
+  "Deleted": "DAM, AI tagging, semantic search, and a cloud review portal.",
+  "Bottleneck": "The hour per job spent dragging thumbnails into the client's code order before writing the PDF.",
+  "Checked myself": "You described one folder of final JPEGs per job, each filename starting with its product code, and a client-supplied ordered code list. I have not opened a job folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply removes the whole DAM stack by name, relies only on the facts the user gave and says it hasn't opened a job folder, and recommends a local script that follows the client's code order.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-studio-delivery.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

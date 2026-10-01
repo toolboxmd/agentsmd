@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.A.target-review-flow.a3",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-review-flow",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 13.4,
+ "valid": true
+}

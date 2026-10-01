@@ -1,0 +1,5 @@
+Keep the spreadsheet for visibility, but red highlighting and reminders won’t meet your requirement. Two agents can both see an item as available and save overlapping bookings before either notices the colour.
+
+I’d recommend a shared reservation service that checks and saves each booking atomically. For the same item and overlapping dates, one submission succeeds and the other is rejected—even when submitted together. All six agents must save through it; direct spreadsheet edits would bypass the protection.
+
+For this week, use highlighting as an interim warning and route reservation confirmations through one designated person until that save-time protection is ready. That reduces risk, but it doesn’t provide the guarantee you require.

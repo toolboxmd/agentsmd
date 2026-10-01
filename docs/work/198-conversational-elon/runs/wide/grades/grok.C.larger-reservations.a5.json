@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: replace overlap colouring and the check reminder with a single locking save action on the shared booking list. The save rejects a row when that item identifier already overlaps the requested dates, and writes only when the claim is free. Direct cell edits are disabled so both offices must use that save. No optional additions are offered. The reply leaves unstated whether the lock is enforced server-side or on transactional storage.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires a conflicting reservation to be rejected at save time, even when two agents submit together. You asked to keep the booking spreadsheet and ship red overlap formatting plus a reminder this week.",
+  "Deleted": "Conditional formatting and a check reminder. Both leave the overlapping row saved, and simultaneous submits from the two offices can both land before anyone sees a warning.",
+  "Bottleneck": "The save does not exclusively claim the item identifier for the requested dates.",
+  "Checked myself": "Six agents book at once from two offices, each physical item has one identifier, and two customers were promised the same item for overlapping dates last week. I have not seen the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Chooses a locked, atomic save-time conflict check that forces all bookings through one path, which meets the LARGER capabilities even though the implementing platform is left unspecified.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-reservations.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

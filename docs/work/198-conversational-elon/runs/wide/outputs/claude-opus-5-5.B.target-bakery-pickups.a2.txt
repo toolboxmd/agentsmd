@@ -1,0 +1,9 @@
+You want every cake due today made before pickup. This morning's miss was a prioritization problem, not a systems problem: staff worked through the list in entry order instead of by pickup date. Payments and stock already reconcile, so Odoo's sales, inventory and manufacturing modules would mostly replace things that work.
+
+I'd recommend fixing the list itself first, this week:
+
+1. Sort the shared list by pickup date, earliest first, and have the counter view show only unfinished orders due today and tomorrow.
+2. Add one rule: nobody starts a cake while an earlier-due one is still unmade.
+3. Run it for two weeks and see whether any pickup gets missed.
+
+That costs almost nothing and is easy to undo. If misses continue for a reason the list can't fix, the Odoo session will be scoped against a real problem instead of "other shops use it." I'd ask the partner whether next week's booking can be moved or reduced to a short scoping call. If you'd rather go ahead with Odoo anyway, tell me what else you expect it to solve besides pickups.

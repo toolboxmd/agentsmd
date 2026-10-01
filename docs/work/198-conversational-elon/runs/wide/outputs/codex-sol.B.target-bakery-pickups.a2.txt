@@ -1,0 +1,5 @@
+Your goal is to have every cake ready before pickup; today’s failure points to preparation priority, while payments and stock already work correctly, so I would start with pickup scheduling rather than a three-module rollout.
+
+Today, have one person list all unmade cakes due today in pickup-time order, assign each to a baker, and check completion before its pickup deadline.
+
+For next week’s partner session, structure the rollout around that workflow: pilot a counter queue showing pickup time, preparation owner and status; verify that upcoming pickups take priority over later orders; then introduce sales, inventory or manufacturing modules only where they solve a demonstrated gap.

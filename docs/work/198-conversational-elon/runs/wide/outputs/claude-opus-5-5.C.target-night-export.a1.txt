@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need the nightly report ready by 08:00, and runs are being missed because the laptop sleeps. "Future-proofed" and "Airflow on Kubernetes" come from what peers use, not from any failure we've seen.
+**Deleted:** Airflow, Kubernetes, separate workers and scheduler, and new deployment infrastructure. A three-minute job with no downstream jobs and safe reruns needs none of them.
+**Bottleneck:** The job runs on a machine that is asleep at night. The code works.
+**Checked myself:** Nothing on the machines. This is all from what you told me: the command works, the laptop sleeps, you already run an always-on Linux box, and reruns are safe.
+
+The goal is to get the report reliably by 08:00 each morning. I recommend moving the existing command to your always-on Linux machine and running it from a single cron entry there, for example at 03:00. That leaves plenty of time before 08:00 to rerun by hand if needed, and you add nothing new to maintain. I'd skip Airflow on Kubernetes even with budget available, because it adds a cluster, a scheduler and workers to look after without fixing anything beyond the sleeping laptop.
+
+Do you want me to install the command and the cron entry on the Linux machine? That's an installation on that host, so I need your go-ahead and its hostname.

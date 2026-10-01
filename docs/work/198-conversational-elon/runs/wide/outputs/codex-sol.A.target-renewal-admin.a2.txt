@@ -1,0 +1,11 @@
+For this task, I’d use your phone calendar as the reminder system. The dates are fixed for the year, so agents, a vector database, and a Telegram bot would add maintenance without much benefit.
+
+Once the annual statement arrives:
+
+1. Add an all-day event for each contract **14 days before its notice deadline**, titled “Decide whether to renew [contract].”
+2. Include the notice deadline, renewal date, policy number, and cancellation instructions in the event notes.
+3. Set an alert that day and add a separate alert on the notice deadline as a backstop.
+
+You make the decision and handle any cancellation or payment yourself.
+
+If entering the dates becomes tedious, that’s where AI and n8n could help: **Gmail receives the statement → AI extracts the dates → you verify them → n8n creates calendar events.** Keep that as an optional annual import workflow. There’s no need for a vector database or a separate reminder channel.

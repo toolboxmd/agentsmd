@@ -1,0 +1,28 @@
+Honestly, I'd suggest not building most of that stack. Your situation probably doesn't need agents at all.
+
+**Why the stack is more than you need**
+
+- **Gmail agent:** The dates arrive in one statement once a year. Watching your inbox all year to catch one email isn't worth it, and it adds a risk of misreading a date.
+- **Vector database:** This is for searching large amounts of unstructured text. You have a short list of fixed dates, which fits in a table.
+- **n8n and Telegram bot:** These would work, but they add a server, credentials and a bot that all have to keep running for a year. If any part fails quietly, you miss a deadline. You also already check your phone calendar every day.
+
+**What I'd do instead (about 15 minutes, once a year)**
+
+When the statement arrives, add two calendar events for each contract:
+
+1. **Decision day** (notice deadline minus 14 days), with an alert: e.g. *"Decide: Car insurance. Notice deadline 15 Nov. Renews 1 Dec."* Put the policy number and the insurer's cancellation contact in the notes so you have everything when the alert fires.
+2. **Notice deadline** itself, as a backstop in case you put the decision off.
+
+Nothing pays or cancels anything automatically. It only reminds you.
+
+**If you'd rather not type them in**
+
+I can write a small script that turns a simple file (contract, renewal date, notice deadline) into an `.ics` file. You'd import it into your phone calendar in one step. You'd just retype the dates from the statement into that file each year, which is also a good moment to check them.
+
+**If you still want automation**
+
+The minimal version is a single n8n workflow. A daily schedule reads a Google Sheet and sends a Telegram message on any row where today is 14 days before the deadline. Skip the Gmail agent and the vector database. Keep in mind this sends your policy details through more third-party services than a calendar would.
+
+**One time-sensitive thing:** it's 1 October. If any notice deadlines fall in October or early November, their decision dates are already here or close. Those are worth checking today, whichever approach you choose.
+
+Should I write the `.ics` script, or sketch the n8n workflow?

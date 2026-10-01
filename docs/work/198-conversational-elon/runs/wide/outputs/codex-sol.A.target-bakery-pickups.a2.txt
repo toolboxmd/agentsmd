@@ -1,0 +1,12 @@
+I’d start by protecting today’s pickups, then structure the Odoo rollout around pickup deadlines.
+
+Today, filter the shared list to orders due today, sort by pickup time, and assign each unmade cake to a named person. Have one person track completion and flag any cake at risk of missing pickup. Everyone can already see the orders; the immediate gap appears to be preparation priority and ownership.
+
+For next week’s implementation partner, I’d propose:
+
+1. **Define the preparation workflow first.** Each order needs a pickup date and time, a preparation deadline, an owner, and a clear status. The counter’s default view should show overdue and next-due work first.
+2. **Pilot the complete flow with a small batch.** Test a prepaid order from sales through ingredient availability, manufacturing, ready-for-pickup status, and collection. Include a later-entered order due sooner to verify that entry order doesn’t determine preparation priority.
+3. **Add inventory and manufacturing integration gradually.** Validate recipes, ingredient reservations, and production tasks while preserving the payment and stock reconciliation that already works.
+4. **Cut over after staff can reliably run the pickup queue.** Reconcile every open order, choose one authoritative system, train staff, and check upcoming pickups daily during launch.
+
+Make the acceptance criterion concrete: every cake due for pickup has an assigned preparation task and becomes ready before its pickup time. Module synchronization should support that outcome; synchronization alone won’t ensure it.

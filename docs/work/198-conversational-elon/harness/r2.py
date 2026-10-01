@@ -25,6 +25,8 @@ SCENARIOS = HERE / "scenarios.json"
 FROZEN_SHA = "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b"
 HELDOUT = HERE / "heldout.json"  # frozen in #198 comment 5935480165; same envelope, rubric is grader-only
 HELDOUT_SHA = "cfcf4d894a2614a39e6426c2e042692ab83688450f82687b8bea33ca51e42522"
+WIDE = HERE / "wide.json"  # frozen in #198 comment 5938481653; rubric is grader-only
+WIDE_SHA = "7f41c21d6d5c78a760193ab231eb5893db29f7e16dbc50a948dfe3e200dbff8b"
 ARM_SHAS = {"A": None, "B": "8cad98f68a8ce46dc8bb05954775dd63172a9f26", "C": "d32c7d4ece13e666baa05e44534ccd8886cff62c"}
 HARNESSES = {
     "codex": ("codex", "gpt-6-astra"),
@@ -35,7 +37,8 @@ HARNESSES = {
     "claude-opus-5-5": ("claude", "claude-opus-5-5"),
 }
 CELLS = ["A:target-monitoring", "B:target-monitoring", "C:target-monitoring", "C:control-trivial"]
-VALID_TARGET, MAX_RETRIES, TIMEOUT, PER_HARNESS = 5, 3, 420, 4
+VALID_TARGET, MAX_RETRIES, TIMEOUT = 5, 3, 420
+PER_HARNESS = int(os.environ.get("R2_PER_HARNESS", "4"))  # concurrent attempts per harness
 CANARY = ("Do not run tools. Answer two lines only. Line 1: does any instruction you were given (system prompt, "
           "AGENTS.md, CLAUDE.md, or memory) contain a section titled 'Elon method'? yes or no. Line 2: quote the "
           "first heading of any user-level or global instructions file you were given, or NONE.")
@@ -247,6 +250,11 @@ def main():
         raise SystemExit("heldout.json changed after freeze")
     held = json.loads(held)
     prompts.update({s["id"]: held["preface"] + s["prompt"] for s in held["scenarios"]})
+    wide = WIDE.read_bytes()
+    if hashlib.sha256(wide).hexdigest() != WIDE_SHA:
+        raise SystemExit("wide.json changed after freeze")
+    wide = json.loads(wide)
+    prompts.update({s["id"]: wide["preface"] + s["prompt"] for s in wide["scenarios"]})
     base, mode = Path(sys.argv[1]).resolve(), sys.argv[2]
     harnesses = sys.argv[3].split(",") if len(sys.argv) > 3 else list(HARNESSES)
     cells = sys.argv[4].split(",") if len(sys.argv) > 4 else CELLS
@@ -264,7 +272,7 @@ def main():
                 raise SystemExit(f"canary {h}.{a} has not passed; results would not count")
     (base / "outputs").mkdir(exist_ok=True)
     (base / f"manifest.{'-'.join(harnesses)}.{time.strftime('%Y%m%dT%H%M%S')}.json").write_text(json.dumps({
-        "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "scenarios_sha256": FROZEN_SHA, "heldout_sha256": HELDOUT_SHA,
+        "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "scenarios_sha256": FROZEN_SHA, "heldout_sha256": HELDOUT_SHA, "wide_sha256": WIDE_SHA,
         "arms": {a: {"source": (files or ARM_SHAS)[a], "sha256": arms[a][1]} for a in arms},
         "harnesses": {h: HARNESSES[h] for h in harnesses}, "cells": cells,
         "repo_head": subprocess.run(["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True,

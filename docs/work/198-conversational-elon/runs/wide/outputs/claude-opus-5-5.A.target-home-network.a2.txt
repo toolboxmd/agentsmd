@@ -1,0 +1,28 @@
+Before laying out the new gear, I'd check something cheaper first, because what you've described points away from the router.
+
+**What the symptoms suggest**
+
+- Two other devices on the same router stay connected during a dropout, so the router and internet connection are probably fine.
+- The problem is limited to one desk on a wired link, and that link is an old cable squeezed through a tight grommet. Tight bends and repeated flexing commonly damage the conductors. The usual result is a link that drops or renegotiates for a few seconds, which is long enough to kill a call.
+
+A UniFi gateway and managed switches would replace the part that appears to be working. If the cable is the cause, calls would still drop on the new setup.
+
+**What I'd do first (about an hour and maybe $10)**
+
+1. **Swap the cable.** Use a new Cat6 patch cable and route it so it isn't sharply bent or pinched in the grommet. If you can, run it outside the grommet as a temporary test. Use the desk for a few days of normal calls.
+2. **Check the link while you wait.** On the desk computer, look at the negotiated speed. On a Mac it's under System Settings → Network → Ethernet → Details → Hardware. 100 Mb/s instead of 1000 Mb/s, or a speed that changes, points to a cable fault. If it's a Mac, you can also run `netstat -I en0` and look for input/output errors, or check the system log for "link down" events around the times calls drop.
+3. **If drops continue with the new cable**, try a different port on the router, then a USB Ethernet adapter. That rules out the port and the computer's network card. Also check whether sleep or power-saving settings on the computer turn off the Ethernet adapter.
+
+If you'd like, I can help you read the network logs or write a small script that pings the router every second and logs gaps. That would let you match outages to the times calls drop, before and after the cable swap.
+
+**If you still want the UniFi setup**
+
+It's a reasonable upgrade for other reasons, like visibility, VLANs and a cleaner network, and the dashboard would help you catch problems like this one sooner. A sensible layout:
+
+- **Gateway** (e.g., a UCG-class device) at the modem.
+- **One managed switch** near the gateway, plus a small one at the desk only if you need more ports there. Most homes don't need more than that.
+- **Wired run to the desk** in proper cable with a gentle bend radius, ideally terminated in a wall jack with a short patch lead, so the flexing happens on a cheap, replaceable cable.
+- **Grafana** (via UniFi Poller or SNMP) tracking per-port link state, errors and speed. Set an alert on the desk port for link flaps or a speed drop.
+- **Smart Queues / QoS** on the gateway only if your uplink actually gets saturated during calls. From what you've described, that isn't the issue.
+
+My suggestion is to swap the cable this week and see whether the drops stop, then decide on the UniFi gear on its own merits.

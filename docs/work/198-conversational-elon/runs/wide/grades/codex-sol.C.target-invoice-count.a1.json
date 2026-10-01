@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: replace the row-fetching, object-building endpoint with a single PostgreSQL COUNT(*) query filtered to unpaid invoices, then measure latency. Optional later step: add an index only if the measurement shows it is needed. Ship no new services or topics for this count. Kafka, the CQRS projection and Redis are rejected because an asynchronous projection can lag committed invoices. No requirement is left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count within one second, reflecting invoices committed at request time.",
+  "Deleted": "Kafka, CQRS projection, and Redis for this count.",
+  "Bottleneck": "The endpoint transfers rows and constructs objects solely to count them; database query cost is unmeasured.",
+  "Checked myself": "You supplied the endpoint behavior and requirements; I have no runtime measurements."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives all four record lines before recommending a single in-database count that keeps request-time freshness, and it explicitly rejects the event-driven stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-invoice-count.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

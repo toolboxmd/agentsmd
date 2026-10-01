@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends adding one event per contract to the existing phone calendar on its notice deadline, each with an alert 14 days before. It suggests keeping the budget unspent and offers to turn the contract list from the statement into an importable calendar file, which is a one-time conversion. It recommends no workflow engine, inbox agent, vector store or bot. Nothing the user needs is left uncovered, though the reply doesn't confirm that phone notifications are turned on.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need a reminder for each contract two weeks before its notice deadline, so you can decide about the renewal yourself. Nothing should cancel or pay automatically.",
+  "Deleted": "n8n, the Gmail agent, the vector database, and the Telegram bot. The dates come from one statement a year and stay fixed, so nothing needs parsing, searching, or a separate channel.",
+  "Bottleneck": "Getting each year's dates in front of you at the right time.",
+  "Checked myself": "Nothing on your machines. This is based only on what you've told me: one yearly statement with fixed dates, daily phone calendar use, and no automatic actions."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes a bounded calendar-only recommendation, and all four record lines are specific, grounded in the facts the user gave, and come before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-renewal-admin.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends one shared booking record now. It checks the item and the dates as part of the save and refuses the second of two conflicting reservations before it is stored, including when two agents submit at the same moment. The spreadsheet stays only as a view for both offices. Red formatting and a reminder to check may mark rows on that view, but the reply says plainly that they do not meet the owner's rule. It names no storage or service, and it gives none of the four required record labels.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses a save-time check that lets only one of two simultaneous conflicting bookings through, but none of the four record labels appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.larger-reservations.a1",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

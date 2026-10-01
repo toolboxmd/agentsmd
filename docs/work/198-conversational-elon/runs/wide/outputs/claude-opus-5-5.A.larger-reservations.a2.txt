@@ -1,0 +1,15 @@
+Ship the red formatting this week as a stopgap, but it won't meet the owner's requirement, and I'd tell them so plainly rather than let it look like the fix.
+
+**Why colours aren't enough**
+
+- **It flags, it doesn't reject.** The owner asked for a conflicting booking to be refused at save time. Formatting lets the save succeed and turns a cell red afterwards.
+- **It doesn't handle simultaneous saves.** With six agents in two offices, two people can each check, see no red, and save within seconds of each other. That's very likely what happened last week. A reminder to check doesn't close that gap, because each agent's check was correct when they made it.
+- **It depends on people noticing.** Red cells scroll off-screen, get missed when someone is busy, or break when someone pastes over the rule.
+
+**What I'd recommend**
+
+1. **This week:** add the overlap formatting, plus a "Conflicts" view that lists every clash. Have someone review it daily. That catches problems before the customer arrives, and it's honest about being detection rather than prevention.
+2. **Next (a few days of work, keeps the spreadsheet):** if you're on Google Sheets, agents stop typing into the sheet and book through a form or sidebar instead. A script takes a lock, checks the item's dates for overlaps, and either writes the row or rejects it with a message. The lock makes simultaneous submissions take turns, so the second one sees the first. The booking columns get protected so only the script can write to them. This does meet "rejected at save time, even when two agents submit together", as long as nobody can bypass the form. Excel has weaker options here.
+3. **Longer term:** a small booking database (for example Postgres with an exclusion constraint on item + date range) makes double-booking impossible at the data level. The spreadsheet can stay as a read-only view.
+
+My suggestion is to ship step 1 now, label it to the owner as interim, and let me start on step 2. Which spreadsheet are you using, Google Sheets or Excel/365? And could you share the column layout (item ID, start, end, and whether end dates are inclusive)? With those I can write the overlap formula and the locked booking script.

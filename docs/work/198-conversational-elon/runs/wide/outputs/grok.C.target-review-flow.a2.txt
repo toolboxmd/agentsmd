@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked for an operating model to launch this week so shipping gets faster, and you named Spotify squads and chapters, Jira Align, paid tooling, and quarterly planning workshops. The requirement with a cause is yours: changes stop waiting when the lead is absent.
+**Deleted:** Spotify squads and chapters, Jira Align, new tooling, and quarterly planning workshops. The last six changes were already coded in under a day, so a new structure and planning cycle leave the wait in place.
+**Bottleneck:** Approval. Each of those six changes waited three days because the lead was the only assigned reviewer and was away. Two other engineers are already qualified and authorized to approve.
+**Checked myself:** You told me there are four engineers in one time zone, the existing tracker already has current task and pull request status, coding on the last six changes took under a day, approval took three days, the lead was the sole reviewer and away on those days, and two other engineers may approve.
+
+You want a change to merge while the lead is away.
+
+This week, set one rule in the tracker you already use: one approval from either of the two authorized engineers is enough while you are away. Reassign every open review that is waiting on you to one of them today.

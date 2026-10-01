@@ -1,0 +1,15 @@
+Ship a delivery script this week. It takes the client’s ordered product-code list and the job folder of final JPEGs, and it writes a numbered delivery folder plus the contact-sheet PDF.
+
+Do this for every job:
+
+1. Save the client list as a text file, one exact product code per line, in the order they specified.
+2. Match each code to the JPEG whose filename starts with that code. Treat the code as a prefix with a boundary after it (end of the name, or `_`, `-`, or a space) so `AB12` does not take `AB123`.
+3. Copy matches into a delivery folder named `001-CODE.jpg`, `002-CODE.jpg`, and so on. Name order is what the client will see in a zip or a viewer.
+4. Build the contact-sheet PDF from that same sequence.
+5. Write a short exception report before you send anything: codes with no file, files that match no code, and codes that match more than one file. For duplicates, break ties by filename and list every extra file in the report.
+
+Leave the finals folder as it is. The delivery folder is the only package that goes out.
+
+That removes the hour of dragging thumbnails. You already have both inputs on every job: the code list and one folder of JPEGs. Run it once on a past job, check the exception report and the PDF page order against the list, then use it on the next delivery.
+
+AI tagging, semantic search, and a cloud review portal are the next project, for finding frames across past shoots and collecting comments. They still need this same code-list step if this client’s deliveries have to follow the supplied order. Put the DAM on the backlog after this script is the normal way a job goes out.

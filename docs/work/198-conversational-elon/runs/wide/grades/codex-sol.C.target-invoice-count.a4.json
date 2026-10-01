@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends replacing the endpoint's in-memory counting with a PostgreSQL COUNT(*) query in the existing application. It adds an index only if measurements show one is needed. It says to ship no new services or topics, and to check latency under representative load. It adds no cache, event stream or projection.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count within one second, reflecting committed invoices at request time.",
+  "Deleted": "Kafka, CQRS, and Redis for this count. Approved budget and peer adoption do not establish a need.",
+  "Bottleneck": "The endpoint retrieves and constructs invoice objects just to count them.",
+  "Checked myself": "Only the supplied description; no query plan or latency measurements."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labels come before a bounded aggregate-query recommendation that keeps request-time freshness, and the Checked myself line openly states what was not inspected.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-invoice-count.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Do now: replace direct sheet entry with an Apps Script booking form that takes a LockService lock, checks the item for overlapping dates, and rejects or appends, with the sheet protected so only the script can write (if on Google Sheets). Otherwise: a Postgres database with an overlap constraint, keeping the sheet as a read-only view. Red formatting ships today only as a labelled stopgap. Unmet: the reply has no labelled record lines, and it asks which spreadsheet the user has rather than committing to one path.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The chosen paths enforce an atomic, server-side overlap rejection under concurrent submits, but none of the four required record labels appear, and colours are still offered now as a stopgap.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.larger-reservations.a1",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

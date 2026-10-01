@@ -1,0 +1,8 @@
+**Requirements and who asked:** The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, with no self-approval or later alteration.
+**Deleted:** Typed initials and naming conventions as proof of approval.
+**Bottleneck:** Preserving an approved copy beyond authors’ editing access.
+**Checked myself:** You stated the contract requirements and confirmed authors can edit the shared folder; no existing retention controls have been verified.
+
+You want compliant controls before this week’s delivery while keeping the folder. I recommend keeping it for drafting and adding a protected release archive that enforces seven-year retention, preserves the exact approved document, and records authenticated approval identity and time while preventing self-approval.
+
+The APPROVED column cannot meet those requirements by itself. Release only once the archive and approval controls have been verified.

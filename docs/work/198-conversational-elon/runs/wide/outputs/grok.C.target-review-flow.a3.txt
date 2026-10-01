@@ -1,0 +1,11 @@
+**Requirements and who asked:** You asked for an operating model to launch this week so changes stop waiting when you are away.
+
+**Deleted:** Spotify squads and chapters, Jira Align, new tooling, and quarterly planning workshops.
+
+**Bottleneck:** The last six changes were coded in less than a day, then waited three days because you were the sole assigned reviewer and you were away. Two other engineers are already qualified and authorized to approve them.
+
+**Checked myself:** You reported the team of four in one time zone, the existing tracker, those six waits, your absence, and the two authorized approvers. I have not opened the tracker.
+
+You are trying to get finished changes approved while you are away.
+
+This week, in the tracker you already use, make one approval from either authorized engineer enough and reassign every open review that lists only you.

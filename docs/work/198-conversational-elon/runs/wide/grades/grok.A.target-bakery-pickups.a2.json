@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now, the reply has preparers work from a due-today, unmade-cakes view of the existing list, sorted by pickup time. Next-month cakes stay on a separate planning view. It then also recommends going ahead with the Odoo rollout with the partner next week: Sales as the counter queue, Manufacturing production orders for cakes, then Inventory, a one-week parallel run, and retiring the old list. Only the full catalog, accounting, order history and automatic purchasing are put off. The unmet need is that it does not stop at the bounded fix: the ERP and sync are still recommended for now rather than made conditional.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The due-today view is the right fix, but it comes bundled with an Odoo sales, manufacturing and inventory rollout for next week, and none of the four required labels appear.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-bakery-pickups.a2",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

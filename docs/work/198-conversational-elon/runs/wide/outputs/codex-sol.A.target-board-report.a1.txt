@@ -1,0 +1,12 @@
+We can automate this week’s report with a small local pipeline. Given one Excel table that fits comfortably on your computer, I’d hold off on Airbyte, Snowflake and dbt until there’s a concrete need for them.
+
+I’d use Excel Power Query to:
+
+- Read the accounting export and validate region, date and signed net amount.
+- Group by month and region, keeping negative refunds in the net sales sums.
+- Reconcile the regional totals to the source total and flag missing regions or invalid dates.
+- Refresh a board-ready summary, with Power BI added if you need interactive views or shared dashboards.
+
+We’d check the first automated month against your hand-built report and keep the source export for traceability. After that, the monthly process becomes replace the export, refresh and review.
+
+To prepare for future growth, we’d document the input format, calculation rules and checks. Those can move into a larger platform when multiple sources, data volume or access requirements justify it. The budget gives you options; you don’t need to spend it all to make this report reliable.

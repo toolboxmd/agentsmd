@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup; you proposed Odoo to prevent missed pickups.
+**Deleted:** New sales, inventory and manufacturing modules from this fix; payments and stock already reconcile correctly.
+**Bottleneck:** Preparation is happening out of pickup order, despite everyone having access to the orders.
+**Checked myself:** Only your account: cakes due today remain unmade while next month’s orders have been prepared.
+
+You’re trying to ensure prepaid cakes are ready when customers arrive.
+
+I would defer the Odoo rollout and use the existing list as a preparation queue, ordered by pickup date and time. Today, have staff prepare the outstanding cakes due today in that order, updating their preparation status so you can verify each is ready before its pickup.

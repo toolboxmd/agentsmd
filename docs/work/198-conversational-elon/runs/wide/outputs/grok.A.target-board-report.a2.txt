@@ -1,0 +1,16 @@
+Put Power BI on the Excel export this week. That is the whole pipeline the board report needs.
+
+The export is already one table: region, date, and a signed net amount. Refunds are negative, so the monthly regional figure is a sum. The file fits on your computer, and accounting already delivers it. Power BI can read that file, turn the date into a month, and show region by month with the sum of the amount.
+
+Do this:
+
+1. Keep the export in one folder under one name, such as `net_sales.xlsx`, and replace that file each month.
+2. In Power BI Desktop, use Get Data → Excel and load the table.
+3. Set region to text, date to date, and amount to a decimal number. Leave the sign as it is.
+4. Add a month column from the date, using the first day of the month.
+5. Build a matrix with region on the rows, month on the columns, and the sum of amount as the values.
+6. Publish it. Each month, replace the file and refresh.
+
+Airbyte, Snowflake, and dbt start to pay for themselves when several systems must land on a schedule and more than one report must share the same logic. A second source is the point to add a warehouse, with one model that sums the signed amount by region and month, and to point this same Power BI report at that model.
+
+Send the header row and a few fake sample rows if you want the Power Query steps matched to the exact columns.

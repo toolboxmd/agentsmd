@@ -1,0 +1,5 @@
+You want a reliable monthly board report that takes less manual work and can adapt as your needs grow.
+
+I recommend an Excel Power Query pipeline this week: manual aggregation is the bottleneck, and one local table does not justify Airbyte, Snowflake, dbt, and Power BI.
+
+The flow would be **export → validate regions, dates, and signed amounts → sum by month and region → refresh the board report**, preserving negative refunds and reconciling totals against the export; documented calculation rules can move to a larger platform when a concrete need arises.

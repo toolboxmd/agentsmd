@@ -1,0 +1,9 @@
+You want changes to keep shipping when the lead is absent; I recommend reviewer coverage in your existing tracker, launched this week. All six recent changes took less than a day to code and then waited three days for the same absent reviewer, so approval availability is the demonstrated bottleneck; defer squads, chapters, Jira Align, and quarterly workshops.
+
+This week’s operating model:
+
+- Rotate an approval duty among the lead and the two authorized engineers, with a named backup for absences.
+- Assign each ready PR to an available, authorized reviewer; the duty engineer owns reassignment when the assigned reviewer is away.
+- Target review within one working day, preserving existing tests and approval requirements.
+- Use current tracker statuses to check waiting PRs each morning and arrange coverage.
+- After one week, compare time waiting for approval and total shipping time with the six-change baseline, and check whether any PR waited because its reviewer was absent.

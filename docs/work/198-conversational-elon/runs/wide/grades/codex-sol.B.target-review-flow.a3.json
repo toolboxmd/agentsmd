@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Launch a review-coverage policy in the existing tracker this week: give each PR a primary reviewer and a qualified backup, route PRs to the backup when the primary is away, reassign after one business day without review, keep the existing approval checks and measure approval wait time over the next six changes. Squads, chapters, Jira Align and quarterly workshops are deferred, not recommended now. No optional larger additions. The reply does not name the two qualified engineers as backups.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes a sound, bounded reviewer-coverage recommendation and defers the larger proposals, but none of the four required labels appears, so every label-based check fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-review-flow.a3",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

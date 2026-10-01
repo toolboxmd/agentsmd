@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends a shared database that saves every reservation and enforces the item/date overlap rule atomically, with the spreadsheet kept only as a view. Before shipping, it should prove that two simultaneous conflicting submissions give one save and one rejection. It explicitly rejects colours and reminders as the safeguard. Unmet need: it can't confirm a this-week ship date without knowing the user's spreadsheet platform and save workflow.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires overlapping reservations for the same physical item to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and reminders as conflict prevention.",
+  "Bottleneck": "Checking availability and saving must be one atomic operation shared by all six agents.",
+  "Checked myself": "You reported last week\u2019s double booking; I have not inspected the spreadsheet or its capabilities."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses atomic, server-enforced rejection of overlapping bookings, explicitly handles simultaneous submissions, and keeps the spreadsheet only as a view.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

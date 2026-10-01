@@ -1,0 +1,201 @@
+Build this week's delivery as a join between the client's code list and the finals folder. The product code is already at the start of every filename, so one command can order the set, flag gaps, and produce the contact sheet.
+
+For each job, keep two inputs:
+
+- `order.txt`, one exact product code per line, in the client's order. Blank lines and lines starting with `#` are ignored.
+- One folder of final JPEGs. Several frames may share a code. They stay together, sorted by filename.
+
+Save this as `deliver.py` and run it with Python 3, which is already on your Mac. It copies matches into a sibling folder named `<finals>-delivery`, prefixed `0001_`, `0002_`, and so on. A code matches only as a whole prefix, so `AB12` matches `AB12_front.jpg` and does not match `AB123_front.jpg`. The run also writes `delivery-report.txt` and `contact-sheet.html`.
+
+```python
+#!/usr/bin/env python3
+"""Order catalogue finals by a client product-code list and build a contact sheet."""
+
+import html
+import re
+import shutil
+import sys
+from pathlib import Path
+from urllib.parse import quote
+
+def code_pattern(code: str) -> re.Pattern:
+    # Prefix must end at a boundary so AB12 does not match AB123_front.jpg.
+    return re.compile(rf"^{re.escape(code)}(?:$|[^A-Za-z0-9])")
+
+def main() -> None:
+    if len(sys.argv) != 3:
+        sys.exit("usage: deliver.py order.txt /path/to/finals")
+
+    order_path = Path(sys.argv[1])
+    finals = Path(sys.argv[2])
+    if not finals.is_dir():
+        sys.exit(f"not a folder: {finals}")
+
+    out = finals.parent / f"{finals.name}-delivery"
+    if out.exists():
+        sys.exit(f"{out} already exists. Move it aside and run again.")
+
+    ordered = []
+    seen = set()
+    duplicates = []
+    for raw in order_path.read_text(encoding="utf-8").splitlines():
+        code = raw.strip()
+        if not code or code.startswith("#"):
+            continue
+        if code in seen:
+            duplicates.append(code)
+            continue
+        seen.add(code)
+        ordered.append(code)
+    if not ordered:
+        sys.exit("order file has no product codes")
+
+    images = [
+        p for p in finals.iterdir()
+        if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg"}
+    ]
+
+    used = set()
+    copied = []
+    missing = []
+    for code in ordered:
+        pat = code_pattern(code)
+        hits = sorted(
+            (p for p in images if p not in used and pat.match(p.name)),
+            key=lambda p: p.name.lower(),
+        )
+        if not hits:
+            missing.append(code)
+            continue
+        for path in hits:
+            used.add(path)
+            seq = len(copied) + 1
+            filename = f"{seq:04d}_{path.name}"
+            shutil.copy2(path, out / filename) if False else None
+            copied.append((seq, code, path, filename))
+
+    unmatched = sorted((p for p in images if p not in used), key=lambda p: p.name.lower())
+
+    out.mkdir()
+    for seq, code, path, filename in copied:
+        shutil.copy2(path, out / filename)
+
+    lines = ["Delivery order", ""]
+    lines += [f"{seq:04d}  {code}  {filename}" for seq, code, path, filename in copied]
+    lines += ["", f"Duplicate codes in the list ({len(duplicates)})"]
+    lines += duplicates or ["(none)"]
+    lines += ["", f"Missing codes ({len(missing)})"]
+    lines += missing or ["(none)"]
+    lines += ["", f"JPEG files not on the order list ({len(unmatched)})"]
+    lines += [p.name for p in unmatched] or ["(none)"]
+    (out / "delivery-report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    cards = []
+    for seq, code, path, filename in copied:
+        cards.append(
+            "<figure>"
+            f'<img src="{quote(filename)}" alt="{html.escape(code)}">'
+            f"<figcaption>{seq:04d} · {html.escape(code)}<br>{html.escape(filename)}</figcaption>"
+            "</figure>"
+        )
+    document = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contact sheet</title>
+<style>
+  body {{ margin: 16px; font: 11px/1.3 -apple-system, sans-serif; color: #111; }}
+  h1 {{ font-size: 16px; margin: 0 0 4px; }}
+  .grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }}
+  figure {{ margin: 0; break-inside: avoid; }}
+  img {{ width: 100%; height: 180px; object-fit: contain; background: #f2f2f2; }}
+  figcaption {{ margin-top: 4px; word-break: break-all; }}
+  @media print {{
+    body {{ margin: 8mm; }}
+    img {{ height: 38mm; }}
+  }}
+</style>
+</head>
+<body>
+<h1>Contact sheet</h1>
+<p>{len(copied)} images · {len(missing)} missing codes · {len(unmatched)} files not on the list</p>
+<div class="grid">
+{"".join(cards)}
+</div>
+</body>
+</html>
+"""
+    (out / "contact-sheet.html").write_text(document, encoding="utf-8")
+    print(f"Wrote {len(copied)} images to {out}")
+    if duplicates or missing or unmatched:
+        print("Read delivery-report.txt before you send the PDF.")
+
+if __name__ == "__main__":
+    main()
+```
+
+There is a mistake in that draft: the copy is deferred until after `out.mkdir()`, but the loop above still has a leftover no-op. Use this cleaned body for `main` from the image scan downward, replacing the earlier version of that half:
+
+```python
+    images = [
+        p for p in finals.iterdir()
+        if p.is_file() and p.suffix.lower() in {".jpg", ".jpeg"}
+    ]
+
+    used = set()
+    planned = []
+    missing = []
+    for code in ordered:
+        pat = code_pattern(code)
+        hits = sorted(
+            (p for p in images if p not in used and pat.match(p.name)),
+            key=lambda p: p.name.lower(),
+        )
+        if not hits:
+            missing.append(code)
+            continue
+        for path in hits:
+            used.add(path)
+            seq = len(planned) + 1
+            planned.append((seq, code, path, f"{seq:04d}_{path.name}"))
+
+    unmatched = sorted((p for p in images if p not in used), key=lambda p: p.name.lower())
+
+    out.mkdir()
+    for seq, code, path, filename in planned:
+        shutil.copy2(path, out / filename)
+
+    lines = ["Delivery order", ""]
+    lines += [f"{seq:04d}  {code}  {filename}" for seq, code, path, filename in planned]
+    lines += ["", f"Duplicate codes in the list ({len(duplicates)})"]
+    lines += duplicates or ["(none)"]
+    lines += ["", f"Missing codes ({len(missing)})"]
+    lines += missing or ["(none)"]
+    lines += ["", f"JPEG files not on the order list ({len(unmatched)})"]
+    lines += [p.name for p in unmatched] or ["(none)"]
+    (out / "delivery-report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    cards = []
+    for seq, code, path, filename in planned:
+        cards.append(
+            "<figure>"
+            f'<img src="{quote(filename)}" alt="{html.escape(code)}">'
+            f"<figcaption>{seq:04d} · {html.escape(code)}<br>{html.escape(filename)}</figcaption>"
+            "</figure>"
+        )
+```
+
+Leave the HTML template as written, and change its count from `len(copied)` to `len(planned)`.
+
+Run it on the last job you ordered by hand:
+
+```bash
+python3 deliver.py order.txt ~/Jobs/ClientA/finals
+open ~/Jobs/ClientA/finals-delivery/contact-sheet.html
+```
+
+In the browser, use Print → Save as PDF. Read `delivery-report.txt` first. Send the sheet when every code is present, or after the client has confirmed each missing code. JPEGs that are not on the list stay out of the sheet.
+
+Repeat that on two more finished jobs. When the report is clean and the page order matches what you used to arrange by dragging, use this as the delivery step.
+
+Keep the DAM budget for the next problem: several people approving versions, or finding a frame across old jobs when nobody remembers the code. Tagging, semantic search, and a review portal do that library work. The client's sequence still comes from `order.txt`, so this sorter stays the last step after any DAM export.

@@ -1,0 +1,39 @@
+The hour you're losing is a sorting problem, and a DAM won't solve it. AI tagging and semantic search help you *find* images across a big archive. Your bottleneck is putting a known set of files into an order the client already gave you. Since every filename starts with its exact product code, a small script can do that in seconds.
+
+**What I'd build this week**
+
+One command you run per job:
+
+```
+deliver --codes client_list.txt --images ./JobFolder --out ./Delivery
+```
+
+It would:
+
+1. **Read the client's code list** in order (pasted text, CSV, or a column from their spreadsheet).
+2. **Match each code to its files.** It would match the code exactly at the start of the filename, followed by a separator like `_`, `-`, `.` or a space. That way `AB12` never accidentally picks up `AB123_front.jpg`.
+3. **Check before writing anything:**
+   - codes with no image (missing shots)
+   - images whose code isn't on the list (extras or typos)
+   - codes with several images (kept together, in a sensible order like `_01`, `_02`)
+4. **Write the ordered delivery.** It would either copy the files with a sequence prefix (`001_AB12_front.jpg`) or leave filenames untouched and just set the order, whichever your client prefers. Originals are never modified.
+5. **Generate the contact-sheet PDF** in that same order, with each thumbnail captioned by its product code and filename. It can carry your studio name, job number and date in the header.
+
+This is a few hundred lines of Python on your Mac. There's no subscription and no upload step, and you can test it this week on a past job where you already know the correct order.
+
+**About the DAM budget**
+
+The DAM is still worth considering, but it should be justified by other needs, for example:
+- searching years of past shoots ("all white-background shots of chairs from 2024")
+- clients reviewing and approving in a browser instead of over email
+- multiple people working on the same archive
+
+If those problems are real for you, evaluate a DAM next month. If you buy one, keep the script anyway: you'd still want the ordered, verified set before anything goes into the portal.
+
+**To get started I need:**
+- a sample of how the client sends the code list (format, and whether it has headers)
+- a few real filenames, especially any with multiple shots per code
+- whether the delivery should rename files or keep the original names
+- any contact-sheet preferences (thumbnails per page, captions, logo)
+
+Send those and I'll write the script and run it on a copy of a past job so you can compare it against what you delivered by hand.

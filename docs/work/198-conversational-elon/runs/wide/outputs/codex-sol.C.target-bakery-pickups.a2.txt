@@ -1,0 +1,12 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup.
+**Deleted:** A full system migration as a prerequisite for fixing pickup misses.
+**Bottleneck:** Preparation is happening out of pickup-date order; today’s cakes remain unmade.
+**Checked myself:** From your account, everyone can read the shared list, and payments and stock reconcile correctly; the reason staff selected later orders is still unknown.
+
+You’re trying to prevent missed pickups. I recommend first establishing a preparation queue using the existing list:
+
+1. **Today:** Identify every unfinished cake due today, assign each to a preparer, and have one person at the counter confirm readiness before pickup. Prioritize these over next month’s orders.
+2. **Before next week:** Find out why staff chose later orders. Check whether responsibility, preparation priority, or the meaning of each status was unclear.
+3. **With the partner:** Make the first session prove that the proposed workflow shows what needs preparation next, who owns it, and what remains unfinished before pickup. Use actual orders to demonstrate it.
+
+Sales, inventory and manufacturing synchronization is broader than the failure you’ve described. Keep that rollout pending until the partner can show which additional problem each module solves; moving the same preparation habits into Odoo could preserve the same missed pickups.

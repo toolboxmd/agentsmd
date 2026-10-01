@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends that the team keep the shared folder for drafts and add a controlled release step now. A non-author reviewer with an authenticated account approves a specific version, and the release process captures that exact file, the reviewer's identity and the approval time. The approved copy and record are kept for seven years in storage protected against alteration or deletion, separate from the editable folder. The APPROVED column and naming convention stay only as status and findability aids. Unmet needs: the controls must be verified before shipping. If they can't be set up this week, the delivery should be renegotiated with the customer.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommended release step covers every LARGER capability, but none of the four labelled record lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.larger-approvals.a2",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

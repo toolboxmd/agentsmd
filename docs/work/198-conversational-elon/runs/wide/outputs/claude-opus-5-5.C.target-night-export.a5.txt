@@ -1,0 +1,16 @@
+**Requirements and who asked:** You need the report by 08:00 every day, and the missing runs have to stop. You also asked for "future-proofed," but no concrete future need has been named yet.
+**Deleted:** Airflow, Kubernetes, separate workers and scheduler, and a deployment pipeline. The job is one 3-minute command with no downstream jobs, so none of these are needed.
+**Bottleneck:** The laptop is asleep overnight, so the job never starts. Nothing is wrong with the export itself.
+**Checked myself:** Nothing observed directly. You told me the command works, takes three minutes, is safe to rerun, has no downstream jobs, and misses runs when the laptop sleeps, and that you run an always-on Linux machine.
+
+What you're trying to achieve: a correct report waiting for you every morning by 08:00.
+
+My recommendation is to move the command to your always-on Linux machine and run it with a systemd timer, which you can ship today:
+
+- **Timer:** set `OnCalendar=*-*-* 03:00` and `Persistent=true`. If the machine was down at 03:00, the run still happens once it comes back.
+- **Service:** use a `oneshot` unit with `Restart=on-failure`. Because reruns are safe, a transient failure just retries.
+- **Checking it:** `systemctl list-timers` shows the next run, and `journalctl -u <unit>` shows what happened.
+
+I'd reject Airflow on Kubernetes here. It adds a scheduler, workers, a metadata database and a cluster for you to maintain, and it fixes nothing that the timer doesn't. Budget isn't the constraint; your ongoing attention is. Revisit orchestration only if real downstream jobs or dependencies show up.
+
+One thing to confirm before the move: the Linux machine needs the same credentials and data access the laptop has, and the report needs to land somewhere you can read it by 08:00.

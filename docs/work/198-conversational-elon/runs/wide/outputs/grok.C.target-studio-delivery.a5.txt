@@ -1,0 +1,13 @@
+**Requirements and who asked:** The client requires each job's final JPEGs in the supplied product-code order, plus a contact-sheet PDF. You asked for a DAM with AI tagging, semantic search, and a cloud review portal because other studios are buying them.
+
+**Deleted:** DAM, AI tagging, semantic search, and a cloud review portal. The order is already an exact code list, and every delivered filename already starts with its code.
+
+**Bottleneck:** The hour per delivery spent dragging thumbnails into that order.
+
+**Checked myself:** What you described: one folder of final JPEGs per job, each filename starts with its product code, the client supplies an ordered list of exact codes, and the contact-sheet PDF is written after the manual sort.
+
+You are trying to deliver each job in the client's code order, with a contact-sheet PDF, this week.
+
+Use one local script: read the code list from top to bottom, copy the single JPEG whose filename begins with that code followed by a separator or the extension into a delivery folder as 001-<filename>, 002-<filename>, and so on, write the contact-sheet PDF from that same sequence, and stop and print any code that matches zero files or more than one.
+
+Save the client's list as a text file, one code per line, and run the script on the next job folder.

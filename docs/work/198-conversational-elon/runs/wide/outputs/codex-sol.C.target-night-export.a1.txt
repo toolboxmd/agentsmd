@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need the correct report by 08:00 and something shippable this week; you asked for future-proofing.
+**Deleted:** Airflow, Kubernetes, separate workers, and a distributed scheduler add no needed capability for this single export.
+**Bottleneck:** Reliable overnight execution; the laptop is often asleep.
+**Checked myself:** No independent checks in this exercise; you reported a working three-minute command, safe reruns, no downstream jobs, and an existing always-on Linux machine.
+
+To get the report ready by 08:00, I recommend one systemd timer on your existing Linux machine, running the Python command at 07:00 with `Persistent=true` to catch missed timer events.
+
+The worker is one service running your command, the scheduler is the timer, and deployment consists of the script, its Python environment, and those two unit files. Keep the command independently runnable and logs in the system journal; future orchestration can invoke that same command if dependencies or scale eventually justify it.

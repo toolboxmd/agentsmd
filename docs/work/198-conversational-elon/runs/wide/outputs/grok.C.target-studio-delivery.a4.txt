@@ -1,0 +1,9 @@
+**Requirements and who asked:** The client requires the images in the product-code order they supply, plus the contact-sheet PDF you already make. You want that delivery done this week without the hour of dragging. The DAM, AI tagging, semantic search, and cloud review portal come from other studios' spending and your budget. Nothing in this delivery breaks without them.
+
+**Deleted:** DAM, AI tagging, semantic search, and a cloud review portal.
+
+**Bottleneck:** The hour per job spent dragging thumbnails into the client's code order before writing the PDF.
+
+**Checked myself:** You described one folder of final JPEGs per job, each filename starting with its product code, and a client-supplied ordered code list. I have not opened a job folder.
+
+You want each delivery's JPEGs and contact sheet in the client's code order. Build one local script that reads that list, copies each JPEG whose name starts with the code, and writes the contact-sheet PDF from the same sequence. Keep the client's list as a text file in the order they sent, and run the script on the job folder.

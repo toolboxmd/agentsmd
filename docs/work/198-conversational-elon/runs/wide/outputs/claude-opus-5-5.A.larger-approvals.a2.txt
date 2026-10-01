@@ -1,0 +1,29 @@
+I'd advise against shipping that as the control. Initials in a column wouldn't meet the contract, and an auditor would likely spot it quickly.
+
+**Why initials in the shared folder fall short:**
+
+- **Approver identity:** Anyone with edit access can type anyone's initials. Nothing ties the entry to a real, authenticated person.
+- **Approval time:** A typed date can be changed later. The file's "modified" time changes with every edit.
+- **No self-approval:** Authors can edit the folder, so nothing stops an author from approving their own document. A convention depends on all 15 people following it every week.
+- **Exact approved version:** If the approved file stays editable, later edits overwrite what was approved. A naming convention doesn't stop that.
+- **Seven-year retention:** Ordinary folders can be cleaned up, reorganised or purged by version-history limits.
+
+**A version that could realistically be ready this week:**
+
+Keep your current folder for drafting, and add a separate release step:
+
+1. **A locked "Released" location.** Only the three reviewers can write to it. Authors can only read it. Your platform's permissions enforce this, not a convention.
+2. **Approve by e-signature or a built-in approval flow.** Examples are Adobe Sign, DocuSign, SharePoint/Power Automate approvals, or Google Drive approvals, depending on what you already have. These record a logged-in identity and a server timestamp for you. Make the reviewer, not the author, the required approver.
+3. **Freeze the approved version.** Export the approved document to PDF, or use the signed output, and store that copy in Released. Record a checksum if you can. Later edits happen to the draft and never touch the released copy.
+4. **Turn on a retention policy or hold** of 7+ years for the Released location, plus audit logging, if your platform supports it. Most business tiers of Microsoft 365 and Google Workspace do.
+5. **Keep a simple release register** listing document, version, approver, time and link. Populate it from the approval tool rather than by hand typing.
+
+If you need something for this week's delivery before all of that is set up, you could combine e-signed PDFs, the reviewer-only folder and a written procedure. Tell the customer the retention policy will be added by a specific date. That's honest and defensible. Initials alone are not.
+
+**To be specific about the next steps, I need to know:**
+
+- Which platform is the shared folder on (SharePoint/OneDrive, Google Drive, Dropbox, a file server)?
+- Do you already have an e-signature tool or approval workflow licensed?
+- Does the contract name a particular standard or audit format, such as ISO 9001 or 21 CFR Part 11?
+
+Once I know those, I can write out the exact permission settings, the approval flow and a one-page procedure for the authors and reviewers.

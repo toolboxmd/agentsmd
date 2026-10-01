@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: add a PivotTable to the existing sheet, with region on rows, month from the date on columns and the sum of the signed net amount as values, then refresh it when each new export arrives. No optional additions are offered. Airbyte, Snowflake, dbt and Power BI are all rejected. The reply never addresses the user's wish to future-proof the report, apart from saying the stack isn't needed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "A monthly board figure for net sales by region, from one local Excel export with region, date, and signed net amount. You asked for that figure. You also asked for Airbyte, Snowflake, dbt, and Power BI this week because peers use them and you have budget.",
+  "Deleted": "Airbyte, Snowflake, dbt, and Power BI. The export is already on your computer and fits there, so there is nothing to sync, warehouse, model, or publish.",
+  "Bottleneck": "The regional month totals are still built by hand. A PivotTable on that same sheet removes the wait.",
+  "Checked myself": "Your description of the single local workbook, the three columns, refunds stored as negatives, and the hand totals. I did not open the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Gives a bounded pivot-table fix that keeps refunds negative, with all four labeled lines placed before the recommendation; it rejects the stack by name and admits it never opened the file.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-board-report.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

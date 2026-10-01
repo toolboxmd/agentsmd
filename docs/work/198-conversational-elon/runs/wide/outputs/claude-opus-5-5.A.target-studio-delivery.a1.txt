@@ -1,0 +1,31 @@
+The hour you're losing is a sorting problem, and a DAM won't fix it. You already have exact product codes from the client and filenames that start with those codes. That's enough to automate the ordering and the contact sheet completely. AI tagging and semantic search help you *find* images in a large archive. They don't put a known set of files into a client-specified order.
+
+## What I'd build this week
+
+A small script you run per job:
+
+1. **Input:** the job folder plus the client's code list (CSV, Excel or plain text).
+2. **Match:** for each code in order, find the files whose names start with that code. It should match on the code plus a separator, so `AB12` doesn't accidentally match `AB123_front.jpg`.
+3. **Check before output:**
+   - codes with no image
+   - images that match no code
+   - codes with more than one image, kept in a consistent order (e.g. by suffix: `_front`, `_back`)
+4. **Output:**
+   - a contact-sheet PDF in client order, with code and filename under each thumbnail
+   - optionally, a copy of the JPEGs renamed with a sequence prefix (`001_AB12.jpg`, …) so they sort correctly anywhere
+   - a short report of anything missing or unexpected
+
+On your Mac that's a Python script, a few hundred lines at most. It should take seconds per delivery instead of an hour. It also catches mistakes that are easy to make when dragging thumbnails by hand.
+
+## Where a DAM might still make sense
+
+It's worth it later if you have other needs: searching years of past shoots, long-term archiving, or a client review and approval portal. Those are real benefits. But evaluate them separately and after this fix, so you're paying for problems you actually have. Even with a DAM, you'd probably still want this script for delivery ordering.
+
+## To get started, I need:
+
+- **A sample client code list** in the format they actually send it
+- **A few real filenames** from one job, especially any with multiple shots per code
+- **Contact-sheet preferences:** grid size per page, page size, and whether to include your logo or a job name header
+- **Delivery format:** whether you deliver the reordered or renamed JPEGs too, or just the PDF
+
+Send those and I'll write the script and test it on a copy of one job folder before you use it on a real delivery.

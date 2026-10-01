@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need a reminder for each contract two weeks before its notice deadline, so you can decide about the renewal yourself. Nothing should cancel or pay automatically.
+**Deleted:** n8n, the Gmail agent, the vector database, and the Telegram bot. The dates come from one statement a year and stay fixed, so nothing needs parsing, searching, or a separate channel.
+**Bottleneck:** Getting each year's dates in front of you at the right time.
+**Checked myself:** Nothing on your machines. This is based only on what you've told me: one yearly statement with fixed dates, daily phone calendar use, and no automatic actions.
+
+You want to never miss a notice deadline, and your phone calendar already does that. When the statement arrives each year, add one event per contract on its notice deadline, titled with the contract name, and set an alert for 14 days before. That takes about ten minutes a year and leaves nothing new to run or pay for.
+
+I recommend keeping the budget unspent. If you send me the statement's contract list, I'll turn it into a calendar file you can import in one tap.

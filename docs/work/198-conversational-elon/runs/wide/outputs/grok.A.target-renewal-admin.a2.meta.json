@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-renewal-admin.a2",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-renewal-admin",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 32.8,
+ "valid": true
+}

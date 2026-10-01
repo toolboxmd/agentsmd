@@ -1,0 +1,5 @@
+You need every cake due today ready before pickup; the evidence points to preparation priority as the immediate problem, while payments and stock are already reconciled correctly.
+
+Today, sort the shared list by pickup time, assign each due cake to a named preparer, and have one person check progress against pickup deadlines.
+
+For next week’s partner session, I recommend a phased rollout: first prove that Odoo turns prepaid orders into preparation work ordered by pickup deadline, with clear ownership and overdue alerts; pilot that workflow at the counter through a complete pickup cycle, then add inventory and manufacturing integration where a demonstrated need justifies it.

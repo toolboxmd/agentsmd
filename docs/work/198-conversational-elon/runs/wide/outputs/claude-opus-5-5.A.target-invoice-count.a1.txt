@@ -1,0 +1,30 @@
+I'd recommend not building Kafka, CQRS, or Redis for this count. The simpler fix is faster, and it also meets your freshness requirement, which the event-driven design would break.
+
+**Why the projection is a poor fit**
+
+- **It can't guarantee freshness.** A CQRS projection fed by Kafka is eventually consistent. Between a commit in Postgres and the Redis counter updating, there's always a lag, and during consumer outages or rebalances that lag can grow. You need the count to reflect committed invoices at request time, and a projection can't promise that. To close the gap you'd need an outbox table, idempotent consumers, and reconciliation jobs, which is a lot of moving parts for one integer.
+- **The slowness probably isn't in Postgres.** The endpoint pulls every unpaid invoice row, builds objects, and counts them in memory. Most of the time likely goes to row transfer and object construction. Asking the database for the count removes nearly all of that.
+
+**What I'd ship this week instead**
+
+1. Replace the fetch-and-count with a single query, e.g.
+   ```sql
+   SELECT count(*) FROM invoices WHERE customer_id = $1 AND status = 'unpaid';
+   ```
+   I'd match your real column names and "unpaid" condition, and keep the ORM's equivalent `.count()` if it emits this SQL.
+2. Add a partial index so the count can come from a small index:
+   ```sql
+   CREATE INDEX CONCURRENTLY invoices_unpaid_by_customer
+     ON invoices (customer_id) WHERE status = 'unpaid';
+   ```
+3. Verify with `EXPLAIN (ANALYZE, BUFFERS)` against production-sized data, then measure p95/p99 on the endpoint against the one-second target.
+
+This reads committed data directly, so freshness is exact. It's one small code change plus one index, and it's easy to roll back.
+
+**When the event-driven route would make sense**
+
+If, after this change, the count is still over a second (say, customers with millions of unpaid invoices), the next step is still in Postgres. A counter table maintained by a trigger in the same transaction stays consistent at commit. Kafka plus Redis would only be worth it if other consumers need invoice events anyway, and right now this count has no other readers. The approved Kafka budget is better spent on a use case that actually needs a stream.
+
+If you still want the CQRS version, I can outline it: an outbox table, a Debezium or outbox relay, an `invoice-events` topic, a consumer service, and Redis counters. But I'd want us to agree first that eventual consistency is acceptable, since it contradicts the stated requirement.
+
+Want me to look at the current endpoint and invoice schema so I can write the exact query and index?

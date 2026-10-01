@@ -1,0 +1,6 @@
+**Requirements and who asked:** The owner requires conflicting reservations to be rejected at save time, including simultaneous submissions.
+**Deleted:** Colours and reminders as the mechanism for preventing conflicts.
+**Bottleneck:** Checking availability and saving must happen atomically across all six agents.
+**Checked myself:** Only your supplied facts; no implementation or delivery estimate verified.
+
+To prevent double bookings, I recommend keeping the spreadsheet interface only if every reservation goes through one shared save mechanism that atomically rejects overlaps for the same item. Red formatting can highlight conflicts, but it cannot meet the owner’s requirement; I would not ship it as the fix or promise the enforced solution this week without checking the current setup.

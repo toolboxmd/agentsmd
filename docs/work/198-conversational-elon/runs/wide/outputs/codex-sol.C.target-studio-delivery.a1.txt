@@ -1,0 +1,8 @@
+**Requirements and who asked:** Your client wants images in their exact product-code order; you want a professional delivery workflow this week.
+**Deleted:** DAM, AI tagging, semantic search, and a cloud review portal from this week’s scope.
+**Bottleneck:** Manually arranging thumbnails takes an hour per delivery.
+**Checked myself:** You told me each job has an ordered code list, one JPEG folder, and filenames starting with product codes; I have not inspected them.
+
+You’re trying to deliver correctly ordered images with less manual work. I recommend one small local contact-sheet generator: give it the client’s list and JPEG folder, have it match exact codes, flag missing or ambiguous matches, and generate the PDF in the supplied order.
+
+The evidence supports automating ordering this week; it does not establish a need for a DAM.

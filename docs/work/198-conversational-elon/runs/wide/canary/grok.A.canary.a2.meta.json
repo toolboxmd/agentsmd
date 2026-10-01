@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.canary.a2",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "canary",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 13.5,
+ "valid": true
+}

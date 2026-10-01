@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: run the same Python command from one systemd timer (07:00, Persistent=true) plus a service on the existing always-on Linux machine, with the script, its Python environment and logs in the journal. Optional now: nothing. Later, only if dependencies or scale justify it: orchestration that calls the same command. Unmet needs: the interpreter, paths and data access on the server are not confirmed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the correct report by 08:00 and something shippable this week; you asked for future-proofing.",
+  "Deleted": "Airflow, Kubernetes, separate workers, and a distributed scheduler add no needed capability for this single export.",
+  "Bottleneck": "Reliable overnight execution; the laptop is often asleep.",
+  "Checked myself": "No independent checks in this exercise; you reported a working three-minute command, safe reruns, no downstream jobs, and an existing always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply picks a bounded systemd timer on the existing server, rejects the Airflow/Kubernetes stack by name, and makes later orchestration conditional.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

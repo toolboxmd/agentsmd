@@ -1,0 +1,8 @@
+**Requirements and who asked**: A monthly board total of net sales by region from your one local Excel export, refunds included, with less hand work, this week. You asked for Airbyte, Snowflake, dbt, and Power BI because peers use them and you want the report future-proof. No volume, extra source, or failure was named that this stack would fix.
+**Deleted**: Airbyte, Snowflake, dbt, Power BI, and a pipeline between them.
+**Bottleneck**: The hand totals. The workbook already fits on your computer.
+**Checked myself**: Only what you told me: one local Excel table of region, date, and signed net amount, refunds as negatives, summed by hand. I have not opened the file.
+
+You want this week's board report of net sales by region from that export.
+Use one PivotTable on the sheet: Region as rows, Date grouped by year and month as columns, Sum of the signed net amount as values.
+Each new export, paste the rows into the same table and refresh the pivot.

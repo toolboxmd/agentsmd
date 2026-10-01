@@ -1,0 +1,5 @@
+You want a reminder to decide on each renewal two weeks before its notice deadline, using the phone calendar you already check, with the dates taken once from the yearly statement.
+
+Enter one calendar event per contract on that decision date, and put the contract name, renewal date, and notice deadline in the notes.
+
+Leave n8n, the Gmail agent, the vector database, and the Telegram bot out of it: the dates stay fixed all year, the calendar is where you already look, and the job ends at a reminder.

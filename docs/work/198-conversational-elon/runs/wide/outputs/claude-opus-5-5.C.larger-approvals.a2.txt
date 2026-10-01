@@ -1,0 +1,15 @@
+**Requirements and who asked:** The customer contract requires keeping the exact approved version, approver identity and approval time for seven years. It forbids self-approval, and later edits must not change the approved version. You need this before this week's delivery.
+**Deleted:** The APPROVED initials column and the naming convention as the control. Anyone can type anyone's initials, and authors can still overwrite the approved file in the current folder.
+**Bottleneck:** Authors can edit the folder where approved files live, so no record in it can be trusted later.
+**Checked myself:** Only what you told me. I haven't seen which platform the folder is on or its permission, audit and retention settings.
+
+Your goal is to prove to the customer, for seven years, who approved which exact version and when. Your proposal won't hold up to that, so I'd rather say it now than after an audit.
+
+I recommend keeping your current folder for drafts and adding a single "Released" folder on the same platform:
+- **Who can write:** Only the three reviewers can add files. Authors can read but not edit.
+- **How approval works:** A reviewer approves by placing the final file there, ideally as a PDF. The platform's audit log then records who did it and when, from their login rather than typed initials.
+- **Retention:** Set a seven-year retention or lock on that folder so the approved version can't be changed or deleted.
+
+This uses tools you already run, so it fits this week. Two things to confirm:
+- **Which platform you're on.** Whether audit logs and retention locks are available depends on the platform and license (for example SharePoint or Google Drive).
+- **Whether any reviewer also writes documents.** If so, their own documents need to go to a different reviewer, which permissions alone won't enforce.

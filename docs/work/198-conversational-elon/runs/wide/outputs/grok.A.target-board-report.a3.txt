@@ -1,0 +1,13 @@
+Skip the warehouse stack this week. The board report is one local Excel table, and the monthly regional figure is a sum of the signed net amount you already have.
+
+In the workbook:
+
+1. Keep refunds as negative amounts so they reduce the total.
+2. Build a pivot table: region on the rows, month from the date on the columns or as a filter, and Sum of net amount as the values.
+3. Save that pivot as the board tab. Next month, drop in the new export and refresh.
+
+That is the pipeline. It finishes this week, stays on your machine, and matches how the numbers are produced today.
+
+Power BI is the only tool from that list worth adding later, and only if the board wants a dashboard. Connect it straight to the same Excel file. There is still no extract, warehouse, or dbt model to run.
+
+Airbyte, Snowflake, and dbt earn a place when a second system has to land in the same report, when several people need a shared history, or when the file no longer fits a workbook. Until then they add accounts, cost, and a failure point around a sum you can refresh in place.

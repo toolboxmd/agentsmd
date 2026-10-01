@@ -1,0 +1,12 @@
+I’d start by making today’s pickups the preparation priority. The missed orders point to a scheduling problem: staff can see the orders, and payments and stock reconcile, but cakes aren’t being prepared in pickup-date order.
+
+For today, have one person review every order due, sort unfinished cakes by pickup time, assign each to a baker, and check progress until every cake is ready before pickup.
+
+Then structure the Odoo rollout around that workflow:
+
+1. **Agree the preparation rules with staff.** Show overdue and today’s orders first, with pickup time, assigned baker, and clear statuses: awaiting preparation, in progress, ready, collected.
+2. **Pilot the full flow on a small set of cake orders.** Link the sales order to its manufacturing job and ingredient requirements. Give the counter a shared view of preparation status. Use pickup time to set the production deadline, allowing time for baking, cooling and decorating.
+3. **Test the cases that cause missed pickups.** Include a next-month order entered before a today order, changed pickup times, rush orders and unfinished jobs. Confirm that today’s work stays first and delays become visible.
+4. **Expand after the pilot works.** Reconcile open orders during migration, train staff, and set a clear cutover so there is one authoritative order list.
+
+Ask the implementation partner to demonstrate that a cake due today gets prepared before one due next month, regardless of entry order. Judge the rollout by cakes ready on time; module synchronisation supports that outcome but doesn’t establish the priority rules by itself.

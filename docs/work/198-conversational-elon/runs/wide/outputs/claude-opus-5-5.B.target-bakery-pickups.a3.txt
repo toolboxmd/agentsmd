@@ -1,0 +1,9 @@
+Your goal is getting every cake due today made before pickup, and I'd fix that before rolling out Odoo. Payments and stock already reconcile, so sales, inventory and manufacturing modules mostly replace parts that work. The failure was that staff prepared next month's orders while today's sat unmade, which looks like the list isn't being worked by pickup date (my inference; worth asking staff how they chose what to make).
+
+My recommendation is to change the shared list this week instead:
+
+- **Sort by pickup date** so the earliest pickups are always at the top, not the newest entries.
+- **Add a "due today or tomorrow, not prepared" view** at the counter, and have staff work only from that view.
+- **Do a quick morning check** of that view before baking starts, so nothing due today is left unmade.
+
+Try that for a couple of weeks before committing to Odoo. If pickups still get missed, you'll know exactly what Odoo has to fix, and the partner can scope a much narrower rollout. Whether to keep, narrow or postpone next week's booking is your call, since it involves money.

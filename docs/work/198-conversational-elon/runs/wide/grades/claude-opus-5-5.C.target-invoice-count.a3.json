@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do this now: swap the row fetch and in-memory object counting for a single PostgreSQL SELECT count(*) on the unpaid condition. Add a partial index only if EXPLAIN ANALYZE shows a sequential scan, and measure timing before and after the change. The reply adds no Kafka, CQRS projection or Redis, either now or as an option. Still open: the one-second target has not been measured and the repo has not been inspected.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to return within one second and reflect invoices committed at request time; users reported it is slow.",
+  "Deleted": "Kafka topics, the CQRS projection service, and Redis. No requirement needs them, and an async projection would break the \"committed at request time\" requirement because it lags the database.",
+  "Bottleneck": "The endpoint pulls every unpaid invoice row and builds an object for each one just to count them in application memory.",
+  "Checked myself": "Nothing yet in code or the live database. I only know what you told me: one app, PostgreSQL, the endpoint returns only the count, and nothing else reads it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes an aggregate-query fix with all four record lines in place first, rejects the stack by name, and is honest about what it has not checked.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-invoice-count.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

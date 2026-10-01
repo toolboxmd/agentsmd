@@ -1,0 +1,3 @@
+The new gear probably won't fix these drops: the other two devices on the same router stay connected when the desk drops, which points at the desk's own path (cable, router port, or network adapter), not the router or internet line. The old cable squeezed through that tight grommet is the likeliest cause, so I'd start with a new Cat6 patch cable routed without sharp bends, and try a different router port while you're at it. If drops continue after that, check the computer's link status during a drop (it shouldn't flap or fall back to 100 Mb), and only then look at the adapter or router.
+
+The UniFi, managed switch, and Grafana setup is a fine separate project if you want it for its own sake, but I'd decide that after the cable test rather than as the fix for this desk.

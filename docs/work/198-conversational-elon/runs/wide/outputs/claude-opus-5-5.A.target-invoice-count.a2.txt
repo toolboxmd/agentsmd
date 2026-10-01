@@ -1,0 +1,31 @@
+I'd recommend not shipping Kafka, a CQRS projection, or Redis for this count. The simpler fix is faster to ship, and it's the only option that meets your freshness requirement.
+
+**Why the event-driven version works against your goals**
+
+- **Freshness:** A Kafka-fed projection in Redis is eventually consistent. Between an invoice commit and the consumer updating Redis, the count is stale. You need the count to reflect committed invoices at request time, and the projection can't guarantee that.
+- **Correctness risk:** You'd need an outbox or CDC (Change Data Capture) to avoid lost or double-counted events. You'd also need idempotent consumers, a rebuild path for drift, and handling for every status transition (paid, voided, refunded, deleted). Each of these can make the count wrong in ways that are hard to notice.
+- **It doesn't address the cause:** The endpoint is slow because it loads every unpaid invoice row, builds objects, and counts them in memory. That's a query problem, not an architecture problem.
+
+**What I'd ship this week instead (likely in a day)**
+
+1. Replace the fetch-and-count with a database count:
+   ```sql
+   SELECT count(*) FROM invoices
+   WHERE customer_id = $1 AND status = 'unpaid';
+   ```
+   (I'll match your actual column names and status values.)
+2. Add a supporting index, ideally partial:
+   ```sql
+   CREATE INDEX CONCURRENTLY invoices_unpaid_by_customer
+     ON invoices (customer_id) WHERE status = 'unpaid';
+   ```
+   This usually allows an index-only scan over just that customer's unpaid rows. Per-customer counts typically come back in single-digit milliseconds.
+3. Verify with `EXPLAIN (ANALYZE, BUFFERS)` against production-like data, and add a latency check to confirm it stays under one second.
+
+Because the query reads committed data at request time, it meets the freshness requirement by construction. The endpoint has no other reader or output, so nothing else depends on the in-memory objects. The change is low-risk and easy to roll back.
+
+**If it's still slow after that** (for example, one tenant with millions of unpaid rows), the next step is a counter table updated in the same transaction as invoice writes. That stays inside Postgres and stays transactionally consistent.
+
+**On the approved Kafka budget:** It's better spent where events actually help. Good fits are fan-out to multiple consumers, cross-service integration, notifications, and analytics pipelines. I'd be glad to help identify a good first use case. Adopting it for this count would add operational load and make the result less accurate.
+
+Want me to start by looking at the current endpoint and invoice schema so I can write the query change and migration?

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "For now: sort the existing shared order list by pickup date with the earliest first, add a filter or highlight on the counter view for unmade orders due today or tomorrow, and add a rule that nobody starts a later order while an earlier one is still unmade. No optional additions are offered now. The Odoo rollout is dropped, and the owner decides whether to cancel or repurpose the partner booking. Still open: the agent hasn't confirmed which tool holds the list or how the list is sorted now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup. Payments and stock already reconcile correctly, so nobody has a need that sales, inventory or manufacturing modules would fill.",
+  "Deleted": "Odoo, its sales, inventory and manufacturing modules, the counter sync, and the implementation partner.",
+  "Bottleneck": "Staff decide what to bake next from the shared list, and this morning they made next month's orders before today's.",
+  "Checked myself": "Only what you told me. I haven't seen the list itself or how it is sorted at the counter."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply has all four record lines before its recommendation, offers a bounded due-today view and sort on the existing list, rejects Odoo and the sync by name, and says plainly what it hasn't seen.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

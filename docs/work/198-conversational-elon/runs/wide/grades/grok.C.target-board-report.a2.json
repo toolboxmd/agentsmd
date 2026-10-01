@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends one PivotTable in the existing workbook. Regions go in rows, dates are grouped by year and month in columns, and the values are the sum of the signed net amount, so refunds stay negative. Each month the user pastes the new export into the same table and refreshes the pivot. It offers no optional add-ons and names no unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "A monthly board total of net sales by region from your one local Excel export, refunds included, with less hand work, this week. You asked for Airbyte, Snowflake, dbt, and Power BI because peers use them and you want the report future-proof. No volume, extra source, or failure was named that this stack would fix.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI, and a pipeline between them.",
+  "Bottleneck": "The hand totals. The workbook already fits on your computer.",
+  "Checked myself": "Only what you told me: one local Excel table of region, date, and signed net amount, refunds as negatives, summed by hand. I have not opened the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply fills in all four record lines before recommending a pivot table that stays inside the workbook, and it drops the whole proposed stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-board-report.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

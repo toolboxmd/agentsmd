@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: put one all-day event per contract into the phone calendar, dated 14 days before each notice deadline, with an alert on each. Also add a yearly event to enter the dates when the statement arrives. Optional: a second alert on the deadline itself as a backstop. It rejects n8n, the Gmail agent, the vector database and the Telegram bot outright and leaves no needs unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for a reminder per contract two weeks before its notice deadline, so you can decide in time; no automatic cancellation or payment.",
+  "Deleted": "n8n, the Gmail agent, the vector database, and the Telegram bot. The dates arrive once a year on one statement and don't change, so there is nothing to watch, search, or sync.",
+  "Bottleneck": "Getting each year's dates into a place you already look every day. The reminder itself is solved.",
+  "Checked myself": "Only what you told me: one statement per year, fixed dates, a 14-day decision lead, daily phone calendar use, no automatic actions."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, and the reply picks the bounded calendar fix, names and rejects each part of the proposed stack, and limits its checks to facts the user gave.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-renewal-admin.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

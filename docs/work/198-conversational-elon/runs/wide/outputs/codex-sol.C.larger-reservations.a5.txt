@@ -1,0 +1,8 @@
+**Requirements and who asked:** The owner requires overlapping reservations for the same item to be rejected at save time, including simultaneous submissions.
+**Deleted:** Colours and reminders as the mechanism for preventing conflicts.
+**Bottleneck:** Two agents can both see availability before either saves.
+**Checked myself:** You described six agents across two offices and a double booking last week; I have not inspected the spreadsheet.
+
+You want to prevent another double booking while keeping this week’s change small. I recommend keeping the spreadsheet only if every reservation save goes through one shared mechanism that checks availability and reserves the item atomically, so one conflicting submission succeeds and the other is rejected.
+
+Conditional formatting cannot meet that requirement. If enforced saving cannot ship this week, the proposed release does not satisfy the owner’s requirement.

@@ -1,0 +1,5 @@
+Run the export on the always-on Linux machine you already administer, with cron or a systemd timer, well before 08:00. That is the setup to ship this week.
+
+The job is one Python command, about three minutes, with no downstream work, and running it again safely replaces that night’s report. The missing nights come from the laptop sleeping. A single schedule on a host that stays up fixes that. Pick a fixed time such as 06:00 so a failed run can be started again by hand and still finish before 08:00. Write stdout and stderr to a log so you can see whether it ran.
+
+There is nothing to split across workers, a scheduler, and a deployment. Airflow on Kubernetes is a platform for many jobs, dependencies, and shared operations. It does not change this export, and standing it up is more work than the report itself. Add a workflow system when you have several jobs, real dependencies, or more than one person operating them. Until then, one timer and the command you already trust is the future-proof version: small, repeatable, and easy to move later.

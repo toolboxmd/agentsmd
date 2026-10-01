@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends adding a small Postgres bookings table now, with an exclusion constraint on item identifier and date range. The database then rejects the second of two overlapping saves even when both arrive at once. The spreadsheet stays only as a read-only view. It asks where agents enter bookings and whether the sheet is Google Sheets or Excel, so it can design a save screen. No unmet needs.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires that a conflicting reservation for the same item identifier be rejected at save time, even when two of the six agents submit at once. You asked to ship something this week.",
+  "Deleted": "Red conditional formatting plus a reminder as the overlap guard. It only highlights a conflict after both bookings are saved, and it depends on someone noticing, which is how last week's double promise got through.",
+  "Bottleneck": "Two agents saving at the same moment, each without seeing the other's booking.",
+  "Checked myself": "Only what you told me: six agents in two offices, one identifier per item, last week's double booking, and the owner's save-time rule. I haven't seen the spreadsheet or which product it runs in."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Uses transactional storage with an atomic exclusion constraint, and says plainly that only one of two simultaneous conflicting saves succeeds; the sheet is kept only as a read-only view.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

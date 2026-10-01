@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Rejects the user's preferred approach (shared folder plus typed-initials APPROVED column plus naming convention) as the release control. It keeps the folder for drafts only. For this week, it adds a release archive that authors cannot edit or delete. A reviewer who is not the author copies the exact approved file into the archive. That reviewer stores a checksum, their authenticated login identity and the system time of approval with the file. The customer receives the archive copy. Any later change needs a new approval, and the archive and records are kept for seven years with routine edit and delete blocked. It suggests no optional additions. Nothing the contract requires is left unmet, although the reply does not say which tool should enforce the archive permissions.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The chosen control is enforceable and does what the contract requires, but the reply has none of the four required labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.larger-approvals.a3",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

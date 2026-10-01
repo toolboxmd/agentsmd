@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.B.canary.a2",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "B",
+ "arm_sha256": "57470662266ca15a7587ccf9486a5132e09f428f87e80e69e127ace27d91590a",
+ "scenario": "canary",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "Reading additional input from stdin...\nOpenAI Codex v0.159.3\n--------\nworkdir: /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.B.canary.a2-_lip2quz/work\nmodel: gpt-6.1-sol\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: medium\nreasoning summaries: none\nsession id: 01a0f8e4-237c-78a1-849b-1ab068ca1d4e\n--------\nuser\nDo not run tools. Answer two lines only. Line 1: does any instruction you were given (system prompt, AGENTS.md, CLAUDE.md, or memory) contain a section titled 'Elon method'? yes or no. Line 2: quote the first heading of any user-level or global instructions file you were given, or NONE.\nwarning: Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.B.canary.a2-_lip2quz/home/.codex/config.toml.\ncodex\nyes\n\"# Global Agent Rules\"\ntokens used\n5,377\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": "a608dbc56b9823b48df67beab57628745fdf8692b8a54853f4077ec3e858b232"
+ },
+ "seconds": 6.7,
+ "valid": true
+}

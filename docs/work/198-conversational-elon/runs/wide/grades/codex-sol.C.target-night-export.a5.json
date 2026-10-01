@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now, run the existing Python command on the always-on Linux machine using one systemd service and timer. Schedule it for 07:30 in the report's timezone, use Persistent=true so missed runs are caught up, keep the logs, and verify a scheduled run and a safe rerun before shipping. Keep the command independent of its scheduler so other options stay open later. It adds no Airflow, Kubernetes or worker split. It does not explicitly mention confirming the interpreter and paths on the server, but the pre-ship verification would cover that in practice.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need a correct report by 08:00 and a solution shipped this week.",
+  "Deleted": "Airflow, Kubernetes, and separate workers, scheduler, and deployment roles add no necessary capability for this single job.",
+  "Bottleneck": "The laptop is often asleep when the export should run.",
+  "Checked myself": "Your supplied facts: the command works, takes three minutes, has no downstream jobs, and can safely replace that night\u2019s output."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply names and rejects the Airflow/Kubernetes stack, grounds its check in the supplied facts, and recommends a bounded systemd timer on the existing server.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

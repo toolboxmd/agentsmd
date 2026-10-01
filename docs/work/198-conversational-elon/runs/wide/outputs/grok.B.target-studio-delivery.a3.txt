@@ -1,0 +1,1 @@
+You want each job's JPEGs and contact sheet in the client's product-code order, without an hour of dragging thumbnails. Build a small script this week that reads their ordered code list, sorts the folder by the code at the start of each filename, and writes the PDF. Keep the DAM budget until a client actually needs tagging, search, or a review portal.

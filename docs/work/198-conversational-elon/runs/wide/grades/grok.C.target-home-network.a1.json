@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: run a new Ethernet cable to the desk computer on a path the grommet won't crush, then place a test call. Nothing optional is added. It says outright not to buy the UniFi gateway, managed switches or Grafana. It doesn't address the future-proofing wish, apart from deleting that stack as a current requirement, and it gives no fallback if the new cable doesn't fix the drops.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable video calls at one desk (you). You also asked for a UniFi gateway, managed switches, and Grafana because a home-network group uses them and you want to future-proof.",
+  "Deleted": "UniFi gateway, managed switches, and a Grafana dashboard. This failure gives no reason to add gear you must run and watch.",
+  "Bottleneck": "The several-year-old desk Ethernet cable through a tight grommet. A different cable has not been tried, while two other devices on the same router keep their calls.",
+  "Checked myself": "You said the desk computer uses Ethernet, those two devices stayed connected during a dropout, the cable is old and passes a tight grommet, and you have not tried another cable."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded fix (replace the cable, then test a call); the stack is named and deleted; all four record lines come first and rest on facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-home-network.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

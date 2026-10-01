@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends acting now with a small Postgres bookings table that has an exclusion constraint on item identifier plus date range. The database atomically rejects the second of two conflicting saves, even when agents submit together. Agents enter bookings through a simple form, and the spreadsheet stays as a read-only view. As an optional step this week, it offers the red colours as a stopgap, provided the owner is told they only flag conflicts and don't prevent them. It offers to draft the table and constraint. No requirement is left unmet by the chosen option.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. You asked to keep the spreadsheet and ship this week.",
+  "Deleted": "The manual \"remember to check the colours\" step as the safeguard, because the requirement says the system rejects the conflict, not that a person notices it.",
+  "Bottleneck": "Six agents in two offices can save to a shared store at the same moment, and nothing makes the overlap check and the save one step.",
+  "Checked myself": "Only what you told me: six concurrent agents, one identifier per item, last week's double booking, and the owner's save-time rule. I have not seen the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The exclusion constraint meets the atomic concurrent-rejection need, but offering the colours as a stopgap this week puts the deleted spreadsheet-colours safeguard back on offer now.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

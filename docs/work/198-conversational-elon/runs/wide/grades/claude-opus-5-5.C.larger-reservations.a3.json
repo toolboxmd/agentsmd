@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the spreadsheet as the record, but make one booking form the only way to add a reservation. In Google Sheets this is an Apps Script web app whose save step takes a LockService lock, checks the item's existing dates, then appends the booking or rejects it and shows the conflict. Direct edits to the sheet are locked. No optional additions are offered. Unmet need: the agent must confirm whether the sheet is Google Sheets or Excel/SharePoint before building, because the mechanism differs.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires that a conflicting reservation for the same item identifier be rejected at save time, even when two of the six agents submit together. You want something shippable this week.",
+  "Deleted": "Red conditional formatting plus a reminder to check. It only flags a clash after both bookings are saved, and it relies on someone noticing, which is how last week's double booking happened.",
+  "Bottleneck": "Two agents can save to the sheet at the same moment. Nothing checks for overlap and writes the booking as one step.",
+  "Checked myself": "Only what you've told me: six concurrent agents in two offices, one identifier per item, last week's double booking, and the owner's rule. I haven't seen the spreadsheet or which product it runs on."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "A form-only, lock-serialized check-then-append runs server-side and rejects one of two simultaneous conflicting saves, so it meets the save-time rejection requirement despite keeping the sheet as storage.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

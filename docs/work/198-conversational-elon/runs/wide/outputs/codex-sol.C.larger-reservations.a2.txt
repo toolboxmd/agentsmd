@@ -1,0 +1,8 @@
+**Requirements and who asked:** The owner requires overlapping reservations for the same physical item to be rejected at save time, including simultaneous submissions.
+**Deleted:** Colours and reminders as conflict prevention.
+**Bottleneck:** Checking availability and saving must be one atomic operation shared by all six agents.
+**Checked myself:** You reported last week’s double booking; I have not inspected the spreadsheet or its capabilities.
+
+You want to prevent double bookings while keeping as much of your current workflow as possible. I recommend keeping the spreadsheet as a view and putting reservation saves through one shared database that enforces the overlap rule atomically; red formatting alone cannot meet the owner’s requirement.
+
+Before shipping, prove that two simultaneous, conflicting submissions produce exactly one saved reservation and one rejection; whether that can ship this week depends on your spreadsheet platform and save workflow.

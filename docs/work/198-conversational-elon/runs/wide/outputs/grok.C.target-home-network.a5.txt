@@ -1,0 +1,6 @@
+**Requirements and who asked**: Dependable video calls at the one desk that drops (you). A UniFi gateway, managed switches, and a Grafana dashboard (you, because the home-network group is adopting that setup, the budget is approved, and you want to future-proof).
+**Deleted**: UniFi gateway, managed switches, Grafana dashboard. Two other devices on the same router keep their calls during the dropout, so the shared path is already carrying calls. Those additions leave the failing desk link unchanged, and nothing in the drops breaks without them.
+**Bottleneck**: The several-year-old Ethernet cable at that desk, run through a tight grommet, which has not been replaced.
+**Checked myself**: What you reported: Ethernet only at the dropping desk, two other devices on the same router stay connected, old cable through a tight grommet, no different cable tried yet. No cable swap or call test has been done.
+
+You want dependable calls at that desk. Put a known-good Ethernet cable on that computer, routed clear of the grommet, and place a call from the desk to confirm the drop is gone.

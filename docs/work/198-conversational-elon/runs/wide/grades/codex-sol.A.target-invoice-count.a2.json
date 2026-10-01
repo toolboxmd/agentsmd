@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do it now: replace in-memory counting with a PostgreSQL SELECT COUNT(*) on the primary, using the endpoint's existing filters. Check the query plan for a suitable index, possibly a partial index on unpaid invoices. Benchmark against the one-second target. Ship no new services or topics. Later options, each conditional: a count table updated in the same transaction if the query still misses the target, and CQRS/Kafka/Redis only if eventual consistency becomes acceptable. Unmet needs: the reply has no labeled record, and it cites no timing data.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The bounded aggregate-query fix is sound and keeps request-time freshness, but none of the four required labeled lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.target-invoice-count.a2",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

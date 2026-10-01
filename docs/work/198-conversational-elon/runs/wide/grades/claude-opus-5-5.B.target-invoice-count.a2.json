@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply says to replace the row-loading, in-memory count with one PostgreSQL count(*) aggregate. It adds a partial index only if EXPLAIN ANALYZE shows a scan. It rejects Kafka, CQRS and Redis because an event-fed projection is eventually consistent and would break the request-time committed-data requirement. It offers no optional stack additions now and leaves no requirement unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a sound bounded fix, but the reply has none of the four labeled record lines, so every label-based predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-invoice-count.a2",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

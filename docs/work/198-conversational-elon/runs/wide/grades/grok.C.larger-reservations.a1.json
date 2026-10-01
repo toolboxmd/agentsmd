@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Keep the spreadsheet as the data store, but route every booking through one save path. That save takes an exclusive lock, checks the item identifier's dates against stored rows and refuses overlapping bookings, so only one of two simultaneous conflicting saves succeeds. No optional additions are offered. Unmet needs: it does not say how direct edits of the sheet are blocked or what platform enforces the lock, and it has not seen the spreadsheet.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires a save to be rejected when that item identifier already has overlapping dates, including when two agents save together. You asked to ship red overlap colours and a reminder on the current spreadsheet this week. Last week's double promise is the failure that rule is there to stop.",
+  "Deleted": "Conditional formatting and a reminder. Colour leaves both saves stored. A replacement booking product as well.",
+  "Bottleneck": "Nothing at save time exclusively checks one item identifier against existing dates, so two simultaneous saves both stick.",
+  "Checked myself": "What you told me: six agents, two offices, one identifier per physical item, one overlapping double-booking last week, and the owner's reject-on-save rule. I have not seen the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "It rejects colours and reminders and picks an enforced, locked check-and-reject save that handles simultaneous saves, though it doesn't say how direct sheet edits are blocked.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-reservations.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

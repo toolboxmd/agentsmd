@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-review-flow.a3",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-review-flow",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 41.0,
+ "valid": true
+}

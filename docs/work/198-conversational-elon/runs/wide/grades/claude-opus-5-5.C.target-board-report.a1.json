@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: build a PivotTable on the existing export table, with region in rows, dates grouped by month and year, and Sum of signed net amount as the value, so refunds net out. Each month, paste in the new export and refresh. A one-time check of the pivot total against SUM is suggested. No optional additions are offered now. Other tools are to be looked at again only if a second data source appears or the file outgrows Excel. No needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for monthly net sales by region for the board, refunds included, without the manual summing; \"future-proofing\" and peer adoption name no failure the current setup has.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI. There is one source, one local table, and data that fits on your machine, so none of them solves a problem you have.",
+  "Bottleneck": "Building the regional monthly sums by hand.",
+  "Checked myself": "Only what you've told me: the export is one local Excel table with region, date and signed net amount, it fits easily on your computer, and you sum it by hand. I haven't opened the workbook."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Fits the bounded approach: four specific, grounded record lines come before a pivot-table fix, and the stack is named and dropped, coming back only on a stated condition.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-board-report.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

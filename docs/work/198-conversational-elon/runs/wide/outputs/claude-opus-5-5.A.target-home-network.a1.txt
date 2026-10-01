@@ -1,0 +1,23 @@
+Before laying out new gear, it's worth looking at what the symptoms say. **They point at the desk's own connection, not the router or internet.** When the drop happens, the other two devices on the same router stay on their calls. So the internet link and the router are working at that moment. What's left is the path unique to that desk: the cable, the router port it plugs into, and the computer's network adapter.
+
+The cable is the top suspect. It's several years old and squeezed through a tight grommet. A pinched or flexed cable can drop the link for a second or two, or quietly fall from gigabit to 100 Mb. Either one is enough to kill a call. A UniFi gateway and managed switches would sit upstream of that cable, so the same cable would keep dropping calls.
+
+**What I'd do first (cheap, about an hour):**
+
+1. **Swap the cable.** Use a new Cat6 patch cable. If you can, route it so it isn't bent sharply or pinched in the grommet. A flat or slim cable helps there. This alone may fix it.
+2. **Move to a different router port**, to rule out a flaky port.
+3. **Check the computer's adapter:**
+   - On a Mac, open System Settings → Network → Ethernet → Details → Hardware and check that the speed shows 1000 Mb/s, full duplex.
+   - If you use a USB/Thunderbolt Ethernet dongle or a dock, try a different one, or plug it directly into the computer instead of through a hub. Dongles are a common cause of brief link drops.
+   - On Windows, turn off "Energy Efficient Ethernet" and the power saving on the adapter.
+4. **Confirm the next time a call drops.** Note the time. On a Mac, `log show --last 10m | grep -i "link down\|en0\|en[0-9]"` will show whether the Ethernet link actually went down. You can also run a continuous ping to the router (`ping 192.168.1.1`, or whatever your router's address is) during a call and watch for gaps.
+
+If the new cable fixes it, you're done. If drops continue with a known-good cable, port, and adapter, send me what the logs or ping show and we'll dig further.
+
+**On the UniFi/Grafana setup:** it's a fine project if you want it for visibility, VLANs, or better Wi-Fi coverage. Just treat it as separate from this problem. If you do build it, I'd keep it simple:
+
+- Gateway → one managed switch → desk drop on a short, new cable
+- Turn on the gateway's built-in Smart Queues (traffic shaping), which helps calls when the internet line is saturated
+- Use Grafana (or just the UniFi console) mainly to watch for port link-down events and errors on the desk port
+
+I'd still swap the cable first, though. It's a few dollars and it's the most likely fix. Want me to help you read the link/ping results once you've tried it?

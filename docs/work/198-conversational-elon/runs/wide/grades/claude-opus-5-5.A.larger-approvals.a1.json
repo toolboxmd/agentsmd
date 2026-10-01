@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now by keeping the authors' working folder and adding a locked Released area that only reviewers can write to. A reviewer approves by copying a PDF or read-only file into it under their own account, and the audit log records who approved and when. The record should be protected by a 7-year retention or legal-hold policy on both the Released area and the approval log. Optional additions are a built-in approval workflow or a sign-in-required form that logs approver, timestamp and file hash, plus a flag on self-approval with weekly spot-checks; a naming convention stays only as a convenience. Still needed: which platform the folder is on and whether the user has admin rights. If the initials column ships anyway, the reply says to tell the customer it is interim.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The chosen setup meets every LARGER capability: reviewer-only write access, an audit-logged approver and time, a read-only exact version, and 7-year retention. None of the four required labelled record lines appear, so all four predicates are false.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.larger-approvals.a1",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

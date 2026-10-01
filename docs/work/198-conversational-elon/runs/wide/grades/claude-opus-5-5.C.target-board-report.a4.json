@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends a reusable PivotTable in the existing export workbook today: format the export as a Table, group Date by month/year with Region as rows, and Sum the signed net amount so refunds net out. Refresh it each month. The full stack is rejected now and only revisited on named triggers (a second source, data too big for Excel, or a need for unattended refresh). The agent offers to check one month's totals against the last manual report. No unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need monthly net sales by region for the board, with refunds netted in. \"Peers are adopting a modern data stack\" is not a requirement; nothing you described breaks without one.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI. You have one source, one local Excel table, and data that fits on your laptop, so there is nothing for them to extract, warehouse, model or visualize.",
+  "Bottleneck": "Building the monthly regional sums by hand, which costs time and invites errors.",
+  "Checked myself": "Only what you told me: one Excel export with region, date and signed net amount, including negative refunds, built by hand each month. I have not opened the workbook."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded PivotTable fix, the stack is explicitly deleted with only conditional later triggers, and the reply states it did not open the workbook.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-board-report.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

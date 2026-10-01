@@ -1,0 +1,22 @@
+Before planning the rollout, I'd look at what actually went wrong this morning, because I don't think it was a missing system.
+
+**What likely happened:** Payments and stock reconcile fine, and everyone can read the list. But cakes due today sat unmade while next month's orders were done. That suggests staff work the list in the order orders were *entered*, not by *pickup date*. The data was right; the order people worked through it was wrong.
+
+**A fix you can make today:**
+- Sort the shared list by pickup date (earliest first), or add a "Due today / tomorrow" view at the top.
+- Highlight unprepared orders due within 24–48 hours.
+- Agree on one rule: nothing gets prepared more than X days before its pickup date unless today's and tomorrow's cakes are done.
+- Do a quick check at opening: "everything due today is in progress or done."
+
+That directly addresses the owner's goal of having today's cakes ready before pickup.
+
+**On Odoo:** It can do this. Manufacturing orders can be scheduled from sale order delivery dates, and you can show a counter view sorted by date. But sales, inventory and manufacturing together is a big change. It touches the parts that already work (payments, stock), and the scheduling problem is something a sort order solves. I'd use next week's session to scope the work rather than commit to all three modules.
+
+**If you do go ahead, I'd structure it like this:**
+1. **Week 1 – Scope with the partner.** Start with the problem: "staff must see what's due soonest." Ask them to demo a pickup-date-sorted production view first.
+2. **Phase 1 – Sales only.** Enter prepaid orders as sale orders with a required pickup date. Build a counter dashboard filtered to unprepared orders due today and tomorrow. Run it alongside the current list for 2–3 weeks.
+3. **Phase 2 – Manufacturing (optional).** Generate a work order per cake with its deadline set to the pickup date. Add this only if the dashboard alone isn't enough.
+4. **Phase 3 – Inventory (last, if at all).** Your stock already reconciles. Migrating it is risky and does nothing for missed pickups.
+5. **Cutover criteria:** No missed pickups during the parallel run, and staff are comfortable using it before you retire the old list.
+
+If you tell me what the current list is (spreadsheet, shared doc, app), I can suggest the exact sort or filter setup to put in place today.

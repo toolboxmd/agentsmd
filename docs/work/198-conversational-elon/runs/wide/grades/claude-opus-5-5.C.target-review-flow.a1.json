@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's action for now is to add the lead and the two qualified engineers as reviewers on every change, with any one approval enough (on GitHub, a code-owners team with required approvals at 1). It keeps the existing tracker, adds nothing else, and offers exact settings once the user says where the code is hosted. All stated needs are covered.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to ship faster. Your data shows the need is for changes to stop waiting for approval when the lead is away.",
+  "Deleted": "Squads and chapters, Jira Align, new tooling spend, and quarterly planning workshops. None of them touch the wait you measured.",
+  "Bottleneck": "Approval. Your last six changes each took under a day to code, then sat three days with the lead as their only reviewer while the lead was out.",
+  "Checked myself": "Only what you told me. That covers the six changes, the three-day waits, the lead being the sole reviewer, the two other engineers who are qualified and authorized, and your existing tracker. I have not seen your repository or tracker settings."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded reviewer-coverage fix, and the reply rejects the squads/Jira Align/workshops proposal by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-review-flow.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

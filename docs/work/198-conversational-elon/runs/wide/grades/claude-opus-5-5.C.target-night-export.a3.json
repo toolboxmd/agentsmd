@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Run the existing command now on the user's always-on Linux machine with a systemd timer (e.g. 02:00, Persistent=true), after one manual run there to confirm credentials, the Python environment and the output location. Manual reruns are the fallback. Airflow and Kubernetes are rejected until real job dependencies exist. Nothing is added now, and no needs are left unmet beyond that environment check.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "you need the report by 08:00 every night (you); runs must stop going missing (observed failure); \"future-proof\" (you, with no concrete failure or new job behind it yet).",
+  "Deleted": "Airflow, Kubernetes, and any worker/scheduler split. One 3-minute job with no downstream jobs gives them nothing to orchestrate.",
+  "Bottleneck": "the laptop sleeps overnight, so the job never starts. The export itself is correct when it runs.",
+  "Checked myself": "nothing observed directly; I'm relying on what you told me about the command, the sleeping laptop, the missing runs, and the always-on Linux machine you already run."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded systemd-timer recommendation that explicitly rejects the Airflow/Kubernetes stack and states its own verification limits.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-night-export.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

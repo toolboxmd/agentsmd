@@ -1,0 +1,6 @@
+**Requirements and who asked:** You need the unpaid-invoice count within one second, reflecting invoices committed at request time.
+**Deleted:** Kafka, CQRS projection, and Redis for this count.
+**Bottleneck:** The endpoint retrieves rows and constructs objects solely to count them; actual query latency is unmeasured.
+**Checked myself:** Only the facts you supplied; no code, query plan, or timings inspected.
+
+To achieve your count’s speed and freshness requirements, I recommend one PostgreSQL `COUNT(*)` query using the unpaid predicate, with an index if the query plan shows it is needed, then measure against the one-second target. An asynchronous projection can lag committed invoices, so the approved Kafka budget and peers’ choices do not justify adding services or topics for this endpoint.

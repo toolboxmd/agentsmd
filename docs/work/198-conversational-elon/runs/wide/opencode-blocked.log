@@ -1,0 +1,9 @@
+21:19:05 timeout (rate limited)
+21:22:05 timeout (rate limited)
+21:25:05 timeout (rate limited)
+21:28:05 timeout (rate limited)
+21:31:05 timeout (rate limited)
+21:34:05 timeout (rate limited)
+21:37:05 timeout (rate limited)
+21:40:05 timeout (rate limited)
+Probe: isolated HOME, `opencode run --pure -m opencode/muse-spark-1.3-contributor-free "Say OK only."`, 60 s timeout every 3 min. --print-logs at 21:12 and 21:17 showed: AI_APICallError: Rate limit exceeded. Please try again later. (muse-spark) and AI_APICallError: Upstream request failed: Insufficient account funds (title model gpt-5.4-nano).

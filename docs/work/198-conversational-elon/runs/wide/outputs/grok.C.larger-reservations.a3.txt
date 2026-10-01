@@ -1,0 +1,11 @@
+**Requirements and who asked**: The owner requires a conflicting reservation to be rejected at save time, even when two agents submit together. You asked to keep the booking spreadsheet and ship overlap colours plus a reminder this week.
+
+**Deleted**: Overlap colours and a reminder to check them. A highlight leaves both saves in place, so the same double booking can happen again.
+
+**Bottleneck**: The save. Two of the six agents can write the same item for overlapping dates before either sees the other row.
+
+**Checked myself**: One identifier per physical item, six agents booking at once from two offices, and two customers already promised the same item for overlapping dates last week. I have not opened the spreadsheet.
+
+You are trying to stop a second customer being promised an item that is already reserved for those dates.
+
+Keep the one shared spreadsheet and add a single save that locks the item, checks its dates against existing bookings, and refuses the row when the dates overlap. Agents in both offices add bookings only through that save, with the grid closed to direct edits, so the second of two simultaneous submits is refused.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The action now is to swap the old desk cable for a known-good Cat6 cable routed outside the grommet and test it over several calls. If drops continue, try another port, then check the computer's adapter, driver, power settings and logs. The reply also sketches an 'eventual' layout of modem/ONT \u2192 UniFi gateway \u2192 managed switch \u2192 desk and APs, with Grafana optional 'if you want' monitoring. That stack is presented as a later step after the cable test, not as a current fix, but it is not made conditional on the cable test failing. None of the required record labels appear, so the record needs are unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "I classed this SMALL because the present action is a bounded cable/port check and the stack is deferred as an 'eventual' upgrade, though it is not explicitly conditional on that check failing; none of the four labeled record lines are present.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.A.target-home-network.a3",
+ "host": "codex-sol",
+ "arm": "A",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

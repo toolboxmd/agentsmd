@@ -1,0 +1,8 @@
+**Requirements and who asked:** Your client requires images in their supplied product-code order; you want a professional workflow this week.
+**Deleted:** DAM, AI tagging, semantic search, and a cloud portal from this scope.
+**Bottleneck:** You spend an hour manually arranging thumbnails before each PDF export.
+**Checked myself:** You told me each job has one JPEG folder, filenames start with product codes, and the client supplies an ordered code list. I have not inspected files or tested matching.
+
+You want to turn finished JPEGs into an accurately ordered contact-sheet PDF with minimal manual work. I recommend one small local script: read the client’s list, match exact product-code prefixes, and generate the PDF in that order.
+
+Have it flag missing codes, unmatched images, and ambiguous matches before export, with a defined order for multiple images of one product. This week, validate it on a completed job against the client’s list, then use it for the next delivery. The evidence you’ve given supports automating ordering; it does not establish a need for a DAM.

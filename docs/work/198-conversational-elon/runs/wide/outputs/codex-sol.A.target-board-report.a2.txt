@@ -1,0 +1,7 @@
+We can automate this week’s report with a small local pipeline: Excel export → validation → monthly regional sums → a report workbook. Keep signed amounts so refunds reduce net sales, and reconcile the regional totals to the source total.
+
+Airbyte, Snowflake, dbt and Power BI could support a larger reporting system, but one Excel table that fits comfortably on your computer doesn’t currently justify that complexity. Budget alone isn’t a reason to add it.
+
+I’d build a repeatable script that checks columns, dates, amounts and missing regions, groups sales by month and region, and produces the board report plus a reconciliation sheet. We’d compare its results with a previously completed month before using it for the next report.
+
+To future-proof it, keep the calculation rules explicit and the transformation separate from the input and output. That gives us a straightforward path to a warehouse or Power BI when additional sources, shared access or reporting volume make them useful.

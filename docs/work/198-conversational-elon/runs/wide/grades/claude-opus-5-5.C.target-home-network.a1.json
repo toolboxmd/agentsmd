@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "For now: swap in a new Cat6 patch cable, route it loosely around the grommet, plug it into a different router port, then take a few normal calls. If drops continue, the agent will check whether the computer's link goes down during each drop to look for a port or driver problem. The UniFi gateway, managed switches and Grafana dashboard are not recommended for this problem and are left for a later decision based on a real need. No unmet needs remain.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable video calls at the desk computer; nobody has asked for anything beyond that.",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard. Other devices on the same router stay connected during the drops, so the router and internet line are not the cause, and new gear wouldn't change the desk's link.",
+  "Bottleneck": "The desk computer's own wired link, most likely the old cable squeezed through the tight grommet.",
+  "Checked myself": "Nothing on the live network. I'm relying on what you told me: the desk uses Ethernet, other devices stay connected during drops, the cable is several years old and runs through a tight grommet, and you haven't tried another cable."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a small cable swap and port check, names and rejects the stack, and grounds its claims in the supplied facts while calling the cable a likely cause, not a proven one.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-home-network.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

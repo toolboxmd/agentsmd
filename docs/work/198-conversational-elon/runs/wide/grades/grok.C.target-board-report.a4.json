@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: add a pivot table in the existing workbook grouping by region and month, summing the signed net amount so refunds stay negative. No optional additions; Airbyte, Snowflake, dbt and Power BI are explicitly left unbought. Unmet needs: the file itself was not opened, and the reply does not reconcile the pivot against the manual totals.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for a pipeline this week to future-proof the monthly board report of net sales by region; peer adoption and budget are why Airbyte, Snowflake, dbt, and Power BI are on the list. The board needs that regional monthly total, and the report still stands without those four products.",
+  "Deleted": "Airbyte, Snowflake, dbt, and Power BI. This export is one local Excel table and has no separate ingest, warehouse, modeling, or dashboard job.",
+  "Bottleneck": "The manual monthly sum by region. Region, date, and signed net amount are already in the file.",
+  "Checked myself": "You told me the accounting export is one local Excel table with region, date, and signed net amount, refunds included as negatives, the workbook fits on your computer, and you total it by hand. I have not opened the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded in-workbook pivot with signed net amounts, rejects the named stack, and grounds its claims in supplied facts while stating it did not inspect the file.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-board-report.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

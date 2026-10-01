@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply says to change the endpoint now to a single SQL count(*) query that uses the existing unpaid predicate, backed by a matching (partial) index, and to verify it with EXPLAIN ANALYZE. It says to ship no Kafka, CQRS or Redis services this week, because projection lag would break request-time committed freshness. Its only next step is further PostgreSQL query-plan work. No needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a sound bounded fix, but none of the four labeled record lines appears, so every record predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-invoice-count.a1",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

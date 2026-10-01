@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.A.target-home-network.a2",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-home-network",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 18.3,
+ "valid": true
+}

@@ -1,0 +1,11 @@
+**Requirements and who asked:** The owner needs every cake due today prepared before pickup. You asked for an Odoo sales, inventory, and manufacturing rollout synced to the counter, with an implementation partner booked for next week, because other shops are moving to Odoo.
+
+**Deleted:** That Odoo rollout. Payments and stock already reconcile, and everyone preparing cakes can already read the shared list.
+
+**Bottleneck:** Preparation sequence. Cakes due today were still unmade while orders for next month had been prepared.
+
+**Checked myself:** I was told the list holds customer, pickup date, and preparation status; payments and stock reconcile; this morning's due cakes were unmade and later orders were prepared; preparers can read the list at the counter. I have not seen the list.
+
+You are trying to get every cake due today prepared before pickup.
+
+Sort the existing counter list by pickup date and make today's orders before any later date. Pause the partner until a cake due today is still missed after the list is worked in pickup order.

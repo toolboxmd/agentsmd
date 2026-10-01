@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.C.control-weekday.a4",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "C",
+ "arm_sha256": "55740c72f4475929e5712e3974ef783095118a063f74c223b91805a2802f42cd",
+ "scenario": "control-weekday",
+ "attempt": 4,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 3.0,
+ "valid": true
+}

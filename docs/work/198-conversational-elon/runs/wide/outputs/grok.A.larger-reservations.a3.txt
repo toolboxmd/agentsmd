@@ -1,0 +1,10 @@
+Red formatting will only flag an overlap after both bookings are already saved. It will not reject the second reservation when two agents submit together, so it misses the rule your owner set.
+
+Keep the spreadsheet as the list the six agents already work from, and stop entering new bookings by typing straight into cells. Ship one save path this week that treats each item identifier as a single resource:
+
+- Lock that item, so the two offices cannot both pass the check at once.
+- Compare the requested dates with existing bookings for that same identifier.
+- If the ranges overlap, reject the save and show which booking already holds the item.
+- If they do not overlap, write the reservation, then release the lock.
+
+A form (item, start, end, customer) backed by a script lock, or a database exclusion constraint on item id plus date range, is enough to do this. Direct cell edits skip that check, so new reservations need to go through the form. Leave the red formatting on the sheet as a visual cue for rows that are already there.

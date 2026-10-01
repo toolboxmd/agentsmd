@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends adopting one shared booking service now that checks and saves each reservation atomically and rejects conflicts, with the spreadsheet kept only as a view. Red formatting is allowed only as an interim warning. If prevention can't be ready in time, it suggests routing all booking confirmations through one person until it is. Unmet: the reply never says outright that when two agents submit together only one booking succeeds, though rejecting conflicts atomically implies it.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply picks atomic server-side conflict rejection that covers simultaneous saves, but it has none of the four required record labels.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.larger-reservations.a1",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

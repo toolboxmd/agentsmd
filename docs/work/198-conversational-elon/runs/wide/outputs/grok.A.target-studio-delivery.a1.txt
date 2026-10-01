@@ -1,0 +1,12 @@
+Ship a local reorder step this week. The client already sends an ordered list of product codes, and every final JPEG name already starts with its code, so a short script can build the delivery folder and the contact-sheet PDF in that order.
+
+1. Save the client’s codes as a text file, one code per line, in the order they specified.
+2. Point the script at that list and the job folder of final JPEGs.
+3. For each code, take the file whose name starts with that code.
+4. Copy the matches into a new delivery folder as `001_CODE.jpg`, `002_CODE.jpg`, and so on, so a folder view, ZIP, or FTP drop stays in order. Leave the originals where they are.
+5. Render the contact-sheet PDF from that same sequence.
+6. Before anything goes out, list codes that matched nothing or more than one file and fix those by hand.
+
+That removes the hour of dragging thumbnails. AI tagging, semantic search, and a cloud review portal earn their place once you are searching an archive and collecting comments in a browser. Add them after this handoff is automatic.
+
+I can write that script next: code list plus JPEG folder in, numbered delivery folder and contact-sheet PDF out.

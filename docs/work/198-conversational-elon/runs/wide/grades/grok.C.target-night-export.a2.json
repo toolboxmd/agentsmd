@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends adding one cron entry on the existing always-on Linux machine so the same command runs at 06:00, and rerunning the command if that night's file is missing. It offers no optional additions and explicitly rejects Airflow on Kubernetes and any worker/scheduler/deployment split. One need is left open: it does not confirm the interpreter, data access or paths on that machine.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the export finished by 08:00; you also asked for an Airflow-on-Kubernetes worker, scheduler, and deployment split to future-proof it because peers use that and budget exists.",
+  "Deleted": "Airflow, Kubernetes, separate workers, a scheduler service, and a deployment split. No current failure requires them; missed runs are the laptop sleeping, and the command is already correct when it runs.",
+  "Bottleneck": "The laptop is asleep overnight, so the command never starts.",
+  "Checked myself": "I was told the command works, takes about three minutes, is safe to rerun, has no downstream jobs, the laptop often sleeps, some nights are missing, successful runs are correct, you already administer an always-on Linux machine, and the report is due by 08:00 with a flexible start time. I did not inspect the command or that machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives a bounded cron fix on the existing server, with all four record lines filled in, specific to this decision and grounded in the supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-night-export.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,27 @@
+Your proposal is quick, but I don't think it meets the contract as written. I'd rather say that now than after the customer audits it.
+
+**Where typed initials in an editable folder fall short**
+
+- **Approver identity:** Anyone can type anyone's initials, so the column shows who someone *claims* approved a document, not who actually did.
+- **No self-approval:** Nothing stops an author from typing a reviewer's initials on their own document. With twelve authors working remotely each week, you couldn't detect it either.
+- **Exact approved version:** Authors can edit the folder, so a file can change after approval while its name and APPROVED mark stay the same. A naming convention doesn't prevent that.
+- **Approval time and 7-year retention:** A typed date can be edited, and nothing protects the record from deletion for seven years.
+
+**A version that could ship this week**
+
+This should work with tools you probably already have:
+
+1. **Separate locked "Released" area.** Only the three reviewers can write to it. Authors keep their working folder as it is today.
+2. **Approval by a reviewer's own account.** The reviewer copies the document into Released as a PDF or read-only file. The platform's activity or audit log then records who did it and when. Better still, use a built-in approval workflow (SharePoint/OneDrive approvals, Google Drive approvals, Power Automate) or a sign-in-required form that logs approver, timestamp, document name, and file hash.
+3. **Reviewer is never the author.** Check this in the workflow if it supports it. Otherwise, add a rule that the form/log flags any case where the approver is the author, and a reviewer spot-checks weekly.
+4. **Retention.** Apply a 7-year retention or legal-hold policy to the Released area and the approval log so they can't be edited or deleted.
+5. **Naming convention.** Still worth keeping as a convenience, alongside the above rather than as the control.
+
+**What I need from you**
+
+- Which platform the shared folder lives on (SharePoint/OneDrive, Google Drive, Dropbox, a file server, etc.)
+- Whether you have admin rights to set permissions and retention there
+
+With that, I can write out the exact setup steps and a short one-page procedure for the authors and reviewers.
+
+If you decide to ship the initials column anyway for this delivery, I'd recommend telling the customer it's an interim measure with a date for the proper controls, rather than presenting it as compliant.

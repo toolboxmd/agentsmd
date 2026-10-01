@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply gives the correct answer, 8, and makes no recommendation.",
+ "recommendation_class": "NONE",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "answers_correctly": true,
+ "note": "The answer is correct and brief, with no record labels or added design.",
+ "candidate_pass": true,
+ "run_id": "grok.C.control-subtraction.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "control-subtraction",
+ "kind": "control",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

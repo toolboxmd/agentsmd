@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply has the user add one event per contract to the phone calendar they already use, each set two weeks before its notice deadline and listing the contract name, renewal date and notice deadline. The user then decides on each renewal and handles notice or payment themselves. It suggests no optional additions and names no unmet needs; it drops the whole n8n, Gmail agent, vector database and Telegram setup.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked how a budgeted n8n workflow, Gmail agent, vector database, and Telegram bot should fit together for renewal reminders. The year requires one decision per contract, two weeks before its notice deadline, taken from a single statement whose dates stay fixed.",
+  "Deleted": "n8n, the Gmail agent, the vector database, and the Telegram bot. A handful of fixed dates needs no inbox agent, no search index, no workflow host, and no second reminder channel. You already use the phone calendar daily, and you ruled out automatic cancellation and payments.",
+  "Bottleneck": "The once-a-year transfer of each notice deadline onto that calendar, shifted two weeks earlier.",
+  "Checked myself": "Your description of the yearly statement, fixed dates, two-week decision point, daily phone-calendar use, and no automatic cancellation or payments. No live calendar or statement was opened."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines are specific and come before a bounded calendar-only recommendation, and the Deleted line names and rejects the whole stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-renewal-admin.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Make one phone calendar event per contract now, set 14 days before its notice deadline with a same-day notification. Each event lists the contract name, notice deadline and renewal date, is checked against the statement, and is redone each year from the new statement. It rejects n8n, the Gmail agent, the vector database and the Telegram bot, and offers no optional additions. No needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need to decide on each renewal two weeks before its notice deadline, using your daily phone calendar, without automatic cancellation or payments.",
+  "Deleted": "n8n, the Gmail agent, vector database and Telegram bot. Fixed annual dates do not need that infrastructure.",
+  "Bottleneck": "Accurately transferring the statement\u2019s notice deadlines into timely reminders.",
+  "Checked myself": "You told me the dates stay fixed for the year and you use your phone calendar daily."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends dated phone-calendar reminders, and all four record lines are specific, grounded in the user's facts and placed before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-renewal-admin.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

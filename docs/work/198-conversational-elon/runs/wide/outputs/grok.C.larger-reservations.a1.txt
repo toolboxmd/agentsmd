@@ -1,0 +1,8 @@
+**Requirements and who asked:** The owner requires a save to be rejected when that item identifier already has overlapping dates, including when two agents save together. You asked to ship red overlap colours and a reminder on the current spreadsheet this week. Last week's double promise is the failure that rule is there to stop.
+**Deleted:** Conditional formatting and a reminder. Colour leaves both saves stored. A replacement booking product as well.
+**Bottleneck:** Nothing at save time exclusively checks one item identifier against existing dates, so two simultaneous saves both stick.
+**Checked myself:** What you told me: six agents, two offices, one identifier per physical item, one overlapping double-booking last week, and the owner's reject-on-save rule. I have not seen the spreadsheet.
+
+You are trying to stop the same physical item being confirmed for two customers on overlapping dates.
+
+Keep the spreadsheet. Add one save that takes an exclusive lock, checks that item's dates against the rows already stored, and refuses the booking when they overlap. Every agent uses that save, so a direct edit of the sheet cannot record a second promise.

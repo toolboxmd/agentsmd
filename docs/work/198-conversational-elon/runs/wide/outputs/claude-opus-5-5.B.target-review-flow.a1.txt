@@ -1,0 +1,8 @@
+You're trying to stop finished changes from sitting idle, and your own data shows the delay is in approval, not planning: the last six changes each took under a day to code, then waited three days because the lead was the only assigned reviewer and was away.
+
+**What to launch this week:**
+- Make the lead plus the two other qualified engineers one reviewer pool, and require a single approval from anyone in it.
+- Auto-assign reviews round-robin (a CODEOWNERS team or a tracker group), so no change depends on one named person.
+- Track time from "ready for review" to "approved" on the next few changes. The target is same-day approval.
+
+I'd hold off on squads and chapters, Jira Align, and quarterly workshops. With four engineers in one time zone, they add planning overhead and don't touch the three-day wait. Keep that budget in reserve and spend it only if changes still stall once the reviewer pool is live.

@@ -1,0 +1,9 @@
+**Requirements and who asked**: Dependable video calls at the one desk that drops. You asked for that. The gateway, managed switches, and dashboard are a group trend and a future-proofing wish.
+
+**Deleted**: UniFi gateway, managed switches, Grafana dashboard, and any new network layout. The other two devices on the same router stay in their calls during each dropout, so the shared router path is already doing its job.
+
+**Bottleneck**: The desk Ethernet cable: several years old, squeezed through a tight grommet, and still the original cable.
+
+**Checked myself**: Your account of the single-desk Ethernet dropout, the two devices that stay connected, and the old cable through the grommet. No cable swap has been run, and I have not inspected the link.
+
+You want that desk's calls to stay up. Run a new Ethernet cable clear of the grommet, join a call from the desk machine, and confirm the call holds.

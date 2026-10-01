@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: combine the lead and the two qualified engineers into one reviewer pool where any single approval counts, auto-assign reviews round-robin, and track the time from ready-for-review to approved, aiming for same-day approval. Squads/chapters, Jira Align and the quarterly workshops are put off, with that budget kept in reserve only if changes still stall. No unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is bounded reviewer coverage and the larger stack is only a conditional later step, but none of the four labeled record lines appear, so the three label-based predicates are false.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-review-flow.a1",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

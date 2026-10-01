@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need changes to stop waiting for approval when the lead is away; you named squads, chapters, Jira Align, and workshops as candidate means.
+**Deleted:** Squads and chapters, Jira Align, and quarterly planning workshops; none of them address a single-reviewer queue on a four-person team.
+**Bottleneck:** Approval. In the last six completed changes, coding took under a day and each waited three days because the lead was the sole reviewer and was away.
+**Checked myself:** Nothing directly. This is from what you told me; I have not looked at your tracker or review settings.
+
+You're trying to get changes approved and shipped without waiting for one person. The smallest fix is to make the two other qualified engineers eligible approvers alongside the lead, with any one approval enough to merge. You can do that this week in the tool you already use: add all three to the default reviewer group (or code owners), and require one approval instead of the lead's.
+
+A reorg, new planning tool, or workshops would add process and spend without touching this queue, so I'd skip them. Watch the wait time on the next few changes to confirm it drops.

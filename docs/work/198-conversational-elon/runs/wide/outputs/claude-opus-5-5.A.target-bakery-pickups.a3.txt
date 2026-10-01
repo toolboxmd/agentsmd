@@ -1,0 +1,36 @@
+Happy to help structure it, but first a point that could change the scope.
+
+**What went wrong this morning looks like a sequencing problem, not a missing-system problem.** Payments and stock reconcile fine, and everyone can already read the list. Cakes due today sat unmade while next month's were done, so staff were almost certainly working in entry order rather than pickup-date order. Odoo will only fix that if it's set up to show work by pickup date. Without that, it can repeat the same failure with more software involved.
+
+**Fix it today, before the partner arrives:**
+- Sort the shared list by pickup date, soonest first. Or add a "Due today / Due tomorrow" view at the top.
+- Make a simple rule: nobody starts a cake due later while one due sooner is unmade.
+- Add a quick end-of-day check: tomorrow's pickups are each marked prepared or have someone assigned.
+
+This costs nothing and protects pickups during the rollout, which is when things are most likely to slip.
+
+**If you go ahead with Odoo, I'd structure it like this:**
+
+1. **Start with the problem you actually have.** In the kickoff, tell the partner the success criterion is "no pickup is missed." Ask them to show you the counter screen first: manufacturing orders sorted by pickup date, with overdue and due-today orders highlighted. Everything else is secondary.
+
+2. **Phase 1: sales and manufacturing only.**
+   - Each prepaid order becomes a sales order with the pickup date as its scheduled date.
+   - Each sales order automatically creates a manufacturing order dated for the morning of pickup, or earlier if the cake needs lead time.
+   - The counter shows a shop-floor or kanban view of manufacturing orders sorted by that date.
+   - Run it alongside the existing list for one to two weeks. Check every evening that both agree on tomorrow's pickups.
+
+3. **Phase 2: inventory, only once phase 1 is stable.** Your stock reconciliation already works, so moving it now adds risk without helping pickups. Bring it in later, compare counts against your current process for a few weeks, and only then retire the old method.
+
+4. **Migration and cutover.**
+   - Import all open future orders and verify them line by line, especially pickup dates. A wrong date in an import recreates this morning's problem.
+   - Choose a quiet cutover day.
+   - Keep the old list readable for a while as a fallback.
+
+5. **Training.** A short session on one habit: open the due-today view, work top to bottom.
+
+**Questions worth asking the partner:**
+- Can the counter view be locked to pickup-date order?
+- What happens to the counter display if the internet drops?
+- What are the licence and support costs for the manufacturing module specifically?
+
+If it helps, I can draft the requirements note for the kickoff, or set up the sorted due-today view on your current list today.

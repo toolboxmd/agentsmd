@@ -1,0 +1,18 @@
+You need the unpaid-invoice count to return in under a second and match committed data at request time. I recommend not shipping Kafka, a CQRS projection, or Redis for this. A projection is updated after commit, so it can show a stale count and break your freshness requirement, and it adds services for a problem that lives in one endpoint.
+
+The likely cause is that the endpoint loads every unpaid invoice row and builds objects just to count them. The smallest fix is to have PostgreSQL count instead:
+
+```sql
+SELECT count(*) FROM invoices WHERE customer_id = $1 AND status = 'unpaid';
+```
+
+If that is still slow, add a matching partial index:
+
+```sql
+CREATE INDEX CONCURRENTLY invoices_unpaid_by_customer
+  ON invoices (customer_id) WHERE status = 'unpaid';
+```
+
+Your table and column names may differ, and I haven't measured anything yet. Running `EXPLAIN ANALYZE` on that query against production-sized data would confirm it finishes within one second. This could ship today.
+
+If you want to move to event-driven systems for reasons beyond this count, that's a separate architecture decision, and I'd be glad to scope it. This endpoint doesn't need it, though.

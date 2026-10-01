@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: build a local Python script that reads the client's ordered code list, matches files by exact code, stops and reports on missing, duplicate or extra images, can copy files with sequence prefixes, and writes the contact-sheet PDF in the client's order. Hold the DAM until the script has run on a few real jobs, and consider one only if a named need (searching past shoots, client approvals) is still a problem. Still needed from the user: sample code list, example filenames, how to handle alternates, and contact-sheet layout preferences.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends a bounded local script that follows the client's code order and defers the DAM conditionally, but none of the four required record labels appears.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-studio-delivery.a3",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

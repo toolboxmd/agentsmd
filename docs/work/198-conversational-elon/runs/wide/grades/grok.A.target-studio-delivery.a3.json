@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends a local delivery script now that reads the client's ordered code list, matches each code to a JPEG by filename prefix with a boundary check, copies matches into a numbered delivery folder, builds the contact-sheet PDF in that order, and writes an exception report. It says to test the script on a past job first. The DAM, AI tagging, semantic search and cloud portal are explicitly put on the backlog until after the script is in normal use. Nothing unmet beyond the missing record labels.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is properly small and follows the supplied code order, but the reply has none of the four required record lines, so every record predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-studio-delivery.a3",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

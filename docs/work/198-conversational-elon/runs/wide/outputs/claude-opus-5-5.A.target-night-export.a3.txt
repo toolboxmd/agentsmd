@@ -1,0 +1,49 @@
+I'd hold off on Airflow/Kubernetes for this. Your missing runs come from **where** the job runs, not **how** it's scheduled. The laptop is asleep, so nothing fires. Moving the existing command to the always-on Linux machine you already run fixes that, and you can ship it today instead of this week.
+
+**Why Airflow on K8s doesn't fit here**
+
+- It's one 3-minute job with no dependencies or downstream tasks. A DAG engine's strengths (fan-out, retries across task graphs, backfills, lineage) don't apply.
+- You'd be adding a scheduler, metadata DB, webserver, workers, a cluster, image builds, and upgrades. Each is a new way for the 08:00 report to go missing.
+- Budget isn't the constraint. The ongoing ops burden is.
+
+**What I'd ship: a systemd timer on the Linux box**
+
+`/etc/systemd/system/nightly-export.service`
+```ini
+[Unit]
+Description=Nightly report export
+
+[Service]
+Type=oneshot
+User=youruser
+WorkingDirectory=/opt/nightly-export
+ExecStart=/opt/nightly-export/venv/bin/python export.py
+```
+
+`/etc/systemd/system/nightly-export.timer`
+```ini
+[Unit]
+Description=Run nightly export
+
+[Timer]
+OnCalendar=*-*-* 02:00
+Persistent=true
+RandomizedDelaySec=15m
+
+[Install]
+WantedBy=timers.target
+```
+
+Then run `sudo systemctl enable --now nightly-export.timer`.
+
+- `Persistent=true` catches up on a run missed during a reboot.
+- Since rerunning is safe, you can add retries with `Restart=on-failure` plus `StartLimitBurst`, or a second `OnCalendar` at 05:00 as a backstop. You'll still have the report well before 08:00.
+- Logs go to `journalctl -u nightly-export`.
+
+**The part that actually future-proofs it:** alert when the report is missing. Add an `OnFailure=` unit that emails or pings you, or a simple 07:00 check that the output file has today's date. Today you find out about missing runs after the fact. This closes that gap.
+
+**If you want an Airflow path later**
+
+Keep the export a plain CLI with config via env vars and a pinned venv or container image. If you ever have several interdependent jobs, it can drop into a `KubernetesPodOperator` or `BashOperator` unchanged. That's the right time to decide how to split scheduler, workers, and deployment, and I'm happy to design it then.
+
+Want me to adapt these unit files to your actual paths and add the missing-report alert?

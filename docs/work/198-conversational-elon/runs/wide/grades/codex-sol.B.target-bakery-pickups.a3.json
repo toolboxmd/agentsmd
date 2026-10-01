@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The action for today is to sort the shared list by pickup time, give each cake due today a named preparer and have one person track progress against pickup deadlines. For next week the reply still recommends an Odoo rollout with the implementation partner. That rollout starts with a preparation-priority workflow and a counter pilot, then adds inventory and manufacturing where a need is demonstrated. The reply contains no labeled record, and it does not drop the ERP or synchronization proposal as a current requirement.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply bundles a bounded sort-by-pickup fix with an Odoo rollout for next week and has none of the four required labels.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-bakery-pickups.a3",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

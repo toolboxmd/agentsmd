@@ -1,0 +1,10 @@
+The drops are limited to one Ethernet desk, while two other devices on the same router stay in their calls. That points to the old cable squeezed through the tight grommet. Replace that cable before you buy anything.
+
+A UniFi gateway, managed switches, and a Grafana dashboard sit on the shared side of the network, which is already staying up. They will not repair a pinched run at that desk, so the same computer can keep dropping while the new dashboard looks healthy.
+
+Do this in order:
+
+1. Plug the desk computer into the router with a short, known-good cable that does not pass through the grommet, and place a long call.
+2. If that call holds, install a new cable on the desk path. Keep a gentle bend at the grommet. If the opening crushes the jacket, enlarge it or use a surface raceway.
+3. If the call still drops on the short cable, move it to another router port and check the computer’s Ethernet adapter, including power-saving settings or a second adapter.
+4. Use the approved budget only after this desk stays connected through a long call. Put the gateway at the ISP handoff and the switch where you need more ports. Treat Grafana as visibility for that later project, separate from fixing this desk.

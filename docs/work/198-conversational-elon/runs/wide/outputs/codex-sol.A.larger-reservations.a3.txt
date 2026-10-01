@@ -1,0 +1,5 @@
+I’d keep the spreadsheet for planning, but red overlap highlighting won’t meet your requirement. Two agents can both see an item as available and save conflicting bookings before either sees a warning.
+
+I recommend making a shared booking service the only place agents can confirm reservations, with a database rule that rejects overlapping dates for the same item identifier. That rule must apply atomically, so when two agents submit together, one succeeds and the other gets a conflict message.
+
+For this week, add the colours as a useful warning, but route every confirmation through one designated booking agent until that enforced save path is ready. That reduces the immediate risk; it doesn’t provide the automatic rejection you require.

@@ -1,0 +1,17 @@
+**Requirements and who asked:** You need monthly net sales by region for the board, computed from the accounting export (region, date, signed net amount, refunds as negatives). The wish to "future-proof" comes from what peers are doing, not from any failure in your report.
+**Deleted:** Airbyte, Snowflake, dbt and Power BI. You have one local workbook that fits on your machine, so there is nothing to ingest, warehouse, model or host.
+**Bottleneck:** Building the monthly regional sums by hand.
+**Checked myself:** Nothing observed. This is based only on what you told me about the export and your process.
+
+**Goal:** Get correct monthly regional net sales into the board report without summing by hand.
+
+**Recommendation:** Add a PivotTable to the export workbook. You can set it up today.
+
+1. Click inside the export table and choose Insert > PivotTable.
+2. Put region in Rows and date in Columns, then right-click a date and group it by Months and Years.
+3. Put net amount in Values as Sum. Refunds are already negative, so the sums come out net.
+4. Each month, paste or replace the new export into the same table and click Refresh.
+
+To check it, compare one month against your last hand-built figures before you rely on it.
+
+I'd keep the stack budget unspent. It would add four services to run and pay for, and it would not make this report any more correct.

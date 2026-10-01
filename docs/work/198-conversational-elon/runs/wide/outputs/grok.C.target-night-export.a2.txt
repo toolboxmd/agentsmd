@@ -1,0 +1,6 @@
+**Requirements and who asked**: You need the export finished by 08:00; you also asked for an Airflow-on-Kubernetes worker, scheduler, and deployment split to future-proof it because peers use that and budget exists.
+**Deleted**: Airflow, Kubernetes, separate workers, a scheduler service, and a deployment split. No current failure requires them; missed runs are the laptop sleeping, and the command is already correct when it runs.
+**Bottleneck**: The laptop is asleep overnight, so the command never starts.
+**Checked myself**: I was told the command works, takes about three minutes, is safe to rerun, has no downstream jobs, the laptop often sleeps, some nights are missing, successful runs are correct, you already administer an always-on Linux machine, and the report is due by 08:00 with a flexible start time. I did not inspect the command or that machine.
+
+You want the existing export to finish before 08:00 on a machine that stays on. Add one cron entry on the Linux machine you already administer so the same command runs at 06:00; if that night's file is missing, run the command again. I reject Airflow on Kubernetes and any split of workers, scheduler, and deployment: that adds a cluster to run and watch for one three-minute command with nothing downstream.

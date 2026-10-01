@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: sort the shared order list by pickup date, add a 'due today/tomorrow, not prepared' view at the top for the counter, and set a rule to prepare cakes in pickup-date order and check that view at opening. Hold off on the Odoo rollout. Later, and only if the fix fails: give the partner a narrow brief, probably production scheduling. The reply suggests turning next week's booking into a scoping session. Unmet need: no labeled decision record.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is small, correctly bounded and holds off on Odoo, but the reply has none of the four required labeled lines, so every record predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-bakery-pickups.a1",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

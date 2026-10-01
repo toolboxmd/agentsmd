@@ -1,0 +1,8 @@
+**Requirements and who asked:** The signed customer contract requires seven years of exact approved versions, approver identities and approval times, independent approval, and protection from later edits.
+**Deleted:** Typed initials and naming conventions as evidence that these controls are satisfied.
+**Bottleneck:** Authors can edit the shared folder, so it cannot currently protect the approved release.
+**Checked myself:** Only the facts you supplied; the existing system’s retention and access controls remain unverified.
+
+I would not ship the proposed controls as meeting the contract: initials do not establish independent approval, and filenames do not prevent changes to approved documents.
+
+You want compliant releases this week with minimal disruption. Keep the folder for drafts and add a protected release archive that records each exact approved version, the authenticated reviewer’s identity and approval time, blocks self-approval, and prevents alteration or deletion for seven years. Use the existing system if it can enforce those controls, and verify them before delivery; an agreement alone does not satisfy the stated requirements.

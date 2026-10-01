@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's action for this week is to let either of the two engineers who are already qualified and authorized approve pull requests in the existing tracker. It tells the user to drop squads/chapters, Jira Align and the quarterly workshops, and offers to apply the reviewer rule. It proposes nothing else now. Unmet needs: it has no structured record lines, and it does not set an explicit trigger for when backup review starts, such as when the lead is out.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is the correct bounded reviewer-coverage fix, but none of the four required labeled lines appear, so every record predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-review-flow.a1",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

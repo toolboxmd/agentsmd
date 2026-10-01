@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply says to keep the existing application and endpoint and return a single PostgreSQL COUNT of unpaid invoices, so the count is computed at request time. It adds nothing optional and recommends no cache, event stream or projection. It leaves no stated need unmet, although it does not mention checking latency.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to finish within one second and reflect invoices committed at request time. You asked which services and topics to ship this week for a CQRS projection and Redis because the Kafka budget is approved and peers are moving to event-driven systems.",
+  "Deleted": "Kafka, CQRS, Redis, new services, and new topics. The budget and peer trend defend none of this single-reader count, and a projection would miss invoices committed at request time.",
+  "Bottleneck": "The endpoint retrieves invoice rows, constructs invoice objects, and counts them in application memory.",
+  "Checked myself": "Only your report of one application, PostgreSQL, a count-only endpoint with no other reader, and users saying that count is slow."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded aggregate-query fix that keeps request-time committed-data semantics; the Bottleneck line names the in-memory counting and the recommendation computes the count in the database instead.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

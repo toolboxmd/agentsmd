@@ -1,0 +1,3 @@
+You need this week’s release to meet the signed contract: exact approved versions, identifiable approvers and approval times retained for seven years, with no self-approval or later alteration.
+The APPROVED column, typed initials and naming convention alone cannot enforce those requirements while authors can edit the folder.
+I recommend keeping the folder for drafting and adding a controlled release archive with authenticated reviewer approval, enforced separation between author and approver, and locked approved copies and approval records retained for seven years; verify those controls before delivery.

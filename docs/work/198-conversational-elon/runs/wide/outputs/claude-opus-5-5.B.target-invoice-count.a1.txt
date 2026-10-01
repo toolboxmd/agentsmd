@@ -1,0 +1,18 @@
+I recommend against Kafka, CQRS, and Redis for this count. A projection is eventually consistent, so it would break your requirement that the count reflect invoices committed at request time.
+
+You want the unpaid count under one second and exactly current. The likely bottleneck is that the endpoint loads every unpaid row and builds objects just to count them. The smallest fix is to let PostgreSQL do the counting:
+
+```sql
+SELECT count(*) FROM invoices WHERE customer_id = $1 AND status = 'unpaid';
+```
+
+Add a supporting partial index if the plan needs one:
+
+```sql
+CREATE INDEX CONCURRENTLY invoices_unpaid_by_customer
+  ON invoices (customer_id) WHERE status = 'unpaid';
+```
+
+Table and column names are guesses; I'd adjust them to your schema. That is one query change and maybe one index, so it can ship well within this week with no new services or topics. I'd confirm the one-second target with `EXPLAIN ANALYZE` on production-sized data before calling it done.
+
+The approved Kafka budget is still available for a problem that actually needs events. If you still want the event-driven version for this count, tell me, and I'll scope it with its staleness tradeoff stated explicitly.

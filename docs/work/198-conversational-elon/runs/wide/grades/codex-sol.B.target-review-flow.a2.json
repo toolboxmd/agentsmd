@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now by rotating approval duty among the lead and the two authorized engineers, with a named backup. The duty engineer reassigns any ready PR whose reviewer is away. The target is review within one working day, checked each morning in the existing tracker. After a week, results are compared against the six-change baseline. Squads, chapters, Jira Align and quarterly workshops are deferred, and no optional additions are offered.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is small and well grounded, but the reply never uses the four required labels, so every record-based predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-review-flow.a2",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

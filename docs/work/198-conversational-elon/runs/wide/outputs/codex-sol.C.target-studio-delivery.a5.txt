@@ -1,0 +1,8 @@
+**Requirements and who asked:** Client: exact product-code order. You: a professional delivery workflow this week.
+**Deleted:** DAM, AI tagging, semantic search and cloud portal from this week’s scope.
+**Bottleneck:** An hour spent manually ordering thumbnails for each delivery.
+**Checked myself:** You told me filenames start with product codes, each job has one JPEG folder, and clients supply an ordered code list; I haven’t inspected files.
+
+You’re trying to deliver a contact-sheet PDF in the client’s exact order. I recommend one small local script that reads the code list and JPEG folder, matches exact code prefixes, and generates the PDF in that order, flagging missing codes, unlisted images and ambiguous matches before export.
+
+Use one real job to verify the matching and agree how multiple images of the same product should be ordered; that is enough scope for this week.

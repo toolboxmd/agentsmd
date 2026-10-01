@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked for a pipeline this week to future-proof the monthly board report of net sales by region; peer adoption and budget are why Airbyte, Snowflake, dbt, and Power BI are on the list. The board needs that regional monthly total, and the report still stands without those four products.
+**Deleted**: Airbyte, Snowflake, dbt, and Power BI. This export is one local Excel table and has no separate ingest, warehouse, modeling, or dashboard job.
+**Bottleneck**: The manual monthly sum by region. Region, date, and signed net amount are already in the file.
+**Checked myself**: You told me the accounting export is one local Excel table with region, date, and signed net amount, refunds included as negatives, the workbook fits on your computer, and you total it by hand. I have not opened the file.
+
+You are trying to get a correct monthly net-sales-by-region figure from that one export onto the board report.
+This week, add a pivot on the same workbook: region by month, summing the signed net amount, and leave refunds as negatives so they reduce the total.
+Airbyte, Snowflake, dbt, and Power BI stay unbought.

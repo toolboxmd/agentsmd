@@ -1,0 +1,1 @@
+You want dependable video calls at that desk. Replace the old Ethernet cable that runs through the tight grommet first: only that computer drops, and two other devices on the same router keep their calls. Lay out a UniFi gateway, managed switches, and Grafana only if a known-good cable still drops the call.

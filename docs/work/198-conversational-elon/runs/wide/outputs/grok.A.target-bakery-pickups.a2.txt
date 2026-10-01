@@ -1,0 +1,19 @@
+The missed pickups came from work order. Cakes due today sat unmade while later orders for next month were prepared. Payments and stock already reconcile, and everyone at the counter can already read the shared list. Structure the Odoo rollout around one rule: every cake whose pickup is today is prepared before any cake with a later pickup is started.
+
+**Today, before the partner arrives**
+
+Sort the current list by pickup date. Give the people preparing cakes one working view: pickup date is today, status is unmade, ordered by pickup time. Keep entering orders as you do now. Leave next-month cakes on a planning view and start them only after today's view is empty. Run the rest of this week that way so the partner sees a working rule, not a blank requirements doc.
+
+**Next week with the partner, in this order**
+
+1. **Counter queue first.** Put prepaid cake orders in Sales with customer, cake, pickup date and time, and preparation status. The counter's default screen is cakes due today and any overdue cakes still unmade, sorted by pickup time. Future orders live on a separate planning screen. The week's success test is a preparer clearing today's screen before opening the future one.
+
+2. **Manufacturing second, cakes only.** Each prepaid cake becomes a production order scheduled on the pickup date, using the date the customer will collect it. Marking that order done updates the preparation status on the counter. Limit this to custom cakes for the first cycle.
+
+3. **Inventory third.** Turn on ingredient consumption only after the queue has covered one full set of pickup days. Set reordering rules from that real usage. Your stock already reconciles, so this module waits until the counter queue is reliable.
+
+**Parallel run and cutover**
+
+Keep the current list beside Odoo for one week. Each morning, match customer, pickup date, and prepared status on both. During two busy prep windows, the counter works only from Odoo's "due today" screen. Retire the old list after one full day where every cake due that day is prepared before any later cake is started, and the cake that leaves matches the customer on the order.
+
+Leave the full catalog, accounting, old-order history, and automatic purchasing for a later phase, after a week of pickups has gone out on time.

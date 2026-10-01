@@ -1,0 +1,30 @@
+Yes, ship the red highlighting this week, but it **won't meet the owner's requirement**, and I'd be clear with them about that.
+
+**Why colours alone fall short**
+
+- Conditional formatting only flags a clash after both bookings are already saved. Nothing gets rejected.
+- If two agents enter overlapping bookings at the same moment, both saves succeed. The red appears later, possibly after both customers have confirmations. That's what happened last week.
+- A "remember to check" reminder depends on six busy people never missing it.
+
+So it's useful for catching problems sooner, but it doesn't stop double-booking.
+
+**What I'd recommend**
+
+1. **This week:** Add the red overlap highlighting. Present it to the owner as a temporary detection aid, not the fix.
+
+2. **Also possible this week, if you're on Google Sheets:**
+   - Stop agents editing the booking sheet directly.
+   - Have them submit bookings through a small form or web app backed by Apps Script.
+   - The script takes a lock (`LockService.getScriptLock()`), checks for any overlap on that item ID, and then either saves the booking or rejects it with a message.
+   - Because the lock lets only one booking through at a time, two simultaneous submissions can't both succeed.
+   - This keeps the spreadsheet as the record, and it actually meets "rejected at save time." The catch is that it only works if the sheet is protected, so the form is the only way in.
+
+3. **Durable fix:** Move bookings into a small database, e.g. Postgres with an exclusion constraint:
+   ```sql
+   EXCLUDE USING gist (item_id WITH =, during WITH &&)
+   ```
+   The database itself refuses any overlapping booking for the same item, no matter how many agents save at once. The spreadsheet can stay as a read-only view.
+
+**Two questions:**
+- Which spreadsheet are you using: Google Sheets, Excel/365, or something else? Option 2 depends on it.
+- Would the owner accept colours as a stopgap for a week or two, or do they need real rejection now? If it's now, I'd go straight to option 2.

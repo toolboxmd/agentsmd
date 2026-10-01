@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-home-network.a2",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-home-network",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 32.5,
+ "valid": true
+}

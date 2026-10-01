@@ -1,0 +1,21 @@
+The cakes due today were left unmade because the counter list was worked in entry order. A cake entered for next month was prepared while today’s prepaid orders sat further down the same list. Payments and stock are already reconciling, and everyone at the bench can already read the list. The rollout has to make pickup date the order of work.
+
+**Before the partner arrives**
+
+Sort the shared list by pickup date and time, soonest first. Put one working view on the counter: due today or overdue, and not yet prepared. Finish that view before anyone starts a later date. Keep entering orders the way you do now.
+
+**Next week, in this order**
+
+1. **Counter queue first.** One screen at the bench: customer, cake, pickup time, preparation status. It opens sorted by pickup date, filtered to today and overdue, unmade only. Bakers mark “prepared” there. Later orders stay on the full list and stay off that screen.
+
+2. **Manufacturing as the source of that queue.** Each prepaid cake becomes one manufacturing order whose deadline is the customer pickup date. The counter reads those orders in deadline order. Go live on this only after a test order for next month stays below every order due today.
+
+3. **Sales only to feed that deadline.** A confirmed prepaid order must copy its pickup date onto the manufacturing order automatically. Leave your current payment flow in place for this week.
+
+4. **Inventory after the queue is trusted.** Consume ingredients from the manufacturing order once bakers are actually working today’s queue. Keep stock screens off the bench; the pickup queue stays the only working list.
+
+**Go-live check the same day**
+
+Enter three test orders in this sequence: next month, tomorrow, today. The counter must show today’s cake first. Mark it prepared and confirm the next-month cake is still unmade and absent from today’s queue. Someone who only looks at the counter must be able to say what has to be finished before pickup.
+
+Tell the partner that week-one success is that queue, and that you will count missed same-day pickups for the next two weeks. Inventory posting can follow once the queue has run a real busy day.

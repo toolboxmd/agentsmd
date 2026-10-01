@@ -1,0 +1,12 @@
+You're trying to get rid of the hour of manual ordering and produce a correct contact sheet. A DAM won't do that: AI tagging and semantic search help you find images, but your problem is putting known codes in a known order.
+
+I recommend a small local script, buildable today:
+
+- It reads the client's code list and the job folder.
+- It matches each JPEG to its code exactly, so `AB12` never grabs `AB123_front.jpg`.
+- It writes the contact-sheet PDF in the client's order.
+- It flags any code with no image, more than one image, or images that match no code.
+
+That should turn the hour into seconds. Consider a DAM or review portal later if clients start asking to review online.
+
+To build it, send me one real code list and the folder path, or a few sample filenames. I need to see how the list is formatted and what separator follows the code (`_`, `-`, or a space).

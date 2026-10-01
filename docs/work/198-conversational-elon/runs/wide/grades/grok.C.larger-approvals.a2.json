@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the current folder for drafting only. Add a separate approval folder that only the three reviewers can write to, with delete and overwrite removed, kept for seven years. A reviewer who is not the author copies the exact approved file there; that reviewer's account and the write time are the approver and approval time. The file name includes the document and approval time, but only as a label. There are no optional extras. Conditional follow-up: if the drive can't limit writes to the reviewers, the user should report what access it can set. Still unknown: the drive's actual permission and retention settings haven't been checked.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years; authors must not approve their own documents, and later edits must leave that version unchanged. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.",
+  "Deleted": "Typed initials in an APPROVED column, and a naming convention used as the approval record. Authors can edit that folder, so anyone, including the author, can enter or change initials and can change the file after approval.",
+  "Bottleneck": "The released file stays where all twelve authors can edit it. The delivery needs one copy that a reviewer who is not the author writes once, and that authors cannot change.",
+  "Checked myself": "The contract terms and the setup you described. I have not seen the folder or its permissions."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks an approval store that is reviewer-only, write-once and kept for seven years, which ties a non-author approver and approval time to the exact version; it rejects initials and naming conventions as the control.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-approvals.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

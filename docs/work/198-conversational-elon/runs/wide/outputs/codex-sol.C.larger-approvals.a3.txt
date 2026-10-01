@@ -1,0 +1,8 @@
+**Requirements and who asked:** The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, independent approval, and protection from later edits.
+**Deleted:** Typed initials and naming conventions as evidence of enforced approval controls.
+**Bottleneck:** Authors can edit the shared folder, so it cannot protect released versions.
+**Checked myself:** You supplied the contract requirements and folder permissions; no system controls have been verified.
+
+You need compliant document releases before this week’s delivery. I recommend keeping the folder for drafts and adding one protected release archive that records each exact approved document, the authenticated reviewer’s identity and approval time, blocks self-approval, and enforces seven-year retention against alteration or deletion.
+
+The APPROVED column and naming convention alone do not meet the contract. Ship only after those archive controls have been verified.

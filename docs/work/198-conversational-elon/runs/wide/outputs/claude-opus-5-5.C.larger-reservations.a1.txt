@@ -1,0 +1,10 @@
+**Requirements and who asked:** The owner requires that a conflicting reservation for the same item identifier be rejected at save time, even when two of the six agents submit at once. You asked to ship something this week.
+**Deleted:** Red conditional formatting plus a reminder as the overlap guard. It only highlights a conflict after both bookings are saved, and it depends on someone noticing, which is how last week's double promise got through.
+**Bottleneck:** Two agents saving at the same moment, each without seeing the other's booking.
+**Checked myself:** Only what you told me: six agents in two offices, one identifier per item, last week's double booking, and the owner's save-time rule. I haven't seen the spreadsheet or which product it runs in.
+
+You're trying to make it impossible to save two overlapping bookings for the same item. Colours can't do that, and I don't know of any spreadsheet check that holds when two people save at the same instant.
+
+I recommend one small Postgres table for bookings with an exclusion constraint on item identifier and date range. The database then refuses the second of two overlapping saves, even if both arrive together, and agents see an error instead of a silent clash. The table and constraint are a few hours of work, so this fits in the week. The spreadsheet can stay as a read-only view.
+
+Where do agents enter bookings today, and is the sheet Google Sheets or Excel? That tells me how to give them a save screen with the least change to how they work.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: add a pivot table to the existing workbook, with region and month as the axes and the sum of the signed net amount as the value, so refunds stay negative. No optional additions are made now. Airbyte, Snowflake, dbt and Power BI are deferred until a second source appears or the export outgrows the computer. Unmet needs: none for the stated report, though no reconciliation of totals is mentioned.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a correctly bounded pivot table with the stack deferred under named conditions, but none of the four record labels appear in the reply, so all four record fields fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-board-report.a3",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

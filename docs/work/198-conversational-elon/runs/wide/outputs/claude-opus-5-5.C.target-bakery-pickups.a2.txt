@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup. Payments and stock already reconcile correctly, so nobody has a need that sales, inventory or manufacturing modules would fill.
+**Deleted:** Odoo, its sales, inventory and manufacturing modules, the counter sync, and the implementation partner.
+**Bottleneck:** Staff decide what to bake next from the shared list, and this morning they made next month's orders before today's.
+**Checked myself:** Only what you told me. I haven't seen the list itself or how it is sorted at the counter.
+
+You're trying to make sure each day's cakes get made first, and I'd skip the Odoo rollout because it targets areas that already work.
+
+Instead, sort the existing order list by pickup date, earliest first, and give the counter view a filter or highlight for unmade orders due today or tomorrow. Then add one rule: nobody starts a later order while an earlier one is still unmade. My guess is the list currently shows orders in the order they were entered, which would explain this morning, but I haven't confirmed that.
+
+Whether to cancel or repurpose next week's partner booking is up to you. If you tell me which tool the list lives in (a spreadsheet, an app, or paper), I can set up the sort and the due-today view.

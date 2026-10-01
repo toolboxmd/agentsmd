@@ -1,0 +1,9 @@
+You need to decide each renewal two weeks before its notice deadline, and **this doesn't need agents**: once a year, put one calendar event per contract on (notice deadline minus 14 days) in the phone calendar you already check daily, with the renewal date and the notice deadline in the event notes.
+
+The n8n, Gmail agent, vector database and Telegram bot stack would add parts that can fail or need upkeep, but none of it fixes a real problem here:
+- the dates arrive once and stay fixed for the year, so there's nothing to watch;
+- a handful of contracts doesn't need a search index;
+- you already have a daily reminder channel;
+- and nothing should cancel or pay automatically anyway.
+
+Paste or upload this year's statement and I'll turn it into a single `.ics` file you can import in one tap. Next January you repeat that step with the new statement.

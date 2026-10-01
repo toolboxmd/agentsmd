@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: sort the existing shared list by pickup date with earliest first, bake from the top, never start a later date while an earlier one is unmade, and do a quick morning check that every order due today is in progress or done. No optional additions. The reply recommends postponing or cancelling the Odoo implementation partner. It also offers to set up the sort and today view once the user says which app holds the list. Nothing the user needs is left unaddressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup.",
+  "Deleted": "Odoo sales, inventory and manufacturing modules and the counter sync. Payments and stock already reconcile correctly, and the shared list already holds pickup date and status where the bakers can read it.",
+  "Bottleneck": "Prep order. Cakes were made in the order they were entered, not by pickup date, so next month's orders got made before today's.",
+  "Checked myself": "Only what you told me: the list's fields, that it is readable at the counter, this morning's miss, and that payments and stock are fine. I have not seen the list itself."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply picks a bounded fix: sort the existing list by pickup date and add a morning check. It rejects Odoo by name and grounds its claims only in facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

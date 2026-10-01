@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need the unpaid-invoice count to return within one second and include every invoice committed at request time. Kafka, a CQRS projection, and Redis come from peer practice and an approved budget, not from a failure they fix.
+**Deleted:** Kafka topics, the CQRS projection, Redis, and any new service for this count.
+**Bottleneck:** The endpoint pulls every invoice row into the app and builds objects just to count them.
+**Checked myself:** Only your description: one app, PostgreSQL, the endpoint returns only the count, and nothing else reads it. I have not seen the query plan, the schema, or table sizes.
+
+You're trying to make one count fast and current. My recommendation is to have PostgreSQL do the counting: replace the fetch-and-count code with a single `SELECT count(*) ... WHERE <unpaid condition>` that uses the same filters the endpoint uses now. If `EXPLAIN ANALYZE` still shows a slow sequential scan, add a partial index on the filter columns `WHERE <unpaid condition>` with `CREATE INDEX CONCURRENTLY`.
+
+A projection fed through Kafka into Redis would lag behind commits, so it would break your "committed at request time" requirement. It would also add three systems to run for a single number. The query change is one code edit plus at most one migration, so it fits easily this week.
+
+To confirm before shipping, share the current query or ORM call and run `EXPLAIN ANALYZE` on the replacement.

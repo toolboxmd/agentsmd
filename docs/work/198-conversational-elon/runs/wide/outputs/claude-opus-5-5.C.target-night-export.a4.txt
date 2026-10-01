@@ -1,0 +1,8 @@
+**Requirements and who asked**: you need the report every morning by 08:00. You asked for "future-proofed," but no future job, dependency, or scale need has been named.
+**Deleted**: Airflow, Kubernetes, and a worker/scheduler/deployment split. A single three-minute job with no downstream jobs and safe reruns needs none of them.
+**Bottleneck**: the job runs on a laptop that is often asleep overnight. That is my inference for why runs go missing; I haven't seen logs that confirm it.
+**Checked myself**: nothing directly. I'm relying on what you told me: the command works, takes three minutes, has no downstream jobs, reruns are safe, the laptop sleeps, you run an always-on Linux machine, and the deadline is 08:00.
+
+The goal is a correct report every morning by 08:00. I recommend running the existing command on your always-on Linux machine with a systemd timer that has `Persistent=true` and a start time such as 02:00. If the machine was down at that time, the timer runs the job when it comes back, and safe reruns mean that can't do harm. This fixes where the job runs, which is the actual failure. It can ship today, and the Python command stays portable if real multi-job needs show up later.
+
+To install it I need your go-ahead, plus the hostname, the user to run as, and the command path, since it's a persistent change on that machine.

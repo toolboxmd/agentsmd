@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now it recommends changing the endpoint to run SELECT count(*) with the unpaid filter in PostgreSQL and return only that number. It adds a partial index only if EXPLAIN ANALYZE still shows the query taking more than one second. It explicitly rejects Kafka, CQRS and Redis because an async projection would lag behind committed invoices. It offers to make the change and measure it. No need is left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to return within one second and reflect invoices committed at request time; users reported the slowness. Kafka, CQRS, and Redis come from peer trend and available budget, not from this need.",
+  "Deleted": "Kafka topics, CQRS projection, Redis cache, and any new service for this count.",
+  "Bottleneck": "The endpoint fetches every unpaid invoice row, builds objects, and counts them in application memory, when it only needs a number.",
+  "Checked myself": "Only what you told me: one app, PostgreSQL, the endpoint returns just the count, and it has no other reader. I have not seen the query, table size, or query plan."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, which is a single aggregate query in the existing database that keeps the request-time freshness and names and rejects Kafka, CQRS and Redis.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-invoice-count.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: reject the folder, initials column and naming convention as the approval control. Keep the shared folder for drafts only. Add a release step that only reviewers can complete, where a reviewer who is not the author approves the document. The exact approved file goes into an archive that authors cannot edit, with the reviewer's authenticated identity and the approval time recorded. The archive is kept seven years, and any later edit needs a new approval and a new archived copy. Optional addition: the agent offers to help set this up in the tools the team already uses. Unmet need: the reply has none of the four required labeled record lines.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommendation covers every LARGER capability (non-author authenticated approval, recorded time, exact file in an archive authors cannot edit, seven-year retention), but the reply has none of the four labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.larger-approvals.a1",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

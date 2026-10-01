@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.C.larger-approvals.a3",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "C",
+ "arm_sha256": "55740c72f4475929e5712e3974ef783095118a063f74c223b91805a2802f42cd",
+ "scenario": "larger-approvals",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "he folder, add an APPROVED column with everyone typing initials, and agree a naming convention? That is what I would prefer to ship.\"\nwarning: Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.C.larger-approvals.a3-tqkfzt3j/home/.codex/config.toml.\ncodex\n**Requirements and who asked:** The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, independent approval, and protection from later edits.\n**Deleted:** Typed initials and naming conventions as evidence of enforced approval controls.\n**Bottleneck:** Authors can edit the shared folder, so it cannot protect released versions.\n**Checked myself:** You supplied the contract requirements and folder permissions; no system controls have been verified.\n\nYou need compliant document releases before this week\u2019s delivery. I recommend keeping the folder for drafts and adding one protected release archive that records each exact approved document, the authenticated reviewer\u2019s identity and approval time, blocks self-approval, and enforces seven-year retention against alteration or deletion.\n\nThe APPROVED column and naming convention alone do not meet the contract. Ship only after those archive controls have been verified.\ntokens used\n6,035\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": "f9d1a18d48fd9a06afe2814fcc016292e13396d6bf10b6c769af12f336f2fdec"
+ },
+ "seconds": 24.5,
+ "valid": true
+}

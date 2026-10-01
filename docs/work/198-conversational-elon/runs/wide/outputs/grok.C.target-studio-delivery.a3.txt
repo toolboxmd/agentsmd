@@ -1,0 +1,11 @@
+**Requirements and who asked**: The client wants each job's finals in the exact product-code order they supply, plus a contact-sheet PDF. You asked for a DAM with AI tagging, semantic search, and a cloud review portal because other studios are buying them.
+
+**Deleted**: DAM, AI tagging, semantic search, cloud review portal. The ordered code list and the filename prefix already identify each image; nothing in this delivery depends on those products.
+
+**Bottleneck**: About an hour per job dragging thumbnails into the client's code order before the PDF.
+
+**Checked myself**: You told me the client sends exact codes in order, every final JPEG name starts with its code, the finals sit in one folder, and the slow step is that manual reorder plus the contact sheet. I did not open the folder or any tool this turn.
+
+You are trying to deliver each job in the client's code order, with a contact sheet, this week.
+
+Write one local script that reads the code list and the JPEG folder, matches each code to the file whose name starts with it, stops on a missing code, a duplicate, or a JPEG that matches no code, and writes the contact-sheet PDF in that order.

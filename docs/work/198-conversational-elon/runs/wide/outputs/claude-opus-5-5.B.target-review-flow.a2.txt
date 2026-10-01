@@ -1,0 +1,11 @@
+You want changes to stop waiting on approval. I'd skip squads, chapters, and Jira Align: your last six changes each took under a day to code, then sat three days waiting for one reviewer who was away. A new framework or tool doesn't fix that.
+
+**What I'd launch this week:**
+
+1. **Three approvers instead of one.** Make the lead and the two other qualified engineers interchangeable reviewers. Any one of them can approve, and requests rotate or go to whoever is free, not to the lead by default.
+2. **A review deadline.** If a PR has no review within 4 working hours, any of the three picks it up. You're all in one time zone, so same-day approval is realistic.
+3. **Track wait time.** Use your existing tracker to watch time from "ready for review" to "approved" on the next few changes. If it drops from three days to under one, it worked.
+
+This costs nothing and needs no workshops. If wait time stays high after a couple of weeks, look again before spending on tooling. With four engineers, squads and quarterly planning add overhead without removing the wait.
+
+Your call: are you comfortable with the lead no longer being the default sole approver? If so, I can draft the reviewer rule for your repo settings and team notes.

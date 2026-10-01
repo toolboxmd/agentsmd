@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: make one event per contract in the phone calendar, set 14 days before its notice deadline, with an alert that day and the deadline, renewal date and contract reference in the notes. Build these from each year's statement and check them against it. Cancellations and payments stay manual. No optional additions. Notification settings aren't confirmed, but the reply says the calendar wasn't inspected.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need a decision reminder two weeks before each notice deadline, using dates fixed for the year; you use your phone calendar daily and want no automatic cancellation or payments.",
+  "Deleted": "n8n, the Gmail agent, vector database, Telegram bot, and agent coordination.",
+  "Bottleneck": "Getting the dates from the annual statement into reminders you will see.",
+  "Checked myself": "Only the facts you provided; I have not inspected the statement or your calendar."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labels come before the recommendation and are specific to this case; it names and rejects the whole stack and recommends only phone-calendar events.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-renewal-admin.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

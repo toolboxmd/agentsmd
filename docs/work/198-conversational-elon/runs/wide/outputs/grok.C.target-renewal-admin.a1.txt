@@ -1,0 +1,13 @@
+**Requirements and who asked:** You asked how n8n, a Gmail agent, a vector database, and a Telegram bot should fit together for renewal reminders. You need to decide on each contract two weeks before its notice deadline. One yearly statement fixes those dates, you already use the phone calendar daily, and you do not want automatic cancellation or payments.
+
+**Deleted:** n8n, a Gmail agent, a vector database, a Telegram bot, and any workflow joining them. A fixed list of dates entered once a year does not need those services.
+
+**Bottleneck:** Putting each decision date on the phone calendar when the yearly statement arrives.
+
+**Checked myself:** Only the facts in your message. I have not seen the statement or the calendar.
+
+You want a reminder to decide on each renewal two weeks before its notice deadline.
+
+When the statement arrives, create one phone calendar event per contract on that date, with the contract name and the decision in the title.
+
+That is the whole system.

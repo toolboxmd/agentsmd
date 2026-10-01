@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-night-export.a2",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-night-export",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 30.9,
+ "valid": true
+}

@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-bakery-pickups.a2",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-bakery-pickups",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 46.1,
+ "valid": true
+}

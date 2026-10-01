@@ -1,0 +1,17 @@
+**The initials column won't meet the contract, so I'd advise against shipping it as the control.** You need approvals the customer will accept as proof this week. The column fails on each clause:
+
+- **Approver identity:** anyone can type anyone's initials, so they don't prove who approved.
+- **Approval time:** a typed or editable date proves nothing.
+- **No self-approval:** authors can edit the folder, so nothing stops an author from approving their own document.
+- **Retained approved version:** later edits overwrite the file. A naming convention doesn't protect the content.
+
+**Recommendation:** keep your current folder for drafts and add a separate locked release area.
+
+1. **Create a "Released" folder.** Only the three reviewers can write to it, and authors get read-only access.
+2. **Reviewers do the release.** A reviewer copies the approved file into "Released", ideally as a PDF, which freezes that version.
+3. **Record approvals through a signed-in form.** Each approval goes through a form or tool tied to the reviewer's login, which captures their identity and timestamp automatically. Add a rule that a reviewer never approves a document they authored.
+4. **Set a 7-year retention policy on "Released".** This prevents deletion and overwriting.
+
+This is a small change to how the team already works, and it can be set up this week.
+
+Which platform is the shared folder on: SharePoint/OneDrive, Google Drive, Dropbox, or something else? That decides how to set the permissions, the form, and the retention.

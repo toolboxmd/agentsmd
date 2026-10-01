@@ -1,0 +1,12 @@
+**Requirements and who asked:** You need monthly net sales by region for the board, from one local Excel export with signed amounts (refunds negative). "Future-proof" and "match peers" have no failure behind them yet.
+**Deleted:** Airbyte, Snowflake, dbt, and Power BI. There is one local source, the data fits on your computer, and no second consumer exists, so each would be a new thing to run and pay for with nothing to fix.
+**Bottleneck:** Building the monthly regional sums by hand.
+**Checked myself:** Nothing. This rests only on what you've told me about the export and your process.
+
+You want the regional monthly totals to come out right without manual work. My recommendation is a PivotTable in the workbook you already have, which you can set up today.
+
+1. Paste each month's export into the same Excel table.
+2. Insert a PivotTable from that table. Put Region in Rows and Date in Columns, grouped by Month. Put Sum of the net amount in Values. Refunds net out automatically because they are already negative.
+3. Each month, paste the new export and click **Refresh**. If you'd like, I can build this in your workbook.
+
+We should revisit the setup when it actually breaks, for example when a second data source arrives, the file outgrows Excel, or other people need live access.

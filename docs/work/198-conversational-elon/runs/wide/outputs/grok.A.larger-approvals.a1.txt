@@ -1,0 +1,18 @@
+That folder, initials column, and naming convention will not satisfy the signed contract, so I would not ship it as the control for this week’s delivery.
+
+The contract requires every released document to keep all of the following for seven years:
+
+- The exact file that was approved, stored so a later edit cannot change it.
+- The approver’s real identity.
+- The approval time, recorded with that approval.
+- Approval by someone other than the author.
+
+Authors can still change files in the shared folder. Anyone can type or change initials, including the author, and that column does not lock the file or the time. A naming convention only labels a file. It does not freeze the approved bytes.
+
+Keep the current folder for drafts. Add a separate release step that only the three reviewers can complete:
+
+- A reviewer who did not write the document approves it, and that exact file is copied into a release archive the twelve authors cannot edit.
+- The archive records the reviewer’s authenticated identity and the approval time, and you retain that archive for seven years.
+- Any later edit is a new draft. It needs a new approval and a new archived copy. The earlier approved copy stays unchanged.
+
+I can help you set up that archive and the reviewer-only approval step in the tools you already use before the delivery.

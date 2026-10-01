@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship no new services or topics now. Replace the in-memory object counting with a single PostgreSQL COUNT(*) using the unpaid filter, plus a supporting index if needed. This keeps request-time committed-data freshness. Kafka/CQRS/Redis is rejected for this endpoint because a projection would lag behind commits, and the Kafka budget is deferred to a future workload that actually needs it. No unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply picks the bounded aggregate-query fix and correctly rejects the stack, but none of the four labeled record lines appear, so all four label predicates fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-invoice-count.a3",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

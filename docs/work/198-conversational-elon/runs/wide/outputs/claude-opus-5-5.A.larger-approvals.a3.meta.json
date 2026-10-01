@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.A.larger-approvals.a3",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "larger-approvals",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 15.3,
+ "valid": true
+}

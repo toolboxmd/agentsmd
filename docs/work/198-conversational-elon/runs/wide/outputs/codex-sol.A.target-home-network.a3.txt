@@ -1,0 +1,11 @@
+I’d start with the desk’s Ethernet connection before designing the upgrade. Since two other devices on the same router keep their calls connected during a dropout, the evidence points toward the desk’s cable, port, or computer rather than the shared gateway.
+
+Try these in order:
+
+1. Replace the old cable with a known-good Cat6 cable, temporarily routed outside the tight grommet. Test across several calls.
+2. If drops continue, try a different router or switch port.
+3. If they persist, check the computer’s Ethernet adapter, driver, power-saving settings, and link-disconnect logs.
+
+For the eventual upgrade, a straightforward layout is **ISP modem/ONT → UniFi gateway → managed switch → desk and access points**. Give the desk a sound cable run with no pinching or sharp bends. Add Grafana if you want historical monitoring; switch-port errors and link changes would be useful metrics.
+
+The approved budget gives you options, but replacing and testing that cable first will tell you whether the larger upgrade addresses the call drops at all.

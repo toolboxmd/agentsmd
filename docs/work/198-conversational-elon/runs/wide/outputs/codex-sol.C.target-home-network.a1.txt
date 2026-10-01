@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want dependable calls at the Ethernet desk; you also asked for future-proofing.
+**Deleted:** The UniFi gateway, managed switches, and Grafana dashboard from this fix: the reported symptoms do not justify them.
+**Bottleneck:** The desk’s Ethernet connection is the first suspect, especially the aging cable through the tight grommet.
+**Checked myself:** No direct checks; you reported that two other devices keep their calls connected during dropouts, and a different cable remains untested.
+
+To get dependable calls at that desk, I recommend first replacing its Ethernet cable and routing it without pinching or sharp bends, then checking calls under normal use. The cable is a suspect, not a confirmed cause; if drops continue, try another router port, then investigate the desk computer’s Ethernet adapter.

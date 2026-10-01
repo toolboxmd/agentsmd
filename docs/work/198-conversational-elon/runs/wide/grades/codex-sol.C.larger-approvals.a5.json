@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Keep the shared folder for drafting only. Add a protected release archive that keeps the exact approved document for seven years and records authenticated approval identity and time. It must also prevent self-approval. The reply says the APPROVED column alone can't meet the requirements and that release should wait until the archive and controls are verified. It offers no optional additions now, and the controls still need verification.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, with no self-approval or later alteration.",
+  "Deleted": "Typed initials and naming conventions as proof of approval.",
+  "Bottleneck": "Preserving an approved copy beyond authors\u2019 editing access.",
+  "Checked myself": "You stated the contract requirements and confirmed authors can edit the shared folder; no existing retention controls have been verified."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses one controlled archive that covers non-author authenticated approval, time, the exact version and seven-year protection, and drops initials and naming as proof.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-approvals.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

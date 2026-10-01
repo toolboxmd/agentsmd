@@ -1,0 +1,13 @@
+Reject the second booking at save time. Red formatting and a reminder leave both reservations stored, so they miss the rule you already set.
+
+Six agents can all see the same item as free, enter the same dates, and save before any cell turns red. The sheet accepts both writes. The colour shows up only after two customers have been promised one item. That is the race you hit last week. A reminder still depends on someone noticing in time.
+
+Ship one shared save path this week:
+
+- Every new or changed reservation for an item goes through that path. Direct edits to the grid are closed off.
+- The save locks that item, checks existing reservations for overlapping dates, then writes or refuses.
+- The check and the write stay together, so a second agent cannot pass the check while the first save is still in progress.
+- On a clash, the second agent gets a clear refusal naming the other booking’s customer and dates. The first booking stays as it is.
+- Decide whether the return day is still occupied or free that morning, and use the same rule in the check.
+
+Keep the spreadsheet as a live view or export if agents want the grid. Conditional formatting can still mark old bad rows while you clean them up. New clashes have to die on the second save, including when both offices submit together.

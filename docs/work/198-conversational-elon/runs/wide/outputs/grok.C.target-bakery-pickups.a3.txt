@@ -1,0 +1,9 @@
+**Requirements and who asked**: The owner needs every cake due today prepared before pickup. You asked for an Odoo sales, inventory, and manufacturing sync because other shops are moving and a partner is booked next week.
+
+**Deleted**: The Odoo rollout. Payments and stock already reconcile, the shared list already has pickup date and preparation status, and everyone making cakes can already read it.
+
+**Bottleneck**: Preparation order. Cakes due today stayed unmade while orders for next month were prepared.
+
+**Checked myself**: Only what you told me about the list, the reconciliation, the counter access, and this morning's miss. I have not seen the list or the shop.
+
+You are trying to have every cake due today prepared before pickup. Sort the shared list by pickup date and finish today's cakes before anyone starts a later order. Postpone the partner, since that booking is your money and it leaves this sequence unchanged.

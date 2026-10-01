@@ -1,0 +1,35 @@
+The hour you're losing isn't something a DAM fixes. AI tagging, semantic search and a review portal help with *finding* images across a big archive. Your bottleneck is narrower: putting a known set of files into the client's exact code order and producing a contact sheet. You already have everything needed to do that automatically:
+
+- the client's ordered code list
+- filenames that start with the product code
+- one folder per job
+
+A small script can turn that into a 10-second step.
+
+**What I'd build this week**
+
+A script you run per job, e.g. `deliver.py codes.csv ./job-folder`, that:
+
+1. Reads the client's code list in order.
+2. Matches each code to its file(s) by exact code, not loose prefix, so `AB12` doesn't grab `AB123`.
+3. Stops with a clear report before producing anything if:
+   - a code has no image
+   - a code matches more than one file unexpectedly
+   - an image in the folder isn't on the client's list
+4. Optionally copies the files into a delivery folder with sequence prefixes (`001_AB12.jpg`, `002_…`), so the order survives in any viewer or upload portal.
+5. Writes the contact-sheet PDF in that order: thumbnails, code captions, job name and date. Grid size and page format are up to you.
+
+On your Mac this is Python plus a couple of libraries (Pillow and a PDF library). It runs locally, costs nothing, and doesn't change your originals.
+
+**On the DAM budget**
+
+I'd hold it until the script has run on a few real jobs. Then look at what's still painful. If it's searching past shoots or getting client approvals, a DAM or review portal may be worth it, and you'll know exactly what to require from one. Buying one now risks paying for features that don't touch the hour you're actually losing.
+
+**To write it, I need:**
+
+1. A sample code list, in whatever format the client sends it (CSV, Excel, email text, PDF).
+2. A few example filenames, especially for a product with multiple angles, if that happens.
+3. What should happen with alternates or extra shots: deliver them, ignore them, or flag them.
+4. Your preferred contact-sheet layout: images per page, A4 or Letter, captions.
+
+Send those and I'll write the script and test it on a copy of one job folder before you rely on it.

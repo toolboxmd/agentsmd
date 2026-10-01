@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends a small local script that reads the client's code list, matches JPEGs by exact filename prefix (so AB12 and AB123 are kept apart), flags missing or extra images, and writes the contact-sheet PDF in the client's order. It adds no DAM, AI tagging, semantic search or cloud portal. To build it, the agent asks for a real code list, the job's folder path, and whether the files themselves need renaming.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client asked for images in their supplied code order. You need a contact-sheet PDF with each delivery. You asked to cut the hour spent per delivery.",
+  "Deleted": "DAM, AI tagging, semantic search, and the cloud review portal. No client requirement needs them, and the exact product code at the start of each filename already identifies every image.",
+  "Bottleneck": "The hour of hand-dragging thumbnails into the client's order before building the PDF.",
+  "Checked myself": "Only what you've told me: the client sends an ordered list of exact codes, each final JPEG's filename starts with its code, and each job's JPEGs sit in one folder. I haven't seen a real list or folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A bounded script that follows the client's code order, rejects the DAM stack by name, and sticks to the facts it was given while saying what it hasn't seen.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-studio-delivery.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

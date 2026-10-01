@@ -1,0 +1,7 @@
+Ship the export as one cron job on the always-on Linux machine you already administer. There is no worker, scheduler, or deployment split for this.
+
+The missing nights are the laptop sleeping. The job is one Python command, about three minutes, with no downstream work, and running it again safely replaces that night’s report. It only has to finish by 08:00. A crontab line (or a systemd timer) on the machine that stays up meets that. Pick a start well before 08:00, append stdout and stderr to a log, and if a morning check shows no report, run the same command again.
+
+Airflow on Kubernetes is a scheduler deployment, a worker pool, a metadata database, and the pipeline that keeps them up. That platform pays off when many jobs depend on each other. This export is one command. Building that stack would spend the week on infrastructure you then have to run for a three-minute script.
+
+What keeps a later move cheap is the entry point, not the scheduler. Put the command in a small script that logs and exits non-zero on failure. If you later have a real queue of dependent jobs, that script is the task you move. Until then, that host is both the scheduler and the worker.

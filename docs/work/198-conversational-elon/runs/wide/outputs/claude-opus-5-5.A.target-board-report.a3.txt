@@ -1,0 +1,23 @@
+Honest take first: for this report, the full Airbyte → Snowflake → dbt → Power BI stack would be a lot of machinery for a problem one Excel file can solve. You'd be paying for and maintaining four services, connectors, credentials, and a warehouse to compute a sum by region and month. It wouldn't make the report more future-proof. It would add more things that can break before a board meeting.
+
+What actually makes it future-proof is removing the manual step and making the logic repeatable and checkable. That's achievable this week with no new spend:
+
+**Option A: Stay in Excel (lowest friction)**
+1. Load the export with **Power Query** (Data → Get Data → From File). Set the column types: date as Date, amount as Decimal.
+2. Add a Month column (start of month from the date).
+3. Group by Region + Month and **sum the signed net amount**. Refunds are already negative, so they net out correctly. Don't filter them or take absolute values.
+4. Output to a table or pivot that feeds the board sheet.
+5. Each month: drop in the new export, click **Refresh All**, done.
+
+**Option B: Small Python script (if you want version control and tests)**
+- About 20 lines with pandas: read the file, group by region and month, sum, write a summary workbook.
+- Add a couple of checks: the grand total matches the export total, no blank regions, no unparseable dates, and a flag on any month where refunds exceed X%.
+- I can write this and a short README.
+
+**Either way, I'd add:**
+- A reconciliation line: sum of the regional totals = total of the raw export.
+- One-time validation: run it on last month's data and compare it to your hand-built numbers before you trust it.
+
+**When the bigger stack would make sense:** multiple source systems to combine, data too large for a laptop, many people building reports off the same numbers, or a need for self-serve dashboards beyond the board pack. If any of that is on the horizon, Option B's logic moves cleanly into a dbt model later, so nothing is wasted. Power BI on its own could also read the same Excel file if the board wants interactive charts, without needing a warehouse.
+
+Which way do you lean, Excel/Power Query or a script? If you share the column names (or a few anonymized rows), I'll build it.

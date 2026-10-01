@@ -1,0 +1,11 @@
+**Requirements and who asked:** The owner requires a conflicting reservation to be rejected at save time, even when two agents submit together. You asked to keep the booking spreadsheet and ship red overlap formatting plus a reminder this week.
+
+**Deleted:** Conditional formatting and a check reminder. Both leave the overlapping row saved, and simultaneous submits from the two offices can both land before anyone sees a warning.
+
+**Bottleneck:** The save does not exclusively claim the item identifier for the requested dates.
+
+**Checked myself:** Six agents book at once from two offices, each physical item has one identifier, and two customers were promised the same item for overlapping dates last week. I have not seen the spreadsheet.
+
+You are trying to stop the same physical item being promised twice for overlapping dates.
+
+Ship one save action on the shared list that locks, rejects the row when that item identifier already overlaps those dates, and writes only when the claim is free. Turn off direct cell edits so every booking from both offices uses that save.

@@ -1,0 +1,7 @@
+Ship none. This count does not need a new service, topic, CQRS projection, or Redis.
+
+The endpoint must finish in under a second and match invoices already committed when the request runs. A Kafka consumer updating Redis does that update after the database commit, so the stored count can lag behind committed invoices. That misses the freshness requirement even when the Redis read itself is fast.
+
+Keep the count in the application and PostgreSQL you already run. The slowness is from loading invoice rows, building objects, and counting them in memory when the response is only a count. Run the same unpaid filter as a single `COUNT(*)` in PostgreSQL, and add an index that covers that filter and the customer or account key if the count is scoped. That query returns committed rows under normal PostgreSQL read rules and should stay well under a second.
+
+The approved Kafka budget can wait for a workload that actually needs asynchronous fan-out. It does not belong on this endpoint.

@@ -1,0 +1,7 @@
+I’d ship a database-side count this week. The endpoint only returns a count, so loading rows and constructing invoice objects adds unnecessary work.
+
+A Kafka-fed Redis projection can lag behind committed invoices, which conflicts with your request-time freshness requirement. An approved budget doesn’t remove that tradeoff.
+
+Start with `SELECT COUNT(*)` using the endpoint’s existing filters, run it against the PostgreSQL primary, and check the query plan for a suitable index—potentially a partial index for unpaid invoices scoped to the customer. Benchmark with realistic data and concurrency to verify the one-second target.
+
+For this count, we need no new services or topics. If that query still misses the target, evaluate a count table updated in the same database transaction as invoice changes. CQRS with Kafka and Redis becomes an option if you can accept eventual consistency.

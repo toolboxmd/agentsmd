@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want dependable calls at the desk; you also requested future-proofing, but no specific future capacity need is established.
+**Deleted:** The gateway, managed switches, and dashboard from this call-drop fix.
+**Bottleneck:** Evidence points toward the desk’s connection; the old, tightly routed cable remains untested.
+**Checked myself:** Only your report: the desk uses Ethernet, while two other devices on the same router stay connected during dropouts.
+
+For dependable calls, I recommend first connecting the desk directly to the existing router with a known-good Ethernet cable, bypassing the tight grommet, and testing calls. The cable is a suspect, not a confirmed cause; approved budget and group adoption do not establish that replacing the network would fix this fault.

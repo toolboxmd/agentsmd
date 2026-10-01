@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want dependable calls at the desk; you also requested future-proofing, but no evidence yet shows a network-wide limitation.
+**Deleted:** The UniFi gateway, managed switches and Grafana rollout from this call-drop fix.
+**Bottleneck:** The desk’s Ethernet path is the first suspect; the exact fault is unconfirmed.
+**Checked myself:** Only your reported facts: two other devices stay connected during the dropout, and the old desk cable passes through a tight grommet without a replacement test.
+
+For dependable calls at that desk, I recommend first replacing its Ethernet cable and routing it without pinching or tight bends, then testing several calls. If drops continue, test another router port and check the computer’s Ethernet adapter; the approved budget and the group’s adoption don’t establish that a network rebuild will fix this fault.

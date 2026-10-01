@@ -1,0 +1,5 @@
+You need every cake due today ready before pickup; what you described points to a preparation-priority problem, while payments and stock already work.
+
+Today, put today’s orders first, confirm pickup times, assign each cake to a preparer, and have one person check completion before each pickup; prepare next month’s cakes only after today’s queue is covered.
+
+For next week’s partner session, I recommend a staged rollout: first demonstrate a counter preparation queue ordered by pickup deadline, with clear ownership and unfinished orders visible; pilot it through a full pickup cycle, then expand into sales and inventory only where a demonstrated gap justifies it, with one authoritative order list throughout.

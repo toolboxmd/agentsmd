@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now by using the existing shared list: identify every unfinished cake due today, assign each one to a person, prioritize by pickup time, and confirm completion before moving to later dates. Nothing optional is added now. At next week's partner meeting, the user should make reliable pickup preparation the acceptance criterion and ask the partner to show what Odoo would change about this failure before committing to any broader rollout. No ERP or sync is recommended now. Unmet: the reply does not explicitly name a persistent date-filtered view for the morning baker, though the daily due-today list is equivalent.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup; you proposed Odoo sales, inventory and manufacturing.",
+  "Deleted": "Those modules from the immediate pickup fix; payments and stock already reconcile correctly.",
+  "Bottleneck": "Preparation is reaching next month\u2019s orders while today\u2019s cakes remain unmade.",
+  "Checked myself": "From your account, everyone preparing cakes can read the shared list; I have not inspected it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded due-today prioritization of the existing list and defers Odoo to a conditional evaluation, with all four record lines grounded and placed before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-bakery-pickups.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

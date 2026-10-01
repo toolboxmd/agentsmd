@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: replace the in-memory row/object counting with a single PostgreSQL SELECT count(*) filtered on unpaid status. A plain read statement keeps request-time committed semantics. Optional, if EXPLAIN ANALYZE still shows more than one second: add a partial index. No new services or topics. Still unknown: the schema, the column names and the query plan.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count under one second and current with committed invoices at request time. Users report it is slow. Kafka, CQRS and Redis come from peer trends and available budget, not from a failure this endpoint shows.",
+  "Deleted": "Kafka topics, the CQRS projection service, and Redis. A projection lags behind commits, so it would break your \"committed at request time\" requirement. It would also add three things to run for a single number.",
+  "Bottleneck": "The endpoint fetches every invoice row, builds an object for each one, and counts them in memory, just to return one integer.",
+  "Checked myself": "Nothing. This comes only from your description: one app, PostgreSQL, the count is the only output, and there are no other readers."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes a bounded aggregate-query fix with the four record lines placed before it, names and rejects the Kafka/CQRS/Redis stack, and says plainly that it checked nothing.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-invoice-count.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

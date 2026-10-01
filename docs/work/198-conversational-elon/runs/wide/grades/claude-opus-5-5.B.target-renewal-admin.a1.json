@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: when the annual statement arrives, add one phone-calendar event per contract, dated two weeks before its notice deadline. Optional: the agent offers a one-time conversion of the statement's names and dates into an importable calendar file. Rejected: n8n, the Gmail agent, the vector DB and the Telegram bot. Unmet: notification settings are not verified, and there is no explicit reminder to refresh the events from next year's statement.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The bounded calendar recommendation is sound and the stack is rejected in the 'Why not the stack' section, but none of the four required labeled record lines appear, so all four label-dependent predicates fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-renewal-admin.a1",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

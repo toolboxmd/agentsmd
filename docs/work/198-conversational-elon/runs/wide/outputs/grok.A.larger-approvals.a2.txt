@@ -1,0 +1,11 @@
+The shared folder, an initials column, and a naming convention do not meet the signed contract, so I would not ship that as this week’s control.
+
+Authors can still change or replace files in that folder, typed initials do not establish who approved a document or when, and nothing stops an author from marking their own document approved. A naming convention only works if everyone follows it. The contract needs the exact approved file, the approver’s identity, and the approval time kept for seven years, with later edits leaving that record unchanged.
+
+Keep the current folder as the working area. For each release, have one of the three reviewers — never the author — approve a frozen copy that authors cannot edit or delete:
+
+- Store that copy in a separate location with write and delete rights limited to the reviewers, retained for seven years.
+- Record the document name, a hash of the approved file, the reviewer’s authenticated identity, and the system approval time in a log that authors cannot change.
+- Continue later edits only in the working folder. The archived copy and its approval record stay as they were at approval.
+
+That is the smallest setup that covers version, identity, time, separation of duties, and retention before delivery. I can write the reviewer steps and the approval-log format next if you want that for the team this week.

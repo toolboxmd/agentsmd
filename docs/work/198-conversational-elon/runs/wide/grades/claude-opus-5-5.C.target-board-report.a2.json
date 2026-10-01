@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends a PivotTable in the existing workbook with Region in rows, months grouped by date, and summed signed net amounts so refunds net out. Each month the user pastes the new export and clicks refresh. Airbyte, Snowflake, dbt and Power BI are deleted now. The reply says to revisit the setup only if a named trigger arrives: a second data source, the file outgrowing Excel, or other people needing live access. No unmet needs remain.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need monthly net sales by region for the board, from one local Excel export with signed amounts (refunds negative). \"Future-proof\" and \"match peers\" have no failure behind them yet.",
+  "Deleted": "Airbyte, Snowflake, dbt, and Power BI. There is one local source, the data fits on your computer, and no second consumer exists, so each would be a new thing to run and pay for with nothing to fix.",
+  "Bottleneck": "Building the monthly regional sums by hand.",
+  "Checked myself": "Nothing. This rests only on what you've told me about the export and your process."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded pivot-table fix in the existing workbook, and its four record lines come before the recommendation and are specific and grounded in the supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-board-report.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

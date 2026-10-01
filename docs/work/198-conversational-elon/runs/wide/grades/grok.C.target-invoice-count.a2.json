@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: keep the existing endpoint and replace the in-memory counting with one PostgreSQL aggregate query filtered to the caller, so the count stays current to request time. Optional additions: none. Kafka services, topics, the CQRS projection and Redis are all rejected for this count. Unmet needs: none flagged, though the reply suggests no latency or count-equivalence check.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The unpaid-invoice count must finish within one second and match invoices committed at request time (user). CQRS, Redis, and Kafka topics were requested because a Kafka budget is approved and peers are moving to event-driven systems (user).",
+  "Deleted": "Kafka, CQRS, Redis, new services, and topics. One application already reads PostgreSQL and returns only this count; a second database and an event pipeline would lag commits and add systems to run.",
+  "Bottleneck": "The endpoint loads invoice rows, builds invoice objects, and counts them in application memory.",
+  "Checked myself": "Told the portal is one application and PostgreSQL, the endpoint returns only the count, nothing else reads it, and users report the count is slow."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts all four record lines before the recommendation, chooses the bounded aggregate-query fix, and rejects the Kafka/CQRS/Redis stack by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,10 @@
+**Requirements and who asked:** You want dependable video calls at the one desk that drops them.
+**Deleted:** UniFi gateway, managed switches, Grafana dashboard. None of them fixes this drop, and each adds something to run and maintain.
+**Bottleneck:** The desk's own link. Other devices on the same router stay connected during a dropout, so the router and internet line are not the cause.
+**Checked myself:** Only what you told me: the desk uses Ethernet, its cable is several years old and pinched in a tight grommet, and no other cable has been tried.
+
+Goal: calls that stay up at that desk.
+
+My recommendation is to replace the desk's Ethernet cable with a new Cat6 cable and route it so it isn't bent or squeezed in the grommet. A cable that's old and pinched is the most likely cause, and a new one costs a few dollars. Replacing the router layout would leave that cable in place, and the drops would continue.
+
+Make a call or two after the swap. If the drops come back, tell me, and we'll look at the desk computer's network port and adapter next.

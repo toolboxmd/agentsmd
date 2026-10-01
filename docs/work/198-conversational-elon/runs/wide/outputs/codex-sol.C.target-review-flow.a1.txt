@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want changes to ship faster and stop waiting when the lead is absent.
+**Deleted:** Squads, chapters, Jira Align, and quarterly planning workshops from this launch.
+**Bottleneck:** Approval depends on one unavailable reviewer despite two authorized alternatives.
+**Checked myself:** From the facts you provided, all six changes took under a day to code, then waited three days for the same absent lead.
+
+Launch one rule this week: assign each PR to an available, qualified, authorized reviewer, with either of the two other engineers taking approval when the lead is away. Keep the current team and tracker; a reorganization or new planning platform does not address the demonstrated approval bottleneck. Use the existing tracker’s timestamps to compare approval waiting time for the next six changes.

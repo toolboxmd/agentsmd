@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-opus-5-5.A.target-invoice-count.a2",
+ "harness": "claude-opus-5-5",
+ "host": "claude-opus-5-5",
+ "model": "claude-opus-5-5",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-invoice-count",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 13.9,
+ "valid": true
+}

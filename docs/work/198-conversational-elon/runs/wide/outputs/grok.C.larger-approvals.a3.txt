@@ -1,0 +1,9 @@
+**Requirements and who asked**: The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years, and it forbids authors approving their own documents or later edits changing that retained version. You asked to meet that before this week's delivery by keeping the shared folder, adding an APPROVED column people type initials into, and agreeing a naming convention.
+
+**Deleted**: Typed initials, an editable APPROVED column, and a naming convention as the control. A new document-management or e-signature product.
+
+**Bottleneck**: The twelve authors can still edit the shared folder, so the approved file stays exact only when a reviewer who is not the author writes it once into a place authors cannot change, and that write supplies the identity and the time.
+
+**Checked myself**: Your statement of the contract terms, the twelve remote authors, the three reviewers, weekly releases, and authors' edit access to the current folder. I have not inspected that folder's permissions or retention.
+
+The APPROVED column and a naming convention will not meet the contract. You need this week's releases to preserve the exact approved file, an authenticated approver who is not the author, and the approval time for seven years. Use one archive folder on the same storage: a reviewer who did not author the document copies in the exact file, only the three reviewers can write or delete there, and you retain that copy with the reviewer's account and the storage write time for seven years.

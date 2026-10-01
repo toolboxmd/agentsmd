@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Action now: keep the shared spreadsheet as the store, but make all bookings go through a single save path. That save locks the item, checks the requested dates against existing bookings and refuses the row if they overlap. The grid is closed to direct edits, so when two agents submit at once only the first succeeds. Optional additions: none. Unmet needs: the reply does not say where the save is enforced or how the lock is made atomic on spreadsheet storage, but it does describe the required behaviour.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires a conflicting reservation to be rejected at save time, even when two agents submit together. You asked to keep the booking spreadsheet and ship overlap colours plus a reminder this week.",
+  "Deleted": "Overlap colours and a reminder to check them. A highlight leaves both saves in place, so the same double booking can happen again.",
+  "Bottleneck": "The save. Two of the six agents can write the same item for overlapping dates before either sees the other row.",
+  "Checked myself": "One identifier per physical item, six agents booking at once from two offices, and two customers already promised the same item for overlapping dates last week. I have not opened the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply rejects colours and reminders and picks a locked, single-path save that refuses conflicts, including two simultaneous submits, though the spreadsheet stays as the storage layer.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-reservations.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

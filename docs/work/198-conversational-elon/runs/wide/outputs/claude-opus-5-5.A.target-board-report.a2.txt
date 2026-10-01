@@ -1,0 +1,28 @@
+My recommendation is **not** to stand up Airbyte + Snowflake + dbt + Power BI this week. For your current workload, that stack would add cost, credentials, sync schedules and a cloud copy of financial data, and it wouldn't make the report more correct. Your actual problem is that the monthly sums are built by hand. That's what we should fix.
+
+**What I'd put in place this week**
+
+1. **Automate the aggregation.** Choose one of these:
+   - **Excel-native:** Load the export with Power Query, add a `Month` column from the date, and build a PivotTable with Region × Month summing net amount. Each month you drop in the new export and click Refresh.
+   - **Small script:** A ~30-line Python/pandas script reads the export, groups by region and calendar month, sums the signed amounts, and writes a formatted sheet or CSV for the board pack. I can write it for you.
+2. **Handle refunds correctly.** Sum the signed amounts as they are, so refunds net against sales. Don't filter or take absolute values. If the board also wants gross sales and refunds shown separately, we can add those as two extra columns.
+3. **Add checks that run every time:**
+   - The grand total of the report equals the total of the raw export.
+   - Flag rows with a blank or unknown region, or a missing or unparseable date.
+   - Flag any region/month whose net is negative, so it gets a look before the board sees it.
+4. **Validate once against your manual numbers.** Run the new process on last month's export and compare it to the report you built by hand. Any difference is either a bug in the new process or an error in the old manual one, and either is worth knowing.
+5. **Keep it versioned.** Put the query or script and a short README in a folder (ideally git) so someone else could run it.
+
+That's realistic to finish this week, and it removes the manual step.
+
+**When the modern stack would make sense**
+
+These would be good reasons to revisit it later:
+- Several source systems need to be combined (CRM, billing, ERP).
+- Data volume outgrows a laptop, or you need daily or near-real-time refreshes.
+- Several people need governed, self-serve access to the same numbers.
+- An auditor or finance team requires a controlled warehouse.
+
+If you go that way, the logic from step 1 (signed sums by region and month, plus the reconciliation checks) carries over almost directly into a dbt model and tests. Nothing you build this week is wasted. If you want a dashboard sooner, Power BI Desktop can read the Excel file directly with no warehouse needed.
+
+Which do you prefer for step 1: Power Query/PivotTable inside Excel, or a Python script? If you share the export's column names and date format, I'll build it.

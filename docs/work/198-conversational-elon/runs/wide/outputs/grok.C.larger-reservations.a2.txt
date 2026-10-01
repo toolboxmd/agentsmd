@@ -1,0 +1,8 @@
+**Requirements and who asked**: The owner requires a conflicting reservation to be rejected at save time, including when two agents submit together. You asked to keep the spreadsheet, add red overlap formatting, and ship a reminder to check it this week.
+**Deleted**: Red conditional formatting and a check reminder. A colour leaves both saves accepted, so the double booking still stands.
+**Bottleneck**: The second save of the same item identifier on overlapping dates. Anything that runs after both bookings exist is too late.
+**Checked myself**: You told me six agents work at once from two offices, each physical item has one identifier, and last week two customers were promised that item for overlapping dates. I have not inspected the spreadsheet.
+
+You are trying to stop a second agent confirming an item that is already reserved for those dates.
+Ship one shared place to save a booking, where that save checks the item identifier and dates and commits in one step, and the losing agent sees the refusal at once.
+That is the smallest control that meets the owner's rule, and it is what to ship this week.

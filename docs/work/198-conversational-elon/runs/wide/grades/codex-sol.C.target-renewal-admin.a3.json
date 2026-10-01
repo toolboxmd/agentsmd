@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends acting now: once a year, put one event per contract in the existing phone calendar, dated 14 days before that contract's notice deadline, with a same-day notification and the deadline and renewal date in the event details. It suggests no optional additions. It does not check whether the phone's notification settings actually work. It leaves cancellation and payment decisions to the user.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need a reminder two weeks before each notice deadline, with cancellation and payment decisions left to you.",
+  "Deleted": "n8n, the Gmail agent, vector database, and Telegram bot. Fixed annual dates do not need these.",
+  "Bottleneck": "Entering the dates accurately from the annual statement.",
+  "Checked myself": "You told me the dates stay fixed for the year and you use your phone calendar daily."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts all four record lines before the recommendation, names and drops the whole proposed tool set, and bases its check only on facts the user gave.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-renewal-admin.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

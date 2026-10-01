@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-board-report.a1",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-board-report",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 19.6,
+ "valid": true
+}

@@ -1,0 +1,10 @@
+**Requirements and who asked:** The client asked for images in their supplied code order. You deliver a contact-sheet PDF. Nobody asked for the DAM, AI tagging, semantic search or review portal; the reason given is that other studios are buying them.
+**Deleted:** DAM, AI tagging, semantic search, cloud review portal.
+**Bottleneck:** The hour you spend dragging thumbnails into the client's order for each delivery.
+**Checked myself:** You told me that filenames start with the product code, that the client sends an ordered code list, and that the finals sit in one folder. I have not seen a real code list, real filenames, or how you build the PDF today.
+
+You want to deliver images in the client's code order without the manual hour.
+
+I recommend one small local script. It reads the client's code list and matches each code to its JPEG by filename prefix. It copies the files into a delivery folder with sequence-number prefixes (`001_`, `002_`, ...) and builds the contact-sheet PDF in that same order. It stops and lists any code with no image, more than one image, or images with no code, so you can fix those before anything ships. That should take each delivery from an hour to seconds, it can be done this week, and it costs nothing to run.
+
+Send me one past job's code list (as the client sent it) and the path to its finals folder, and I'll build the script and test it against that job.

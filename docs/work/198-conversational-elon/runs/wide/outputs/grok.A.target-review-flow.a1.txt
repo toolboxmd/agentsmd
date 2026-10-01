@@ -1,0 +1,19 @@
+Launch this week with a same-day review failover on the tracker and pull requests you already use.
+
+The last six changes were written in under a day, then each sat for three days with you as the only reviewer while you were away. Two other engineers are already qualified and authorized to approve that work. The wait is review coverage.
+
+**The rule**
+
+1. Every pull request opens with two reviewers: a primary and a backup. Both are people authorized to approve that change. You may be primary. You are never the only reviewer.
+2. One approval from an authorized reviewer who did not write the change is enough to merge.
+3. If the primary is out, or has not reviewed by the end of the day the change is ready, the backup reviews and approves that same day. Your absence does not hold the queue.
+4. The author assigns the backup in the existing tracker when they open the pull request, and pings that person when the failover applies. Add no new statuses and no new tool.
+5. When you are in, review what you want to see. That review is extra. It does not gate merge after an authorized peer has approved.
+
+**This week**
+
+- Today, tell the four engineers the rule. Set reviewer assignment so the two authorized engineers are eligible approvers on the changes they already may approve, including while you are out.
+- For the next six merges, record time from ready to approval in the current tracker. The bar is approval the same day the code is ready.
+- Keep the current board and your normal check-ins. Four people in one time zone can see this queue directly.
+
+Spotify squads and chapters, Jira Align, and quarterly planning workshops are a portfolio system for many teams. This team’s delay is one required reviewer who was away. A second authorized approver on each pull request is the operating model that shortens that wait, and you can turn it on today with the tools you have. Revisit a portfolio tool if the later problem is prioritizing work across several teams.

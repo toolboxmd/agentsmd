@@ -1,0 +1,14 @@
+I’d start by automating the client’s required order. Your exact product codes already give us a reliable way to match images; AI tagging and semantic search won’t solve this delivery bottleneck.
+
+This week, build a small local workflow that takes the client’s ordered code list and the folder of final JPEGs, then:
+
+- Matches each filename to an exact product code, avoiding partial matches between similar codes.
+- Flags missing products, unexpected files and multiple images per code for review.
+- Generates the contact-sheet PDF in the client’s order, with product codes beneath the thumbnails.
+- Saves a delivery manifest so you can verify what was included and in what order.
+
+Keep the original JPEG names intact. If the client also needs the files to sort in that order, create a separate delivery copy with numbered prefixes, such as `001_PRODUCTCODE.jpg`.
+
+For the first job, compare the generated sheet against the client’s list before delivery. Once that works, make it a repeatable “select list, select folder, generate” process.
+
+A DAM may still be useful for searching your archive or managing client reviews. I’d evaluate it after this delivery workflow is working, and require any candidate to preserve exact product codes and client-defined ordering. Your immediate investment should remove the hour of manual sorting.

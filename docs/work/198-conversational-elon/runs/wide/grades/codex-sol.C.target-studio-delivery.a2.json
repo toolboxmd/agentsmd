@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Build one local utility now that reads the client's ordered code list, matches JPEGs by exact product-code filename prefix, and generates the contact-sheet PDF in that supplied order with codes under thumbnails; flag missing, ambiguous and unlisted images before export, and validate the first PDF against the client list, including a rule for multiple images per product. No optional additions; DAM/AI/cloud stack is rejected outright.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires images in exact product-code order; you want a professional delivery workflow this week.",
+  "Deleted": "DAM, AI tagging, semantic search and a cloud portal add no necessary step to this delivery.",
+  "Bottleneck": "Manually arranging thumbnails takes an hour per job.",
+  "Checked myself": "You told me each job has one JPEG folder, an ordered client code list and filenames beginning with product codes; I have not inspected files."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded local script recommendation that follows the client's list and explicitly rejects the DAM stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-studio-delivery.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

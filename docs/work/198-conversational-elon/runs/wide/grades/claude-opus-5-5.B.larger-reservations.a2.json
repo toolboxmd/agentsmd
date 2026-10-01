@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends routing all new bookings through an Apps Script booking form. The script takes a lock, checks the item for overlapping dates, and either saves the booking or rejects it and shows the clashing reservation. Direct edits to the booking range would be blocked by protecting it. Red formatting is offered now as an optional backup that only catches rows that already clash. The reply asks the user to confirm that agents will stop editing booking rows directly. It contains no labelled pre-recommendation record.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses a locked check that rejects a conflicting booking at save time, even for simultaneous submissions, but none of the four required record lines are present.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.larger-reservations.a2",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

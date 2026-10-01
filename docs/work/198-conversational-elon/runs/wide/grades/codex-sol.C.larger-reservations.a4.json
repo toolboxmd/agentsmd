@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends a single enforced booking save path that checks availability and reserves atomically now, so only one of two conflicting submissions succeeds. The spreadsheet stays for viewing only. Conditional formatting is rejected as unable to meet the requirement. No optional additions are offered. One need is unmet: whether this can ship this week depends on the user's spreadsheet platform.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires overlapping reservations for the same physical item to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and reminders as conflict prevention.",
+  "Bottleneck": "Two agents can both see availability before either saves.",
+  "Checked myself": "You reported six agents, two offices, and a double booking last week; I have not inspected the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses an atomic, enforced save path that handles simultaneous conflicts and keeps the spreadsheet for viewing only, with all four record lines placed before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

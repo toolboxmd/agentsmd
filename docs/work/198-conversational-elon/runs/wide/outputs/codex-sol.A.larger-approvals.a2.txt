@@ -1,0 +1,9 @@
+We can keep the folder for drafts, but an APPROVED column, typed initials, and a naming convention won’t meet the signed contract. They don’t reliably establish who approved which version or when, prevent self-approval, or protect the approved copy from later edits.
+
+For this week, I’d keep the existing author workflow and add a controlled release step:
+
+- A reviewer other than the author approves a specific version using an authenticated account.
+- The release process captures that exact file, the reviewer’s identity, and the approval time.
+- The approved copy and approval record are retained for seven years in storage protected against alteration or deletion, separate from the editable folder.
+
+The column can show approval status, and the naming convention can help people find files. Before shipping, we need to verify the release controls actually enforce those requirements. If we can’t establish them this week, we should agree a delivery change with the customer rather than present the folder convention as compliant.

@@ -1,0 +1,5 @@
+You need this week’s delivery to preserve each approved document, its approver identity, and its approval time for seven years, with authors unable to approve their own work or alter approved versions.
+
+The APPROVED column and naming convention cannot enforce those contract requirements while authors can edit the folder.
+
+I recommend keeping the folder for drafts and adding a controlled release step: a different, authenticated reviewer approves an exact version, and that version and its approval record go into storage that prevents alteration or deletion for seven years.

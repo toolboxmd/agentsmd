@@ -1,0 +1,36 @@
+For a single Excel export that fits on your laptop and produces one monthly summary, Airbyte + Snowflake + dbt + Power BI would add cost, accounts, and maintenance without making the numbers more accurate. The real risk in a hand-built report is manual error, not scale. So I'd focus this week on making the report **automated, repeatable, and checked**.
+
+## What I'd put in place this week
+
+**A small script (Python/pandas) or an Excel Power Query that:**
+
+1. Reads the accounting export as-is (no manual edits).
+2. Groups by region and calendar month and sums the signed net amount. Refunds stay negative, so they net out automatically.
+3. Writes the board table: regions as rows, months as columns, with totals.
+4. Runs sanity checks and fails loudly if any of these break:
+   - The grand total equals the sum of every row in the export (nothing dropped or double-counted).
+   - No blank or unexpected region names, such as "EMEA" vs "Emea".
+   - All dates parse and fall in the expected period.
+   - It reports refund totals separately, so a sign flip in the export would be obvious.
+5. Saves each month's output alongside its input file, so any past report can be reproduced.
+
+Each month becomes: drop in the new export, run one command (or click Refresh), check the output. That's about an afternoon to build, and I can write it with you.
+
+## Why this is the future-proof option
+
+- **The logic gets written down.** The definition of "net sales by region per month" lives in code, not in someone's head. That definition is the part you'd carry into dbt later, almost unchanged.
+- **The checks catch errors** that a fancier stack wouldn't catch on its own.
+- **Nothing gets thrown away.** If you outgrow it, the same logic moves into a warehouse.
+
+## When the modern stack starts to pay off
+
+- Several sources need joining, such as the CRM, a billing system, or multiple ledgers.
+- The data no longer fits comfortably in Excel or pandas.
+- Many people need self-serve or daily-refreshed dashboards.
+- You need access controls, audit trails, or shared metric definitions across teams.
+
+Until then, Snowflake credits and Airbyte connectors mostly add bills and things that can break. Airbyte in particular isn't a natural fit for a local Excel file.
+
+**One optional middle step:** if the board wants nicer visuals, Power BI Desktop can read the Excel export or the script's output directly, with no warehouse.
+
+To get started, can you share the export's column names and a few sample rows (anonymized is fine)? Also, do you prefer Python or staying inside Excel? Then I'll build the first version.

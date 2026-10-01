@@ -1,0 +1,14 @@
+For this week, I’d build the delivery workflow around the client’s product-code list. That list already gives us an exact ordering rule, so we can automate the hour you spend dragging thumbnails.
+
+A small local tool would:
+
+- Read the client’s ordered code list and the job’s JPEG folder.
+- Match filename prefixes to exact product codes, avoiding partial matches.
+- Flag missing codes, unlisted images and products with multiple images.
+- Generate a contact-sheet PDF in the client’s order, with product-code labels.
+
+For products with multiple shots, we’d define a consistent order within each product. Keep the original JPEG filenames; if the client also needs files to sort in that order, create a separate delivery copy with numbered prefixes.
+
+Test it on a completed job, compare the PDF with the client’s list, then use it for this week’s deliveries. A professional result here means correct order, clear checks and repeatable output.
+
+A DAM could still be useful for searching your archive or managing client reviews. I’d assess those needs separately before spending the budget: AI tagging and semantic search won’t improve on exact product codes for this particular task.

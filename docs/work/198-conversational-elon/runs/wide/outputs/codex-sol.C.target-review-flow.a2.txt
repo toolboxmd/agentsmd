@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want changes to ship faster this week and keep moving when the lead is absent.
+**Deleted:** Jira Align, squads and chapters, and quarterly planning workshops from this launch; none addresses the observed approval delay.
+**Bottleneck:** All six changes waited three days for the same unavailable reviewer after less than a day of coding.
+**Checked myself:** Your supplied facts establish that two other engineers are qualified and authorized to approve; I have not independently inspected the tracker.
+
+To keep changes moving during absences, I recommend availability-based reviewer assignment using your existing tracker. This week, reassign waiting approvals from the absent lead to either authorized engineer, make an available qualified engineer the default reviewer, and have the change owner reassign promptly when that reviewer becomes unavailable.
+
+Compare approval waiting time on the next six completed changes with the three-day baseline to verify the improvement.

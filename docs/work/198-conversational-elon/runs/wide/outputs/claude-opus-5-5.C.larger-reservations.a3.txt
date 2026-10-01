@@ -1,0 +1,10 @@
+**Requirements and who asked:** The owner requires that a conflicting reservation for the same item identifier be rejected at save time, even when two of the six agents submit together. You want something shippable this week.
+**Deleted:** Red conditional formatting plus a reminder to check. It only flags a clash after both bookings are saved, and it relies on someone noticing, which is how last week's double booking happened.
+**Bottleneck:** Two agents can save to the sheet at the same moment. Nothing checks for overlap and writes the booking as one step.
+**Checked myself:** Only what you've told me: six concurrent agents in two offices, one identifier per item, last week's double booking, and the owner's rule. I haven't seen the spreadsheet or which product it runs on.
+
+You're trying to stop an item ever being booked twice for overlapping dates, without replacing your workflow this week.
+
+I don't recommend the colours plan, because it can't meet the owner's rule. My recommendation is to keep the spreadsheet as the record and make one booking form the only way to add a reservation. The form's save step would take a lock, check the item's existing dates, and then either append the booking or reject it with the conflicting booking shown. The sheet itself would be locked against direct edits. In Google Sheets this is a small Apps Script web app using `LockService`, so there's no new server or database to run, and it's realistic for this week.
+
+The one thing I need from you: is the sheet in Google Sheets or Excel/SharePoint? The mechanism differs, and I'd confirm that before building.

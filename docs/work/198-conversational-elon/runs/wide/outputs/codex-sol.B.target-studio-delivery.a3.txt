@@ -1,0 +1,3 @@
+You want to deliver the images in the client’s exact product-code order without spending an hour arranging thumbnails. I recommend a small local tool this week: read the client’s ordered code list, match it to the JPEG filename prefixes, flag missing or ambiguous matches, and generate the contact-sheet PDF in that order.
+
+AI tagging, semantic search, and a cloud portal don’t address the bottleneck you’ve described, so I’d defer the DAM purchase until there’s a separate need for those features. If a product has multiple images, what order should they appear in within that product?

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends a single local script that reads the client's ordered code list, copies the matching JPEGs into a delivery folder with sequence-numbered names (001-CODE\u2026), and reports any codes with no file and any files with no code. The user then makes the contact-sheet PDF from that folder with their current step. No DAM, AI tagging, search or cloud portal is added. Nothing is left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client asked for images in the exact product-code order they supply. You already make the contact-sheet PDF and asked for a professional delivery workflow this week. You named a DAM with AI tagging, semantic search, and a cloud review portal because other studios buy them and you have budget.",
+  "Deleted": "DAM, AI tagging, semantic search, cloud review portal. The code is already in each filename and in the client list, so the delivery still matches with a sort alone.",
+  "Bottleneck": "About an hour per job dragging thumbnails into an order the list and the filename prefixes already fix.",
+  "Checked myself": "Your description only: an ordered list of exact codes, JPEG names that start with those codes, one folder of finals, manual reordering, then a contact-sheet PDF. No job folder was opened."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The fix is bounded, local and follows the client's list order, and all four labels are present before the recommendation and grounded in the supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-studio-delivery.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

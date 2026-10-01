@@ -1,0 +1,25 @@
+**You probably don't need any of those for this.** Your phone calendar already does what this needs.
+
+Your dates arrive once a year, stay fixed, and you already check your calendar every day. A dozen dated reminders don't need an agent, a workflow engine or a vector database. Each of those is another thing to pay for, keep running and secure. A Gmail agent would also need read access to your inbox, which is a lot of access for a once-a-year task.
+
+## What I'd suggest instead
+
+Each January, when the statement arrives:
+
+1. **Paste the statement to me** (or the relevant rows).
+2. **I generate an `.ics` file.** For each contract it contains:
+   - **A decision event** 14 days before the notice deadline, with an alert. The notes hold the contract name, renewal date, notice deadline, cost, and how to give notice (phone, email, portal link).
+   - **Optionally, a backstop event** a few days before the deadline itself, in case the first one gets snoozed.
+3. **You import the file once** into your phone calendar.
+
+That's about 10 minutes a year. Nothing cancels or pays automatically, and you make every decision yourself.
+
+## If you still want the automated stack
+
+If you want Telegram pings as well, or want to build this as a learning project, keep it small:
+
+- **Data:** a simple table (Google Sheet, CSV or Airtable) with contract, renewal date, notice deadline, decision date and notes. Skip the vector database; it's for searching large amounts of text, not looking up a dozen dates.
+- **n8n:** one scheduled workflow that runs daily, finds rows whose decision date is today, and sends a Telegram message. It should only read and notify. Don't give it any action that could cancel or pay.
+- **Skip the Gmail agent.** Entering or pasting the statement by hand once a year is safer and simpler than having an agent parse your inbox.
+
+Want me to set up the calendar file? Paste this year's statement, or just the contract names and dates, and I'll generate it.

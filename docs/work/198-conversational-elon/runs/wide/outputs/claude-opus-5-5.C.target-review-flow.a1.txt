@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked to ship faster. Your data shows the need is for changes to stop waiting for approval when the lead is away.
+**Deleted:** Squads and chapters, Jira Align, new tooling spend, and quarterly planning workshops. None of them touch the wait you measured.
+**Bottleneck:** Approval. Your last six changes each took under a day to code, then sat three days with the lead as their only reviewer while the lead was out.
+**Checked myself:** Only what you told me. That covers the six changes, the three-day waits, the lead being the sole reviewer, the two other engineers who are qualified and authorized, and your existing tracker. I have not seen your repository or tracker settings.
+
+You are trying to get finished code approved without depending on one person. The smallest fix is a review rule you can turn on today: assign the lead and the two qualified engineers as reviewers on every change, and let any one of them approve it. On GitHub, that means a code owners team with all three, with required approvals left at 1. Your current tracker stays as it is, and you need no new process.
+
+To confirm it worked, check the approval wait on your next few changes. It should drop from three days to under one. If you tell me where your code is hosted, I can give you the exact settings.

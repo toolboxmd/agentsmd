@@ -1,0 +1,28 @@
+The initials column alone won't meet the contract, but you can keep the folder and add a few pieces that would be shippable this week.
+
+**Where the initials column falls short**
+
+- **Approver identity:** Anyone can type anyone's initials. Nothing ties the entry to the person who actually approved.
+- **Approval time:** A typed date can be edited later. There's no trustworthy record of when approval happened.
+- **Exact approved version:** Authors can edit the shared folder, so the approved file can change after approval. A naming convention won't prevent that.
+- **No self-approval:** Nothing stops an author from entering their own initials.
+- **Seven-year retention:** A working folder isn't a retention store. Files can be moved, renamed or deleted.
+
+If the customer audits this, an editable spreadsheet of initials is unlikely to count as evidence of any of these controls.
+
+**A minimal setup that does meet them**
+
+1. **Keep the working folder** as it is for drafting.
+2. **Add a separate "Released" location** where only reviewers can write and authors can only read. Turn on versioning and a retention or legal-hold policy of at least seven years. SharePoint, Google Drive (Vault) and S3 Object Lock all support this.
+3. **Record approvals through a sign-in, not typing.** For example, use a Microsoft or Google Form that requires login and logs the approver's account and timestamp automatically. It would capture the document name, version and author.
+4. **Freeze the approved version.** On approval, the reviewer exports a PDF to the Released location and records its SHA-256 hash in the approval record. Later edits in the working folder can't touch it, and the hash proves it hasn't changed.
+5. **Block self-approval.** Reviewers approve only other people's documents. A simple check that the author doesn't equal the approver account can flag violations. If a reviewer also authors documents, another reviewer must approve those.
+
+Most of this is configuration, not development, so it should fit in this week. I can write the hash-and-log script and the self-approval check once I know your platform.
+
+**What I need from you**
+
+- Which platform is the shared folder on (SharePoint/OneDrive, Google Drive, Dropbox, a file server)?
+- Do any of the three reviewers also author documents?
+
+If the full setup can't be in place before this delivery, I'd tell the customer which controls are interim rather than present the initials column as compliant.

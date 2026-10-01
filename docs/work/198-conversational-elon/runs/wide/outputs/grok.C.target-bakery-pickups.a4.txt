@@ -1,0 +1,13 @@
+**Requirements and who asked:** The owner needs every cake due today prepared before pickup. You asked for Odoo sales, inventory, and manufacturing synced to the counter, with a partner booked next week, because other shops are moving to Odoo.
+
+**Deleted:** The Odoo rollout and that three-module sync. Payments and stock already reconcile, and those modules do not set which cake gets made first.
+
+**Bottleneck:** Preparers can already read the one shared list, and they made next month's orders while cakes due today stayed unmade. The list is being worked without pickup-date order.
+
+**Checked myself:** Your account that payments and stock reconcile, that everyone preparing cakes can read the list at the counter, and that this morning today's cakes were unmade while later orders were already prepared.
+
+You want every cake due today made before its pickup.
+
+Sort the shared order list by pickup date, today first, and prepare from the top until those cakes are done.
+
+Postpone the implementation partner, and check the next morning's run to confirm today's cakes are made before anything later.

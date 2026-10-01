@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: sort the existing shared list by pickup date with the soonest first, prepare cakes from the top until today's are done, and pause the Odoo partner. Optional additions: none. Unmet needs: no one is named to own the morning check, and the reply does not say who works from the sorted view.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The owner needs every cake due today prepared before pickup. You asked for an Odoo sales, inventory, and manufacturing rollout synced to the counter because other shops are moving to Odoo and a partner is booked next week.",
+  "Deleted": "The Odoo rollout, the module sync, and the implementation partner. The shared list already has customer, pickup date, and preparation status, and payments and stock already reconcile. None of that is what left today's cakes unmade.",
+  "Bottleneck": "Cakes are prepared in entry order, so later orders for next month were made while cakes due today sat unmade.",
+  "Checked myself": "Your account of this morning: everyone preparing cakes can read the one shared list, payments and stock reconcile, and due-today cakes were still unmade after next-month orders entered later had been prepared."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "This is a bounded fix: a pickup-date sort of the existing list, with Odoo explicitly deleted and the check grounded in the facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-bakery-pickups.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

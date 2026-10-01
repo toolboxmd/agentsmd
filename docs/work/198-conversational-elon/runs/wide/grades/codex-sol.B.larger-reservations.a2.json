@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends keeping the spreadsheet as the working view and adding a shared reservation service. That service checks and saves each booking atomically and rejects conflicts even when agents submit at the same time. Red formatting is kept only as a temporary warning, and the reply says plainly that colours and reminders do not meet the owner's requirement. It also says it has not verified whether the safeguard can ship this week.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply recommends server-enforced atomic conflict rejection that covers simultaneous saves, but none of the four required labelled record lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.larger-reservations.a2",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

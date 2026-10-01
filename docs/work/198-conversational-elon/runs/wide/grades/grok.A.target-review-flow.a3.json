@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply sets an approval-coverage rule in the existing tracker this week. Any one of the lead or the two authorized engineers can approve. Two reviewers are assigned each time, with lead absence marked. A reviewer who hasn't responded by end of the next working day is swapped for the remaining one. It measures the next six changes. Squads/chapters, Jira Align and workshops are deferred as not addressing the wait. Nothing is added as an option now, and the user's need is met.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a bounded reviewer-coverage fix with the stack rejected in the prose, but none of the four required labels appear, so all label-based predicates fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-review-flow.a3",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

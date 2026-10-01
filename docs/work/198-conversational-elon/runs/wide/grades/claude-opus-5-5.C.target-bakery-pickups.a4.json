@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: keep the existing shared list, sort it by pickup date with the earliest first, add a rule that no cake gets started while an earlier-dated one is still unprepared, and check at opening that everything due today is marked prepared. Optional extra: if the list is a spreadsheet, the agent offers to set up the sort and a 'due today, not prepared' view. The agent recommends against the Odoo rollout and leaves cancelling the partner booking to the owner. No needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You (the owner) need every cake due today prepared before pickup. The Odoo sales, inventory and manufacturing sync came from other shops moving to it, but nothing you described breaks without it: payments and stock already reconcile correctly.",
+  "Deleted": "The Odoo rollout, including its modules and the counter sync.",
+  "Bottleneck": "The order in which cakes get prepared. Today's cakes sat unmade while next month's got done, so bakers are not working by pickup date.",
+  "Checked myself": "Only what you told me: one shared list with customer, pickup date and status, readable by everyone at the counter. I have not seen how the list is sorted or how bakers pick their next cake."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply fills in all four record lines before recommending a sort-by-date and due-today view of the existing list, rejects Odoo by name, and does not offer it now.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,8 @@
+**Requirements and who asked**: The client requires each delivery in the exact product-code order they supply. You asked for a professional delivery workflow this week. A DAM, AI tagging, semantic search, and a cloud review portal are other studios' purchases; this delivery still succeeds if none of them exist.
+**Deleted**: Adobe-style DAM, AI tagging, semantic search, cloud review portal.
+**Bottleneck**: The hour you spend dragging thumbnails into the client's code order before the contact-sheet PDF.
+**Checked myself**: You told me the client supplies an ordered list of exact product codes, each final JPEG filename starts with its code, all finals for a job sit in one folder, and you spend an hour per delivery dragging them into that order and then writing a contact-sheet PDF. I did not open a job folder.
+
+You are trying to deliver each job's JPEGs and contact-sheet PDF in the client's product-code order.
+Write one local script that reads the code list, matches each code to the JPEG whose name starts with it, and copies the matches into a delivery folder as 001-, 002-, and so on. Make the contact sheet from that folder.
+Reject a DAM.

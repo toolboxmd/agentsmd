@@ -1,0 +1,5 @@
+The unpaid-invoice count can stay in the application and PostgreSQL you already run. Change the endpoint so the database returns the count: `SELECT count(*) FROM invoices WHERE customer_id = $1 AND status = 'unpaid'`, with a partial index on the unpaid rows for that filter. The statement sees invoices committed at request time, returns one integer, and should finish well under a second because the application no longer loads invoice rows and builds objects just to count them.
+
+Ship that query, that index, and a check that a representative customer’s count stays under one second and includes an invoice committed immediately before the request.
+
+No Kafka service or topic belongs in this week’s work. A CQRS projection in Redis is updated only after the commit is published and consumed, so the count can omit invoices that are already committed. This endpoint is the only reader, and it returns only the count, so there is no second read model to maintain. The approved Kafka budget can wait for a workload that has subscribers outside this request.

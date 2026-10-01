@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Move the existing command to the always-on Linux machine and run it with a systemd timer (Persistent=true, oneshot service with Restart=on-failure). Before moving, confirm the Linux machine has the same credentials and data access and that the output lands somewhere readable by 08:00. Airflow/Kubernetes is rejected now and only reconsidered if real downstream jobs or dependencies appear.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the report by 08:00 every day, and the missing runs have to stop. You also asked for \"future-proofed,\" but no concrete future need has been named yet.",
+  "Deleted": "Airflow, Kubernetes, separate workers and scheduler, and a deployment pipeline. The job is one 3-minute command with no downstream jobs, so none of these are needed.",
+  "Bottleneck": "The laptop is asleep overnight, so the job never starts. Nothing is wrong with the export itself.",
+  "Checked myself": "Nothing observed directly. You told me the command works, takes three minutes, is safe to rerun, has no downstream jobs, and misses runs when the laptop sleeps, and that you run an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded systemd-timer fix on the existing server; the four record lines come before the recommendation, are specific, and stick to facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-night-export.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

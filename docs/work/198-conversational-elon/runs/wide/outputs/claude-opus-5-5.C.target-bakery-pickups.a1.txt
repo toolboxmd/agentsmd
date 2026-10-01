@@ -1,0 +1,16 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup; nobody has asked for new sales, inventory, or manufacturing tracking.
+**Deleted:** Odoo and the implementation partner. Payments and stock already reconcile correctly, and the order list already holds the pickup date.
+**Bottleneck:** Cakes are prepared in the order they were entered instead of by pickup date, so next month's cakes got made before today's.
+**Checked myself:** Only what you told me. Every order has customer, pickup date, and status, and the list is readable at the counter. I have not seen the list.
+
+You're trying to make sure no cake due today is still unmade at pickup time. I'd skip the Odoo rollout entirely, because it wouldn't fix this: the data is already in your list, but nobody works from it in pickup-date order.
+
+My recommendation is to keep the shared list and change how staff use it:
+
+1. **Sort by pickup date, earliest first,** and keep it sorted at the counter. If it's a spreadsheet, freeze that sort or add a "Due today" filter.
+2. **Daily rule:** at opening, staff prepare only orders due today (then tomorrow) whose status isn't "prepared." Nothing for a later date gets started until those are done.
+3. **One closing check:** before closing, someone confirms every order due tomorrow is either prepared or has a known start time.
+
+This takes about ten minutes to set up and adds no new system for you to run or pay for.
+
+Whether to cancel next week's partner booking is your call, but I'd cancel it. If cakes still get missed after a couple of weeks on the sorted list, tell me what went wrong and we'll look again.

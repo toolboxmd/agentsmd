@@ -1,0 +1,73 @@
+Put n8n in the middle. It is the only component that talks to the others. The Gmail agent reads the yearly statement, you confirm the dates, n8n writes them to a small table and to the phone calendar, and the Telegram bot nudges you on the decision day. The vector database holds the policy documents for questions about cover. It does not store the dates that drive reminders.
+
+The dates on that statement stay fixed for the year, and you want a decision two weeks before each notice deadline. You look at the phone calendar every day, and you want a reminder you can act on yourself. No workflow should cancel a contract or pay anyone.
+
+## How the pieces connect
+
+```
+Yearly statement email
+        │
+        ▼
+   Gmail agent          reads the email and attachments
+        │               returns a draft list of contracts
+        ▼
+      n8n               shows you the draft in Telegram
+        │               waits until you confirm
+        ▼
+  Contract table        one row per contract for this year
+        │
+        ├──► Phone calendar     event on decision day (notice date minus 14 days)
+        │                       event on the notice deadline
+        │
+        └──► Telegram bot       same-morning reminder, plus buttons that
+                                only update your decision in the table
+
+Policy PDFs ──► Vector database ──► answers questions about wording and cover
+```
+
+The Gmail agent, the bot, and the vector database never call each other. n8n calls them.
+
+## Two workflows
+
+**1. Once a year: load the statement**
+
+- n8n starts when the statement email arrives, or when you forward it to a label the workflow watches.
+- The Gmail agent extracts, for each contract, the provider, the contract name, the renewal date, and the last date to give notice. It also saves the source message id and any PDF.
+- n8n sends you that draft in Telegram and waits.
+- You correct any row that looks wrong. Calendar events are created only after you confirm.
+- For each confirmed row, n8n stores the decision date as the notice deadline minus 14 days.
+- n8n creates two phone-calendar events: one on the decision date ("Decide: Home insurance — notice deadline 3 April, renewal 17 April") and one on the notice deadline ("Last day to give notice: Home insurance"). The event notes include the provider and a link back to the email.
+- PDFs are indexed in the vector database under the same contract name, so you can ask what the policy covers. If a PDF and the confirmed row disagree, the row you confirmed is the one the reminders use.
+
+**2. On the decision day: remind you**
+
+- The calendar event is the reminder you will actually see, because you open that calendar daily.
+- The same morning, n8n sends one Telegram message. If several contracts share a day, send one message that lists all of them.
+- Each item has the contract, the notice deadline, and the renewal date, with three replies: "I will renew", "I will give notice", and "Remind me in 3 days".
+- Those replies update the row in the table. They do not send email, cancel a policy, or make a payment.
+- If a row is still undecided on the morning of the notice deadline, n8n sends one last Telegram message. The deadline event is already on the calendar.
+- A "remind me in 3 days" reply moves only that contract's next Telegram nudge. It leaves the notice-deadline event where it is.
+
+## What each budget item is for
+
+| Piece | Role |
+| --- | --- |
+| Gmail agent | Read the yearly statement and return structured rows. Scope it to read mail. |
+| n8n | Run both workflows, keep the contract table, create calendar events, and send bot messages. |
+| Telegram bot | Confirm the yearly draft, then deliver the decision-day nudge and record your choice. |
+| Vector database | Search policy wording later. Separate from scheduling. |
+
+A spreadsheet, an n8n data table, or SQLite is enough for the contract rows. You will have a few dozen dates a year. Columns that matter: year, contract, provider, renewal date, notice deadline, decision date, status (undecided / renew / give notice / done), and source email id.
+
+## Calendar and a missing statement
+
+Write the events into the calendar account the phone already shows. n8n can write straight to Google Calendar. For iCloud, write through CalDAV, or publish a calendar from n8n and subscribe to it on the phone.
+
+Add one fixed check in January: if this year's statement has not been confirmed, Telegram asks you to forward it. When the new statement is confirmed, n8n archives last year's rows and replaces this year's calendar events from the new table.
+
+## Boundaries
+
+- Give the Gmail agent read access to the statement label. Keep send and delete off.
+- Treat extracted dates as a draft until you confirm them in Telegram.
+- Keep payment and cancellation steps out of every workflow. Your reply records the decision, and you contact the provider yourself.
+- When you correct a date, edit the row and let n8n move the two calendar events. The vector database stays unchanged unless the PDF itself changed.

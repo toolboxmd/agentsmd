@@ -1,0 +1,63 @@
+Before splitting Airflow components, it helps to look at why runs are missing. The export itself works. It's missing because **the laptop is asleep when it's supposed to run**. Airflow on Kubernetes would fix that only because it runs somewhere that's always on, and you already have such a machine.
+
+## What I'd ship this week
+
+Move the job to your always-on Linux box and schedule it with a **systemd timer**:
+
+```ini
+# /etc/systemd/system/nightly-export.service
+[Unit]
+Description=Nightly report export
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=youruser
+WorkingDirectory=/opt/nightly-export
+ExecStart=/opt/nightly-export/.venv/bin/python export.py
+TimeoutStartSec=30min
+```
+
+```ini
+# /etc/systemd/system/nightly-export.timer
+[Unit]
+Description=Run nightly export
+
+[Timer]
+OnCalendar=*-*-* 02:00
+Persistent=true
+RandomizedDelaySec=15min
+
+[Install]
+WantedBy=timers.target
+```
+
+```sh
+sudo systemctl daemon-reload
+sudo systemctl enable --now nightly-export.timer
+systemctl list-timers nightly-export.timer
+```
+
+Why this fits your situation:
+- **`Persistent=true`** catches up after a reboot or outage, so a missed 02:00 still runs well before 08:00.
+- **Re-runs are safe**, so you can add a retry without worrying (e.g. `Restart=on-failure` with `RestartSec=10min`, or a second timer at 05:00 that reruns).
+- Logs are already in `journalctl -u nightly-export`.
+- Add an alert so a failure doesn't go unnoticed: `OnFailure=` pointing to a unit that emails or pings you, or a dead-man's-switch check (healthchecks.io or similar) that alerts if no success by ~07:00.
+
+That's about an hour of work, and it directly fixes the missing runs.
+
+## On future-proofing
+
+For a single 3-minute, dependency-free job, Airflow on Kubernetes adds a metadata database, scheduler, webserver, executor, image pipeline, and upgrades to keep running. All of that is more surface area that can fail at night than the job itself. The parts that make it future-proof are portable anyway: a containerized or venv-pinned script, idempotent output, and alerting. If you later have several jobs that depend on each other, that script can be moved into an Airflow `KubernetesPodOperator` task with minimal changes.
+
+## If you still want Airflow on K8s
+
+A minimal layout you could ship in a week:
+- **Deploy** with the official Airflow Helm chart, using a managed Postgres (not the bundled one) for metadata.
+- **Scheduler**: one replica, plus the webserver/API server as one replica.
+- **Workers**: use `KubernetesExecutor`, so no standing Celery workers. Each run spins up a pod from your export image.
+- **DAG**: one task, `schedule="0 2 * * *"`, `retries=2`, `catchup=False`, with a failure callback that alerts you.
+- **DAG delivery**: git-sync sidecar or bake DAGs into the image.
+
+I'd still suggest the timer first and Airflow only once there's a second or third job to justify it. Want me to set up the systemd units (and an alert hook) on the Linux box?

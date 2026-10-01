@@ -1,0 +1,25 @@
+The data points to a narrower fix than squads or Jira Align: **your bottleneck is review, not planning.** In the last six completed changes, coding took under a day, then each waited about three days because the lead was the only assigned reviewer and was away. That's roughly 75–80% of cycle time spent waiting on one person. Spotify's model and Jira Align are built for coordinating many teams. With four engineers in one time zone, they'd add ceremony without touching that wait.
+
+Here's what I'd launch this week:
+
+**1. Remove the single-reviewer dependency (day 1)**
+- Make the two other qualified engineers default reviewers alongside the lead. Any one approval merges.
+- Set this up in the tracker or repo settings (CODEOWNERS with a group, a review rotation, or auto-assign to whoever's available) so it doesn't depend on someone remembering.
+- Reserve lead-only review for an explicitly short list, such as security, schema migrations, or billing. Everything else is fair game for any qualified approver.
+
+**2. Set a review-time expectation (day 1)**
+- For example: first review within 4 working hours. If the assigned reviewer is out or silent, any qualified approver picks it up, no permission needed.
+- When someone is away, they mark it in the tracker, and the rotation skips them.
+
+**3. Handle the currently waiting PRs (today)**
+- Use the tracker to find anything sitting in review with only the lead assigned, and reassign it to one of the other two approvers.
+
+**4. Measure it (ongoing, no new tooling)**
+- Track "time from PR opened to approved" alongside "time coding," using data the tracker already has.
+- Check it in two weeks. If review wait drops from about 3 days to under 1, you've cut cycle time by most of what's available.
+
+**Where funding could actually help**
+- Hold off on Jira Align and quarterly planning workshops unless you see a planning or cross-team coordination problem. Nothing in the last six changes suggests one.
+- If you want to spend, consider a short session to agree on the "lead-only" list and the review norms, or a reviewer-rotation bot if your tracker lacks one.
+
+If you'd like, I can draft the CODEOWNERS/rotation config and a one-paragraph team announcement of the new review norms. I'll need to know which tracker and repo host you're on.

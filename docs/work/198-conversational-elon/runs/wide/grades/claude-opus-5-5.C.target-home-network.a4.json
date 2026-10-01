@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: swap in a new Cat6 patch cable and route it so it isn't bent sharply or pinched in the grommet, then watch whether calls still drop. Optional additions: none. The gateway, managed switches and dashboard are explicitly rejected. Only if drops continue: ask the user when they happen and check the desk computer's network adapter. Unmet need: calls are not yet confirmed fixed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for dependable calls at one desk; \"future-proof\" comes from what your group is adopting, not from a failure you've seen.",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard.",
+  "Bottleneck": "The desk's Ethernet link, since two other devices on the same router keep their calls during a dropout.",
+  "Checked myself": "Nothing observed directly. You told me the other devices stay connected, the desk cable is several years old and runs through a tight grommet, and no other cable has been tried."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines are present and specific, and the reply chooses a bounded cable swap, with an adapter check offered only if drops continue.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-home-network.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Write one local script now. It reads the client's ordered code list, matches each code to the JPEG whose filename starts with it, and copies the files into a delivery folder with 001-, 002- prefixes. The contact sheet is then made from that folder. The reply rejects the DAM, AI tagging, semantic search and cloud portal, and offers no optional additions. It leaves unmet-match handling (missing or duplicate codes) unaddressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires each delivery in the exact product-code order they supply. You asked for a professional delivery workflow this week. A DAM, AI tagging, semantic search, and a cloud review portal are other studios' purchases; this delivery still succeeds if none of them exist.",
+  "Deleted": "Adobe-style DAM, AI tagging, semantic search, cloud review portal.",
+  "Bottleneck": "The hour you spend dragging thumbnails into the client's code order before the contact-sheet PDF.",
+  "Checked myself": "You told me the client supplies an ordered list of exact product codes, each final JPEG filename starts with its code, all finals for a job sit in one folder, and you spend an hour per delivery dragging them into that order and then writing a contact-sheet PDF. I did not open a job folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and are specific to this job; the fix is a bounded local script that follows the client's order, and the stack is rejected outright.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-studio-delivery.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

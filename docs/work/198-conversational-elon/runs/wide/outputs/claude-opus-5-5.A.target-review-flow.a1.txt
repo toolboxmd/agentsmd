@@ -1,0 +1,16 @@
+I'd hold off on squads/chapters and Jira Align. Your data points to one specific bottleneck, and those tools won't fix it.
+
+**What's slowing you down:** For the last six changes, coding took under a day, then each waited three days for approval. All six had the lead as the only reviewer, and the lead was away. Two other engineers are already qualified and authorized to approve. This is a single-reviewer bottleneck, not a planning or team-structure problem. With four engineers in one time zone, a squad/chapter matrix or portfolio tooling mostly adds overhead.
+
+**Operating model you can launch this week**
+
+1. **Pool of three reviewers, one approval required.** Make the lead and the two qualified engineers the reviewer group for these changes. Any one of them can approve. This removes the single point of failure immediately.
+2. **Auto-assign reviewers.** Use round-robin or load-balanced assignment from that pool, so it doesn't default to the lead out of habit.
+3. **Review response target.** For example, first response within 4 working hours. If there's no response, any other pool member picks it up without asking.
+4. **Away means out of rotation.** When someone is on leave, they're removed from assignment for those days, which your tracker or code host can usually handle.
+5. **Lead review only where it matters.** If some changes truly need the lead, such as architecture or security, define those narrowly and in writing. Everything else goes through the pool.
+6. **Track one number.** Measure time from PR opened to approved, using the statuses already in your tracker. Compare the next few changes against the 3-day baseline.
+
+**Where the budget helps:** You probably don't need new tooling. A short session to agree on the reviewer pool, the response target, and the "lead-only" categories would be worth more than quarterly planning workshops. Revisit heavier frameworks if the team grows to several teams that need cross-team coordination.
+
+If you want, I can draft the reviewer-pool config (for example, a CODEOWNERS file and branch-protection settings) and a one-page team agreement. I'll show you the changes before anything is applied to your repo or tracker. Which code host and tracker are you on?

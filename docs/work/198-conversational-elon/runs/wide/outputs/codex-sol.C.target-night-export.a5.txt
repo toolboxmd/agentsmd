@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need a correct report by 08:00 and a solution shipped this week.
+**Deleted:** Airflow, Kubernetes, and separate workers, scheduler, and deployment roles add no necessary capability for this single job.
+**Bottleneck:** The laptop is often asleep when the export should run.
+**Checked myself:** Your supplied facts: the command works, takes three minutes, has no downstream jobs, and can safely replace that night’s output.
+
+To get the report ready by 08:00, I recommend running the existing Python command on your always-on Linux machine with one systemd service and timer. Schedule it for 07:30 in the report’s timezone, enable missed-run catch-up with `Persistent=true`, retain logs, and verify a scheduled run and safe rerun before shipping.
+
+Keep the command independent of its scheduler; that preserves future options without adding infrastructure you must maintain this week.

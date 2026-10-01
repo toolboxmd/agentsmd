@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: make the lead and the two qualified engineers a reviewer pool where any one can approve, auto-assign reviewers, set a response target with pickup by another pool member, take people on leave out of rotation, keep lead-only review for narrowly defined cases and track time from opened to approved. Optional: a short alignment session and drafting the CODEOWNERS file and a team agreement. Squads/chapters and Jira Align are deferred until the team grows to several teams, and quarterly workshops are put below the alignment session. Still open: which code host and tracker the team uses.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is a small reviewer-pool change, but none of the four labeled record lines appear, so the label-based predicates fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-review-flow.a1",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

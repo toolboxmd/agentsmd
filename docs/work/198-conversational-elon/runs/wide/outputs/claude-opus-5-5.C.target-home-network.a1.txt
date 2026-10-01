@@ -1,0 +1,10 @@
+**Requirements and who asked:** You want dependable video calls at the desk computer; nobody has asked for anything beyond that.
+**Deleted:** UniFi gateway, managed switches, Grafana dashboard. Other devices on the same router stay connected during the drops, so the router and internet line are not the cause, and new gear wouldn't change the desk's link.
+**Bottleneck:** The desk computer's own wired link, most likely the old cable squeezed through the tight grommet.
+**Checked myself:** Nothing on the live network. I'm relying on what you told me: the desk uses Ethernet, other devices stay connected during drops, the cable is several years old and runs through a tight grommet, and you haven't tried another cable.
+
+Your goal is dependable calls at that desk. The smallest fix is a new Cat6 patch cable, run loosely around the grommet for now, plugged into a different router port. Then take a few normal calls.
+
+If calls still drop, tell me the desk computer's OS. I'll check whether its network link goes down at the moment of each drop, which points to the network port or driver.
+
+The new gear doesn't fix this, so I'd keep it separate from the call problem and decide on it later, based on a need you actually have.

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the shared folder for drafts and add one protected release archive. The archive records the exact approved document, the authenticated reviewer's identity and the approval time, blocks self-approval, and enforces seven-year retention against alteration or deletion. Shipping waits until those archive controls are verified. Optional additions: none. Unmet needs: the controls are not yet verified, and no specific tool or configuration is named.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, independent approval, and protection from later edits.",
+  "Deleted": "Typed initials and naming conventions as evidence of enforced approval controls.",
+  "Bottleneck": "Authors can edit the shared folder, so it cannot protect released versions.",
+  "Checked myself": "You supplied the contract requirements and folder permissions; no system controls have been verified."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks one protected archive that ties non-author, authenticated approval and its time to the exact version and keeps both for seven years, and it rejects the initials and naming-convention patch as the control.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-approvals.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

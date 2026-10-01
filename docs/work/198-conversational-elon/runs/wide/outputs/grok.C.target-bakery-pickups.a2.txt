@@ -1,0 +1,6 @@
+**Requirements and who asked**: You asked for an Odoo sales, inventory, and manufacturing sync so no pickup is missed, because other shops are moving and a partner is booked next week. What you need is every cake due today prepared before pickup. Payments and stock already reconcile, so those modules are not required for that.
+**Deleted**: Odoo and the implementation partner. The shared order list already has customer, pickup date, and preparation status, and everyone preparing cakes can read it at the counter.
+**Bottleneck**: Cakes due today were still unmade while orders entered later for next month had been prepared. Work is not taken in pickup-date order.
+**Checked myself**: Your account of the shared list, correct payment and stock reconciliation, this morning's missed same-day cakes, and that preparers can read the list at the counter.
+
+You are trying to have every cake due today prepared before pickup. Make the shared list the preparation queue, unmade cakes due today first, then later pickup dates, and prepare from the top. Stop the Odoo rollout before the partner starts next week.

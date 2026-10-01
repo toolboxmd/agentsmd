@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends automating the manual monthly regional sums now, either with Power Query in Excel (group by region and month, summing the signed net amount so refunds stay negative) or with a small pandas script. It suggests adding a reconciliation check and validating the result against last month's hand-built numbers. The full stack is put off until a named need arises, such as multiple source systems, data growth or many report users. The reply also mentions that Power BI could read the Excel file 'if the board wants interactive charts'. That is a conditional mention, not a present recommendation. Unmet: the reply has none of the required labeled record lines.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is small and correctly keeps refunds as negative amounts, but none of the four labeled record lines appear in the reply.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-board-report.a3",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

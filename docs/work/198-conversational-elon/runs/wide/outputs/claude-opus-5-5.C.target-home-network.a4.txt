@@ -1,0 +1,10 @@
+**Requirements and who asked:** You asked for dependable calls at one desk; "future-proof" comes from what your group is adopting, not from a failure you've seen.
+**Deleted:** UniFi gateway, managed switches, Grafana dashboard.
+**Bottleneck:** The desk's Ethernet link, since two other devices on the same router keep their calls during a dropout.
+**Checked myself:** Nothing observed directly. You told me the other devices stay connected, the desk cable is several years old and runs through a tight grommet, and no other cable has been tried.
+
+**Goal:** Calls at that desk stop dropping.
+
+**Recommendation:** Replace the desk cable with a new Cat6 patch cable, and route it so it doesn't bend sharply or get pinched in the grommet. A slim or flat cable fits tight grommets more easily. If the drops stop, you're done.
+
+The new network gear wouldn't fix this. The router already keeps your other calls up, so replacing it and adding monitoring would just give you more equipment to maintain while the faulty cable stays in place. If drops continue with the new cable, tell me when they happen and I'll check the desk computer's network adapter next.

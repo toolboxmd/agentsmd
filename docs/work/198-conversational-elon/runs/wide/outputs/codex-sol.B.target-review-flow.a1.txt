@@ -1,0 +1,10 @@
+You want changes to ship when the lead is absent; I recommend launching shared approval coverage in your existing tracker this week, postponing new tooling and quarterly workshops.
+For all six recent changes, coding took less than a day and approval waited three days behind the same absent reviewer, so reviewer availability is the demonstrated bottleneck.
+
+Launch with these rules:
+
+- **Coverage:** Assign a primary reviewer and one of the two authorized engineers as backup on every PR.
+- **Handoff:** When the primary is away, the backup owns approval immediately, with the same review standards.
+- **Response:** Agree on a one-working-day review target and check waiting PRs during the existing daily check-in.
+- **Accountability:** You own coverage; reviewers own timely decisions.
+- **Proof:** After one week, use existing tracker timestamps to compare approval waiting time and identify any remaining delays.

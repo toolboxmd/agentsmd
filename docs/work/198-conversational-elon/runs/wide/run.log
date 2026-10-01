@@ -1,0 +1,32 @@
+start wide: Thu Oct  1 21:02:47 CEST 2026 head 4695c8338da3b0cf11483ff4d938083ea358f875
+claude-opus-5-5.C.canary.a1                             valid                                 4s
+claude-opus-5-5.B.canary.a1                             valid                                 4s
+claude-opus-5-5.A.canary.a1                             valid                                 4s
+codex-sol.C.canary.a1                                   valid                                 7s
+codex-sol.B.canary.a1                                   valid                                 8s
+codex-sol.A.canary.a1                                   valid                                 8s
+grok.A.canary.a1                                        valid                                12s
+grok.B.canary.a1                                        valid                                12s
+grok.C.canary.a1                                        valid                                61s
+opencode.B.canary.a1                                    INVALID timeout 420s                420s
+opencode.A.canary.a1                                    INVALID timeout 420s                420s
+opencode.C.canary.a1                                    INVALID timeout 420s                420s
+canary rerun for codex-sol,grok,claude-opus-5-5 (first canary process killed by tool timeout during OpenCode retries): Thu Oct  1 21:14:55 CEST 2026
+claude-opus-5-5.A.canary.a2                             valid                                 4s
+claude-opus-5-5.B.canary.a2                             valid                                 4s
+claude-opus-5-5.C.canary.a2                             valid                                 4s
+codex-sol.B.canary.a2                                   valid                                 7s
+codex-sol.C.canary.a2                                   valid                                 8s
+codex-sol.A.canary.a2                                   valid                                10s
+grok.C.canary.a2                                        valid                                13s
+grok.A.canary.a2                                        valid                                14s
+grok.B.canary.a2                                        valid                                14s
+canary codex-sol.A            PASS  'no\nNONE'
+canary codex-sol.B            PASS  'yes\n"# Global Agent Rules"'
+canary codex-sol.C            PASS  'yes\n"# Global Agent Rules"'
+canary grok.A                 PASS  'no\nNONE'
+canary grok.B                 PASS  'yes\n# Global Agent Rules'
+canary grok.C                 PASS  'yes\n# Global Agent Rules'
+canary claude-opus-5-5.A      PASS  'no\nNONE'
+canary claude-opus-5-5.B      PASS  'yes\n"# Global Agent Rules"'
+canary claude-opus-5-5.C      PASS  'yes\n"# Global Agent Rules"'

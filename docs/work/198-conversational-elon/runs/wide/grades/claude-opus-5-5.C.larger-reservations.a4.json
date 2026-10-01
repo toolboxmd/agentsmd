@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Keep the spreadsheet as the record. Make every booking go through one small script that takes a lock so simultaneous submits run one at a time, then checks the item's dates. It either rejects an overlap with a message or saves the booking. The booking tab is locked against direct edits so the script can't be bypassed. Red formatting stays only as an optional visual extra. Unmet need: the platform is unconfirmed. The design relies on Google Sheets Apps Script LockService, and Excel would need a different approach.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "the owner requires that a conflicting reservation for the same item be rejected at save time, even when two of the six agents submit at once. You asked to keep the spreadsheet and ship this week.",
+  "Deleted": "a \"check the colours\" reminder as the safeguard, and a new booking system or database.",
+  "Bottleneck": "nothing currently stops the second overlapping save. Red formatting only marks the clash after both bookings are saved and possibly promised.",
+  "Checked myself": "only what you've told me. I haven't seen the spreadsheet or which product it runs on."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The chosen option is a server-side script that locks, checks for overlaps and rejects them at save, with direct edits blocked, so it meets the concurrent save-time rejection rule; colours stay only as a harmless visual extra.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Right now the reply says to keep the shared folder for drafts only and drop the initials-and-naming idea as the control. Instead, a reviewer who did not write the document copies the exact file into a write-once archive that authors cannot alter. The reviewer's authenticated identity and the system's approval time are stored with that copy for seven years. It offers no optional extras and asks the user to confirm before the delivery. It does not name a specific system or say how to set it up this week.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommendation covers non-author approval, identity, time, the exact version and seven-year protection, but none of the four required labels appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.larger-approvals.a3",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

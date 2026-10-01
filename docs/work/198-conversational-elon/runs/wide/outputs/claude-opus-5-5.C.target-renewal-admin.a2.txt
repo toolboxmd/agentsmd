@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need a reminder for each contract two weeks before its notice deadline, so you can decide in time, with no automatic cancellation or payment.
+**Deleted:** n8n, the Gmail agent, the vector database and the Telegram bot; the dates arrive once a year on one statement and never change during the year, so nothing needs to fetch, search or relay them.
+**Bottleneck:** Getting the dates from the statement into something you look at daily, which happens once a year.
+**Checked myself:** Only what you told me: one yearly statement with fixed dates, a two-week decision window, daily phone calendar use, and no automatic actions.
+
+You're trying to never miss a notice deadline, and your phone calendar already does that without the agents or the budget.
+
+When the statement arrives each year, add one all-day event per contract on the day 14 days before its notice deadline. Title it something like "Decide: home insurance renewal". Put the renewal date and notice deadline in the notes, and turn on an alert for that morning. Then add one yearly repeating event in January, "Enter renewal dates from statement", so next year's setup doesn't get skipped.

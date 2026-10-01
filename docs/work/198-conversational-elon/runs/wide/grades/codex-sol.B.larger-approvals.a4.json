@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends acting now by keeping the shared folder for drafting only and adding a controlled release step. In that step an authenticated reviewer who is not the author approves the exact version, and that version plus its approval record go into an archive locked against alteration or deletion for seven years. It offers no optional additions. It does not name a specific tool or configuration, and it does not address the deadline being this week. It explicitly says the APPROVED column, typed initials and naming convention cannot meet the contract.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommendation itself has every LARGER capability (non-author authenticated approval tied to the exact version, approval record including time, seven-year locked retention), but all four required labels are missing, so the label-based predicates fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.larger-approvals.a4",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

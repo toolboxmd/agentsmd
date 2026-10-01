@@ -1,0 +1,11 @@
+You want every cake due today made before pickup, and I'd hold off on the Odoo rollout because it doesn't target what actually went wrong. Payments and stock already reconcile, and everyone can read the list. The miss happened because cakes were made in the order they were entered, not in order of pickup date. A three-module ERP rollout adds months of setup and retraining, and the same mistake can still happen inside it.
+
+**Recommendation:** fix the list itself this week.
+
+1. Sort the shared list by pickup date.
+2. Add a "Due today / tomorrow, not prepared" view at the top, where the counter sees it first.
+3. Set one rule: prepare in pickup-date order and check that view at opening.
+
+Run that for two weeks. If pickups still get missed, you'll know exactly what's failing, and you can give the partner a narrow brief (likely just production scheduling) instead of a full sales, inventory and manufacturing rollout.
+
+Keeping, rescoping or postponing next week's partner booking is your call. I'd use it as a scoping session rather than an implementation kickoff.

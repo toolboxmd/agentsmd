@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends one action for this week: run a single aggregate count in the existing PostgreSQL database from the current endpoint, using the same unpaid rule, and return that number. It adds no optional extras and introduces no cache, event stream or projection. Unmet need: it does not suggest checking end-to-end latency or confirming the new count matches the old one.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to finish within one second and match invoices committed in PostgreSQL at request time. You asked for a CQRS projection, Kafka, and Redis because that cluster budget is approved and peers are moving to event-driven systems.",
+  "Deleted": "Kafka, CQRS, Redis, and every new service and topic. The endpoint returns only this count and has no other reader; a projection would show the count after the commit, which misses request time. The budget and the peer trend are not requirements for this result.",
+  "Bottleneck": "The endpoint loads invoice rows, builds invoice objects, and counts those objects in memory.",
+  "Checked myself": "I was told there is one application and PostgreSQL, the endpoint returns only the count, and users say that count is slow. I have not inspected the endpoint, the unpaid rule, or a measured runtime."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply names and removes the Kafka/CQRS/Redis stack, uses only supplied facts and states what it did not inspect, and picks the aggregate query that keeps request-time accuracy.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the spreadsheet only as the data store. Make it read-only for agents, and have them book through a form that takes a lock, checks that item's existing dates and refuses to save an overlapping booking, so that only one of two simultaneous conflicting submissions succeeds. If the sheet is in Google Sheets, this would be built with Apps Script and LockService. No optional additions are recommended. Unmet need: the reply still has to learn which spreadsheet product the user has, because Excel/365 would need a different build.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. You want to keep the spreadsheet and ship this week.",
+  "Deleted": "Red overlap formatting plus a reminder. It only flags a conflict after both bookings are saved and depends on someone noticing, which is how last week's double booking happened.",
+  "Bottleneck": "Six agents in two offices write to the same sheet, and nothing makes the overlap check and the save happen as one step.",
+  "Checked myself": "Only what you've told me. I haven't seen the spreadsheet or which product it runs in."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses a locked, server-side check that rejects a conflicting booking at save time and explicitly covers two agents submitting together, while correctly rejecting colours and a reminder.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

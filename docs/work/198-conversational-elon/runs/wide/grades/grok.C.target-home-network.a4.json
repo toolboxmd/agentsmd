@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: replace the desk Ethernet cable with a new one that doesn't go through the tight grommet, then join a call from the desk machine and check that it stays connected. Optional additions: none. Unmet needs: nothing important; it doesn't mention checking the port, which is optional anyway. The UniFi, managed-switch and Grafana stack is dropped and not offered now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable video calls at the one desk that drops. You asked for that. The gateway, managed switches, and dashboard are a group trend and a future-proofing wish.",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard, and any new network layout. The other two devices on the same router stay in their calls during each dropout, so the shared router path is already doing its job.",
+  "Bottleneck": "The desk Ethernet cable: several years old, squeezed through a tight grommet, and still the original cable.",
+  "Checked myself": "Your account of the single-desk Ethernet dropout, the two devices that stay connected, and the old cable through the grommet. No cable swap has been run, and I have not inspected the link."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes a small cable-swap test, rejects the rebuild by naming each part, and says it has not inspected the link.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-home-network.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

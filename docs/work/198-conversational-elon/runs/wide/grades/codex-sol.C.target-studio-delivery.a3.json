@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends one local helper. It reads the client's code list, matches exact product-code prefixes in the JPEG filenames and generates the contact-sheet PDF in that supplied order. It flags missing codes, unmatched images and ambiguous matches for review. It adds no DAM, AI tagging, semantic search or cloud portal, now or as an option. Unmet: the reply does not say who builds the helper or how it fits into this week.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires images in their supplied product-code order; you want a professional delivery workflow this week.",
+  "Deleted": "DAM, AI tagging, semantic search, and a cloud portal add nothing needed for this delivery.",
+  "Bottleneck": "Manually arranging thumbnails costs you an hour per job.",
+  "Checked myself": "Your description establishes the ordering rule; I have not inspected files or tested a solution."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply has all four record lines before the recommendation, rejects the named DAM stack and recommends a local tool that follows the client's code order.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-studio-delivery.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

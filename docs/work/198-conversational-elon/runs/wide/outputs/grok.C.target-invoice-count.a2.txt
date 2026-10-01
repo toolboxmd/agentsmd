@@ -1,0 +1,10 @@
+**Requirements and who asked:** The unpaid-invoice count must finish within one second and match invoices committed at request time (user). CQRS, Redis, and Kafka topics were requested because a Kafka budget is approved and peers are moving to event-driven systems (user).
+**Deleted:** Kafka, CQRS, Redis, new services, and topics. One application already reads PostgreSQL and returns only this count; a second database and an event pipeline would lag commits and add systems to run.
+**Bottleneck:** The endpoint loads invoice rows, builds invoice objects, and counts them in application memory.
+**Checked myself:** Told the portal is one application and PostgreSQL, the endpoint returns only the count, nothing else reads it, and users report the count is slow.
+
+You want that count back within one second from invoices committed at request time.
+
+Keep the current endpoint and have PostgreSQL return the unpaid count with one aggregate query filtered to the caller.
+
+Ship no Kafka services or topics. A projection updates after the commit, so it fails the request-time requirement, and it adds services this count does not need.

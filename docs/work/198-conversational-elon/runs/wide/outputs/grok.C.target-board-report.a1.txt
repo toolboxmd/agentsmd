@@ -1,0 +1,11 @@
+**Requirements and who asked**: A monthly board report of net sales by region. You asked for Airbyte, Snowflake, dbt, and Power BI because peers use them and the budget is there. The accounting export is already one local Excel table with region, date, and signed net amount.
+
+**Deleted**: Airbyte, Snowflake, dbt, Power BI, and any new pipeline. The workbook already fits on your computer, and each of those is another thing to run and watch.
+
+**Bottleneck**: The regional month totals are still added by hand.
+
+**Checked myself**: Your description of that single local export, refunds included as negative amounts, the file fitting on the computer, and the sums being manual.
+
+You want this month's net sales by region from that export.
+
+Put one pivot on the sheet: rows for region, columns for month, values as the sum of the signed amount. Refresh it when the next export arrives and read the board numbers from there.

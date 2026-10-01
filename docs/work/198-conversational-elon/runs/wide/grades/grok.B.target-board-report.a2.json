@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do this week: build a pivot table in the existing workbook with region as rows, month as columns and the sum of signed net amount as values, so refunds reduce totals. Nothing optional is added now. The Airbyte/Snowflake/dbt/Power BI spend is deferred until a second source arrives or the file outgrows the computer. The reply never states the user's actual requirement or who set it, and it does not mention any verification or limits.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation itself is a correct, bounded workbook fix with the stack only as a later conditional step, but the reply has none of the four required record labels.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-board-report.a2",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

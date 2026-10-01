@@ -1,0 +1,14 @@
+**Requirements and who asked:** The client wants images in their supplied product-code order; you produce a contact-sheet PDF per delivery as your current practice.
+**Deleted:** DAM, AI tagging, semantic search, and cloud review portal, since no stated client need calls for them and the filenames already carry exact codes.
+**Bottleneck:** The hour of manual thumbnail dragging per delivery.
+**Checked myself:** Only what you've told me; I haven't seen a job folder, a client code list, or one of your contact sheets.
+
+You want deliveries in the client's code order without the manual hour. I recommend one small local script, no DAM. You point it at the job folder and the client's code list, and it does three things:
+
+- It matches each code to its JPEG by filename prefix, treating `AB1` and `AB12` as different codes.
+- It writes the contact-sheet PDF in the client's order.
+- It flags any codes with no image, plus any images not on the list.
+
+That's one thing to maintain instead of a subscription, and it fits in a day, well within this week.
+
+To build it, I need a sample client code list (CSV, spreadsheet, or PDF?) and one existing contact sheet so I can match the layout.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "For now, the reply says to sort the existing shared list by pickup date and then by status, and to use it as the kitchen queue. It then lays out a full Odoo rollout with the partner (sales, manufacturing, inventory and a counter screen), followed by a parallel run and then a cutover. So the bounded fix comes bundled with the ERP rollout and sync now, not as a conditional later step.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends the due-date sort but also endorses and sequences the Odoo rollout now, and none of the four required record labels appear.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-bakery-pickups.a1",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

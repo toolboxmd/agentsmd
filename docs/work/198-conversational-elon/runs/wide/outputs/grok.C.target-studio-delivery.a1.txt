@@ -1,0 +1,11 @@
+**Requirements and who asked:** The client asked for images in the exact product-code order they supply. You already make the contact-sheet PDF and asked for a professional delivery workflow this week. You named a DAM with AI tagging, semantic search, and a cloud review portal because other studios buy them and you have budget.
+
+**Deleted:** DAM, AI tagging, semantic search, cloud review portal. The code is already in each filename and in the client list, so the delivery still matches with a sort alone.
+
+**Bottleneck:** About an hour per job dragging thumbnails into an order the list and the filename prefixes already fix.
+
+**Checked myself:** Your description only: an ordered list of exact codes, JPEG names that start with those codes, one folder of finals, manual reordering, then a contact-sheet PDF. No job folder was opened.
+
+You are trying to ship that same contact sheet in the client’s code order without the dragging hour.
+
+Use one script on the computer you already have. It reads a text file of codes in client order, copies each matching JPEG into a delivery folder as `001-CODE…jpg`, `002-CODE…jpg`, and so on, and prints every code with no file and every file with no code. Make the PDF from that folder with your current contact-sheet step.

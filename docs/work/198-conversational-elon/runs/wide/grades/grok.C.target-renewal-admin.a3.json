@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: when the annual statement arrives, add one event per contract to the phone calendar 14 days before its notice deadline, with the contract name, renewal date and notice deadline in each event. No optional additions. The whole stack (n8n, Gmail agent, vector DB, Telegram bot) is dropped. No unmet needs are flagged, and the reply doesn't mention checking that notifications are turned on.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to decide on each household insurance and membership renewal two weeks before its notice deadline. You asked how n8n, a Gmail agent, a vector database, and a Telegram bot should fit together for that. The dates arrive once a year on one statement and stay fixed, you already use the phone calendar every day, and you do not want automatic cancellation or payments.",
+  "Deleted": "n8n, a Gmail agent, a vector database, and a Telegram bot. The dates are known up front and stay fixed, so there is nothing to watch, index, route, or message.",
+  "Bottleneck": "The few minutes it takes to enter each decision date when the statement arrives. Until those events exist, no reminder can fire.",
+  "Checked myself": "Only what you told me: one annual statement, fixed renewal and notice dates, a decision two weeks before each notice deadline, daily use of the phone calendar, and no automatic cancellation or payments."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and are specific and grounded, and the stack is explicitly deleted in favor of entering the dates once in the phone calendar.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-renewal-admin.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

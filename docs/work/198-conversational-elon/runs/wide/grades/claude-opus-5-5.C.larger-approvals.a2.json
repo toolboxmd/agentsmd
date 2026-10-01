@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Right now, keep the current folder for drafts and add a 'Released' folder on the same platform. Only the three reviewers can add files there; authors can read but not edit. A reviewer approves by placing the final file (ideally a PDF) in that folder, so the platform's audit log records who approved and when. A seven-year retention lock protects the approved file. There are no optional additions. Two needs are open: the user must confirm which platform they use and whether its license supports audit logs and retention locks. If a reviewer also writes documents, the reply says permissions alone won't stop that reviewer approving their own work. The reply also never says the approver-and-time record itself will be kept for seven years.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The customer contract requires keeping the exact approved version, approver identity and approval time for seven years. It forbids self-approval, and later edits must not change the approved version. You need this before this week's delivery.",
+  "Deleted": "The APPROVED initials column and the naming convention as the control. Anyone can type anyone's initials, and authors can still overwrite the approved file in the current folder.",
+  "Bottleneck": "Authors can edit the folder where approved files live, so no record in it can be trusted later.",
+  "Checked myself": "Only what you told me. I haven't seen which platform the folder is on or its permission, audit and retention settings."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": false,
+ "note": "This is a real controlled-system answer, but the approver-and-time record depends on platform audit logs that the reply never says will be kept for seven years, and it admits nothing blocks a reviewer who also writes from approving their own documents.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.C.larger-approvals.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,9 @@
+You want changes to stop waiting when the lead is away. Squads, chapters, and Jira Align won't fix that, because the delay isn't planning: your last six changes each took under a day to code, then sat three days waiting for one absent reviewer.
+
+What I'd launch this week instead, with no new tooling:
+
+1. **Add the two other qualified engineers as approvers** on those changes, with any one approval enough to merge (in your repo's review rules or CODEOWNERS).
+2. **Set a review deadline**, for example same business day. Any available approver picks up anything older than that.
+3. **Track time-to-first-review** in your existing tracker for a few weeks to confirm the wait is gone.
+
+I'd hold the tooling and workshop budget until that data shows a planning problem rather than a review problem.

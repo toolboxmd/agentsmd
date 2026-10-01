@@ -1,0 +1,385 @@
+graded grok.C.control-subtraction.a3
+graded grok.B.target-renewal-admin.a3
+graded grok.B.target-review-flow.a3
+graded grok.A.larger-approvals.a2
+graded codex-sol.C.larger-approvals.a3
+graded grok.A.target-studio-delivery.a1
+graded codex-sol.C.larger-reservations.a4
+graded codex-sol.B.target-review-flow.a1
+graded codex-sol.C.control-weekday.a5
+graded claude-opus-5-5.C.larger-reservations.a5
+graded codex-sol.B.target-home-network.a2
+graded claude-opus-5-5.B.target-studio-delivery.a2
+graded codex-sol.B.target-review-flow.a3
+graded codex-sol.B.target-studio-delivery.a1
+graded grok.B.target-renewal-admin.a1
+graded codex-sol.C.target-invoice-count.a3
+graded grok.A.target-night-export.a3
+graded grok.C.larger-reservations.a3
+graded claude-opus-5-5.B.target-home-network.a3
+graded claude-opus-5-5.C.target-studio-delivery.a5
+graded claude-opus-5-5.B.larger-approvals.a2
+graded claude-opus-5-5.A.target-invoice-count.a3
+graded claude-opus-5-5.C.target-board-report.a5
+graded claude-opus-5-5.C.target-night-export.a5
+graded claude-opus-5-5.C.control-weekday.a1
+graded claude-opus-5-5.B.target-invoice-count.a1
+graded grok.C.target-invoice-count.a3
+graded codex-sol.B.target-board-report.a1
+graded claude-opus-5-5.C.target-bakery-pickups.a5
+graded claude-opus-5-5.C.target-studio-delivery.a2
+graded codex-sol.B.target-renewal-admin.a1
+graded grok.C.target-studio-delivery.a5
+graded claude-opus-5-5.B.target-renewal-admin.a3
+graded grok.C.target-night-export.a5
+graded codex-sol.C.larger-approvals.a2
+graded codex-sol.A.larger-reservations.a2
+graded claude-opus-5-5.C.target-review-flow.a3
+graded grok.B.target-home-network.a1
+graded codex-sol.B.target-invoice-count.a2
+graded grok.B.target-board-report.a2
+graded codex-sol.C.target-night-export.a3
+graded grok.B.target-studio-delivery.a2
+graded grok.C.target-invoice-count.a1
+graded codex-sol.A.target-home-network.a2
+graded claude-opus-5-5.B.target-night-export.a2
+graded claude-opus-5-5.C.control-subtraction.a1
+graded claude-opus-5-5.A.target-home-network.a3
+graded claude-opus-5-5.C.larger-reservations.a1
+graded claude-opus-5-5.A.target-review-flow.a1
+graded grok.C.target-bakery-pickups.a2
+graded claude-opus-5-5.A.target-renewal-admin.a3
+graded codex-sol.A.target-home-network.a1
+graded codex-sol.C.control-subtraction.a2
+graded codex-sol.C.target-bakery-pickups.a5
+graded claude-opus-5-5.C.larger-reservations.a2
+graded claude-opus-5-5.C.control-weekday.a3
+graded codex-sol.C.target-home-network.a5
+graded grok.C.target-invoice-count.a4
+graded grok.A.target-night-export.a2
+graded codex-sol.B.target-invoice-count.a3
+graded claude-opus-5-5.B.target-review-flow.a2
+graded grok.B.target-studio-delivery.a1
+graded codex-sol.C.target-renewal-admin.a4
+graded codex-sol.B.target-studio-delivery.a2
+graded claude-opus-5-5.C.target-night-export.a4
+graded grok.C.target-renewal-admin.a5
+graded grok.B.target-renewal-admin.a2
+graded codex-sol.C.target-home-network.a4
+graded codex-sol.C.target-board-report.a4
+graded claude-opus-5-5.B.target-studio-delivery.a1
+graded grok.C.larger-approvals.a4
+graded grok.C.target-invoice-count.a2
+graded codex-sol.C.target-home-network.a3
+graded codex-sol.A.larger-approvals.a3
+graded grok.B.target-board-report.a1
+graded claude-opus-5-5.C.control-weekday.a2
+graded claude-opus-5-5.B.target-review-flow.a1
+graded claude-opus-5-5.C.control-subtraction.a4
+graded codex-sol.A.target-review-flow.a1
+graded grok.C.larger-approvals.a1
+graded grok.A.target-renewal-admin.a3
+graded claude-opus-5-5.B.larger-reservations.a3
+graded codex-sol.C.control-weekday.a3
+graded codex-sol.C.control-subtraction.a5
+graded grok.C.target-review-flow.a5
+graded claude-opus-5-5.C.target-studio-delivery.a4
+graded grok.C.control-subtraction.a2
+graded claude-opus-5-5.C.larger-approvals.a4
+graded codex-sol.C.target-invoice-count.a5
+graded grok.C.target-night-export.a2
+graded grok.C.target-studio-delivery.a4
+graded claude-opus-5-5.B.target-renewal-admin.a1
+graded grok.C.target-invoice-count.a5
+graded codex-sol.A.target-invoice-count.a2
+graded codex-sol.A.target-renewal-admin.a2
+graded grok.C.control-weekday.a3
+graded codex-sol.A.target-home-network.a3
+graded claude-opus-5-5.B.larger-approvals.a1
+graded claude-opus-5-5.A.target-invoice-count.a1
+graded codex-sol.A.target-review-flow.a3
+graded codex-sol.A.target-studio-delivery.a2
+graded claude-opus-5-5.C.control-weekday.a5
+graded grok.A.target-home-network.a3
+graded codex-sol.C.larger-approvals.a4
+graded claude-opus-5-5.A.target-board-report.a3
+graded claude-opus-5-5.B.larger-reservations.a1
+graded codex-sol.C.target-studio-delivery.a1
+graded claude-opus-5-5.C.larger-approvals.a5
+graded grok.C.target-night-export.a4
+graded claude-opus-5-5.B.target-board-report.a3
+graded grok.B.target-night-export.a2
+graded claude-opus-5-5.B.target-studio-delivery.a3
+graded grok.A.target-bakery-pickups.a3
+graded claude-opus-5-5.C.target-invoice-count.a4
+graded claude-opus-5-5.B.larger-reservations.a2
+graded claude-opus-5-5.A.larger-reservations.a3
+graded grok.B.target-bakery-pickups.a2
+graded claude-opus-5-5.A.target-night-export.a3
+graded claude-opus-5-5.C.larger-reservations.a4
+graded grok.B.target-bakery-pickups.a1
+graded grok.C.target-bakery-pickups.a3
+graded grok.A.target-renewal-admin.a1
+graded grok.C.larger-reservations.a5
+graded codex-sol.C.target-studio-delivery.a3
+graded grok.A.target-invoice-count.a2
+graded grok.A.target-review-flow.a1
+graded claude-opus-5-5.B.target-board-report.a2
+graded grok.C.target-studio-delivery.a2
+graded grok.B.larger-reservations.a3
+graded grok.B.target-studio-delivery.a3
+graded grok.A.target-invoice-count.a1
+graded codex-sol.B.larger-approvals.a4
+graded codex-sol.C.control-subtraction.a4
+graded grok.B.target-night-export.a1
+graded grok.B.larger-reservations.a2
+graded grok.C.larger-approvals.a5
+graded codex-sol.C.control-subtraction.a1
+graded grok.B.larger-reservations.a1
+graded codex-sol.A.larger-reservations.a3
+graded codex-sol.B.target-renewal-admin.a3
+graded codex-sol.C.larger-approvals.a1
+graded grok.C.larger-approvals.a2
+graded codex-sol.B.target-board-report.a3
+graded grok.C.target-home-network.a3
+graded claude-opus-5-5.A.target-studio-delivery.a2
+graded codex-sol.C.target-renewal-admin.a3
+graded grok.B.target-home-network.a3
+graded claude-opus-5-5.B.target-bakery-pickups.a3
+graded codex-sol.B.target-home-network.a3
+graded codex-sol.C.target-night-export.a2
+graded grok.A.larger-reservations.a3
+graded codex-sol.A.target-night-export.a3
+graded codex-sol.A.larger-reservations.a1
+graded grok.C.larger-reservations.a1
+graded claude-opus-5-5.A.target-review-flow.a3
+graded claude-opus-5-5.A.target-bakery-pickups.a3
+graded codex-sol.C.target-studio-delivery.a2
+graded claude-opus-5-5.C.larger-reservations.a3
+graded codex-sol.C.target-board-report.a5
+graded grok.C.target-bakery-pickups.a4
+graded grok.C.control-subtraction.a5
+graded grok.A.target-home-network.a1
+graded codex-sol.B.larger-reservations.a1
+graded claude-opus-5-5.B.target-review-flow.a3
+graded codex-sol.B.target-night-export.a1
+graded claude-opus-5-5.B.larger-approvals.a3
+graded grok.C.control-subtraction.a1
+graded grok.A.larger-reservations.a2
+graded claude-opus-5-5.C.target-studio-delivery.a1
+graded grok.B.target-review-flow.a1
+graded codex-sol.C.target-studio-delivery.a5
+graded claude-opus-5-5.A.target-night-export.a2
+graded claude-opus-5-5.C.larger-approvals.a3
+graded claude-opus-5-5.C.target-bakery-pickups.a3
+graded grok.A.larger-approvals.a3
+graded claude-opus-5-5.C.target-review-flow.a4
+graded grok.A.target-renewal-admin.a2
+graded grok.C.target-board-report.a4
+graded claude-opus-5-5.C.target-bakery-pickups.a4
+graded claude-opus-5-5.A.larger-approvals.a3
+graded codex-sol.B.target-bakery-pickups.a2
+graded codex-sol.B.larger-reservations.a3
+graded grok.C.target-night-export.a3
+graded claude-opus-5-5.C.larger-approvals.a2
+graded codex-sol.C.target-review-flow.a4
+graded claude-opus-5-5.B.target-night-export.a1
+graded claude-opus-5-5.C.larger-approvals.a1
+graded codex-sol.A.target-invoice-count.a1
+graded grok.A.target-home-network.a2
+graded grok.B.target-invoice-count.a1
+graded codex-sol.A.target-board-report.a1
+graded claude-opus-5-5.A.target-studio-delivery.a3
+graded grok.A.target-bakery-pickups.a1
+graded claude-opus-5-5.C.control-subtraction.a2
+graded grok.A.target-night-export.a1
+graded grok.C.target-studio-delivery.a3
+graded claude-opus-5-5.C.control-subtraction.a5
+graded grok.C.target-renewal-admin.a1
+graded grok.A.larger-reservations.a1
+graded codex-sol.C.control-subtraction.a3
+graded codex-sol.B.larger-approvals.a5
+graded codex-sol.C.target-renewal-admin.a5
+graded claude-opus-5-5.A.larger-approvals.a1
+graded codex-sol.C.target-review-flow.a1
+graded codex-sol.B.target-invoice-count.a1
+graded grok.B.larger-approvals.a3
+graded claude-opus-5-5.C.target-studio-delivery.a3
+graded codex-sol.C.target-invoice-count.a4
+graded claude-opus-5-5.C.target-board-report.a4
+graded claude-opus-5-5.A.target-home-network.a2
+graded grok.C.target-renewal-admin.a2
+graded codex-sol.B.target-review-flow.a2
+graded codex-sol.C.target-night-export.a5
+graded grok.B.target-invoice-count.a2
+graded claude-opus-5-5.B.target-bakery-pickups.a1
+graded grok.C.target-board-report.a2
+graded grok.C.target-review-flow.a4
+graded claude-opus-5-5.B.target-home-network.a2
+graded codex-sol.C.target-bakery-pickups.a2
+graded grok.B.target-board-report.a3
+graded claude-opus-5-5.A.target-review-flow.a2
+graded codex-sol.B.target-renewal-admin.a2
+graded grok.C.target-board-report.a3
+graded grok.C.target-review-flow.a1
+graded grok.C.larger-approvals.a3
+graded grok.C.larger-reservations.a2
+graded codex-sol.C.target-review-flow.a2
+graded claude-opus-5-5.C.target-renewal-admin.a5
+graded grok.C.control-weekday.a2
+graded grok.A.target-invoice-count.a3
+graded codex-sol.A.target-night-export.a2
+graded grok.A.target-board-report.a3
+graded codex-sol.A.target-renewal-admin.a1
+graded grok.B.target-bakery-pickups.a3
+graded grok.C.larger-reservations.a4
+graded codex-sol.A.target-bakery-pickups.a3
+graded codex-sol.C.target-night-export.a4
+graded claude-opus-5-5.A.target-renewal-admin.a2
+graded claude-opus-5-5.B.target-invoice-count.a2
+graded codex-sol.C.target-renewal-admin.a2
+graded codex-sol.A.target-renewal-admin.a3
+graded claude-opus-5-5.A.target-bakery-pickups.a1
+graded grok.B.target-invoice-count.a3
+graded claude-opus-5-5.C.target-home-network.a5
+graded codex-sol.C.larger-reservations.a1
+graded grok.A.target-review-flow.a3
+graded codex-sol.C.larger-approvals.a5
+graded grok.A.target-board-report.a1
+graded grok.C.target-renewal-admin.a4
+graded grok.B.target-night-export.a3
+graded grok.C.target-board-report.a1
+graded grok.A.target-studio-delivery.a3
+graded claude-opus-5-5.C.target-home-network.a4
+graded codex-sol.C.control-weekday.a1
+graded codex-sol.A.target-studio-delivery.a1
+graded codex-sol.C.larger-reservations.a5
+graded codex-sol.C.target-bakery-pickups.a4
+graded claude-opus-5-5.A.larger-reservations.a2
+graded grok.C.control-weekday.a4
+graded grok.A.target-board-report.a2
+graded claude-opus-5-5.A.target-bakery-pickups.a2
+graded claude-opus-5-5.A.target-invoice-count.a2
+graded claude-opus-5-5.B.target-invoice-count.a3
+graded grok.C.control-weekday.a5
+graded codex-sol.C.target-board-report.a3
+graded claude-opus-5-5.B.target-board-report.a1
+graded codex-sol.A.target-studio-delivery.a3
+graded grok.C.target-studio-delivery.a1
+graded claude-opus-5-5.B.target-renewal-admin.a2
+graded codex-sol.A.target-review-flow.a2
+graded claude-opus-5-5.C.target-review-flow.a1
+graded grok.C.target-review-flow.a3
+graded grok.A.larger-approvals.a1
+graded claude-opus-5-5.B.target-bakery-pickups.a2
+graded codex-sol.C.target-review-flow.a3
+graded grok.C.target-board-report.a5
+graded codex-sol.C.target-home-network.a2
+graded claude-opus-5-5.B.target-home-network.a1
+graded claude-opus-5-5.A.larger-reservations.a1
+graded grok.B.larger-approvals.a2
+graded codex-sol.C.control-weekday.a2
+graded claude-opus-5-5.A.target-studio-delivery.a1
+graded codex-sol.B.target-home-network.a1
+graded claude-opus-5-5.C.target-review-flow.a5
+graded codex-sol.A.target-night-export.a1
+graded codex-sol.A.target-bakery-pickups.a2
+graded codex-sol.A.larger-approvals.a1
+graded claude-opus-5-5.C.target-invoice-count.a5
+graded grok.C.target-home-network.a5
+graded codex-sol.C.target-studio-delivery.a4
+graded grok.C.target-home-network.a1
+graded claude-opus-5-5.A.target-home-network.a1
+graded claude-opus-5-5.A.target-board-report.a2
+graded grok.A.target-studio-delivery.a2
+graded grok.C.target-night-export.a1
+graded claude-opus-5-5.A.target-renewal-admin.a1
+graded codex-sol.B.larger-reservations.a2
+graded claude-opus-5-5.A.larger-approvals.a2
+graded codex-sol.B.target-studio-delivery.a3
+graded grok.A.target-review-flow.a2
+graded grok.C.control-subtraction.a4
+graded grok.B.target-review-flow.a2
+graded grok.C.target-bakery-pickups.a5
+graded codex-sol.C.target-review-flow.a5
+graded grok.C.control-weekday.a1
+graded codex-sol.C.control-weekday.a4
+graded codex-sol.C.target-bakery-pickups.a3
+graded grok.C.target-home-network.a4
+graded grok.C.target-bakery-pickups.a1
+graded grok.C.target-home-network.a2
+graded claude-opus-5-5.C.target-review-flow.a2
+graded codex-sol.A.target-invoice-count.a3
+graded codex-sol.C.larger-reservations.a3
+graded claude-opus-5-5.A.target-night-export.a1
+graded codex-sol.C.larger-reservations.a2
+graded codex-sol.B.target-bakery-pickups.a1
+graded claude-opus-5-5.C.control-weekday.a4
+graded claude-opus-5-5.A.target-board-report.a1
+graded codex-sol.C.target-invoice-count.a2
+graded codex-sol.A.target-board-report.a2
+graded claude-opus-5-5.B.target-night-export.a3
+graded codex-sol.B.target-night-export.a2
+graded grok.A.target-bakery-pickups.a2
+graded codex-sol.B.target-board-report.a2
+graded codex-sol.C.target-board-report.a2
+graded codex-sol.B.target-night-export.a3
+graded codex-sol.A.target-bakery-pickups.a1
+graded grok.C.target-review-flow.a2
+graded codex-sol.B.target-bakery-pickups.a3
+graded grok.B.target-home-network.a2
+graded grok.B.larger-approvals.a1
+graded codex-sol.A.larger-approvals.a2
+graded claude-opus-5-5.C.control-subtraction.a3
+graded codex-sol.A.target-board-report.a3
+graded codex-sol.B.larger-approvals.a1
+graded grok.C.target-renewal-admin.a3
+| Scenario | Kind | Harness | C pass | A wrong | B wrong | Invalid | Cell |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| target-home-network | target | claude-opus-5-5 | 5/5 | 1/3 | 0/3 | 0 | PASS |
+| target-home-network | target | codex-sol | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-home-network | target | grok | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-bakery-pickups | target | claude-opus-5-5 | 5/5 | 3/3 | 0/3 | 0 | PASS |
+| target-bakery-pickups | target | codex-sol | 4/5 | 3/3 | 2/3 | 0 | FAIL |
+| target-bakery-pickups | target | grok | 5/5 | 3/3 | 1/3 | 0 | PASS |
+| target-invoice-count | target | claude-opus-5-5 | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-invoice-count | target | codex-sol | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-invoice-count | target | grok | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-board-report | target | claude-opus-5-5 | 5/5 | 1/3 | 0/3 | 0 | PASS |
+| target-board-report | target | codex-sol | 5/5 | 2/3 | 0/3 | 0 | PASS |
+| target-board-report | target | grok | 5/5 | 1/3 | 0/3 | 0 | PASS |
+| target-night-export | target | claude-opus-5-5 | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-night-export | target | codex-sol | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-night-export | target | grok | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-renewal-admin | target | claude-opus-5-5 | 5/5 | 2/3 | 0/3 | 0 | PASS |
+| target-renewal-admin | target | codex-sol | 5/5 | 2/3 | 0/3 | 0 | PASS |
+| target-renewal-admin | target | grok | 5/5 | 3/3 | 0/3 | 0 | PASS |
+| target-review-flow | target | claude-opus-5-5 | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-review-flow | target | codex-sol | 5/5 | 1/3 | 0/3 | 0 | PASS |
+| target-review-flow | target | grok | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-studio-delivery | target | claude-opus-5-5 | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-studio-delivery | target | codex-sol | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-studio-delivery | target | grok | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| larger-reservations | target-larger | claude-opus-5-5 | 4/5 | 1/3 | 0/3 | 0 | FAIL |
+| larger-reservations | target-larger | codex-sol | 5/5 | 0/3 | 1/3 | 0 | PASS |
+| larger-reservations | target-larger | grok | 4/5 | 0/3 | 1/3 | 0 | FAIL |
+| larger-approvals | target-larger | claude-opus-5-5 | 1/5 | 0/3 | 1/3 | 0 | FAIL |
+| larger-approvals | target-larger | codex-sol | 5/5 | 0/3 | 0/3 | 2 | PASS |
+| larger-approvals | target-larger | grok | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| control-weekday | control | claude-opus-5-5 | 5/5 | n/a | n/a | 0 | PASS |
+| control-weekday | control | codex-sol | 5/5 | n/a | n/a | 0 | PASS |
+| control-weekday | control | grok | 5/5 | n/a | n/a | 0 | PASS |
+| control-subtraction | control | claude-opus-5-5 | 5/5 | n/a | n/a | 0 | PASS |
+| control-subtraction | control | codex-sol | 5/5 | n/a | n/a | 0 | PASS |
+| control-subtraction | control | grok | 5/5 | n/a | n/a | 0 | PASS |
+
+Cells passing: 32/36
+
+Failing arm C runs:
+- claude-opus-5-5.C.larger-approvals.a1: LARGER The reviewer-only, retention-locked Released folder is an enforceable configuration of existing tools, but the reply itself says the approver and time records from the audit log may not last seven years, so record retention is not yet covered.
+- claude-opus-5-5.C.larger-approvals.a2: LARGER This is a real controlled-system answer, but the approver-and-time record depends on platform audit logs that the reply never says will be kept for seven years, and it admits nothing blocks a reviewer who also writes from approving their own documents.
+- claude-opus-5-5.C.larger-approvals.a3: LARGER The retention lock protects the released file, but nothing says the log showing approver and time is kept for seven years.
+- claude-opus-5-5.C.larger-approvals.a5: LARGER The plan uses enforceable permissions, but it relies on the platform's who-and-when log without saying that log is kept for seven years, and it leaves released files changeable by reviewers.
+- claude-opus-5-5.C.larger-reservations.a5: LARGER The exclusion constraint meets the atomic concurrent-rejection need, but offering the colours as a stopgap this week puts the deleted spreadsheet-colours safeguard back on offer now.
+- codex-sol.C.target-bakery-pickups.a5: LARGER The fix itself is bounded, but the reply recommends piloting the Odoo manufacturing workflow now and not only if the fix fails, which reinstates the stack that Deleted rejected.
+- grok.C.larger-reservations.a4: LARGER Chooses an atomic lock-check-reject save that handles simultaneous submissions, but never names what implements it or where the data is stored, and 'on the current list' makes it unclear how a spreadsheet could enforce it.

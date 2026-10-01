@@ -1,0 +1,8 @@
+Colours alone won't meet the owner's rule. Conditional formatting only highlights a clash after both bookings are already saved, and if two agents save at the same moment, both succeed and both customers get promised the item. That is exactly what happened last week.
+
+The goal is that a second, overlapping booking for the same item gets refused at save time, even under simultaneous submits. I recommend the smallest change that does that and still keeps the spreadsheet:
+
+- **If you're on Google Sheets:** agents book through a small form backed by Apps Script instead of typing into the sheet. The script takes a lock (`LockService`), checks the item's existing dates for overlap, and either appends the row or rejects it with a message. Then protect the bookings sheet so only the script can write to it. This is roughly a few days of work and fits this week.
+- **If you're on Excel or the sheet can't be locked down:** move bookings into a small database with an overlap constraint (Postgres can enforce "no two bookings for the same item with overlapping dates" itself), and keep the spreadsheet as a read-only view. This is the more robust option but likely won't ship this week.
+
+Ship the red formatting today as a stopgap, but tell the owner plainly it only flags clashes and does not prevent them. Which spreadsheet are you using, and does anyone need to edit bookings directly rather than through a form?

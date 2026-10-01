@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want dependable calls at the desk; a broader network upgrade has no demonstrated need yet.
+**Deleted:** UniFi gateway, managed switches, and Grafana as fixes for these dropouts.
+**Bottleneck:** The desk’s Ethernet connection is the first suspect; the cable is untested.
+**Checked myself:** Only your reported observations: two other devices stay connected, and the older desk cable passes through a tight grommet.
+
+You want dependable calls at that desk. I recommend first replacing its cable with a known-good one, routed without pinching, and checking whether calls remain stable. The evidence points toward a desk-specific fault, so there is no justified network redesign yet.

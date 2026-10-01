@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply correctly answers Wednesday and introduces no recommendation, tool, or process.",
+ "recommendation_class": "NONE",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "answers_correctly": true,
+ "note": "The reply is short and correct, with no added design or record labels, as expected for a control case.",
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.control-weekday.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "control-weekday",
+ "kind": "control",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends adding one save path now that locks the item and date range and refuses a conflicting write, with the spreadsheet kept as the list agents read. It treats red formatting and a reminder as optional extras for people scanning the sheet. It says these extras alone do not meet the owner's rule. It does not say what tool or storage would provide the lock. It mentions simultaneous submissions in the requirement but does not say outright that only one of two simultaneous conflicting saves succeeds.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply picks a save-time lock that rejects conflicts and is fairly clear about simultaneous saves, but none of the four required labelled lines appear and it offers the colours now as an optional addition.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.larger-reservations.a3",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

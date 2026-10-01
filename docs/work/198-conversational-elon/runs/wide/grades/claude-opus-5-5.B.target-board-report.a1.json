@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: build a PivotTable in the existing workbook that groups the pasted export by month and region, with refunds netting out because the amounts are signed. Paste each new export and click Refresh, which replaces the hand sums. Hold off on Airbyte, Snowflake, dbt and Power BI for now. Revisit the stack only if a named future need arises (several source systems, data too big for Excel, or many people on live dashboards). No unmet needs are left for the current report.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is small and correct, with the stack deferred only on a stated condition, but the reply has none of the four required labeled lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-board-report.a1",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: replace the spreadsheet as the reservation control with one shared place to save bookings. Each save checks the item identifier and dates and commits in a single atomic step, and the losing agent in a simultaneous submission is refused immediately. No optional additions are offered. Unmet needs: it names no specific product or storage, but none is required.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires a conflicting reservation to be rejected at save time, including when two agents submit together. You asked to keep the spreadsheet, add red overlap formatting, and ship a reminder to check it this week.",
+  "Deleted": "Red conditional formatting and a check reminder. A colour leaves both saves accepted, so the double booking still stands.",
+  "Bottleneck": "The second save of the same item identifier on overlapping dates. Anything that runs after both bookings exist is too late.",
+  "Checked myself": "You told me six agents work at once from two offices, each physical item has one identifier, and last week two customers were promised that item for overlapping dates. I have not inspected the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses a shared save path that checks and commits in one step and refuses the losing concurrent agent, which is enough to count as atomic conflict enforcement even though it names no specific technology.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-reservations.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

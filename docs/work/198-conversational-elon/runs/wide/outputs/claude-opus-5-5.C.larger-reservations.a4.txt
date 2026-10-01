@@ -1,0 +1,10 @@
+**Requirements and who asked:** the owner requires that a conflicting reservation for the same item be rejected at save time, even when two of the six agents submit at once. You asked to keep the spreadsheet and ship this week.
+**Deleted:** a "check the colours" reminder as the safeguard, and a new booking system or database.
+**Bottleneck:** nothing currently stops the second overlapping save. Red formatting only marks the clash after both bookings are saved and possibly promised.
+**Checked myself:** only what you've told me. I haven't seen the spreadsheet or which product it runs on.
+
+You want overlapping bookings for one item to be impossible to save, without replacing the spreadsheet.
+
+Red conditional formatting on its own doesn't meet the owner's rule. It flags the clash after it's saved, so last week's double booking could happen again. I'd keep the spreadsheet as the record but make agents submit bookings through one small script. The script takes a lock, so simultaneous submits run one at a time, then checks the item's dates. It rejects an overlap with a message, or saves the booking. The booking tab is locked against direct edits so the script can't be bypassed. That fits in this week, and you can keep the red formatting as a visual extra.
+
+Is the spreadsheet Google Sheets or Excel? Google Sheets has the locking this needs built in (Apps Script `LockService`), and Excel needs a different approach.

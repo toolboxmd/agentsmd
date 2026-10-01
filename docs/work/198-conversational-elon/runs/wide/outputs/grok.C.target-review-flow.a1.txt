@@ -1,0 +1,11 @@
+**Requirements and who asked:** You asked for Spotify squads and chapters, Jira Align, funded tooling, and quarterly planning workshops, launchable this week, so the team ships faster. You need changes to stop waiting when the lead is absent.
+
+**Deleted:** Spotify squads and chapters, Jira Align, new tooling, and quarterly planning workshops. Four engineers in one time zone already track tasks and pull requests. The last six changes waited on one absent reviewer.
+
+**Bottleneck:** Coding on each of those six took less than a day, then approval waited three days. The lead was the sole assigned reviewer and was away. Two other engineers are qualified and authorized to approve those changes.
+
+**Checked myself:** Your account of the team, the existing tracker, those six changes, the lead's absence, and the two authorized approvers.
+
+You are trying to keep changes moving while the lead is away.
+
+This week, assign one of those two engineers as the approver on changes the lead cannot review, in the tracker you already use.

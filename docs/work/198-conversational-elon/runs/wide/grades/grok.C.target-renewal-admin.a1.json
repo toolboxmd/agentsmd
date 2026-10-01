@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: when the yearly statement arrives, add one phone calendar event per contract, dated two weeks before its notice deadline, with the contract name and the decision in the title. It suggests nothing extra and no later steps. It drops n8n, the Gmail agent, the vector database, the Telegram bot and any workflow joining them. It doesn't mention checking notification settings or the yearly refresh, though the yearly refresh is implied by 'when the statement arrives'.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked how n8n, a Gmail agent, a vector database, and a Telegram bot should fit together for renewal reminders. You need to decide on each contract two weeks before its notice deadline. One yearly statement fixes those dates, you already use the phone calendar daily, and you do not want automatic cancellation or payments.",
+  "Deleted": "n8n, a Gmail agent, a vector database, a Telegram bot, and any workflow joining them. A fixed list of dates entered once a year does not need those services.",
+  "Bottleneck": "Putting each decision date on the phone calendar when the yearly statement arrives.",
+  "Checked myself": "Only the facts in your message. I have not seen the statement or the calendar."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a calendar-only recommendation, the stack is dropped by name, and 'Checked myself' sticks to the user's stated facts and says what wasn't seen.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-renewal-admin.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

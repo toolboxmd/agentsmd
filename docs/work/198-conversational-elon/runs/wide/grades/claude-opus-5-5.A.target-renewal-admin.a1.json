@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's main recommendation is to add two events per contract to the phone calendar now: a decision-day event 14 days before each notice deadline and a backstop event on the deadline itself. It also offers an optional .ics script, and it presents an n8n workflow with a Google Sheet and Telegram as a current option if the user still wants automation. It ends by asking whether to write the script or sketch the n8n workflow. It rejects the Gmail agent and the vector database. It does not include the required labelled record lines.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The calendar plan is sound, but the reply offers an n8n/Telegram workflow as a present option based on preference, not on any failure or future need, and none of the four labels appear.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-renewal-admin.a1",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

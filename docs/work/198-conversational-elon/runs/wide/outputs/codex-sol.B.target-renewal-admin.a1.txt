@@ -1,0 +1,5 @@
+You want to decide about each renewal two weeks before its notice deadline, using reminders you’ll actually see.
+
+I recommend creating one phone-calendar event per contract, 14 days before its notice deadline, with an alert and the renewal date, notice deadline, and statement reference in the notes.
+
+Since the dates stay fixed for the year, the agents, n8n, vector database, and Telegram bot would add cost and maintenance without improving the reminder; enter the dates once each January and keep cancellation and payment under your control.

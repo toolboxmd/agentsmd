@@ -1,0 +1,21 @@
+Before you spend that budget, the evidence points to something much smaller than the network design.
+
+**What the symptoms say:** During a dropout, two other devices on the same router stay connected. That rules out the router, your internet connection, and your ISP. The problem is almost certainly on the path from the router to the desk computer: the cable, the ports at either end, or the computer's network adapter. An old cable squeezed through a tight grommet is the top suspect, since repeated bending can break conductors inside so the link drops or renegotiates on and off.
+
+A UniFi gateway and managed switches would replace the part that's working and leave the likely fault in place. The calls could keep dropping after the upgrade.
+
+**What I'd do first (cheap, about an hour):**
+1. **Swap the cable.** Run a new Cat6 cable, even temporarily over the floor without the grommet, and use it for a few days of calls. If the drops stop, you've found it.
+2. **Check the link during a drop.** On the desk machine, watch for the link going down/up or the speed changing (e.g. 1 Gbps falling to 100 Mbps). On a Mac, the system log shows link changes. On Windows, look in Event Viewer for adapter disconnects. Link flaps mean the problem is physical.
+3. **Try a different router port** in case one port is failing.
+4. **Check the adapter.** If it's a USB/dock Ethernet adapter, try another one or a built-in port. On Windows, turn off "Allow the computer to turn off this device to save power" and Energy-Efficient Ethernet, which commonly cause brief drops.
+
+If you'd like, I can write you a small script that logs link state and pings the router every second, so the next dropout leaves a clear record.
+
+**On the upgrade:** It's a reasonable thing to want for visibility and future growth, and Grafana would have made this fault easier to spot. If you go ahead, here's a sensible layout:
+- UniFi gateway → one managed core switch (PoE if you'll add access points or cameras)
+- A separate VLAN for work devices, with a QoS/priority rule for call traffic
+- Grafana via UniFi Poller (or SNMP) for per-port errors, link flaps, and latency
+- New cabling to the desk either way, routed without sharp bends through the grommet
+
+Fix the cable first, though. Then buy the gear because you want it, not hoping it fixes the calls. Want me to put together that logging script?

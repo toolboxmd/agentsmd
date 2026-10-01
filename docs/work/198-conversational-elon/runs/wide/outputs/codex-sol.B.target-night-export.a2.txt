@@ -1,0 +1,3 @@
+You need a correct report by 08:00, with room to grow; I recommend running the existing command on your always-on Linux machine using a systemd service and timer.
+Keep deployment as one script and those two unit files, schedule it comfortably before 08:00, and enable missed-run catch-up with `Persistent=true`.
+For this week, verify scheduled execution and safe reruns; add Airflow or Kubernetes when actual dependencies or capacity needs justify them, since budget alone does not establish that requirement.

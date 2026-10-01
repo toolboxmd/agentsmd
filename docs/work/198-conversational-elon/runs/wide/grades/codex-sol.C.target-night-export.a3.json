@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Run the existing Python command now on the user's always-on Linux machine, using one systemd service and timer set for 07:00, with output and logs kept on that machine. Airflow, Kubernetes and separate workers are rejected for now. Orchestration is kept only as a possibility if future requirements justify it. It does not mention checking the interpreter or paths on the server first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the correct nightly report by 08:00 and want something shippable this week.",
+  "Deleted": "Airflow, Kubernetes, and separate workers add infrastructure without solving a demonstrated need.",
+  "Bottleneck": "The laptop is often asleep when the export should run.",
+  "Checked myself": "Your supplied facts: the command works, takes three minutes, has no downstream jobs, and is safe to rerun; you already administer an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A bounded systemd timer on the existing server, with the stack named and deleted, and every check line based on supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,9 @@
+We can keep the folder for drafting, but an APPROVED column with typed initials and a naming convention won’t satisfy the signed contract. Authors could change the approved files or approval entries, and initials alone don’t reliably establish who approved which version and when.
+
+For this week’s delivery, I’d keep the shared folder and add a controlled release step:
+
+- A reviewer other than the author approves using an individual authenticated account.
+- Each release saves the exact approved file, approver identity, and approval time in a separate archive.
+- Authors cannot alter that archive, and retention controls preserve each release for seven years. Later edits stay in the drafting folder and require a new approval.
+
+The APPROVED column can remain a convenient status indicator. Before shipping, we need to verify that the approval record and retained files have those protections; the proposed convention alone leaves the contractual requirements unmet.

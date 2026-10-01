@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply says to create one phone-calendar event per contract from the annual statement. Each event goes 14 days before that contract's notice deadline, has an alert turned on, and lists both the notice deadline and the renewal date. It suggests no optional additions. It rejects n8n, the Gmail agent, the vector DB and the Telegram bot because the dates are fixed. It doesn't say to check that alerts actually fire or to repeat the step with next year's statement.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes the right bounded calendar-only choice but has none of the four required labelled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-renewal-admin.a2",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

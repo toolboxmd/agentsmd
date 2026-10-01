@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup.
+**Deleted:** Treating a full Odoo rollout as necessary to meet today’s pickups.
+**Bottleneck:** Preparation is happening out of pickup-date order.
+**Checked myself:** You said everyone can read the shared list, later orders were prepared first, and payments and stock reconcile correctly.
+
+You’re trying to prevent missed pickups; I recommend fixing preparation priority in the existing list first.
+
+Today, identify every unfinished cake due for pickup, put them in pickup-time order, assign each to a preparer, and check that available time and capacity cover them all; flag any shortfall to you immediately.
+Next week, have the partner demonstrate how Odoo would turn pickup deadlines into a clear preparation queue, then pilot that workflow before relying on it at the counter.
+Keep sales and inventory integration out of the initial rollout unless a specific gap emerges: the evidence currently points to preparation priority, and syncing three modules alone does not establish that priority.

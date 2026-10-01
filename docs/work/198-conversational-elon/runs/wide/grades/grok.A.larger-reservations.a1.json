@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends shipping this week a bookings table that is the source of truth: item id, start, end, customer. The save locks the item, checks for overlapping dates and refuses the second booking, naming the reservation that already holds the item. When two agents save at the same moment, one commit wins and the other is rejected. The spreadsheet stays only as a coloured export of that data. Red formatting is explicitly rejected as the control, and the reply offers to sketch the table and save rule next. Unmet: the reply has none of the four required labelled lines.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The reply recommends a server-side lock-and-reject save that handles two agents saving at once, but it omits all four labelled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.larger-reservations.a1",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

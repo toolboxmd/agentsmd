@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: swap in a known-good Ethernet cable at the desk computer, route it away from the tight grommet, and place a test call from that desk to confirm the drops stop. The reply adds nothing optional and drops the UniFi gateway, managed switches and Grafana dashboard as current needs. It leaves no stated need unmet, though it gives no next step if the new cable does not fix the drops.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable video calls at the one desk that drops (you). A UniFi gateway, managed switches, and a Grafana dashboard (you, because the home-network group is adopting that setup, the budget is approved, and you want to future-proof).",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard. Two other devices on the same router keep their calls during the dropout, so the shared path is already carrying calls. Those additions leave the failing desk link unchanged, and nothing in the drops breaks without them.",
+  "Bottleneck": "The several-year-old Ethernet cable at that desk, run through a tight grommet, which has not been replaced.",
+  "Checked myself": "What you reported: Ethernet only at the dropping desk, two other devices on the same router stay connected, old cable through a tight grommet, no different cable tried yet. No cable swap or call test has been done."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply removes the network rebuild by name and recommends a bounded cable swap with a call test, based only on the facts the user reported.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-home-network.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

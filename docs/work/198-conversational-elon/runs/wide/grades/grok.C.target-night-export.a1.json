@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship the existing command this week as a single cron entry on the always-on Linux machine, timed so the report is ready before 08:00. Airflow, Kubernetes, workers, a separate scheduler and a separate deployment are all dropped; no optional additions are offered. The reply does not say to check the interpreter, paths or data access on that machine first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for an Airflow-on-Kubernetes split of workers, scheduler, and deployment so this nightly export is future-proof like your peers' setups. The requirement that holds is one report before 08:00. You also described a single three-minute Python command, no downstream jobs, and safe replacement of that night's output.",
+  "Deleted": "Airflow, Kubernetes, workers, a separate scheduler, and a separate deployment. This week's ship is the existing command on the machine that stays on.",
+  "Bottleneck": "The laptop sleeps, so some nights the command never starts. Runtime, correctness, and downstream coordination are already fine.",
+  "Checked myself": "Your account of the command, the missing overnight runs, the 08:00 deadline, and the always-on Linux machine you already administer."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes a bounded cron recommendation after four specific record lines, and Checked myself relies only on facts the user supplied, with no claimed tests.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-night-export.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

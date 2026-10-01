@@ -1,0 +1,5 @@
+You want each job delivered as JPEGs and a contact-sheet PDF in the client's product-code order, without an hour of dragging thumbnails.
+
+This week, a short script on that job folder does the delivery: it reads the ordered code list, matches filenames by the longest code that prefixes them, reports any missing or duplicate code, and writes the PDF in that sequence.
+
+The DAM, AI tagging, semantic search, and cloud review portal came from other studios and the budget, while the client only asked for code order. The filenames already contain those codes, so build the larger system only after this sorter is in daily use and a real search or remote-review problem appears.

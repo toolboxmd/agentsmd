@@ -1,0 +1,54 @@
+I'd hold off on Airflow for this. The missing runs come from **where the job runs**, not how it's orchestrated. The laptop is asleep, so the job never starts. The command itself works. Airflow on Kubernetes would add a scheduler, a metadata database, workers, upgrades and on-call surface for a single 3‑minute, idempotent job with no dependencies. You'd still need somewhere always-on to host it.
+
+**What I'd ship this week:** move the job to the always-on Linux machine you already run, using a systemd timer.
+
+```ini
+# /etc/systemd/system/nightly-export.service
+[Unit]
+Description=Nightly report export
+OnFailure=notify-failure@%n.service
+
+[Service]
+Type=oneshot
+User=reports
+WorkingDirectory=/opt/nightly-export
+ExecStart=/opt/nightly-export/.venv/bin/python export.py
+TimeoutStartSec=30min
+```
+
+```ini
+# /etc/systemd/system/nightly-export.timer
+[Unit]
+Description=Run nightly export
+
+[Timer]
+OnCalendar=*-*-* 02:00
+Persistent=true
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target
+```
+
+- `Persistent=true` runs a missed job as soon as the box comes back up, if it was down at 02:00.
+- Because reruns are safe, you can add a cheap safety net: a second timer around 06:00 that reruns only if today's report is missing. That leaves time to fix things before 08:00.
+- `OnFailure=` gives you an alert, via email or a webhook, so a missing report never surprises you at 08:00 again.
+- `journalctl -u nightly-export` gives you run history and logs.
+
+This takes about an hour and fixes the actual problem.
+
+**Future-proofing without the platform:**
+- Package the export as a container image or a pinned venv, with config in environment variables and no laptop-specific paths.
+- Keep it idempotent and parameterized by date, e.g. `export.py --date 2026-10-01`, so backfills are trivial.
+
+If you later have multiple jobs with dependencies between them, that same command drops straight into an Airflow `KubernetesPodOperator` task or a Kubernetes `CronJob` unchanged.
+
+**If you still want Airflow on Kubernetes**, here's the minimal sane split:
+- Use the official Helm chart with a single scheduler replica and the `KubernetesExecutor`, so there's no standing worker pool or Celery/Redis to run.
+- Use a managed Postgres for the metadata database, not the in-cluster one.
+- Bake DAGs into the image or use git-sync.
+- Run one DAG with one `KubernetesPodOperator` task, `retries=2`, and an SLA or failure callback before 08:00.
+
+Realistically, "this week" for that means standing it up, not operating it with confidence. I'd ship the systemd timer now and revisit Airflow when there's a second or third job that needs orchestration.
+
+Want me to adapt the unit files to your actual command and set up the failure notification?

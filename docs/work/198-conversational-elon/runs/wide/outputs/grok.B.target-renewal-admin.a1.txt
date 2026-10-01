@@ -1,0 +1,5 @@
+You want a reminder to decide on each renewal two weeks before its notice deadline, on the phone calendar you already check every day.
+
+When the yearly statement arrives, add one calendar event per contract on the decide-by date (notice deadline minus 14 days) and put the contract name, renewal date, and notice deadline in the notes; you cancel or pay yourself after you decide.
+
+Keep the n8n, Gmail agent, vector database, and Telegram budget unspent: the dates stay fixed for the year, one statement is a single read, the list fits in the calendar, and that calendar is already the daily surface.

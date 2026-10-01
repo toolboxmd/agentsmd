@@ -1,0 +1,14 @@
+{
+ "run_id": "grok.A.target-invoice-count.a1",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-invoice-count",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 39.3,
+ "valid": true
+}

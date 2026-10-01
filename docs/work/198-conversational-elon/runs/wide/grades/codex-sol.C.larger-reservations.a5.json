@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends keeping the spreadsheet only if every reservation save goes through one shared mechanism. That mechanism must check availability and reserve the item atomically, so that when two conflicting submissions arrive together, one succeeds and the other is rejected. It rejects conditional formatting as the safeguard. It says that if enforced saving cannot ship this week, the release does not meet the owner's requirement. It offers no optional additions. The unmet need is that it never says what the shared mechanism is or how to build it.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires overlapping reservations for the same item to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and reminders as the mechanism for preventing conflicts.",
+  "Bottleneck": "Two agents can both see availability before either saves.",
+  "Checked myself": "You described six agents across two offices and a double booking last week; I have not inspected the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply requires a shared atomic save that rejects the second of two simultaneous conflicting bookings and rejects colours; it is vague only about how to implement that mechanism.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

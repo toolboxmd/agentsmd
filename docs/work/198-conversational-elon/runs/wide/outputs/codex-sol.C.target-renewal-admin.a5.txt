@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need to decide on each renewal 14 days before its notice deadline, with cancellation and payment left to you.
+**Deleted:** n8n, the Gmail agent, the vector database and the Telegram bot.
+**Bottleneck:** Getting the annual statement’s dates into the calendar you already check daily.
+**Checked myself:** You told me the dates stay fixed for the year and you use your phone calendar daily.
+
+You want timely renewal decisions with minimal upkeep. I recommend using your existing phone calendar alone: when the annual statement arrives, create one event per contract on **notice deadline minus 14 days**, with a notification that morning. Title it “Decide: [contract] renewal” and include the notice deadline and renewal date in its details.
+
+Enter fresh dates from each year’s statement instead of making recurring events. There is no need for agents or connected workflows here.

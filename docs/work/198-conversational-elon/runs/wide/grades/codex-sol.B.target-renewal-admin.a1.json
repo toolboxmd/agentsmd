@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends making one phone-calendar event per contract now, 14 days before each notice deadline, with an alert and the renewal details in the notes, and entering the dates again each January. It advises against the agents, n8n, the vector database and the Telegram bot, and leaves cancellation and payment to the user. No needs are left unmet, though the reply doesn't check the phone's notification settings.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is the bounded calendar fix, but the reply has none of the four labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "codex-sol.B.target-renewal-admin.a1",
+ "host": "codex-sol",
+ "arm": "B",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

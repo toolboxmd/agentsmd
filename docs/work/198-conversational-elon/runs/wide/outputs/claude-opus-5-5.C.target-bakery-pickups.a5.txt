@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup. Payments and stock already reconcile correctly, so nobody has asked for new sales or inventory tracking.
+**Deleted:** Odoo and its sales, inventory and manufacturing modules, plus the implementation partner. They replace systems that already work and don't fix what failed.
+**Bottleneck:** Staff work from the shared list without ordering it by pickup date, so next month's cakes were made before today's.
+**Checked myself:** Only what you told me. I haven't seen the list itself or how staff read it.
+
+You want no pickup missed, and I'd skip the rollout entirely. The smallest fix is to keep your shared order list and show it at the counter sorted by pickup date, with today's and tomorrow's unprepared orders at the top. Then make the rule that staff always work from the top down.
+
+Before next week, it's your call whether to cancel or reschedule the partner booking, since that may involve a fee. If you tell me what the list lives in (spreadsheet, app, paper), I'll set up the sorted view.

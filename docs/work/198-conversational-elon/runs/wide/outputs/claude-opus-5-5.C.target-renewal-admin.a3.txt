@@ -1,0 +1,12 @@
+**Requirements and who asked:** You asked for a reminder per contract two weeks before its notice deadline, so you can decide in time; no automatic cancellation or payment.
+**Deleted:** n8n, the Gmail agent, the vector database, and the Telegram bot. The dates arrive once a year on one statement and don't change, so there is nothing to watch, search, or sync.
+**Bottleneck:** Getting each year's dates into a place you already look every day. The reminder itself is solved.
+**Checked myself:** Only what you told me: one statement per year, fixed dates, a 14-day decision lead, daily phone calendar use, no automatic actions.
+
+You want a timely nudge to decide on each renewal. I recommend using the phone calendar you already check, with no agents or workflows:
+
+1. When the statement arrives, add one all-day event per contract dated 14 days before its notice deadline. Title it like "Decide: home insurance renewal" and put the renewal date and notice deadline in the notes.
+2. Set an alert on each event. Add a second alert on the deadline itself if you want a backstop.
+3. Add one yearly event for the week the statement usually arrives: "Enter renewal reminders."
+
+That takes about ten minutes a year and costs nothing, so you can keep that budget.

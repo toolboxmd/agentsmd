@@ -1,0 +1,11 @@
+I’d ship this week by moving the existing command to your always-on Linux machine and scheduling it with a systemd timer. The missed runs are consistent with the laptop being asleep; successful runs already produce the right report.
+
+For this workload, the split is simple:
+
+- **Scheduler:** a systemd timer, running comfortably before 08:00—for example, at 06:00—with `Persistent=true` to catch up after downtime.
+- **Worker:** a systemd service that runs the existing Python command in a pinned virtual environment under a dedicated user.
+- **Deployment:** a small versioned bundle containing the script, dependencies, service and timer definitions. Keep credentials outside the repository.
+
+Add a bounded retry, prevent overlapping runs, and write the report to a temporary file before atomically replacing the final output. Log each attempt and alert if there’s no successful report for that night by 07:30.
+
+Airflow in Kubernetes would add several services to operate without solving an additional problem here. Budget makes it affordable, but doesn’t make it necessary. Future-proof this by keeping the export runnable as a standalone command and documenting its inputs, output and success criteria. You can move that same command into Airflow later if you acquire dependent jobs, backfills, or enough workflows to justify centralized orchestration.

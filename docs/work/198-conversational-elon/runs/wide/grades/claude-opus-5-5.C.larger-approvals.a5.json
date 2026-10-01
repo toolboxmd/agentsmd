@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the current folder and add a released subfolder that only the three reviewers can write to. A reviewer approves by moving or copying the exact file into it, so the platform logs who did it and when under their own login. Put a seven-year retention policy on that subfolder. Permissions block authors from approving their own work, and a rule or separate check covers reviewers who also author. Rejected: the typed-initials APPROVED column and naming conventions as controls. Asks which platform hosts the folder to scope the setup. Unmet: it never says the platform's approval log is kept for seven years, and nothing stops reviewers from changing or overwriting files already in the released folder.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The customer contract requires each released document to keep its exact approved version, approver identity and approval time for seven years, with no self-approval and no way for later edits to change the approved version. You need this before this week's delivery and want to keep the current folder.",
+  "Deleted": "A new document system or custom approval tool. A naming convention as a control, because it enforces none of the contract terms.",
+  "Bottleneck": "Authors can write to everything, so nothing approved can stay fixed.",
+  "Checked myself": "Only what you told me. I have not seen the folder or the platform it runs on."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": false,
+ "note": "The plan uses enforceable permissions, but it relies on the platform's who-and-when log without saying that log is kept for seven years, and it leaves released files changeable by reviewers.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.C.larger-approvals.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

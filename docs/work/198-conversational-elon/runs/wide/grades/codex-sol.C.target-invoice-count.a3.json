@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Replace the row retrieval and in-memory object counting with a PostgreSQL COUNT(*) that uses the existing unpaid-invoice conditions, then measure it against the one-second target. Ship only that query change this week, with no Kafka, CQRS projection, Redis, services or topics. No optional additions. The latency claim is left unverified until measured.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count within one second, reflecting invoices committed at request time.",
+  "Deleted": "Kafka, CQRS projection, and Redis for this count.",
+  "Bottleneck": "Fetching rows and constructing invoice objects adds unnecessary work; database performance is unmeasured.",
+  "Checked myself": "You supplied the endpoint behavior and requirements; I have no timing or query-plan evidence."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded aggregate-query fix that keeps request-time freshness and names the rejected Kafka, CQRS and Redis stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-invoice-count.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

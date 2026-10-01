@@ -1,0 +1,14 @@
+**Requirements and who asked:** The customer contract requires, for seven years, the exact approved version, the approver's identity and the approval time for every released document; no self-approval; later edits must not alter the approved version.
+**Deleted:** A new document management or QMS product, typed-initials approval, and a naming convention as a control.
+**Checked myself:** Only what you told me: 12 authors and 3 reviewers work remotely and release weekly, and authors can edit the current shared folder. I have not seen the folder or its platform.
+**Bottleneck:** Authors can edit the folder, so nothing in it stays fixed after approval.
+
+Your plan won't meet the contract. Anyone can type anyone's initials, an author can type their own, the column records no reliable time, and an author can still overwrite the approved file. A naming convention is fine for tidiness but controls none of this.
+
+You need contract-compliant releases by this week's delivery. The smallest way is to keep your folder for drafting and add one **Released** folder that only the three reviewers can write to and authors can only read:
+
+1. A reviewer who did not write the document copies the exact approved file into Released. The platform's own activity log records who did it and when, which replaces typed initials.
+2. Turn on a seven-year retention policy or legal hold on Released, so no one can edit or delete the files there.
+3. Authors keep editing their drafts. Approved copies never change.
+
+Which platform hosts the folder (SharePoint, Google Drive, Dropbox or something else)? Each one keeps audit logs and retention differently, and on some plans the log keeps only a few months of history. That would need a fix before I can tell you this covers seven years.

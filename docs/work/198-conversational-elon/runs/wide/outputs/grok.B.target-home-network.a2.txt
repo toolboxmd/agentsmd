@@ -1,0 +1,1 @@
+You want dependable video calls at that desk. Replace the desk Ethernet cable and leave slack through the grommet, then place a call: only that computer drops while two other devices on the same router stay connected, and the cable is several years old and squeezed. Keep the UniFi gateway, managed switches, and Grafana until a sound cable still drops the call.

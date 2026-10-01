@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: build one saved Excel Power Query on the existing export that groups by month and region and sums the signed net amounts, then refresh it each month. Before using it for the board, reconcile its totals against a month already checked by hand. No optional additions are offered, and the four-tool stack is dropped. Unmet needs: none stated.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want a repeatable monthly board report of net sales by region.",
+  "Deleted": "Airbyte, Snowflake, dbt and Power BI; this report has no demonstrated need for them.",
+  "Bottleneck": "Summing the regional totals by hand.",
+  "Checked myself": "You\u2019ve told me the export is one local Excel table, fits on your computer and includes negative refunds; I haven\u2019t inspected it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Power Query inside the existing workbook is a bounded way to aggregate, the stack is dropped by name, and Checked myself relies only on facts the user supplied and says the export wasn't inspected.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-board-report.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

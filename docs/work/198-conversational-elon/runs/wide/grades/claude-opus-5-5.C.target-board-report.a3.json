@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: format the export as an Excel Table and build a PivotTable in the same workbook with Region as rows, Date grouped by Month/Year as columns and Sum of signed net amount as values; refresh it each month. Refunds stay as negatives. No optional present additions. Revisit the stack only if a second data source or more data than Excel can handle appears later. The agent offers to build the pivot and reconcile it against a hand-built month if given the workbook path. No unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want a correct, low-effort monthly net-sales-by-region table for the board; \"modern data stack\" comes from peer adoption, not from a failure in your current report.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI. There is one local Excel source that fits on your machine, so there is nothing to ingest, warehouse, transform at scale, or host.",
+  "Bottleneck": "Building the monthly regional sums by hand each month.",
+  "Checked myself": "Nothing yet. This is based only on what you told me: one Excel table with region, date, and signed net amount including negative refunds."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded pivot-table fix, names and removes the four-tool stack as a current need, and is honest that it checked nothing itself.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-board-report.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

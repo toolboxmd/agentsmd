@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends replacing the endpoint's row and object counting with a single PostgreSQL COUNT(*) query that uses the unpaid predicate. It adds an index only if the query plan shows one is needed, then checks the result against the one-second target. It rejects Kafka, a CQRS projection and Redis for this count because an asynchronous projection can lag behind committed invoices. It offers no stack additions now. Latency has not been measured yet, so whether the one-second target is met is still open.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count within one second, reflecting invoices committed at request time.",
+  "Deleted": "Kafka, CQRS projection, and Redis for this count.",
+  "Bottleneck": "The endpoint retrieves rows and constructs objects solely to count them; actual query latency is unmeasured.",
+  "Checked myself": "Only the facts you supplied; no code, query plan, or timings inspected."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, which is a bounded aggregate-query fix that keeps request-time freshness and explicitly rejects the event-driven stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-invoice-count.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

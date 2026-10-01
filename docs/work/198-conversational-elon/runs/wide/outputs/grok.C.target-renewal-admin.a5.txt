@@ -1,0 +1,11 @@
+**Requirements and who asked**: A reminder so you can decide on each renewal two weeks before its notice deadline. You asked for an n8n, Gmail-agent, vector-database, and Telegram-bot design to send those reminders.
+
+**Deleted**: n8n, the Gmail agent, the vector database, the Telegram bot, and any workflow joining them.
+
+**Bottleneck**: Putting this year's dates on the phone calendar you already open every day.
+
+**Checked myself**: Your description of one yearly statement, fixed renewal and notice dates, the two-week decision point, daily phone calendar use, and no automatic cancellation or payments.
+
+You are trying to decide on each renewal two weeks before its notice deadline.
+
+When the statement arrives, add one calendar event per contract on the day 14 days before its notice deadline, with the contract name, renewal date, and notice deadline in the notes, and turn on the alert you already see. Do the same from next year's statement.

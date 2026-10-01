@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply says to keep the current network layout and connect the desk computer to the router with a known-good replacement cable, routed without pinching or tight bends, then watch whether drops come back on normal calls. If they do, the next step is to isolate the router port and the computer's Ethernet adapter. Nothing is added now: the gateway, switches and dashboard are dropped from this fix. The reply also says the cable is a plausible cause, not a confirmed one.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at the desk; you also asked for future-proofing, but no capacity or feature gap is established.",
+  "Deleted": "The UniFi gateway, managed switches, and Grafana dashboard from this fix; the evidence does not justify them.",
+  "Bottleneck": "The desk\u2019s Ethernet connection, including an aging cable through a tight grommet, has not been tested with a replacement.",
+  "Checked myself": "You told me two other devices on the same router keep their calls connected during dropouts; I have no direct measurements."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded cable swap, rejects the stack by name, and its four record lines come before the recommendation and stick to the facts given.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

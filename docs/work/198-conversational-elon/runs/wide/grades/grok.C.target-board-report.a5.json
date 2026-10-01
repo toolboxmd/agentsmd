@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: build one pivot table on the existing export, with region as rows, the sum of the signed net amount as values and the report month as a date filter. Refresh it when each new file arrives. The reply offers no optional additions and leaves no needs unmet. It rejects the Airbyte/Snowflake/dbt/Power BI stack.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for an Airbyte, Snowflake, dbt, and Power BI pipeline this week to future-proof the monthly board report, because peers use that stack and you have budget. The report needs one month of net sales summed by region.",
+  "Deleted": "Airbyte, Snowflake, dbt, and Power BI. Peer adoption and a budget are the only reasons given for them.",
+  "Bottleneck": "Hand-totaling one local Excel table once a month.",
+  "Checked myself": "You told me the export is one local table with region, date, and signed net amount, refunds already negative, and that the workbook fits on your computer. I have not opened the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded pivot recommendation, the stack is named and rejected, and the reply bases its checks on the facts it was given while saying it never opened the file.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-board-report.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

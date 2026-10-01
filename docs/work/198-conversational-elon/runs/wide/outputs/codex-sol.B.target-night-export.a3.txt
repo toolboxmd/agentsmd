@@ -1,0 +1,5 @@
+You need a correct report by 08:00, and a sleeping laptop cannot reliably guarantee that; Airflow and Kubernetes add complexity without solving a requirement this export currently has.
+
+I recommend shipping the existing Python command on your always-on Linux machine with one systemd service and one timer scheduled comfortably before 08:00, then verifying an unattended run and a safe rerun.
+
+Keep execution, scheduling, and deployment together this week; reconsider separate workers or Airflow when actual dependencies, concurrency, or scale require them.

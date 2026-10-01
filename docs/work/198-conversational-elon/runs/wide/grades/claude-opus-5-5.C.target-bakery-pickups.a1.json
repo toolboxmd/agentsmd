@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: keep the existing shared order list, sort it by pickup date (earliest first) or add a 'Due today' filter at the counter, and have staff prepare only today's (then tomorrow's) unprepared orders before starting anything later. Add a closing check that tomorrow's orders are prepared or scheduled. No optional present additions; the reply advises cancelling the Odoo partner booking and revisiting only if cakes are still missed after a couple of weeks. Unmet needs: none.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup; nobody has asked for new sales, inventory, or manufacturing tracking.",
+  "Deleted": "Odoo and the implementation partner. Payments and stock already reconcile correctly, and the order list already holds the pickup date.",
+  "Bottleneck": "Cakes are prepared in the order they were entered instead of by pickup date, so next month's cakes got made before today's.",
+  "Checked myself": "Only what you told me. Every order has customer, pickup date, and status, and the list is readable at the counter. I have not seen the list."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded due-date sort/filter on the existing list with Odoo explicitly deleted; the only revisit is conditional on later failure, and the checks rely on supplied facts with the inspection limit stated.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

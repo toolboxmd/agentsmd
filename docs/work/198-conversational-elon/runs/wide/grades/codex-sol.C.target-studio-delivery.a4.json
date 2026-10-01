@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: build one small local script that reads the client's ordered code list, matches exact filename code prefixes in the JPEG folder, flags missing, unmatched or ambiguous images, and generates the contact-sheet PDF in the client's order. Test it on a finished job this week, then use it for the next delivery. Optional additions: none. The DAM, AI tagging, semantic search and cloud portal are dropped as unsupported by the evidence. Unmet needs: none beyond defining how multiple images of one product are ordered.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Your client requires images in their supplied product-code order; you want a professional workflow this week.",
+  "Deleted": "DAM, AI tagging, semantic search, and a cloud portal from this scope.",
+  "Bottleneck": "You spend an hour manually arranging thumbnails before each PDF export.",
+  "Checked myself": "You told me each job has one JPEG folder, filenames start with product codes, and the client supplies an ordered code list. I have not inspected files or tested matching."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, which is a bounded local script that follows the client's code order and adds nothing from the rejected stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-studio-delivery.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

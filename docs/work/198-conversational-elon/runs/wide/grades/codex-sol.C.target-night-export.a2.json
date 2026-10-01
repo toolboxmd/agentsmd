@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now, the reply says to run the existing command on the always-on Linux machine as a single systemd service. A timer would start it at 07:30, with missed-run catch-up turned on and logs kept. It adds no orchestration platform. Keeping the command runnable on its own leaves room for future changes. It does not mention checking the machine's interpreter or paths first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want a reliable report by 08:00 and something we can ship this week.",
+  "Deleted": "Airflow, Kubernetes, and separate workers add machinery this export does not need.",
+  "Bottleneck": "The laptop is often asleep when the export should run.",
+  "Checked myself": "From the facts you supplied: the command works, takes three minutes, has no downstream jobs, and is safe to rerun; you already administer an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply fills in all four record lines before recommending anything, and its fix stays small: a timer on the server the user already runs, with nothing added to it.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

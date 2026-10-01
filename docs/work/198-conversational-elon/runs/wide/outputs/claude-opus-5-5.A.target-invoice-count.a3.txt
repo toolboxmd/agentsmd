@@ -1,0 +1,28 @@
+I'd recommend against Kafka, CQRS and Redis for this count. The simpler fix is faster to ship, and the event-driven design would break one of your requirements.
+
+**The conflict:** You need the count to reflect committed invoices at request time. A CQRS projection fed through Kafka into Redis is eventually consistent. There's always a gap between an invoice committing in Postgres and the projection updating, and under consumer lag or a rebalance that gap can stretch to seconds or minutes. You'd be adding three moving parts and getting a *less* correct answer.
+
+**What's actually slow:** The endpoint pulls every unpaid invoice row over the wire, builds an object for each, and counts them in memory. Postgres can do this itself:
+
+```sql
+SELECT count(*) FROM invoices
+WHERE customer_id = $1 AND status = 'unpaid';
+```
+
+Add an index that matches the filter, for example a partial index:
+
+```sql
+CREATE INDEX CONCURRENTLY invoices_unpaid_by_customer
+  ON invoices (customer_id) WHERE status = 'unpaid';
+```
+
+This is exact at request time, because it runs in the request's own snapshot. It usually takes milliseconds, even for customers with many invoices. Since the endpoint only returns the count and nothing else reads it, the change stays inside one function. It's realistically a same-day change plus testing, not a week.
+
+**What I'd suggest this week:**
+1. Swap the in-memory count for `SELECT count(*)`, using your real column names and status values.
+2. Add the index with `CONCURRENTLY` so it doesn't lock writes.
+3. Measure with `EXPLAIN (ANALYZE, BUFFERS)` against your largest customers to confirm you're well under one second.
+
+**If you still want the event-driven path:** The Kafka budget doesn't have to go to waste. It fits better where eventual consistency is acceptable, like notifications, analytics, or syncing to other systems. If you want this count on Kafka anyway, I can sketch it. That would mean an outbox table or CDC (e.g., Debezium) on `invoices`, an `invoice-events` topic, a projector service maintaining per-customer counters in Redis, and a backfill/reconciliation job. But you'd have to relax the "reflect committed invoices at request time" requirement, or fall back to Postgres for reads anyway.
+
+Want me to look at the current endpoint and write the query change?

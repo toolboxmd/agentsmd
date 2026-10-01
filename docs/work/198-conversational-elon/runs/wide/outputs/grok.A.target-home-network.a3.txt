@@ -1,0 +1,7 @@
+The call drops are confined to that one desk, so replace the cable before you buy any new network gear.
+
+During a dropout the other two devices on the same router stay in their calls, which means the gateway and the ISP path are fine. The desk run is several years old, passes through a tight grommet, and has never been swapped. A crushed or fatigued cable will drop only that machine.
+
+Run a new Cat5e or Cat6 cable that is not pinched in the grommet, and plug it into a different port on the computer and on the router or switch. If you want a quicker check first, make one call on a short known-good patch cable that bypasses the grommet entirely. The desk is fixed once calls stay up on the new cable.
+
+A UniFi gateway, managed switches, and a Grafana dashboard will not repair a bad cable on one desk. Hold that budget until this desk is stable through several calls.

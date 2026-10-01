@@ -1,0 +1,15 @@
+Ship no new services or topics this week. Keep the count in the existing application and PostgreSQL.
+
+The endpoint is slow because it loads invoice rows and builds objects only to count them. Replace that with one query that returns the number, using the same unpaid predicate the endpoint already applies:
+
+```sql
+SELECT count(*) AS unpaid
+FROM invoices
+WHERE <existing unpaid predicate>;
+```
+
+Add an index that matches that predicate (a partial index on the unpaid rows is a good fit). Under PostgreSQL’s default read committed isolation, the statement sees invoices committed at request time, and an indexed count should finish in milliseconds, inside the one-second limit.
+
+A CQRS projection written to Redis from Kafka updates after the invoice transaction commits. A request during that lag returns a count that omits invoices already committed, which misses the requirement. It also adds a cluster, topics, a consumer, Redis, lag, and replay for a value with a single reader.
+
+Change this endpoint to the indexed count and check it with `EXPLAIN ANALYZE`. If a particular unpaid set is still slow after the index, the next step is still the query plan in PostgreSQL.

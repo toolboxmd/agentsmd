@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.A.target-home-network.a1",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-home-network",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "out to stop these call drops?\"\nwarning: Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.A.target-home-network.a1-asdqbvrs/home/.codex/config.toml.\ncodex\nThe dropout pattern points first to the desk\u2019s Ethernet connection: two other devices keep their calls connected through the same router. A UniFi upgrade may be useful, but it\u2019s unlikely to fix a damaged desk cable.\n\nI\u2019d do this first:\n\n1. Temporarily run a known-good Ethernet cable directly from the desk computer to the router, bypassing the tight grommet.\n2. Use it for several calls. If the drops stop, replace the old cable permanently and route it without pinching or sharp bends.\n3. If drops continue, try another router port, then a different Ethernet adapter on the desk computer.\n\nFor the eventual upgrade, keep the layout simple: **internet modem/ONT \u2192 UniFi gateway \u2192 managed switch \u2192 desk and other wired devices**, with Wi-Fi access points connected to the switch. Choose port speeds and PoE capacity around devices you expect to add.\n\nGrafana can help track WAN outages and switch-port errors, but it won\u2019t repair a faulty connection. Establish a reliable desk connection first, then use the approved budget for capacity, coverage, and monitoring where they\u2019ll actually help.\ntokens used\n2,187\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": null
+ },
+ "seconds": 15.8,
+ "valid": true
+}

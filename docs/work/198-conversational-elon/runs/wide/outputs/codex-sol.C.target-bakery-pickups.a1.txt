@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup; you proposed Odoo sales, inventory and manufacturing.
+**Deleted:** Those modules from the immediate pickup fix; payments and stock already reconcile correctly.
+**Bottleneck:** Preparation is reaching next month’s orders while today’s cakes remain unmade.
+**Checked myself:** From your account, everyone preparing cakes can read the shared list; I have not inspected it.
+
+You’re trying to prevent missed pickups. My recommendation is to use the existing list now: identify every unfinished cake due today, assign each to a person, prioritize by pickup time, and confirm completion before moving to later dates.
+
+For next week’s partner meeting, make reliable pickup preparation the acceptance criterion and ask them to demonstrate what Odoo would change about this specific failure before committing to a broader rollout.

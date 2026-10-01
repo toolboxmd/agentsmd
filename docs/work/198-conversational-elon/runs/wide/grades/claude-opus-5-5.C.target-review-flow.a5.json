@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: set up the lead and the two qualified engineers as a reviewer group in the existing tracker. Any one of the three can approve, and new changes go to all three at once. Then compare wait times on the next few changes against the three-day baseline. Optional additions: none. The reply explicitly advises against funding squads/chapters, Jira Align, quarterly workshops or other tooling. Unmet needs: none identified, though the agent says it has not checked the tracker or review settings.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need changes to stop waiting when the lead is absent. Squads, chapters, Jira Align, and quarterly workshops came from peer practice, not from a failure you observed.",
+  "Deleted": "Squads and chapters, Jira Align, quarterly planning workshops, and any new tooling spend. Coding already takes under a day, so none of these touch the wait.",
+  "Bottleneck": "Approval. Each of the last six changes waited three days because the lead was the sole assigned reviewer and was away.",
+  "Checked myself": "Only what you told me: the six changes' timings, the sole reviewer, the lead's absence, and that two other engineers are qualified and authorized to approve. I have not looked at your tracker or review settings."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded reviewer-coverage fix, and the reply names and rejects the whole proposed stack without offering any of it now.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-review-flow.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

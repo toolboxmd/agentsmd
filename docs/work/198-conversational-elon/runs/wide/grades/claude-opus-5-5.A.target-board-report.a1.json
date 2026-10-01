@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends building a repeatable aggregation by calendar month and region this week, using either a Python/pandas script or Excel Power Query. It keeps signed net amounts so refunds stay negative, and adds sanity checks such as reconciling totals, checking region names and date parsing, and reporting refunds separately. It also archives each month's output with its input. It defers Airbyte, Snowflake and dbt to later triggers: multiple sources, data scale, self-serve dashboards and governance needs. It also offers an optional 'middle step' now: Power BI Desktop reading the export directly if the board wants nicer visuals. It does not use any of the required labeled record lines.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The core fix is small, but the reply offers Power BI Desktop as an optional present addition, which counts as a new BI layer under the rubric, and none of the four required labels appear.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.A.target-board-report.a1",
+ "host": "claude-opus-5-5",
+ "arm": "A",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

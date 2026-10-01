@@ -1,0 +1,8 @@
+**Requirements and who asked**: The signed customer contract requires every released document to retain its exact approved version, the approver's identity, and the approval time for seven years; authors must not approve their own documents, and later edits must not change the retained version. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.
+**Deleted**: Typed initials and a naming convention as the control, because authors can change both and neither records an authenticated approver or an approval time. A new document system, because one read-only copy and a reviewer-only log meet the contract.
+**Bottleneck**: Authors can edit the shared folder, so the released file and any approval mark in it can change after release.
+**Checked myself**: What you told me about the contract, the twelve remote authors, the three reviewers, weekly releases, and author edit access to the current folder. I have not inspected the folder or the contract.
+
+You are trying to meet those controls before this week's delivery, and I would not ship the initials column and naming convention: authors can still change the released file and the approval mark.
+A reviewer who did not write the document copies the exact file into a retention folder authors cannot modify, on storage you already keep for seven years, sets that copy read-only, and appends the checksum, author, approver account, and approval time to a reviewer-only log kept with the copy.
+Tell me which share to use and I will set that retention folder up before the delivery.

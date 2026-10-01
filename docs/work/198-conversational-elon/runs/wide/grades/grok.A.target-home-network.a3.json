@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do it now: replace the old desk cable with a new Cat5e/Cat6 run that isn't pinched in the grommet, use different ports, or first test one call on a short known-good patch cable that skips the grommet. Hold off on the UniFi/switch/Grafana budget until the desk stays stable. Nothing is added now. Gap: the reply has no labeled record lines.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends a bounded cable check and rejects the stack in prose, but none of the four required labeled lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-home-network.a3",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

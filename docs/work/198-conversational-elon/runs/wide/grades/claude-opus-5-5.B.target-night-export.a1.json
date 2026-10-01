@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends moving the existing command to the always-on Linux machine now, under a systemd timer that runs at 02:00 with Persistent=true, retries on failure and sends an OnFailure alert. It explicitly rejects Airflow on Kubernetes now and treats it only as a conditional later option once there are several interdependent jobs, backfills or team sharing. Before setup it asks for the hostname and command path, and says it will read an ADR first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a bounded fix and correctly rejects the stack, but the reply has none of the four required record labels, so every label-based predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.B.target-night-export.a1",
+ "host": "claude-opus-5-5",
+ "arm": "B",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

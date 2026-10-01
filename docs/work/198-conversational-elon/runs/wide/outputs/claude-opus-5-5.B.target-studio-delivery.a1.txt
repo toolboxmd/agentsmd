@@ -1,0 +1,16 @@
+You want each delivery to arrive in the client's code order with a contact sheet, without the hour of dragging. A DAM with AI tagging and semantic search doesn't solve that, because your images are already identified by exact product code. I'd skip it for now and have me write a small script this week instead.
+
+The script would:
+
+- read the client's code list
+- match each file in the job folder by its code prefix
+- flag missing codes, extra files, and duplicates before anything is written
+- produce a contact-sheet PDF in the client's order (and optionally renamed copies like `001_CODE.jpg`)
+
+That should turn the hour into a minute, and it costs nothing. If clients later ask for online review, we can add a portal then.
+
+To build it, send me:
+
+- one real code list, in whatever format clients send it
+- a listing of a job folder's filenames
+- what should happen when one code has several shots

@@ -1,0 +1,3 @@
+Your goal is to keep changes shipping when the lead is absent; I recommend fixing review coverage this week and deferring squads, chapters, Jira Align, and quarterly workshops.
+For all six recent changes, coding took less than a day, then approval waited three days because the sole assigned reviewer was away, despite two other engineers being qualified and authorized to approve.
+Launch a simple review policy in your existing tracker: assign each PR a primary reviewer and a qualified backup, route directly to the backup when the primary is absent, and reassign after one business day without review; keep existing approval checks and measure approval wait time over the next six changes.
