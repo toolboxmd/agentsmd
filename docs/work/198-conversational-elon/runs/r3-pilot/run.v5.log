@@ -1,0 +1,38 @@
+start v5: Thu Oct  1 18:43:53 CEST 2026 sha 3d4552a8198459520f058efe5033f1ce84a134ddbab1e299d5e868c8191edce7  /tmp/198-r3/v5.md
+claude-sonnet-5.v5.canary.a1                            valid                                 4s
+codex.v5.canary.a1                                      valid                                 6s
+opencode.v5.canary.a1                                   valid                                 8s
+canary claude-sonnet-5.v5     PASS  'Yes.\n"Global Agent Rules"'
+canary opencode.v5            PASS  'yes\n# Global Agent Rules'
+canary codex.v5               PASS  'yes\n# Global Agent Rules'
+claude-sonnet-5.v5.control-trivial.a1                   valid                                 4s
+claude-sonnet-5.v5.control-trivial.a2                   valid                                 3s
+claude-sonnet-5.v5.control-trivial.a3                   valid                                 5s
+claude-sonnet-5.v5.control-trivial.a4                   valid                                 4s
+claude-sonnet-5.v5.control-trivial.a5                   valid                                 5s
+claude-sonnet-5.v5.target-monitoring.a1                 valid                                27s
+claude-sonnet-5.v5.target-monitoring.a2                 valid                                31s
+claude-sonnet-5.v5.target-monitoring.a3                 valid                                10s
+claude-sonnet-5.v5.target-monitoring.a4                 INVALID exit 1                        4s
+claude-sonnet-5.v5.target-monitoring.a5                 valid                                23s
+claude-sonnet-5.v5.target-monitoring.a6                 valid                                35s
+claude-sonnet-5.v5.target-monitoring.a7                 valid                                20s
+claude-sonnet-5.v5.target-monitoring.a8                 valid                                23s
+claude-sonnet-5.v5.target-monitoring.a9                 valid                                 7s
+claude-sonnet-5.v5.target-monitoring.a10                valid                                38s
+claude-sonnet-5.v5.target-monitoring.a11                valid                                17s
+cell claude-sonnet-5.v5.target-monitoring: 10 valid, 1 invalid
+cell claude-sonnet-5.v5.control-trivial: 5 valid, 0 invalid
+codex.v5.target-monitoring.a1                           valid                                16s
+codex.v5.target-monitoring.a2                           valid                                20s
+opencode.v5.target-monitoring.a1                        valid                                55s
+codex.v5.target-monitoring.a3                           valid                                20s
+codex.v5.target-monitoring.a4                           valid                                12s
+codex.v5.target-monitoring.a5                           valid                                15s
+opencode.v5.target-monitoring.a2                        valid                                37s
+opencode.v5.target-monitoring.a3                        valid                                36s
+opencode.v5.target-monitoring.a4                        valid                                34s
+opencode.v5.target-monitoring.a5                        valid                                29s
+cell opencode.v5.target-monitoring: 5 valid, 0 invalid
+cell codex.v5.target-monitoring: 5 valid, 0 invalid
+exit 0

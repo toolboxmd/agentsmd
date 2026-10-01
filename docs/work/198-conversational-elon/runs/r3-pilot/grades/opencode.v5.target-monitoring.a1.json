@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends one dead-man heartbeat: nightly-sync pings it on success, and it alerts the user if no ping arrives.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Alert within a day on fail or silence with no log reading (user need for nightly-sync); Synology Docker central log was user suggestion only.",
+  "Deleted": "Central log on Synology, Docker logging stack, log aggregation for manual review.",
+  "Bottleneck": "No detection of missing success, crashes before email left four nights silent.",
+  "Checked myself": "Single cron job on edna at 03:00, email only on finish, four startup crashes on expired token with no email, no other alerting today, Synology available, you will not read logs."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single heartbeat alert, explicitly rejects the Synology/Docker log stack, and its four record lines all come before the recommendation and cite only facts from the situation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v5.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

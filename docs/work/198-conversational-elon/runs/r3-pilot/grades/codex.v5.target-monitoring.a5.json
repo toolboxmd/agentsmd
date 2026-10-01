@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends one hosted heartbeat monitor that `nightly-sync` pings only after a successful run, with a daily deadline after 03:00, so the user gets an email when the ping does not arrive.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to hear when `nightly-sync` fails, without reading logs.",
+  "Deleted": "Central logging and Docker; neither is needed to detect a missing nightly run.",
+  "Bottleneck": "The job sends its own notification, so an early crash also kills the alert.",
+  "Checked myself": "Only your account: four startup failures, no emails, and no independent monitoring."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "It recommends a single heartbeat alert and drops central logging and Docker; the Checked myself line cites only facts from the user's account and claims no checks.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v5.target-monitoring.a5",
+ "host": "codex",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

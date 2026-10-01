@@ -1,0 +1,9 @@
+Requirements and who asked: you need to know within hours when `nightly-sync` fails, including crashes before the email step; nobody asked for a log aggregation platform, that's a solution jumping ahead of the actual requirement.
+
+Deleted: a central log server, Docker, and anything on the Synology. A log pipeline tells you what happened after you go looking, it doesn't notice absence for you, that's exactly how this failure stayed silent for four days. Not worth running or watching.
+
+Bottleneck: the job can fail before its only success signal (the email) ever gets sent. Fix that point, not somewhere downstream.
+
+Checked myself: you told me the email happens at the end and that it crashed at startup, so it never ran.
+
+Recommendation: add a dead-man's-switch check, like healthchecks.io's free tier or cron-wrapping with a one-line curl at job start and end (or self-hosted `healthchecks` via a single container if you don't want a third party, but start with the hosted free tier since it's one less thing to run). Wrap the cron entry so it pings "start" then "success"; if "success" doesn't arrive by a deadline, it emails/texts you. That catches this exact failure mode with one new moving part instead of a logging stack.

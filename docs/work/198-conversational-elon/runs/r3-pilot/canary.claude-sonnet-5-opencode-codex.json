@@ -16,5 +16,23 @@
   "expected": "# Global Agent Rules",
   "reply": "yes\n\"# Global Agent Rules\"",
   "attempts": 1
+ },
+ "claude-sonnet-5.v5": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "Yes.\n\"Global Agent Rules\"",
+  "attempts": 1
+ },
+ "opencode.v5": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n# Global Agent Rules",
+  "attempts": 1
+ },
+ "codex.v5": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n# Global Agent Rules",
+  "attempts": 1
  }
 }

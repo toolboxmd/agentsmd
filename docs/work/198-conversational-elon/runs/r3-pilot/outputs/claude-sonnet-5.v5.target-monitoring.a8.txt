@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked to find out when nightly-sync fails without reading logs — the actual requirement is a failure alert, not a browsable log archive.
+**Deleted:** The central log stack and the Docker/Synology buildout. You said you won't read logs, so centralizing them doesn't get you a notification; it just makes a bigger pile of things you won't look at.
+**Bottleneck:** nightly-sync dies before it reaches its own email step, so your only notification path skips itself exactly when you need it. The bottleneck is "no alert independent of job completion," not "logs are scattered."
+**Checked myself:** This is from what you reported (crashed at startup four nights running on an expired token, no email, nothing else alerts today). I haven't inspected edna or the script myself.
+
+Recommendation: a dead-man's-switch ping (e.g. healthchecks.io, or self-hosted on the Synology if you want it local) — nightly-sync pings it on success, and it pushes/emails you if the ping doesn't land by 03:10. One mechanism, nothing new to run or babysit, and it fires precisely in the case that just burned you. Want me to wire that into the script and cron entry?

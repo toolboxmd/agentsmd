@@ -1,0 +1,14 @@
+{
+ "run_id": "opencode.v5.canary.a1",
+ "harness": "opencode",
+ "host": "opencode",
+ "model": "opencode/muse-spark-1.3-contributor-free",
+ "arm": "v5",
+ "arm_sha256": "3d4552a8198459520f058efe5033f1ce84a134ddbab1e299d5e868c8191edce7",
+ "scenario": "canary",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "\n> build \u00b7 muse-spark-1.3-contributor-free\n\n",
+ "seconds": 7.5,
+ "valid": true
+}

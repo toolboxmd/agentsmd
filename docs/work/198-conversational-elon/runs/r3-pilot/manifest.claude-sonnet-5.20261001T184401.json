@@ -1,0 +1,21 @@
+{
+ "started": "2026-10-01T18:44:01+0200",
+ "scenarios_sha256": "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b",
+ "arms": {
+  "v5": {
+   "source": "/tmp/198-r3/v5.md",
+   "sha256": "3d4552a8198459520f058efe5033f1ce84a134ddbab1e299d5e868c8191edce7"
+  }
+ },
+ "harnesses": {
+  "claude-sonnet-5": [
+   "claude",
+   "claude-sonnet-5"
+  ]
+ },
+ "cells": [
+  "v5:target-monitoring:10",
+  "v5:control-trivial"
+ ],
+ "repo_head": "21006cea033e7335c4e2fe76ec60269e5826def1"
+}

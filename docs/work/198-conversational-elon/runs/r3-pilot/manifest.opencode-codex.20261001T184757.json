@@ -1,0 +1,24 @@
+{
+ "started": "2026-10-01T18:47:57+0200",
+ "scenarios_sha256": "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b",
+ "arms": {
+  "v5": {
+   "source": "/tmp/198-r3/v5.md",
+   "sha256": "3d4552a8198459520f058efe5033f1ce84a134ddbab1e299d5e868c8191edce7"
+  }
+ },
+ "harnesses": {
+  "opencode": [
+   "opencode",
+   "opencode/muse-spark-1.3-contributor-free"
+  ],
+  "codex": [
+   "codex",
+   "gpt-6-astra"
+  ]
+ },
+ "cells": [
+  "v5:target-monitoring"
+ ],
+ "repo_head": "21006cea033e7335c4e2fe76ec60269e5826def1"
+}

@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked for reliable notice when nightly-sync fails to run; nobody asked for a log platform.
+**Deleted:** A Synology/Docker centralized-logging stack (Loki, ELK, etc.) — it's a bigger thing to run and maintain than this problem needs, and it still requires someone to watch a dashboard, which is exactly what "I won't read logs" rules out.
+**Bottleneck:** nightly-sync only emails on successful completion; a startup crash (expired token) never reaches that code path, so there's no failure signal today.
+**Checked myself:** you told me it crashed four nights in a row before the email step, and nothing else currently monitors the job.
+
+Recommendation: wrap the cron invocation (or add a try/except around the script's entry point) so any non-zero exit or uncaught exception fires an immediate failure email, reusing the same email mechanism nightly-sync already uses for its success summary — no logs, no new service, nothing on the Synology. That's a few lines in the script plus the crontab line; want me to write it?

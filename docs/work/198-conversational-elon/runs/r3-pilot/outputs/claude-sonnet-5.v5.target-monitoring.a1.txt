@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked to know when nightly-sync fails, not to have more logs to not-read — you said yourself you won't read logs.
+**Deleted:** A central Docker logging stack (Loki/Grafana/etc.) on the Synology. Rejected — it's a new service to run and maintain, and it still only gives you something to look at, which doesn't fix the actual failure mode.
+**Bottleneck:** nightly-sync only emails on a clean finish. A crash before that point (like the expired-token crash, four nights running) produces zero signal, logged or otherwise.
+**Checked myself:** From what you told me — crash was pre-email-step, same failure four nights straight, nothing else alerts on this job today.
+
+Goal: know the moment nightly-sync fails, without reading logs. Smallest fix: wrap the cron invocation so *any* exit (success or failure) sends an email, not just the success path — e.g. a one-line `trap`/`||` wrapper around the script that mails a failure notice with the tail of the error if the script dies early. No new host, no Docker, no central log to watch; it reuses the inbox you already check. Want me to write that wrapper and update the crontab on edna?

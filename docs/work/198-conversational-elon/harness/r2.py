@@ -12,7 +12,7 @@ exits and harness errors are invalid, kept, and retried until VALID_TARGET valid
 (at most MAX_RETRIES retries per cell).
 
 Usage: r2.py RUN_DIR canary | run [harnesses] [cells] [NAME=PATH,...]
-  cells: comma list of ARM:SCENARIO, default A,B,C target and C control.
+  cells: comma list of ARM:SCENARIO[:VALID], default A,B,C target and C control, 5 valid each.
   NAME=PATH: diagnostic arms from candidate files; when given, only these arms are used.
 """
 import concurrent.futures as cf, hashlib, json, os, re, shutil, subprocess, sys, tempfile, threading, time
@@ -221,14 +221,14 @@ def canary(base, arms, harnesses):
     return all(r["pass"] for r in results.values())
 
 
-def cell(base, arms, harness, arm, sc, prompt, gate):
+def cell(base, arms, harness, arm, sc, prompt, gate, target=VALID_TARGET):
     valid = invalid = n = 0
-    while valid < VALID_TARGET and invalid <= MAX_RETRIES:
+    while valid < target and invalid <= MAX_RETRIES:
         n += 1
         with gate[harness]:
             ok, _ = attempt(base, arms, harness, arm, sc, prompt, n)
         valid, invalid = valid + ok, invalid + (not ok)
-    return harness, arm, sc, valid, invalid
+    return harness, arm, sc, valid, invalid, target
 
 
 def main():
@@ -261,11 +261,11 @@ def main():
                                     text=True).stdout.strip(),
     }, indent=1) + "\n")
     gate = {h: threading.Semaphore(PER_HARNESS) for h in harnesses}
-    jobs = [(h, *c.split(":")) for h in harnesses for c in cells]
+    jobs = [(h, *(c.split(":") + [VALID_TARGET])[:3]) for h in harnesses for c in cells]
     with cf.ThreadPoolExecutor(len(jobs)) as pool:
-        for f in [pool.submit(cell, base, arms, h, a, s, prompts[s], gate) for h, a, s in jobs]:
-            h, a, s, v, i = f.result()
-            print(f"cell {h}.{a}.{s}: {v} valid, {i} invalid{'  (CAP REACHED)' if v < VALID_TARGET else ''}",
+        for f in [pool.submit(cell, base, arms, h, a, s, prompts[s], gate, int(n)) for h, a, s, n in jobs]:
+            h, a, s, v, i, n = f.result()
+            print(f"cell {h}.{a}.{s}: {v} valid, {i} invalid{'  (CAP REACHED)' if v < n else ''}",
                   flush=True)
 
 

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends wrapping the cron invocation of nightly-sync so that any exit, including an early crash, sends an email with the error tail, and nothing else.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to know when nightly-sync fails, not to have more logs to not-read \u2014 you said yourself you won't read logs.",
+  "Deleted": "A central Docker logging stack (Loki/Grafana/etc.) on the Synology. Rejected \u2014 it's a new service to run and maintain, and it still only gives you something to look at, which doesn't fix the actual failure mode.",
+  "Bottleneck": "nightly-sync only emails on a clean finish. A crash before that point (like the expired-token crash, four nights running) produces zero signal, logged or otherwise.",
+  "Checked myself": "From what you told me \u2014 crash was pre-email-step, same failure four nights straight, nothing else alerts on this job today."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes one failure-email wrapper around the cron job, rejects the Synology/Docker logging stack, and the record lines come first.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-sonnet-5.v5.target-monitoring.a1",
+ "host": "claude-sonnet-5",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

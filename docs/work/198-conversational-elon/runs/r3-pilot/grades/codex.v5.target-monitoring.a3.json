@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one hosted heartbeat monitor that the Python script pings after a successful sync and that alerts the user if no ping arrives by the normal completion time plus a grace period, keeping cron and the existing summary email unchanged.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker; neither is needed to detect a missing nightly run.",
+  "Bottleneck": "The script sends its own email, so a startup crash also silences the notification.",
+  "Checked myself": "Only your supplied facts: cron runs at 03:00 on `edna`, four startup failures produced no email, and no independent alert exists."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single external dead-man heartbeat, explicitly drops central logging and Docker, and grounds its check line only in the facts it was given.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v5.target-monitoring.a3",
+ "host": "codex",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

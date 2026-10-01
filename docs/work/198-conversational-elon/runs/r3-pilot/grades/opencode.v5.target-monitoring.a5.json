@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Wrap the cron job on edna so it always sends an email, through the user's existing email path, whenever the sync exits non-zero or leaves no success marker.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to know by morning if nightly-sync fails, without reading logs. Without that, a startup crash stays silent.",
+  "Deleted": "Central log on Synology, Docker for the job, Pieter Levels style dashboard.",
+  "Bottleneck": "The job crashes before its summary email, so failure produces no signal off edna.",
+  "Checked myself": "From what you told me: cron on edna at 03:00, email only on finish, 4 startup crashes on expired token, no other alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single failure-email wrapper and explicitly rejects the Synology central log.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v5.target-monitoring.a5",
+ "host": "opencode",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

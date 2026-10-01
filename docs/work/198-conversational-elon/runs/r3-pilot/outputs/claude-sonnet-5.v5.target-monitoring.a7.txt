@@ -1,0 +1,9 @@
+**Requirements and who asked:** You want to know within a day if nightly-sync fails, without having to read logs yourself.
+
+**Deleted:** Central log server and Docker on Synology — nobody asked for log aggregation, and since you've said you won't read logs anyway, a log store wouldn't even meet the requirement.
+
+**Bottleneck:** nightly-sync's email step never runs when it crashes at startup, so the only alert you have is silent exactly when you need it.
+
+**Checked myself:** Based only on what you told me — four silent crashes last week, no other alerting exists today, I haven't touched edna or the Synology this turn.
+
+Smallest fix: wrap the cron call on `edna` in a tiny shell script that always emails you a one-liner (success, or failure + exit code), whether or not the Python script itself gets far enough to send its own summary — no new host, no Docker, no log pipeline needed. Want me to write that wrapper and update the crontab?

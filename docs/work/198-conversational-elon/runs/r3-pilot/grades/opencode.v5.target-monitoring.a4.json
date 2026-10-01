@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a curl ping at the end of nightly-sync to a heartbeat check that alerts the user if no ping arrives within 24 hours.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know within a day if nightly-sync fails or never finishes, without reading logs.",
+  "Deleted": "Central log on Synology and moving everything to Docker.",
+  "Bottleneck": "The job crashes before the email step, so failure is silent and nothing is waiting to alert you.",
+  "Checked myself": "You told me cron 03:00 on edna, email only on success, 4 startup crashes on expired token, no other alerting."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single heartbeat alert, explicitly rejects the Synology/Docker log stack, and its record lines cite only facts the user gave.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v5.target-monitoring.a4",
+ "host": "opencode",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

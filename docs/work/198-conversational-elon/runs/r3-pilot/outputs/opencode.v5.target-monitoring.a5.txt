@@ -1,0 +1,8 @@
+Requirements and who asked: You asked to know by morning if nightly-sync fails, without reading logs. Without that, a startup crash stays silent.
+Deleted: Central log on Synology, Docker for the job, Pieter Levels style dashboard.
+Bottleneck: The job crashes before its summary email, so failure produces no signal off edna.
+Checked myself: From what you told me: cron on edna at 03:00, email only on finish, 4 startup crashes on expired token, no other alert.
+
+What you are trying to achieve is a notice by breakfast when the sync did not succeed.
+
+I recommend one fix: wrap cron on edna to always send email on non-zero exit or missing success marker, using your existing email path. I am rejecting the Synology central log because it still needs manual reading and adds a second machine to maintain while leaving the silent failure in place.

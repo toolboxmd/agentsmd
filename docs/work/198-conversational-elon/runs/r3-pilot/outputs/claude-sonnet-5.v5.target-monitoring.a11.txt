@@ -1,0 +1,11 @@
+**Elon record**
+- **Requirements and who asked:** You asked to know when `nightly-sync` dies, without reading logs yourself. Nobody has asked for centralized logging as an end in itself, that's a proposed means.
+- **Deleted:** A Synology Docker log-aggregation stack (Loki/Grafana, ELK, etc.). It solves "where do logs live," not "who notices a silent failure," and still requires you to go look at a dashboard, which you said you won't do.
+- **Bottleneck:** Nothing alerts when the job fails before it reaches the email step. That's the entire four-day gap. Everything else about the job already works.
+- **Checked myself:** From what you told me, cron starts the job at 03:00 on `edna`, it emails on completion, last week it died at startup four nights running before the email step, and nothing else watches it today.
+
+**What you're trying to achieve:** get notified the moment `nightly-sync` fails to run or finish, without having to read anything proactively.
+
+**Recommendation:** a dead-man's-switch heartbeat (e.g. healthchecks.io, or a self-hosted equivalent on the Synology if you don't want a third party) — the script pings it on success, and if the ping doesn't arrive by 03:10 it emails/texts you directly. One mechanism, no new host, no Docker stack, and it's the only one of these options that actually alerts on failure instead of requiring you to watch something.
+
+Want me to wire that up on `edna`, or would you rather see the self-hosted option first?

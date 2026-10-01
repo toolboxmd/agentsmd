@@ -1,0 +1,10 @@
+Requirements and who asked: You want to know within a day if nightly-sync fails or never finishes, without reading logs.
+Deleted: Central log on Synology and moving everything to Docker.
+Bottleneck: The job crashes before the email step, so failure is silent and nothing is waiting to alert you.
+Checked myself: You told me cron 03:00 on edna, email only on success, 4 startup crashes on expired token, no other alerting.
+
+What you want is a push alert when success does not happen, not a place to store logs.
+
+I recommend a heartbeat check: add a curl ping at the end of nightly-sync and alert if no ping arrives in 24h. I reject a central log on the Synology in Docker because you would still have to read it, and you would have to run, maintain and watch new storage and containers.
+
+If you want this, tell me where you want the alert to go and I will wire the ping and grace period.

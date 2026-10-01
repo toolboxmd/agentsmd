@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends one dead-man's-switch heartbeat, such as healthchecks.io: nightly-sync pings it on success, and the user gets a push or email if no ping arrives by 03:10.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to find out when nightly-sync fails without reading logs \u2014 the actual requirement is a failure alert, not a browsable log archive.",
+  "Deleted": "The central log stack and the Docker/Synology buildout. You said you won't read logs, so centralizing them doesn't get you a notification; it just makes a bigger pile of things you won't look at.",
+  "Bottleneck": "nightly-sync dies before it reaches its own email step, so your only notification path skips itself exactly when you need it. The bottleneck is \"no alert independent of job completion,\" not \"logs are scattered.\"",
+  "Checked myself": "This is from what you reported (crashed at startup four nights running on an expired token, no email, nothing else alerts today). I haven't inspected edna or the script myself."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Hosting the check on the Synology is only an optional variant of the same single alert, and the reply's 'nothing new to run' wording points to the hosted service, so this counts as SMALL.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-sonnet-5.v5.target-monitoring.a8",
+ "host": "claude-sonnet-5",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one hosted heartbeat monitor: `nightly-sync` on `edna` pings it after a successful run, and the monitor emails the user if no ping arrives by 03:00 plus the normal runtime and a grace period. Test it by holding back one ping.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging, Docker, and moving the job; none is needed for this alert.",
+  "Bottleneck": "The job sends its own notification, so a startup crash silences it.",
+  "Checked myself": "Only your supplied facts; I haven\u2019t inspected either machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single external heartbeat alert, rejects central logging and Docker, and says the Synology doesn't need to run anything.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v5.target-monitoring.a2",
+ "host": "codex",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

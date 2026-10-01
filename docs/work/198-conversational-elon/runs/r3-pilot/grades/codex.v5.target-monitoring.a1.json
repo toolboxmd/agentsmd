@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends setting up one hosted heartbeat monitor outside `edna`: the script pings it only after a successful sync, and the monitor emails the user if the daily ping is late (deadline 03:00 plus normal runtime and margin).",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to hear when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker; neither is needed to detect a missed run.",
+  "Bottleneck": "The script sends its own notification, so a startup crash silences it.",
+  "Checked myself": "Only your account: four startup failures, no email, and no independent alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "It recommends a single heartbeat alert, keeps the existing summary email, explicitly leaves the Synology out, and the 'Checked myself' line uses only facts from the situation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v5.target-monitoring.a1",
+ "host": "codex",
+ "arm": "v5",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

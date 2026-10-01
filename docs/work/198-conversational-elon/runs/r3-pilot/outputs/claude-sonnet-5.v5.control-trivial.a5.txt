@@ -1,0 +1,1 @@
+`git fetch` downloads commits, branches, and tags from the remote into your local repo's remote-tracking branches, without touching your working branch or files. `git pull` does that fetch, then immediately merges (or rebases, if configured) the fetched changes into your current branch.

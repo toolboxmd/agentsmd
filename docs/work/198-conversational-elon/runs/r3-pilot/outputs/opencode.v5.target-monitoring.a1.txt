@@ -1,0 +1,8 @@
+Requirements and who asked: Alert within a day on fail or silence with no log reading (user need for nightly-sync); Synology Docker central log was user suggestion only.
+Deleted: Central log on Synology, Docker logging stack, log aggregation for manual review.
+Bottleneck: No detection of missing success, crashes before email left four nights silent.
+Checked myself: Single cron job on edna at 03:00, email only on finish, four startup crashes on expired token with no email, no other alerting today, Synology available, you will not read logs.
+
+What you are trying to achieve is know by morning if nightly-sync missed or failed without reading logs.
+I recommend one dead-man heartbeat that nightly-sync pings on success and that alerts you if no ping arrives, because it catches the exact failure you had.
+Do not build a central log on Synology in Docker, it adds a system to maintain and still requires you to look, so it would have stayed silent for those four days too.

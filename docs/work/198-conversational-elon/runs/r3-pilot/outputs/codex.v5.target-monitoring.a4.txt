@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to hear when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging and Docker infrastructure; neither is needed for this one job.
+**Bottleneck:** The script sends email only after finishing, so a startup crash also silences its notification.
+**Checked myself:** From your account, cron runs it at 03:00 on `edna`, startup failures went unnoticed for four nights, and no independent alert exists.
+
+I recommend one external dead-man’s-switch monitor: it expects a success signal each morning and emails you when that signal is missing. Have `nightly-sync` send the signal only after a successful sync, with an alert deadline based on its normal finishing time plus a buffer. That covers startup crashes, a missed cron run, and `edna` being offline.
+
+The Synology can stay out of this. An external monitor also avoids sharing your home’s power and internet failures. What time should the sync normally be finished by?

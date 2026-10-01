@@ -1,0 +1,12 @@
+Requirements and who asked: You want to be told when nightly-sync fails without reading logs.
+Deleted: Central log on Synology, Docker for the job, all-logs-in-one-place search.
+Bottleneck: Failure happens before the summary email, so success-only email gives no signal on 4 days of startup crashes.
+Checked myself: edna cron 03:00 Python nightly-sync, email on finish only, 4x expired-token startup crash last week, no other alerting, Synology available (all as told, not independently observed).
+
+You are trying to achieve reliable notice by morning if sync did not succeed, with nothing to manually check.
+
+I recommend one heartbeat: add a curl ping to Healthchecks.io at the very end of a successful sync, and let it email you when the ping is late or missing.
+
+Do not build the Synology Docker central log: it adds a system to run and still needs you to look, so it would not have caught these 4 silent days.
+
+Want me to sketch the 5-line change and the check settings?
