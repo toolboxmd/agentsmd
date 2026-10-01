@@ -917,9 +917,17 @@ def resolve(directory: Path, value: str) -> str:
     return os.path.normpath(path if path.is_absolute() else directory / path)
 
 
+def command_strings(tool_input: object) -> list[str]:
+    """Return only the shell command a tool call runs, never its description or prompt."""
+    if not isinstance(tool_input, dict):
+        return []
+    # Claude, Codex, Grok and OpenCode all put the shell command in `command`.
+    return tool_strings(tool_input.get("command"))
+
+
 def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
     """Return a block message when a gh create call lacks the Elon record."""
-    for text in tool_strings(event_input.get("tool_input")):
+    for text in command_strings(event_input.get("tool_input")):
         if "gh" not in text or "create" not in text:
             continue
         directory = Path(cwd)
