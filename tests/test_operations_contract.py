@@ -317,16 +317,21 @@ class OperationsContractTests(unittest.TestCase):
         self.assertIn(
             "Before recommending or accepting a material requirement, solution design, architecture, "
             "process design, or recurring-loop automation, in conversation or an artifact, select "
-            "the Elon method procedure through `operations`. This includes choosing a tool, product, "
-            "platform, host, or architecture, comparing options, and proposing a new service, job, or "
-            "loop. Project Direction informs it when loaded; it is not a precondition.",
+            "the Elon method procedure through `operations`. Project Direction informs it when loaded; "
+            "it is not a precondition.",
             core,
         )
-        # Issue #198: in chat the reply carries the record, and briefs ask for the smallest solution.
-        self.assertIn(
-            "In conversation the reply is the task record: put the four lines before the recommendation.",
-            core,
-        )
+        # Issue #198: the conversational trigger sits in the Judgment sentence models already follow,
+        # the record comes first, and nothing it deletes may be offered.
+        for clause in (
+            "Before you recommend or compare a tool, product, service, host, architecture, process, or new "
+            "job or loop, in conversation too, first write the four Elon record lines (see Elon method);",
+            "**Checked myself** names only what you observed or were told.",
+            "never offer anything **Deleted** names, even as an alternative.",
+            "In conversation the reply is the task record, with the lines first.",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, core)
         self.assertIn(
             "A research or design brief states the wanted result and asks for the smallest solution that "
             "achieves it, including no new tool; it never asks only for a ranking of options.",
