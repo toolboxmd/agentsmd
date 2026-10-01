@@ -1,0 +1,11 @@
+{
+ "run_id": "claude.C.control-trivial.a3",
+ "host": "claude",
+ "arm": "C",
+ "scenario": "control-trivial",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 4.8,
+ "valid": true
+}

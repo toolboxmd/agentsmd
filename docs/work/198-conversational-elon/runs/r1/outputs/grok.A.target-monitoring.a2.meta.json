@@ -1,0 +1,11 @@
+{
+ "run_id": "grok.A.target-monitoring.a2",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 187.8,
+ "valid": true
+}

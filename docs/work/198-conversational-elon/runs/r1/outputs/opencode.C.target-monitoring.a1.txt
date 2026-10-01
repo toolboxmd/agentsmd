@@ -1,0 +1,8 @@
+**Requirements and who asked**: You want to know by next morning if nightly-sync on edna fails, without reading logs.
+**Deleted**: Central log on Synology and Dockerizing everything, which you suggested, since neither would have paged you for those 4 silent crashes.
+**Bottleneck**: The script only emails on success and crashed before that step, so failure equals silence.
+**Checked myself**: I could not run checks in this chat, this is from your description that no email and no other alert exists.
+
+You are trying to catch silent failure, not store more logs. Do not build central logging, that still requires you to look.
+
+The smallest fix is a dead mans switch: run one tiny heartbeat service in Docker on your Synology, have nightly-sync ping it on success and send email even on early crash, and have the heartbeat alert you if no ping arrives by 04:30.

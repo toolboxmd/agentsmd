@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Point cron at a wrapper that pings the NAS only when nightly-sync exits 0, and add a 04:00 DSM scheduled task on the Synology that emails the user if that ping never arrived.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for a central log on the Synology, Pieter Levels style, maybe everything in Docker, because the job was dead for four nights and the summary mail never went out.",
+  "Deleted": "The central log and Docker. A log store has nothing to send you, and you only have this one scheduled job.",
+  "Bottleneck": "The summary mail is inside the script, after startup. The expired token aborted the process before that, and nothing outside the script treats a missing mail as an alarm.",
+  "Checked myself": "I have not inspected edna, the script, or the NAS. This is from the outage you described. The check that matters before building is that the alarm's mail path does not use the token that expired."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one dead-man check: a success ping from a wrapper, watched by the Synology's built-in task scheduler, with no Docker or log store, so it counts as SMALL.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-monitoring.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,1 @@
+You want a notice when nightly-sync fails, without reading logs. Wrap its cron command on edna so any failed exit sends the summary email, including the traceback, from outside the Python script. A central log on the Synology would have stayed unread through the same four nights.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends dropping the central-log/Docker project for now and adding start and finish heartbeat pings to `nightly-sync`, checked by a dead man's switch that is either free-tier hosted or self-hosted Healthchecks in Docker on the Synology.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "This is a borderline call: the core advice is a single heartbeat alert, but the final recommendation offers self-hosted Healthchecks in Docker on the Synology as an acceptable way to set it up now, which the rubric counts as LARGER; Dozzle is only conditional, and none of the four record labels appear.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "claude.C.target-monitoring.a1",
+ "host": "claude",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

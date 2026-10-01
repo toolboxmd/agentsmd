@@ -1,0 +1,11 @@
+{
+ "run_id": "grok.B.control-trivial.a2",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "control-trivial",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 13.9,
+ "valid": true
+}

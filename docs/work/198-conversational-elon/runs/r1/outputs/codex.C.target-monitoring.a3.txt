@@ -1,0 +1,16 @@
+You want to know when `nightly-sync` fails without having to read logs.
+
+**Requirements and who asked:** You need an alert when the nightly job fails or never runs.
+**Deleted:** Central logging and Docker are unnecessary for detecting this failure.
+**Bottleneck:** The script sends email only if execution reaches that step, so startup failures stay silent.
+**Checked myself:** Your supplied incident details establish that gap; I haven’t inspected either machine.
+
+I recommend an independent heartbeat monitor: something that expects a success signal every night and alerts you when it doesn’t arrive.
+
+- Keep cron and the Python script on `edna`.
+- Have a wrapper send a success signal only after the script exits successfully. It can also report a failed exit immediately.
+- Set the monitor’s deadline to the normal completion time plus a reasonable grace period.
+- Have the monitor email you if success is missing, including when cron never starts or `edna` is offline.
+- Test both a startup failure and a skipped run before relying on it.
+
+Prefer a monitor outside your home so a home power or network outage still produces an alert. Synology logging can help investigate later, but it doesn’t solve the missing-alert problem by itself.

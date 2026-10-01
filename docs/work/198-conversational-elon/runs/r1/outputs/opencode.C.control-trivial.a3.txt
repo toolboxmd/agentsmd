@@ -1,0 +1,1 @@
+`git fetch` downloads remote updates without changing your files. `git pull` does a fetch plus merges those updates into your current branch.

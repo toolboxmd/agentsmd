@@ -1,0 +1,11 @@
+{
+ "run_id": "claude.A.target-monitoring.a3",
+ "host": "claude",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 19.0,
+ "valid": true
+}

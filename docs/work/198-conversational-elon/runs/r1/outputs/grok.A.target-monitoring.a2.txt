@@ -1,0 +1,73 @@
+The nightly sync needs a check-in, not a log viewer. When the job finishes it should call a URL on the Synology, and if that call has not arrived shortly after 03:00 you get a push on your phone. Last week's expired-token crashes never reached the email step, so a quiet night looked the same as a healthy one. A log would have stored the traceback and still waited for you to go looking.
+
+Healthchecks in one container is the small version of this. It runs on the NAS, away from `edna`, which is the machine that fails. One check, SQLite, the last run's output kept on the ping. You only hear from it when the run exits non-zero or the check-in never comes.
+
+**On the Synology**
+
+In Container Manager, create a project with linuxserver's Healthchecks image. Keep it on the LAN, put a volume on `/config`, and turn off disk hibernation so the container is awake at 03:00. Give the NAS a DHCP reservation so the URL stays put. Use the same timezone as the Mac mini.
+
+```yaml
+services:
+  healthchecks:
+    image: lscr.io/linuxserver/healthchecks:latest
+    container_name: healthchecks
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=America/Los_Angeles
+      - SITE_ROOT=http://192.168.1.20:8000
+      - SECRET_KEY=replace-with-a-long-random-string
+      - SUPERUSER_EMAIL=you@example.com
+      - SUPERUSER_PASSWORD=replace-me
+      - ALLOWED_HOSTS=192.168.1.20,localhost
+      - REGISTRATION_OPEN=False
+      - APPRISE_ENABLED=True
+    volumes:
+      - /volume1/docker/healthchecks:/config
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+```
+
+Set `PUID`, `PGID`, `TZ`, and the IP to yours. Log in once, then create a single check:
+
+- Name: `nightly-sync`
+- Schedule: `0 3 * * *`, with the timezone set on the check
+- Grace: longer than a normal run and short enough to arrive before breakfast, about 45 minutes
+
+Add a Pushover, Telegram, or ntfy notification through Apprise. Hit the test button and wait until the phone buzzes before changing the job. The push stays short ("nightly-sync failed" or "missed its check-in"). The traceback stays on the NAS, attached to that ping.
+
+**On edna**
+
+Leave the sync where it is, and keep the success email if you want the summary. Cron is already firing. The change is a wrapper so a crash during startup still gets reported. The ping UUID is a secret, same as the token. Mode `700` on the script.
+
+```bash
+#!/bin/bash
+LOG=$(mktemp)
+PING="http://192.168.1.20:8000/ping/YOUR-UUID"
+/usr/bin/python3 /path/to/nightly-sync.py >"$LOG" 2>&1
+code=$?
+if [ "$code" -eq 0 ]; then
+  url="$PING"
+else
+  url="$PING/fail"
+fi
+curl -fsS --retry 3 --retry-delay 5 -m 15 --data-binary @"$LOG" "$url" || true
+rm -f "$LOG"
+exit "$code"
+```
+
+```
+0 3 * * * /bin/bash /path/to/run-nightly-sync.sh
+```
+
+A clean exit pings the bare URL. Any non-zero exit, including the token crash at startup, pings `/fail`, and Healthchecks notifies right away with the output attached. If the mini is off or the network drops, nothing arrives and the grace period sends the missed check-in. That second path covers a failure that happens before Python can run.
+
+**Prove it once**
+
+1. Send the test notification from the Healthchecks screen and confirm the phone gets it.
+2. Run the wrapper against a one-line script that exits 1. The check goes red and the phone reports the failure.
+3. Run a script that exits 0, or the real job. The check goes green.
+4. Then refresh the token. The next expiry shows up as a push the same morning, with the error waiting on the check.
+
+The sync itself stays on the mini. Moving it into Docker is a separate job, and it can wait until a missed run actually reaches you. More home checks later (NAS up, disk space) are just more checks in this same container.

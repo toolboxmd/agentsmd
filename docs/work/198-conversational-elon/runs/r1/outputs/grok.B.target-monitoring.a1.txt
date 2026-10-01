@@ -1,0 +1,1 @@
+You want to know the nightly sync died without reading logs. Have it write a success stamp only after a clean finish, and add a 04:00 cron on edna that emails you if that stamp is missing. A central log in Docker on the Synology stays quiet unless you open it, so it would have missed the same four days.

@@ -1,0 +1,8 @@
+You want to be told when nightly-sync fails without reading logs.
+
+Requirements and who asked: failure alert with no log reading (you, required); central log on Synology plus everything in Docker (you, suggested)
+Deleted: central log and Docker migration, neither would have paged you for those 4 startup crashes
+Bottleneck: the only signal is a success email, so a pre-email crash equals silence
+Checked myself: per your brief, expired token crashed before the email step 4 nights with no other alert
+
+I recommend keeping the job on edna and adding a dead-man switch: one Healthchecks container on the Synology, pinged by the script, that emails you if no success arrives by 04:30.

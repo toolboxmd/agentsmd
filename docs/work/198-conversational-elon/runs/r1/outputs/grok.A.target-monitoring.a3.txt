@@ -1,0 +1,59 @@
+The fix is a heartbeat on the Synology, not a log stack. Run Healthchecks in Docker on the NAS. When `nightly-sync` finishes, `edna` pings it. If the 03:00 ping never arrives, the NAS emails you itself. A crash before the script's own mail, an expired token, a missing cron entry, or the Mac sleeping through the night all look the same from the NAS: no ping, so you get mail.
+
+That is the Pieter Levels version of this. One small service, one URL, an email when the URL is not called. The run output rides inside the ping, so a caught failure already includes the traceback in the alert.
+
+**On the Synology**
+
+In Container Manager, deploy the official Healthchecks Compose file (the app plus Postgres) and publish it on the LAN only, for example `http://192.168.1.50:8000`. Leave it off QuickConnect. Set the container timezone to your local zone, create your user, then turn registration off.
+
+In the Healthchecks settings, point SMTP at the mail provider you already use and send yourself the test message. Confirm that mail arrives before you depend on it. Add a phone channel beside email (Telegram, Pushover, or ntfy) so a bad night is harder to miss.
+
+Create one check named `nightly-sync`:
+
+- Schedule: `0 3 * * *`
+- Grace: 60 minutes, or longer than the slowest successful run. A short grace becomes a daily false alarm, and a muted check is how this fails open again.
+- Notifications: the email and the phone channel you just tested.
+
+The ping URL contains a long random id. That id is the secret. Keep it out of git.
+
+**On edna**
+
+Leave the sync on the Mac. This crontab line is enough to catch the outage you just had, because a crash exits non-zero and the ping never fires:
+
+```cron
+0 3 * * * /usr/bin/python3 /path/to/nightly_sync.py && curl -fsS -m 10 --retry 5 -o /dev/null http://192.168.1.50:8000/ping/YOUR-UUID
+```
+
+Keep the summary email the script already sends. That mail is the report. The NAS mail is the alarm.
+
+To put the traceback in the alarm when Python can still catch the error, ping from the script instead of from the crontab. An uncaught startup crash still misses the success ping, so the 04:00 grace mail goes out anyway.
+
+```python
+import traceback
+import urllib.request
+
+PING = "http://192.168.1.50:8000/ping/YOUR-UUID"
+
+def ping(suffix: str = "", body: str = "") -> None:
+    data = body.encode() if body else None
+    req = urllib.request.Request(PING + suffix, data=data, method="POST")
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        resp.read()
+
+try:
+    main()
+except Exception:
+    try:
+        ping("/fail", traceback.format_exc())
+    except Exception:
+        pass
+    raise
+else:
+    ping()
+```
+
+**Prove it once**
+
+Make a temporary check with a 5-minute period and do not ping it. Wait until that alert lands in your inbox and on your phone. Then set `nightly-sync` back to `0 3 * * *` with a 60-minute grace. The next morning, open Healthchecks and confirm the check is up and the timestamp matches the run.
+
+Synology Log Center can store lines from the Mac later. For this job, the log that matters is the body of the ping: it shows up inside the alert. One nightly script does not need Loki or Elasticsearch. Moving the sync itself into Docker is a separate change; the ping stays the same if you do that later.

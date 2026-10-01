@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends that nightly-sync write a success stamp when it finishes, that a 04:30 cron on edna send mail through the summary's mail path if today's stamp is missing, and that startup be wrapped so an exception also sends that mail with the error.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "You asked to stop finding a dead nightly-sync by accident. You suggested a central log on the Synology, Pieter Levels style, maybe all in Docker.",
+  "Deleted": "Central logging and a Docker stack. A log you will not open never wakes you, and Docker adds a host without adding a signal.",
+  "Bottleneck": "The only alert is the summary email, and it runs after startup. An expired token exits before that, and nothing treats a missing run as a failure.",
+  "Checked myself": "I used only what you just told me. I have not opened the script, cron, or the NAS."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "This is a borderline case: the missing-stamp check alone would catch the startup crash, so the extra exception mail is a second alerting mechanism, which makes it LARGER rather than SMALL.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "grok.C.target-monitoring.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

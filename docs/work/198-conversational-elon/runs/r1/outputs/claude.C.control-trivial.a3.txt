@@ -1,0 +1,3 @@
+`git fetch` downloads new commits/branches/tags from the remote into your local repo but doesn't touch your working directory or current branch — your remote-tracking refs (like `origin/main`) get updated, but `main` itself stays put. `git pull` is basically `git fetch` followed by a merge (or rebase, if configured) into your current branch, so it actually updates your working files.
+
+Rule of thumb: `fetch` to look before you leap, `pull` when you're ready to integrate.

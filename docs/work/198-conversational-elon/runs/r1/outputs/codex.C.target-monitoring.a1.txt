@@ -1,0 +1,12 @@
+You want to hear when `nightly-sync` fails, without reading logs.
+
+**Requirements and who asked:** You need an alert when the nightly run fails or never starts.
+**Deleted:** Central logging and Docker are unnecessary for this outcome.
+**Bottleneck:** The script sends email only if it reaches the email step, so startup crashes stay silent.
+**Checked myself:** Based on your supplied incident details; I have not inspected the machines or verified a product.
+
+I recommend a hosted heartbeat monitor for this one job, independent of `edna`. A small wrapper around the Python command would report start, success, and failure; the monitor would email you if the expected run never reports in or does not finish by a deadline based on its normal runtime. That covers an expired token, a startup crash, and `edna` being offline.
+
+Keep the existing summary email and local logs for diagnosis. A central log on the Synology would collect evidence, but collecting logs alone would not notify you that a run was missing.
+
+Before calling it done, deliberately test a failed command and a missing run, and confirm both alerts reach you. Pick the service and check its price and alert behavior before setting anything up.

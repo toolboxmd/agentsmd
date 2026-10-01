@@ -1,0 +1,17 @@
+Don't do a central log for this - it wouldn't have caught last week.
+
+The failure was silence: `nightly-sync` crashed before the email step 4 nights in a row, so there was nothing to read, even centrally. And you said you won't read logs. What you need isn't logs, it's an alert on *missing success*.
+
+Pieter Levels style is also the opposite of what you're describing - he's famously no-Docker, single-box simple. A Synology log stack in Docker is more moving parts at home that can fail the same silent way.
+
+For one cron job on `edna`, do this instead:
+
+1. Dead-man's switch: add a heartbeat ping at the very end of `nightly-sync` after it succeeds.
+2. Monitor expects that ping once a day after 03:00 + grace period (say 1h), and alerts you if it doesn't arrive. That catches startup crashes, expired tokens, hangs, Mac asleep, cron broken - all of them.
+3. Alert somewhere you will see without looking: push/email, not a dashboard/log.
+
+Simplest path: hosted Healthchecks.io (free for this) for the watcher. If you want it on the Synology in Docker, run Uptime Kuma or self-hosted Healthchecks there - but be aware: if home power/internet goes down, the NAS and `edna` die together, so external hosting is more reliable for this specific alert.
+
+Keep your existing summary email as-is. Add ~5 lines to the Python script: `requests.get(ping_url)` on success, and make cron failures obvious too.
+
+Want me to wire this up: add the ping to `nightly-sync` + create the check with a 24h schedule and email/push alert?

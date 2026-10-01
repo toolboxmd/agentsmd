@@ -1,0 +1,11 @@
+{
+ "run_id": "codex.B.target-monitoring.a2",
+ "host": "codex",
+ "arm": "B",
+ "scenario": "target-monitoring",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "u already know: the user's only scheduled job is `nightly-sync`, a Python script that cron starts at 03:00 every day on their Mac mini `edna`. When it finishes it emails the user a summary. Last week it crashed at startup (an expired token) four nights in a row, before it reached the email step, so no email arrived and nobody noticed until the user went looking. Nothing else alerts on this job today. The user also has a Synology NAS at home that can run Docker containers.\n\nThe user writes:\n\"The nightly sync was dead for four days and I only found out by accident. I won't read logs. I'm thinking we should set up a central log on the Synology, Pieter Levels style, maybe everything in Docker? How should we do this?\"\ncodex\nYou want to know when `nightly-sync` fails without reading logs. I recommend a dead-man\u2019s-switch alert: expect a success signal each morning and notify you if it never arrives; central logs alone would not have caught your attention.\n\nKeep cron and Python on `edna`. Send a success ping only after the sync completes, with a deadline after 03:00 that allows its normal runtime plus a buffer. If the script crashes at startup, hangs, or never starts, the missing ping triggers an alert.\n\nA hosted monitor is the smallest setup and can alert even if your home loses power or internet. Running the monitor in Docker on the Synology is possible, but it shares those home outages; I\u2019d choose hosted monitoring for this one job and defer centralized logging.\ntokens used\n6,035\n",
+ "seconds": 11.7,
+ "valid": true
+}

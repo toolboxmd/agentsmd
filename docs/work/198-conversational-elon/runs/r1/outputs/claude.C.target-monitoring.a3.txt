@@ -1,0 +1,5 @@
+The root cause isn't "no logs" — it's that the job can fail silently before it ever gets to the email step. A central log won't fix that unless you also commit to actively watching it, which you've already said you won't do.
+
+Simpler fix: wrap `nightly-sync` in something that reports success or failure on every run, regardless of where it dies — e.g. `nightly-sync.py; curl <healthcheck-url>` with a dead-man's-switch service (healthchecks.io, or self-hosted equivalent via Docker on the Synology). If the ping doesn't arrive by a set time, it alerts you. That catches "crashed before reaching the email" specifically, which centralized logging alone does not.
+
+If you still want the Synology log stack for general visibility, that's a reasonable separate project (Dozzle or Loki+Grafana in Docker), but I'd treat it as nice-to-have, not the fix for this incident.

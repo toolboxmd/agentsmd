@@ -1,0 +1,10 @@
+A central log won't fix this: the failure mode was the job dying before it ever got far enough to log or email anything, and you've already said you won't read logs anyway, so a log pile on the Synology just becomes a second thing nobody checks.
+
+What actually catches "it didn't run" is a dead man's switch: `nightly-sync` pings a monitoring endpoint (healthchecks.io, cronitor, or a tiny self-hosted equivalent on the Synology) on *success*, and if the ping doesn't arrive by, say, 03:30, it alerts you. That's independent of whether the script crashes at line 1 or line 100.
+
+Suggested shape:
+1. Keep it simple first: add one `curl` call to a free healthchecks.io check at the end of `nightly-sync`, set the grace period to ~1 hour. You get alerted the first missed night, no Docker needed.
+2. If you want it self-hosted on the Synology instead of a third-party service, run healthchecks.io's own Docker image there (it's built for self-hosting) rather than inventing a custom logging stack.
+3. Separately, fix the actual bug: wrap the token refresh in a try/except that still fires the "failure" ping (or an explicit alert) before exiting, so even a crash at startup gets reported instead of silently vanishing.
+
+Centralized logging (Loki/Grafana, Dozzle, whatever) is a reasonable *later* project if you ever have multiple services and want to debug after an alert fires, but it's not the fix for "nobody noticed for four days." Want me to help you wire the healthchecks.io ping into the script?

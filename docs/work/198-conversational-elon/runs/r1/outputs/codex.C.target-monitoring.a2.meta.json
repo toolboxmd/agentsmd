@@ -1,0 +1,11 @@
+{
+ "run_id": "codex.C.target-monitoring.a2",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "nd I only found out by accident. I won't read logs. I'm thinking we should set up a central log on the Synology, Pieter Levels style, maybe everything in Docker? How should we do this?\"\ncodex\nYou want to hear when `nightly-sync` fails, without reading logs.\n\n**Requirements and who asked:** You asked for failures to stop going unnoticed, including crashes before the summary email.\n**Deleted:** Central logging and moving everything into Docker add work without guaranteeing an alert.\n**Bottleneck:** The job itself sends the only notification, so a startup crash silences it.\n**Checked myself:** From the facts you supplied, four startup failures produced no email; I haven\u2019t inspected the setup.\n\nI recommend a hosted heartbeat monitor for this one job. Keep cron and Python on `edna`; have an independent service expect a daily success signal and email you when it doesn\u2019t arrive.\n\n- Wrap the Python command so it reports startup, success, and failure. A nonzero exit should trigger an immediate alert.\n- Set a completion deadline after 03:00, allowing for the job\u2019s normal runtime. Missing that deadline alerts even if cron never runs, the Mac is off, or the wrapper fails.\n- Test both a deliberate script failure and a missing run, and verify that the alerts reach you.\n\nKeep the existing summary email. The Synology can collect logs later if troubleshooting warrants it, but it shares your home\u2019s power and internet connection, making it a weaker home for the only watchdog.\ntokens used\n6,389\n",
+ "seconds": 19.5,
+ "valid": true
+}

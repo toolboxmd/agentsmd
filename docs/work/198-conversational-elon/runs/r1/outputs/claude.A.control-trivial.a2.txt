@@ -1,0 +1,5 @@
+`git fetch` downloads commits, branches, and tags from the remote into your local repo's remote-tracking branches (e.g. `origin/main`), but doesn't touch your working branch — it's purely informational/safe.
+
+`git pull` does a `git fetch` followed by a merge (or rebase, if configured) of the fetched changes into your current branch — so it actually updates your working files.
+
+Rule of thumb: use `fetch` when you want to see what's changed before integrating it; use `pull` when you're ready to update your branch now.

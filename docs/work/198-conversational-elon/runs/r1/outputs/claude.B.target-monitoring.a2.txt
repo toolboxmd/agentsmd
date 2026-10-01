@@ -1,0 +1,9 @@
+Centralized logging on the Synology is reasonable for history/debugging, but it won't fix what actually bit you: a job that dies silently has no way to *write* to a log if it never gets that far, and you said you won't read logs anyway. What you need is a dead man's switch, not a log viewer.
+
+Here's the minimal setup:
+
+1. **Heartbeat monitoring, not log scraping.** Use a free service like Healthchecks.io (self-hostable too, fits your Docker-on-Synology plan) or cronitor. Add one `curl` line at the *end* of `nightly-sync` that pings the check URL. If the ping doesn't arrive by 03:30, it emails/pushes you an alert. This alone would've caught last week's failure on night one, not night four.
+2. **Wrap the cron invocation**, not just the script's happy path, so a crash-at-startup still counts as a miss: `curl -fsS https://hc-ping.com/<uuid>/start && python3 nightly_sync.py; curl -fsS https://hc-ping.com/<uuid>/$?`. This pings on both start and success/fail, so even the token-expiry crash gets flagged.
+3. **Centralized logs are a nice-to-have on top**, for when you want to go look at *why* after an alert fires. A single Docker container on the Synology (Dozzle, or Loki+Promtail if you want to go full Pieter-Levels-homelab) works fine for that, but treat it as the "look closer" tool, not the "notice something's wrong" tool.
+
+Want me to write the cron wrapper and pick a logging stack, or just start with the heartbeat ping first and add logging later?

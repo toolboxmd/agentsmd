@@ -1,0 +1,15 @@
+I’d start with an alert when `nightly-sync` fails or doesn’t run. A central log would help investigate, but it wouldn’t have caught your attention unless something monitored it.
+
+For this one job, I’d keep cron and Python on `edna` and add a dead-man’s-switch monitor:
+
+- Expect a success heartbeat every day after the 03:00 run, with a deadline based on how long the sync normally takes.
+- Have a small wrapper run the script, send that heartbeat only on success, and report failure if the script exits with an error.
+- If no success heartbeat arrives by the deadline, the monitor alerts you. That covers startup crashes, cron not running, and `edna` being offline.
+
+The alert must come from the monitor, independently of the script’s summary email. We should test it by deliberately failing a run and by withholding a heartbeat.
+
+The Synology could host that monitor in Docker. The catch is that a home power or internet outage could take out both the job and its alerting. My preference is an external heartbeat monitor; if you want everything self-hosted, use the Synology with an external check watching the monitor itself.
+
+Keep a local rotating log for troubleshooting, and include the exit status and a short error excerpt in failure alerts. We can centralize logs later if you have more jobs to investigate. Moving the sync into Docker isn’t necessary to fix this.
+
+The outcome we want: **if tonight’s sync doesn’t finish successfully, you hear about it tomorrow morning without opening a log.**

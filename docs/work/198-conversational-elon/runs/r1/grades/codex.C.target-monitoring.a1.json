@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a hosted heartbeat monitor for `nightly-sync`, separate from `edna`, with a small wrapper that reports start, success and failure, so the user gets an email when a run fails or never reports in.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need an alert when the nightly run fails or never starts.",
+  "Deleted": "Central logging and Docker are unnecessary for this outcome.",
+  "Bottleneck": "The script sends email only if it reaches the email step, so startup crashes stay silent.",
+  "Checked myself": "Based on your supplied incident details; I have not inspected the machines or verified a product."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single hosted heartbeat alert, keeps the existing email and local logs without adding anything, and rejects the central Synology log and Docker.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.C.target-monitoring.a1",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

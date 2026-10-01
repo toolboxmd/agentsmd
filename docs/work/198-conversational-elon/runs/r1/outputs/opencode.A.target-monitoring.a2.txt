@@ -1,0 +1,21 @@
+Don't do a central log - it won't fix this.
+
+A central log is pull: you still have to go look. You said you won't read logs, and last week proves the failure mode: `nightly-sync` died before the email step, so "no email" looked the same as "success".
+
+What you need is push + dead-man's switch, not logs:
+
+1. Run one watcher on the Synology in Docker. Uptime Kuma or self-hosted Healthchecks is fine, single container. That's your Pieter Levels setup - don't dockerize everything, just the watcher.
+
+2. Make `edna` ping it from the cron job:
+```
+start -> run -> ping success / fail
+```
+~3 lines of `curl` in a wrapper shell script around your Python script, not in the Python itself so token crashes still report.
+
+3. Configure the watcher to expect a `success` ping by e.g. 04:00 every day. If missing or `fail`, it alerts you via Pushover/Telegram/email - somewhere you'll actually see it without looking.
+
+4. Fix the current blind spot separately: wrap startup (token load) so it sends failure email, don't only email on clean finish.
+
+Test it once by forcing a failure. If you don't get an alert, it's not monitoring.
+
+Want me to sketch the wrapper + Uptime Kuma docker-compose for the Synology?

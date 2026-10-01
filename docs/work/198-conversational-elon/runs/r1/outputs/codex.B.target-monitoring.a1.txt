@@ -1,0 +1,5 @@
+You want to know when `nightly-sync` fails without having to read logs. I recommend a dead-man’s-switch monitor: `edna` sends a success ping after each completed sync, and the monitor alerts you if that ping misses the expected deadline after 03:00, with enough time for a normal run.
+
+Central logs would help investigate failures, but collecting them alone would not have alerted you during those four nights. Keep cron and the Python script; the missing piece is an independent check that expects success and notices silence, including startup crashes.
+
+For this one job, I’d use a hosted heartbeat monitor rather than run monitoring in Docker on the Synology: it can still alert when your home power or internet goes down. Send missed-run alerts by email, and test it by deliberately withholding a success ping before relying on it.

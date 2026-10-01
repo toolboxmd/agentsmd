@@ -1,0 +1,5 @@
+What you want is to notice within a day when nightly-sync on edna fails silently, without reading logs.
+
+A central log on the Synology in Docker won't do that because you still have to look, and last week's expired token crashed before the email step so the missing success was the signal.
+
+I recommend a heartbeat instead: nightly-sync pings a monitor on success and the monitor alerts you when the 03:00 run misses, which we can run as a single Uptime Kuma container on the Synology if you want it local - want to do it that way?

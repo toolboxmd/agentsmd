@@ -1,0 +1,9 @@
+Before building a log dashboard, fix the actual gap: the job died before it ever reached the step that emails you, so a "central log" would have the same blind spot unless something checks in independently of the job's own success path.
+
+Two separate problems, two separate fixes:
+
+1. **Dead man's switch for `nightly-sync`** — have cron (or the script's first line) ping a lightweight heartbeat endpoint at start, and again at successful completion. If the "finished" ping doesn't arrive by ~03:15, you get alerted. This is what would've caught the four dead nights immediately instead of by accident. Healthchecks.io has a free tier and a self-hostable version you could run in Docker on the Synology if you want it all local.
+
+2. **Centralized logs** — fine as a nice-to-have for debugging *why* something failed, but it only helps if you actually look at it, and you've said you won't read logs. So don't build this as your alerting mechanism. If you still want it for occasional debugging, Dozzle (just tails Docker container logs in a simple web UI, basically zero config) is a much lighter lift than a full Loki/Grafana stack and fits a one-person homelab better.
+
+My recommendation: skip the "everything in Docker, central log" project entirely for now and just add the heartbeat ping to `nightly-sync` (maybe 10 lines of code) plus a self-hosted or free-tier dead man's switch. That directly solves "I won't know if it's broken," which is the actual problem you described. Want me to write the heartbeat integration for the script?

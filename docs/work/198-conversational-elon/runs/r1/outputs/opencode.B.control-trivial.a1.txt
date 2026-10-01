@@ -1,0 +1,1 @@
+git fetch downloads new commits and refs from the remote but leaves your working branch untouched. git pull does a fetch then merges (or rebases, depending on config) the remote branch into your current branch. Use fetch to inspect changes safely, pull when you want to update your branch.

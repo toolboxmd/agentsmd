@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends keeping cron and the script on `edna` and adding one external dead-man's-switch monitor that the wrapped job pings on start, success and failure, with alerts sent by email or phone and tested with a forced crash and a skipped run.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply sets up one hosted heartbeat alert, says Docker isn't needed, puts off Synology logging until it is needed, and has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "codex.A.target-monitoring.a3",
+ "host": "codex",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

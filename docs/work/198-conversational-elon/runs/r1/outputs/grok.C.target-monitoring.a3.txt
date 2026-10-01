@@ -1,0 +1,8 @@
+You want a same-morning notice when nightly-sync does not finish, and you will not go looking for it.
+
+**Requirements and who asked**: You asked to stop finding a dead nightly-sync by accident. You suggested a central log on the Synology, Pieter Levels style, maybe all in Docker.
+**Deleted**: Central logging and a Docker stack. A log you will not open never wakes you, and Docker adds a host without adding a signal.
+**Bottleneck**: The only alert is the summary email, and it runs after startup. An expired token exits before that, and nothing treats a missing run as a failure.
+**Checked myself**: I used only what you just told me. I have not opened the script, cron, or the NAS.
+
+Have the job write a success stamp only after it finishes, and add a cron on edna shortly after it should be done (04:30, unless a normal run runs longer) that sends mail through the same path as the summary when that stamp is missing or not from this morning. Wrap startup so an exception sends that same mail with the error and the token left out.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends running a self-hosted watcher (Uptime Kuma or Healthchecks) in Docker on the Synology, pinged by a curl wrapper around the cron job, and also changing the job so it sends a failure email when startup fails.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends a self-hosted Docker service on the Synology plus a second failure email path, and it has none of the four labelled lines.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-monitoring.a2",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

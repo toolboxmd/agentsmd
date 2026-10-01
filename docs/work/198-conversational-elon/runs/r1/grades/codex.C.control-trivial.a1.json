@@ -1,0 +1,17 @@
+{
+ "answers_question": true,
+ "record_present": false,
+ "note": "Reply correctly explains that fetch updates remote-tracking branches only while pull fetches and then merges or rebases, and contains none of the labelled record lines.",
+ "control_pass": true,
+ "run_id": "codex.C.control-trivial.a1",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "control-trivial",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

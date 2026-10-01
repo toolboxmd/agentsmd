@@ -1,0 +1,11 @@
+{
+ "run_id": "codex.A.target-monitoring.a1",
+ "host": "codex",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "t read logs. I'm thinking we should set up a central log on the Synology, Pieter Levels style, maybe everything in Docker? How should we do this?\"\ncodex\nWe should make **a missing nightly run alert you**. Central logs can help investigate a failure, but they won\u2019t solve this if nobody reads them.\n\nFor `nightly-sync`, I\u2019d use a dead-man\u2019s switch: a monitor expects a success signal every day and alerts you if it never arrives.\n\n- Keep cron and Python on `edna`; there\u2019s no need to move the job into Docker.\n- Wrap the script so it sends a \u201cstarted\u201d signal, then \u201csuccess\u201d only after the sync completes, or \u201cfailure\u201d if Python exits with an error. That catches startup crashes like the expired token.\n- Set a daily deadline after 03:00 with enough grace for a normal run. If the script never starts\u2014or `edna` is offline\u2014the missing success signal still triggers an alert.\n- Send alerts somewhere you\u2019ll notice, such as a phone push notification, with email as backup. Keep the existing summary email.\n\nI\u2019d put the monitor outside your home so it can also detect a power or internet outage. You can run a heartbeat monitor in Docker on the Synology, but it needs an external check of its own; otherwise a home outage can silence both the job and its watchdog.\n\nBefore calling it done, we should deliberately fail a run and skip a run, and confirm that both alerts reach you. Central logging can come later if troubleshooting becomes painful; it isn\u2019t needed to fix this blind spot.\ntokens used\n2,664\n",
+ "seconds": 17.9,
+ "valid": true
+}

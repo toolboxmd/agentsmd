@@ -1,0 +1,5 @@
+You want to know by breakfast if nightly-sync did not succeed, without reading logs.
+
+Do not build a central log on the Synology for this. You would still not read it, a startup crash like the expired token would still be silent, and Docker adds a second system to maintain. That is the opposite of Pieter Levels style, which is fewer moving parts and push alerts.
+
+Keep the job on edna and add a heartbeat: ping a small monitor on success and on failure, and have the monitor alert you if no success arrives in 24 hours.

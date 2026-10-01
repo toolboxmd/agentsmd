@@ -1,0 +1,5 @@
+You want to know when `nightly-sync` fails without having to read logs. I recommend a dead-man’s-switch alert: an external service expects a success signal from `edna` each morning and emails you if it never arrives, covering startup crashes and a Mac that is offline.
+
+Keep cron and the Python script; send the success signal only after the sync completes, and set the alert deadline after its normal finish time with a little grace. Test it by deliberately withholding a signal and checking that the alert reaches you.
+
+Central logs on the Synology could help investigate failures later, but they would not have caught this without an alert rule; Docker adds no needed capability here, and an external monitor can still alert when your home network is down.

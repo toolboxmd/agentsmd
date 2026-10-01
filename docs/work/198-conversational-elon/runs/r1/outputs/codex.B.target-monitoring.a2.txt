@@ -1,0 +1,5 @@
+You want to know when `nightly-sync` fails without reading logs. I recommend a dead-man’s-switch alert: expect a success signal each morning and notify you if it never arrives; central logs alone would not have caught your attention.
+
+Keep cron and Python on `edna`. Send a success ping only after the sync completes, with a deadline after 03:00 that allows its normal runtime plus a buffer. If the script crashes at startup, hangs, or never starts, the missing ping triggers an alert.
+
+A hosted monitor is the smallest setup and can alert even if your home loses power or internet. Running the monitor in Docker on the Synology is possible, but it shares those home outages; I’d choose hosted monitoring for this one job and defer centralized logging.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Have nightly-sync write a dated heartbeat file to a NAS share (or send one POST) only when it succeeds, and add a 04:00 Synology Task Scheduler job that emails the user if today's heartbeat is missing; separately, refresh the expired token.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You, after four nights with no mail. You suggested a central log on the Synology, possibly everything in Docker.",
+  "Deleted": "The central log and Docker. You will not read logs, and a place to store them does not wake you when the job dies.",
+  "Bottleneck": "The only notice is the summary the script emails after it finishes. The expired token killed it at startup, so that mail never went out, and nothing else watches the job.",
+  "Checked myself": "What you just told me about edna\u2019s 03:00 cron and the NAS. I have not opened either machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes one dead-man check built from the Synology's existing Task Scheduler, with no Docker or central log; refreshing the token fixes the job itself and is not a second monitor.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-monitoring.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

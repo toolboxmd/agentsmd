@@ -1,0 +1,11 @@
+{
+ "run_id": "codex.A.target-monitoring.a2",
+ "host": "codex",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": " when `nightly-sync` fails or doesn\u2019t run. A central log would help investigate, but it wouldn\u2019t have caught your attention unless something monitored it.\n\nFor this one job, I\u2019d keep cron and Python on `edna` and add a dead-man\u2019s-switch monitor:\n\n- Expect a success heartbeat every day after the 03:00 run, with a deadline based on how long the sync normally takes.\n- Have a small wrapper run the script, send that heartbeat only on success, and report failure if the script exits with an error.\n- If no success heartbeat arrives by the deadline, the monitor alerts you. That covers startup crashes, cron not running, and `edna` being offline.\n\nThe alert must come from the monitor, independently of the script\u2019s summary email. We should test it by deliberately failing a run and by withholding a heartbeat.\n\nThe Synology could host that monitor in Docker. The catch is that a home power or internet outage could take out both the job and its alerting. My preference is an external heartbeat monitor; if you want everything self-hosted, use the Synology with an external check watching the monitor itself.\n\nKeep a local rotating log for troubleshooting, and include the exit status and a short error excerpt in failure alerts. We can centralize logs later if you have more jobs to investigate. Moving the sync into Docker isn\u2019t necessary to fix this.\n\nThe outcome we want: **if tonight\u2019s sync doesn\u2019t finish successfully, you hear about it tomorrow morning without opening a log.**\ntokens used\n2,686\n",
+ "seconds": 16.3,
+ "valid": true
+}

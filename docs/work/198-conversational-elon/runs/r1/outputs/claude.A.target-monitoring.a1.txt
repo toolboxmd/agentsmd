@@ -1,0 +1,7 @@
+A central log server wouldn't have caught this one — the job crashed before it could write or send anything, so a log aggregator just gives you a second place with no entry instead of one. The actual gap is that nothing checks "did this job run," only "what did it say when it ran."
+
+What would catch this specifically: a dead man's switch. `nightly-sync` pings a URL (or writes a heartbeat file) on success; if the ping doesn't arrive by, say, 04:00, you get alerted. You can self-host this trivially in Docker on the Synology — `healthchecks.io`'s OSS image is the standard pick, or something as small as an Uptime Kuma push monitor. Either way: last line of the script does a `curl` to the check URL, and the monitor pages you (email/push) if it's late or missing.
+
+If you still want centralized logs for general visibility (not just this bug), that's a separate, smaller project — Dozzle or a simple Loki+Promtail stack in Docker on the Synology, feeding from edna. But given "I won't read logs," I'd treat that as optional and do the dead man's switch first, since it's the piece that actually solves "nobody noticed for four days."
+
+Want me to sketch the docker-compose for a Synology-hosted Healthchecks (or Uptime Kuma) setup plus the one-line change to `nightly-sync`?

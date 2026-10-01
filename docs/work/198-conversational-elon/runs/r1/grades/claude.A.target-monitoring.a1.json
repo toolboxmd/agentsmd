@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a dead man's switch for `nightly-sync`, self-hosted in Docker on the Synology (Healthchecks OSS image or an Uptime Kuma push monitor), with a curl ping added to the script; central logging is marked optional.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The alert itself is the right one, but the reply says to self-host it in Docker on the Synology, which is LARGER, and none of the four record labels appear.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "claude.A.target-monitoring.a1",
+ "host": "claude",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

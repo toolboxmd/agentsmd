@@ -1,0 +1,8 @@
+You want to know nightly-sync is dead without reading logs.
+
+**Requirements and who asked:** You, after four nights with no mail. You suggested a central log on the Synology, possibly everything in Docker.
+**Deleted:** The central log and Docker. You will not read logs, and a place to store them does not wake you when the job dies.
+**Bottleneck:** The only notice is the summary the script emails after it finishes. The expired token killed it at startup, so that mail never went out, and nothing else watches the job.
+**Checked myself:** What you just told me about edna’s 03:00 cron and the NAS. I have not opened either machine.
+
+On success only, nightly-sync leaves a heartbeat the NAS can see: a dated file on a share or one POST. A Synology Task Scheduler job at 04:00 emails you if today’s heartbeat is missing, which covers a crash, a hang, and the mini being off. Refresh the token on its own; this only makes the next miss loud.

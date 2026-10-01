@@ -1,0 +1,13 @@
+I’d start with a missed-run alert. A central log would collect the crash, but you’d still need something to tell you the sync hadn’t completed.
+
+For `nightly-sync`, I’d do this:
+
+- Keep cron and the Python script on `edna`. Docker isn’t needed for this fix.
+- Set up an external dead-man’s-switch monitor expecting a successful run every day after 03:00, with enough grace time for the sync to finish.
+- Wrap the script so it signals start, success, or failure. Send success only after the sync actually completes. If it crashes at startup, the wrapper reports failure; if `edna` never starts it or loses connectivity, the missing success signal triggers the alert.
+- Deliver alerts somewhere you’ll notice—email at minimum, or a phone notification. Keep the existing summary email.
+- Test both a forced crash and a skipped run to prove the alerts arrive.
+
+I’d use an external monitor because `edna` and the Synology share your home’s power and internet. A monitor on the NAS could go silent alongside the Mac.
+
+The Synology can hold centralized logs later if troubleshooting across several machines becomes painful. For one nightly job, automatic failure and missing-completion alerts solve the problem you actually hit, with much less upkeep.

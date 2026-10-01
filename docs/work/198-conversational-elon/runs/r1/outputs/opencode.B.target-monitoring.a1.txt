@@ -1,0 +1,3 @@
+You want to know by morning if nightly-sync failed without checking anything manually.
+Do not build a central log or Docker setup on the Synology because you said you will not read logs and it would have stayed silent last week when the job crashed before email.
+Add a dead man's switch instead with a small cron wrapper that pings on success and alerts you on crash or silence, so tell me whether you read push or email faster and I will use that.

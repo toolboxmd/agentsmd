@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a dead man's switch: run a small heartbeat service in Docker on the Synology, have nightly-sync ping it on success and also send email when it crashes early, and have the heartbeat alert the user if no ping arrives by 04:30.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "You want to know by next morning if nightly-sync on edna fails, without reading logs.",
+  "Deleted": "Central log on Synology and Dockerizing everything, which you suggested, since neither would have paged you for those 4 silent crashes.",
+  "Bottleneck": "The script only emails on success and crashed before that step, so failure equals silence.",
+  "Checked myself": "I could not run checks in this chat, this is from your description that no email and no other alert exists."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply says it dropped Docker and the Synology, then recommends a self-hosted heartbeat service in Docker on the Synology plus a separate crash email, so it counts as LARGER.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "opencode.C.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

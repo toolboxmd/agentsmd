@@ -1,0 +1,92 @@
+The nightly sync needs a dead-man's switch, not a log pile. Put a watcher on the Synology that expects a check-in after a clean run and pushes your phone when that check-in is late. That is the simple version of this: one small Docker service whose only job is "did `nightly-sync` report in?"
+
+You already will not read logs. The four quiet nights were a success email that never sent, because the script died at startup on an expired token. Silence looked like a normal night. A log volume on the NAS would have sat there the same way. The signal that works is a message that arrives on its own when 03:45 comes and the job has not checked in.
+
+The Synology is the right place for the watcher. It stays up when the Mac mini does not. Keep the sync script on `edna`.
+
+**On the Synology**, one Container Manager compose project with two containers, bound to the LAN:
+
+1. **Healthchecks** understands a cron schedule. Create a check named `nightly-sync`, schedule `0 3 * * *`, timezone the same as `edna`, grace 45 minutes. No success ping by 03:45 and the check goes down that same morning.
+2. **ntfy** is the phone push. Subscribe in the ntfy app to a private topic. Point a Healthchecks webhook at that topic so a late or failed run buzzes the phone. A missing email is what hid this outage, so push is the channel that matches how you actually notice things.
+
+Give ntfy its own user, write access on that topic for Healthchecks, and read access for your phone. Failure text can mention account names. The ping URL is a secret too: anyone who has it can mark the job healthy.
+
+```yaml
+services:
+  healthchecks:
+    image: healthchecks/healthchecks:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./hc:/data
+    environment:
+      - TZ=<same zone as edna>
+      - DB=sqlite
+      - DB_NAME=/data/hc.sqlite
+      - SECRET_KEY=<long random string>
+      - SITE_ROOT=http://<nas-lan-ip>:8000
+      - ALLOWED_HOSTS=<nas-lan-ip>,nas.local
+      - REGISTRATION_OPEN=False
+      - DEBUG=False
+
+  ntfy:
+    image: binwiederhier/ntfy:latest
+    restart: unless-stopped
+    command: serve
+    ports:
+      - "8081:80"
+    volumes:
+      - ./ntfy:/var/lib/ntfy
+    environment:
+      - TZ=<same zone as edna>
+      - NTFY_BASE_URL=http://<nas-lan-ip>:8081
+      - NTFY_AUTH_FILE=/var/lib/ntfy/auth.db
+      - NTFY_AUTH_DEFAULT_ACCESS=deny-all
+```
+
+After the first start, create the Healthchecks admin with `createsuperuser` inside the container, add the check, and copy its ping URL. Webhook that check to `http://ntfy/edna-nightly` on the compose network, with a title and high priority when the status is down, and include the ping body so the push carries the error line. If an environment name has shifted in the current image, the image README has the current list. These are the settings that matter: SQLite on a volume, registration closed, `SITE_ROOT` set to the LAN address you actually open.
+
+**On `edna`**, the ping has to come from a shell wrapper. The crash last week happened before Python reached the email step, so a `try` inside the script would have died the same way.
+
+```bash
+#!/bin/bash
+# /usr/local/bin/nightly-sync-wrap
+set -u
+URL=$(cat /usr/local/etc/nightly-sync.ping-url)   # mode 600, not in git
+LOG="$HOME/Library/Logs/nightly-sync.log"
+mkdir -p "$(dirname "$LOG")"
+
+curl -fsS -m 10 "$URL/start" >/dev/null || true
+
+/usr/bin/python3 /path/to/nightly-sync.py >"$LOG" 2>&1
+code=$?
+
+msg=$(tail -n 3 "$LOG" | tr '\n' ' ' | cut -c1-350)
+
+if [ "$code" -eq 0 ]; then
+  curl -fsS -m 10 "$URL" >/dev/null || true
+else
+  curl -fsS -m 10 --data-binary "$msg" "$URL/fail" >/dev/null || true
+fi
+exit "$code"
+```
+
+Cron stays the same, pointed at the wrapper:
+
+```
+0 3 * * * /usr/local/bin/nightly-sync-wrap
+```
+
+- `/start` runs before Python. If the script hangs or the Mac dies mid-run, the success ping never arrives and the grace timer fires.
+- The bare ping URL runs only on exit 0.
+- `/fail` runs on any other exit, with the last few log lines as the body. "Token expired" shows up in the push. That is the log you will actually see. Keep it to those few lines so a traceback cannot leak the token itself.
+- If cron never starts, neither ping arrives, and the 03:45 schedule alert still fires.
+
+A sleeping Mac skips cron and does not run the missed job later. Set a repeating wake a few minutes before 03:00. The NAS alert still covers a missed wake. The wake is what makes the sync actually run.
+
+Prove it once before trusting it. Point the wrapper at `python3 -c 'import sys; sys.exit(1)'` and confirm the phone gets the failure text. Set the grace to 2 minutes, do not run the job, confirm the late alert, then put the grace back to 45 minutes. Run the real script once and confirm a success ping and no alert.
+
+Leave the success summary email as it is. Renew the token, and add a preflight that exits non-zero with a clear one-line message if the token expires within 7 days, so the push arrives while you still have time.
+
+Hosted healthchecks.io uses the same ping URLs and the same schedule if you later decide you do not want a container to update. For this outage, the NAS watcher plus the wrapper is the whole fix.

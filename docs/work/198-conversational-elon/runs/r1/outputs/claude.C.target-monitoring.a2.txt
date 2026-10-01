@@ -1,0 +1,5 @@
+Centralized logging on the Synology is reasonable long-term, but it wouldn't have caught this specific failure any faster, and it adds containers you'd have to maintain. The actual gap is simpler: nightly-sync has no "did this even run" check, so a startup crash before the email step is silent by design.
+
+I'd fix that first, cheaply: have cron (or a tiny wrapper around the script) send a heartbeat/alert itself — e.g. a dead man's switch service (Healthchecks.io, Cronitor, or a self-hosted Healthchecks instance on the Synology) that pings on success and alerts you if no ping arrives by 03:10. That's a few lines added to the existing script, no new infrastructure, and it directly solves "nobody noticed for four days" — regardless of whether the failure is an expired token, a crash, or the Mac mini being off.
+
+Centralized logging (Docker + something like Dozzle/Loki on the Synology) is a good follow-up if you want history/search across multiple jobs later, but treat it as a separate, lower-priority project — not the fix for this incident. Want me to set up the heartbeat check first?

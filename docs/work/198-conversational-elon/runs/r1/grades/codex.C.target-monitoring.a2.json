@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a hosted heartbeat monitor for `nightly-sync`: a wrapper around the Python command reports start, success and failure, and the user gets an email if a non-zero exit is reported or no success signal arrives by a deadline after 03:00; it also says to test that both kinds of alert reach the user.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for failures to stop going unnoticed, including crashes before the summary email.",
+  "Deleted": "Central logging and moving everything into Docker add work without guaranteeing an alert.",
+  "Bottleneck": "The job itself sends the only notification, so a startup crash silences it.",
+  "Checked myself": "From the facts you supplied, four startup failures produced no email; I haven\u2019t inspected the setup."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply sets up one hosted heartbeat alert now and puts off Synology log collection until troubleshooting needs it.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.C.target-monitoring.a2",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

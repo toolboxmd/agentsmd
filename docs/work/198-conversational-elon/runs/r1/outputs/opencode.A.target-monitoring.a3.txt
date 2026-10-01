@@ -1,0 +1,19 @@
+Silent failure is the real bug here, not missing logs — so don't build a central log.
+
+`nightly-sync` only emails on success. Expired token = crash before email = no signal. A log on the Synology has the same flaw: you said you won't read logs, and `edna` + Synology are in the same house/power/internet, so if the house goes down both go down together. Adding Docker just adds ways to fail.
+
+Do this instead — alert on *missing success*:
+
+1. **Use an external heartbeat, not home infra.** Free Healthchecks.io / Cronitor check that expects 1 ping per 24h, grace period ~6-8h after 03:00. It emails/pushes you when the ping *doesn't* arrive. This covers crash-at-startup, cron broken, `edna` off, home internet down — all the cases a Synology log can't.
+
+Self-hosting Uptime Kuma / Healthchecks on the Synology is okay as a second view, but not as the alerter for this job.
+
+2. **Ping from outside the Python script.** Wrap it in shell in cron so even an import/token failure still reports fail:
+
+`nightly-sync.sh: curl start ping; python nightly-sync.py && curl success ping || curl fail ping`
+
+That would have caught last week's 4-day outage on night 1.
+
+3. **Keep logs local for debug only.** Keep a simple rotating file on `edna` for after you get an alert. No central log system needed for 1 job.
+
+Want me to wire the cron wrapper + Healthchecks check for `nightly-sync`?

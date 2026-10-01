@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Wrap the nightly-sync cron command on edna so that any non-zero exit sends the user an email with the traceback, sent from outside the Python script.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends one failure alert and turns down the Synology central log, but it has none of the four labelled record lines.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "grok.B.target-monitoring.a2",
+ "host": "grok",
+ "arm": "B",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

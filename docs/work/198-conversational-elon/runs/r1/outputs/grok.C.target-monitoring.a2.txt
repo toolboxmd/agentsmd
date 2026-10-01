@@ -1,0 +1,8 @@
+You want a same-morning email when nightly-sync does not succeed, without opening a log.
+
+**Requirements and who asked**: You asked for a central log on the Synology, Pieter Levels style, maybe everything in Docker, because the job was dead for four nights and the summary mail never went out.
+**Deleted**: The central log and Docker. A log store has nothing to send you, and you only have this one scheduled job.
+**Bottleneck**: The summary mail is inside the script, after startup. The expired token aborted the process before that, and nothing outside the script treats a missing mail as an alarm.
+**Checked myself**: I have not inspected edna, the script, or the NAS. This is from the outage you described. The check that matters before building is that the alarm's mail path does not use the token that expired.
+
+Point cron at a wrapper that pings the NAS only when the script exits 0. Add a DSM scheduled task at 04:00 that emails you if that ping never came. Wording like "nightly-sync did not report success" covers a startup crash, a skipped run, and edna being off. The Synology task scheduler is enough; the NAS is the watcher.

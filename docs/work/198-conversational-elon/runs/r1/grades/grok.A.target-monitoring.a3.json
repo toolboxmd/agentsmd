@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends running a self-hosted Healthchecks instance (app plus Postgres) in Docker on the Synology, with email and phone channels, and having `nightly-sync` on edna ping it on success and on caught failure.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "It's a heartbeat for one job, but it is self-hosted in Docker on the Synology and adds a second phone channel, so it counts as LARGER. None of the four labelled record lines appear.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "grok.A.target-monitoring.a3",
+ "host": "grok",
+ "arm": "A",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

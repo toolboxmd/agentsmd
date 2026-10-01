@@ -1,0 +1,12 @@
+We should make **a missing nightly run alert you**. Central logs can help investigate a failure, but they won’t solve this if nobody reads them.
+
+For `nightly-sync`, I’d use a dead-man’s switch: a monitor expects a success signal every day and alerts you if it never arrives.
+
+- Keep cron and Python on `edna`; there’s no need to move the job into Docker.
+- Wrap the script so it sends a “started” signal, then “success” only after the sync completes, or “failure” if Python exits with an error. That catches startup crashes like the expired token.
+- Set a daily deadline after 03:00 with enough grace for a normal run. If the script never starts—or `edna` is offline—the missing success signal still triggers an alert.
+- Send alerts somewhere you’ll notice, such as a phone push notification, with email as backup. Keep the existing summary email.
+
+I’d put the monitor outside your home so it can also detect a power or internet outage. You can run a heartbeat monitor in Docker on the Synology, but it needs an external check of its own; otherwise a home outage can silence both the job and its watchdog.
+
+Before calling it done, we should deliberately fail a run and skip a run, and confirm that both alerts reach you. Central logging can come later if troubleshooting becomes painful; it isn’t needed to fix this blind spot.
