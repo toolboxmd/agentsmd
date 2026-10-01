@@ -371,5 +371,97 @@ class CommittedRecordsTests(unittest.TestCase):
                       out.getvalue())
 
 
+class MultiTurnScoringTests(unittest.TestCase):
+    """Review findings on PR #200: only a read that returned the file counts; Codex item ids restart per process."""
+
+    VC = "skills/operations/workflows/version-control/index.md"
+    HEADINGS = {"version-control/index.md": "# Version Control"}
+
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location("multiturn", HARNESS.parent / "multiturn.py")
+        self.m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.m)
+
+    @staticmethod
+    def codex(item_id, command, exit_code, output):
+        return json.dumps({"type": "item.completed", "item": {
+            "id": item_id, "type": "command_execution", "command": command, "exit_code": exit_code,
+            "status": "completed", "aggregated_output": output}})
+
+    def commit_verdict(self, lines, host="codex"):
+        stream = "\n".join(lines)
+        end = len(self.m.tool_calls(stream, host))  # every call belongs to the commit turn
+        result = self.m.score_session(stream, [0, 0, 0, end, end], host, self.HEADINGS)
+        return result["turns"]["commit"]["verdict"]["version-control/index.md"]
+
+    def test_failed_or_echoed_codex_read_before_commit_is_a_skip(self):
+        for command, code, output in ((f"cat undefined/{self.VC}", 1, "No such file or directory"),
+                                      (f"echo cat {self.VC}", 0, f"cat {self.VC}")):
+            with self.subTest(command=command):
+                lines = [self.codex("item_1", command, code, output),
+                         self.codex("item_2", "git commit -m x", 0, "")]
+                self.assertEqual(self.commit_verdict(lines), "skip")
+
+    def test_codex_read_that_returned_the_file_fires(self):
+        lines = [self.codex("item_1", f"cat {self.VC}", 0, "# Version Control\n"),
+                 self.codex("item_2", "git commit -m x", 0, "")]
+        self.assertEqual(self.commit_verdict(lines), "fired")
+
+    def test_codex_items_of_a_resumed_process_are_not_dropped(self):
+        lines = [json.dumps({"type": "thread.started"}), self.codex("item_1", "ls", 0, ""),
+                 json.dumps({"type": "thread.started"}), self.codex("item_1", "git commit -m x", 0, "")]
+        self.assertEqual([c[2] for c in self.m.tool_calls("\n".join(lines), "codex")], ["ls", "git commit -m x"])
+
+    def test_claude_read_needs_its_tool_result(self):
+        read = json.dumps({"type": "assistant", "message": {"content": [
+            {"type": "tool_use", "id": "r", "name": "Read", "input": {"file_path": f"/p/{self.VC}"}},
+            {"type": "tool_use", "id": "c", "name": "Bash", "input": {"command": "git commit -m x"}}]}})
+        result = json.dumps({"type": "user", "message": {"content": [
+            {"type": "tool_result", "tool_use_id": "r", "content": "1\t# Version Control"}]}})
+        self.assertEqual(self.commit_verdict([read], "claude"), "skip")
+
+    def test_read_counts_only_once_its_output_arrived_before_the_action(self):
+        def assistant(*blocks):
+            return json.dumps({"type": "assistant", "message": {"content": list(blocks)}})
+
+        def result(call_id, text):
+            return json.dumps({"type": "user", "message": {"content": [
+                {"type": "tool_result", "tool_use_id": call_id, "content": text}]}})
+        read = {"type": "tool_use", "id": "r", "name": "Read", "input": {"file_path": f"/p/{self.VC}"}}
+        commit = {"type": "tool_use", "id": "c", "name": "Bash", "input": {"command": "git commit -m x"}}
+        # Read and commit issued together: the commit was chosen before the procedure arrived.
+        parallel = [assistant(read, commit), result("c", ""), result("r", "1\t# Version Control")]
+        self.assertEqual(self.commit_verdict(parallel, "claude"), "skip")
+        sequential = [assistant(read), result("r", "1\t# Version Control"), assistant(commit), result("c", "")]
+        self.assertEqual(self.commit_verdict(sequential, "claude"), "fired")
+        # Codex: the read completes after the commit starts.
+        late = [json.dumps({"type": "item.started", "item": {"id": "item_1", "type": "command_execution",
+                                                            "command": f"cat {self.VC}"}}),
+                json.dumps({"type": "item.started", "item": {"id": "item_2", "type": "command_execution",
+                                                            "command": "git commit -m x"}}),
+                self.codex("item_1", f"cat {self.VC}", 0, "# Version Control\n"),
+                self.codex("item_2", "git commit -m x", 0, "")]
+        self.assertEqual(self.commit_verdict(late), "skip")
+
+    def test_a_help_lookup_is_not_the_action(self):
+        create = r"\bgh\s+pr\s+create\b"
+        self.assertFalse(self.m.runs(create, "git status && gh pr create --help 2>&1 | head -80"))
+        self.assertFalse(self.m.runs(create, "gh pr create -h"))
+        self.assertTrue(self.m.runs(create, "gh pr create --help; gh pr create --title x --body y"))
+        self.assertTrue(self.m.runs(create, 'gh pr create --title "Raise -h flag" --body-file b.md'))
+        self.assertTrue(self.m.runs(create, """/bin/zsh -lc 'gh pr create --title x --body-file b.md'"""))
+        self.assertFalse(self.m.runs(create, """/bin/zsh -lc 'gh pr create --help'"""))
+
+    def test_grok_turn_completes_only_with_an_error_free_result(self):
+        for text, done in (('{"type":"result","is_error":true}', False),
+                           ('{"type": "result", "is_error": true}', False),
+                           ('{"type":"result","is_error":false}', True),
+                           ('{"type":"assistant"}', False), ("", False)):
+            with self.subTest(text=text):
+                self.assertIs(self.m.turn_done(text, "grok"), done)
+        self.assertTrue(self.m.turn_done('{"type":"turn.completed"}', "codex"))
+        self.assertFalse(self.m.turn_done('{"type":"turn.failed"}', "codex"))
+
+
 if __name__ == "__main__":
     unittest.main()
