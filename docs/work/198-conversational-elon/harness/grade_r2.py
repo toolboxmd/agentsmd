@@ -68,7 +68,8 @@ def main():
     base = Path(sys.argv[1]).resolve()
     if (sys.argv[2:] or ["grade"])[0] == "grade":
         (base / "grades").mkdir(exist_ok=True)
-        metas = [p for p in (base / "outputs").glob("*.meta.json") if json.loads(p.read_text())["valid"]]
+        metas = [p for p in (base / "outputs").glob("*.meta.json") if json.loads(p.read_text())["valid"]
+                 and not (base / "grades" / p.name.replace(".meta.json", ".json")).exists()]  # grade new runs only
         random.shuffle(metas)
         with cf.ThreadPoolExecutor(6) as pool:
             list(pool.map(lambda p: g1.grade(base, p), metas))

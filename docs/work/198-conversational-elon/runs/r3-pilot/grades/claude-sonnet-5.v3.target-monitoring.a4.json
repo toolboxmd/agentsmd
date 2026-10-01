@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a dead-man's-switch check-in, such as Healthchecks.io, that `nightly-sync` pings at the start and end of each run and that alerts the user if `edna` hasn't checked in by 03:10.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to know within hours when `nightly-sync` fails to run or crashes, without reading logs. Centralized logging wasn't asked for directly, it's one possible means to that end.",
+  "Deleted": "A central log aggregator (Loki/ELK/etc. on the Synology, \"everything in Docker\") \u2014 it would show you the failure if you went looking, but you said you won't read logs, so a log you don't read doesn't fix this. Dropping it, not a smaller version of it.",
+  "Bottleneck": "The job can fail before it reaches its own email step, so the one notification path is skipped exactly when you need it. Nothing watches the job itself, only the job watches itself.",
+  "Checked myself": "Confirmed from what you told me: single cron job on `edna`, crashes before email, nothing else alerts, NAS available for Docker. I haven't looked at `edna` or the Synology myself."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "It's one alert, but 'self-hosted or cloud' leaves a self-hosted option open without choosing it, so this is a borderline SMALL.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-sonnet-5.v3.target-monitoring.a4",
+ "host": "claude-sonnet-5",
+ "arm": "v3",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

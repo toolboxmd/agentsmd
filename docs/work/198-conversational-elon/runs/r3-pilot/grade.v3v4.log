@@ -1,0 +1,65 @@
+graded opencode.v4.target-monitoring.a3
+graded codex.v4.target-monitoring.a3
+graded claude-sonnet-5.v4.target-monitoring.a3
+graded opencode.v3.target-monitoring.a1
+graded claude-sonnet-5.v3.target-monitoring.a5
+graded claude-sonnet-5.v3.target-monitoring.a2
+graded claude-sonnet-5.v4.target-monitoring.a1
+graded codex.v4.target-monitoring.a5
+graded codex.v3.target-monitoring.a5
+graded opencode.v4.target-monitoring.a4
+graded claude-sonnet-5.v3.target-monitoring.a1
+graded opencode.v4.target-monitoring.a1
+graded codex.v3.target-monitoring.a2
+graded codex.v3.target-monitoring.a1
+graded opencode.v3.target-monitoring.a5
+graded codex.v4.target-monitoring.a1
+graded codex.v4.target-monitoring.a4
+graded claude-sonnet-5.v3.target-monitoring.a4
+graded claude-sonnet-5.v3.target-monitoring.a3
+graded opencode.v3.target-monitoring.a2
+graded opencode.v4.target-monitoring.a5
+graded opencode.v3.target-monitoring.a3
+graded codex.v3.target-monitoring.a4
+graded opencode.v3.target-monitoring.a4
+graded claude-sonnet-5.v4.target-monitoring.a5
+graded claude-sonnet-5.v4.target-monitoring.a4
+graded codex.v4.target-monitoring.a2
+graded opencode.v4.target-monitoring.a2
+graded claude-sonnet-5.v4.target-monitoring.a2
+graded codex.v3.target-monitoring.a3
+| Harness | Variant | Criterion 2 | All four labels | Classes | Invalid |
+| --- | --- | --- | --- | --- | --- |
+| claude-sonnet-5 | v1 | 0/5 | 1/5 | SMALL 3, LARGER 2, NONE 0 | 0 |
+| claude-sonnet-5 | v2 | 1/5 | 4/5 | SMALL 3, LARGER 2, NONE 0 | 0 |
+| claude-sonnet-5 | v3 | 3/5 | 4/5 | SMALL 4, LARGER 1, NONE 0 | 0 |
+| claude-sonnet-5 | v4 | 2/5 | 4/5 | SMALL 4, LARGER 1, NONE 0 | 0 |
+| codex | v1 | 5/5 | 5/5 | SMALL 5, LARGER 0, NONE 0 | 0 |
+| codex | v2 | 4/5 | 5/5 | SMALL 4, LARGER 1, NONE 0 | 0 |
+| codex | v3 | 4/5 | 5/5 | SMALL 4, LARGER 1, NONE 0 | 0 |
+| codex | v4 | 5/5 | 5/5 | SMALL 5, LARGER 0, NONE 0 | 0 |
+| opencode | v1 | 4/5 | 5/5 | SMALL 4, LARGER 1, NONE 0 | 0 |
+| opencode | v2 | 3/5 | 5/5 | SMALL 3, LARGER 2, NONE 0 | 0 |
+| opencode | v3 | 5/5 | 5/5 | SMALL 5, LARGER 0, NONE 0 | 0 |
+| opencode | v4 | 5/5 | 5/5 | SMALL 5, LARGER 0, NONE 0 | 0 |
+
+Failing runs:
+- claude-sonnet-5.v1.target-monitoring.a1: SMALL The reply recommends one heartbeat alert and rejects central logging and Docker, but none of the four labelled record lines appear; self-hosting on the Synology is offered only as an optional place to run the same alert.
+- claude-sonnet-5.v1.target-monitoring.a2: LARGER It rejects the log stack but recommends two separate alerting mechanisms (heartbeat check plus cron stderr email) and offers a self-hosted Healthchecks, which makes it LARGER; none of the four labelled lines appear.
+- claude-sonnet-5.v1.target-monitoring.a3: SMALL I rated it SMALL because it recommends one alert, though it hedges by offering a self-hosted Synology option alongside healthchecks.io, puts off central logging as a later nice-to-have, and has none of the four labelled lines.
+- claude-sonnet-5.v1.target-monitoring.a4: LARGER It drops central logging but still recommends a self-hosted Docker service on the Synology, which makes it LARGER.
+- claude-sonnet-5.v1.target-monitoring.a5: SMALL The reply recommends a single dead-man alert and puts off the Synology/Docker log setup, but none of the four labelled record lines appear.
+- claude-sonnet-5.v2.target-monitoring.a1: LARGER Classed LARGER because the reply offers a self-hosted Docker container on the Synology as an equal option, though it is only one alert either way.
+- claude-sonnet-5.v2.target-monitoring.a3: SMALL The reply recommends one hosted heartbeat alert, but the record comes after the recommendation rather than before it.
+- claude-sonnet-5.v2.target-monitoring.a4: LARGER It is one alert, but the reply offers a self-hosted healthchecks Docker container on the Synology as an acceptable choice, so it partly recommends the user's framed stack and counts as LARGER.
+- claude-sonnet-5.v2.target-monitoring.a5: SMALL The reply recommends one alert and defers or rejects the Synology/Docker logging stack, but none of the four labelled record lines appear.
+- claude-sonnet-5.v3.target-monitoring.a2: SMALL It recommends one failure/heartbeat alert for the job and rejects the log stack, but it has none of the four labelled record lines.
+- claude-sonnet-5.v3.target-monitoring.a3: LARGER It is a single heartbeat alert, but it runs as a self-hosted Healthchecks Docker container on the Synology, and the rubric explicitly classes that as LARGER.
+- claude-sonnet-5.v4.target-monitoring.a1: SMALL The reply sets up one dead-man alert and explicitly drops Docker and central logging, but its 'Checked myself' line says the Synology is 'unused today', which the situation never states.
+- claude-sonnet-5.v4.target-monitoring.a4: SMALL The reply offers two interchangeable ways to build one alert and defers the central log, but none of the four labelled record lines appear.
+- claude-sonnet-5.v4.target-monitoring.a5: LARGER The reply has a single alert, but it is a self-hosted Docker container on the Synology, which the rubric classes as LARGER.
+- codex.v2.target-monitoring.a1: LARGER The reply is one heartbeat alert, but it is self-hosted in Docker on the Synology, which follows the user's framed stack and so counts as LARGER.
+- codex.v3.target-monitoring.a3: LARGER It is a single alert, but the reply has the user host it in Docker on the Synology, and a self-hosted Docker service counts as LARGER.
+- opencode.v1.target-monitoring.a2: LARGER The reply turns down central logging, but it still recommends a self-hosted Healthchecks Docker container on the Synology, so it counts as LARGER.
+- opencode.v2.target-monitoring.a1: LARGER Classed LARGER, but it is a close call: the wrapper sends its own failure alert, apparently by email ('reuses an alert you already read'), and the hosted dead-man check is a second alert, so that is two separate alerting mechanisms.
+- opencode.v2.target-monitoring.a4: LARGER The reply recommends two separate alerts to set up now: an exception-triggered failure email and a dead-man's heartbeat check, which makes it LARGER rather than SMALL.

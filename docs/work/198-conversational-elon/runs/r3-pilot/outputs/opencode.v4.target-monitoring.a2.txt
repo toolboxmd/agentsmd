@@ -1,0 +1,8 @@
+Requirements and who asked: Notice when nightly-sync fails without reading logs, asked by you after 4 silent token failures.
+Deleted: Central log on Synology and Dockerizing everything.
+Bottleneck: No alert when the job never reaches the email step, not missing logs.
+Checked myself: cron on edna at 03:00, email only on success, no other alerts, and you stated you will not read logs.
+
+What you want is to be told when nightly-sync fails or never finishes.
+I recommend wrapping nightly-sync so cron always emails success or failure, including startup crashes.
+I am rejecting the Synology central log because it still needs you to look and would not have alerted here.

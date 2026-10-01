@@ -1,0 +1,20 @@
+{
+ "claude-sonnet-5.v3": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "Yes\n\"# Global Agent Rules\"",
+  "attempts": 1
+ },
+ "opencode.v3": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n# Global Agent Rules",
+  "attempts": 1
+ },
+ "codex.v3": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n\"# Global Agent Rules\"",
+  "attempts": 1
+ }
+}

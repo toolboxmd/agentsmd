@@ -1,0 +1,7 @@
+What you're actually trying to achieve: know within minutes when `nightly-sync` fails to start, without reading logs.
+
+A central log server doesn't solve that: it would record the crash, but you'd only see it by going and looking, same failure mode as last week. The actual bottleneck is startup failures never reaching your existing email step.
+
+Recommended: wrap the cron job so it emails you directly on failure, e.g. `nightly-sync.py || mail -s "nightly-sync FAILED" you@... <<< "$(tail logfile)"`, or use a dead-man's-switch ping (healthchecks.io style, self-hostable or free tier) that alerts you if cron doesn't check in by 03:10. Either is a few lines on `edna`, nothing new to run or maintain.
+
+Centralized Docker logging on the Synology is a larger thing to build and watch, and you'd still need to add alerting on top of it to solve this problem, so it doesn't replace the fix above. Worth doing later only if you have multiple services you actually want to search logs across, not as the fix for this.

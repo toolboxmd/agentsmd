@@ -1,0 +1,9 @@
+What you're actually trying to achieve: know within minutes when `nightly-sync` fails to run, not build a log pipeline. A central Synology log won't fix this specific failure — the job died before it reached the email step, so even perfect logging still relies on you going and looking, which you've said you won't do.
+
+Elon record:
+- **Requirements and who asked:** you asked for "find out automatically if the job died." Nobody has asked for log aggregation, retention, search, or Docker as capabilities — that's solving a different problem (visibility into job internals) than the one that bit you (silent total failure).
+- **Deleted:** central/Dockerized logging stack (Loki, ELK, Dozzle, etc.) on the Synology. It adds a service to run and watch, and still wouldn't have alerted you — it only helps once you're already looking.
+- **Bottleneck:** `nightly-sync` has zero failure signal today; it only speaks on success. That's the single point to fix.
+- **Checked myself:** this is from what you told me (cron time, crash point, four silent nights) — I haven't read the script or crontab.
+
+Recommendation: wrap the cron invocation so it emails/notifies you on non-zero exit or timeout too (e.g. `nightly-sync.py || mail -s "nightly-sync FAILED" you@...`, or a one-line healthcheck ping like healthchecks.io's curl-on-success-with-dead-man's-switch pattern). One mechanism, no new host service, no Docker. Want me to write that wrapper?

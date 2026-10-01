@@ -1,0 +1,6 @@
+**Requirements and who asked**: You asked to know within a day when nightly-sync fails, without reading logs.
+**Deleted**: Central log server, Synology Docker host, moving the job into Docker.
+**Bottleneck**: Silence before the email step, not log storage. A central log still needs you to read it.
+**Checked myself**: Only your description here, I did not run or inspect edna in this chat.
+
+Do not build logging. I recommend one addition: a small cron wrapper on edna outside the Python script that emails you on non-zero exit, so a startup crash like the expired token still alerts.

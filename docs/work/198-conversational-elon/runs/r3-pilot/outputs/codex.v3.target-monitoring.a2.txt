@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging, Docker, and Synology hosting for this problem.
+**Bottleneck:** The job must survive long enough to send its own email; nothing detects its silence.
+**Checked myself:** No independent checks here. From your account, startup failures prevented email for four nights.
+
+I recommend one externally hosted heartbeat monitor: `nightly-sync` sends it a success signal only after completing, and the monitor emails you an explicit failure alert if that signal misses the expected finish time plus a buffer. This catches startup crashes, missed cron runs, and `edna` being offline, without another home service to maintain.

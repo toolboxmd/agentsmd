@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a dead man's switch: have nightly-sync ping a monitoring URL such as healthchecks.io or Cronitor at the start and end of each run, so the user gets an email or text if the ping hasn't arrived by about 03:15.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "you want to know about failures without reading logs \u2014 that's the actual requirement, not \"a central log.\" Nobody asked for Docker or a Synology log aggregator specifically; that's a solution jumping ahead of the problem.",
+  "Deleted": "a log server (central logging, Docker stack, log shipping) doesn't fix this. Last week's failure happened before the email step \u2014 the summary never got written, so even a perfect central log would just contain the same crash nobody would read, because you said you won't read logs.",
+  "Bottleneck": "the job has zero independent alerting. It can die silently and nothing says so. That's the whole problem.",
+  "Checked myself": "you told me the crash was an expired token, four nights, caught by accident, and that nothing else alerts on this job today."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "It recommends a single heartbeat alert; the passing mention of a 'tiny self-hosted equivalent' is one option alongside hosted services, and the reply stresses no new infrastructure, so it stays SMALL.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-sonnet-5.v3.target-monitoring.a5",
+ "host": "claude-sonnet-5",
+ "arm": "v3",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

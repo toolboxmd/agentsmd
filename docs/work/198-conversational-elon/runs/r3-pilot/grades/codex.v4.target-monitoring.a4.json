@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends setting up one external dead-man's-switch monitor. The script pings it only after a successful sync, and the monitor emails the user if the nightly signal is missing by a deadline.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker infrastructure; neither is needed to detect a missed run.",
+  "Bottleneck": "The script sends email only after finishing, so a startup crash leaves you without an alert.",
+  "Checked myself": "Only the facts you supplied: cron runs it at 03:00 on `edna`, and an expired token caused four silent failures."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single heartbeat alert and rejects the Synology/Docker logging stack; all four record lines come first and are grounded in the situation's facts.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v4.target-monitoring.a4",
+ "host": "codex",
+ "arm": "v4",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

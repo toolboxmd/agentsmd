@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one external dead-man's-switch monitor that `nightly-sync` pings only after a successful run, so a missed ping triggers an alert. Keep the job on `edna` and skip the Synology and Docker.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to hear when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker infrastructure for this one job.",
+  "Bottleneck": "The script sends email only if it reaches the email step, so a startup crash stays silent.",
+  "Checked myself": "From your account, cron runs it at 03:00 on `edna`; four startup crashes produced no email, and nothing else monitors it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one heartbeat alert, rejects the Synology/Docker idea, and its Checked myself line uses only facts from the situation, credited to the user's account.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v4.target-monitoring.a1",
+ "host": "codex",
+ "arm": "v4",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

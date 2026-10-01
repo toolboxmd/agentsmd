@@ -1,0 +1,6 @@
+**Requirements and who asked:** You need to know within a day when nightly-sync fails; you said you won't read logs, so the fix must push a notice to you, not wait for you to look.
+**Deleted:** Docker and a central log server on the Synology. A log you won't read doesn't solve "I didn't notice" even if it's centralized.
+**Bottleneck:** nightly-sync has no failure path at all, it only emails on success, so a crash before that step (or cron never firing) is silent by design.
+**Checked myself:** This is what you described: four silent crashes, no other alerting on this job, Synology present but unused today.
+
+Recommendation: a dead man's switch, not log aggregation. Have nightly-sync ping a heartbeat (a file touch, or a curl to a cron-monitoring endpoint) as its very last line, and run a small watchdog on the Synology's built-in Task Scheduler (no Docker needed) that emails/pushes you if that heartbeat hasn't arrived by, say, 04:00. That catches both a mid-run crash and cron not starting at all, which log scraping wouldn't catch either. Want me to write the heartbeat line for nightly-sync and the watchdog check for the Synology?

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one hosted heartbeat check for nightly-sync: a success ping at the end of the script and a failure ping from a top-level exception handler, with a missed-ping alert to the user's phone, and do not build the Synology central log.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to know within a day if nightly-sync fails, without reading logs.",
+  "Deleted": "Central log on Synology, Dockerizing nightly-sync and surrounding infra.",
+  "Bottleneck": "Silence looks normal. A startup crash before the email step produces no alert.",
+  "Checked myself": "You told me only this: cron 03:00 on edna, email on finish, 4 nights expired-token crash before email, no other alerts, Synology available, you will not read logs."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one heartbeat alert (the success and failure pings both feed the same check), rejects the Synology/Docker stack, and its 'Checked myself' line cites only facts from the situation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v4.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "v4",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

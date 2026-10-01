@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want to hear when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging and Docker for this problem.
+**Bottleneck:** The job sends its own notification, so a startup crash silences it.
+**Checked myself:** Only your account: four missed runs, no independent alert, and a daily 03:00 schedule on `edna`.
+
+I recommend one addition: a hosted heartbeat monitor that expects a success signal after each nightly sync completes and emails you when that signal misses its deadline. Set the deadline using the job’s normal completion time plus a buffer; because the monitor runs independently, it also catches `edna` being offline or cron never starting the script. Your existing summary email stays, and the Synology needs no new service.

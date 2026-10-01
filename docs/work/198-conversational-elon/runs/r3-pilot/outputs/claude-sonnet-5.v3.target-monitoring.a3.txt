@@ -1,0 +1,9 @@
+**Requirements and who asked:** You asked for a way to stop being the one who finds out "by accident." Central logging/Docker is your proposed solution, not the actual requirement.
+
+**Deleted:** Centralized logging and dockerizing everything, at least as the fix for *this* incident. You said you won't read logs, so a log dashboard doesn't close the loop even if you build it.
+
+**Bottleneck:** nightly-sync died before it reached its own alerting step (the summary email). The gap isn't "logs are hard to find," it's "nothing notices when the job doesn't finish."
+
+**Checked myself:** I haven't looked at edna, the Synology, or the script. This is based only on what you've told me.
+
+Recommendation: skip the log stack for now and add a dead man's switch instead, one small addition for the one unmet outcome. Have nightly-sync (or its cron wrapper) ping a check-in URL at success; run a tiny self-hosted heartbeat checker (e.g. Healthchecks, one container) on the Synology that pages you if the ping doesn't land by 03:30. That directly covers the failure mode you actually hit (crash before completion) without you reading anything. Want me to spec that out, or do you still want the central-log setup for other reasons?

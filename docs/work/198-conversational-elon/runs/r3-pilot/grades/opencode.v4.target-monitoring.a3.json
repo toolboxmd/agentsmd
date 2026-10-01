@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Have nightly-sync ping a dead-man's check only when it succeeds, and have that check email the user if the ping is late or missing.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "User wants same-day notice when nightly-sync fails without reading logs.",
+  "Deleted": "Central log on Synology and Docker-everything rebuild, neither alerts on a missing email.",
+  "Bottleneck": "No signal when the job dies before its summary email, not log storage.",
+  "Checked myself": "nightly-sync runs via cron at 03:00 on edna, emails only on finish, died 4 nights on expired token with no email, no other alerting."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends exactly one dead-man alert, rejects the Synology log and Docker stack, and its 'Checked myself' line uses only facts from the situation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v4.target-monitoring.a3",
+ "host": "opencode",
+ "arm": "v4",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

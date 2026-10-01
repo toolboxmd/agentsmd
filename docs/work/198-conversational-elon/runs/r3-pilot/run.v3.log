@@ -1,0 +1,26 @@
+start v3: Thu Oct  1 18:39:21 CEST 2026 sha 3d0ae461f0a1a297d7a9f6e2385442b02d1fa514e68f91d9f303ac92ff1ba37b  /tmp/198-r3/v3.md
+claude-sonnet-5.v3.canary.a1                            valid                                 4s
+opencode.v3.canary.a1                                   valid                                 6s
+codex.v3.canary.a1                                      valid                                10s
+canary claude-sonnet-5.v3     PASS  'Yes\n"# Global Agent Rules"'
+canary opencode.v3            PASS  'yes\n# Global Agent Rules'
+canary codex.v3               PASS  'yes\n"# Global Agent Rules"'
+codex.v3.target-monitoring.a1                           valid                                15s
+opencode.v3.target-monitoring.a1                        valid                                17s
+claude-sonnet-5.v3.target-monitoring.a1                 valid                                19s
+claude-sonnet-5.v3.target-monitoring.a2                 valid                                 8s
+codex.v3.target-monitoring.a2                           valid                                17s
+opencode.v3.target-monitoring.a2                        valid                                29s
+claude-sonnet-5.v3.target-monitoring.a3                 valid                                22s
+codex.v3.target-monitoring.a3                           valid                                19s
+claude-sonnet-5.v3.target-monitoring.a4                 valid                                 7s
+claude-sonnet-5.v3.target-monitoring.a5                 valid                                 9s
+cell claude-sonnet-5.v3.target-monitoring: 5 valid, 0 invalid
+codex.v3.target-monitoring.a4                           valid                                20s
+opencode.v3.target-monitoring.a3                        valid                                34s
+codex.v3.target-monitoring.a5                           valid                                18s
+opencode.v3.target-monitoring.a4                        valid                                30s
+opencode.v3.target-monitoring.a5                        valid                                42s
+cell opencode.v3.target-monitoring: 5 valid, 0 invalid
+cell codex.v3.target-monitoring: 5 valid, 0 invalid
+exit 0

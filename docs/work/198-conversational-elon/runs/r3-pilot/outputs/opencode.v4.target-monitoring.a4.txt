@@ -1,0 +1,8 @@
+Requirements and who asked: You need morning notice if nightly-sync failed or never finished; you suggested a central log on Synology in Docker as one possible means.
+Deleted: Synology central log and Dockerizing everything, because a log you must open does not alert and adds a second system to run and maintain.
+Bottleneck: Silence looks like success, because the summary email only sends after success and last week's startup crash happened before that step.
+Checked myself: edna cron at 03:00 runs Python nightly-sync, four nights of startup expired-token crashes with no email, no other alert today.
+
+What you are trying to achieve in one line: know a nightly-sync failure without reading anything manually.
+
+I recommend keeping the job on edna and adding a small wrapper so any nonzero exit, exception, or startup failure sends a failure email with the traceback, leaving success email as is. That would have paged you on the token crash, while a central log would still have stayed silent until you opened it.

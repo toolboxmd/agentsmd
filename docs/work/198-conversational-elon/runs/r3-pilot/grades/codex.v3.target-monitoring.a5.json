@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single hosted heartbeat monitor that expects a success signal after each nightly-sync run and emails the user when the signal misses its deadline, keeping the existing summary email and adding nothing to the Synology.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to hear when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker for this problem.",
+  "Bottleneck": "The job sends its own notification, so a startup crash silences it.",
+  "Checked myself": "Only your account: four missed runs, no independent alert, and a daily 03:00 schedule on `edna`."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends exactly one independent heartbeat alert, explicitly drops the central log and Docker, and its 'Checked myself' line cites only facts the user gave.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v3.target-monitoring.a5",
+ "host": "codex",
+ "arm": "v3",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

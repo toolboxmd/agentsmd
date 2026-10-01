@@ -1,0 +1,7 @@
+**Elon record**
+- Requirements and who asked: you want to know when nightly-sync fails, without reading logs — the real need is "alert on missing/failed run," not "store logs centrally."
+- Deleted: a Synology Docker log stack (ELK/Loki/Grafana-style) — you said you won't read logs, so a log viewer doesn't solve silent failure, and it's new infra to run and maintain on top of that.
+- Bottleneck: nightly-sync dies at startup before it reaches the email-summary step, so your only notification path never fires on failure.
+- Checked myself: based on what you told me (four silent crashes, no other alerting on this job) — I haven't looked at the script or cron entry myself.
+
+Recommendation: skip the log stack and add a dead-man's-switch heartbeat — have nightly-sync ping a small monitor (self-hosted on the Synology if you want it local) at start, which pages/emails you if the expected ping doesn't show up by 03:05. That directly closes the gap — you get alerted even when the script never reaches the email step — with nothing new to read.

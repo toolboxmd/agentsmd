@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends setting up one externally hosted heartbeat monitor that `nightly-sync` pings only after it finishes, which emails the user a failure alert if the ping doesn't arrive by the expected time plus a buffer.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging, Docker, and Synology hosting for this problem.",
+  "Bottleneck": "The job must survive long enough to send its own email; nothing detects its silence.",
+  "Checked myself": "No independent checks here. From your account, startup failures prevented email for four nights."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, which is a single hosted heartbeat alert, and the reply explicitly drops central logging, Docker and the Synology.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v3.target-monitoring.a2",
+ "host": "codex",
+ "arm": "v3",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

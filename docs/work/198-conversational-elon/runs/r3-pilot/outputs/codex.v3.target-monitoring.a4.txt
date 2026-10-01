@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to hear when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging and Docker migration from this fix; neither provides the missing alert by itself.
+**Bottleneck:** The job sends its own email, so a startup crash also disables its notification.
+**Checked myself:** No independent checks in this exercise. You told me cron runs it at 03:00 on `edna`, four startup failures went unnoticed, and no other alert exists.
+
+I recommend one independent heartbeat monitor hosted outside your home. After a successful sync, the script sends it a small success signal; if that signal has not arrived by 03:00 plus the normal runtime and a grace period, the monitor emails you.
+
+That catches the expired-token failure, cron failing to start the job, and `edna` being offline. Keep the existing summary email, and verify the new alert by deliberately withholding one heartbeat before relying on it.

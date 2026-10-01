@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a fail-loud wrapper on edna that emails the user whenever nightly-sync exits nonzero or crashes at startup.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need to notice within a day if nightly-sync did not succeed, without reading logs.",
+  "Deleted": "Central log on Synology, Docker containers.",
+  "Bottleneck": "The crash happens before the email step, so success-only email stays silent on the failures you need to catch.",
+  "Checked myself": "nightly-sync runs at 03:00 on edna by cron, emails only on finish, died 4 nights at startup on an expired token, with no other alert today."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one failure alert and drops the framed stack, but the wrapper can't catch a night when cron or edna doesn't run the job at all.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v3.target-monitoring.a2",
+ "host": "opencode",
+ "arm": "v3",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

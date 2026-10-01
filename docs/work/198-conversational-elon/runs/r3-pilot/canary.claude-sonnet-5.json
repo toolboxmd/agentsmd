@@ -10,5 +10,11 @@
   "expected": "# Global Agent Rules",
   "reply": "Yes.\n\"# Global Agent Rules\"",
   "attempts": 1
+ },
+ "claude-sonnet-5.v4": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "Yes.\n\"# Global Agent Rules\"",
+  "attempts": 2
  }
 }

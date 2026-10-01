@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single external dead-man's-switch monitor that `nightly-sync` pings on successful completion and that emails the user if the daily heartbeat is missed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker infrastructure for this one job.",
+  "Bottleneck": "The script sends email only after reaching its summary step, so a startup crash stays silent.",
+  "Checked myself": "Only the facts you supplied; I have not inspected the job or machines."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert, explicitly rejects Synology/Docker logging, and its record lines are specific and come before the recommendation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v4.target-monitoring.a2",
+ "host": "codex",
+ "arm": "v4",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

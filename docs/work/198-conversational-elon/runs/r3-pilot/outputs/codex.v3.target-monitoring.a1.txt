@@ -1,0 +1,10 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging, a Synology deployment, and Docker for this problem.
+**Bottleneck:** The job sends its own email, so an early crash also kills the notification.
+**Checked myself:** Nothing independently; you told me cron runs it at 03:00 on `edna`, and startup failures went unnoticed for four nights.
+
+I recommend one external heartbeat monitor that alerts you when a successful run is overdue. Central logs would collect evidence, but you would still need something watching for failure.
+
+Have the cron command send the monitor a success signal only after Python exits successfully. Set the deadline to 03:00 plus the normal maximum runtime and a small grace period, with the timezone explicit. If the token expires, cron stops running, or `edna` goes offline, the missing signal triggers an email from the monitor.
+
+Test it by deliberately withholding one signal and confirming the alert arrives.

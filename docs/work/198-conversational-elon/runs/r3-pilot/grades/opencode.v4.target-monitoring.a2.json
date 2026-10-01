@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends wrapping nightly-sync so cron always sends an email on success or failure, including startup crashes.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Notice when nightly-sync fails without reading logs, asked by you after 4 silent token failures.",
+  "Deleted": "Central log on Synology and Dockerizing everything.",
+  "Bottleneck": "No alert when the job never reaches the email step, not missing logs.",
+  "Checked myself": "cron on edna at 03:00, email only on success, no other alerts, and you stated you will not read logs."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one failure-email wrapper and rejects the Synology/Docker stack, but a wrapper can't alert if cron never runs the job at all.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v4.target-monitoring.a2",
+ "host": "opencode",
+ "arm": "v4",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

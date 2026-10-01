@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked for one thing — know when `nightly-sync` fails or doesn't run, without reading logs.
+**Deleted:** The Pieter-Levels-style central log stack (ELK/Loki/Grafana in Docker) — you said you won't read logs, so a place to view more logs doesn't close the loop; naming it only to rule it out.
+**Bottleneck:** The crash happens at startup, before the script reaches its own email step, so nothing ever fires — that's the actual gap, not a lack of log visibility.
+**Checked myself:** From what you told me — four nights of silent failure, crash before the email step, no other alerting on this job today.
+
+Smallest fix: a dead-man's-switch heartbeat. Have `nightly-sync` ping a heartbeat container on the Synology right after it succeeds; if no ping arrives by 03:15, it emails/pushes you. One container, one job to watch, and it catches this exact failure mode (crash before the alert step) instead of a startup crash before an alert step, which log aggregation never would.

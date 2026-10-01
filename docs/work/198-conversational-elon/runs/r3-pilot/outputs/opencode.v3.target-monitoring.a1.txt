@@ -1,0 +1,6 @@
+**Requirements and who asked**: You asked to catch a dead nightly-sync without reading logs.
+**Deleted**: Central log on Synology, Dockerizing everything.
+**Bottleneck**: Crash before the email step sends nothing, so failure looks like nothing happened.
+**Checked myself**: You told me edna cron 03:00 emails only on finish, failed 4 nights silent, with no other alert.
+
+I recommend adding one dead-man check: have nightly-sync ping an external health check on success and alert you when no ping arrives by morning, and nothing else to run or maintain. A central log would still need you to go look.

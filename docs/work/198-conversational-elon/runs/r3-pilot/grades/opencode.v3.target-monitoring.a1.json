@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a single dead-man check: nightly-sync pings an external health-check service on success, and the service alerts the user if no ping arrives by morning.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to catch a dead nightly-sync without reading logs.",
+  "Deleted": "Central log on Synology, Dockerizing everything.",
+  "Bottleneck": "Crash before the email step sends nothing, so failure looks like nothing happened.",
+  "Checked myself": "You told me edna cron 03:00 emails only on finish, failed 4 nights silent, with no other alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted dead-man alert, rejects the central log and Docker, and the Checked myself line attributes its facts to the user.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v3.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "v3",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

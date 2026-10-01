@@ -1,0 +1,9 @@
+Requirements and who asked: you want to know about failures without reading logs — that's the actual requirement, not "a central log." Nobody asked for Docker or a Synology log aggregator specifically; that's a solution jumping ahead of the problem.
+
+Deleted: a log server (central logging, Docker stack, log shipping) doesn't fix this. Last week's failure happened before the email step — the summary never got written, so even a perfect central log would just contain the same crash nobody would read, because you said you won't read logs.
+
+Bottleneck: the job has zero independent alerting. It can die silently and nothing says so. That's the whole problem.
+
+Checked myself: you told me the crash was an expired token, four nights, caught by accident, and that nothing else alerts on this job today.
+
+What actually solves it: a dead man's switch. `nightly-sync` pings a monitoring URL (healthchecks.io, Cronitor, or a tiny self-hosted equivalent) at the start and end of the run; if the ping doesn't arrive by ~03:15, it emails/texts you. That catches the exact failure mode you hit (crash before the summary email) with no logs involved and no new infrastructure to run. Want me to wire that into the script?

@@ -198,12 +198,14 @@ def canary(base, arms, harnesses):
     results = {}
 
     def probe(h, a):
-        for n in range(1, MAX_RETRIES + 2):
+        start = 1 + len(list((base / "canary").glob(f"{h}.{a}.canary.a*.txt")))  # never reuse an attempt
+        for n in range(start, start + MAX_RETRIES + 1):
             valid, text = attempt(base, arms, h, a, "canary", CANARY, n, "canary")
             if valid:
                 lines = [l.strip() for l in text.splitlines() if l.strip()]
                 want = "NONE" if a == "A" else "# Global Agent Rules"
-                ok = bool(lines) and lines[-1].strip("`\"' ") == want
+                # The heading text proves the file loaded; accept it with or without the leading "#".
+                ok = bool(lines) and lines[-1].strip("`\"' ").lstrip("# ") == want.lstrip("# ")
                 return {"pass": ok, "expected": want, "reply": text, "attempts": n}
         return {"pass": False, "expected": None, "reply": "no valid attempt", "attempts": n}
 
@@ -211,7 +213,9 @@ def canary(base, arms, harnesses):
         futs = {(h, a): pool.submit(probe, h, a) for h in harnesses for a in arms}
         for k, f in futs.items():
             results[f"{k[0]}.{k[1]}"] = f.result()
-    (base / f"canary{tag}.json").write_text(json.dumps(results, indent=1) + "\n")
+    dest = base / f"canary{tag}.json"
+    merged = {**(json.loads(dest.read_text()) if dest.exists() else {}), **results}  # keep earlier arms' canaries
+    dest.write_text(json.dumps(merged, indent=1) + "\n")
     for k, r in results.items():
         print(f"canary {k:22} {'PASS' if r['pass'] else 'FAIL'}  {r['reply']!r}")
     return all(r["pass"] for r in results.values())

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a ping to a hosted heartbeat service at the end of nightly-sync so the service emails the user if no ping arrives by morning.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want notice within a day if nightly-sync fails or goes silent, with no log reading.",
+  "Deleted": "Central log on Synology, Docker setup, Pieter Levels style aggregation.",
+  "Bottleneck": "Early crash happens before the summary email, so failure looks the same as success from the outside.",
+  "Checked myself": "You told me cron 03:00 on edna, email on finish, 4 day startup crash with no email, no other alerts today."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one dead man's switch, rejects the Synology/Docker log stack, and lists all four record lines first, each tied to the facts of this case.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v4.target-monitoring.a5",
+ "host": "opencode",
+ "arm": "v4",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

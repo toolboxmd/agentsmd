@@ -1,0 +1,6 @@
+**Requirements and who asked**: You need to notice within a day if nightly-sync did not succeed, without reading logs.
+**Deleted**: Central log on Synology, Docker containers.
+**Bottleneck**: The crash happens before the email step, so success-only email stays silent on the failures you need to catch.
+**Checked myself**: nightly-sync runs at 03:00 on edna by cron, emails only on finish, died 4 nights at startup on an expired token, with no other alert today.
+
+I recommend adding a fail-loud wrapper on edna that sends email on any nonzero exit or startup crash, because it turns your current silent miss into an explicit alert. That is the Pieter Levels move here: keep it on edna with no new system to run.

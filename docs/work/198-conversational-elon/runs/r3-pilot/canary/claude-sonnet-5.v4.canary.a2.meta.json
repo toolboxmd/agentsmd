@@ -1,0 +1,14 @@
+{
+ "run_id": "claude-sonnet-5.v4.canary.a2",
+ "harness": "claude-sonnet-5",
+ "host": "claude-sonnet-5",
+ "model": "claude-sonnet-5",
+ "arm": "v4",
+ "arm_sha256": "55fb7260712089576227d2f4ca48e56acabb9b13ef03a650758efa953902926f",
+ "scenario": "canary",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 3.0,
+ "valid": true
+}

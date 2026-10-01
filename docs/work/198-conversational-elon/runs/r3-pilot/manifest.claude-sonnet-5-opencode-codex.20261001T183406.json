@@ -1,0 +1,28 @@
+{
+ "started": "2026-10-01T18:34:06+0200",
+ "scenarios_sha256": "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b",
+ "arms": {
+  "v4": {
+   "source": "/tmp/198-r3/v4.md",
+   "sha256": "55fb7260712089576227d2f4ca48e56acabb9b13ef03a650758efa953902926f"
+  }
+ },
+ "harnesses": {
+  "claude-sonnet-5": [
+   "claude",
+   "claude-sonnet-5"
+  ],
+  "opencode": [
+   "opencode",
+   "opencode/muse-spark-1.3-contributor-free"
+  ],
+  "codex": [
+   "codex",
+   "gpt-6-astra"
+  ]
+ },
+ "cells": [
+  "v4:target-monitoring"
+ ],
+ "repo_head": "52aefbe2ff5c942298c47db8e5992a023965facc"
+}

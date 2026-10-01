@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends one external heartbeat monitor that `nightly-sync` pings only after a successful run, so the monitor emails the user when the 03:00 run's signal is overdue, and testing it by withholding one signal.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging, a Synology deployment, and Docker for this problem.",
+  "Bottleneck": "The job sends its own email, so an early crash also kills the notification.",
+  "Checked myself": "Nothing independently; you told me cron runs it at 03:00 on `edna`, and startup failures went unnoticed for four nights."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single heartbeat alert, explicitly drops the Synology/Docker logging stack, and grounds its checks in facts the user gave.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v3.target-monitoring.a1",
+ "host": "codex",
+ "arm": "v3",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

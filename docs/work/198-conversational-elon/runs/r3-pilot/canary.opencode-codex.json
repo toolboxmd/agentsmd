@@ -1,0 +1,14 @@
+{
+ "opencode.v4": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n# Global Agent Rules",
+  "attempts": 2
+ },
+ "codex.v4": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n\"# Global Agent Rules\"",
+  "attempts": 2
+ }
+}

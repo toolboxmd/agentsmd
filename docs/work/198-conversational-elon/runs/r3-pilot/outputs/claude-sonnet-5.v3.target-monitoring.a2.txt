@@ -1,0 +1,3 @@
+The requirement isn't logs, it's an alert when the job doesn't finish. A central log on the Synology wouldn't have caught this either, since you said you won't read logs, and the crash was before the email step so nothing would have shipped a log line anyway. Smallest fix: cron already knows exit status, so wrap the script (or add `&&`/`||` in the crontab line) to email or push a notification (ntfy, Pushover, whatever you already use) on non-zero exit or on no-heartbeat-by-0400, no Docker or log stack needed.
+
+Do you want that heartbeat/alert-on-failure wrapper for `nightly-sync`, or do you actually want the Synology log stack for other reasons beyond this incident?

@@ -1,0 +1,7 @@
+**Elon record**
+- **Requirements and who asked:** Get notified when `nightly-sync` fails or doesn't run (you, after missing 4 nights of failures). You explicitly said you won't read logs, so the requirement is alerting, not storage.
+- **Deleted:** A central log server on the Synology, Docker-ified. It would store logs, but you said you won't read them, so it doesn't fix the actual failure you hit.
+- **Bottleneck:** the script only emails from its own final step, so a crash at startup (the expired token) never reaches that code and produces zero signal anywhere else.
+- **Checked myself:** from what you've told me — mail only fires on completion, cron has no failure handling today, nothing else watches this job.
+
+Recommendation: skip the log server. Wrap the cron call so the job pings a dead-man's-switch (e.g. `healthchecks.io`, free tier) at start and on success; if no ping lands by 03:15, it emails you automatically, startup crash or not. No containers, no NAS service to maintain, one mechanism that directly covers the failure mode you hit. Want me to set that up?

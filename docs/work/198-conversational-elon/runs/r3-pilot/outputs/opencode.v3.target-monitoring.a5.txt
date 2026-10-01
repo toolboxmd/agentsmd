@@ -1,0 +1,6 @@
+Requirements and who asked: You asked to catch a silent outage without reading logs; you suggested a central log on the Synology and Dockerizing everything.
+Deleted: Routine log browsing and moving nightly-sync to Docker; neither would have paged you.
+Bottleneck: No alert on missing success; a startup crash before the email step looks the same as success.
+Checked myself: Per what you told me, cron starts nightly-sync at 03:00 on edna, it crashed at startup on an expired token four nights with no email, and nothing else alerts today.
+
+A central log still needs you to look, so it would not have caught this. I recommend adding one dead-man check that expects a success signal from nightly-sync by 04:30 and alerts you if it is missing. Want me to sketch that single check on your Synology?

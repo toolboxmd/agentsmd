@@ -1,0 +1,7 @@
+Requirements and who asked: User wants same-day notice when nightly-sync fails without reading logs.
+Deleted: Central log on Synology and Docker-everything rebuild, neither alerts on a missing email.
+Bottleneck: No signal when the job dies before its summary email, not log storage.
+Checked myself: nightly-sync runs via cron at 03:00 on edna, emails only on finish, died 4 nights on expired token with no email, no other alerting.
+
+What you are trying to achieve is notice within 24 hours when sync did not succeed.
+I recommend one dead-mans ping: nightly-sync pings a check only on success, and that check emails you when the ping is late or missing. This would have caught last week, while a central log would just give you another place not to look.

@@ -1,0 +1,6 @@
+Requirements and who asked: You asked to know within a day when nightly-sync fails without reading logs; you suggested a central log on the NAS and Docker.
+Deleted: central log, Docker rollout, Pieter Levels style setup, because none of it pushes an alert and none would have fired on a pre-email crash.
+Bottleneck: failure is silent when the script dies before its summary email or never starts, so you only find out by accident days later.
+Checked myself: You told me nightly-sync runs by cron at 03:00 on edna, emails on finish, died 4 nights on expired token before email, with no other alert.
+
+A central log would not have woken you because you will not read it. I recommend adding one independent missing-success alarm outside the script that notifies you if no success is reported by morning, and nothing else. Want me to sketch that using only the cron and email you already have?

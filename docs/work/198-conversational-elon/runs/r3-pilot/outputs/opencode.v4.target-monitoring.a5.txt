@@ -1,0 +1,10 @@
+Requirements and who asked: You want notice within a day if nightly-sync fails or goes silent, with no log reading.
+Deleted: Central log on Synology, Docker setup, Pieter Levels style aggregation.
+Bottleneck: Early crash happens before the summary email, so failure looks the same as success from the outside.
+Checked myself: You told me cron 03:00 on edna, email on finish, 4 day startup crash with no email, no other alerts today.
+
+What you are trying to achieve is an alert when nightly-sync fails or does not run.
+
+A central log on the Synology would not fix that. It adds a new host to run and still needs you to read it, and it stays quiet on the exact failure you just had.
+
+I recommend a dead man's switch: ping a heartbeat service at the end of nightly-sync and have it email you if no ping arrives by morning. Say the word and I will wire that in.
