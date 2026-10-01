@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.5.8] - 2026-10-01
+
+### Changed
+
+- Shared Communication rule asks agents to speak to the user like a colleague in a normal conversation and to include technical detail only when it helps the user understand or decide.
+
 ## [14.5.7] - 2026-09-30
 
 ### Changed
