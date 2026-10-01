@@ -1,0 +1,7 @@
+**Requirements and who asked**: You need to be told when nightly-sync fails without reading logs.
+**Deleted**: Synology NAS central log, Docker containers for logging, Pieter Levels style centralization.
+**Bottleneck**: Crashes before the email step produce silence, which caused the 4 day gap.
+**Checked myself**: From your note only: cron 03:00 on edna, email only on success path, no other alert.
+
+What you are trying to achieve is notice by morning if nightly-sync did not succeed.
+I recommend one thing: keep the job where it is and add a small cron wrapper that emails on any nonzero exit, and I reject the Synology Docker central log because you would still have to read it so it does not fix the silence.

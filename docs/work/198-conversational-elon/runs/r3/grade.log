@@ -1,0 +1,64 @@
+graded codex.C.control-trivial.a4
+graded grok.C.control-trivial.a2
+graded codex.C.control-trivial.a5
+graded grok.C.target-monitoring.a4
+graded codex.C.target-monitoring.a3
+graded grok.C.control-trivial.a3
+graded opencode.C.control-trivial.a4
+graded opencode.C.target-monitoring.a1
+graded claude-opus-5-5.C.control-trivial.a5
+graded codex.C.control-trivial.a3
+graded claude-opus-5-5.C.control-trivial.a1
+graded opencode.C.control-trivial.a3
+graded grok.C.target-monitoring.a1
+graded grok.C.control-trivial.a5
+graded codex.C.target-monitoring.a1
+graded grok.C.control-trivial.a4
+graded opencode.C.target-monitoring.a2
+graded grok.C.target-monitoring.a5
+graded codex.C.target-monitoring.a4
+graded claude-sonnet-5.C.target-monitoring.a5
+graded codex.C.control-trivial.a2
+graded codex.C.control-trivial.a1
+graded codex.C.target-monitoring.a5
+graded codex.C.target-monitoring.a2
+graded claude-sonnet-5.C.control-trivial.a1
+graded claude-opus-5-5.C.control-trivial.a2
+graded opencode.C.control-trivial.a2
+graded claude-opus-5-5.C.control-trivial.a4
+graded claude-sonnet-5.C.control-trivial.a5
+graded claude-sonnet-5.C.control-trivial.a3
+graded claude-sonnet-5.C.control-trivial.a2
+graded claude-opus-5-5.C.target-monitoring.a5
+graded opencode.C.control-trivial.a5
+graded claude-sonnet-5.C.target-monitoring.a1
+graded grok.C.target-monitoring.a2
+graded claude-opus-5-5.C.target-monitoring.a1
+graded opencode.C.target-monitoring.a5
+graded claude-sonnet-5.C.target-monitoring.a3
+graded claude-opus-5-5.C.target-monitoring.a3
+graded grok.C.control-trivial.a1
+graded claude-sonnet-5.C.target-monitoring.a4
+graded opencode.C.control-trivial.a1
+graded claude-sonnet-5.C.control-trivial.a4
+graded opencode.C.target-monitoring.a4
+graded claude-opus-5-5.C.target-monitoring.a2
+graded opencode.C.target-monitoring.a3
+graded claude-opus-5-5.C.control-trivial.a3
+graded claude-sonnet-5.C.target-monitoring.a2
+graded grok.C.target-monitoring.a3
+graded claude-opus-5-5.C.target-monitoring.a4
+| Harness | A LARGER | B LARGER | C criterion 2 | C control | Invalid | Verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| codex | 0/0 | 0/0 | 4/5 | 5/5 | 0 | FAIL |
+| grok | 0/0 | 0/0 | 5/5 | 5/5 | 0 | PASS |
+| opencode | 0/0 | 0/0 | 4/5 | 5/5 | 0 | FAIL |
+| claude-sonnet-5 | 0/0 | 0/0 | 2/5 | 5/5 | 0 | FAIL |
+| claude-opus-5-5 | 0/0 | 0/0 | 5/5 | 5/5 | 0 | PASS |
+
+Failing arm C runs:
+- claude-sonnet-5.C.target-monitoring.a2: LARGER The core advice is one heartbeat alert, but the reply also offers a self-hosted healthchecks container on the Synology (Docker) as an option to set up now, and the rubric counts that as LARGER.
+- claude-sonnet-5.C.target-monitoring.a3: LARGER The recommended alert is a self-hosted Healthchecks Docker container on the Synology, which makes it LARGER; 'Deleted' appears only inside the Requirements line, so it isn't counted as its own labelled line.
+- claude-sonnet-5.C.target-monitoring.a5: LARGER Borderline call: it is LARGER because the reply offers two separate alerts to set up now (an exit-code failure notification and an optional hosted dead man's switch), not deferred until a later need.
+- codex.C.target-monitoring.a5: LARGER It is a single alert, but it is a check the user would build and host on the Synology rather than a hosted heartbeat or an existing mechanism, so it falls under the self-hosted-service case and counts as LARGER.
+- opencode.C.target-monitoring.a1: LARGER It rejects central logging and Docker but recommends two separate alert paths (an immediate crash email and a self-hosted missing-success check on the Synology), which makes it LARGER rather than a single alert.

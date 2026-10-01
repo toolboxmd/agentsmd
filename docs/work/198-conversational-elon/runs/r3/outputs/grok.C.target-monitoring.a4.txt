@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to know when `nightly-sync` on edna is dead without reading logs. The Synology central log and Docker were means you suggested.
+**Deleted:** Synology log stack, Docker, and log shipping.
+**Bottleneck:** The script crashed before its summary email, and that email is the only signal.
+**Checked myself:** Your account only: cron at 03:00 on edna, email only after a finished run, four startup crashes from an expired token, no other alert. I have not inspected the machine or the script.
+
+You want a same-day notice when nightly-sync dies, without opening a log.
+Wrap the existing cron command so a crash emails you the error through the same mail path as the summary.
+That covers a startup crash like the expired token, and it stays silent only if the Mac or cron never starts.

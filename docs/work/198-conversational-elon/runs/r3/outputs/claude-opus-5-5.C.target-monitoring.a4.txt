@@ -1,0 +1,10 @@
+**Requirements and who asked:** You want to know within a day when `nightly-sync` fails, without reading logs (you).
+**Deleted:** Central log on the Synology, Docker, any log stack. You said you won't read logs, so storing them better doesn't tell you anything.
+**Bottleneck:** The job only emails on success. A crash before the email step means silence, and silence looks like nothing.
+**Checked myself:** Only what you told me: the token expiry crashed it at startup four nights running, before the email, and nothing else alerts. I haven't read the script.
+
+You're trying to get told when the nightly sync breaks. The smallest fix is to wrap the script's entry point so any exception sends you a "nightly-sync FAILED" email with the error, using the email code you already have.
+
+Two things I'd confirm in the script first:
+- **Email independence:** sending the email must not depend on the token that expired.
+- **Residual gap:** if `edna` is off or cron never fires, you still get silence. Catching that needs an outside watcher, which is a separate, larger decision I'm not recommending yet.

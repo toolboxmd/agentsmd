@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked to find out when `nightly-sync` stops working, without reading logs.
+**Deleted:** The central log on the Synology, Docker, and log shipping. You won't read logs, and a log can't tell you that a run never happened.
+**Bottleneck:** A missing email is silent. Nothing notices when the summary doesn't arrive.
+**Checked myself:** Only what you told me: one cron job on `edna` at 03:00, a startup crash four nights running before the email step, and no other alerting. I haven't looked at the script or the crontab.
+
+You want an alert whenever a nightly run doesn't succeed. I recommend a dead man's switch on a free hosted check like healthchecks.io. The script pings a URL as its last step after success. If no ping arrives by about 04:00, the service emails you. That covers crashes, expired tokens, cron not firing, and `edna` being off or asleep, and there's nothing new to run at home.
+
+The one step that's yours is creating the account and its ping URL, since that's a new external service. Send me the URL and I'll add the ping to the script and set the schedule and grace period.

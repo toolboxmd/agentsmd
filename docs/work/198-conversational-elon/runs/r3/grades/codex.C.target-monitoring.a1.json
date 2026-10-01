@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends having `nightly-sync` write a completion timestamp to the NAS after each successful run, with a daily Synology scheduled task that emails the user if that timestamp is missing or unreadable, then skipping one run on purpose to test the alert.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker for this fix. Neither makes a missing email trigger an alert.",
+  "Bottleneck": "The job sends its own notification only after reaching the email step, so startup failures stay silent.",
+  "Checked myself": "No live checks; your account establishes four missed runs and no independent alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single missed-run check that uses the NAS's built-in scheduler, with no Docker and no central logging, so it counts as one alert for this job.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.C.target-monitoring.a1",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

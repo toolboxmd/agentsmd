@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Point the 03:00 cron line at a short wrapper script that runs nightly-sync and, on any non-zero exit, sends the summary email with the error text through a mail path that doesn't depend on the sync token.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when nightly-sync is dead without reading logs. You proposed a central log on the Synology, maybe in Docker. The failure was an expired token that crashed startup on edna four nights running, before the summary email.",
+  "Deleted": "A Synology central log and a Docker logging stack. Unread logs with no page would have stayed silent for the same four nights.",
+  "Bottleneck": "The finish email is the only signal, so a crash before it leaves nothing to notice.",
+  "Checked myself": "Only your account: nightly-sync is the sole cron job, 03:00 on Mac mini edna, email only after a finished run, no other alert, Synology can run Docker. I have not seen the script or the crontab."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one failure-email alert through a wrapper and admits it misses the case where edna is off or cron never runs, but it doesn't recommend fixing that, so the class is still SMALL.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-monitoring.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

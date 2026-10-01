@@ -1,0 +1,72 @@
+start r3: Thu Oct  1 18:59:29 CEST 2026 head 6814ae7e605216dbb5fbc94f55b9ed848bf8ffe6
+claude-sonnet-5.C.canary.a1                             valid                                 3s
+claude-opus-5-5.C.canary.a1                             valid                                 4s
+codex.C.canary.a1                                       valid                                 6s
+opencode.C.canary.a1                                    valid                                 7s
+grok.C.canary.a1                                        valid                                 9s
+canary codex.C                PASS  'yes\n"# Global Agent Rules"'
+canary grok.C                 PASS  'yes\n# Global Agent Rules'
+canary opencode.C             PASS  'yes\n# Global Agent Rules'
+canary claude-sonnet-5.C      PASS  'Yes.\n"Global Agent Rules"'
+canary claude-opus-5-5.C      PASS  'yes\n# Global Agent Rules'
+claude-sonnet-5.C.control-trivial.a1                    valid                                 3s
+claude-opus-5-5.C.control-trivial.a1                    valid                                 5s
+opencode.C.control-trivial.a1                           valid                                 7s
+codex.C.control-trivial.a1                              valid                                 8s
+claude-sonnet-5.C.control-trivial.a2                    valid                                 5s
+claude-opus-5-5.C.control-trivial.a2                    valid                                 5s
+grok.C.control-trivial.a1                               valid                                11s
+claude-sonnet-5.C.control-trivial.a3                    valid                                 3s
+opencode.C.control-trivial.a2                           valid                                 6s
+claude-opus-5-5.C.control-trivial.a3                    valid                                 5s
+claude-sonnet-5.C.control-trivial.a4                    valid                                 4s
+codex.C.control-trivial.a2                              valid                                 9s
+codex.C.target-monitoring.a1                            valid                                18s
+claude-sonnet-5.C.control-trivial.a5                    valid                                 3s
+claude-opus-5-5.C.control-trivial.a4                    valid                                 4s
+claude-opus-5-5.C.target-monitoring.a1                  valid                                20s
+opencode.C.control-trivial.a3                           valid                                 6s
+claude-sonnet-5.C.target-monitoring.a1                  valid                                22s
+claude-opus-5-5.C.control-trivial.a5                    valid                                 5s
+codex.C.control-trivial.a3                              valid                                 8s
+grok.C.control-trivial.a2                               valid                                14s
+opencode.C.control-trivial.a4                           valid                                 8s
+codex.C.control-trivial.a4                              valid                                 8s
+codex.C.target-monitoring.a2                            valid                                16s
+opencode.C.target-monitoring.a1                         valid                                37s
+grok.C.control-trivial.a3                               valid                                12s
+claude-opus-5-5.C.target-monitoring.a2                  valid                                18s
+opencode.C.control-trivial.a5                           valid                                 9s
+codex.C.control-trivial.a5                              valid                                 7s
+claude-sonnet-5.C.target-monitoring.a2                  valid                                20s
+grok.C.control-trivial.a4                               valid                                10s
+codex.C.target-monitoring.a3                            valid                                18s
+claude-opus-5-5.C.target-monitoring.a3                  valid                                17s
+grok.C.control-trivial.a5                               valid                                 9s
+opencode.C.target-monitoring.a2                         valid                                24s
+claude-sonnet-5.C.target-monitoring.a3                  valid                                26s
+codex.C.target-monitoring.a4                            valid                                17s
+claude-opus-5-5.C.target-monitoring.a4                  valid                                15s
+grok.C.target-monitoring.a1                             valid                                86s
+claude-opus-5-5.C.target-monitoring.a5                  valid                                16s
+codex.C.target-monitoring.a5                            valid                                23s
+cell codex.C.target-monitoring: 5 valid, 0 invalid
+cell codex.C.control-trivial: 5 valid, 0 invalid
+opencode.C.target-monitoring.a3                         valid                                30s
+claude-sonnet-5.C.target-monitoring.a4                  valid                                30s
+claude-sonnet-5.C.target-monitoring.a5                  valid                                18s
+opencode.C.target-monitoring.a4                         valid                                31s
+opencode.C.target-monitoring.a5                         valid                                30s
+grok.C.target-monitoring.a2                             valid                                99s
+grok.C.target-monitoring.a3                             valid                               105s
+grok.C.target-monitoring.a4                             valid                                66s
+grok.C.target-monitoring.a5                             valid                                54s
+cell grok.C.target-monitoring: 5 valid, 0 invalid
+cell grok.C.control-trivial: 5 valid, 0 invalid
+cell opencode.C.target-monitoring: 5 valid, 0 invalid
+cell opencode.C.control-trivial: 5 valid, 0 invalid
+cell claude-sonnet-5.C.target-monitoring: 5 valid, 0 invalid
+cell claude-sonnet-5.C.control-trivial: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-monitoring: 5 valid, 0 invalid
+cell claude-opus-5-5.C.control-trivial: 5 valid, 0 invalid
+exit 0

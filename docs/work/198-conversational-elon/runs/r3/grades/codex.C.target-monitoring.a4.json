@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Have `nightly-sync` write a dated success marker to the Synology, and run a daily check on the NAS after the deadline that emails the user if today's marker is missing; keep the existing summary email and test the alert by withholding the marker.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker; neither is needed to detect a missed run.",
+  "Bottleneck": "The job sends its own email, so a startup crash also silences the alert.",
+  "Checked myself": "Nothing inspected; I\u2019m using your account of the four missed runs and your two machines."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one dead-man check run as a scheduled task on the NAS, with no Docker and no logging stack, so I counted it as SMALL even though it is hosted on the user's own NAS.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.C.target-monitoring.a4",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

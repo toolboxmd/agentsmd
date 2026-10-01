@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a free Healthchecks.io daily dead man's switch that the nightly-sync script pings as its last step, so the user gets emailed if no ping arrives by about 04:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to find out within a day when `nightly-sync` doesn't finish, without reading logs. Nobody needs a central log for that; logs only help if someone reads them.",
+  "Deleted": "The central log on the Synology, Docker, and any log collection or dashboard.",
+  "Bottleneck": "Your only signal is the success email, so a run that dies early produces silence, and silence looks like nothing happened.",
+  "Checked myself": "Only what you told me: one cron job at 03:00 on `edna`, a summary email at the end, four startup crashes from an expired token, no other alerting, and a Synology that can run Docker. I haven't seen the script or crontab."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat check, drops the central log and Docker stack, and gives a specific record that comes before the recommendation and sticks to the given facts.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

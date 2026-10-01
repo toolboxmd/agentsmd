@@ -1,0 +1,10 @@
+**Requirements and who asked:** You want to know within a day when `nightly-sync` doesn't finish, without reading logs. Nobody needs stored logs: you said you won't read them.
+**Deleted:** A central log on the Synology, Docker, and log shipping. They store logs nobody reads and still wouldn't alert you.
+**Bottleneck:** Detection. The only signal is a success email, and an email that never arrives goes unnoticed.
+**Checked myself:** Only what you told me: one cron job on `edna` at 03:00, an email on finish, four nights of startup crashes from an expired token before the email step, and nothing else alerting. I haven't looked at the script or the machine.
+
+**Goal:** get told when the sync didn't succeed, even if it never got far enough to say so.
+
+**Recommendation:** a dead-man's switch on healthchecks.io's free tier. The script pings a URL as its last step after a successful run. If no ping arrives by about 04:00, healthchecks.io emails you. Because it alerts on silence, it catches the expired token, a crash anywhere in the script, cron not firing, and `edna` being off or offline. You run and maintain nothing new; the only addition is one `curl` line at the end of the script.
+
+To set it up, create the account and a check with a daily schedule and about a one-hour grace period, then give me the ping URL and I'll add the line. Separately, the expired token is the actual cause of last week's failure, and I can look at making it refresh or fail earlier once the alert is in place.

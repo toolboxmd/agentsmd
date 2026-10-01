@@ -1,0 +1,17 @@
+{
+ "answers_question": true,
+ "record_present": false,
+ "note": "Correctly explains that fetch downloads without changing local branches while pull fetches and merges; none of the labelled lines appear.",
+ "control_pass": true,
+ "run_id": "opencode.C.control-trivial.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "control-trivial",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

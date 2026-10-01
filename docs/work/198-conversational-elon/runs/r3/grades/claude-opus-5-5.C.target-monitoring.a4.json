@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends wrapping the nightly-sync script's entry point so any exception sends a \"nightly-sync FAILED\" email with the error, reusing the script's existing email code.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know within a day when `nightly-sync` fails, without reading logs (you).",
+  "Deleted": "Central log on the Synology, Docker, any log stack. You said you won't read logs, so storing them better doesn't tell you anything.",
+  "Bottleneck": "The job only emails on success. A crash before the email step means silence, and silence looks like nothing.",
+  "Checked myself": "Only what you told me: the token expiry crashed it at startup four nights running, before the email, and nothing else alerts. I haven't read the script."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The only thing it recommends now is a failure email; it explicitly holds off on an outside watcher, so that doesn't count.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging on the Synology and Docker migration add maintenance without solving the missing-alert problem.
+**Bottleneck:** The script sends its own email, so an early crash also disables its alert.
+**Checked myself:** Only your account: cron runs at 03:00 on `edna`, and four startup failures produced no email.
+
+You’re trying to detect a missed successful run; I recommend one external heartbeat monitor that expects a success signal from `nightly-sync` each morning. Put that signal after successful completion, and have the monitor email you if it hasn’t arrived by a deadline based on the job’s normal duration, using `edna`’s timezone. Keep cron and the existing summary email; the independent monitor covers startup crashes, a missed cron run, and `edna` being offline.

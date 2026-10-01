@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends wrapping nightly-sync with a trap or try/finally so it always sends its summary email on exit, including on startup errors, and it rejects the Synology central log.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to know when nightly-sync fails without reading logs, central log on Synology in Docker was a suggested means not a requirement.",
+  "Deleted": "Central log on Synology and putting everything in Docker.",
+  "Bottleneck": "The job dies before the email step, so silence looks the same as success and you wait 4 days.",
+  "Checked myself": "nightly-sync on edna at 03:00 emails only on finish, crashed 4 nights at startup on expired token, no other alert today."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one failure signal, built by changing the job's existing email, but that email would not cover the case where the job never runs at all (for example, edna is off).",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-monitoring.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

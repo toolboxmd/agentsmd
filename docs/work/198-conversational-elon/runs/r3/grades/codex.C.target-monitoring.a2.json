@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one external heartbeat monitor that `nightly-sync` pings after it finishes successfully, so you get an email if the ping hasn't arrived by a deadline; keep cron and the existing summary email as they are.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging on the Synology and Docker migration add maintenance without solving the missing-alert problem.",
+  "Bottleneck": "The script sends its own email, so an early crash also disables its alert.",
+  "Checked myself": "Only your account: cron runs at 03:00 on `edna`, and four startup failures produced no email."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single heartbeat alert, rejects the Synology log and Docker setup, and its 'Checked myself' line cites only facts from the situation without claiming any checks were run.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.C.target-monitoring.a2",
+ "host": "codex",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,10 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging and Docker for this fix. Neither makes a missing email trigger an alert.
+**Bottleneck:** The job sends its own notification only after reaching the email step, so startup failures stay silent.
+**Checked myself:** No live checks; your account establishes four missed runs and no independent alert.
+
+You’re trying to catch a missing successful run. I recommend one small daily check on the Synology, using its built-in scheduler.
+
+Have `nightly-sync` record a completion timestamp on the NAS only after a successful sync. After the normal finishing window, the NAS checks that timestamp and emails you if today’s completion is missing. A missing or unreadable timestamp must count as an alert, and the NAS’s email credentials must be independent of the sync token.
+
+That catches startup crashes, hangs, cron failing to start, and `edna` being offline. Keep the existing summary email, then deliberately skip one run to prove the NAS alert arrives.

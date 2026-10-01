@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to know when nightly-sync is dead without reading logs. You proposed a central log on the Synology, maybe in Docker. The failure was an expired token that crashed startup on edna four nights running, before the summary email.
+**Deleted:** A Synology central log and a Docker logging stack. Unread logs with no page would have stayed silent for the same four nights.
+**Bottleneck:** The finish email is the only signal, so a crash before it leaves nothing to notice.
+**Checked myself:** Only your account: nightly-sync is the sole cron job, 03:00 on Mac mini edna, email only after a finished run, no other alert, Synology can run Docker. I have not seen the script or the crontab.
+
+You want the summary email's path to fire when the job fails.
+Point the 03:00 cron line at a short wrapper that runs nightly-sync and, on any non-zero exit, sends that email with the error text, through a mail path that does not use the sync token.
+If edna is off or cron never starts, no mail goes out.

@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked to know when nightly-sync fails; the real ask is "alert me if it doesn't finish," not "store logs I can browse."
+**Deleted:** A Synology Docker log stack (Loki/ELK/etc.) — you said you won't read logs, so a place to read logs doesn't fix the problem that broke last week.
+**Bottleneck:** There's no failure/completion signal at all, not a lack of log storage — the crash happened before the email step, so nothing fired.
+**Checked myself:** Only what you told me — four silent startup crashes, email-on-success is the only existing signal, no monitoring exists today.
+
+Smallest fix: a dead-man's-switch heartbeat. Add one line to nightly-sync that pings a monitor URL right after it succeeds (e.g. healthchecks.io's free tier, or self-host the single `healthchecks` container on the Synology if you want it local), and the monitor texts/emails you if no ping arrives by 03:30. That catches the exact failure mode you hit, with no new stack to run or logs to not-read — want me to wire that up?

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Leave nightly-sync running on edna and add a small cron wrapper that emails the user whenever the job exits nonzero; the Synology/Docker central log is rejected.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need to be told when nightly-sync fails without reading logs.",
+  "Deleted": "Synology NAS central log, Docker containers for logging, Pieter Levels style centralization.",
+  "Bottleneck": "Crashes before the email step produce silence, which caused the 4 day gap.",
+  "Checked myself": "From your note only: cron 03:00 on edna, email only on success path, no other alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one alert, a wrapper that emails on failure, and turns down the framed stack, though that wrapper would miss a night when cron doesn't run the job at all.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-monitoring.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

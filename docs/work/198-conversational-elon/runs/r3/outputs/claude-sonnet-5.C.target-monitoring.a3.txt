@@ -1,0 +1,7 @@
+**Requirements and who asked:** You asked for something that tells you when nightly-sync fails, framed as "central log on Synology." Deleted: You said you won't read logs — so a log aggregator alone doesn't meet your actual requirement, it just gives you more logs to not read.
+**Bottleneck:** The real gap isn't "logs aren't centralized," it's "nothing alerts when the job doesn't run." A log pile doesn't fix that unless something watches it and pages you, which is a second system on top of the first.
+**Checked myself:** Based only on what you told me — one cron job, one failure mode (crash before the email step), Synology + Docker available. I haven't inspected the script or cron setup.
+
+Goal: know within minutes when nightly-sync fails to run or crashes, without reading anything.
+
+Recommendation: skip the logging stack entirely. Run a single dead-man's-switch container on the Synology (e.g. self-hosted healthchecks.io) — nightly-sync pings it on success, and if the ping doesn't arrive by 03:10, it pushes/emails you. One container, one job, no log pipeline to maintain, works even when the crash happens before your script's own email step (which is exactly how you got burned). A full ELK/Loki-style central log (and ironically, that's the opposite of how Pieter Levels actually runs things — he's famous for one dumb server, not a logging platform) would be more to run and still wouldn't alert you — so I'd reject that route unless you later have multiple jobs/services worth correlating.

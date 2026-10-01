@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a hosted dead-man heartbeat: one curl line in the cron wrapper pings a hosted check when the job succeeds, and the user gets an email or push alert if that ping is missing for 24 hours.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to know within a day when nightly-sync fails silently, without reading logs.",
+  "Deleted": "Central log on Synology, Dockerizing the job, Pieter Levels style aggregation.",
+  "Bottleneck": "The success email is the only signal, so a startup crash before email looks the same as nothing to check.",
+  "Checked myself": "You told me cron at 03:00 on edna, email on finish, 4-day startup crash on expired token with no email, no other alerting, you will not read logs."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single hosted heartbeat alert, explicitly rejects the Synology log and Docker, and gives all four record lines before the recommendation, each tied to facts from this case.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-monitoring.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

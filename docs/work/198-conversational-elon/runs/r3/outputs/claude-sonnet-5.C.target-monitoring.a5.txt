@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked to find out when `nightly-sync` dies, without reading logs — triggered by last week's four silent crashes.
+**Deleted:** A central Synology log stack (Docker, Loki/ELK-style aggregation). Nobody asked to search or aggregate logs across services; you have one job with one failure mode.
+**Bottleneck:** The script's only signal is the success email it sends at the end, so a startup crash produces no signal at all.
+**Checked myself:** Based only on what you told me — single cron job on edna, crashes before the email step, nothing else alerts today, Synology can run Docker.
+
+You're trying to get alerted when the job doesn't finish, not trying to read or centralize logs. Smallest fix: wrap the cron call in a one-line script that runs `nightly-sync`, checks its exit code, and on failure immediately fires a notification (email/Pushover/ntfy) — that alone catches the expired-token crash. If you also want to catch "cron never ran at all" (box asleep, cron broken), add a dead man's switch: have the script ping a URL on success, and use a free hosted check-in service to alert if the ping is late — no server or containers needed. I'd skip the Synology/Docker logging setup entirely; it solves a problem you don't have yet.

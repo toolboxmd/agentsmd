@@ -1,0 +1,10 @@
+**Requirements and who asked:** You asked to find out when `nightly-sync` fails without reading logs; it must catch crashes before the email step, like last week's expired token.
+**Deleted:** Central log on the Synology and Docker. You won't read logs, and logs don't alert you when a job goes silent.
+**Bottleneck:** Today the only signal is the success email, so a missing email is the failure signal, and nothing watches for it.
+**Checked myself:** Nothing observed this session; I'm going on what you told me about cron at 03:00 on `edna`, the success email, and the four-night crash.
+
+You want to be told the morning a sync didn't succeed, without doing anything yourself.
+
+I recommend a dead man's switch: `nightly-sync` pings a URL as its last step after success, and a hosted checker like healthchecks.io emails you if no ping arrives by about 04:00. This catches every way the job can die, including crashes at startup, `edna` being off, or cron not firing, and it adds one line to the script with nothing for you to host or watch.
+
+To set it up, create the check on healthchecks.io with a daily 03:00 schedule and a one-hour grace period, then send me the ping URL and I'll add it to the script.

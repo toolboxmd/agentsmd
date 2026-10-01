@@ -1,0 +1,8 @@
+Requirements and who asked: you want to know by morning if nightly-sync did not succeed, with no logs to read.
+Deleted: central log on Synology, Dockerizing the job, Pieter Levels style dashboard.
+Bottleneck: a missing success email went unnoticed for four days, not a lack of stored logs.
+Checked myself: cron at 03:00 on edna, email only on finish, token crash before email, no other alert, Synology available.
+
+You are trying to achieve: get a push alert if nightly-sync has not clearly succeeded by about 04:30.
+
+I recommend against your proposal: a central log still needs reading and Docker adds upkeep without fixing silent failure. The smallest fix is make the script always report outcome plus add a dead-mans check: wrap nightly-sync so any crash emails failure immediately, ping a success timestamp on clean finish, and add one Synology Task Scheduler check with no Docker that alerts you if that success mark is missing. Shall I implement that wrapper plus missing-success check?

@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked to know when nightly-sync fails, not to see logs. "Central log on Synology" and "Docker" are your proposed means.
+**Deleted:** A centralized logging stack (Loki/ELK/etc. in Docker on the Synology). You'd be running and maintaining a log platform to solve a problem that's really "I never got an alert."
+**Bottleneck:** nightly-sync dies before it reaches its own email step, so the one notification path you have never fires on failure.
+**Checked myself:** You told me cron runs it at 03:00 on edna, it crashed at startup (expired token) four nights straight, and the email only happens on successful completion.
+
+What you're trying to achieve: get notified the moment nightly-sync fails or doesn't run, without reading logs.
+
+Smallest fix: wrap the cron call in a shell script with a trap that emails you on any nonzero exit, success or failure, so the notification no longer depends on the Python script getting that far. No new service, no Synology, no Docker. If you also want coverage for "cron never fired at all," the next-smallest step up is a single dead-man's-switch container (e.g. healthchecks.io self-hosted) on the Synology, not a full log stack, but I'd only add that if the wrapper alone doesn't give you the confidence you want.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends setting up a healthchecks.io dead-man's switch: the script pings a URL as its last step, and the user gets an email if no ping arrives by about 04:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know within a day when `nightly-sync` doesn't finish, without reading logs. Nobody needs stored logs: you said you won't read them.",
+  "Deleted": "A central log on the Synology, Docker, and log shipping. They store logs nobody reads and still wouldn't alert you.",
+  "Bottleneck": "Detection. The only signal is a success email, and an email that never arrives goes unnoticed.",
+  "Checked myself": "Only what you told me: one cron job on `edna` at 03:00, an email on finish, four nights of startup crashes from an expired token before the email step, and nothing else alerting. I haven't looked at the script or the machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert, and the token fix is offered only as later, optional follow-up work.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

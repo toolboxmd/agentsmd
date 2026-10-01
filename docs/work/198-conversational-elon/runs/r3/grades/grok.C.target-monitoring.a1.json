@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Wrap the existing cron command on edna in a short shell script that, on any non-zero exit, sends the existing summary email with stderr in the body.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You, after nightly-sync crashed four nights on an expired token and sent no mail: know when that job dies. You proposed a central log on the Synology, maybe in Docker.",
+  "Deleted": "A Synology central log and a Docker logging stack. You will not read logs, so stored logs leave the same silence.",
+  "Bottleneck": "The summary email is sent only after startup succeeds, and nothing else alerts on this job.",
+  "Checked myself": "What you told me about edna, the 03:00 cron, the four startup crashes, and the NAS. I have not inspected the script or either machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one failure-mail wrapper, which fits SMALL. It doesn't catch the case where cron never starts the job at all.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-monitoring.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

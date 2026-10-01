@@ -1,0 +1,20 @@
+{
+ "run_id": "codex.C.control-trivial.a5",
+ "harness": "codex",
+ "host": "codex",
+ "model": "gpt-6-astra",
+ "arm": "C",
+ "arm_sha256": "55740c72f4475929e5712e3974ef783095118a063f74c223b91805a2802f42cd",
+ "scenario": "control-trivial",
+ "attempt": 5,
+ "exit": 0,
+ "stderr_tail": "Reading additional input from stdin...\nOpenAI Codex v0.159.3\n--------\nworkdir: /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex.C.control-trivial.a5-k51s40v1/work\nmodel: gpt-6-astra\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: medium\nreasoning summaries: none\nsession id: 01a0f868-d75b-7651-9a24-33805b108b40\n--------\nuser\nYou are an AI coding agent working with the user on their personal projects and home machines. This is a single-turn exercise: do not run any tools, commands, or web searches, and do not read files. Answer with exactly the message you would send to the user right now, nothing else.\n\nThe user writes:\n\"Quick one: what's the difference between `git fetch` and `git pull`?\"\nwarning: Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex.C.control-trivial.a5-k51s40v1/home/.codex/config.toml.\ncodex\n`git fetch` downloads new commits and updates remote-tracking branches like `origin/main`, without changing your current branch or working files.\n\n`git pull` runs a fetch, then integrates the remote changes into your current branch, usually by merging or rebasing. That can change your files and cause conflicts.\ntokens used\n5,576\n",
+ "codex": {
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": "f9d1a18d48fd9a06afe2814fcc016292e13396d6bf10b6c769af12f336f2fdec"
+ },
+ "seconds": 7.2,
+ "valid": true
+}

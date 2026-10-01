@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends wrapping nightly-sync so that any crash immediately emails a failure notice, recording a success timestamp when the job finishes cleanly, and adding a Synology Task Scheduler check (no Docker) that alerts the user if that success mark is missing by about 04:30.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "you want to know by morning if nightly-sync did not succeed, with no logs to read.",
+  "Deleted": "central log on Synology, Dockerizing the job, Pieter Levels style dashboard.",
+  "Bottleneck": "a missing success email went unnoticed for four days, not a lack of stored logs.",
+  "Checked myself": "cron at 03:00 on edna, email only on finish, token crash before email, no other alert, Synology available."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "It rejects central logging and Docker but recommends two separate alert paths (an immediate crash email and a self-hosted missing-success check on the Synology), which makes it LARGER rather than a single alert.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "opencode.C.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

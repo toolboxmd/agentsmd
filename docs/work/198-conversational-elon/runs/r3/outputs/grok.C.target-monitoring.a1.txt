@@ -1,0 +1,8 @@
+**Requirements and who asked**: You, after nightly-sync crashed four nights on an expired token and sent no mail: know when that job dies. You proposed a central log on the Synology, maybe in Docker.
+**Deleted**: A Synology central log and a Docker logging stack. You will not read logs, so stored logs leave the same silence.
+**Bottleneck**: The summary email is sent only after startup succeeds, and nothing else alerts on this job.
+**Checked myself**: What you told me about edna, the 03:00 cron, the four startup crashes, and the NAS. I have not inspected the script or either machine.
+
+You want a mail that shows up the morning the sync fails.
+Add a short shell wrapper on edna around the existing cron command that runs the Python script and, on any non-zero exit, sends the email you already use, with stderr in the body.
+The expired token would have produced that mail on the first night.

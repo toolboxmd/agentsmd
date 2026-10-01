@@ -1,0 +1,24 @@
+**Requirements and who asked:** You want to hear when nightly-sync dies without reading logs. You suggested a central log on the Synology, Pieter Levels style, maybe all in Docker.
+**Deleted:** A central log, a Docker log stack, and any new service on the Synology. Also deleted: a second watcher for the mini being off. Cron did start; the script died at startup.
+**Bottleneck:** The only signal is the summary email, and that sends only after a finished run. A startup crash sends nothing, so a dead night looks quiet.
+**Checked myself:** You told me the only job is nightly-sync, a Python script cron starts at 03:00 on the Mac mini edna; it emails a summary when it finishes; an expired token crashed it at startup four nights before that email; nothing else alerts; the Synology can run Docker; you will not read logs. I have not opened the script, the crontab, or either machine.
+
+You want a message on the night the sync fails.
+
+Put the failure mail in a shell wrapper that cron runs, and send it through the same mail path as the success summary. The wrapper runs the Python script, and on any non-zero exit it emails you the traceback. A crash during startup then lands in your inbox.
+
+```cron
+0 3 * * * /path/to/run-nightly-sync.sh
+```
+
+```sh
+#!/bin/sh
+/path/to/python /path/to/nightly-sync.py >/tmp/nightly-sync.log 2>&1
+status=$?
+if [ "$status" -ne 0 ]; then
+  # email /tmp/nightly-sync.log with the mail path the summary already uses
+fi
+exit "$status"
+```
+
+The Synology stays out of this. A log collector there would be another system to keep alive, and it would still wait for you to look.

@@ -1,0 +1,8 @@
+Requirements and who asked: You asked to know when nightly-sync fails without reading logs, central log on Synology in Docker was a suggested means not a requirement.
+Deleted: Central log on Synology and putting everything in Docker.
+Bottleneck: The job dies before the email step, so silence looks the same as success and you wait 4 days.
+Checked myself: nightly-sync on edna at 03:00 emails only on finish, crashed 4 nights at startup on expired token, no other alert today.
+
+What you want is to be told by morning if nightly-sync did not finish cleanly, without checking anything.
+
+I recommend making nightly-sync always send its summary email on exit including startup errors with a wrapper trap or try-finally, and rejecting the Synology central log because a log you never read cannot alert you.

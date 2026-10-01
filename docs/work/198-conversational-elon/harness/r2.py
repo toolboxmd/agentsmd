@@ -13,7 +13,8 @@ exits and harness errors are invalid, kept, and retried until VALID_TARGET valid
 
 Usage: r2.py RUN_DIR canary | run [harnesses] [cells] [NAME=PATH,...]
   cells: comma list of ARM:SCENARIO[:VALID], default A,B,C target and C control, 5 valid each.
-  NAME=PATH: diagnostic arms from candidate files; when given, only these arms are used.
+  NAME=PATH or NAME=git:SHA: arms from a candidate file or global/AGENTS.md at a commit; when given,
+  only these arms are used.
 """
 import concurrent.futures as cf, hashlib, json, os, re, shutil, subprocess, sys, tempfile, threading, time
 from pathlib import Path
@@ -181,8 +182,9 @@ def load_arms(base, files=None):
         if sha is None:
             arms[arm] = (None, None)
             continue
-        data = Path(sha).read_bytes() if files else subprocess.run(
-            ["git", "-C", str(REPO), "show", f"{sha}:global/AGENTS.md"], capture_output=True, check=True).stdout
+        rev = sha[4:] if files and sha.startswith("git:") else None if files else sha
+        data = Path(sha).read_bytes() if not rev else subprocess.run(
+            ["git", "-C", str(REPO), "show", f"{rev}:global/AGENTS.md"], capture_output=True, check=True).stdout
         path = base / "arms" / f"{arm}.md"
         if path.exists() and path.read_bytes() != data:
             raise SystemExit(f"{path} differs from {sha}")

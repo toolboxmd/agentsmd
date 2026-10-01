@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a hosted dead man's switch (healthchecks.io) that `nightly-sync` pings after success, emailing the user if no ping arrives by about 04:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to find out when `nightly-sync` fails without reading logs; it must catch crashes before the email step, like last week's expired token.",
+  "Deleted": "Central log on the Synology and Docker. You won't read logs, and logs don't alert you when a job goes silent.",
+  "Bottleneck": "Today the only signal is the success email, so a missing email is the failure signal, and nothing watches for it.",
+  "Checked myself": "Nothing observed this session; I'm going on what you told me about cron at 03:00 on `edna`, the success email, and the four-night crash."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A single hosted heartbeat alert, with the framed Synology/Docker logging stack explicitly dropped and an honest record of what was and wasn't checked.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-monitoring.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

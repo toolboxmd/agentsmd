@@ -1,0 +1,1 @@
+`git fetch` downloads new commits from the remote but leaves your branches untouched. `git pull` is `fetch` plus merging into your current branch. Use `fetch` to review first, `pull` to update directly.

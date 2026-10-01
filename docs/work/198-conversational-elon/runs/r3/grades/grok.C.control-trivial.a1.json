@@ -1,0 +1,17 @@
+{
+ "answers_question": true,
+ "record_present": false,
+ "note": "The reply correctly explains that fetch only updates remote-tracking refs while pull also merges or rebases, and it has none of the labelled lines.",
+ "control_pass": true,
+ "run_id": "grok.C.control-trivial.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "control-trivial",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

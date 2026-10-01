@@ -1,0 +1,9 @@
+**Requirements and who asked**: You asked to catch a silent nightly-sync failure without reading logs.
+**Deleted**: Central log on the Synology and moving everything to Docker.
+**Bottleneck**: The success email is sent by the job itself, so a startup crash means silence.
+**Checked myself**: nightly-sync runs at 03:00 on edna, emails on finish, crashed 4 nights on expired token before email, with no other alerting.
+
+You are trying to get a loud signal when the job fails or goes missing, not a searchable log archive.
+I recommend one heartbeat check for nightly-sync that pages you if it does not report success by morning: ping it on success and on failure, and alert on no ping. This rejects the log server because it adds hosting and maintenance without fixing silent crashes.
+
+Want me to wire that heartbeat into nightly-sync next?

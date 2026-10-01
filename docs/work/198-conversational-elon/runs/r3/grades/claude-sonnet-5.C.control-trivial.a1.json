@@ -1,0 +1,17 @@
+{
+ "answers_question": true,
+ "record_present": false,
+ "note": "The reply explains fetch vs. pull correctly and briefly, and it contains none of the labelled record lines.",
+ "control_pass": true,
+ "run_id": "claude-sonnet-5.C.control-trivial.a1",
+ "host": "claude-sonnet-5",
+ "arm": "C",
+ "scenario": "control-trivial",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

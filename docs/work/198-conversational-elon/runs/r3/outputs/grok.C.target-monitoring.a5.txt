@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want to hear when nightly-sync dies, without reading logs. You proposed a central log and Docker on the Synology.
+**Deleted:** Central log, Synology, and Docker. A log you will not read never tells you it failed, and a second host is another thing that can fail silently.
+**Bottleneck:** The summary email is sent only after the script starts, so a startup crash is silence, and nothing treats a missing email as a failure.
+**Checked myself:** You said nightly-sync is the only scheduled job, cron starts it at 03:00 on the Mac mini edna, it emails a summary only when it finishes, an expired token crashed it for four nights before that email, and nothing else alerts.
+
+You want to learn the sync failed without opening logs. Have the script write a success stamp only when it finishes, and add one cron on edna at 04:00 that emails you when today's stamp is missing. Renew the token too, or that mail will arrive every morning.

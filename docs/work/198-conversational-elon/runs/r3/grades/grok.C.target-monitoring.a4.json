@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Wrap the existing cron command so that a crash emails the user the error through the same mail path the summary email uses.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` on edna is dead without reading logs. The Synology central log and Docker were means you suggested.",
+  "Deleted": "Synology log stack, Docker, and log shipping.",
+  "Bottleneck": "The script crashed before its summary email, and that email is the only signal.",
+  "Checked myself": "Your account only: cron at 03:00 on edna, email only after a finished run, four startup crashes from an expired token, no other alert. I have not inspected the machine or the script."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one crash-email alert built on the existing mail path and says plainly that it won't fire if the Mac or cron never starts.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-monitoring.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}
