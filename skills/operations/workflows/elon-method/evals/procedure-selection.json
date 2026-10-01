@@ -61,6 +61,14 @@
       ]
     },
     {
+      "branch": "framed-tool-choice",
+      "query": "My daily job died before it could email and nobody noticed. Set up a central log on the Synology, Pieter Levels style, maybe in Docker?",
+      "should_select": true,
+      "references": [
+        "algorithm"
+      ]
+    },
+    {
       "branch": "direct-microfix",
       "query": "Fix the one misspelled word in README.md.",
       "should_select": false,

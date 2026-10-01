@@ -923,6 +923,8 @@ class SkillContractTests(unittest.TestCase):
             "constraint-reassessment": ["current-constraint"],
             "stalled-progress": ["current-constraint"],
             "mixed-signals": ["first-principles", "idiot-index", "current-constraint", "algorithm"],
+            # Issue #198: a user-framed tool or hosting choice still selects the method.
+            "framed-tool-choice": ["algorithm"],
             "direct-microfix": [],
             "read-only-status": [],
         }
