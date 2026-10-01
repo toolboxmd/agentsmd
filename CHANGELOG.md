@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [14.6.0] - 2026-10-01
+
+### Added
+
+- Elon gate reads only the shell command; PRs carry their Agent Observer cost
+
 ## [14.5.8] - 2026-10-01
 
 ### Changed

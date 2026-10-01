@@ -90,6 +90,17 @@ class ElonGateTests(unittest.TestCase):
                 result = self.hook(tool_input)
                 self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
 
+    def test_text_that_only_mentions_creation_passes(self) -> None:
+        # Regression from 2026-10-01: a research spawn was blocked because its
+        # task text quoted the command under investigation.
+        mention = "Find why this was blocked:\ngh issue create --title x\nDo not run it."
+        for tool_input in ({"command": "ls", "description": mention},
+                           {"prompt": mention, "description": "Research gate"},
+                           {"task": mention}):
+            with self.subTest(tool_input=tool_input):
+                self.assertEqual(self.hook(tool_input).returncode, 0)
+        self.assertBlocked(self.hook({"command": "gh issue create --title x", "description": mention}))
+
     # Regressions from the Luna max review of PR #163.
     def test_quoted_subcommand_is_still_checked(self) -> None:
         self.assertBlocked(self.hook({"command": 'gh "issue" create --title x --body "hello"'}))

@@ -39,6 +39,12 @@ Record, release policy, documentation, or current delivery state.
   required proof is current, the final diff passed self-review, independent
   review passed on the current head, and the version transition is committed.
   Blocked work ends in a blocker handoff, not a ready-PR claim.
+- Before claiming a PR ready, post its agent cost when the Agent Observer
+  skill is installed: run its `publish --task <owner/repo#N> --repo
+  <owner/repo> --pr <N>` for the PR's linked Issue or the PR itself. The
+  user's standing request authorizes this comment on the task's own PR.
+  Publishing again edits the same comment, so republish after a later push.
+  If publishing fails, note the gap in the PR and continue.
 - On GitHub, independent review passed only when the newest
   `review/independent` status on the head has state `success` and was created
   by the repository's `gh` account, or the PR records an exempt slice under
