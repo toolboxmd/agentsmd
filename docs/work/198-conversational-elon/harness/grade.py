@@ -8,7 +8,7 @@ exactly one grade file; an existing grade stops the run instead of being reused.
 
 Usage: grade.py RUN_DIR [grade|summary]
 """
-import concurrent.futures as cf, json, random, re, subprocess, sys, tempfile
+import concurrent.futures as cf, json, os, random, re, subprocess, sys, tempfile
 from collections import defaultdict
 from pathlib import Path
 
@@ -73,8 +73,8 @@ Answer with JSON only:
 def judge(prompt, keys):
     work = tempfile.mkdtemp(prefix="198-judge-")
     for _ in range(3):
-        p = subprocess.run(["claude", "-p", "--model", JUDGE_MODEL, "--setting-sources", "project,local",
-                            "--tools", "", prompt], cwd=work, capture_output=True, text=True, timeout=400,
+        p = subprocess.run(["claude", "-p", "--tools", "", "--model", JUDGE_MODEL, "--setting-sources",
+                            "project,local", prompt], cwd=work, env={**os.environ, "PWD": work}, capture_output=True, text=True, timeout=400,
                            stdin=subprocess.DEVNULL)
         m = re.search(r"\{.*\}", p.stdout, re.S)
         try:

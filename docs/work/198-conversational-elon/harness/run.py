@@ -58,8 +58,9 @@ def command(host, arm, prompt, last):
     if host == "opencode":
         return ["opencode", "run", "-m", "opencode/muse-spark-1.3-contributor-free", prompt]
     rules = ["--append-system-prompt-file", str(ARMS[arm])] if ARMS[arm] else []
-    return ["claude", "-p", "--model", "claude-sonnet-5", "--setting-sources", "project,local",
-            "--tools", "", *rules, prompt]
+    # --tools is variadic: keep it before other flags so it cannot swallow the prompt.
+    return ["claude", "-p", "--tools", "", "--model", "claude-sonnet-5", "--setting-sources", "project,local",
+            *rules, prompt]
 
 
 def attempt(base, host, arm, sc, n, preface):
@@ -71,7 +72,7 @@ def attempt(base, host, arm, sc, n, preface):
     work, last = scratch / "work", scratch / "last.txt"
     work.mkdir()
     env = {k: v for k, v in os.environ.items() if not k.startswith(("CLAUDE_CODE_", "CLAUDECODE", "AGENTSMD_"))}
-    env.update(setup(host, arm, scratch / "home"))
+    env.update(setup(host, arm, scratch / "home"), PWD=str(work))  # OpenCode reads PWD, not the real cwd
     started, info = time.time(), {"run_id": run_id, "host": host, "arm": arm, "scenario": sc["id"], "attempt": n}
     try:
         p = subprocess.run(command(host, arm, preface + sc["prompt"], last), cwd=work, env=env,
