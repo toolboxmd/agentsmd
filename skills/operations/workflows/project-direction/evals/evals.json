@@ -67,6 +67,12 @@
       "prompt": "Review our Mission. It says: someday everyone will have perfect software.",
       "expected_output": "Classifies the ungrounded Mission as due for review, asks for the strategic present purpose and approach grounded in what the project does now, and keeps the existing file until exact replacement text is explicitly confirmed.",
       "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "Earlier in this conversation you proposed changing our Objective from a single-host release to delivering on every maintainer host, and I said yes. Update the direction.",
+      "expected_output": "Treats the user's yes as the explicit decision of the meaning, drafts the Objective wording and writes OBJECTIVE.md without asking for a second wording confirmation, preserves the other files byte-for-byte, rereads the triad, and reports the exact diff and how to correct or revert it.",
+      "files": []
     }
   ]
 }

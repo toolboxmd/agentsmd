@@ -58,7 +58,8 @@ Vision reduced to current work, Mission lacking grounded present strategy, an
 Objective restating one task/Issue/commit/PR, an achieved/invalidated/abandoned/
 reprioritized Objective, or a user request to define, review, or update direction.
 Distinguish repository/tracker facts from inference and user choices. Semantic
-writes require explicit confirmation.
+writes require explicit confirmation: the user's explicit decision of the meaning,
+or confirmation of the exact contents, as the procedure's step 5 defines.
 
 Before judging alignment or acting on drift, apply the core `global/AGENTS.md` Project
 Direction section. It owns contribution, detour, and strategic confirmation rules.
