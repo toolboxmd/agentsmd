@@ -319,7 +319,8 @@ def parse(stream, host):
         return list(zip(calls, [outputs[k] for k in order] + [""] * (len(calls) - len(order))))
     ids, outputs = [], {}
     for event in events:
-        content = (event.get("message") or {}).get("content")
+        message = event.get("message")
+        content = message.get("content") if isinstance(message, dict) else None  # some events carry a string
         for block in content if isinstance(content, list) else []:
             if not isinstance(block, dict):
                 continue
