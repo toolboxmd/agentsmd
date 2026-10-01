@@ -419,7 +419,39 @@ class MultiTurnScoringTests(unittest.TestCase):
         result = json.dumps({"type": "user", "message": {"content": [
             {"type": "tool_result", "tool_use_id": "r", "content": "1\t# Version Control"}]}})
         self.assertEqual(self.commit_verdict([read], "claude"), "skip")
-        self.assertEqual(self.commit_verdict([read, result], "claude"), "fired")
+
+    def test_read_counts_only_once_its_output_arrived_before_the_action(self):
+        def assistant(*blocks):
+            return json.dumps({"type": "assistant", "message": {"content": list(blocks)}})
+
+        def result(call_id, text):
+            return json.dumps({"type": "user", "message": {"content": [
+                {"type": "tool_result", "tool_use_id": call_id, "content": text}]}})
+        read = {"type": "tool_use", "id": "r", "name": "Read", "input": {"file_path": f"/p/{self.VC}"}}
+        commit = {"type": "tool_use", "id": "c", "name": "Bash", "input": {"command": "git commit -m x"}}
+        # Read and commit issued together: the commit was chosen before the procedure arrived.
+        parallel = [assistant(read, commit), result("c", ""), result("r", "1\t# Version Control")]
+        self.assertEqual(self.commit_verdict(parallel, "claude"), "skip")
+        sequential = [assistant(read), result("r", "1\t# Version Control"), assistant(commit), result("c", "")]
+        self.assertEqual(self.commit_verdict(sequential, "claude"), "fired")
+        # Codex: the read completes after the commit starts.
+        late = [json.dumps({"type": "item.started", "item": {"id": "item_1", "type": "command_execution",
+                                                            "command": f"cat {self.VC}"}}),
+                json.dumps({"type": "item.started", "item": {"id": "item_2", "type": "command_execution",
+                                                            "command": "git commit -m x"}}),
+                self.codex("item_1", f"cat {self.VC}", 0, "# Version Control\n"),
+                self.codex("item_2", "git commit -m x", 0, "")]
+        self.assertEqual(self.commit_verdict(late), "skip")
+
+    def test_grok_turn_completes_only_with_an_error_free_result(self):
+        for text, done in (('{"type":"result","is_error":true}', False),
+                           ('{"type": "result", "is_error": true}', False),
+                           ('{"type":"result","is_error":false}', True),
+                           ('{"type":"assistant"}', False), ("", False)):
+            with self.subTest(text=text):
+                self.assertIs(self.m.turn_done(text, "grok"), done)
+        self.assertTrue(self.m.turn_done('{"type":"turn.completed"}', "codex"))
+        self.assertFalse(self.m.turn_done('{"type":"turn.failed"}', "codex"))
 
 
 if __name__ == "__main__":

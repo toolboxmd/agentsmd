@@ -230,8 +230,21 @@ def execute(host, cmd, cwd, env):
     return "".join(lines), not killed and proc.returncode == 0
 
 
-# Event that marks a finished turn in each host's stream (Claude: its result event, checked above).
-TURN_DONE = {"codex": '"type": "turn.completed"', "grok": '"type": "result"', "opencode": '"type": "step_finish"'}
+def turn_done(text, host):
+    """The host's end-of-turn event is in the stream: Codex turn.completed, OpenCode step_finish, Grok a
+    result event whose is_error is false (Claude's result events are checked in claude_session)."""
+    events = []
+    for line in text.splitlines():
+        try:
+            event = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(event, dict):
+            events.append(event)
+    if host == "grok":
+        results = [e for e in events if e.get("type") == "result"]
+        return bool(results) and results[-1].get("is_error") is False
+    return any(e.get("type") == {"codex": "turn.completed", "opencode": "step_finish"}[host] for e in events)
 
 
 def session(host, model, effort, arm, repo, plugin, env, prompts):
@@ -250,15 +263,14 @@ def session(host, model, effort, arm, repo, plugin, env, prompts):
     for n, prompt in enumerate(prompts):
         bounds.append(sum(1 for _ in tool_calls(stream, host)))
         text, ok = execute(host, turn_command(host, model, effort, repo, plugin, prompt, n == 0, arm), repo, env)
-        done = re.sub(r'":\s*"', '": "', text)
-        ok = ok and TURN_DONE[host] in done and not (host == "grok" and '"is_error": true' in done)
+        ok = ok and turn_done(text, host)
         stream += text
         complete.append(ok)
     return stream, bounds, complete
 
 
 def tool_calls(stream, host):
-    return [call for call, _ in parse(stream, host)]
+    return [entry[0] for entry in parse(stream, host)]
 
 
 def _text(content):
@@ -270,8 +282,11 @@ def _text(content):
 
 
 def parse(stream, host):
-    """[(call, output)]: trigger_test's calls in order (plus Codex's non-shell tool items by name), each
-    with the text its tool returned, or "" when none was recorded."""
+    """[(call, output, called_at, returned_at)]: trigger_test's calls in order (plus Codex's non-shell tool
+    items by name), each with the text its tool returned ("" when none was recorded), the stream event at
+    which it was invoked and the event at which its output arrived (infinity when none did). OpenCode
+    reports a tool part once, when it has finished, so both positions are that event."""
+    never = float("inf")
     events = []
     for line in stream.splitlines():
         try:
@@ -281,8 +296,8 @@ def parse(stream, host):
         if isinstance(event, dict):
             events.append(event)
     if host == "codex":
-        items, order, thread = {}, [], 0
-        for event in events:
+        items, order, thread, started, completed = {}, [], 0, {}, {}
+        for pos, event in enumerate(events):
             if event.get("type") == "thread.started":
                 thread += 1  # each resumed `codex exec` numbers its items from item_0 again
             item = event.get("item") or {}
@@ -291,6 +306,9 @@ def parse(stream, host):
             key = (thread, item.get("id"))
             if key not in items:
                 order.append(key)
+                started[key] = pos
+            if event.get("type") == "item.completed":
+                completed.setdefault(key, pos)
             items[key] = item
         result = []
         for key in order:
@@ -299,26 +317,30 @@ def parse(stream, host):
             if kind == "command_execution":
                 done = item.get("status") == "completed" and item.get("exit_code") is not None
                 result.append((("Bash", "", str(item.get("command", "")), ""),
-                               str(item.get("aggregated_output") or "") if done else ""))
+                               str(item.get("aggregated_output") or "") if done else "",
+                               started[key], completed.get(key, never) if done else never))
             elif kind == "file_change":
                 for change in item.get("changes") or [{}]:
-                    result.append((("Edit", str(change.get("path", "")), "", ""), ""))
+                    result.append((("Edit", str(change.get("path", "")), "", ""), "", started[key], never))
             elif kind and kind not in ("agent_message", "reasoning", "todo_list", "error", "web_search"):
-                result.append(((str(item.get("tool") or item.get("name") or kind), "", "", ""), ""))
+                result.append(((str(item.get("tool") or item.get("name") or kind), "", "", ""), "", started[key],
+                               never))
         return result
     calls = list(tt.tool_calls(stream, host))
     if host == "opencode":
-        outputs, order = {}, []
-        for event in events:
+        outputs, order, at = {}, [], {}
+        for pos, event in enumerate(events):
             part = event.get("part") or {}
             if event.get("type") == "tool_use":
                 if part.get("callID") not in outputs:
                     order.append(part.get("callID"))
+                    at[part.get("callID")] = pos
                 state = part.get("state") or {}
                 outputs[part.get("callID")] = _text(state.get("output")) if state.get("status") == "completed" else ""
-        return list(zip(calls, [outputs[k] for k in order] + [""] * (len(calls) - len(order))))
-    ids, outputs = [], {}
-    for event in events:
+        found = [(outputs[k], at[k], at[k] if outputs[k] else never) for k in order]
+        return [(c, *x) for c, x in zip(calls, found + [("", never, never)] * (len(calls) - len(found)))]
+    ids, outputs, called, returned = [], {}, {}, {}
+    for pos, event in enumerate(events):
         message = event.get("message")
         content = message.get("content") if isinstance(message, dict) else None  # some events carry a string
         for block in content if isinstance(content, list) else []:
@@ -326,13 +348,17 @@ def parse(stream, host):
                 continue
             if event.get("type") == "assistant" and block.get("type") == "tool_use" and block.get("id") not in ids:
                 ids.append(block.get("id"))
-            elif event.get("type") == "user" and block.get("type") == "tool_result" and not block.get("is_error"):
+                called[block.get("id")] = pos
+            elif (event.get("type") == "user" and block.get("type") == "tool_result" and not block.get("is_error")
+                  and block.get("tool_use_id") not in outputs):
                 outputs[block.get("tool_use_id")] = _text(block.get("content"))
-    return list(zip(calls, [outputs.get(i, "") for i in ids] + [""] * (len(calls) - len(ids))))
+                returned[block.get("tool_use_id")] = pos
+    found = [(outputs.get(i, ""), called[i], returned.get(i, never)) for i in ids]
+    return [(c, *x) for c, x in zip(calls, found + [("", never, never)] * (len(calls) - len(found)))]
 
 
 def heading(plugin, f):
-    """First Markdown heading of a procedure in the arm's copy, or None (control arm)."""
+    """First Markdown heading of a procedure in a plugin copy, or None when it has none."""
     for path in sorted((pathlib.Path(plugin) / "skills/operations").rglob(pathlib.Path(f).name)):
         if str(path).endswith(f):
             return next((l.strip() for l in path.read_text().splitlines() if l.startswith("# ")), None)
@@ -363,13 +389,22 @@ def first_hit(calls, spec, start, end):
 
 def score_session(stream, bounds, host, headings):
     """A read counts when the call names the file and its returned text contains the file's first
-    heading: a failed, refused or merely echoed read does not."""
+    heading: a failed, refused or merely echoed read does not. It counts before an action only when its
+    output arrived before the action was invoked. `reads` reports the index of the call whose output
+    arrived first."""
     parsed = parse(stream, host)
-    calls = [call for call, _ in parsed]
+    calls = [entry[0] for entry in parsed]
+    called = [entry[2] for entry in parsed] + [float("inf")]  # called[len(calls)]: after the last call
     files = sorted({f for *_, req in TURNS for f in req} | set(REWORDED))
-    reads = {f: next((i for i, (c, out) in enumerate(parsed)
-                      if headings.get(f) and tt.reads_file(c, f) and headings[f] in out), None)
-             for f in files}
+    returned = {f: min(((ret, i) for i, (c, out, _, ret) in enumerate(parsed)
+                        if headings.get(f) and tt.reads_file(c, f) and headings[f] in out),
+                       default=(float("inf"), None)) for f in files}
+    reads = {f: returned[f][1] for f in files}
+
+    def before(f, index):
+        """The file's content had arrived before call `index` was invoked (or before the session ended)."""
+        return returned[f][0] < called[index]
+
     entry = next((i for i, (name, _, _, skill) in enumerate(calls)
                   if (name == "Skill" and skill.split(":")[-1] == "operations") or tt.reads_file(calls[i], tt.ENTRY)),
                  None)
@@ -387,13 +422,13 @@ def score_session(stream, bounds, host, headings):
             spec = ("edit",) if f == IMPL else tuple(a for a in moment if a != "edit") or moment
             hit = first_hit(calls, spec, start, end)
             if hit is None:
-                verdict[f] = "read-noaction" if reads[f] is not None and reads[f] < end else "noaction"
+                verdict[f] = "read-noaction" if before(f, end) else "noaction"
             else:
-                verdict[f] = "fired" if reads[f] is not None and reads[f] < hit else "skip"
+                verdict[f] = "fired" if before(f, hit) else "skip"
         turns[turn] = {"start": start, "moment_at": at, "verdict": verdict}
     # Over-trigger check: a reworded file opened during the question or research turns.
     early_end = bounds[2] if len(bounds) > 2 else len(calls)
-    opened_early = sorted(f for f in REWORDED if reads[f] is not None and reads[f] < early_end)
+    opened_early = sorted(f for f in REWORDED if before(f, early_end))
     return {"calls": len(calls), "entry_loaded_at": entry, "reads": reads, "turns": turns,
             "reworded_opened_in_turns_1_2": opened_early,
             "call_list": [[c[0], c[1] or " ".join(c[2].split())[:300] or c[3]] for c in calls]}
@@ -408,7 +443,12 @@ def run_one(host, model, effort, arm, index, before):
         started = time.time()
         stream, bounds, complete = session(host, model, effort, arm, repo, plugin, env, prompts)
         files = sorted({f for *_, req in TURNS for f in req} | set(REWORDED))
-        headings = {f: heading(plugin, f) for f in files}
+        # The control loads no plugin, so its reads are scored against a real arm's procedures.
+        source = plugin if arm != "none" else next(
+            v for k, v in tt.SOURCES.items() if not k.endswith("-sha"))
+        headings = {f: heading(source, f) for f in files}
+        if not all(headings.values()):
+            raise RuntimeError(f"no heading for {[f for f, h in headings.items() if not h]}")
         after = tt.snapshot()
         if after != before:
             changed = sorted(k for k in set(before) | set(after) if before.get(k) != after.get(k))
@@ -510,7 +550,8 @@ def main():
     arms = [a.partition("=")[0] for a in args.arms.split(",")]
     git_arms = {a: r or tt.DEFAULT_REFS[a] for a, r in (x.partition("=")[::2] for x in args.arms.split(","))
                 if a != "none"}
-    sources = tt.extract_sources(git_arms) if git_arms else None
+    # The control is scored against main's procedures, so a control-only batch still extracts main.
+    sources = tt.extract_sources(git_arms or {"main": tt.DEFAULT_REFS["main"]})
     try:
         tt.guard_self_check()
         before = tt.snapshot()
