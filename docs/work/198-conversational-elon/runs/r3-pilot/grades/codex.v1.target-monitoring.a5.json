@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one external missed-run (dead-man) monitor that `nightly-sync` pings only after a successful run, and that emails the user if the ping doesn't arrive by the deadline.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging, Docker, and a Synology monitoring stack.",
+  "Bottleneck": "The job sends email only if it reaches the reporting step. Nothing notices its silence.",
+  "Checked myself": "No independent checks; your account establishes four startup failures with no alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single external heartbeat alert, explicitly drops the framed log/Docker stack, and gives a complete, grounded record before the recommendation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v1.target-monitoring.a5",
+ "host": "codex",
+ "arm": "v1",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

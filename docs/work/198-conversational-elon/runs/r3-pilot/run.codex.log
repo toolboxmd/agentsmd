@@ -1,0 +1,21 @@
+codex start: v1=/tmp/198-r3/v1.md,v2=/tmp/198-r3/v2.md
+/Users/lukaszmaj/dev/toolboxmd/agentsmd-worktrees/198-conversational-elon/docs/work/198-conversational-elon/runs/r3-pilot/arms/v2.md differs from /tmp/198-r3/v2.md
+codex exit 1
+codex restart after arm-copy race: v1=/tmp/198-r3/v1.md,v2=/tmp/198-r3/v2.md
+codex.v2.canary.a1                                      valid                                 6s
+codex.v1.canary.a1                                      valid                                 8s
+canary codex.v1               PASS  'yes\n"# Global Agent Rules"'
+canary codex.v2               PASS  'yes\n# Global Agent Rules'
+codex.v2.target-monitoring.a1                           valid                                16s
+codex.v1.target-monitoring.a1                           valid                                17s
+codex.v1.target-monitoring.a2                           valid                                18s
+codex.v2.target-monitoring.a2                           valid                                20s
+codex.v2.target-monitoring.a3                           valid                                11s
+codex.v1.target-monitoring.a3                           valid                                18s
+codex.v2.target-monitoring.a4                           valid                                19s
+codex.v1.target-monitoring.a4                           valid                                20s
+codex.v2.target-monitoring.a5                           valid                                12s
+codex.v1.target-monitoring.a5                           valid                                18s
+cell codex.v1.target-monitoring: 5 valid, 0 invalid
+cell codex.v2.target-monitoring: 5 valid, 0 invalid
+codex exit 0

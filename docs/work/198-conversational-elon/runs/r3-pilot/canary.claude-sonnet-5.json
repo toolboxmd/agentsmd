@@ -1,0 +1,14 @@
+{
+ "claude-sonnet-5.v1": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "Yes.\n\"# Global Agent Rules\"",
+  "attempts": 1
+ },
+ "claude-sonnet-5.v2": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "Yes.\n\"# Global Agent Rules\"",
+  "attempts": 1
+ }
+}

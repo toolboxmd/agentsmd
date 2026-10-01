@@ -1,0 +1,18 @@
+opencode start: v1=/tmp/198-r3/v1.md,v2=/tmp/198-r3/v2.md
+opencode.v2.canary.a1                                   valid                                 6s
+opencode.v1.canary.a1                                   valid                                 8s
+canary opencode.v1            PASS  'yes\n# Global Agent Rules'
+canary opencode.v2            PASS  'yes\n# Global Agent Rules'
+opencode.v2.target-monitoring.a1                        valid                                27s
+opencode.v1.target-monitoring.a1                        valid                                31s
+opencode.v2.target-monitoring.a2                        valid                                29s
+opencode.v1.target-monitoring.a2                        valid                                28s
+opencode.v2.target-monitoring.a3                        valid                                29s
+opencode.v1.target-monitoring.a3                        valid                                39s
+opencode.v2.target-monitoring.a4                        valid                                37s
+opencode.v1.target-monitoring.a4                        valid                                31s
+opencode.v2.target-monitoring.a5                        valid                                30s
+opencode.v1.target-monitoring.a5                        valid                                25s
+cell opencode.v1.target-monitoring: 5 valid, 0 invalid
+cell opencode.v2.target-monitoring: 5 valid, 0 invalid
+opencode exit 0

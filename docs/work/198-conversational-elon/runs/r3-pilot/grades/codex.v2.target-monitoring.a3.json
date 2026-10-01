@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single external heartbeat monitor that the nightly-sync script pings only after a successful run, which emails the user when a successful run is overdue after 03:00.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker are unnecessary for this one job.",
+  "Bottleneck": "The script sends email only after reaching its reporting step; startup crashes stay silent.",
+  "Checked myself": "From your account, an expired token caused four startup failures, and nothing else alerts on the job."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one heartbeat alert and drops the central-log and Docker plan; its Checked myself line only repeats facts from the user's account and claims no checks of its own.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v2.target-monitoring.a3",
+ "host": "codex",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

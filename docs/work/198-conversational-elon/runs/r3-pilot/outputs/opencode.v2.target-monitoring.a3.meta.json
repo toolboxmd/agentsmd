@@ -1,0 +1,14 @@
+{
+ "run_id": "opencode.v2.target-monitoring.a3",
+ "harness": "opencode",
+ "host": "opencode",
+ "model": "opencode/muse-spark-1.3-contributor-free",
+ "arm": "v2",
+ "arm_sha256": "e071c107651013358cf4dcc452dd7479e4703d0966c94210f7c1f13daf519862",
+ "scenario": "target-monitoring",
+ "attempt": 3,
+ "exit": 0,
+ "stderr_tail": "\n> build \u00b7 muse-spark-1.3-contributor-free\n\n",
+ "seconds": 28.9,
+ "valid": true
+}

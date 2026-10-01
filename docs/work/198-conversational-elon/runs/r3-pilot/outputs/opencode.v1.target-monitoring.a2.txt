@@ -1,0 +1,11 @@
+Elon record:
+Requirements and who asked: You asked to know within a day if nightly-sync fails without reading logs. You suggested a central log on the Synology and Dockerizing everything.
+Deleted: Central log collection, log dashboard, Dockerizing nightly-sync.
+Bottleneck: You only learn by absence of an email, so a silent crash waits 4 days until you go looking.
+Checked myself: I only know what you told me: cron on edna at 03:00, emails only on success, 4 startup crashes on expired token with no email, no other alerting.
+
+What you are trying to achieve in one line: get pushed when nightly-sync did not succeed, without having to check anything.
+
+I recommend against the central log: it has the same failure mode as today, it only helps if you look, and Dockerizing everything is the opposite of Pieter Levels style, his whole point is boring single-box simplicity with no extra infra.
+
+Do this instead: keep the script on edna, add one heartbeat ping on success to one Healthchecks container on the Synology, and set it to email/push you when a ping is late or fails. That covers this exact bug plus edna down plus cron not firing, with one thing to maintain. Want me to sketch that 10-line wrapper plus the compose file?

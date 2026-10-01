@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked to stop missing silent failures of nightly-sync without reading logs — the actual need is "tell me when the job doesn't finish," not "store all logs centrally."
+**Deleted:** A central Docker log stack (Loki/Grafana/ELK-style) on the Synology — it wouldn't have caught last week's failure either, since the crash happened before the email step ever wrote anything worth logging, and you said you won't read logs anyway.
+**Bottleneck:** nightly-sync only speaks at the end (the summary email); when it dies at startup it says nothing, so the single fix is making silence itself the alert.
+**Checked myself:** From what you told me — cron on edna at 03:00, email only on completion, last failure was an expired token at startup, four nights unnoticed, nothing else alerts today.
+
+Recommendation: a dead-man's-switch heartbeat, not a logging platform. Add one line to nightly-sync that pings a heartbeat URL right after it succeeds, and point that heartbeat at a monitor that emails/pushes you if the ping doesn't land by, say, 03:30 — you can self-host the tiny `healthchecks` container on the Synology if you want it to stay fully yours, or use a free hosted one if you'd rather not run anything new. Either way it's one mechanism (missing ping = alert) instead of a fleet of log-shipping containers you'd still have to watch.

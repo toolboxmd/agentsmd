@@ -35,6 +35,17 @@ def summary(base):
     for m in metas:
         if not m["valid"]:
             cells[(m["host"], m["arm"], m["scenario"])]["invalid"] += 1
+    if not any(k[1] in "ABC" for k in cells):  # diagnostic pilot: candidate-file arms only
+        print("| Harness | Variant | Criterion 2 | All four labels | Classes | Invalid |")
+        print("| --- | --- | --- | --- | --- | --- |")
+        for (h, v, s), c in sorted(cells.items()):
+            print(f"| {h} | {v} | {c['pass']}/{c['valid']} | {c['record4']}/{c['valid']} "
+                  f"| SMALL {c['SMALL']}, LARGER {c['LARGER']}, NONE {c['NONE']} | {c['invalid']} |")
+        print("\nFailing runs:")
+        for r in rows:
+            if not r.get("judge_error") and not r["candidate_pass"]:
+                print(f"- {r['run_id']}: {r['recommendation_class']} {r.get('note', '')}")
+        return
     print("| Harness | A LARGER | B LARGER | C criterion 2 | C control | Invalid | Verdict |")
     print("| --- | --- | --- | --- | --- | --- | --- |")
     for h in HARNESSES:

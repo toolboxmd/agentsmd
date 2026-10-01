@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends running a small heartbeat monitor in Docker on the Synology that emails the user if `nightly-sync` misses its success signal after 03:00, along with fixing the expired token and testing the alert.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central log collection and moving the sync into Docker; neither is needed to detect a missed run.",
+  "Bottleneck": "The job sends its own notification, so a startup crash also silences the alert.",
+  "Checked myself": "Only your supplied facts: four missed runs, no independent alert, and a Docker-capable Synology."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply is one heartbeat alert, but it is self-hosted in Docker on the Synology, which follows the user's framed stack and so counts as LARGER.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "codex.v2.target-monitoring.a1",
+ "host": "codex",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

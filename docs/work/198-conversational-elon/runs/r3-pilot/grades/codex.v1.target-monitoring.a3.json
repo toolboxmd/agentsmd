@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends one hosted heartbeat monitor that cron pings only after `nightly-sync` succeeds, which emails the user if the ping misses its daily deadline, and suggests testing it by withholding one heartbeat.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker for this task; neither is needed to detect a missed sync.",
+  "Bottleneck": "The script sends its own email, so a startup crash also silences notification.",
+  "Checked myself": "Only your account of the setup and failure; no independent checks."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one heartbeat alert and grounds all four record lines in this case, but it brings in a Europe/Warsaw timezone that the situation never gave.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v1.target-monitoring.a3",
+ "host": "codex",
+ "arm": "v1",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

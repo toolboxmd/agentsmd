@@ -1,0 +1,8 @@
+**Requirements and who asked**: nightly-sync must alert when it fails or never runs without log reading, per your note after 4 silent crashes.
+**Deleted**: central log on Synology, moving nightly-sync to Docker, full rebuild.
+**Bottleneck**: crash happens before the email step, so missing success email is invisible and detection waits there, not in log storage.
+**Checked myself**: per your note only: cron 03:00 on edna, email only on finish, 4 startup token failures last week, no other alert, you will not read logs.
+
+What you want is an alert within hours when nightly-sync fails or does not run, without checking anything manually.
+
+I recommend keeping the job on edna and adding failure plus absence alerting: wrap startup so any exception sends a failure email, and ping a dead-mans check on success that pages you if no ping by about 04:30. That would have caught the token expiry on night one, and still alerts if edna is off. A central log on Synology adds a system to run and watch but still needs you to read it, so it does not fix the actual failure.

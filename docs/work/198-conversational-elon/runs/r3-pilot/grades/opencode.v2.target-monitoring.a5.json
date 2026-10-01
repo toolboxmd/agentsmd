@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a hosted heartbeat that nightly-sync pings only on success, alerting when the ping is missing.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to catch silent nightly-sync failure without reading logs.",
+  "Deleted": "Central log on Synology, Dockerizing the job, Pieter Levels style aggregation.",
+  "Bottleneck": "Detection waits on you manually looking, so silent startup crashes stay hidden for days.",
+  "Checked myself": "From your brief only: cron at 03:00 on edna, email only on success, 4 startup token crashes with no email, no other alerter."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single hosted dead-man heartbeat, puts all four record lines before it, and grounds them in facts from the brief.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v2.target-monitoring.a5",
+ "host": "opencode",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

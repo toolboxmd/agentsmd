@@ -1,0 +1,7 @@
+Requirements and who asked: You asked to know within a day when nightly-sync fails without reading logs; Docker and a central Synology log were your suggested means, not the need.
+Deleted: Docker platform and central log aggregation.
+Bottleneck: Silent failure sends no push alert, so stored logs you never read change nothing.
+Checked myself: You told me cron on edna at 03:00 emails only on finish, a 4 day startup crash sent nothing, nothing else alerts, you will not read logs, and Synology can run containers.
+
+You want to be told within a day when nightly-sync fails or goes silent without reading logs.
+I recommend one watchdog and no log platform: have edna write a small success/fail timestamp to the Synology on every run, plus one daily Synology scheduled check that emails you if the timestamp is failed or stale, because it catches crashes, missed runs, and a dead Mac with nothing new to maintain. Confirm you want this watchdog instead of central logging and I will outline the exact two scripts.

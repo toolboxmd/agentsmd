@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a dead-man's-switch heartbeat: cron pings a healthchecks.io URL at the start and end of the `nightly-sync` run, and the user gets an alert if no ping arrives by 03:05.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends one heartbeat alert and rejects central logging and Docker, but none of the four labelled record lines appear; self-hosting on the Synology is offered only as an optional place to run the same alert.",
+ "baseline_fail": false,
+ "candidate_pass": false,
+ "run_id": "claude-sonnet-5.v1.target-monitoring.a1",
+ "host": "claude-sonnet-5",
+ "arm": "v1",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

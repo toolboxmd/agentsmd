@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends a wrapper script on edna that sends an alert when nightly-sync exits with an error, plus a ping to one hosted dead-man check that notifies the user if no success has been reported by 04:00.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "You need to know by morning if nightly-sync did not succeed (from your 4 day silent failure).",
+  "Deleted": "central log on Synology, Docker for nightly-sync, dashboard you have to open.",
+  "Bottleneck": "missing success signal gets no alert, not log storage or location.",
+  "Checked myself": "cron 03:00 on edna emails only on finish, 4 startup crashes on expired token sent nothing, no other alert today, you said you will not read logs."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Classed LARGER, but it is a close call: the wrapper sends its own failure alert, apparently by email ('reuses an alert you already read'), and the hosted dead-man check is a second alert, so that is two separate alerting mechanisms.",
+ "baseline_fail": true,
+ "candidate_pass": false,
+ "run_id": "opencode.v2.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

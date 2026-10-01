@@ -1,0 +1,5 @@
+What you're trying to achieve: know within minutes when `nightly-sync` fails, without reading logs.
+
+A central log won't fix this: your actual failure mode was silence (crash before the email step), and a log only helps if someone reads it. What you need is a dead-man's switch: cron pings a heartbeat URL (healthchecks.io, or self-hosted on the Synology if you want it local) at the start and end of the run; if the ping doesn't arrive by 03:05, it alerts you by push/email/whatever. Recommend that, not centralized logging or a Docker buildout.
+
+If you still want logs later for debugging (not alerting), that's a separate, smaller need, say so and we'll size it then.

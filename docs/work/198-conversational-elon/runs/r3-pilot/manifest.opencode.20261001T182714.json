@@ -1,0 +1,25 @@
+{
+ "started": "2026-10-01T18:27:14+0200",
+ "scenarios_sha256": "0f09353fccbfcd03ae2beb455783ed9e765b8ff4bff28e01cbf76d1a844c694b",
+ "arms": {
+  "v1": {
+   "source": "/tmp/198-r3/v1.md",
+   "sha256": "35cabf5bb5d1450a26cf8602203dda968ed4d9a566818c0126251c83d7922624"
+  },
+  "v2": {
+   "source": "/tmp/198-r3/v2.md",
+   "sha256": "e071c107651013358cf4dcc452dd7479e4703d0966c94210f7c1f13daf519862"
+  }
+ },
+ "harnesses": {
+  "opencode": [
+   "opencode",
+   "opencode/muse-spark-1.3-contributor-free"
+  ]
+ },
+ "cells": [
+  "v1:target-monitoring",
+  "v2:target-monitoring"
+ ],
+ "repo_head": "03e9b981de358caa35ac6f222c716dbe4b659fcf"
+}

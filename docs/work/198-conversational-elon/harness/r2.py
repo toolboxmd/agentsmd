@@ -11,8 +11,9 @@ Every attempt gets its own output and meta file. Timeouts, empty output, non-zer
 exits and harness errors are invalid, kept, and retried until VALID_TARGET valid
 (at most MAX_RETRIES retries per cell).
 
-Usage: r2.py RUN_DIR canary | run [harnesses] [cells]
+Usage: r2.py RUN_DIR canary | run [harnesses] [cells] [NAME=PATH,...]
   cells: comma list of ARM:SCENARIO, default A,B,C target and C control.
+  NAME=PATH: diagnostic arms from candidate files; when given, only these arms are used.
 """
 import concurrent.futures as cf, hashlib, json, os, re, shutil, subprocess, sys, tempfile, threading, time
 from pathlib import Path
@@ -172,16 +173,16 @@ def attempt(base, arms, harness, arm, scenario, prompt, n, kind="outputs"):
     return info["valid"], text
 
 
-def load_arms(base):
-    """Write each arm file from its exact commit into the run dir; return {arm: (path, sha256)}."""
+def load_arms(base, files=None):
+    """Copy each arm file (exact commit, or a candidate file) into the run dir; return {arm: (path, sha256)}."""
     (base / "arms").mkdir(exist_ok=True)
     arms = {}
-    for arm, sha in ARM_SHAS.items():
+    for arm, sha in (files or ARM_SHAS).items():
         if sha is None:
             arms[arm] = (None, None)
             continue
-        data = subprocess.run(["git", "-C", str(REPO), "show", f"{sha}:global/AGENTS.md"],
-                              capture_output=True, check=True).stdout
+        data = Path(sha).read_bytes() if files else subprocess.run(
+            ["git", "-C", str(REPO), "show", f"{sha}:global/AGENTS.md"], capture_output=True, check=True).stdout
         path = base / "arms" / f"{arm}.md"
         if path.exists() and path.read_bytes() != data:
             raise SystemExit(f"{path} differs from {sha}")
@@ -193,6 +194,7 @@ def load_arms(base):
 def canary(base, arms, harnesses):
     """One probe per harness and arm: heading quoted with a rules file, NONE without."""
     (base / "canary").mkdir(exist_ok=True)
+    tag = "" if set(arms) == set(ARM_SHAS) else "." + "-".join(harnesses)
     results = {}
 
     def probe(h, a):
@@ -206,10 +208,10 @@ def canary(base, arms, harnesses):
         return {"pass": False, "expected": None, "reply": "no valid attempt", "attempts": n}
 
     with cf.ThreadPoolExecutor(15) as pool:
-        futs = {(h, a): pool.submit(probe, h, a) for h in harnesses for a in ARM_SHAS}
+        futs = {(h, a): pool.submit(probe, h, a) for h in harnesses for a in arms}
         for k, f in futs.items():
             results[f"{k[0]}.{k[1]}"] = f.result()
-    (base / "canary.json").write_text(json.dumps(results, indent=1) + "\n")
+    (base / f"canary{tag}.json").write_text(json.dumps(results, indent=1) + "\n")
     for k, r in results.items():
         print(f"canary {k:22} {'PASS' if r['pass'] else 'FAIL'}  {r['reply']!r}")
     return all(r["pass"] for r in results.values())
@@ -234,19 +236,22 @@ def main():
     base, mode = Path(sys.argv[1]).resolve(), sys.argv[2]
     harnesses = sys.argv[3].split(",") if len(sys.argv) > 3 else list(HARNESSES)
     cells = sys.argv[4].split(",") if len(sys.argv) > 4 else CELLS
+    files = dict(x.split("=", 1) for x in sys.argv[5].split(",")) if len(sys.argv) > 5 else None
     base.mkdir(parents=True, exist_ok=True)
-    arms = load_arms(base)
+    arms = load_arms(base, files)
     if mode == "canary":
         sys.exit(0 if canary(base, arms, harnesses) else 1)
-    canaries = json.loads((base / "canary.json").read_text())
+    canaries = {}
+    for c in base.glob("canary*.json"):
+        canaries.update(json.loads(c.read_text()))
     for h in harnesses:
-        for a in ARM_SHAS:
+        for a in arms:
             if not canaries.get(f"{h}.{a}", {}).get("pass"):
                 raise SystemExit(f"canary {h}.{a} has not passed; results would not count")
     (base / "outputs").mkdir(exist_ok=True)
-    (base / f"manifest.{time.strftime('%Y%m%dT%H%M%S')}.json").write_text(json.dumps({
+    (base / f"manifest.{'-'.join(harnesses)}.{time.strftime('%Y%m%dT%H%M%S')}.json").write_text(json.dumps({
         "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "scenarios_sha256": FROZEN_SHA,
-        "arms": {a: {"commit": ARM_SHAS[a], "sha256": arms[a][1]} for a in ARM_SHAS},
+        "arms": {a: {"source": (files or ARM_SHAS)[a], "sha256": arms[a][1]} for a in arms},
         "harnesses": {h: HARNESSES[h] for h in harnesses}, "cells": cells,
         "repo_head": subprocess.run(["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True,
                                     text=True).stdout.strip(),

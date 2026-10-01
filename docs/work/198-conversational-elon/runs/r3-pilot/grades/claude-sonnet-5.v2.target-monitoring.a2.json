@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding a dead-man's-switch heartbeat to nightly-sync using hosted healthchecks.io, so the user is alerted if no ping arrives by about 03:30.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to find out when `nightly-sync` dies instead of discovering it by accident; nobody asked for log aggregation, that's a proposed means.",
+  "Deleted": "a central log server / Docker log stack (ELK, Loki, etc.) \u2014 you said you won't read logs, so a nicer log doesn't close the gap that bit you.",
+  "Bottleneck": "the only failure signal today is the success email sent at the end of the script; a crash before that point produces zero signal.",
+  "Checked myself": "you told me the four crashes were an expired token at startup, before the email step, and nothing else watches the job."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat and offers self-hosted Docker only as a discouraged fallback for users who want no external dependency, so it counts as SMALL.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "claude-sonnet-5.v2.target-monitoring.a2",
+ "host": "claude-sonnet-5",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

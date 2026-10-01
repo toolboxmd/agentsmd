@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails without reading logs.
+**Deleted:** Central log collection and moving the sync into Docker; neither is needed to detect a missed run.
+**Bottleneck:** The job sends its own notification, so a startup crash also silences the alert.
+**Checked myself:** Only your supplied facts: four missed runs, no independent alert, and a Docker-capable Synology.
+
+I recommend one small heartbeat monitor on the Synology, running in Docker: `nightly-sync` on `edna` sends it a success signal only after completing, and the monitor emails you if that signal misses a deadline based on the 03:00 start plus normal runtime and a buffer.
+
+Keep cron and the existing summary email, fix the expired token, and verify the alert by deliberately withholding a heartbeat. This catches startup crashes and missed cron runs, but the NAS must remain working and able to send email for the alert to reach you.

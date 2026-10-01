@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up one hosted heartbeat check that nightly-sync pings at its end, which alerts the user if no ping arrives by morning.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "know by morning if nightly-sync failed or never ran, without reading logs - asked by you",
+  "Deleted": "central log on Synology, Dockerizing the job - no failure needs them and they still require you to look",
+  "Bottleneck": "silent missing success - the script crashed before its email step for four days with no other alert",
+  "Checked myself": "you told me - one 03:00 cron on edna, email on finish, 4x expired-token crash before email, no other alerts, you will not read logs"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Recommends a single dead-man heartbeat alert, explicitly drops the Synology/Docker logging stack, and grounds its record only in facts the user gave.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v1.target-monitoring.a4",
+ "host": "opencode",
+ "arm": "v1",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

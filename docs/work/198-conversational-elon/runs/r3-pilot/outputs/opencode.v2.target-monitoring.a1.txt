@@ -1,0 +1,7 @@
+Requirements and who asked: You need to know by morning if nightly-sync did not succeed (from your 4 day silent failure).
+Deleted: central log on Synology, Docker for nightly-sync, dashboard you have to open.
+Bottleneck: missing success signal gets no alert, not log storage or location.
+Checked myself: cron 03:00 on edna emails only on finish, 4 startup crashes on expired token sent nothing, no other alert today, you said you will not read logs.
+
+What you are trying to achieve is a poke when nightly-sync fails or never finishes, with nothing new to babysit.
+I recommend one wrapper on edna that alerts on nonzero exit and pings a single hosted dead-man check that notifies you if no success by 04:00, because it reuses an alert you already read and a central log would still wait for you to look.

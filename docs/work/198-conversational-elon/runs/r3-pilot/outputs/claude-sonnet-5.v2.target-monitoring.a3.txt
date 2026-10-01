@@ -1,0 +1,13 @@
+What you're trying to achieve: know within minutes when `nightly-sync` fails to run, without reading logs.
+
+A central Synology log won't fix this: the job crashed before it could write or email anything, so a log aggregator just gives you a prettier place to see nothing arrived. The actual bottleneck is "no one checks that the job ran" — that needs a dead-man's-switch, not more logging infrastructure.
+
+Recommendation: add a single `curl` heartbeat ping at the end of `nightly-sync` to a dead-man's-switch service (e.g. Healthchecks.io, free tier), configured to alert you by email/push if it doesn't check in by 03:15. That's one new thing to maintain, catches exactly the failure you had (crash before completion), and needs no Docker, no NAS container, no log pipeline.
+
+Elon record:
+- **Requirements and who asked:** User wants to know when the nightly job fails, without reading logs. Nobody has asked for log aggregation itself — that's an inferred means, not the actual requirement.
+- **Deleted:** Central Synology log server, Docker-based logging stack (Loki/ELK/etc.) — none of this would have surfaced a crash that happened before any log line or email was written.
+- **Bottleneck:** Absence of any check that the job ran at all; everything downstream (logs, dashboards) is irrelevant until that check exists.
+- **Checked myself:** Per what you told me — crash was at startup (expired token), four nights straight, before the email step; nothing else alerts on this job today.
+
+Want me to make the one-line addition to the `nightly-sync` script now?

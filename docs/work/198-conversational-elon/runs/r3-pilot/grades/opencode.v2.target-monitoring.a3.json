@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Keep the job on edna and add a hosted heartbeat ping on success, so the user gets an alert when the ping is late or reports a failure.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want same-day notice when nightly-sync fails silently, with no log reading.",
+  "Deleted": "Central log on Synology, moving the job to Docker.",
+  "Bottleneck": "Crash before the email step makes success and failure both look like silence.",
+  "Checked myself": "You told me cron at 03:00 on edna, email only on finish, 4-day token crash with no email, no other watcher."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert, explicitly rejects the central log and Docker, and its record lines cite only facts from the situation.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v2.target-monitoring.a3",
+ "host": "opencode",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

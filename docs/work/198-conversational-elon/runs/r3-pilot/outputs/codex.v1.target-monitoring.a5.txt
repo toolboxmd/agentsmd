@@ -1,0 +1,13 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging, Docker, and a Synology monitoring stack.
+**Bottleneck:** The job sends email only if it reaches the reporting step. Nothing notices its silence.
+**Checked myself:** No independent checks; your account establishes four startup failures with no alert.
+
+You want unattended sync with reliable failure alerts. I recommend one external missed-run monitor: it expects a success signal every day and emails you when that signal does not arrive.
+
+- Have `nightly-sync` send the signal only after a successful sync.
+- Set the deadline after its normal completion time, with a small grace period.
+- Let the monitor send the alert independently of `edna`, so it also catches a missed cron run, a powered-off Mac, or a lost connection.
+- Verify it by deliberately withholding one signal and confirming the alert arrives.
+
+Central logs would help investigate a failure, but they would still need a separate alert to solve the problem you experienced.

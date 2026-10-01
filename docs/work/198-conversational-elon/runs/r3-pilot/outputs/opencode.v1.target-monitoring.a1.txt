@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked to catch a silent nightly-sync death without reading logs.
+**Deleted**: Central log on Synology and moving everything to Docker, nothing in this failure needed them.
+**Bottleneck**: No signal independent of the script, so an early crash means no email and no alert.
+**Checked myself**: You told me cron 03:00 on edna emails only on finish, crashed 4 nights on expired token before email, no other alert exists, you will not read logs, Synology can run Docker.
+
+You are trying to achieve: know by morning if nightly-sync failed or never finished, without checking anything manually.
+
+I recommend one dead-man check: wrap nightly-sync to ping Healthchecks.io on success only, with alerts on fail or no ping by 04:30. That is the smallest fix because a central log still requires you to look, while this pushes one alert when the success ping is missing. Want me to set that wrapper up?

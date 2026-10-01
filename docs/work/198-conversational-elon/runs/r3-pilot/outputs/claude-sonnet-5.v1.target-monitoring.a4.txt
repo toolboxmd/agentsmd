@@ -1,0 +1,8 @@
+**Requirements and who asked:** you want to know when nightly-sync fails instead of finding out by accident, that's the actual ask.
+**Deleted:** a centralized log stack (Loki/ELK/Grafana-style). You said you won't read logs, so a place to store them doesn't fix detection, it just gives you a nicer place to not look.
+**Bottleneck:** there's no alert when the job fails to complete. All four crashes stopped before the email step, so nothing ever signaled failure.
+**Checked myself:** this is from what you told me about the crash pattern, I haven't inspected the script or cron setup myself.
+
+Recommendation: a self-hosted dead man's switch, not log aggregation. Run healthchecks.io's open-source image as one Docker container on the Synology; add a single curl ping at the end of nightly-sync's success path. If the ping doesn't arrive by ~03:30, it pushes you a notification (email, ntfy, Pushover, whatever you want). One container, one line in the script, nothing to read.
+
+This conflicts with what you asked for (central logging), so your call: want me to set this up instead, or do you still want the log server for other reasons beyond this job?

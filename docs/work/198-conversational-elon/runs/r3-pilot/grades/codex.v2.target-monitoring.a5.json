@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single external dead-man's-switch monitor that `nightly-sync` pings only when it finishes successfully, so the monitor emails the user if the ping misses the daily deadline, then test it by deliberately skipping a ping.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central logging and Docker are unnecessary for this one job.",
+  "Bottleneck": "The script sends email only after finishing, so a startup crash leaves you unaware.",
+  "Checked myself": "From what you told me, cron runs it at 03:00 on `edna`; an expired token caused four startup failures, and no independent alert exists."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one heartbeat alert and says the Synology doesn't need to run anything; its \"Checked myself\" line cites only facts the user gave.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v2.target-monitoring.a5",
+ "host": "codex",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

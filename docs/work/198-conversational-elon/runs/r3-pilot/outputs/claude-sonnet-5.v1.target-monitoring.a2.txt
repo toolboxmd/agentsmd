@@ -1,0 +1,5 @@
+What you're actually trying to achieve isn't "see logs" — it's "know within minutes when nightly-sync fails to run or fails to finish," without reading anything. A central log server doesn't do that; it just gives you a nicer place to not read logs. The failure mode you hit (crash before the email step, so silence looked like success) needs a positive confirmation check, not more log volume.
+
+Smallest fix: wrap the cron invocation so it pings a dead-man's-switch (e.g. a self-hosted Healthchecks.io instance, or the free hosted one) at start and success, and have cron's own stderr mailed to you too. If the job doesn't check in by 03:15, you get an alert — that's the one new thing. This also makes expired-token crashes loud immediately instead of silently four nights running.
+
+I'd skip the Synology/Docker log stack entirely for this problem — it's infrastructure to build and maintain that doesn't address "nobody noticed," only "nobody looked." If you later have many jobs across machines and want a real dashboard, that's a different, bigger conversation — want me to set up the dead-man's-switch check on `edna` now?

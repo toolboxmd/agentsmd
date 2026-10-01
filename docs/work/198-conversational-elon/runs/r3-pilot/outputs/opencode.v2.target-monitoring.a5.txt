@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked to catch silent nightly-sync failure without reading logs.
+**Deleted**: Central log on Synology, Dockerizing the job, Pieter Levels style aggregation.
+**Bottleneck**: Detection waits on you manually looking, so silent startup crashes stay hidden for days.
+**Checked myself**: From your brief only: cron at 03:00 on edna, email only on success, 4 startup token crashes with no email, no other alerter.
+
+You want an alert within a day if nightly-sync did not succeed, with nothing to read when healthy.
+I recommend a hosted heartbeat pinged only on success with alert on missing ping, because it catches startup crashes with no host to maintain.
+A central log on Synology would still need you to read it, so it does not fix the four silent days.

@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Wrap nightly-sync so it pings Healthchecks.io only on success, and have it alert if the job fails or no ping arrives by 04:30.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked to catch a silent nightly-sync death without reading logs.",
+  "Deleted": "Central log on Synology and moving everything to Docker, nothing in this failure needed them.",
+  "Bottleneck": "No signal independent of the script, so an early crash means no email and no alert.",
+  "Checked myself": "You told me cron 03:00 on edna emails only on finish, crashed 4 nights on expired token before email, no other alert exists, you will not read logs, Synology can run Docker."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single hosted dead-man check, turns down the central log on the Synology and the Docker setup, and every fact in its record comes from what the user said.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v1.target-monitoring.a1",
+ "host": "opencode",
+ "arm": "v1",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

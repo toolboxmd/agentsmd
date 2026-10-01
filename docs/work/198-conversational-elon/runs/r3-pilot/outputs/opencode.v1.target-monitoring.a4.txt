@@ -1,0 +1,7 @@
+**Requirements and who asked**: know by morning if nightly-sync failed or never ran, without reading logs - asked by you
+**Deleted**: central log on Synology, Dockerizing the job - no failure needs them and they still require you to look
+**Bottleneck**: silent missing success - the script crashed before its email step for four days with no other alert
+**Checked myself**: you told me - one 03:00 cron on edna, email on finish, 4x expired-token crash before email, no other alerts, you will not read logs
+
+What you want is to be told when there is no success, without checking anything.
+I recommend one hosted heartbeat check that expects a ping at the end of nightly-sync and alerts you if it is missing by morning, because it still fires when the script crashes before email or the Mac never runs.

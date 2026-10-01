@@ -1,0 +1,10 @@
+**Requirements and who asked:** You asked to find out when `nightly-sync` dies instead of discovering it by accident; nobody asked for log aggregation, that's a proposed means.
+**Deleted:** a central log server / Docker log stack (ELK, Loki, etc.) — you said you won't read logs, so a nicer log doesn't close the gap that bit you.
+**Bottleneck:** the only failure signal today is the success email sent at the end of the script; a crash before that point produces zero signal.
+**Checked myself:** you told me the four crashes were an expired token at startup, before the email step, and nothing else watches the job.
+
+What you're actually trying to achieve is "get alerted when nightly-sync doesn't run," not "centralize logs." Smallest fix: a dead-man's-switch heartbeat — the script pings a monitor at start (or on success), and the monitor pages you if no ping arrives by ~03:30. I'd use a free hosted one like healthchecks.io: a two-line curl added to the script, nothing to run or maintain on the Synology, and it still works if `edna` itself is wedged. If you want it fully self-hosted instead, that same tool (e.g. Healthchecks, self-hosted) runs as one Docker container on the Synology — one more thing for you to keep alive, so only worth it if you specifically don't want an external dependency.
+
+One aside: "Pieter Levels style" usually means the opposite of a Docker log stack — he's known for avoiding Docker/microservices and running plain scripts on one box, so if that's the aesthetic you're going for, the heartbeat-only approach fits it better than central logging would.
+
+Want me to write the healthchecks.io version (hosted) or the self-hosted Docker version?

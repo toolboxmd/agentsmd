@@ -1,0 +1,5 @@
+What you're trying to achieve: know within minutes when `nightly-sync` fails to run, not stumble onto it days later.
+
+Centralized logging on the Synology doesn't fix that: it gives you a place to read logs, but you said you won't read logs, so the failure mode repeats. The actual gap is that the job can die before its one existing alert (the email) fires. Smallest fix: wrap the cron invocation on `edna` so it emails you on non-zero exit or on not having run at all, e.g. a one-line healthcheck ping (healthchecks.io or a self-hosted equivalent) that alerts if `nightly-sync` doesn't check in by 03:10 — no new host service, no Docker, no second machine involved.
+
+I'd hold off on the Synology/Docker log pile unless you have other jobs you also can't see failing; if you do, say so and we can scope that separately. Want me to wire up the healthcheck ping on `edna`'s cron entry?

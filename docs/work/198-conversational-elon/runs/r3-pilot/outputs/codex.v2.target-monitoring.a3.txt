@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want to know when `nightly-sync` fails without reading logs.
+**Deleted:** Central logging and Docker are unnecessary for this one job.
+**Bottleneck:** The script sends email only after reaching its reporting step; startup crashes stay silent.
+**Checked myself:** From your account, an expired token caused four startup failures, and nothing else alerts on the job.
+
+I recommend one external heartbeat monitor that emails you when a successful run is overdue. Keep cron and Python on `edna`; have the script send a success signal only after completing the sync, and set the deadline after 03:00 with enough allowance for its normal runtime.
+
+That catches startup crashes, missed cron runs, and `edna` being offline. The Synology needs no new service, and you only need to act when an alert arrives.

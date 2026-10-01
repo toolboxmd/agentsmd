@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Set up a single Healthchecks.io heartbeat check that the cron wrapper pings on success or failure, so an email alert goes out when nightly-sync fails or never runs; also fix the expired token, keep the existing summary email, and test both failure modes.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want an alert when `nightly-sync` fails or never runs, without reading logs.",
+  "Deleted": "Central logging, Docker, and a Synology deployment for this one job.",
+  "Bottleneck": "The job sends its own notification, so an early crash silences it.",
+  "Checked myself": "Only your supplied facts: four startup failures, no email, and no independent alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends one hosted heartbeat alert and turns down the user's Synology, Docker and central-log idea; fixing the token and keeping the existing email don't add a second monitor.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v2.target-monitoring.a2",
+ "host": "codex",
+ "arm": "v2",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,8 @@
+Requirements and who asked: nightly-sync must surface silent failure without routine log reading (you).
+Deleted: central log on Synology and Docker move, they add upkeep without solving detection.
+Bottleneck: missing success signal, not log storage.
+Checked myself: you told me cron at 03:00 on edna, email on finish only, 4 day crash before email, no other alerts, Synology available.
+
+What you want is to know by morning if nightly-sync did not succeed, with nothing to read when healthy.
+
+I recommend one change only: add a success ping from nightly-sync to a hosted heartbeat that emails you on a missed run, and leave hosting and logging as is, because a central log still needs you to look.

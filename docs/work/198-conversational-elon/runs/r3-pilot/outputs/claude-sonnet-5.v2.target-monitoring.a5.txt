@@ -1,0 +1,9 @@
+What you're trying to achieve: know within minutes when `nightly-sync` fails to start, not spot it days later.
+
+A central log on the Synology doesn't fix that: it's a place to read things, and you said you won't read logs. The actual bottleneck is that the job's only "alert" is an email sent from inside the script, after the part that just crashed. A log dashboard adds something to watch; it doesn't add anything to tell you.
+
+Smallest fix: wrap the cron invocation on edna in something that emails or pings you on non-zero exit, independent of the script's own logic (one line, e.g. `... || curl <healthcheck-url>` or a trivial shell wrapper), using a dead-man's-switch service (e.g. healthchecks.io style "ping on start, alert if it doesn't") so silence itself is the alarm. That alone would have caught last week's failure on night one.
+
+If you still want centralized logs later for debugging *why*, that's a separate, smaller want than alerting, and doesn't need Docker or a "stack" — a single log-shipping agent on edna writing to a Synology share is plenty. I'd skip building a Pieter-Levels-style Docker logging stack for one cron job; that's infrastructure for a fleet, not a fix for a missed email.
+
+Recommend: add a dead-man's-switch ping to the cron wrapper now. Want me to write that wrapper?

@@ -1,0 +1,9 @@
+Requirements and who asked: you asked to know within a day if nightly-sync fails without reading logs; you suggested a central log on Synology in Docker.
+Deleted: central log platform and moving everything to Docker for this one job.
+Bottleneck: startup crash happens before the email step, so a success email can never report its own failure.
+Checked myself: nightly-sync runs at 03:00 on edna, emails only on finish, was dead 4 nights from expired token with no alert, Synology can run Docker.
+
+What you want is a separate miss signal when nightly-sync does not finish, not more logs to read.
+I recommend one external heartbeat like Healthchecks.io, pinged by the script on success, with email alert if no ping in 24h.
+
+Want me to sketch that change?

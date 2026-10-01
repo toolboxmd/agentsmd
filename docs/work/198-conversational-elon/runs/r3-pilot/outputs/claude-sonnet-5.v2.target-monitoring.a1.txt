@@ -1,0 +1,9 @@
+**Requirements and who asked:** You said you want to know when nightly-sync dies, specifically because it crashed before the email step four nights running and nothing told you. Nobody asked for centralized logging as its own goal; that's a proposed means, not the stated need.
+
+**Deleted:** A full Docker log-aggregation stack (ELK/Loki/Grafana, "everything in Docker"). It doesn't solve your actual problem: you said you won't read logs, so a nicer place to not look at still leaves you blind.
+
+**Bottleneck:** Detection, not storage. The script already has a working success signal (the email); it has no failure signal. That's the gap to close.
+
+**Checked myself:** This is based only on what you've told me (one cron job on edna, email on success, no other alerting, Synology with Docker available). I haven't looked at the script, crontab, or NAS.
+
+**Recommendation:** Set up a dead man's switch instead of a log pipeline. Have nightly-sync ping a monitoring endpoint right when it finishes (or add a wrapper that pings on success); if no ping lands by, say, 03:30, you get pushed an alert. You can self-host this with one small container on the Synology, or use a hosted free-tier service, either way it's one mechanism and nothing to read. Separately, the token expiring is the actual root cause of last week's outage and is worth fixing on its own, but that's a different, smaller task than this monitoring question.

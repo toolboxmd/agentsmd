@@ -1,0 +1,18 @@
+claude-sonnet-5 start: v1=/tmp/198-r3/v1.md,v2=/tmp/198-r3/v2.md
+claude-sonnet-5.v1.canary.a1                            valid                                 4s
+claude-sonnet-5.v2.canary.a1                            valid                                 4s
+canary claude-sonnet-5.v1     PASS  'Yes.\n"# Global Agent Rules"'
+canary claude-sonnet-5.v2     PASS  'Yes.\n"# Global Agent Rules"'
+claude-sonnet-5.v1.target-monitoring.a1                 valid                                 5s
+claude-sonnet-5.v1.target-monitoring.a2                 valid                                 8s
+claude-sonnet-5.v1.target-monitoring.a3                 valid                                 5s
+claude-sonnet-5.v2.target-monitoring.a1                 valid                                24s
+claude-sonnet-5.v1.target-monitoring.a4                 valid                                24s
+claude-sonnet-5.v2.target-monitoring.a2                 valid                                24s
+claude-sonnet-5.v1.target-monitoring.a5                 valid                                 7s
+cell claude-sonnet-5.v1.target-monitoring: 5 valid, 0 invalid
+claude-sonnet-5.v2.target-monitoring.a3                 valid                                10s
+claude-sonnet-5.v2.target-monitoring.a4                 valid                                23s
+claude-sonnet-5.v2.target-monitoring.a5                 valid                                10s
+cell claude-sonnet-5.v2.target-monitoring: 5 valid, 0 invalid
+claude-sonnet-5 exit 0

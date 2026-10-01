@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "Add a success ping from nightly-sync to a hosted heartbeat service that emails the user when a run is missed, and leave hosting and logging unchanged.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "nightly-sync must surface silent failure without routine log reading (you).",
+  "Deleted": "central log on Synology and Docker move, they add upkeep without solving detection.",
+  "Bottleneck": "missing success signal, not log storage.",
+  "Checked myself": "you told me cron at 03:00 on edna, email on finish only, 4 day crash before email, no other alerts, Synology available."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a single hosted heartbeat alert, explicitly rejects the Synology and Docker stack, and grounds every record line in the facts the user gave.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "opencode.v1.target-monitoring.a5",
+ "host": "opencode",
+ "arm": "v1",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

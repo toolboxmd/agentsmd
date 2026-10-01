@@ -1,0 +1,14 @@
+{
+ "codex.v1": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n\"# Global Agent Rules\"",
+  "attempts": 1
+ },
+ "codex.v2": {
+  "pass": true,
+  "expected": "# Global Agent Rules",
+  "reply": "yes\n# Global Agent Rules",
+  "attempts": 1
+ }
+}

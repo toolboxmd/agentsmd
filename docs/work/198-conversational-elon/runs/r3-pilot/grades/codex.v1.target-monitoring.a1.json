@@ -1,0 +1,28 @@
+{
+ "recommendation_summary": "The reply recommends adding one hosted heartbeat monitor that the existing `nightly-sync` script on `edna` pings after each successful run, so the user gets an independent email if the ping doesn't arrive, while keeping cron, Python and the summary email as they are.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want to know when `nightly-sync` fails without reading logs.",
+  "Deleted": "Central log storage and moving the job into Docker. Neither provides the missing alert by itself.",
+  "Bottleneck": "The script sends its own email, so a startup crash also disables its notification.",
+  "Checked myself": "Only what you told me: four missed runs, an expired token, and no independent alert."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply sets up one heartbeat alert and rejects the Synology, logging and Docker stack; the Europe/Warsaw timezone it mentions is not in the situation, but it appears in the recommendation, not in the Checked myself line.",
+ "baseline_fail": false,
+ "candidate_pass": true,
+ "run_id": "codex.v1.target-monitoring.a1",
+ "host": "codex",
+ "arm": "v1",
+ "scenario": "target-monitoring",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

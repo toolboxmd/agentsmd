@@ -1,0 +1,8 @@
+Requirements and who asked: You want same-day notice when nightly-sync fails silently, with no log reading.
+Deleted: Central log on Synology, moving the job to Docker.
+Bottleneck: Crash before the email step makes success and failure both look like silence.
+Checked myself: You told me cron at 03:00 on edna, email only on finish, 4-day token crash with no email, no other watcher.
+
+What you are trying to achieve is notice within a day when nightly-sync misses or fails without you checking anything.
+
+I recommend keeping the job on edna and adding a hosted heartbeat ping on success with an alert to you when the ping is late or reports failure. A central log would fail the same way because you will not read it, and Docker adds maintenance without fixing detection.
