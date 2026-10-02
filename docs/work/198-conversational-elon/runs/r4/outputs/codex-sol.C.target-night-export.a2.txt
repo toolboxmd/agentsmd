@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want reliable nightly reports by 08:00 and something shippable this week; exact start time is flexible.
+**Deleted:** Airflow, Kubernetes, and separate workers, scheduler, and deployment.
+**Bottleneck:** The laptop is often asleep overnight; successful exports already produce correct reports.
+**Checked myself:** Only the facts you supplied; no files, commands, or live state inspected.
+
+You’re trying to make one three-minute export arrive reliably by 08:00. I recommend running the existing Python command as one systemd service, triggered by a timer on your always-on Linux machine, with `Persistent=true` to catch missed runs when the timer becomes active again.
+
+Keep the command intact, schedule it comfortably before 08:00, and use its exit status and service logs to verify delivery; budget and peers’ choices do not establish a need for distributed orchestration.

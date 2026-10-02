@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends acting now on a review coverage rule inside the current team and tracker: give each PR an available, authorized reviewer (the lead stays eligible but is no longer the default sole reviewer), name a qualified backup who takes over at once if the assigned reviewer is absent, and review within the same working day. It applies the rule to waiting and new PRs this week and measures approval wait time against the three-day baseline. It makes no optional additions, and it removes the reorganization, Jira Align and workshops from this launch.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want changes to ship faster this week and approvals to continue when the lead is absent.",
+  "Deleted": "Squad and chapter restructuring, Jira Align, and quarterly planning workshops from this launch. None addresses the observed approval delay.",
+  "Bottleneck": "All six changes took less than a day to code, then waited three days for the same unavailable reviewer.",
+  "Checked myself": "Your supplied facts and existing tracker statuses; no independent inspection in this exercise."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes a bounded reviewer-coverage fix, puts all four record lines before the recommendation, and names every rejected part of the framed stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-review-flow.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

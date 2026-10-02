@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply says to sort the existing shared list by pickup date, move today's orders to the top so all makers work through them in order, and make one person responsible for keeping that view clear until pickup. It rejects Odoo sync for this goal and adds nothing optional. It leaves no stated need unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need all cakes due today prepared before pickup; you requested Odoo sales, inventory and manufacturing sync to stop misses.",
+  "Deleted": "Odoo sync for this miss because payments and stock already reconcile so it adds setup without changing prep order.",
+  "Bottleneck": "Prep picks from the shared list without due date order so next month orders get made before today orders.",
+  "Checked myself": "You told me the list has customer, pickup date and status, all makers can read it at the counter, and today cakes stayed unmade while later orders were prepared."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts a bounded due-date sort on the existing list ahead of the stack, names and rejects Odoo, and builds its Checked myself line only from facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-bakery-pickups.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

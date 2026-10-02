@@ -1,0 +1,11 @@
+**Requirements and who asked:** You asked for a reminder to decide on each renewal two weeks before its notice deadline. The dates come once a year from one statement and stay fixed. You check your phone calendar daily and want no automatic cancellations or payments.
+
+**Deleted:** n8n, the Gmail agent, the vector database, and the Telegram bot. The dates arrive once a year and never change, so nothing needs watching, searching, or a new channel.
+
+**Bottleneck:** The only work is entering each contract's decision date once a year.
+
+**Checked myself:** Only what you've told me: one yearly statement with fixed dates, daily use of your phone calendar, and no automatic actions. I have not seen the statement.
+
+You're trying to make sure you decide on every renewal in time. My recommendation is to skip the agents and add one event per contract to your phone calendar, dated 14 days before its notice deadline. Each event would have an alert and a note with the contract name, the real deadline, and how to give notice.
+
+Paste or upload this year's statement and I'll turn it into a calendar file you can import in one tap. Then you can keep that budget.

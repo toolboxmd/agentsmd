@@ -1,0 +1,6 @@
+Requirements and who asked: You need all cakes due today prepared before pickup; you requested Odoo sales, inventory and manufacturing sync to stop misses.
+Deleted: Odoo sync for this miss because payments and stock already reconcile so it adds setup without changing prep order.
+Bottleneck: Prep picks from the shared list without due date order so next month orders get made before today orders.
+Checked myself: You told me the list has customer, pickup date and status, all makers can read it at the counter, and today cakes stayed unmade while later orders were prepared.
+You want every cake due today prepared before pickup.
+I recommend you sort that same list by pickup date, pull today only to the top for all makers to work in order, with one owner to keep it clear until pickup. Odoo sync is rejected for this goal because it cannot fix today sequencing and adds risk while pickups are pending.

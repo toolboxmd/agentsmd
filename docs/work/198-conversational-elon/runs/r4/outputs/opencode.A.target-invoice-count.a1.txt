@@ -1,0 +1,9 @@
+Don't ship CQRS/Redis/Kafka for this — it breaks your second requirement.
+
+A Kafka projection to Redis is eventually consistent: it will lag committed Postgres invoices at request time. It also adds services to operate, deploy, and debug without fixing the root cause.
+
+Your root cause is fetching rows + building objects to count in memory when you only return a count. Keep the single app + Postgres and do the count in the database:
+
+`SELECT COUNT(*) ... WHERE <unpaid predicate>`
+
+with an index supporting that predicate, then verify with `EXPLAIN ANALYZE` under load for <1s.

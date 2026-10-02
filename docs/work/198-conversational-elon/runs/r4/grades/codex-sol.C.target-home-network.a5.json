@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: swap in a known-good Ethernet cable, route it so it isn't pinched in the grommet, and test calls under the conditions that usually cause dropouts. Nothing extra is suggested alongside that test. The reply removes the UniFi/managed-switch/Grafana stack from the fix and says the suspect component isn't proven yet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at the desk; the approved budget does not make new infrastructure necessary.",
+  "Deleted": "UniFi gateway, managed switches, and Grafana from the proposed fix.",
+  "Bottleneck": "Isolating the desk\u2019s Ethernet failure before redesigning the network.",
+  "Checked myself": "Only your report: two other devices stay connected, and the desk\u2019s old, tightly routed cable has not been swapped."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded cable test, the stack is removed by name, and the checks rely only on what the user reported.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

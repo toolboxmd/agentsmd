@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need changes to stop waiting for approval when the lead is out.
+**Deleted:** Squads and chapters, Jira Align, new tooling, quarterly planning workshops. None of them touch the step where your changes wait.
+**Bottleneck:** Approval. Your last six changes each took under a day to code, then waited three days because the lead was their only reviewer and was away.
+**Checked myself:** Nothing observed directly. I was told the six-change history, that the lead was the sole reviewer and was absent, and that two other engineers are qualified and authorized to approve.
+
+What you're trying to achieve is changes that don't stall when the lead is absent. A new operating model won't do that, because your process is fine until it reaches one person's inbox.
+
+**Recommendation:** Today, in your existing tracker, set the reviewers for these changes to a group of the lead plus the two qualified engineers. Any one of them can approve and merge. If your repo host enforces required reviewers, point that rule at the group too.
+
+Then watch the time from "ready for review" to approval on the next few changes. If it drops from three days to hours, you're done, and there's nothing to fund.

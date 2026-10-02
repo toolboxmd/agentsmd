@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends sorting and working the existing shared order list by pickup date with today's orders first, and pausing the Odoo rollout as the fix. No ERP, sync or second system is added now. Nothing is offered as an optional extra, and no needs are left unmet for today's pickups.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Owner needs all cakes due today prepared before pickup; you asked for Odoo sales, inventory and manufacturing sync to the counter",
+  "Deleted": "Odoo sync for this miss, because you said payments and stock already reconcile correctly",
+  "Bottleneck": "Readable counter list is being worked out of pickup-date order, since next month orders were prepared while today orders stayed unmade",
+  "Checked myself": "Only what you told me in this chat, I did not check the shop list or system"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives all four record lines before a bounded fix (the existing list sorted by pickup date), names Odoo sync in the Deleted line, and its checks are grounded in what the user said or state their limits.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-bakery-pickups.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

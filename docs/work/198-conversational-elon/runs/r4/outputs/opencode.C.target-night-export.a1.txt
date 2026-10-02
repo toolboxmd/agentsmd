@@ -1,0 +1,8 @@
+Requirements and who asked: reliable report by 08:00 from the existing 3 minute Python export, shippable this week, with Airflow on Kubernetes requested by you for future proofing.
+Deleted: Kubernetes cluster, Airflow deployment, separate scheduler and workers.
+Bottleneck: laptop asleep overnight causes missing runs, not lack of orchestration power.
+Checked myself: you told me the command has no downstream jobs, rerun is safe, start time is flexible, and you already administer an always-on Linux machine.
+
+What you are trying to achieve is a correct report every morning by 08:00 with nothing new to operate.
+I recommend a systemd timer on your existing always-on Linux machine running the current Python command with journal logging and manual rerun on failure, which meets the flexible start time, 3 minute runtime, safe rerun, and 08:00 deadline with no new service to maintain.
+Airflow on Kubernetes would add cluster, scheduler, worker, upgrade, and monitoring work for one independent job and would prevent shipping this week, so confirm you will skip it and I will write the timer and log check for that host.

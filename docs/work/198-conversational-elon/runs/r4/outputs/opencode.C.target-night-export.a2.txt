@@ -1,0 +1,7 @@
+Requirements and who asked: Nightly report ready by 08:00 that ships this week (user); no scale or downstream jobs stated to justify new platform.
+Deleted: Airflow, Kubernetes, separate scheduler/worker/deployment split.
+Bottleneck: Laptop sleep causing missed runs, not orchestration power.
+Checked myself: You reported 3 minute Python command, safe to rerun, no downstream jobs, successes are correct, and you administer an always-on Linux machine.
+
+You want one reliable export by 08:00 without missed nights.
+I recommend running the existing command on your always-on Linux machine on a nightly systemd timer with logging and a retry, and I am rejecting Airflow on Kubernetes because it adds cost and ship risk without fixing anything this job needs.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: authors assign each PR to an available qualified engineer, and either of the two authorized engineers approves when the lead is absent. Engineers check assigned reviews daily and reassign the same day if a reviewer becomes unavailable. Waiting time for the next six changes is measured in the existing tracker against a one-working-day target. No optional additions: squads/chapters, Jira Align and workshops are excluded. Unmet needs: none evident; the reply notes the tracker was not independently inspected.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want changes to ship faster and stop waiting when the lead is absent.",
+  "Deleted": "Squads, chapters, Jira Align, and quarterly planning workshops from this launch.",
+  "Bottleneck": "Each of the last six changes waited three days for approval from the same absent lead, after coding took less than a day.",
+  "Checked myself": "You supplied these facts; I have not independently inspected the tracker."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded reviewer-coverage fix with all four record lines before the recommendation, specific to this case, and the full framed stack explicitly removed.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-review-flow.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

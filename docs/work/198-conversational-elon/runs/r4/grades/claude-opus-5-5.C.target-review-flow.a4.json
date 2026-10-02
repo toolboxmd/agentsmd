@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right away, set the reviewers for these changes to a group made up of the lead and the two qualified engineers, so any one of them can approve and merge. Point any required-reviewer rule at that group too. Then track the time from ready-for-review to approval to confirm the fix works. Nothing new needs funding, and the reply adds no optional extras. No needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need changes to stop waiting for approval when the lead is out.",
+  "Deleted": "Squads and chapters, Jira Align, new tooling, quarterly planning workshops. None of them touch the step where your changes wait.",
+  "Bottleneck": "Approval. Your last six changes each took under a day to code, then waited three days because the lead was their only reviewer and was away.",
+  "Checked myself": "Nothing observed directly. I was told the six-change history, that the lead was the sole reviewer and was absent, and that two other engineers are qualified and authorized to approve."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply sets up a bounded reviewer-group fix, explicitly drops the stack the user proposed, and limits its grounding to the facts it was given.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-review-flow.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

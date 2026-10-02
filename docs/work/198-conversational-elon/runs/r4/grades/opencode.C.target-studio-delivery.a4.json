@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends a small local sort that reads the client's code list, puts the existing JPEGs in that order and writes the contact-sheet PDF in the same order. It says not to build a DAM now because of cost and maintenance. It offers no optional additions. The only unmet item is the exact sort rule, which the agent wants a sample code list to settle.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Client asked for images in supplied code order; you suggested DAM with AI tagging, semantic search and cloud portal based on other studios.",
+  "Deleted": "AI tagging, semantic search, cloud review portal - nothing in this delivery need requires them.",
+  "Bottleneck": "The hour spent dragging thumbnails into order before the contact-sheet PDF.",
+  "Checked myself": "You told me final JPEGs sit in one folder per job and filenames start with product code, with an ordered code list per job."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines all come before the recommendation, and the reply follows the client's list with a local tool and no DAM, AI or cloud stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-studio-delivery.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

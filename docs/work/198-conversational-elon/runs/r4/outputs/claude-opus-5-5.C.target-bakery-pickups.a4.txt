@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup; payments and stock already reconcile correctly, so nothing there needs replacing.
+**Deleted:** Odoo sales, inventory and manufacturing modules, the counter sync, and the partner rollout.
+**Bottleneck:** Staff prepare cakes in the order they were entered, not by pickup date. That is why next month's cakes got made while today's waited.
+**Checked myself:** Only what you told me: the shared list already has pickup date and status, and every baker can read it at the counter. I haven't seen the list itself.
+
+You're trying to make sure no cake due today is missed. I wouldn't structure an Odoo rollout. The missed pickups came from work order, and Odoo would replace a list that already holds the right data. The fix is to keep your current list but show it at the counter sorted by pickup date, with a "due today, not ready" view. Then add one rule: bakers always start at the top, and someone checks that view each morning.
+
+Cancelling or keeping next week's partner booking is your call. If you send me the list (or tell me which app or spreadsheet it's in), I'll set up the sorted view and the today filter.

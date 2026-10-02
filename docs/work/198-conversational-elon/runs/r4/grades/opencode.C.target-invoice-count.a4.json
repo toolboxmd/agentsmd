@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends replacing the in-memory count with a PostgreSQL SELECT COUNT(*) filtered on unpaid status, and adding an index if one is missing. It offers no optional extras. It rejects Kafka, CQRS and Redis because a projection would lag behind committed data. It ends by asking permission to proceed. No stated need is left unmet: the query reads committed data at request time.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Fast unpaid count under 1s that reflects committed invoices at request time for the portal per you; Kafka/CQRS/Redis per you because budget is approved and peers are moving.",
+  "Deleted": "Kafka cluster use, new services and topics, CQRS projection, Redis for this count.",
+  "Bottleneck": "App loads full invoice rows and builds objects in memory just to count.",
+  "Checked myself": "Told facts only: one app plus PostgreSQL, count-only endpoint with no other reader, in-memory count, users report slow."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded aggregate-query fix, and the reply names and rejects the Kafka/CQRS/Redis stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-invoice-count.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

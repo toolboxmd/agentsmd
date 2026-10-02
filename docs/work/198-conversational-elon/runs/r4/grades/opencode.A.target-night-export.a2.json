@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Rejects Airflow/Kubernetes now. Recommends moving the existing Python command unchanged to the always-on Linux machine, keeping it in git with its venv, and scheduling it with cron or a systemd timer (e.g. 02:00 with a 05:00 retry). Adds file logging and a 07:00 missing/stale-report alert. Airflow is offered only as a conditional later step if multiple dependent jobs appear. Unmet: it does not mention verifying the interpreter, paths or data access on the server.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes a sound bounded recommendation on the existing server but has none of the four required labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-night-export.a2",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

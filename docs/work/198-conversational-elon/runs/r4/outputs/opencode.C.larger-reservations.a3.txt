@@ -1,0 +1,6 @@
+Requirements and who asked: Owner requires a conflicting reservation is rejected at save time even with simultaneous submits; you asked if red spreadsheet formatting can ship this week.
+Deleted: Conditional formatting plus a reminder to check as enforcement.
+Bottleneck: Six agents in two offices can both save overlapping rows for the same item identifier before either sees red.
+Checked myself: You told me the same item was promised twice for overlapping dates last week.
+
+What you are trying to achieve is no double promise for one item on overlapping dates. I recommend against shipping color only because it leaves the exact failure the owner forbade. I recommend one small booking store with an atomic overlap check on save that rejects the second submit, with the spreadsheet only as a view if needed.

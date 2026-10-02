@@ -43,8 +43,11 @@ CANARY = ("Do not run tools. Answer two lines only. Line 1: does any instruction
           "AGENTS.md, CLAUDE.md, or memory) contain a section titled 'Elon method'? yes or no. Line 2: quote the "
           "first heading of any user-level or global instructions file you were given, or NONE.")
 ANSI = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]")
-ERROR = re.compile(r"rate.?limit|quota|unauthori[sz]ed|authenticat|api error|internal server error|"
-                   r"overloaded|ECONNRESET|model not found|insufficient|usage limit", re.I)
+# Error signatures the CLIs print instead of a reply; matched at the start of a line, never as loose words.
+ERROR = re.compile(r"^\s*(?:API Error:|Error:|Failed to authenticate|AI_APICallError|Rate limit exceeded|"
+                   r"You've hit your usage limit|Usage limit reached|Insufficient (?:account )?funds|"
+                   r"\{\s*\"type\":\s*\"error\"|.*\b(?:rate_limit_error|overloaded_error|authentication_error|"
+                   r"invalid_request_error|api_error)\b)", re.I | re.M)
 REAL = Path.home()
 DROP = ("CLAUDE_CODE_", "CLAUDECODE", "CLAUDE_PID", "CLAUDE_EFFORT", "CLAUDE_AGENT_SDK", "CLAUDE_CONFIG_DIR",
         "ANTHROPIC_", "AGENTSMD_", "GROK_SESSION_ID", "GROK_AGENT", "CODEX_", "OPENCODE_", "XDG_")
@@ -194,7 +197,10 @@ def load_arms(base, files=None):
         path = base / "arms" / f"{arm}.md"
         if path.exists() and path.read_bytes() != data:
             raise SystemExit(f"{path} differs from {sha}")
-        path.write_bytes(data)
+        if not path.exists():  # atomic, so concurrent runner processes never see a partial file
+            tmp = path.with_suffix(f".{os.getpid()}.tmp")
+            tmp.write_bytes(data)
+            tmp.replace(path)
         arms[arm] = (path, hashlib.sha256(data).hexdigest())
     return arms
 
@@ -229,13 +235,29 @@ def canary(base, arms, harnesses):
     return all(r["pass"] for r in results.values())
 
 
+BLOCKED_WINDOW = 1800  # a rate-limited host is retried with backoff for at most this long per cell
+
+
 def cell(base, arms, harness, arm, sc, prompt, gate, target=VALID_TARGET):
-    valid = invalid = n = 0
-    while valid < target and invalid <= MAX_RETRIES:
+    """Retry invalid attempts up to MAX_RETRIES; timeouts (OpenCode's rate-limit hang) back off and may
+    keep retrying for up to BLOCKED_WINDOW seconds from the first one, then the cell is reported as is."""
+    valid = invalid = timeouts = n = 0
+    first_timeout = None
+    while valid < target:
+        if invalid - timeouts > MAX_RETRIES:
+            break
+        if timeouts and time.time() - first_timeout > BLOCKED_WINDOW:
+            break
         n += 1
         with gate[harness]:
             ok, _ = attempt(base, arms, harness, arm, sc, prompt, n)
         valid, invalid = valid + ok, invalid + (not ok)
+        if not ok:
+            meta = json.loads((base / "outputs" / f"{harness}.{arm}.{sc}.a{n}.meta.json").read_text())
+            if str(meta.get("invalid", "")).startswith("timeout"):
+                timeouts += 1
+                first_timeout = first_timeout or time.time()
+                time.sleep(min(60 * 2 ** (timeouts - 1), 600))
     return harness, arm, sc, valid, invalid, target
 
 

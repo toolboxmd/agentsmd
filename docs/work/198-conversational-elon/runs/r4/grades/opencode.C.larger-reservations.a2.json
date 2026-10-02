@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Replace the spreadsheet as system of record with one central reservations table that has a database-enforced no-overlap rule on item plus dates, so the second concurrent save fails. Optionally keep the spreadsheet as a read-only export this week. No unmet needs: concurrent rejection is explicitly handled.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "Owner requires a conflicting reservation is rejected at save time, even with two simultaneous submits.",
+  "Deleted": "Red conditional formatting and a reminder to check, because they detect after save and do not reject anything.",
+  "Bottleneck": "Two agents in different offices saving the same item for overlapping dates at the same time.",
+  "Checked myself": "You reported six agents, two offices, one identifier per physical item, and a double promise last week."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply chooses a shared table with an atomic, database-enforced overlap constraint that makes the second concurrent save fail, and keeps the spreadsheet only as a harmless read-only export.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.larger-reservations.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,13 @@
+For this report, don't build that stack.
+
+You have one small local Excel file with region, date, and signed amount. It fits in memory, updates monthly, and the logic is a grouped sum that already handles refunds correctly if you sum the signed amounts. Airbyte + Snowflake + dbt + Power BI adds cost, credentials, infra, latency, and failure modes with no benefit here.
+
+What to do this week instead:
+
+1. Keep Excel as the source of truth.
+2. Replace the hand-built sums with one small reproducible script that reads the export, groups by month + region, sums net amount, and writes the board table + a total checksum.
+3. Add two checks: row count in vs out, and sum of signed amounts matches accounting total.
+
+That's future-proof for this use case: versioned, testable, rerunnable in seconds.
+
+Only revisit Snowflake/dbt/Power BI if you get multiple sources, larger-than-memory data, concurrent users, or daily/hourly freshness requirements.

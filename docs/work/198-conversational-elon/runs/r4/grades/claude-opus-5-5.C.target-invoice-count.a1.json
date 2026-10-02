@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship now: replace the in-memory row/object count with a single PostgreSQL `SELECT count(*) ... WHERE <unpaid condition>`. Conditional follow-up: add a partial index only if the count still takes over a second. It explicitly rejects Kafka, CQRS and Redis, and asks for the query and schema so it can confirm the change with EXPLAIN ANALYZE. Not yet done: no actual latency measurement and no check that the new count matches the old one.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "you need the unpaid-invoice count under one second, reflecting invoices committed at request time; nothing else reads this endpoint or uses its output.",
+  "Deleted": "Kafka, the CQRS projection, and Redis. Nothing in the requirement needs them, and an async projection would break the \"committed at request time\" rule.",
+  "Bottleneck": "the endpoint loads every invoice row and builds objects just to count them in application memory.",
+  "Checked myself": "only your description; I have not seen the query, schema, or a query plan."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives the four record lines first, then a bounded aggregate-query fix that keeps request-time committed-data semantics, and it limits its claims to what the user described.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-invoice-count.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

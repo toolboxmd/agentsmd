@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends a small local script for now: it reads the client's code list, sorts the folder's images by filename code prefix in that order, and writes the ordered contact-sheet PDF. It suggests no optional additions. It explicitly rejects building the DAM this week. The one unmet need is that the agent has not seen the actual folder or code list.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Client requires JPEGs in supplied code order for each job (client via user). User requests professional delivery workflow this week (user).",
+  "Deleted": "DAM system, AI tagging, semantic search, cloud review portal (suggested by user, not required by client)",
+  "Bottleneck": "One hour manual thumbnail sorting per delivery",
+  "Checked myself": "You told me final JPEGs are in one folder per job, filenames start with product code, and client supplies ordered code list. I have not seen the folder or list."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded script that follows the client's code list rather than alphabetic order, names and rejects the DAM stack, and states that its facts come from the user and are not its own inspection.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-studio-delivery.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

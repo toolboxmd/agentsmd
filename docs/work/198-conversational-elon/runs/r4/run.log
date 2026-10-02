@@ -1,0 +1,34 @@
+start r4: Fri Oct  2 09:02:38 CEST 2026 head 8f7cafe5a291924227265696012725d3f51f34c9
+claude-opus-5-5.B.canary.a1                             valid                                 3s
+claude-opus-5-5.A.canary.a1                             valid                                 4s
+claude-opus-5-5.C.canary.a1                             valid                                 4s
+grok.C.canary.a1                                        INVALID exit 1                        4s
+grok.A.canary.a1                                        INVALID exit 1                        4s
+grok.B.canary.a1                                        INVALID exit 1                        6s
+opencode.B.canary.a1                                    valid                                 6s
+opencode.C.canary.a1                                    valid                                 7s
+grok.C.canary.a2                                        INVALID exit 1                        4s
+grok.A.canary.a2                                        INVALID exit 1                        4s
+codex-sol.B.canary.a1                                   valid                                 9s
+grok.B.canary.a2                                        INVALID exit 1                        3s
+codex-sol.C.canary.a1                                   valid                                11s
+codex-sol.A.canary.a1                                   valid                                12s
+grok.C.canary.a3                                        INVALID exit 1                        4s
+grok.A.canary.a3                                        INVALID exit 1                        4s
+opencode.A.canary.a1                                    valid                                12s
+grok.B.canary.a3                                        INVALID exit 1                        4s
+grok.C.canary.a4                                        INVALID exit 1                        3s
+grok.A.canary.a4                                        INVALID exit 1                        3s
+grok.B.canary.a4                                        INVALID exit 1                        3s
+canary codex-sol.A            PASS  'no\nNONE'
+canary codex-sol.B            PASS  'yes\n"# Global Agent Rules"'
+canary codex-sol.C            PASS  'yes\n"# Global Agent Rules"'
+canary grok.A                 FAIL  'no valid attempt'
+canary grok.B                 FAIL  'no valid attempt'
+canary grok.C                 FAIL  'no valid attempt'
+canary opencode.A             PASS  'no\nNONE'
+canary opencode.B             PASS  'yes\n# Global Agent Rules'
+canary opencode.C             PASS  'yes\n# Global Agent Rules'
+canary claude-opus-5-5.A      PASS  'no\nNONE'
+canary claude-opus-5-5.B      PASS  'yes\n# Global Agent Rules'
+canary claude-opus-5-5.C      PASS  'yes\n# Global Agent Rules'

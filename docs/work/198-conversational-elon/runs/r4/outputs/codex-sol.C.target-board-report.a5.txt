@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want a repeatable monthly board report of net sales by region, ready this week and easy to maintain.
+**Deleted:** Airbyte, Snowflake, dbt and Power BI; the stated workload does not require them.
+**Bottleneck:** You manually calculate monthly regional totals from one Excel table.
+**Checked myself:** You told me the table fits comfortably on your computer and contains region, date and signed net amounts, including refunds; I have not inspected it.
+
+You’re trying to make the board report reliable as it grows. I recommend one Excel workbook: export table → PivotTable grouped by month and region → board report, summing signed amounts so refunds reduce sales.
+
+This week, set up the refresh, flag missing regions or invalid dates, and reconcile each month’s regional total against the source total. Document the input columns and refresh steps so someone else can run it. That gives you a repeatable report now and a clear foundation for migration if volume, multiple sources or shared access later creates a concrete need.

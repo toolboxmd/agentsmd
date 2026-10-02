@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Do not ship colours alone this week. Now: build one shared bookings table with an atomic overlap check that rejects the second save, and turn the spreadsheet into a read-only export from it. Optional additions: none. Unmet needs: none clearly stated, though the reply gives no implementation detail or timeline.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "Owner requires conflicting reservation rejected at save time even with simultaneous submits from six agents in two offices for one item identifier.",
+  "Deleted": "Red conditional formatting and reminder to check, because a colour does not block a save.",
+  "Bottleneck": "Two agents can both see no red at the same moment and both save, which already promised the same item to two customers last week.",
+  "Checked myself": "You reported that double promise and the six agent concurrent setup, so visual check cannot meet the save time rule."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks a shared store whose atomic overlap check rejects the second of two simultaneous saves, keeps the sheet only as an export, and bases its reasoning on facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.larger-reservations.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

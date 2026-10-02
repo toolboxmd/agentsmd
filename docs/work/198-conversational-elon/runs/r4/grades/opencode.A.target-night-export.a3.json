@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do not adopt Airflow on Kubernetes now. Move the existing working Python command unchanged to the always-on Linux machine the user already administers, and version it. Schedule it with cron or a systemd timer (for example 02:00 with one retry), log to a file, and alert if there is no fresh output by about 07:00. Airflow is mentioned only as a conditional later step, if multiple interdependent DAGs appear. Unmet needs: the reply does not confirm the interpreter, paths or data access on the server, and it contains none of the four labeled record lines.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The bounded recommendation is correct and Airflow is only a conditional later step, but the four required labeled record lines are entirely absent.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-night-export.a3",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

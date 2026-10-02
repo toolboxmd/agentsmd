@@ -1,0 +1,5 @@
+You are trying to deliver each job's JPEGs in the client's exact code order with a matching contact-sheet PDF, without the hour of manual sorting.
+
+I recommend against a DAM with AI tagging, search and portal this week. The client only asked for ordered images, so that adds cost, hosting and maintenance without fixing the bottleneck. The smallest fix is a local script that reads the ordered code list, matches filenames by starting code, and writes the ordered PDF while flagging missing or extra codes.
+
+If you share one example code list and filename format, I will build that first. Do you want to start there before spending on a DAM?

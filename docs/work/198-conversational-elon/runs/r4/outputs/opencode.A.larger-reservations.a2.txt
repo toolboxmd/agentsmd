@@ -1,0 +1,16 @@
+I recommend against shipping that — it won't meet the owner's requirement.
+
+Red formatting is advisory, not enforcement:
+
+1. It doesn't reject at save time. An agent can ignore / miss the red and still save.
+2. It can't handle two agents submitting together. Both sheets can check at the same time, both see no overlap, then both save. That's exactly the double-booking you had last week, and with 6 agents in 2 offices it will happen again.
+
+To guarantee one item can't be promised twice for overlapping dates, you need a single save path with an atomic overlap check:
+
+* one system of record for reservations: `item_id, start_date, end_date`
+* on save, in a single transaction: lock the item / check for overlap, then insert or reject
+* return an error to the second submitter so the conflict is rejected, not just colored
+
+You can keep the spreadsheet as a view / input form this week if you need to, but don't let it save directly. Have it submit to that validator, and let the validator be what accepts or rejects.
+
+Shipping colors + a reminder creates false confidence and leaves the same race condition in place.

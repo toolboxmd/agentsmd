@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: replace the in-memory count with one PostgreSQL count(*) query on the unpaid condition. If the query plan still scans too much, add a partial index, and confirm with EXPLAIN ANALYZE. Kafka, CQRS and Redis are rejected now, and Kafka would only be looked at for some other problem the user names. No requirement is left unmet, though the latency has not been measured yet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to return within one second and reflect invoices committed at request time; the endpoint returns only the count and has no other reader.",
+  "Deleted": "Kafka topics, CQRS projection services, and Redis, because no stated requirement needs them, and an asynchronous projection would break the \"committed at request time\" requirement.",
+  "Bottleneck": "The endpoint fetches every invoice row and builds an object for each just to count them.",
+  "Checked myself": "Only what you told me; I have not seen the query, schema, row counts, or timings."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded aggregate-query fix, and the reply names the Kafka/CQRS/Redis stack and rejects it.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-invoice-count.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

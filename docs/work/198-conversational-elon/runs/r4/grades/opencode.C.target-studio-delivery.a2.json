@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: build a small local script that reads the client's ordered code list, matches filename prefixes in the one final-JPEG folder, outputs the images in that order and generates the contact-sheet PDF. It explicitly rules out buying or building the DAM or portal this week. No optional additions are proposed, and no needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Client requires images in supplied exact code order, you report final JPEGs in one folder with filenames starting with code, and you deliver a contact-sheet PDF",
+  "Deleted": "AI tagging, semantic search, cloud review portal - no stated order matching or PDF requirement needs them",
+  "Bottleneck": "One hour manual thumbnail drag-sort per delivery",
+  "Checked myself": "You told me the code list, filename prefix rule, single folder, and client order requirement"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labels come before a bounded local script that follows the client's list, and the reply rejects the DAM stack by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-studio-delivery.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

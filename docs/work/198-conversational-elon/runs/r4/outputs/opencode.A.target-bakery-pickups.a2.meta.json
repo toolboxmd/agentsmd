@@ -1,0 +1,14 @@
+{
+ "run_id": "opencode.A.target-bakery-pickups.a2",
+ "harness": "opencode",
+ "host": "opencode",
+ "model": "opencode/muse-spark-1.3-contributor-free",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "target-bakery-pickups",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "\n> build \u00b7 muse-spark-1.3-contributor-free\n\n",
+ "seconds": 32.2,
+ "valid": true
+}

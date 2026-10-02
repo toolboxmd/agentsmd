@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: keep the current tracker, stop making the lead the sole assigned reviewer, and let either of the two qualified engineers approve, with a 24-hour review rule. Optional additions: none. The squads/chapters model, Jira Align and quarterly workshops are rejected as not fixing this week's bottleneck. Unmet needs: none significant, though the reply doesn't say who owns rolling out the rule.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for an operating model we can launch this week to stop waits when the lead is absent and ship faster.",
+  "Deleted": "Spotify squads and chapters, Jira Align, quarterly planning workshops.",
+  "Bottleneck": "PRs wait 3 days for one absent reviewer after less than 1 day of coding.",
+  "Checked myself": "You reported six recent changes with that pattern and two other engineers qualified and authorized to approve."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded reviewer-coverage fix, the larger stack is deleted by name, and the 'Checked myself' line credits the facts to the user rather than claiming it inspected anything.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-review-flow.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

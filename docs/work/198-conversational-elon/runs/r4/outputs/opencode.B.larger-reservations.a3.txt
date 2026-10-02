@@ -1,0 +1,5 @@
+What you are trying to achieve is no double promises with six agents saving at once, with a hard reject at save time.
+
+I recommend against shipping only colours and a reminder. Conditional formatting does not reject anything, and a spreadsheet cannot check and save atomically, so two agents submitting together can both save and turn red after both customers were promised.
+
+The smallest option that meets the owner requirement is one shared bookings table that checks for overlap on the same item identifier inside the save transaction and blocks the second save with an error.

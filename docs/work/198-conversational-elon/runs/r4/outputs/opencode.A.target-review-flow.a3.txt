@@ -1,0 +1,13 @@
+Don't adopt squads/chapters or Jira Align for this — they won't fix your bottleneck and will slow you down.
+
+For a 4-person team in one timezone with your existing tracker, your problem isn't alignment or planning, it's approval:
+
+Last 6 changes: coded in <1 day, then waited 3 days each. All 6 had the same lead as sole reviewer while they were away, even though 2 other engineers are qualified/authorized to approve.
+
+Launch this this week with what you have, no new tooling needed:
+
+1. **Kill single-reviewer queue:** Set reviewer pool = lead + the 2 other qualified engineers. Require 1 approval from the pool, never assign only the lead.
+2. **Default to available:** Round-robin auto-assign. If no review in 24h, or if assignee is OOO, auto-reassign to next available in pool. No waiting on someone who is away.
+3. **Make it explicit:** Add a rule: PRs can't sit >1 business day without review. Author pings in channel after 4h, reassigns after 24h.
+
+Skip the quarterly planning workshops — you need flow, not more planning. Measure PR wait time next week; it should drop from 3 days to <1 day.

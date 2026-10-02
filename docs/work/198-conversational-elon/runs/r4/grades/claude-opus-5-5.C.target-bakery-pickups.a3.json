@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: sort the existing shared list by pickup date with prepared orders at the bottom or hidden, have bakers always take the top unprepared order and not start orders due more than a few days out until today's and tomorrow's are done, and have one person check each morning that 'due today, not prepared' is empty or in progress. Optional additions: none. Postpone the Odoo partner; revisit only if pickups are still missed after a couple of weeks. Unmet needs: none identified.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You and the owner need every cake due today prepared before pickup. Nobody has asked for new sales, inventory or manufacturing handling, and payments and stock already reconcile correctly.",
+  "Deleted": "The Odoo rollout, including its sales, inventory and manufacturing modules and the counter sync.",
+  "Bottleneck": "Bakers pick the next cake in the order it was entered rather than by pickup date, so next month's orders got made before today's.",
+  "Checked myself": "I only have what you told me. The shared list already has customer, pickup date and status, everyone can read it at the counter, and today's cakes were unmade while next month's were done. I have not seen the list itself."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The record precedes the recommendation, a bounded due-date sort of the existing list is chosen, and Odoo is deferred only conditionally.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

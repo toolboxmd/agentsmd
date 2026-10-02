@@ -1,0 +1,6 @@
+Requirements and who asked: You asked for a manual decision two weeks before each fixed notice date, using your phone calendar, with no auto cancellation or payment.
+Deleted: n8n, Gmail agent, vector database, Telegram bot because fixed yearly dates need no workflow, agent, search, or extra channel.
+Bottleneck: Turning the January statement into calendar reminders once, not moving data between tools.
+Checked myself: You told me dates stay fixed for the year and you use your phone calendar daily.
+You are trying to get one timely prompt to decide each renewal yourself.
+I recommend entering each deadline minus 14 days once from the statement as a phone calendar event with an alert, because it meets all four constraints with nothing to run or maintain.

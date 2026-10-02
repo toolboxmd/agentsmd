@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need the report by 08:00 each day. The command already works and is safe to rerun. Nobody has asked for workers, a scheduler cluster, or downstream orchestration.
+**Deleted:** Airflow, Kubernetes, and a worker/scheduler split. One three-minute job with no dependents gives them nothing to orchestrate.
+**Bottleneck:** The laptop sleeps overnight, so the job sometimes never starts. The export itself is not the problem.
+**Checked myself:** Nothing directly. I'm relying on what you told me: runs are missing, successful runs are correct, and you already run an always-on Linux machine.
+
+You're trying to get the report reliably by 08:00. I recommend moving the existing command to a single cron entry on your always-on Linux machine, set around 02:00. That fixes the actual failure, adds nothing new for you to maintain, and can ship today.
+
+Airflow on Kubernetes would add a cluster, a scheduler, a metadata database, and upgrades to babysit, all to run one command. I'd reject it even with budget available. Future-proofing here means the command stays portable, and a cron line already is.
+
+If you want this, I'll read `docs/adr/0001-persistent-host-automation.md` first, then confirm the Python environment on the Linux box before adding the job.

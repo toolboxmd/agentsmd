@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need the correct report by 08:00 and delivery this week; no stated requirement needs distributed execution.
+**Deleted:** Airflow, Kubernetes, and separate workers, scheduler, and deployment services.
+**Bottleneck:** The laptop is often asleep when the export should run.
+**Checked myself:** No independent checks; you report a working three-minute command, safe reruns, no downstream jobs, and an existing always-on Linux machine.
+
+You’re trying to make the nightly report reliable with room to grow. I recommend deploying the existing Python command on that Linux machine, with one systemd service and a daily timer around 07:30; enable missed-run catch-up and failure notification.
+
+Keep deployment to the script and those two unit files. Future-proof by keeping the command independently runnable; revisit orchestration when actual dependencies or concurrency require it.

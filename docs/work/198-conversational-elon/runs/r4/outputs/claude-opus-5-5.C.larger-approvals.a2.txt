@@ -1,0 +1,16 @@
+**Requirements and who asked:** The signed customer contract requires each released document to keep its exact approved version, the approver's identity and the approval time for seven years. Authors must not approve their own work, and later edits must not change the approved version. You need this before this week's delivery.
+**Deleted:** The APPROVED initials column and relying on a naming convention to protect approved versions.
+**Bottleneck:** Approval records and approved files currently sit where any author can edit them.
+**Checked myself:** Only what you told me. You have 12 authors and 3 reviewers, all remote, releasing weekly, and authors can edit the shared folder. I don't know which platform hosts the folder.
+
+I'd advise against shipping the initials column as the control, because it fails the contract on every point. Anyone with edit access can type or change initials, so there's no verified identity and nothing stops an author from approving their own document. The column holds no reliable approval time. A later edit to the file silently changes what was "approved."
+
+You're trying to give the customer a trustworthy release record by this week without adding new tools. The smallest option that meets every requirement is to keep the current folder for drafting and add one **Released** folder on the same platform:
+
+- **Permissions:** Only the three reviewers can add files to Released. Authors can read it but not edit or delete anything in it, which blocks self-approval.
+- **Approval step:** A reviewer approves by copying the exact file into Released. The platform's own activity log then records who added it and when, from their signed-in account.
+- **Locking and retention:** Turn on the platform's retention or deletion lock for Released, set to seven years. This stops approved copies from being changed or removed, including by reviewers.
+
+A naming convention is still fine for readability, but it isn't the control.
+
+Which platform is the folder on (SharePoint/OneDrive, Google Drive, Dropbox, or something else)? Retention locking and audit-log retention differ between them, and some plans can't hold logs for seven years. That answer decides whether this works as described or needs a small adjustment.

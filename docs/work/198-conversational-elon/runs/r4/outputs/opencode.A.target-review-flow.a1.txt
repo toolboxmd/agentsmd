@@ -1,0 +1,22 @@
+For a 4-person team in one time zone, don't adopt squads/chapters or Jira Align — that will slow you down. Keep your current tracker and fix the actual blocker: 1-day coding + 3-day wait for one reviewer who was out.
+
+Operating model to launch this week:
+
+**1. Remove single-reviewer dependency**
+- Change default from lead-only to pool of 3: lead + the 2 other qualified approvers.
+- Require 1 approval, not lead approval, for these change types.
+- No PR sits assigned to someone OOO for >24h.
+
+**2. Review rotation with SLA**
+- Round-robin auto-assign next reviewer from the pool. Same-day handoff, no self-pick of lead every time.
+- SLA: first review within 24h, in timezone work hours. If SLA misses, reassign automatically to next in pool — don't wait.
+- Lead OOO = removed from rotation entirely, no queue builds up.
+
+**3. Unblock flow this week**
+- Reassign any current waiting PRs from the lead to the 2 available approvers today.
+- Limit WIP: no new coding start when 2+ PRs are awaiting review — review first.
+- Daily 15-min async check: what is awaiting review >24h and who will clear it today.
+
+Measure only this: time from coding-done to approved. Your baseline is 3 days, target is <1 day to match your coding time. Review next week — if it's still waiting on one person, adjust the pool, not the tooling.
+
+Skip the new tooling and quarterly planning workshops for now — they don't fix approval wait.

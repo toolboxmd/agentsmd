@@ -1,0 +1,13 @@
+You don't need a DAM for this job.
+
+Your client isn't asking for tagging, search, or a portal — they're asking for images in an exact supplied code order. AI tagging / semantic search won't solve that, it will just add setup and subscription cost for zero benefit here.
+
+Build this instead this week:
+
+1. Keep one folder of final JPEGs per job as-is, since filenames already start with product code.
+2. Save the client's ordered list as a text/csv file alongside it — that's your source of truth.
+3. Use a small local script to read that list, match filenames by prefix, flag any missing or extra codes, then output a delivery folder + contact-sheet PDF already in that order.
+
+That turns your hour of dragging thumbnails into a 1-minute check, with fewer errors and a more professional delivery. No Adobe-style system required.
+
+If you share what format the client list comes in — txt, csv, Excel? — I can build that script for you now.

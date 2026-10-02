@@ -1,0 +1,16 @@
+**Requirements and who asked:** The customer contract requires each released document to keep its exact approved version, the approver's identity and the approval time for seven years. It also forbids authors approving their own documents and requires that later edits cannot change the retained version. You need this before this week's delivery and want to keep the folder.
+**Deleted:** A new document management or e-signature system. Also the naming convention as a control, since nothing enforces it.
+**Bottleneck:** The approval record lives where authors can edit, so nothing proves who approved which version.
+**Checked myself:** Only what you told me. I have not seen the folder's platform, permissions, version history or audit log.
+
+You want proof the customer will accept that a separate reviewer approved an exact, frozen version.
+
+An APPROVED column with typed initials won't pass. Any of the 12 authors can type a reviewer's initials, edit the row or change the file afterwards, and nothing records who actually did it or when.
+
+I recommend keeping the shared folder for drafting and adding one locked "Released" folder next to it:
+- Only the three reviewers can write to it; authors can only read it.
+- To approve, a reviewer copies the exact version there under their own login, which makes it a frozen copy, not a link.
+- The platform's own audit log records who approved and when.
+- A seven-year retention setting on that folder stops anyone deleting or overwriting the copies.
+
+This is permissions and settings on what you already run, so it can be in place this week. Whether it works depends on your platform supporting per-folder permissions, audit logging and retention. Which one is the folder on (SharePoint, Google Drive, Dropbox, something else)?

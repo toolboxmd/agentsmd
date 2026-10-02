@@ -15,7 +15,8 @@ Verdicts, computed here:
 - control: answers_correctly and no record label anywhere (regex or judge quote).
 A and B wrong decision: target LARGER; target-larger SMALL or LARGER lacking capabilities.
 
-Usage: grade_wide.py RUN_DIR [grade|summary]
+Usage: grade_wide.py RUN_DIR [grade|summary] [AB_DIR:HARNESS,...]
+  AB_DIR:HARNESS,...: take arms A and B for those harnesses from an earlier run dir (unchanged arms).
 """
 import concurrent.futures as cf, json, random, sys
 from collections import defaultdict
@@ -97,9 +98,18 @@ def grade(base, meta_path):
     print(f"graded {meta['run_id']}", flush=True)
 
 
-def summary(base):
+def summary(base, reuse=None):
     rows = [json.loads(p.read_text()) for p in sorted((base / "grades").glob("*.json"))]
     metas = [json.loads(p.read_text()) for p in sorted((base / "outputs").glob("*.meta.json"))]
+    reused = set()
+    if reuse:
+        ab_dir, hosts = reuse.split(":", 1)
+        reused = set(hosts.split(","))
+        pick = lambda x: x["arm"] in "AB" and x["host"] in reused
+        rows = [r for r in rows if not pick(r)] + [json.loads(p.read_text()) for p in
+                sorted((Path(ab_dir) / "grades").glob("*.json")) if pick(json.loads(p.read_text()))]
+        metas = [m for m in metas if not pick(m)] + [json.loads(p.read_text()) for p in
+                 sorted((Path(ab_dir) / "outputs").glob("*.meta.json")) if pick(json.loads(p.read_text()))]
     cells = defaultdict(lambda: defaultdict(int))
     for r in rows:
         c = cells[(r["scenario"], r["host"], r["arm"])]
@@ -127,7 +137,8 @@ def summary(base):
             total += 1
             if not ok:
                 failing.append((s["id"], h))
-            ab = (lambda x: f"{x['wrong']}/{x['valid']}" + (f" ({x['NONE']} NONE)" if x["NONE"] else "")) \
+            tag = " (reused)" if h in reused else ""
+            ab = (lambda x: f"{x['wrong']}/{x['valid']}" + (f" ({x['NONE']} NONE)" if x["NONE"] else "") + tag) \
                 if s["kind"] != "control" else (lambda x: "n/a")
             print(f"| {s['id']} | {s['kind']} | {h} | {c['pass']}/{c['valid']} | {ab(a)} | {ab(b)} | {inv} "
                   f"| {'PASS' if ok else 'FAIL'} |")
@@ -150,7 +161,7 @@ def main():
         random.shuffle(metas)
         with cf.ThreadPoolExecutor(10) as pool:
             list(pool.map(lambda p: grade(base, p), metas))
-    summary(base)
+    summary(base, sys.argv[3] if len(sys.argv) > 3 else None)
 
 
 if __name__ == "__main__":

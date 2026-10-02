@@ -1,0 +1,6 @@
+Requirements and who asked: Owner needs due-today cakes prepared before pickup; you asked for Odoo sales, inventory and manufacturing synced to the counter.
+Deleted: Odoo rollout and sync for this miss.
+Bottleneck: Due-today orders wait while later orders get prepared first.
+Checked myself: You told me payments and stock reconcile, the list is readable at the counter, and today cakes were unmade while next-month orders were made.
+You are trying to make sure no due-today pickup is missed.
+I recommend sorting the shared list by pickup date and working top down from today, and not proceeding with Odoo for this because it adds sync to maintain without fixing order priority.

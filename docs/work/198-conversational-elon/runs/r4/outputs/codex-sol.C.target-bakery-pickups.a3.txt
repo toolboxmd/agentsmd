@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup; you requested Odoo sales, inventory and manufacturing synchronization.
+**Deleted:** The assumption that new software is necessary to prevent missed pickups.
+**Bottleneck:** Preparation is happening out of pickup-date order despite staff having access to the shared list.
+**Checked myself:** From your account, payments and stock reconcile correctly, and next month’s cakes were prepared while today’s remained unmade; the reason staff chose that sequence is unknown.
+
+Your immediate goal is today’s pickups. I recommend using the existing list: put today’s outstanding orders first, assign each to a named person, confirm its pickup time, and have someone check that each cake is ready before that time.
+
+I would defer the module rollout and use next week’s partner session to examine how staff choose their next cake and where that choice went wrong. Establish and verify preparation by pickup deadline first; scope any software work around a demonstrated gap that the shared list cannot handle.

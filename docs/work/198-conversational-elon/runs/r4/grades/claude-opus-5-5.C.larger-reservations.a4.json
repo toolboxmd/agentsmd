@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends moving reservations now into a shared Postgres table with an exclusion constraint on item identifier plus date range, so the database rejects the second overlapping save even when two agents submit at the same instant. Agents would enter bookings through a simple form, and the spreadsheet would stay as a read-only view. It rejects red formatting as the safeguard. It treats colours this week only as a stopgap the owner must knowingly accept. Unmet needs: the form and hosting, and whether this can ship this week, which is unknown until the agent sees the current setup.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. You want to keep the spreadsheet and ship something this week.",
+  "Deleted": "A full booking app, and any \"check for overlap, then save\" logic in app or script code, because two simultaneous submits can both pass the check.",
+  "Bottleneck": "An atomic overlap check at the moment of saving. A spreadsheet cannot do this; both agents' rows just land.",
+  "Checked myself": "Only what you told me: six agents in two offices, one identifier per item, last week's double booking, and the owner's rule. I have not seen the spreadsheet or which platform it runs on."
+ },
+ "record_before_recommendation": true,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The database recommendation is sound, but the Deleted line removes a full app and check-then-save code rather than the spreadsheet colours and manual checks, which are only rejected later in the body.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,6 @@
+Requirements and who asked: User asked for accurate monthly regional net sales for the board; without it the board misstates results; peer stack and budget cited by user as means, not as board need.
+Deleted: Airbyte, Snowflake, dbt, Power BI weekly build.
+Bottleneck: Manual summing of one local Excel export.
+Checked myself: You told me one local table with region, date, signed net amount including refunds, and it fits on your computer.
+You are trying to achieve a correct monthly regional board report without hand calculation.
+I recommend one Excel PivotTable with region rows, month columns, and sum of net amount because it removes the bottleneck with nothing new to run or maintain. I reject the four tool pipeline for this report because it adds cost, hosting and failure points without changing the result.

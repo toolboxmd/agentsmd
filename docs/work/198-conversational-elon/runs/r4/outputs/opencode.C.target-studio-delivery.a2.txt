@@ -1,0 +1,7 @@
+Requirements and who asked: Client requires images in supplied exact code order, you report final JPEGs in one folder with filenames starting with code, and you deliver a contact-sheet PDF
+Deleted: AI tagging, semantic search, cloud review portal - no stated order matching or PDF requirement needs them
+Bottleneck: One hour manual thumbnail drag-sort per delivery
+Checked myself: You told me the code list, filename prefix rule, single folder, and client order requirement
+
+You want to ship the JPEGs in the client code order plus the contact sheet without manual sorting.
+I recommend a small local script that reads the ordered list, matches filename prefixes, and writes the ordered set plus PDF, so do not buy or build the DAM portal this week.

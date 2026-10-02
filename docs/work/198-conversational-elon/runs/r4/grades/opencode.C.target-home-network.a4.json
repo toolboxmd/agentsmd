@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The action now is to swap in a known-good cable routed outside the tight grommet, then test calls at the desk. The user should report whether drops continue before any budget is spent. The reply recommends no UniFi, managed-switch or Grafana work now. It does not set a condition for revisiting that stack. It also calls the fault 'isolated to one cable path', which is stated more firmly than the evidence supports.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "dependable calls at that desk, requested by you; future-proof UniFi plus Grafana build, prompted by home-network group",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard as a fix for the drops",
+  "Bottleneck": "only the wired desk drops while two other devices on the same router stay connected",
+  "Checked myself": "your report only of Ethernet at desk, old cable through tight grommet, no cable swap tried yet"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded cable-swap test comes before any spending, and all four record lines appear before the recommendation; the only flaw is calling the cable fault isolated when it is only suspected.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-home-network.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

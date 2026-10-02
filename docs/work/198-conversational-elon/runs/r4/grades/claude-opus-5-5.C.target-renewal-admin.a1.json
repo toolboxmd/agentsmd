@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply has the user add one all-day event per contract to their existing phone calendar each year. Each event falls 14 days before that contract's notice deadline, and its title and notes cover the deadline and how to give notice. It suggests no extra tools and says to keep the budget. One small gap: the reply says nothing about checking the calendar's notification settings.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You: decide on each renewal two weeks before its notice deadline. The dates arrive once a year on one statement and stay fixed. Nothing cancels or pays automatically. You check your phone calendar daily.",
+  "Deleted": "n8n, the Gmail agent, the vector database, and the Telegram bot. The dates are known once a year and never change, so nothing needs to watch email, search documents, or send messages.",
+  "Bottleneck": "Entering the dates once when the statement arrives. After that, nothing is waiting on any tool.",
+  "Checked myself": "Only what you told me. I have not seen the statement or your calendar."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines appear before the recommendation and are specific to this decision; the reply names and drops the whole n8n, Gmail agent, vector database and Telegram setup, and recommends calendar events only.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-renewal-admin.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

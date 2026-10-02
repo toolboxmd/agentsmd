@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need changes to stop waiting when the lead is absent; the squads/chapters model, Jira Align, and quarterly workshops came from peer adoption, not from an observed failure.
+**Deleted:** Spotify squads and chapters, Jira Align, quarterly planning workshops, and any new tooling spend.
+**Bottleneck:** Review approval. The last six changes each coded in under a day, then waited three days because the lead was the sole reviewer and was away.
+**Checked myself:** Only what you told me: the six changes, the single-reviewer pattern, the lead's absence, and two other engineers qualified and authorized to approve.
+
+Goal: changes get approved within a day even when the lead is out.
+
+Recommendation: starting this week, assign the lead plus the two other qualified engineers as reviewers on every change, and let any one of the three approve, using your existing tracker and repo review settings. That costs nothing and fixes the measured three-day wait. A reorg, Jira Align, or workshops would not fix it, because coding and planning are not where the work is waiting.

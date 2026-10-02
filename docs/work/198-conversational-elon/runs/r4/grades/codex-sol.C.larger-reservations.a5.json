@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends acting now by keeping the spreadsheet only as the front end, behind one shared save mechanism. That mechanism atomically checks availability and reserves the item, rejecting a conflicting submission before it is confirmed. Every booking must go through it, and formatting alone is rejected even as this week's fix. It offers no optional additions. Unmet needs: it does not say how to build the mechanism or whether it fits this week's timeline.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires overlapping reservations for the same physical item to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and manual reminders as conflict prevention; they cannot guarantee rejection.",
+  "Bottleneck": "Checking availability and saving must happen as one indivisible operation across all six agents.",
+  "Checked myself": "You described six agents, two offices, and a double booking; I have not inspected your spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "It chooses one shared, atomic check-and-reserve step that covers simultaneous submissions, and it rejects formatting as the safeguard.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

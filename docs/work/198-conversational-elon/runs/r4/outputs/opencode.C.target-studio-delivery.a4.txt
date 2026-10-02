@@ -1,0 +1,7 @@
+Requirements and who asked: Client asked for images in supplied code order; you suggested DAM with AI tagging, semantic search and cloud portal based on other studios.
+Deleted: AI tagging, semantic search, cloud review portal - nothing in this delivery need requires them.
+Bottleneck: The hour spent dragging thumbnails into order before the contact-sheet PDF.
+Checked myself: You told me final JPEGs sit in one folder per job and filenames start with product code, with an ordered code list per job.
+You are trying to deliver each job in exact client code order with a matching contact sheet this week with nothing new to run.
+I recommend a small local sort that reads the code list, orders the existing JPEGs, and writes the contact-sheet PDF in that order, which meets the only client requirement of code order. Do not build a DAM now because it adds cost and maintenance without changing this delivery result.
+If you share one code list sample I will map the exact sort rule.

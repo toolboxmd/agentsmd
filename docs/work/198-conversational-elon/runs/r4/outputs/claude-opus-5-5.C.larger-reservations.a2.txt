@@ -1,0 +1,10 @@
+**Requirements and who asked:** the owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. Six agents work in two offices, and each item has one identifier. Your constraint is shipping something this week.
+**Deleted:** the reminder to check colours, and any new database or booking product.
+**Bottleneck:** the spreadsheet saves every row without checking it, so two agents can both save the same item for overlapping dates.
+**Checked myself:** only what you told me. I haven't seen the sheet, so I don't know whether it is Google Sheets or Excel.
+
+Red formatting alone won't meet the owner's requirement. It colours a clash after both bookings are already saved, and it depends on someone noticing. That is how last week's double booking got through.
+
+You're trying to stop double bookings without replacing the spreadsheet. If it's Google Sheets, I recommend keeping it as the record but routing new bookings through a small Apps Script booking form. The script would take a lock so simultaneous submits run one at a time, check that item ID for overlapping dates, and either add the row or reject it with the conflicting booking shown. The sheet itself would then be protected so agents can't type bookings in directly. That is one short script with no new service to run, and it can realistically ship this week. You can keep the red highlighting as a visual aid on top.
+
+Which spreadsheet are you on? If it's Excel, the right approach is different, and I'll adjust the recommendation.

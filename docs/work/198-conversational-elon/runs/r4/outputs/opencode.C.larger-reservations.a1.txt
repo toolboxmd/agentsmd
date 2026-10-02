@@ -1,0 +1,8 @@
+Requirements and who asked: Owner requires conflicting reservation rejected at save time even with simultaneous submits from six agents in two offices for one item identifier.
+Deleted: Red conditional formatting and reminder to check, because a colour does not block a save.
+Bottleneck: Two agents can both see no red at the same moment and both save, which already promised the same item to two customers last week.
+Checked myself: You reported that double promise and the six agent concurrent setup, so visual check cannot meet the save time rule.
+
+What you are trying to achieve is no double promise for the same item on overlapping dates without adding extra work for agents.
+
+I recommend against shipping only colours this week. It will fail the owner requirement and will allow another double booking. Ship one shared bookings table with an atomic overlap check that rejects the second save, and make the spreadsheet a read only export from it.

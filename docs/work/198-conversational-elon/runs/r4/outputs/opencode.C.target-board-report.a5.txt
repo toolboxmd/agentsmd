@@ -1,0 +1,7 @@
+Requirements and who asked: Monthly board-ready net sales by region including refunds (user); pipeline this week on Airbyte plus Snowflake plus dbt plus Power BI (user, peer-driven)
+Deleted: Airbyte, Snowflake, dbt, Power BI - no new source, volume, or latency need defends them for one local table
+Bottleneck: Hand-built monthly sums, not ingestion or warehouse
+Checked myself: One local Excel table with region, date, signed amount; fits on your computer; sums built by hand (only what you told me)
+What you are trying to achieve is a correct monthly regional net total for the board with less manual work.
+I recommend one local pivot on region by month summing the signed amount, checked against the total sum, and reused monthly.
+I reject the four-tool pipeline for this report because it adds hosting, cost and upkeep without changing the result.

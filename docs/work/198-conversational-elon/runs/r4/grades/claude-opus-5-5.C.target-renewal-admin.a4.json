@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do it now: when the yearly statement arrives, add one phone-calendar event per contract, set 14 days before its notice deadline, with an alert, and put the contract name and deadline in the title. Optional: the agent will turn the statement's dates into one .ics file to import. The whole n8n/Gmail-agent/vector-database/Telegram stack is dropped. Unmet need: nobody has confirmed that the phone's notifications work.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "you need a reminder for each renewal two weeks before its notice deadline, from the one yearly statement, with no automatic cancellation or payments.",
+  "Deleted": "n8n, the Gmail agent, the vector database, and the Telegram bot. The dates arrive once a year and stay fixed, so there is nothing to watch, search, or route.",
+  "Bottleneck": "getting each year's dates into a place you already look every day.",
+  "Checked myself": "nothing observed; this rests on what you told me about the statement, your deadlines, and your daily phone calendar use."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and are specific to this case, the stack is named and dropped, and the .ics offer is a one-time conversion, not an ongoing pipeline.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-renewal-admin.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends dropping Airflow/Kubernetes for now and running the existing Python command as a single cron job or systemd timer on the always-on Linux machine, with logging and one retry before 08:00. It offers to supply the exact timer and check command once the user gives the distro and script path. It adds no new platform, and no needs are left unmet beyond confirming the distro and path.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is the right size, but the reply has none of the four labeled record lines, so every record-based predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.B.target-night-export.a3",
+ "host": "opencode",
+ "arm": "B",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

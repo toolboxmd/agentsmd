@@ -1,0 +1,5 @@
+You are trying to ship this week's delivery with the least change while meeting the signed controls.
+
+I recommend not shipping the shared folder plus APPROVED initials column and naming convention. It keeps approved files editable by 12 authors, lets anyone type anyone's initials with no reliable identity or time, and does not block self approval, so later edits can overwrite what was approved and we would fail the seven year retention and audit.
+
+The smallest option that passes is to keep the current folder for drafting only, and add a separate reviewer only release location where a reviewer saves a locked copy with version, reviewer identity, timestamp, and author check for each release. Do you want me to lay out those steps for this week?

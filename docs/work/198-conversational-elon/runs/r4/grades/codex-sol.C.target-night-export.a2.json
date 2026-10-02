@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Run the existing Python command now as a systemd service with a timer (Persistent=true) on the always-on Linux machine, scheduled comfortably before 08:00, and use exit status and service logs to verify it. It adds no orchestration stack now or later and lists no unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want reliable nightly reports by 08:00 and something shippable this week; exact start time is flexible.",
+  "Deleted": "Airflow, Kubernetes, and separate workers, scheduler, and deployment.",
+  "Bottleneck": "The laptop is often asleep overnight; successful exports already produce correct reports.",
+  "Checked myself": "Only the facts you supplied; no files, commands, or live state inspected."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and are specific, and the reply picks a bounded systemd timer on the existing server with no orchestration stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

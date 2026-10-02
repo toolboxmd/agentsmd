@@ -1,0 +1,8 @@
+Requirements and who asked: Customer contract requires immutable approved version with approver identity and time kept 7 years, no self approval, and later edits must not change the approved copy; you asked to ship this week with the editable shared folder plus APPROVED initials and naming convention.
+Deleted: Editable folder as release proof, typed initials as identity and time, naming convention as version control.
+Bottleneck: Anyone who can edit can overwrite or self approve a release, so we cannot prove what was approved.
+Checked myself: You stated authors can edit the current shared folder, with 12 authors and 3 reviewers releasing weekly, and your preferred plan is initials plus naming.
+
+Goal: Ship this week with proof of what was approved, by whom and when.
+
+I cannot approve the initials plan because it fails all four contract controls and risks audit failure and contract loss. I recommend one option: keep the folder for drafts only, and release by having only the 3 reviewers publish to a separate read only library with version history and 7 year retention, where authors have no edit or approve rights. Confirm you want that split and who owns the release library, and I will set out the minimal steps.

@@ -1,0 +1,8 @@
+**Requirements and who asked:** You require a count within one second that reflects committed invoices at request time; you proposed CQRS and Redis.
+**Deleted:** Kafka, CQRS projection, and Redis for this count. Approved budget and peer adoption do not establish a need.
+**Bottleneck:** The endpoint retrieves and constructs rows solely to count them; database query cost remains unknown.
+**Checked myself:** Only the supplied behavior and requirements; no query plan or timing evidence.
+
+You want a fast, current count. I recommend PostgreSQL `COUNT(*)` with the existing unpaid filter, adding an index only if the query plan supports it, and verifying end-to-end latency under representative load before claiming the one-second target.
+
+Ship this within the existing application and PostgreSQL, with no new services or topics. An asynchronous projection can lag committed invoices, so it cannot guarantee your freshness requirement.

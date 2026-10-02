@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the shared folder for drafts and add a Released folder. Only the three reviewers can add files there; authors can read but not edit. Reviewers save each approved document there as a PDF. The platform's audit log records who added each file and when, and a 7-year retention policy on the folder stops files being deleted or replaced. No optional additions are offered. Unmet needs: the setup assumes no reviewer approves a document they wrote, and that the platform supports retention policies and audit logs; the reply asks which platform it is and whether reviewers also write documents. It does not make sure the audit log itself is kept for 7 years.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The customer contract requires each released document to keep its exact approved version, approver identity, and approval time for 7 years, bars authors from approving their own documents, and bars later edits from changing the approved version. You asked to ship this week and keep the folder.",
+  "Deleted": "The typed-initials APPROVED column and naming convention as controls, and any new document or workflow system.",
+  "Bottleneck": "Authors can edit everything in the one shared folder, so no approved version stays fixed.",
+  "Checked myself": "Only what you told me. I have not seen the folder's platform, permissions, or retention settings."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": false,
+ "note": "The choice is an enforceable setup of existing tools, but the approver and time record lives in an audit log that is never kept for the 7-year period, and the non-author rule holds only if reviewers don't write documents.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "claude-opus-5-5.C.larger-approvals.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

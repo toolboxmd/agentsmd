@@ -1,0 +1,16 @@
+**Requirements and who asked:** The customer contract requires each released document to keep its exact approved version, approver identity, and approval time for 7 years, bars authors from approving their own documents, and bars later edits from changing the approved version. You asked to ship this week and keep the folder.
+**Deleted:** The typed-initials APPROVED column and naming convention as controls, and any new document or workflow system.
+**Bottleneck:** Authors can edit everything in the one shared folder, so no approved version stays fixed.
+**Checked myself:** Only what you told me. I have not seen the folder's platform, permissions, or retention settings.
+
+Goal: pass the customer's release controls this week with the least new setup.
+
+I recommend against the initials column. It fails four of the five contract terms: anyone can type anyone's initials, nothing stops an author from approving their own document, the date is whatever someone types, and authors can still edit the file after "approval."
+
+Instead, keep your shared folder for drafts and add one Released folder:
+- Only the three reviewers can add files there. Authors can read it but not edit it.
+- When a reviewer approves a document, they save it there as a PDF. That locks the approved version.
+- The platform's own audit log records who added the file and when, tied to their login, which covers approver identity and approval time.
+- Set a 7-year retention policy on that folder so files cannot be deleted or replaced.
+
+This works only if no reviewer is also an author of documents they approve, and only if your platform supports retention policies and audit logs. Which platform is the folder on (SharePoint/OneDrive, Google Drive, Dropbox, or something else), and do any reviewers also write documents?

@@ -1,0 +1,5 @@
+You want a reliable nudge two weeks before each fixed notice deadline so you can decide in time.
+
+I recommend skipping n8n, the Gmail agent, vector database and Telegram bot entirely, because your dates are fixed once a year, you already check your phone calendar daily, and that stack only adds cost, upkeep and risk of unwanted actions with no benefit here.
+
+The smallest option that works is to do it once in January: create one phone calendar event per contract on notice deadline minus 14 days, with renewal date and how to give notice in the notes. If you paste this year's statement I can format that list for you.

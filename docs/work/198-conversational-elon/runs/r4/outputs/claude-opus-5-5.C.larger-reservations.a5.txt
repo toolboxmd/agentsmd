@@ -1,0 +1,10 @@
+**Requirements and who asked:** the owner requires a conflicting reservation to be rejected at save time, even when two agents submit at the same moment. You want to keep the spreadsheet and ship this week.
+**Deleted:** red conditional formatting with a reminder to check it. It only marks a clash after both bookings are saved, so last week's double promise could still happen.
+**Bottleneck:** six agents in two offices write straight into the same rows, and nothing checks or serialises those writes.
+**Checked myself:** only what you've told me. I haven't seen the sheet, so I don't know whether it's Google Sheets or Excel.
+
+You're trying to stop two customers ever being promised the same item for overlapping dates. My recommendation is to keep the spreadsheet as the record and the view, but stop agents typing bookings directly into it.
+
+Instead, agents would submit through a small booking form backed by a script. The script takes a lock, checks the item's existing dates for overlap, and either saves the booking or rejects it with a message. Because only one save can hold the lock, two simultaneous submissions can't both get in. Protecting the booking range keeps direct edits out. In Google Sheets this is an Apps Script web app using `LockService`, with no new service to run, and it's realistic for this week.
+
+Which spreadsheet are you on? If it's Excel, the fit is different and I'd check that before committing to a date.

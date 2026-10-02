@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: swap the row retrieval for a PostgreSQL COUNT(*) query that uses the same filter, then measure it under representative load. Nothing optional is added: no new services, topics, Kafka, CQRS or Redis. Still unconfirmed: whether the one-second target is actually met, since database performance and indexing haven't been checked.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count within one second, reflecting invoices committed at request time.",
+  "Deleted": "Kafka, CQRS projection, and Redis for this count; approved budget and peer adoption do not establish a need.",
+  "Bottleneck": "The endpoint retrieves rows and constructs objects only to count them.",
+  "Checked myself": "Only the supplied facts; database performance and indexing remain unverified."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply has all four record lines before the recommendation, picks the small aggregate-query fix, keeps request-time freshness, and explicitly rejects the Kafka/CQRS/Redis stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-invoice-count.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

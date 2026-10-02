@@ -1,0 +1,15 @@
+Hold off on the UniFi gateway / managed switches / Grafana for this issue — it won't fix it.
+
+What you described isolates it away from the router/WAN:
+- 2 other devices on the same router stay connected during a dropout
+- only the desk computer on Ethernet drops
+
+That's a desk-port / cable / NIC problem, not a gateway problem. The old cable through a tight grommet is the prime suspect.
+
+Do this first, before you spend the budget:
+
+1. Swap in a different, known-good cable temporarily — even if you just run it across the floor, bypassing the grommet — and use it for calls for a day.
+2. If drops stop, replace that run permanently and relieve the pinch point.
+3. If drops continue, try a different port on the router and check link speed / reseat connectors on that PC.
+
+A new gateway and dashboard can be nice to have later, but they won't future-proof a damaged copper run. Fix the physical layer first.

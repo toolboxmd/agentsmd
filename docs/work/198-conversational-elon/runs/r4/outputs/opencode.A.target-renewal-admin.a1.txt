@@ -1,0 +1,16 @@
+For this case, don't build that stack — it adds cost, maintenance, and failure modes for no benefit.
+
+Your problem is: once a year, copy fixed dates, then get reminded once per contract 2 weeks before its notice deadline. You already check your phone calendar daily, and you don't want auto-actions.
+
+Do this instead:
+
+1. In January when the statement arrives, for each contract create one calendar event on `notice deadline - 14 days`: e.g. `Decide: Home Insurance - notice by Mar 15, renews Apr 15`
+2. Put the details in the event notes and set the phone alert you normally use.
+3. Keep the statement as backup.
+
+You don't need:
+- Gmail agent: it's one document to transcribe per year, manual is faster and more reliable
+- Vector DB: it's a small structured list, not semantic search
+- n8n / Telegram bot: it would just duplicate your calendar in a place you check less often
+
+Save the budget — this is a 15-minute calendar task once a year.

@@ -1,0 +1,24 @@
+**Requirements and who asked:** The signed customer contract requires, for seven years, the exact approved version, the approver's identity and the approval time; no self-approval; later edits must not alter the approved copy. You need this before this week's delivery.
+**Deleted:** Typed initials in an APPROVED column. Any author can type any initials, and authors can edit the folder, so it fails no-self-approval, approver identity and approval time. A naming convention does not stop edits either.
+**Bottleneck:** Write access. Authors can change anything in the shared folder, including what was approved.
+**Checked myself:** Only what you've told me. I haven't seen which platform the folder is on or what retention and permission features it has.
+
+You need releases the customer can trust: an approved copy nobody can change, and proof of who approved it and when.
+
+I don't recommend shipping the initials column. It would claim controls the contract requires but doesn't enforce, which is a worse position with the customer than admitting the gap.
+
+**Recommendation:** Keep your current folder for drafts and add one "Released" folder:
+- Only the three reviewers can write to it. Authors can only read it.
+- To approve, a reviewer saves the exact approved file there, ideally as a PDF.
+- A seven-year retention lock prevents editing or deleting anything in it.
+- The platform's own audit log records who added each file and when. Nobody types that.
+
+Checked against each requirement:
+- **Exact version:** the locked copy.
+- **Approver identity and time:** the platform's audit log.
+- **No self-approval:** authors cannot write to the folder.
+- **Later edits don't change it:** drafts stay in the other folder.
+
+One gap: if a reviewer also writes documents, a different reviewer must release those.
+
+Which platform is the folder on (SharePoint, Google Drive, Dropbox, something else)? Whether it supports a retention lock and an audit log decides whether this can be ready this week.

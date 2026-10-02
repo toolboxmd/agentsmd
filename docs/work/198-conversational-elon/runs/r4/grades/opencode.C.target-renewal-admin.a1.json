@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply says to read each notice deadline from the yearly statement once, subtract 14 days and add each date to the phone calendar as an event with an alert. It drops n8n, the Gmail agent, the vector DB and the Telegram bot entirely and suggests nothing optional. It doesn't cover refreshing the events from next year's statement or checking that notifications are turned on.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for a manual decision two weeks before each fixed notice date, using your phone calendar, with no auto cancellation or payment.",
+  "Deleted": "n8n, Gmail agent, vector database, Telegram bot because fixed yearly dates need no workflow, agent, search, or extra channel.",
+  "Bottleneck": "Turning the January statement into calendar reminders once, not moving data between tools.",
+  "Checked myself": "You told me dates stay fixed for the year and you use your phone calendar daily."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives all four record lines first, names and drops every part of the proposed stack, and grounds its self-check in facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-renewal-admin.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

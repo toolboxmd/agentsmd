@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends a short local script now. It would read the client's code list, put the files in that order and build the contact-sheet PDF. It skips the DAM, AI tagging, semantic search and portal for now, and offers to start with the current job folder. It adds nothing optional. The reply never shows the script working.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The small, code-ordered script is the right recommendation, but the reply has none of the four required labelled lines, so every label-based check fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.B.target-studio-delivery.a1",
+ "host": "opencode",
+ "arm": "B",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

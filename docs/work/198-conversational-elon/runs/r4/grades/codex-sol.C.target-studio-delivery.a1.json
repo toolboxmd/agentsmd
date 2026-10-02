@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends building one local contact-sheet generator now. It reads the client's ordered code list and the JPEG folder, matches exact product codes to filename prefixes, places the images in the client's order, writes the PDF, and flags missing or unmatched codes. It also says to check the generator on a completed job before using it for a delivery. No optional additions are offered, and the DAM is rejected as having no demonstrated need.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires images in the supplied exact product-code order.",
+  "Deleted": "DAM, AI tagging, semantic search and a cloud portal; none addresses the stated delivery bottleneck.",
+  "Bottleneck": "You spend an hour manually arranging thumbnails before generating each PDF.",
+  "Checked myself": "Only the facts you supplied: one JPEG folder per job, code-prefixed filenames and an ordered client list."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives a bounded local fix that follows the client's order, rejects the DAM stack by name, and fills all four record lines with grounded content before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-studio-delivery.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

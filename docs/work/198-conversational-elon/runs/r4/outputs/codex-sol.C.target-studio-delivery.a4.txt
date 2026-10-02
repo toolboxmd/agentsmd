@@ -1,0 +1,8 @@
+**Requirements and who asked:** The client requires images in its exact product-code order; you want professional delivery this week.
+**Deleted:** DAM, AI tagging, semantic search, and a cloud review portal from this week's scope.
+**Bottleneck:** An hour of manual thumbnail ordering before each PDF.
+**Checked myself:** You told me each job has one JPEG folder, filenames start with product codes, and the client supplies an ordered code list; I have not inspected the files.
+
+You want an accurate, client-ordered contact sheet with minimal delivery effort, so I recommend one local script that takes the code list and JPEG folder, matches exact codes, and generates the PDF in the supplied order.
+
+It should flag missing codes, unlisted images, and ambiguous matches before export, with a quick visual check of the finished PDF before sending; the DAM features do not address the ordering bottleneck you described.

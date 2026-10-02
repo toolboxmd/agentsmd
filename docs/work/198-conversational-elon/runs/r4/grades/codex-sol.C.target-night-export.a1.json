@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Run the existing Python command now as a systemd service with a timer on the always-on Linux machine. The timer starts at 07:00 with Persistent=true, and deployment is the script, its dependencies and two unit files. The user should check one manual run and one scheduled run in the journal. Airflow, Kubernetes and separate workers are left out now; orchestration is mentioned only as a future option if real dependencies appear.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want this shipped this week, ready by 08:00, and easy to extend later.",
+  "Deleted": "Airflow, Kubernetes, and separate workers for this single export.",
+  "Bottleneck": "The laptop is often asleep when the export needs to run.",
+  "Checked myself": "From your description: three minutes per run, correct successful output, safe reruns, no downstream jobs, and an existing always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a small systemd timer fix; all four record lines come before the recommendation and are specific, and the Checked myself line uses only facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

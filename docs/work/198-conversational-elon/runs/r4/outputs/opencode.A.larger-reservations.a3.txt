@@ -1,0 +1,9 @@
+I don't recommend shipping that — it won't meet the owner's requirement.
+
+Red formatting + a reminder doesn't reject anything at save time. It's check-after-write, and with 6 agents in 2 offices editing concurrently you still have a race: both agents can read no-overlap, then both save, and you get the same double-booking as last week.
+
+To guarantee one identifier can't be double-booked for overlapping dates, you need the check and the save to be atomic in one central store:
+
+`reservations(item_id, start_date, end_date)` with a transaction that rejects on overlap, e.g. Postgres exclusion constraint, returning an error to the second submitter.
+
+Recommendation: keep the spreadsheet as a view/export if you want, but don't keep it as the system of record. Ship a minimal central booking API/DB this week that is the only path that can create a reservation, and have it enforce no-overlap on insert.

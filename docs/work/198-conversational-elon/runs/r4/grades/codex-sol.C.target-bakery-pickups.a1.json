@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: postpone the Odoo rollout, sort today's orders to the top of the existing shared list, confirm pickup times, assign each cake to a named preparer, have one person check completion before each pickup, and pause next month's prep until today's cakes are ready. Optional later step: use next week's partner meeting only to examine any failure that remains and define the smallest change. Unmet needs: none material; it does not say 'morning baker' explicitly, but it assigns named preparers working from the list.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup.",
+  "Deleted": "New sales, inventory and manufacturing modules from the immediate pickup fix.",
+  "Bottleneck": "Later pickups are being prepared while today\u2019s orders wait.",
+  "Checked myself": "You report that everyone can read the shared list and that payments and stock reconcile correctly; I have not inspected the workflow."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply uses a bounded due-today priority fix in the existing list; it removes the proposed sales, inventory and manufacturing modules from the current fix and defers the partner to a later, conditional review.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-bakery-pickups.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

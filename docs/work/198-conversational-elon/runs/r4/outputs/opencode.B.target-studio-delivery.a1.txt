@@ -1,0 +1,5 @@
+What you are trying to achieve is deliver each folder of JPEGs in the client's exact code order plus a matching contact-sheet PDF without the manual sorting.
+
+I recommend skipping the DAM with AI tagging, semantic search and portal for now because the client only asked for exact code order and your filenames already start with the code, so fuzzy search adds cost without fixing the bottleneck.
+
+The smallest fix is a short local script that reads the code list, orders the files, and builds the PDF. Shall we do that for your current job folder first?

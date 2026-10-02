@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends a filtered COUNT(*) in PostgreSQL, backed by an index on the unpaid predicate, in place of building invoice objects in the app. It rejects Kafka, the CQRS projection and Redis because an async projection can't reflect invoices committed at request time. No optional additions are offered, and no requirement is left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "sub-second unpaid-invoice count reflecting committed data at request time (user need); Kafka/CQRS/Redis (user request, not a functional requirement)",
+  "Deleted": "Kafka topics/cluster use, new CQRS projection service, Redis for this count",
+  "Bottleneck": "endpoint fetches invoice rows and builds objects in app only to count them",
+  "Checked myself": "single app plus PostgreSQL returning only the count with no other reader, per brief; no code or live system checked in this single-turn review"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply fills in all four lines before recommending the in-database count, names and rejects the framed stack, and grounds its checks in the supplied facts while stating it inspected nothing.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-invoice-count.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

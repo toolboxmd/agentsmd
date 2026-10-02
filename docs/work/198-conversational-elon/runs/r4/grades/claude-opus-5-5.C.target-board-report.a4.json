@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends a PivotTable in the existing workbook, built on the export formatted as an Excel Table. It puts region in rows and date grouped by month in columns, and sums the signed net amount so refunds stay netted. The user refreshes it monthly. No optional additions are made now. The reply rejects the Airbyte/Snowflake/dbt/Power BI stack and would only revisit a bigger setup if a named future need appears. The user's 'future-proof' need is left open with a clarifying offer.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "monthly net sales by region for the board, with refunds netted in (you); \"future-proof\" (you, but no concrete failure or new need named yet).",
+  "Deleted": "Airbyte, Snowflake, dbt and Power BI. Peers adopting them is not a requirement, and one local Excel table that fits on your computer needs no ingestion, warehouse, transform layer or BI tool.",
+  "Bottleneck": "building the regional monthly sums by hand each month.",
+  "Checked myself": "only what you told me. I have not opened the workbook."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply chooses a bounded pivot-table fix, rejects the four-tool stack by name in Deleted, and only brings a bigger setup back under named conditions.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-board-report.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

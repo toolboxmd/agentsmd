@@ -1,0 +1,1 @@
+What you are trying to achieve is all cakes due today prepared before pickup. I recommend pausing the Odoo partner because new sales, inventory and manufacturing sync will not fix staff making next month's orders before today's. For today, sort the current counter list by pickup date and work only today's orders top to bottom until you confirm each is ready.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply rejects the Airbyte/Snowflake/dbt/Power BI stack for now. In its place it recommends a reusable Excel PivotTable or a small Python group-by on month and region over signed net amounts, so refunds stay negative. It also adds two checks (the total ties to the export, and no null region or date), a frozen input folder and one stable board table. The stack is deferred until there are multiple sources, data too large to run locally, or a need for daily refreshes. There are no present optional additions, and the reply has no labeled decision record.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes a sound, bounded SMALL recommendation, but none of the four required record labels appear, so all record predicates fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-board-report.a1",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

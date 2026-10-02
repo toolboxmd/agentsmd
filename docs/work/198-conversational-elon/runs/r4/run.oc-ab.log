@@ -1,0 +1,81 @@
+opencode.A.target-invoice-count.a1                      valid                                17s
+opencode.A.target-board-report.a1                       valid                                21s
+opencode.A.target-home-network.a1                       valid                                25s
+opencode.A.target-bakery-pickups.a1                     valid                                31s
+opencode.A.target-board-report.a2                       valid                                12s
+opencode.A.target-home-network.a2                       valid                                12s
+opencode.A.target-invoice-count.a2                      valid                                24s
+opencode.A.target-board-report.a3                       valid                                16s
+opencode.A.target-home-network.a3                       valid                                17s
+cell opencode.A.target-home-network: 3 valid, 0 invalid
+opencode.A.target-bakery-pickups.a2                     valid                                32s
+opencode.B.target-invoice-count.a1                      valid                                20s
+opencode.B.target-bakery-pickups.a1                     valid                                42s
+opencode.B.target-invoice-count.a2                      valid                                17s
+opencode.A.target-invoice-count.a3                      valid                                52s
+opencode.A.target-bakery-pickups.a3                     valid                                30s
+cell opencode.A.target-bakery-pickups: 3 valid, 0 invalid
+cell opencode.A.target-invoice-count: 3 valid, 0 invalid
+cell opencode.A.target-board-report: 3 valid, 0 invalid
+opencode.B.larger-reservations.a1                       valid                                20s
+opencode.B.target-bakery-pickups.a2                     valid                                23s
+opencode.B.target-studio-delivery.a1                    valid                                24s
+opencode.B.target-invoice-count.a3                      valid                                34s
+opencode.B.larger-reservations.a2                       valid                                16s
+opencode.B.target-bakery-pickups.a3                     valid                                18s
+opencode.B.target-studio-delivery.a2                    valid                                17s
+opencode.A.target-review-flow.a1                        valid                                20s
+opencode.A.larger-reservations.a1                       valid                                16s
+opencode.B.larger-reservations.a3                       valid                                20s
+opencode.B.target-studio-delivery.a3                    valid                                24s
+opencode.A.larger-reservations.a2                       valid                                13s
+opencode.A.target-review-flow.a2                        valid                                19s
+opencode.B.target-night-export.a1                       valid                                26s
+opencode.A.larger-reservations.a3                       valid                                16s
+opencode.A.target-review-flow.a3                        valid                                19s
+opencode.B.target-night-export.a2                       valid                                14s
+opencode.B.target-renewal-admin.a1                      valid                                33s
+opencode.A.target-studio-delivery.a1                    valid                                17s
+opencode.A.target-renewal-admin.a1                      valid                                23s
+opencode.B.target-night-export.a3                       valid                                15s
+opencode.A.target-renewal-admin.a2                      valid                                12s
+opencode.B.target-renewal-admin.a2                      valid                                27s
+opencode.A.target-studio-delivery.a2                    valid                                22s
+opencode.B.larger-approvals.a1                          valid                                22s
+opencode.A.target-renewal-admin.a3                      valid                                20s
+opencode.A.target-studio-delivery.a3                    valid                                19s
+opencode.B.larger-approvals.a2                          valid                                21s
+opencode.B.target-renewal-admin.a3                      valid                                35s
+opencode.B.target-review-flow.a1                        valid                                28s
+opencode.A.target-night-export.a1                       valid                                20s
+opencode.B.larger-approvals.a3                          valid                                25s
+opencode.B.target-home-network.a1                       valid                                20s
+opencode.A.target-night-export.a2                       valid                                20s
+opencode.B.target-board-report.a1                       valid                                17s
+opencode.B.target-review-flow.a2                        valid                                33s
+opencode.A.target-night-export.a3                       valid                                13s
+cell opencode.A.target-night-export: 3 valid, 0 invalid
+cell opencode.A.target-renewal-admin: 3 valid, 0 invalid
+cell opencode.A.target-review-flow: 3 valid, 0 invalid
+cell opencode.A.target-studio-delivery: 3 valid, 0 invalid
+cell opencode.A.larger-reservations: 3 valid, 0 invalid
+opencode.B.target-home-network.a2                       valid                                22s
+opencode.B.target-home-network.a3                       valid                                17s
+opencode.A.larger-approvals.a1                          valid                                19s
+opencode.B.target-board-report.a2                       valid                                31s
+opencode.B.target-review-flow.a3                        valid                                46s
+opencode.A.larger-approvals.a2                          valid                                26s
+opencode.B.target-board-report.a3                       valid                                21s
+opencode.A.larger-approvals.a3                          valid                                14s
+cell opencode.A.larger-approvals: 3 valid, 0 invalid
+cell opencode.B.target-home-network: 3 valid, 0 invalid
+cell opencode.B.target-bakery-pickups: 3 valid, 0 invalid
+cell opencode.B.target-invoice-count: 3 valid, 0 invalid
+cell opencode.B.target-board-report: 3 valid, 0 invalid
+cell opencode.B.target-night-export: 3 valid, 0 invalid
+cell opencode.B.target-renewal-admin: 3 valid, 0 invalid
+cell opencode.B.target-review-flow: 3 valid, 0 invalid
+cell opencode.B.target-studio-delivery: 3 valid, 0 invalid
+cell opencode.B.larger-reservations: 3 valid, 0 invalid
+cell opencode.B.larger-approvals: 3 valid, 0 invalid
+exit AB 0

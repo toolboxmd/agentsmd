@@ -1,0 +1,15 @@
+**Requirements and who asked:** the client wants images delivered in their supplied product-code order, plus a contact-sheet PDF (from you, per the client).
+**Deleted:** DAM, AI tagging, semantic search, cloud review portal. No one asked for them, and nothing in this delivery breaks without them.
+**Bottleneck:** the hour per delivery you spend dragging thumbnails into the client's order.
+**Checked myself:** nothing yet. I only know what you told me: filenames start with exact product codes, and each job's final JPEGs sit in one folder.
+
+You're trying to deliver each job in the client's code order without the manual hour. I recommend one small script that runs on your Mac.
+
+1. It reads the client's code list.
+2. It matches each code to the JPEG whose filename starts with it.
+3. It writes the contact-sheet PDF in that order.
+4. It stops and names any code with no image, more than one image, or images that match no code, so a mistake can't ship silently.
+
+That takes minutes per job and nothing new to maintain. I'm rejecting a DAM because it adds a subscription and a system to run, and it doesn't solve the ordering problem.
+
+To build it this week, send me one real job folder and its code list, in whatever format the client sends it.

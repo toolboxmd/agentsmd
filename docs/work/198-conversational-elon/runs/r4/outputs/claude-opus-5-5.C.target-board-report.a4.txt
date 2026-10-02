@@ -1,0 +1,10 @@
+**Requirements and who asked:** monthly net sales by region for the board, with refunds netted in (you); "future-proof" (you, but no concrete failure or new need named yet).
+**Deleted:** Airbyte, Snowflake, dbt and Power BI. Peers adopting them is not a requirement, and one local Excel table that fits on your computer needs no ingestion, warehouse, transform layer or BI tool.
+**Bottleneck:** building the regional monthly sums by hand each month.
+**Checked myself:** only what you told me. I have not opened the workbook.
+
+**Goal:** a correct monthly net-sales-by-region table for the board without hand summing.
+
+**Recommendation:** add a PivotTable in the same workbook, sourced from the export formatted as an Excel Table. Put region in rows, date in columns grouped by month (and year), and sum of net amount in values. Refunds are already negative, so the sum is net sales with no extra logic. Each month, paste the new export into the Table and click Refresh. That's a 15-minute setup this week, nothing new to run, pay for or maintain, and it removes the manual work. The four-tool stack would add licences, connectors, a warehouse and models to watch while producing the same few numbers, so I'd reject it.
+
+What would make a bigger setup worth revisiting: several data sources to combine, data outgrowing Excel, or many people needing live dashboards. If "future-proof" means one of those for you, tell me which and I'll size the answer to that.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Replace the in-memory count with a PostgreSQL COUNT(*) that keeps the endpoint's existing filters. Add an index only if measurements show it is needed, then verify the one-second target under representative load. The reply proposes no new services or topics. Request-time committed freshness is preserved and no requirement is left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count within one second, reflecting committed invoices at request time; you proposed Kafka, CQRS, and Redis.",
+  "Deleted": "Kafka topics, a CQRS projection, and Redis for this count: no other consumer needs them, and an asynchronous projection can lag committed invoices.",
+  "Bottleneck": "The endpoint fetches and constructs invoice objects just to count them; database query cost remains unmeasured.",
+  "Checked myself": "Only the facts you supplied; no code, query plan, or timings inspected."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded COUNT(*) recommendation that explicitly rejects Kafka, the CQRS projection and Redis, and the reply is honest that nothing was inspected.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-invoice-count.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

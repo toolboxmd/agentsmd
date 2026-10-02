@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends replacing the in-memory row and object counting with a filtered COUNT(*) in the existing Postgres database, backed by an index on the unpaid predicate. It adds no new infrastructure and keeps request-time committed-data freshness. Kafka, CQRS and Redis are rejected outright, not offered as options. It ends by asking the user to confirm. The one-second target is reasoned about but not verified.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Fast unpaid count reflecting committed invoices from portal need; Kafka/CQRS/Redis from you citing approved budget and peer practice",
+  "Deleted": "Kafka cluster, topics and services, CQRS projection, Redis for this count",
+  "Bottleneck": "Loading invoice rows and building objects in app memory to count",
+  "Checked myself": "Single app and Postgres and count-only endpoint with no other reader, as you told me"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and are specific to this decision. The Kafka/CQRS/Redis stack is named and removed, and Checked myself says its facts came from the user rather than from any test or inspection.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-invoice-count.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

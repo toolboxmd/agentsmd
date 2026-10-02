@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship no new services or topics this week. Change the endpoint so PostgreSQL computes count(*) for the customer's unpaid invoices. Add a partial index only if EXPLAIN ANALYZE still shows a slow plan, and compare the plans before and after on production-sized data. It offers no optional additions and leaves no stated need unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count to return in under one second and to reflect committed invoices at request time.",
+  "Deleted": "Kafka topics, a CQRS projection, and Redis. No stated requirement needs them, and an asynchronous projection would break the request-time freshness requirement. Approved budget and peer trends are not requirements.",
+  "Bottleneck": "The endpoint loads every unpaid invoice row and builds an object for each one, only to count them in application memory.",
+  "Checked myself": "Only what you told me. I have not seen the code, the query plan, or the row counts."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded fix that counts in the database and keeps the count current at request time, and the reply rejects Kafka, CQRS and Redis by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-invoice-count.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

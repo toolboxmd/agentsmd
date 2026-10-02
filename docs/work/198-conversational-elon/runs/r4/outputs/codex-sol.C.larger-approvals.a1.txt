@@ -1,0 +1,10 @@
+**Requirements and who asked:** The signed customer contract requires the exact approved version, approver identity and approval time retained for seven years, independent approval, and protection from later edits.
+**Deleted:** Typed initials and naming conventions as evidence of approval.
+**Bottleneck:** The editable folder cannot enforce these controls.
+**Checked myself:** You said authors can edit the folder; no platform capabilities have been verified.
+
+You need compliant releases before this week’s delivery; the folder plus an APPROVED column does not meet the contract because initials do not establish authenticated approval, prevent self-approval, or protect the approved version.
+
+Keep the folder for drafts, and release through one controlled archive that authenticates the reviewer, blocks author self-approval, records approval time against the exact document version, and locks that document and its approval record for seven years.
+
+Which platform hosts the folder, so we can establish whether it can provide that archive without adding another system?

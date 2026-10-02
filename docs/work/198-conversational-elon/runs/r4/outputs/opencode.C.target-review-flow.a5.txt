@@ -1,0 +1,8 @@
+Requirements and who asked: You asked for an operating model this week to ship faster, suggesting Spotify squads and chapters, Jira Align, and funded workshops.
+Deleted: Squads and chapters reorg, Jira Align, quarterly planning workshops.
+Bottleneck: Last six changes coded in under a day then waited three days for one absent lead reviewer.
+Checked myself: What you told me about team size, wait times, sole reviewer absence, and two other qualified approvers.
+
+You want changes to stop waiting when the lead is absent.
+I recommend you fix that bottleneck this week by making the two qualified engineers default reviewers with either able to approve, instead of the lead alone.
+I am rejecting Spotify reorg and Jira Align for now because they add ongoing cost and process without removing that wait.

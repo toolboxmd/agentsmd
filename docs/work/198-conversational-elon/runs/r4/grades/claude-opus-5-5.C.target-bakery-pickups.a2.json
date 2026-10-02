@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Skip the Odoo rollout. Sort the existing shared list by pickup date, earliest first, and make a filtered view of unprepared orders due today or tomorrow the default at the counter. Prep starts from that view each day, and someone checks before opening that nothing due today is still unprepared. Optionally cancel or postpone the partner booking. The reply offers exact sort and filter steps once the user says what tool holds the list. No unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup.",
+  "Deleted": "Odoo sales, inventory and manufacturing modules, plus counter sync. Payments and stock already reconcile correctly, and staff can already read the list at the counter.",
+  "Bottleneck": "Staff work the list in the order orders were entered, not by pickup date. That is why next month's cakes were made while today's were not.",
+  "Checked myself": "Only what you told me. I haven't seen the list itself or which tool it lives in."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labels come before a bounded fix on the existing list: a due-date view, with no ERP and no sync.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

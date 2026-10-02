@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's recommendation for now: no DAM, AI tagging, semantic search or cloud portal. Instead, keep the client's ordered code list as a .txt/.csv file and use a local script to match it against filename prefixes, with delimiter-aware matching. The script checks for missing, extra, duplicate and prefix-colliding files, renames copies with sequence numbers in the client's order, and writes a captioned contact-sheet PDF. Delivery is a zip. It offers to write the script and asks what format the client's list is in. There are no optional stack additions, and nothing is left unmet beyond the script itself.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a bounded local fix that follows the client's code order, but the reply has none of the four required labelled lines, so all four record checks fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-studio-delivery.a2",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

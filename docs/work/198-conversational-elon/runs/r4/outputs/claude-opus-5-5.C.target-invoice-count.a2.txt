@@ -1,0 +1,6 @@
+**Requirements and who asked:** You need the unpaid-invoice count to return within one second and include every invoice committed at request time.
+**Deleted:** Kafka topics, the CQRS projection, Redis, and any new service. No requirement needs them, and an async projection would lag behind commits, which breaks the freshness requirement.
+**Bottleneck:** The endpoint loads every invoice row and builds objects in application memory just to count them.
+**Checked myself:** Nothing run; from what you told me, the endpoint returns only the count and nothing else reads its output.
+
+You want a fast, always-current unpaid count. I recommend replacing the in-memory count with a single `SELECT count(*) FROM invoices WHERE customer_id = $1 AND status = 'unpaid'`, plus a partial index on `(customer_id) WHERE status = 'unpaid'` if `EXPLAIN ANALYZE` shows a sequential scan. That is one query and possibly one migration, it reads committed data directly, and it can ship this week without new topics or services. I haven't measured it yet, so the next step is to run `EXPLAIN ANALYZE` against production-sized data to confirm it lands under one second.

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the spreadsheet as the booking record, but send every new booking through one save step, a Google Apps Script web form. That step takes a LockService lock, checks the item's dates for overlap, then either appends the row or rejects the booking. Agents lose direct edit access so nobody can bypass it. Optional: conditional formatting may stay as a warning only, not as the control. Unmet: the reply doesn't know which spreadsheet product the user runs, and for Excel it gives no equivalent locking design or date.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at the same moment. You want something shippable this week.",
+  "Deleted": "Relying on agents noticing red cells and remembering to check them, since that is the human process that already failed last week.",
+  "Bottleneck": "Nothing stops a save. Six agents in two offices can each check, see no conflict, and both save.",
+  "Checked myself": "Only what you told me: one identifier per item, six concurrent agents, last week's double booking, and the owner's save-time rule. I haven't seen the spreadsheet or which product it runs on."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks a locked, server-side check-then-append step with direct edits removed, so of two simultaneous conflicting bookings only one is saved, and formatting is demoted to a warning.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

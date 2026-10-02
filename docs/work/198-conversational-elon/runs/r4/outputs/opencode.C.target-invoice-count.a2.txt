@@ -1,0 +1,6 @@
+**Requirements and who asked**: sub-second unpaid-invoice count reflecting committed data at request time (user need); Kafka/CQRS/Redis (user request, not a functional requirement)
+**Deleted**: Kafka topics/cluster use, new CQRS projection service, Redis for this count
+**Bottleneck**: endpoint fetches invoice rows and builds objects in app only to count them
+**Checked myself**: single app plus PostgreSQL returning only the count with no other reader, per brief; no code or live system checked in this single-turn review
+You are trying to get an accurate unpaid-invoice count in under one second at request time.
+I recommend rejecting CQRS/Redis because async projection cannot reflect committed invoices at request time, and shipping a filtered COUNT(*) in PostgreSQL with an index on the unpaid predicate instead.

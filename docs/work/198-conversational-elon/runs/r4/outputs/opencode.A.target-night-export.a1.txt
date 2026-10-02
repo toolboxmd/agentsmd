@@ -1,0 +1,13 @@
+Don't put this on Airflow in Kubernetes.
+
+For one 3-minute job with no downstream dependencies and safe re-runs, that split adds failure modes and ops work, and you won't ship it reliably this week. Your missing runs are explained already: the laptop sleeps overnight.
+
+Ship this instead on the always-on Linux box you already administer:
+
+1. Move the existing Python command there as-is.
+2. Schedule it once nightly, e.g. 02:00-03:00 via cron or systemd timer. Exact time doesn't matter, you just need it done by 08:00 with buffer for a retry.
+3. Log stdout/stderr to a file, and add one check: if the report for that date doesn't exist / isn't fresh by e.g. 07:00, alert you. Since re-running is safe, retry is just run it again.
+
+No separate workers/scheduler/deployment needed. That's the future-proof version for this workload: simple, observable, runs on a machine that's awake.
+
+Revisit Airflow/K8s only when you have many jobs with dependencies, SLAs, and someone to operate the platform.

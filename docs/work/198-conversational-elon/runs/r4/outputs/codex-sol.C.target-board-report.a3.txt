@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want a reliable monthly board report by region, ready this week and easy to maintain.
+**Deleted:** Airbyte, Snowflake, dbt and Power BI; this report has no demonstrated need for them.
+**Bottleneck:** Building regional sums by hand.
+**Checked myself:** You told me there is one local Excel table, it fits comfortably on your computer, and refunds are signed negative amounts.
+
+You’re trying to make the board report repeatable and ready for future changes. I recommend keeping it in Excel: source table → PivotTable grouped by year, month and region → **Sum** of signed net amounts, preserving negative refunds.
+
+This week, set up that report, document replacing the export and refreshing it, retain each original export, and reconcile the reported monthly total against the source before sending it to the board.

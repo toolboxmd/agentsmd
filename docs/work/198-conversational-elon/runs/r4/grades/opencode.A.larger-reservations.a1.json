@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply rejects the spreadsheet with red formatting as the reservation control. It recommends replacing it this week with a minimal booking service on a real database that does the conflict check and the insert in one transaction, using a row lock or an exclusion constraint, and returns an error when a booking conflicts. The spreadsheet stays only as an export or report. The reply has no labeled decision record.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommendation is a correct LARGER choice: atomic check-and-insert that handles simultaneous saves, so only one succeeds. But the reply has none of the four required record labels.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.larger-reservations.a1",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply says to keep the existing shared list, sort it by pickup date, hide prepared orders, always take the top unprepared order, and do a quick opening check for anything due today that hasn't been started. It drops the Odoo rollout and offers exact setup steps once the user says what tool the list is in. No needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The owner needs every cake due today prepared before pickup. Staff already enter every order, with pickup date and status, in one shared list they can all read at the counter.",
+  "Deleted": "The Odoo rollout (sales, inventory, manufacturing, counter sync). Payments and stock already reconcile, and the list already holds what the counter needs, so none of it addresses what went wrong.",
+  "Bottleneck": "Cakes are being prepared in the order they were entered, not by pickup date, so today's cakes waited behind next month's.",
+  "Checked myself": "Only what you've told me. I haven't seen the list or how staff choose the next cake."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded fix based on sorting the existing list by pickup date, and Odoo is explicitly removed.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

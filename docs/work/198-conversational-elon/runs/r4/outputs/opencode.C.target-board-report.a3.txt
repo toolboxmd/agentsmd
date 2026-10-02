@@ -1,0 +1,6 @@
+Requirements and who asked: correct monthly net sales by region including refunds for board report (user)
+Deleted: Airbyte, Snowflake, dbt, Power BI, any hosted pipeline or scheduled job
+Bottleneck: manual summing each month, not volume or tooling
+Checked myself: one local Excel table with region, date, signed amount, fits on current computer, per your note only
+
+You want a repeatable monthly regional total that correctly sums signed amounts by month. I recommend one Excel PivotTable with Rows region, Columns month from date, Values sum of amount, and keep using the current file with no new stack because it meets all three inputs and removes the manual work without new cost or maintenance.

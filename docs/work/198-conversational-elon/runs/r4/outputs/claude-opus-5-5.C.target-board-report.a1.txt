@@ -1,0 +1,12 @@
+**Requirements and who asked:** You need monthly net sales by region for the board, refunds included, built from one local Excel export that fits on your computer. "Future-proof" and "match peers" are your goals, but no current failure has been named that they would fix.
+**Deleted:** Airbyte, Snowflake, dbt, Power BI. They would add four services to run and pay for, and each solves a problem you don't have: many sources, data too large for one machine, or many report consumers.
+**Bottleneck:** You build the monthly sums by hand. Data volume and tooling are not the constraint.
+**Checked myself:** Only what you told me. I haven't seen the workbook.
+
+You're trying to get correct monthly regional totals without manual work. I recommend one PivotTable in the workbook you already have, and you can set it up today:
+
+1. Click inside the export and press Cmd+T to make it an Excel Table.
+2. Insert > PivotTable. Put Region in Rows, Date in Columns (right-click a date > Group > Months and Years), and Sum of net amount in Values. Refunds are negative, so they subtract automatically.
+3. Each month, paste the new export into the Table and click Data > Refresh All.
+
+Check the first run against last month's hand-built numbers. If they match, the manual step is gone. Revisit a bigger stack only when a real limit appears, such as a second data source or a file too large for Excel.

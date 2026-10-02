@@ -1,0 +1,7 @@
+Requirements and who asked: Monthly board report of net sales by region from one local Excel export with region, date, signed net amount including refunds, asked by you.
+Deleted: Airbyte, Snowflake, dbt, Power BI.
+Bottleneck: Hand-built monthly sums, not data size or delivery.
+Checked myself: You told me the file fits comfortably locally and you sum it by hand.
+
+You are trying to achieve: Accurate monthly regional totals for the board from the accounting export you already have.
+I recommend keeping it local with one Excel PivotTable using region for rows, month from date for columns, and sum of signed net amount, because it meets every requirement with nothing new to run or maintain, so do not adopt the peer stack for this report.

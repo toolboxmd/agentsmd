@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do it now: turn the existing export into an Excel Table and build a PivotTable with Region in rows, Date grouped by month in columns and Sum of net amount in values, so refunds subtract automatically. Each month, paste in the new export, refresh, and check the first run against last month's hand-built numbers. No optional additions now; the agent would revisit the stack only if a second data source or a too-large file appears. Unmet needs: none found, though the agent has not seen the workbook.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need monthly net sales by region for the board, refunds included, built from one local Excel export that fits on your computer. \"Future-proof\" and \"match peers\" are your goals, but no current failure has been named that they would fix.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI. They would add four services to run and pay for, and each solves a problem you don't have: many sources, data too large for one machine, or many report consumers.",
+  "Bottleneck": "You build the monthly sums by hand. Data volume and tooling are not the constraint.",
+  "Checked myself": "Only what you told me. I haven't seen the workbook."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a PivotTable in the existing workbook, removes all four named tools by name, and defers the stack only to named future needs.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-board-report.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

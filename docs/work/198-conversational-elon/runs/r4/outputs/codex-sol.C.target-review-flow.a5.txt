@@ -1,0 +1,13 @@
+**Requirements and who asked:** You want faster shipping this week and changes to keep moving when the lead is absent.
+**Deleted:** Spotify-style restructuring, Jira Align, and quarterly planning workshops from this launch; none addresses the observed approval delay.
+**Bottleneck:** All six changes waited three days for approval because their sole assigned reviewer, the lead, was away.
+**Checked myself:** Your supplied facts: coding took less than a day, statuses are current in your tracker, and two other engineers are qualified and authorized to approve.
+
+To keep changes shipping during the lead’s absence, I recommend changing reviewer assignment within your existing team and tracker.
+
+Launch this week:
+
+- Make the lead and the two authorized engineers the approval pool, preserving existing review requirements.
+- When a PR becomes ready, its author assigns an available approver. Reassign the current waiting PRs from the absent lead to those engineers.
+- When an assigned reviewer becomes unavailable, the author transfers the review to another available approver.
+- Use existing tracker timestamps to check approval waiting time for the next six completed changes. Revisit the model if that delay persists.

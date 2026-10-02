@@ -1,0 +1,6 @@
+Requirements and who asked: dependable calls at desk (you); UniFi gateway, managed switches and Grafana dashboard for future-proofing (home-network group trend, budget approval)
+Deleted: UniFi gateway, managed switches, Grafana dashboard as treatment for these drops
+Bottleneck: single desk wired path, not whole-home routing or observability
+Checked myself: desk computer on Ethernet drops, two other devices on same router stay connected, cable is years old through tight grommet, no different cable tried yet
+Your goal is dependable calls at that desk.
+Test with a known-good cable run temporarily outside the grommet for your next workday before spending. That UniFi layout will not fix a damaged last-meter cable, so hold it until this test passes or fails.

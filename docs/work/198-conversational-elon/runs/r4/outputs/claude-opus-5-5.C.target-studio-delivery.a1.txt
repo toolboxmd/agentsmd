@@ -1,0 +1,14 @@
+**Requirements and who asked:** The client wants the images in their supplied product-code order; you want to stop spending an hour per delivery dragging thumbnails and building the contact sheet by hand.
+
+**Deleted:** DAM, AI tagging, semantic search, and the cloud review portal. Nobody asked for them, and none of them sorts files by a list you already have.
+
+**Bottleneck:** Manually ordering images and building the contact-sheet PDF.
+
+**Checked myself:** Only what you've told me: filenames start with the exact product code, each job's final JPEGs sit in one folder, and the client supplies the ordered code list.
+
+You want each delivery ordered to the client's list without the manual hour. I recommend one small local script: point it at the job folder and the client's code list, and it produces the contact-sheet PDF in that order. It also stops and lists any code with no image, any image not on the list, and any code with more than one match, so nothing ships silently wrong. Because your filenames already carry the codes, the sorting needs no tagging or search; a DAM would add cost and upkeep without removing the hour, so I'd skip it and keep the budget.
+
+To build it this week, send me:
+1. One real client code list, exactly as it arrives (CSV, spreadsheet, PDF, or email text).
+2. A sample of filenames from one job folder.
+3. Whether the client also needs the JPEGs renamed with a sequence number (e.g. `001_ABC123.jpg`), or only the ordered PDF.

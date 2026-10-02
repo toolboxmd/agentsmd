@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: replace the in-memory count with a filtered COUNT(*) in Postgres plus a supporting index, and ship no Kafka services, topics, CQRS projection or Redis, because an async projection would break the request-time freshness requirement. No optional additions are offered. Still needed: the user's SQL and table definition, so the exact query and index can be drafted.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply makes the correct bounded recommendation but contains none of the four required labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.B.target-invoice-count.a2",
+ "host": "opencode",
+ "arm": "B",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Now: keep the spreadsheet for viewing bookings only, and add one shared reservation save path that atomically rejects overlapping bookings for the same item identifier, including when two agents submit together. Optional additions: none. Unmet: whether this can ship this week depends on the spreadsheet platform, so the reply asks which one they use. It rejects red formatting as the safeguard.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "You require conflicting reservations for the same item to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and reminders as the conflict prevention mechanism.",
+  "Bottleneck": "Checking availability and saving the reservation must be one atomic operation across all six agents.",
+  "Checked myself": "You reported a double booking last week; I have not inspected your spreadsheet or booking system."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks a shared save path that checks and saves in one atomic step and covers simultaneous submissions, but it doesn't name a platform or say how this ships this week.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

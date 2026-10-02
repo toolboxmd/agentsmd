@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Ship one change in the existing app this week: replace row retrieval and in-memory object counting with a PostgreSQL COUNT(*) query, measure it against the one-second requirement, and add an index only if the query plan justifies it. The reply proposes no new services or topics and explicitly rules out Kafka, CQRS and Redis. All needs are covered. Request-time freshness is kept, and the reply points out that an asynchronous projection would lag.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the unpaid-invoice count within one second, reflecting invoices committed at request time.",
+  "Deleted": "Kafka, CQRS, and Redis for this endpoint. An approved budget and peer adoption do not establish a need.",
+  "Bottleneck": "The endpoint retrieves rows and constructs objects solely to count them.",
+  "Checked myself": "Only the supplied facts. No query plan or timing evidence is available."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "This is a clean bounded fix: all four record lines are specific and come before the recommendation, and the stack is rejected by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-invoice-count.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

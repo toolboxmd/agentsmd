@@ -1,0 +1,12 @@
+For this report, don't adopt that stack — it's overkill and will make you slower.
+
+You have one source: a local Excel table that fits in memory, with region, date, and signed amount. Monthly sum by region is a Group By. Airbyte (ingestion), Snowflake (warehouse), dbt (transform), and Power BI (BI) add cost, auth, infra, and 4 places to break, with no benefit for volume or complexity.
+
+What to put in place this week instead:
+
+1. Freeze input: one folder for exports, unchanged columns.
+2. Replace hand-sums with one reproducible step: Excel PivotTable or a small Python script grouping by month + region and summing amount (refunds already handled because they're negative).
+3. Add 2 checks: total ties to accounting export, and no missing/null region/date.
+4. Output one stable board table: month x region + total.
+
+Save the budget. Revisit Snowflake/dbt/Power BI only when you have multiple sources, data too large for local, or need automated daily refreshes.

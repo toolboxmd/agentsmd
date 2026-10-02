@@ -1,0 +1,14 @@
+**Requirements and who asked:** The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. You want to keep the spreadsheet and ship something this week.
+**Deleted:** A full booking app, and any "check for overlap, then save" logic in app or script code, because two simultaneous submits can both pass the check.
+**Bottleneck:** An atomic overlap check at the moment of saving. A spreadsheet cannot do this; both agents' rows just land.
+**Checked myself:** Only what you told me: six agents in two offices, one identifier per item, last week's double booking, and the owner's rule. I have not seen the spreadsheet or which platform it runs on.
+
+What you're trying to achieve is that no item is ever promised to two customers for overlapping dates.
+
+Red formatting doesn't meet the owner's rule. It only colours a conflict after both bookings are saved, and it relies on someone noticing. Last week's double booking was exactly that kind of human miss.
+
+I recommend moving reservations into a single Postgres table with an exclusion constraint on item identifier plus date range. The database then rejects the second overlapping save, even if two agents submit in the same instant. Agents enter bookings through a simple form, and the spreadsheet can remain as a read-only view.
+
+The constraint itself is a few lines. The real work is the form and hosting, and I can't promise that fits this week until I see your current setup.
+
+If you ship the colours this week as a stopgap, the owner needs to decide that knowingly, since double bookings can still happen until the database version is live.

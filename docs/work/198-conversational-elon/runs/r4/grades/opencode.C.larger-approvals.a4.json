@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the editable working folder, but add a reviewer-only locked release area. In it, a reviewer saves an immutable copy recording the exact version, the author, the reviewer's identity and the approval time, retained for seven years, with author not equal to approver. Optional additions: none offered. Unmet needs: the reply does not say how reviewer identity is technically bound (it is implied through reviewer-only access) or how author\u2260approver is enforced rather than just stated.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "signed customer contract via you: retain exact approved version with approver identity and time for seven years, block self approval, block later edits changing the approved copy",
+  "Deleted": "editable shared folder with typed initials APPROVED column and naming convention and no lock",
+  "Bottleneck": "anyone with edit access can overwrite or forge the approval in the current folder before audit",
+  "Checked myself": "you said authors can edit the shared folder, 12 authors and 3 reviewers release weekly remotely, and you prefer to ship initials plus naming"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Chooses a reviewer-only immutable release store binding non-author approver identity and time to the exact version with seven-year retention; the enforcement mechanism is described briefly but adequately.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.larger-approvals.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

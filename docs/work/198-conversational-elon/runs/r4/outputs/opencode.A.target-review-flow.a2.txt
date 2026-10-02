@@ -1,0 +1,12 @@
+For a 4-engineer team in one timezone, don't launch squads/chapters or Jira Align this week — they won't fix your bottleneck.
+
+Your bottleneck isn't planning or tooling: your last 6 changes took <1 day to code then waited 3 days because they all had the same lead as sole reviewer while he was away, even though 2 others can approve.
+
+Launch this instead:
+
+1. **No single reviewer:** Review pool = lead + the 2 other qualified engineers. Require 2 assigned on every PR, either can approve. Never assign only the lead.
+2. **OOO rule:** If assignee is OOO, they get auto-removed/reassigned same day. No PR waits on someone who is away.
+3. **Review SLA in your existing tracker:** Review within 1 business day. If no action, reassign to the next available in the pool. Keep work in the same statuses you already have, just add a `waiting-for-review >24h` view.
+4. **Measure for the next 6:** Track code-time vs wait-time. You're at ~75% wait right now — that should drop to near zero.
+
+No new tooling or quarterly workshops needed to ship faster this week.

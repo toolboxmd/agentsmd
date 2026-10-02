@@ -1,0 +1,7 @@
+Requirements and who asked: Dependable calls at desk (user). UniFi gateway, managed switches, Grafana future-proofing (user, from home-network group).
+Deleted: UniFi gateway, managed switches, Grafana dashboard as a fix for these drops.
+Bottleneck: Only the desk Ethernet drops while two other devices on the same router stay connected, pointing to that desk cable and path.
+Checked myself: Told only: desk uses Ethernet, cable is years old through a tight grommet, no different cable tried yet.
+
+What you want is dependable calls at that desk.
+Swap in a known-good cable routed clear of the grommet and test calls before buying anything. That UniFi layout will not fix a bad desk cable and adds cost and upkeep you do not need for this.

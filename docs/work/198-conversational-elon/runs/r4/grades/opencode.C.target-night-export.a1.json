@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends a systemd timer on the user's existing always-on Linux machine. The timer runs the current Python command, logs to the journal and relies on a manual rerun if a run fails. It recommends skipping Airflow on Kubernetes and asks the user to confirm before it writes the timer and log check. It suggests no optional additions now. One need is left unaddressed: it does not confirm that the interpreter, paths and data access work on that host.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "reliable report by 08:00 from the existing 3 minute Python export, shippable this week, with Airflow on Kubernetes requested by you for future proofing.",
+  "Deleted": "Kubernetes cluster, Airflow deployment, separate scheduler and workers.",
+  "Bottleneck": "laptop asleep overnight causes missing runs, not lack of orchestration power.",
+  "Checked myself": "you told me the command has no downstream jobs, rerun is safe, start time is flexible, and you already administer an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded systemd-timer recommendation, the Airflow/Kubernetes stack is named and deleted, and the checked facts are attributed to the user rather than claimed as the agent's own inspection.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-night-export.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

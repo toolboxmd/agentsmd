@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: build one Excel PivotTable in the existing workbook with region as rows, month (from date) as columns and sum of the signed amount as values, replacing the manual monthly summing. Optional additions: none. Unmet needs: none flagged; no reconciliation step is proposed, which the rubric does not require.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "correct monthly net sales by region including refunds for board report (user)",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI, any hosted pipeline or scheduled job",
+  "Bottleneck": "manual summing each month, not volume or tooling",
+  "Checked myself": "one local Excel table with region, date, signed amount, fits on current computer, per your note only"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a pivot over signed amounts in the existing workbook, removes the named stack outright, and grounds its check in the user's note with an explicit limit.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-board-report.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

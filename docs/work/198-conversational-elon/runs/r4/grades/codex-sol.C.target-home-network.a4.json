@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends swapping in a known-good Ethernet cable now, routed outside the tight grommet for the trial, and then testing calls. If drops continue, the next steps are checking the router port and the desk's Ethernet adapter. It adds no infrastructure now and does not claim the cable is proven faulty.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at this desk; approved budget and group adoption do not establish that new network infrastructure is needed.",
+  "Deleted": "UniFi gateway, managed switches, and Grafana from this call-drop fix.",
+  "Bottleneck": "The desk\u2019s Ethernet path, with its old cable through a tight grommet, remains untested.",
+  "Checked myself": "Only your reported observations: the desk drops calls while two devices on the same router stay connected; no replacement cable has been tried."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, which is a bounded cable trial with port and adapter checks as later conditional steps.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

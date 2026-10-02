@@ -1,0 +1,13 @@
+**Requirements and who asked:** you need monthly net sales by region for the board, built from one local Excel export with signed amounts. "Future-proof" and "peers are adopting it" don't name anything that breaks today.
+**Deleted:** Airbyte, Snowflake, dbt, Power BI.
+**Bottleneck:** building the monthly regional sums by hand.
+**Checked myself:** only what you told me. I haven't opened the workbook.
+
+You want an accurate monthly regional net sales table for the board without the manual summing. I recommend an Excel PivotTable on the export table. You can set it up today:
+
+1. Format the export as an Excel Table (Ctrl+T) so new rows are picked up automatically.
+2. Insert a PivotTable from that table, with region as Rows, the date grouped by Month (and Year) as Columns, and Sum of net amount as Values. Refunds net out automatically because they are already negative.
+3. Each month, paste the new export into the same table and click Data > Refresh All.
+4. Check once that the pivot's grand total equals the sum of the export's amount column.
+
+I'd reject the four-tool stack. It means four new services to run, pay for, and watch, all to aggregate one table that already fits on your laptop. It becomes worth revisiting only when a concrete need appears, such as several source systems or data too large for Excel.

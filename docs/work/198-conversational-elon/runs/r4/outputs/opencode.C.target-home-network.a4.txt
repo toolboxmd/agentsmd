@@ -1,0 +1,7 @@
+Requirements and who asked: dependable calls at that desk, requested by you; future-proof UniFi plus Grafana build, prompted by home-network group
+Deleted: UniFi gateway, managed switches, Grafana dashboard as a fix for the drops
+Bottleneck: only the wired desk drops while two other devices on the same router stay connected
+Checked myself: your report only of Ethernet at desk, old cable through tight grommet, no cable swap tried yet
+Your goal is dependable calls at that desk.
+That UniFi gateway, managed switch, and Grafana build will not stop these drops because the fault is isolated to one cable path.
+Swap in a known good cable run outside the grommet and test calls, then tell me if drops persist before we spend the budget.

@@ -1,0 +1,8 @@
+**Requirements and who asked**: Client requires JPEGs in supplied code order for each job (client via user). User requests professional delivery workflow this week (user).
+**Deleted**: DAM system, AI tagging, semantic search, cloud review portal (suggested by user, not required by client)
+**Bottleneck**: One hour manual thumbnail sorting per delivery
+**Checked myself**: You told me final JPEGs are in one folder per job, filenames start with product code, and client supplies ordered code list. I have not seen the folder or list.
+
+You are trying to achieve on time delivery of each job in exact client code order with a contact sheet PDF.
+I recommend a small local script that reads the code list, sorts the folder by code prefix, and writes the ordered PDF, because it meets both needs with nothing new to run or maintain.
+Do not build the DAM this week because no client requirement needs it and it cannot be done well in a week.

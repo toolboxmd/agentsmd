@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup.
+**Deleted:** New sales, inventory and manufacturing modules from the immediate pickup fix.
+**Bottleneck:** Later pickups are being prepared while today’s orders wait.
+**Checked myself:** You report that everyone can read the shared list and that payments and stock reconcile correctly; I have not inspected the workflow.
+
+I recommend postponing the rollout: the evidence points to preparation priorities, and does not yet show a need for new software.
+
+Today, put today’s orders first in the existing list, confirm their pickup times, assign each cake to a named preparer, and have one person check completion before each pickup; pause next month’s work until today’s cakes are ready.
+
+Use next week’s partner meeting to examine any remaining failure in that workflow and define the smallest change needed, with success measured by cakes being ready before pickup.

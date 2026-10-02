@@ -1,0 +1,8 @@
+Requirements and who asked: You asked for an operating model we can launch this week to stop waits when the lead is absent and ship faster.
+Deleted: Spotify squads and chapters, Jira Align, quarterly planning workshops.
+Bottleneck: PRs wait 3 days for one absent reviewer after less than 1 day of coding.
+Checked myself: You reported six recent changes with that pattern and two other engineers qualified and authorized to approve.
+
+What you are trying to achieve is merge reviewed changes without waiting on one person.
+
+I recommend you keep your current tracker and this week stop sole assignment to the lead and allow either qualified engineer to approve with a 24 hour review rule. The larger models you named will not fix this bottleneck this week and add overhead for four engineers in one time zone.

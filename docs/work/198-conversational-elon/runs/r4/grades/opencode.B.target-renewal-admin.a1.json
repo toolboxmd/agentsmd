@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: copy each notice deadline minus 14 days from the yearly statement into the existing phone calendar and set a reminder for each. The reply rejects n8n, a Gmail agent, a vector database and a Telegram bot because the dates are fixed, the calendar is checked daily and no automatic actions are wanted. It offers no optional additions. It does not mention next year's refresh or checking that notification settings work.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is right-sized and names and rejects the stack, but none of the four labels appear, so every record predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.B.target-renewal-admin.a1",
+ "host": "opencode",
+ "arm": "B",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

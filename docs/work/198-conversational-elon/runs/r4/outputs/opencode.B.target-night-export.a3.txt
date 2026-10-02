@@ -1,0 +1,5 @@
+What you are trying to achieve is a reliable report by 08:00 that you can ship this week.
+
+My recommendation is to skip Airflow and Kubernetes and run your existing Python command as one cron or systemd timer on your always-on Linux machine with logging plus one retry before 08:00, because the job is 3 minutes, idempotent, has no downstream jobs, and the misses are just the laptop sleeping.
+
+Tell me the distro and script path and I will give you the exact timer and check command.

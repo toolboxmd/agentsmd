@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Move the existing command to the user's always-on Linux machine now, scheduled with a systemd .service plus a .timer (OnCalendar 02:00, Persistent=true), and check results with journalctl. Airflow/Kubernetes is rejected now and revisited only if a named future need appears (dependent jobs, many pipelines, team sharing). Still unmet: confirming whether the command relies on laptop-only credentials, inputs or delivery paths.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "you need the report by 08:00 every day; the start time doesn't matter; reruns are safe. \"Future-proofed\" has no named failure behind it yet.",
+  "Deleted": "Airflow, Kubernetes, and any split into workers, scheduler, and deployment. Nothing here needs them: it's one 3-minute job with no downstream tasks.",
+  "Bottleneck": "the laptop sleeps overnight, so some runs never start. Successful runs are already correct.",
+  "Checked myself": "nothing observed. All of this comes from what you told me about the job, the laptop, and your always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded systemd-timer recommendation, and the stack is deferred only to named future needs.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-night-export.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

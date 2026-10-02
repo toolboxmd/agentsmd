@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: swap in a new Cat6 patch cable, route it so it isn't pinched, and run normal calls to see whether the drops stop. If they keep happening, try a different router port, then check the computer's network port or adapter. The UniFi, managed-switch and Grafana setup is skipped and isn't offered now. Nothing needed is left out; the only unknown is whether the cable is really the cause, which the trial will show.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable calls at the desk (you); future-proofing (you, prompted by your home-network group).",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard. Two other devices on the same router keep their calls during a dropout, so the router and network aren't what's failing, and none of that gear touches the desk's own link.",
+  "Bottleneck": "The desk computer's link, most likely the old Ethernet cable squeezed through the tight grommet, which hasn't been ruled out.",
+  "Checked myself": "Nothing observed directly. You told me the drops happen only at the Ethernet desk, other devices stay connected during them, the cable is several years old and pinched in a grommet, and no other cable has been tried."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The fix is a bounded cable swap, the stack is named and rejected, and the Checked myself line uses only what the user said and admits nothing was observed directly.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-home-network.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

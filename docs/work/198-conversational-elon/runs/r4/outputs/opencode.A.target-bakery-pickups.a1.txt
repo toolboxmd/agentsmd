@@ -1,0 +1,14 @@
+Don't sync 3 Odoo modules to the counter next week — that won't fix this miss.
+
+Payments and stock are already correct, and everyone can already read the list. Your problem is prioritization, not sync: the list is in entry order, so next month's orders are getting worked before today's due pickups.
+
+For today:
+1. Filter/sort that shared list by pickup date = today, and work only that queue first. Nothing due later gets started until today's are marked prepared.
+
+For the rollout, re-scope the partner visit to discovery, not build:
+1. Freeze the manual rule first: due-date-first, one sorted view at the counter for "Due Today."
+2. Prove no missed pickups for a week on that rule.
+3. Then pilot Odoo Sales only, keeping the counter list as source of truth until the Odoo view can guarantee the same sorted "Due Today" behavior.
+4. Only add Inventory, then Manufacturing, once pickups are reliable.
+
+If you let them build all three synced at once before you fix the queue discipline, you'll just miss pickups faster in a new system.

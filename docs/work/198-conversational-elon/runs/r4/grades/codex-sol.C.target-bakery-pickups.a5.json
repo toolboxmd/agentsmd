@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's main action is to fix preparation priority today in the existing shared list: find every unmade cake due today, order them by pickup time, assign each to a preparer, check the work fits before pickup, and decide which customers to contact if it does not. Before next week, it makes this priority order the counter's working queue, adds a check that a cake is ready before it is marked ready, and asks for the reason staff prepared later orders first. It pauses the Odoo rollout. The partner meeting is limited to reviewing the failure and requiring a demo that today's orders take priority before agreeing scope. It recommends no ERP, synchronization or second order system now. The cause of the wrong prioritization is still unknown.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup; you proposed Odoo to prevent missed pickups.",
+  "Deleted": "Module syncing as a prerequisite for getting today\u2019s cakes ready.",
+  "Bottleneck": "Preparation is reaching next month\u2019s orders while today\u2019s orders remain unmade.",
+  "Checked myself": "Your account establishes that the shared list is accessible and payments and stock reconcile correctly; the reason staff chose later orders is still unverified."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The fix is a due-today, pickup-ordered queue built from the existing list with Odoo paused; 'Deleted' only names 'module syncing' rather than Odoo, which still counts as an unambiguous description of the proposed stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-bakery-pickups.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

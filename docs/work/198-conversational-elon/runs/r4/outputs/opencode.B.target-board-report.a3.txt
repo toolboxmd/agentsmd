@@ -1,0 +1,5 @@
+What you are trying to achieve is a reliable monthly board report of net sales by region with less manual work.
+
+I recommend against building Airbyte + Snowflake + dbt + Power BI for this: for one local Excel table that fits on your computer, it adds cost, maintenance, and failure points without making the numbers more correct. The smallest option that achieves it is one reproducible local calculation that sums signed amount by region and month, keeping refunds as negatives.
+
+If you want, tell me whether you prefer to stay in Excel or use a small Python script and I will help you set that up this week.

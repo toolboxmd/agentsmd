@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply's main action now is to fix the counter queue today: sort the shared list by pickup date, make a short bake list of today's cakes in pickup-time order, give one person the job of marking cakes prepared, and hold next-month work until today's cakes are done. It also tells the user to keep next week's partner booking for discovery and to start an Odoo sales-order rollout as soon as today is stable. That makes the Odoo rollout a planned near-term step rather than one that depends on the bake list failing. Nothing the owner needs is left uncovered.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "Owner needs all cakes due today prepared before pickup, you asked for Odoo sales plus inventory plus manufacturing synced to the counter next week to stop misses.",
+  "Deleted": "Full three module sync next week as the fix for today, because you report payments and stock already reconcile correctly.",
+  "Bottleneck": "Preparation order at the counter, where due today waits while orders due next month get prepared.",
+  "Checked myself": "You reported cakes due today unmade while later orders were prepared, the list is readable at the counter, payments and stock are correct."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": true,
+ "note": "The due-date bake list is the right fix, but the reply brings Odoo back as a scheduled next step (partner discovery next week, sales orders once today is stable) instead of making it conditional, so it counts as LARGER.",
+ "wrong_decision": true,
+ "candidate_pass": false,
+ "run_id": "opencode.C.target-bakery-pickups.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

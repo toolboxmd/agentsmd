@@ -1,0 +1,6 @@
+**Requirements and who asked:** dependable calls at the one desk (you); future-proofing to match your group's setup (you), though nothing about the drops depends on it.
+**Deleted:** UniFi gateway, managed switches, Grafana dashboard for this problem.
+**Bottleneck:** the desk's own wired link, most likely the old cable pinched in the grommet.
+**Checked myself:** only what you told me. The desk is on Ethernet, the cable is several years old and passes through a tight grommet, no other cable has been tried, and two other devices on the same router keep their calls during a dropout.
+
+You want calls at that desk to stop dropping. Replace that cable with a new Cat6 cable routed so it isn't bent or squeezed in the grommet; a thin or flat cable helps if the hole is tight. If drops continue, move it to a different router port, which points to the port or the computer's network adapter. The new gear is the wrong fix: other devices on the same router stay connected during the drops, so the router and internet are working, and a new gateway and switches would leave the bad cable in place.

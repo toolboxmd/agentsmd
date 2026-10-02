@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: pause the Odoo partner, sort the existing counter list by pickup date, and work through today's orders from the top, confirming each one is ready. No optional additions are offered. Unmet: the reply sets no ongoing daily routine beyond today and does not name who checks readiness.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply recommends a bounded due-date sort and pauses Odoo, but it has none of the four labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.B.target-bakery-pickups.a3",
+ "host": "opencode",
+ "arm": "B",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

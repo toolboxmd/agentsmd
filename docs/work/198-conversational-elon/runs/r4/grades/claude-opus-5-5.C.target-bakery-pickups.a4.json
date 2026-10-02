@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: keep the existing shared order list and show it at the counter sorted by pickup date, with a 'due today, not ready' view. Add a rule that bakers start at the top, and have someone check that view each morning. No Odoo, ERP, second order system or sync is recommended now or as an optional add-on. Keeping or cancelling the partner booking is left to the owner. Unmet need: the agent has not seen the actual list and offers to set up the view once the user shares it or names the app.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup; payments and stock already reconcile correctly, so nothing there needs replacing.",
+  "Deleted": "Odoo sales, inventory and manufacturing modules, the counter sync, and the partner rollout.",
+  "Bottleneck": "Staff prepare cakes in the order they were entered, not by pickup date. That is why next month's cakes got made while today's waited.",
+  "Checked myself": "Only what you told me: the shared list already has pickup date and status, and every baker can read it at the counter. I haven't seen the list itself."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded due-today sorted view, Odoo and sync are explicitly deleted, and the check rests on supplied facts with a stated inspection limit.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

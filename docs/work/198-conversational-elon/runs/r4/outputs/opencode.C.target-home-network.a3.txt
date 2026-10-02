@@ -1,0 +1,7 @@
+Requirements and who asked: Dependable calls at that desk asked by you, plus future proofing influenced by home-network group
+Deleted: UniFi gateway, managed switches, and Grafana dashboard as a fix for these drops
+Bottleneck: One wired desk drop fails while two other devices on the same router stay connected
+Checked myself: You reported Ethernet at desk, isolated dropout, old cable through a tight grommet, no cable swap tried yet
+
+Goal in one line: keep video calls up at that desk with the least to buy and maintain.
+Swap in a known good cable routed outside the grommet and test calls there, because that directly tests the likely fault. Do not buy and install the UniFi plus Grafana layout to stop this, it adds cost and upkeep without touching the suspect cable. Tell me what that swap shows and we will decide next steps from there.

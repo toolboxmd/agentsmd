@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends building one saved PivotTable in the existing workbook now, with region as rows, date grouped by month as columns, and the sum of signed net amount as values, so refunds stay negative. It explicitly advises against building the Airbyte/Snowflake/dbt/Power BI pipeline this week. It offers no optional additions and lists no unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Monthly board net sales by region from accounting export, asked by you. No requester for continuous sync, warehouse, or BI layer beyond peer comparison.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI ingestion and serving for one local file.",
+  "Bottleneck": "Hand built monthly sums where negative refunds must stay signed.",
+  "Checked myself": "You told me only one local Excel with region, date, signed net amount that fits comfortably on your computer."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines appear before a bounded pivot recommendation, and the Deleted line names and rejects the full stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-board-report.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

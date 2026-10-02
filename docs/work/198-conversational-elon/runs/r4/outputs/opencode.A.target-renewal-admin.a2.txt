@@ -1,0 +1,20 @@
+You don't need that stack for this — it would make reminders less reliable, not more.
+
+Your problem is small and fixed: once a year you get a list, dates don't change that year, and you just need a nudge 2 weeks before each notice deadline. You already check your phone calendar daily.
+
+Do this instead:
+
+1. When the January statement arrives, spend 15 minutes entering it once: for each contract create one calendar event on `notice deadline minus 14 days`.
+   Title: `Decide: [Contract name] - notice by [date]`
+   Notes: renewal date, notice deadline, contract no / contact.
+
+2. Set one alert on each event. That's your reminder.
+
+Don't build the n8n + Gmail agent + vector DB + Telegram bot:
+
+- Gmail agent: nothing to parse week-to-week, just one statement.
+- Vector database: you have ~a dozen structured dates, not documents to semantic-search.
+- Telegram bot: second channel you have to check, when calendar already works.
+- n8n: no recurring workflow to automate, and you explicitly don't want auto-cancel/pay.
+
+Save the budget. Manual entry is faster, auditable, and can't misfire and cancel something.

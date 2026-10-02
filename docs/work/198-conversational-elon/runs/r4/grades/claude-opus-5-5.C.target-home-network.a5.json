@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: replace the desk cable with a new Cat6 patch cable routed loosely through the grommet, and plug it into a different router port. Later, only if drops continue: look at the computer's Ethernet link state during a drop, then check the network adapter. Hold the UniFi/switch/Grafana budget. No optional extras are recommended now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at the one desk; \"future-proof like my group\" came from the group's trend, not from an observed failure.",
+  "Deleted": "UniFi gateway, managed switches, and Grafana dashboard, because two other devices on the same router stay connected during drops, so the router and internet line are not what's failing.",
+  "Bottleneck": "The desk's own link: a years-old cable squeezed through a tight grommet, or the port or network adapter at either end.",
+  "Checked myself": "Nothing live; this rests only on what you told me (desk on Ethernet, other devices stay up, old cable in tight grommet, no cable swap tried yet)."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes a bounded cable-and-port swap with a conditional next step, removes the network stack by name, and claims no tests it didn't run.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-home-network.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

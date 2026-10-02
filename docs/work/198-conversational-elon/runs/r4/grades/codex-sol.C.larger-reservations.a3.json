@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Do now: keep the spreadsheet only as the booking view, and send every reservation save through one shared, enforced, atomic overlap check so that only one of two conflicting simultaneous submissions succeeds. Rejected: conditional formatting and reminders as the safeguard. Not met: the reply doesn't say what system or storage provides the atomic check, and it says it can't promise the enforced save path will ship this week. No optional additions are offered.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires overlapping reservations for the same physical item to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and reminders as the safeguard.",
+  "Bottleneck": "Two agents can both save a conflicting booking.",
+  "Checked myself": "Only the facts you supplied; I have not inspected the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks an atomic, enforced save-time conflict check that handles simultaneous submissions and keeps the sheet only as a view, though it doesn't name the system behind the check.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

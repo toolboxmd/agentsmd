@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends acting now with one reusable pivot in the existing workbook. It sums the signed net amount by region and month, so refunds stay negative, checks the result against the total sum, and reuses the pivot each month. It rejects the Airbyte/Snowflake/dbt/Power BI pipeline for this report, offers nothing optional to add now, and names no unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Monthly board-ready net sales by region including refunds (user); pipeline this week on Airbyte plus Snowflake plus dbt plus Power BI (user, peer-driven)",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI - no new source, volume, or latency need defends them for one local table",
+  "Bottleneck": "Hand-built monthly sums, not ingestion or warehouse",
+  "Checked myself": "One local Excel table with region, date, signed amount; fits on your computer; sums built by hand (only what you told me)"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a workbook pivot recommendation, the stack is rejected by name, and the checked facts are only what the user supplied, stated as such.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-board-report.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

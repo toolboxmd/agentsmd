@@ -1,0 +1,8 @@
+**Requirements and who asked:** The client requires images in exact product-code order; you want a professional delivery workflow this week.
+**Deleted:** DAM, AI tagging, semantic search and a cloud portal from this week’s scope.
+**Bottleneck:** Manually arranging thumbnails costs you an hour per delivery.
+**Checked myself:** You’ve told me each job has an ordered code list and one folder of JPEGs whose filenames start with those codes.
+
+You’re trying to deliver a correctly ordered contact-sheet PDF with less manual work. I recommend one local script that reads the client’s list, matches filename prefixes to those exact codes, and generates the PDF in list order.
+
+Have it flag missing products, ambiguous matches and unlisted images before export, with a consistent filename order for multiple photographs of one product. Validate it against one completed job this week, then use it for deliveries; the stated problem does not justify a DAM investment.

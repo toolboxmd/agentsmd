@@ -1,0 +1,13 @@
+Don't ship Kafka/CQRS/Redis for this.
+
+It would violate your requirement: a projection is eventually consistent and will miss invoices committed just before request time. Postgres is already the system of record and can give you read-committed correctness directly.
+
+Your current slowness is from retrieving rows and building objects in memory to count them. You only need the count, so push it down:
+
+`SELECT COUNT(*) FROM invoices WHERE status = 'unpaid' ...`
+
+with a supporting (partial) index on the unpaid predicate. That is one indexed query, no new services, no cache invalidation race, and should meet the 1s requirement.
+
+Approved budget and peers moving to events are not reasons to add lag and ops burden when there is only one reader and no other use for the projection.
+
+If you share the exact count query and `EXPLAIN (ANALYZE, BUFFERS)` I can give you the index definition.

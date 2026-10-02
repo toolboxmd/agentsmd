@@ -1,0 +1,14 @@
+{
+ "run_id": "opencode.B.target-review-flow.a2",
+ "harness": "opencode",
+ "host": "opencode",
+ "model": "opencode/muse-spark-1.3-contributor-free",
+ "arm": "B",
+ "arm_sha256": "57470662266ca15a7587ccf9486a5132e09f428f87e80e69e127ace27d91590a",
+ "scenario": "target-review-flow",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "\n> build \u00b7 muse-spark-1.3-contributor-free\n\n",
+ "seconds": 32.6,
+ "valid": true
+}

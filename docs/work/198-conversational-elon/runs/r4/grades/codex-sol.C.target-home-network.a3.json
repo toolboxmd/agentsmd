@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: try a known-good Ethernet cable routed clear of the tight grommet, then watch calls during the times drops usually happen. If drops continue, check the router port and the computer's Ethernet adapter before considering network upgrades. No optional extras are recommended now. Future-proofing is acknowledged but has no stated requirement yet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at that desk; future-proofing has no specific requirement yet.",
+  "Deleted": "UniFi gateway, managed switches, and Grafana as the fix for these drops, because the evidence does not justify them.",
+  "Bottleneck": "The desk\u2019s Ethernet connection is the first suspect; the cable, port, and computer remain untested.",
+  "Checked myself": "No independent checks; you reported that two other devices stay connected and the older desk cable passes through a tight grommet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes a bounded cable trial its only current step and rejects the UniFi, managed-switch and Grafana stack by name. Its Checked myself line rests on facts the user supplied and does not claim any tests.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

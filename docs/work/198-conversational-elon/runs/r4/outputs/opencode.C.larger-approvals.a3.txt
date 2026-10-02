@@ -1,0 +1,8 @@
+Requirements and who asked: Customer contract requires 7 year retention of exact approved version with approver identity and time, no self approval, and immutable approved copy; you asked to ship this week with folder plus initials.
+Deleted: Folder APPROVED column with typed initials and naming convention alone, because it gives no immutability, verifiable identity, trusted time, or segregation.
+Bottleneck: 12 authors can edit the shared folder and anyone can type initials, so an approval can be faked, overwritten, or lost.
+Checked myself: You stated 12 authors and 3 remote reviewers, authors can edit the current folder, and your preferred plan is keep folder plus initials.
+
+That plan would breach the contract so we should not ship it as is.
+
+What you are trying to achieve is a delivery this week that keeps the exact approved version provable for 7 years. I recommend one option: keep the current folder as draft only, and add a separate Approved folder where authors have read only and only reviewers can write, where the reviewer saves a locked copy at approval and logs document, version, author, approver, and date time, and retains it for 7 years. That meets version retention, identity plus time, no self approval by checking author versus approver, and later edits cannot change the retained copy.

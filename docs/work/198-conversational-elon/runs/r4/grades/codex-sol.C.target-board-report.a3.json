@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends keeping the report in Excel. Build a PivotTable from the source table, grouped by year, month and region, that sums signed net amounts so refunds stay negative. This week, also write down how to replace the export and refresh the pivot, keep each original export, and reconcile the monthly total against the source before the report goes to the board. It suggests no optional add-ons. It drops Airbyte, Snowflake, dbt and Power BI because nothing shows the report needs them, and leaves no stated need unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want a reliable monthly board report by region, ready this week and easy to maintain.",
+  "Deleted": "Airbyte, Snowflake, dbt and Power BI; this report has no demonstrated need for them.",
+  "Bottleneck": "Building regional sums by hand.",
+  "Checked myself": "You told me there is one local Excel table, it fits comfortably on your computer, and refunds are signed negative amounts."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded Excel pivot, the full four-line record comes before the recommendation, and the 'Checked myself' line cites only facts the user supplied, framed as what the user said.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-board-report.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,6 @@
+**Requirements and who asked:** You need the unpaid-invoice count under one second and reflecting committed invoices at request time; Kafka, CQRS, and Redis come from peer trends and an approved budget, not from a failure that needs them.
+**Deleted:** Kafka topics, CQRS projection, Redis cache.
+**Bottleneck:** The endpoint loads every unpaid invoice row and builds objects in application memory just to count them.
+**Checked myself:** Nothing observed directly; from your description, the endpoint returns only the count, has no other reader, and users report it slow.
+
+You're trying to get a fast count that is correct at request time. I recommend replacing the row fetch with `SELECT count(*) FROM invoices WHERE <unpaid condition>` in PostgreSQL, plus a partial index on that condition if `EXPLAIN ANALYZE` shows it's still slow. That's a small code change you can ship this week, with no new services or topics. I'd reject the Kafka/CQRS/Redis design: a projection updates after the commit, so it can't guarantee the count reflects committed invoices at request time, and it adds three systems to run for one number.

@@ -1,0 +1,8 @@
+Requirements and who asked: Owner needs all cakes due today prepared before pickup; you asked for Odoo sales, inventory and manufacturing synced to the counter.
+Deleted: Odoo sync and new modules, because you said payments and stock reconcile correctly so they do not fix missed pickups.
+Bottleneck: Counter list is readable but today orders wait while next month orders get made first, so ordering by pickup date is the wait.
+Checked myself: You told me staff use one shared list with customer, pickup date and status, and today cakes were unmade while later orders were prepared.
+
+You are trying to achieve zero missed pickups today with the least to run and watch.
+I recommend one counter view sorted by pickup date with a due today filter, made in date order, before any new system.
+Odoo rollout next week is larger to run and maintain and will not save today pickups, so do not start it for this goal; do you want to pause the partner until the today view holds for a week?

@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need changes to stop waiting when the lead is absent, so the team ships faster.
+**Deleted:** Squads and chapters, Jira Align, new tooling, quarterly planning workshops. None of them touch the delay you described.
+**Bottleneck:** Approval. Each of the last six changes took under a day to code, then waited three days for the lead, who was their only reviewer and was away.
+**Checked myself:** Only what you told me: the six-change history, the single reviewer, and that two other engineers are qualified and authorized to approve. I have not looked at your tracker.
+
+Goal: no change waits on one absent person.
+
+Recommendation: add the two qualified engineers as reviewers alongside the lead, and let any one of them approve. You can set that this week in your existing tracker's default reviewer or code-owner settings, with no new spend. Then check the wait time on the next few changes to confirm it dropped.

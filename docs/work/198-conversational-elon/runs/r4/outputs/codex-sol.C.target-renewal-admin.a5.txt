@@ -1,0 +1,6 @@
+**Requirements and who asked:** You need a reminder for each renewal two weeks before its notice deadline, on the phone calendar you use daily, with decisions and actions left to you.
+**Deleted:** n8n, the Gmail agent, vector database, and Telegram bot. Fixed annual dates do not need agents or a separate reminder system.
+**Bottleneck:** Getting the dates from the annual statement into your calendar accurately.
+**Checked myself:** You told me the dates stay fixed for the year and you use your phone calendar daily; I have not inspected the statement.
+
+You want timely renewal decisions. I recommend one calendar event per contract, dated 14 days before its notice deadline, with a notification that day. Include the contract name, notice deadline, and renewal date in each event, then check the entries against the statement once each year.

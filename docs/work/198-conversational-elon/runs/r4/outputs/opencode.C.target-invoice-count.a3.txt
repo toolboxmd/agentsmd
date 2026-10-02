@@ -1,0 +1,8 @@
+Requirements and who asked: count in under 1s reflecting committed invoices (core need); Kafka/CQRS/Redis projection (requested means from you)
+Deleted: Kafka cluster and topics, CQRS projection service, Redis for this count
+Bottleneck: endpoint fetches rows and builds invoice objects in app memory just to count
+Checked myself: you stated it returns only the count with no other reader or output, and users report it is slow
+
+What you are trying to achieve is a sub-second unpaid-invoice count that matches committed data at request time.
+I recommend changing the endpoint to SELECT COUNT(*) with the unpaid filter in Postgres, with an index on that filter if needed.
+I recommend against shipping Kafka services/topics and CQRS/Redis this week because they add things to run and risk stale reads, which would break the reflect-committed-data requirement.

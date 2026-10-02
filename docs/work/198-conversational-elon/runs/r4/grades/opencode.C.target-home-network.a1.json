@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "For now, the reply says to use a known-good cable that doesn't go through the grommet and make test calls at the desk before spending anything. It suggests no optional additions and says the UniFi gateway, switches and Grafana rollout won't fix a physical cable fault. It never says what happens if the cable test doesn't fix the drops.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable calls at desk per user; UniFi gateway plus switches plus Grafana per user following home-network group.",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard as fix for drops.",
+  "Bottleneck": "Desk specific Ethernet run with old cable through tight grommet while router and two other devices stay connected.",
+  "Checked myself": "Told only: desk on Ethernet drops, two others stay up, cable is old through grommet, no swap tried yet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded cable-swap test. The stack is rejected by name. The cable is called the likely cause, not a proven one, and the 'Checked myself' line sticks to the facts the user gave.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-home-network.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

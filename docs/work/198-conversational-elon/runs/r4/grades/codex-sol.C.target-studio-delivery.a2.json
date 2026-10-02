@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends a small local script. The script reads the client's ordered code list, matches the codes to filename prefixes, flags missing, unmatched and ambiguous files, and builds the contact-sheet PDF in the client's order with filenames under each thumbnail. The user should validate it on one completed job first. The reply rejects the DAM, AI tagging, semantic search and cloud review portal, and adds nothing optional. One gap remains: the order within a product that has several images still needs to be defined.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Your client requires images in their supplied product-code order; you want a professional delivery workflow this week.",
+  "Deleted": "DAM, AI tagging, semantic search and a cloud review portal. None solves the stated ordering problem.",
+  "Bottleneck": "You spend an hour manually arranging thumbnails before producing each PDF.",
+  "Checked myself": "You told me each job has one JPEG folder, filenames start with product codes, and the client supplies an ordered code list. I have not inspected files."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends only a local script that follows the client's code list, rejects the asset-management stack by name, and bases its checks only on facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-studio-delivery.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

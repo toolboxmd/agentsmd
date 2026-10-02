@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: build a PivotTable in the existing workbook with Region in rows, Date grouped by month and year in columns, and net amount summed so negative refunds net out. Each month, paste the new export and refresh. Optional additions now: none. The four-tool stack is rejected now and should be revisited only if a concrete need appears, such as several source systems or data too large for Excel. Unmet needs: none material; the file was not opened.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need monthly net sales by region for the board, from one local Excel export with signed amounts (refunds negative). \"Future-proof\" and \"modern data stack\" come from what peers are doing; no current failure was named that needs them.",
+  "Deleted": "Airbyte, Snowflake, dbt and Power BI. One local workbook has no source to sync, no data volume to warehouse, and no multi-step transforms to model.",
+  "Bottleneck": "Building the monthly regional sums by hand each month.",
+  "Checked myself": "Only what you told me: one Excel table with region, date and signed net amount, small enough for your computer. I have not opened the file."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded in-workbook PivotTable recommendation, and the stack is deferred only to a conditional later step.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-board-report.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

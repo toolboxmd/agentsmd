@@ -1,0 +1,6 @@
+**Requirements and who asked:** The owner requires conflicting reservations to be rejected at save time, including simultaneous submissions.
+**Deleted:** Colour-only prevention and reminders as the proposed fix.
+**Bottleneck:** Two agents can save conflicting promises unless saving enforces availability.
+**Checked myself:** Your account of six agents, two offices, and last week’s double booking; no implementation inspected.
+
+You want to prevent two customers being promised the same item for overlapping dates. I recommend keeping the spreadsheet only if every reservation save goes through one shared operation that checks and reserves the item atomically, so only one conflicting submission succeeds. Red formatting detects conflicts after they exist; it cannot meet the owner’s requirement, and this week’s feasibility depends on the spreadsheet platform.

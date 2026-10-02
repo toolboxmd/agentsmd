@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends putting the existing Python command on the always-on Linux machine now, using one systemd service and a daily timer around 07:30 with missed-run catch-up and failure notification. Deployment stays limited to the script plus the two unit files. Orchestration is to be revisited only if real dependencies or concurrency needs appear. It does not mention confirming the interpreter or paths on the server.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the correct report by 08:00 and delivery this week; no stated requirement needs distributed execution.",
+  "Deleted": "Airflow, Kubernetes, and separate workers, scheduler, and deployment services.",
+  "Bottleneck": "The laptop is often asleep when the export should run.",
+  "Checked myself": "No independent checks; you report a working three-minute command, safe reruns, no downstream jobs, and an existing always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded systemd-timer recommendation, and orchestration is deferred until a stated future need arises.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

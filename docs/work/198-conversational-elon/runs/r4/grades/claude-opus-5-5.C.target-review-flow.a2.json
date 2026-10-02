@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now, add the two qualified engineers as reviewers next to the lead, so that any one of them can approve, using the existing tracker's reviewer or code-owner settings with no new spend. After that, watch the wait time on the next few changes. No optional extras are offered, and no needs are left unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need changes to stop waiting when the lead is absent, so the team ships faster.",
+  "Deleted": "Squads and chapters, Jira Align, new tooling, quarterly planning workshops. None of them touch the delay you described.",
+  "Bottleneck": "Approval. Each of the last six changes took under a day to code, then waited three days for the lead, who was their only reviewer and was away.",
+  "Checked myself": "Only what you told me: the six-change history, the single reviewer, and that two other engineers are qualified and authorized to approve. I have not looked at your tracker."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply picks a bounded backup-reviewer fix, and all four record lines are grounded and appear before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-review-flow.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

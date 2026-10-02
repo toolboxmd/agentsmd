@@ -1,0 +1,18 @@
+For today, don't fix this with Odoo — you'll miss more pickups if you add sync on top of the current list.
+
+What happened this morning is a prioritization view problem, not payments/stock: staff see *all* orders and prepared later-entered ones for next month while today's were still unmade.
+
+Do this:
+
+**1. Fix the counter for today (before next week):**
+Keep your one shared list, but change the view the bakers work from to: filter `preparation status = unmade` + `pickup date = today`, sorted by pickup time ascending. No future orders on that screen. That's what guarantees due-today gets made first.
+
+**2. Structure the partner rollout in that order, not all at once:**
+
+1. Scope freeze: only prepaid cake order -> prepare -> pickup. Leave payments/stock reconciliation as-is since it's correct.
+2. Sales first: Sales Order with `Delivery/Pickup Date`, customer, cake variant. Clean up products/variants.
+3. Then Inventory + Manufacturing: ingredients, BOMs/routes, Make-To-Order rule so a Sales Order creates 1 Manufacturing Order.
+4. Counter sync last: kitchen/counter dashboard fed from Manufacturing Orders, same filter as above: unmade + due today, sorted. Real-time status back to `prepared` on pickup.
+5. Parallel run + go-live: run paper/counter list + Odoo for 3-5 days, UAT with today's miss as test case, train order-entry + bakers separately, then cut over.
+
+Ask the partner next week for Phase 1 only, with a go/no-go on missing pickups. If they want to turn on sales+inventory+manufacturing sync day one, push back — that's how today repeats.

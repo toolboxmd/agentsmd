@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want dependable calls at that desk; future-proofing has no specific requirement yet.
+**Deleted:** UniFi gateway, managed switches, and Grafana as the fix for these drops, because the evidence does not justify them.
+**Bottleneck:** The desk’s Ethernet connection is the first suspect; the cable, port, and computer remain untested.
+**Checked myself:** No independent checks; you reported that two other devices stay connected and the older desk cable passes through a tight grommet.
+
+Your immediate goal is dependable calls at that desk. I recommend first trying a known-good Ethernet cable, temporarily routed clear of the grommet, and checking calls over a period when drops normally occur. If drops continue, isolate the router port and computer’s Ethernet adapter before deciding on network upgrades.

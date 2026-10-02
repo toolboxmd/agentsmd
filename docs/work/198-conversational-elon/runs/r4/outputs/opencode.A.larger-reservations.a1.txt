@@ -1,0 +1,11 @@
+No — don't ship that. It won't meet the owner's requirement.
+
+Red formatting is advisory, not enforcement: it won't reject anything at save time, and with six agents in two offices, two agents can both see green and both hit save together — that's exactly the double-booking you had last week.
+
+To guarantee one identifier can't be double-booked for overlapping dates you need a single central store that does an atomic check-and-insert:
+
+`reject if EXISTS reservation WHERE item_id = :item AND start < :new_end AND end > :new_start`
+
+That check + insert has to happen in one transaction, with a row lock on the item or a DB exclusion constraint (e.g. Postgres `daterange` exclusion). A spreadsheet can't do that — no transactions, sync delays, offline copies.
+
+Recommendation: replace the spreadsheet as source of truth this week with a minimal booking service backed by a real database that returns an error on conflict. Keep the spreadsheet only as an export/report, not for entry.

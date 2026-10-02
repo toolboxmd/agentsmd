@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked for an operating model launchable this week that stops changes waiting when the lead is absent and gets shipping faster.
+**Deleted**: Spotify squads and chapters, Jira Align, funded tooling, quarterly planning workshops; none were tied by you to an observed failure and none remove the approval wait.
+**Bottleneck**: Coding took under a day while each change then waited three days for approval.
+**Checked myself**: You told me the last six changes had the same lead as sole reviewer while that lead was away, and two other engineers are qualified and authorized to approve.
+
+What you want is: PRs keep moving when the lead is out, with no new tools to run.
+
+I recommend you keep your current tracker and change only the reviewer rule this week: assign reviews to first-available of the three qualified approvers, never a sole reviewer, with reassignment if untouched by next morning. I am rejecting squads/chapters and Jira Align because they add org and tool overhead without fixing the single-reviewer block.

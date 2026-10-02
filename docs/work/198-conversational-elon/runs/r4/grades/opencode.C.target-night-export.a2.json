@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Run the existing Python command now on the always-on Linux machine using a nightly systemd timer, with logging and a retry. Airflow on Kubernetes and the separate scheduler/worker/deployment split are rejected, not deferred. The reply does not mention checking the interpreter, data access or paths on that machine first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Nightly report ready by 08:00 that ships this week (user); no scale or downstream jobs stated to justify new platform.",
+  "Deleted": "Airflow, Kubernetes, separate scheduler/worker/deployment split.",
+  "Bottleneck": "Laptop sleep causing missed runs, not orchestration power.",
+  "Checked myself": "You reported 3 minute Python command, safe to rerun, no downstream jobs, successes are correct, and you administer an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, and the reply picks a bounded systemd timer on the existing server with the stack named and rejected; 'Checked myself' only restates facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-night-export.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

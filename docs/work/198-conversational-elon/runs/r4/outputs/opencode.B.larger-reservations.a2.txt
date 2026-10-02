@@ -1,0 +1,5 @@
+You are trying to guarantee the same item cannot be promised twice for overlapping dates, even when two agents save at the same time.
+
+I recommend against shipping only red formatting and a reminder because it cannot reject a conflicting save and will allow last week's double booking to happen again.
+
+The smallest option that meets the requirement is one shared bookings store with an atomic overlap check that rejects the second save.

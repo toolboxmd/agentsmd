@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply rejects the initials column and recommends doing one thing now: keep the current folder for editing only and add a separate release store. In that store, only the three reviewers can save final files, each file is locked against editing and deletion for seven years, the system records the approver's name and approval time, and the author cannot be the approver. It offers no optional additions. One gap remains: it does not name a tool or say how the system would enforce the non-author rule.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "Customer contract per your note requires exact approved version plus approver identity and time retained 7 years, no self-approval, later edits must not alter retained version.",
+  "Deleted": "Editable shared folder with typed-initials APPROVED column and naming convention.",
+  "Bottleneck": "No trustworthy approval proof, which blocks this week's delivery.",
+  "Checked myself": "Your description only; no immutable store, system identity, or timestamp described."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "It chooses one controlled release store with locked files, system-recorded identity and time, a non-author approver and seven-year retention, and it rejects the initials proposal by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.larger-approvals.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

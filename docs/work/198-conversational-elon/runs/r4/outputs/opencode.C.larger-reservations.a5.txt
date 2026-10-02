@@ -1,0 +1,8 @@
+Requirements and who asked: Owner requires a conflicting reservation is rejected at save time even when two agents submit together; you asked if red formatting plus a reminder can ship this week.
+Deleted: Booking spreadsheet with red conditional formatting and manual overlap checks.
+Bottleneck: Two agents in two offices saving the same item ID for overlapping dates at the same time.
+Checked myself: Six booking agents, two offices, one identifier per physical item, and a double promise last week, per what you told me.
+
+What you are trying to achieve is no double promise for the same item for overlapping dates under concurrent entry.
+
+I recommend against shipping only colours and a reminder. Formatting does not block a save, does not serialize simultaneous saves, and will not meet the owner requirement. The smallest option that does is one central booking store where the save itself atomically checks item ID plus date overlap and rejects the second write. You can keep the spreadsheet as a read only view if needed, but writes must go through that enforcing save.

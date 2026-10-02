@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends one local script that takes the client's ordered code list and the JPEG folder, matches exact codes, and generates the contact-sheet PDF in the supplied order. Before export it flags missing codes, unlisted images and ambiguous matches, and the finished PDF gets a quick visual check before sending. The DAM, AI tagging, semantic search and cloud portal are removed from this week's scope, so no optional additions are recommended now. No unmet needs remain beyond the files not having been inspected.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires images in its exact product-code order; you want professional delivery this week.",
+  "Deleted": "DAM, AI tagging, semantic search, and a cloud review portal from this week's scope.",
+  "Bottleneck": "An hour of manual thumbnail ordering before each PDF.",
+  "Checked myself": "You told me each job has one JPEG folder, filenames start with product codes, and the client supplies an ordered code list; I have not inspected the files."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "It is a bounded local script that follows the client's code list, has a complete grounded record placed before the recommendation, and explicitly rejects the DAM stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-studio-delivery.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

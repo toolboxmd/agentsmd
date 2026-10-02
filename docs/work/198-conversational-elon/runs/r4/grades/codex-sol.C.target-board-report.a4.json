@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: build an Excel template with a PivotTable that sums signed net amounts by region and year/month, so refunds stay negative, plus a reconciliation against the source total. Each month: paste in the new export, refresh, check the reconciliation and use the results in the board report. Optional additions: none; no warehouse, ingestion, modeling or BI layer is offered now or later. Unmet needs: none stated; the agent notes it has not inspected the workbook.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want a repeatable monthly board report of net sales by region, ready this week.",
+  "Deleted": "Airbyte, Snowflake, dbt and Power BI; the stated task does not require them.",
+  "Bottleneck": "Building the regional sums by hand.",
+  "Checked myself": "You\u2019ve told me there is one local Excel table, it fits on your computer, and refunds are negative amounts; I haven\u2019t inspected the workbook."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded PivotTable recommendation, and the full stack is rejected by name with no optional reinstatement.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-board-report.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

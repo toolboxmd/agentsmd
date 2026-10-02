@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends now a small shared booking store that runs an atomic overlap check on save, so the second of two conflicting submits is rejected. The spreadsheet stays only as an optional view. It rejects colour-only formatting plus reminders as the control. No unmet needs remain beyond the implementation itself.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "Owner requires a conflicting reservation is rejected at save time even with simultaneous submits; you asked if red spreadsheet formatting can ship this week.",
+  "Deleted": "Conditional formatting plus a reminder to check as enforcement.",
+  "Bottleneck": "Six agents in two offices can both save overlapping rows for the same item identifier before either sees red.",
+  "Checked myself": "You told me the same item was promised twice for overlapping dates last week."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Chooses server-side atomic save-time conflict rejection that explicitly handles simultaneous submits, and all four record lines are present, specific and grounded.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.larger-reservations.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

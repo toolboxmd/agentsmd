@@ -1,0 +1,6 @@
+**Requirements and who asked:** You need changes to stop waiting for approval when the lead is absent; nobody has named a need that squads, chapters, Jira Align, or planning workshops would meet.
+**Deleted:** Spotify squads and chapters, Jira Align, new tooling spend, and quarterly planning workshops.
+**Bottleneck:** Approval. Each of the last six changes was coded in under a day and then waited three days, because the lead was the only reviewer and was away.
+**Checked myself:** Nothing observed directly. You told me the six wait times, that the lead was the sole reviewer and was away, and that two other engineers are qualified and authorized to approve.
+
+You're trying to stop changes from waiting on approval when the lead is out. I recommend launching one rule this week: every change lists the lead and the two qualified engineers as reviewers, and approval from any one of them is enough to merge. Set this up as a reviewer group in your existing tracker, with no new tool and no reorg. A squads-and-chapters reorg or a Jira Align rollout would not fix this, because neither one changes who can approve. To confirm it works, check that the next few changes wait hours instead of days.

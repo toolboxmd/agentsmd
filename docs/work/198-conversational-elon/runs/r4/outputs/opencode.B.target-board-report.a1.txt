@@ -1,0 +1,3 @@
+What you are trying to achieve is a correct monthly board report of net sales by region from one small Excel export that already fits on your computer.
+
+I recommend against Airbyte, Snowflake, dbt and Power BI this week because they add cost, maintenance and failure points without changing the result, which is only a grouped sum of signed amounts where negative refunds must stay included. Keep the Excel file as truth and build the report with one local pivot on region and month summing net amount, and I can set that up now if you want.

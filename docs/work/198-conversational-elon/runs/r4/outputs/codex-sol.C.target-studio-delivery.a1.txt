@@ -1,0 +1,8 @@
+**Requirements and who asked:** The client requires images in the supplied exact product-code order.
+**Deleted:** DAM, AI tagging, semantic search and a cloud portal; none addresses the stated delivery bottleneck.
+**Bottleneck:** You spend an hour manually arranging thumbnails before generating each PDF.
+**Checked myself:** Only the facts you supplied: one JPEG folder per job, code-prefixed filenames and an ordered client list.
+
+You want a reliable delivery workflow this week. I recommend one local contact-sheet generator that reads the client’s list and JPEG folder, matches exact product codes, places images in that order and writes the PDF, flagging missing or unmatched codes for review.
+
+Use a completed job to verify the matching and PDF order before using it for a delivery. The larger DAM investment has no demonstrated need in this workflow.

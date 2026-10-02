@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply rejects the folder-plus-initials proposal. It keeps the folder for drafts only and releases through one controlled archive. That archive authenticates the reviewer, blocks author self-approval, records approval time against the exact document version, and locks the document and its approval record for seven years. There are no optional add-ons. One need is open: it is not yet confirmed whether the current platform can provide this archive, and the reply asks which platform hosts the folder.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires the exact approved version, approver identity and approval time retained for seven years, independent approval, and protection from later edits.",
+  "Deleted": "Typed initials and naming conventions as evidence of approval.",
+  "Bottleneck": "The editable folder cannot enforce these controls.",
+  "Checked myself": "You said authors can edit the folder; no platform capabilities have been verified."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks one controlled archive with every required capability, and its four record lines are specific and appear before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-approvals.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

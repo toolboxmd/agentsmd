@@ -1,0 +1,15 @@
+**Requirements and who asked:** you need the report by 08:00 every day; the start time doesn't matter; reruns are safe. "Future-proofed" has no named failure behind it yet.
+**Deleted:** Airflow, Kubernetes, and any split into workers, scheduler, and deployment. Nothing here needs them: it's one 3-minute job with no downstream tasks.
+**Bottleneck:** the laptop sleeps overnight, so some runs never start. Successful runs are already correct.
+**Checked myself:** nothing observed. All of this comes from what you told me about the job, the laptop, and your always-on Linux machine.
+
+You're trying to get a correct report every morning by 08:00. I recommend moving the existing command to the always-on Linux machine you already run, scheduled with a systemd timer. You can ship that today. Airflow on Kubernetes would add a cluster, a scheduler, a metadata database, and upgrades for you to maintain, and it would fix nothing that the sleeping laptop doesn't already explain.
+
+Concretely:
+- Add a `.service` that runs your command.
+- Add a `.timer` with `OnCalendar=*-*-* 02:00` and `Persistent=true`. If the machine is down at 02:00, the job runs at the next boot.
+- `journalctl -u <name>` shows each night's result.
+
+If a real need appears later, such as dependent jobs, many pipelines, or a team sharing runs, we can revisit then. The command won't need to change.
+
+One thing to confirm before I write the unit files: does the command depend on anything that only exists on the laptop, like credentials, input files, or where the report gets delivered?

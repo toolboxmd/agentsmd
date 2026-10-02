@@ -1,0 +1,13 @@
+That UniFi + Grafana layout won't stop these drops — don't deploy it as the fix.
+
+Evidence points to that desk run, not your router:
+- 2 other devices on the same router stay connected during a dropout, so WAN/router is likely fine
+- only the desk Ethernet drops, and that cable is old + pinched through a tight grommet
+- you haven't tried a different cable yet
+
+Do this first:
+
+1. Get a known-good Cat5e/6 cable and run it temporarily to the desk computer, routed *around* the grommet, not through it.
+2. Use it for calls for a day. If drops stop, you've found it — replace that run permanently with slack/strain-relief at the grommet and check for kinks/broken clips.
+
+A new gateway, managed switches, and dashboard just monitor the same broken physical link. If you still want UniFi for future-proofing, do it after calls are stable, for other reasons.

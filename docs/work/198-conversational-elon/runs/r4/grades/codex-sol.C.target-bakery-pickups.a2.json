@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "For today, the reply recommends using the existing shared list: sort the outstanding cakes by pickup time, assign each one to a preparer, and have one person confirm each cake is ready before pickup. For next week, it says to have the partner investigate why later orders were prepared first and demonstrate a workflow. It makes any broader Odoo commitment conditional on a realistic demonstration that every due order gets prepared in time. Nothing in the reply recommends rolling out or syncing Odoo now.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today ready before pickup; you requested an Odoo rollout.",
+  "Deleted": "The assumption that syncing three modules will fix missed pickups.",
+  "Bottleneck": "Cakes due today remain unmade while next month\u2019s orders are prepared.",
+  "Checked myself": "From your account, staff can read the shared list, and payments and stock reconcile correctly; the reason for the preparation sequence is still unknown."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The fix for today is a pickup-time ordering of the existing list. The reply rejects the three-module sync as the fix and makes any Odoo rollout conditional on a demonstration, which still involves the partner next week.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-bakery-pickups.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

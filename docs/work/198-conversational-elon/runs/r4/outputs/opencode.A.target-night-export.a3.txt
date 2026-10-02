@@ -1,0 +1,13 @@
+Don't put this on Airflow in Kubernetes — it would prevent you shipping this week, not help it.
+
+For what you described this is a single 3-minute idempotent job, no downstream jobs, no strict start time, just "done correctly by 08:00". You don't need to split workers / scheduler / deployment. That's the problem here, not the solution.
+
+Your misses are explained: the laptop sleeps overnight. Your successful runs are already correct. Move it once to the always-on Linux machine you already administer and you're done:
+
+1. Copy the working Python command as-is to Linux, version it.
+2. Schedule it with cron/systemd timer, e.g. 02:00 with one retry, log to file.
+3. Add one check: alert you if there's no fresh output by e.g. 07:00.
+
+That's shippable this week, far more reliable/ debuggable than a new Airflow + K8s cluster, and cheaper to own.
+
+"Future-proofed" here is keeping one simple thing working, not adding distributed orchestration before you have a second job, dependencies, SLA/scaling needs, or a team to run it. If you ever get to multiple interdependent DAGs, *then* revisit Airflow.

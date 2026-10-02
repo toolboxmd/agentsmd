@@ -1,0 +1,8 @@
+Requirements and who asked: Owner requires a conflicting reservation is rejected at save time, even with two simultaneous submits.
+Deleted: Red conditional formatting and a reminder to check, because they detect after save and do not reject anything.
+Bottleneck: Two agents in different offices saving the same item for overlapping dates at the same time.
+Checked myself: You reported six agents, two offices, one identifier per physical item, and a double promise last week.
+
+I recommend against keeping the spreadsheet as the system of record. It cannot meet the owner requirement: two agents can both read a clear sheet, both save, and both look valid until the formatting refreshes.
+
+Ship the smallest thing that does enforce it: one central reservations table with a database enforced no-overlap rule for item plus dates, so the second concurrent save fails. Keep the spreadsheet only as a read-only export if you need it this week.

@@ -1,0 +1,8 @@
+**Requirements and who asked:** images delivered in the client's supplied code order (client); remove the hour of manual dragging per delivery (you); a contact-sheet PDF per job (your current deliverable).
+**Deleted:** DAM, AI tagging, semantic search, cloud review portal. Nothing in your problem needs them, since the client already gives you exact codes and every filename already starts with one.
+**Bottleneck:** hand-ordering thumbnails, which a computer can do exactly from the code list.
+**Checked myself:** only what you told me. Exact ordered codes per job, filenames prefixed with the code, final JPEGs in one folder per job, an hour lost each delivery.
+
+You want each delivery ordered to the client's list with a contact sheet, without the manual hour. I recommend one small script you run per job. It reads the client's code list, matches each code to its JPEGs, and writes numbered copies (`001_CODE.jpg`, ...) plus the contact-sheet PDF in that order. It stops if any code has no image or any image matches no code, so nothing ships silently wrong. It matches the code followed by a separator, so `AB1` never grabs `AB12`.
+
+I can build it this week. Send one real client code list (as you receive it) and that job's filenames, and tell me how multiple shots of one code should be ordered.

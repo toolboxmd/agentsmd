@@ -1,0 +1,1 @@
+You want to decide on each contract two weeks before its fixed notice deadline. You do not need n8n, a Gmail agent, a vector database, or a Telegram bot because the dates are fixed for the year, you check your phone calendar daily, and you want no automatic actions. Copy each notice deadline minus 14 days from the yearly statement into your phone calendar with a reminder.

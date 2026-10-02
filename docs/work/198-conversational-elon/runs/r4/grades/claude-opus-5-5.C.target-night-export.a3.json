@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends moving the existing command to the always-on Linux machine now and running it from a systemd timer at about 02:00 with Persistent=true. It rejects Airflow on Kubernetes. It would reassess only if 'future-proofed' turns into a concrete need, such as dependent jobs or a shared UI. It asks the user to approve the host change before installing the timer. It doesn't propose checking the interpreter or paths on the server first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "the report exists by 08:00 every day (you); \"future-proofed\" (you, not yet tied to a specific need); Airflow on Kubernetes (peers' practice, not a requirement of this job).",
+  "Deleted": "Airflow, Kubernetes, and any worker/scheduler/deployment split. One 3-minute job with no downstream jobs needs none of them.",
+  "Bottleneck": "the job runs on a laptop that is often asleep overnight, so runs are skipped. The command itself works.",
+  "Checked myself": "nothing observed directly. You told me the command works, takes three minutes, has no downstream jobs, is safe to rerun, and that you administer an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply picks a bounded fix on the existing server and treats Airflow only as a conditional future option. All four record lines come before the recommendation and are grounded in the supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-night-export.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

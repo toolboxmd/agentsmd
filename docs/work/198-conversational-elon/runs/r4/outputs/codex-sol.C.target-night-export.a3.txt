@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want delivery by 08:00, room to grow, and shipping this week; exact start time is flexible.
+**Deleted:** Airflow, Kubernetes, separate workers, and a separate scheduler deployment; this single three-minute export has no dependencies requiring them.
+**Bottleneck:** Reliable overnight execution while the laptop is asleep.
+**Checked myself:** Only the facts you supplied: the command works, reruns safely replace output, and you already administer an always-on Linux machine.
+
+Your goal is a reliable report by 08:00; I recommend running the existing Python command on that Linux machine with one systemd service and one timer scheduled for 07:00 in your intended timezone, with `Persistent=true` to catch missed timer events.
+
+The service runs the export, the timer schedules it, and deployment copies the script and its dependencies onto the existing machine; ship after verifying a scheduled run produces the correct report, and preserve the command as the reusable boundary for future growth.

@@ -1,0 +1,12 @@
+**Requirements and who asked:** Monthly net sales by region for the board, including refunds as negative amounts (you, for the board report).
+**Deleted:** Airbyte, Snowflake, dbt, Power BI. There is one source, one local Excel table, and it fits on your computer, so nothing needs extracting, warehousing, modeling, or a BI server.
+**Bottleneck:** Building the monthly regional sums by hand.
+**Checked myself:** Only what you told me (one local Excel export with region, date, and signed net amount). I have not opened the file.
+
+You want the monthly regional totals produced reliably without hand work. I recommend an Excel PivotTable on the export, which you can set up in about 15 minutes:
+
+1. Click inside the export and press Cmd+T to format it as a Table.
+2. Insert a PivotTable from that Table: Region in Rows, Date in Columns grouped by Months and Years, Sum of net amount in Values. Refunds net out automatically because they are already negative.
+3. Each month, paste the new export into the Table and choose Data > Refresh All.
+
+I'm rejecting the modern data stack because it would give you four paid services to run and maintain to produce one small table that Excel already computes. Before you rely on the pivot, check two things: the Date column holds real dates, not text, and each region is spelled the same way throughout. Either problem would quietly split or drop totals.

@@ -1,0 +1,10 @@
+**Requirements and who asked:** The signed customer contract requires the exact approved version, approver identity and approval time retained for seven years, independent approval, and protection from later edits.
+**Deleted:** Typed initials and naming conventions as evidence that those controls are satisfied.
+**Bottleneck:** Enforcing independent approval and preserving the released version and its approval record.
+**Checked myself:** You said authors can edit the shared folder; its access controls and retention capabilities are unverified.
+
+The proposed column and naming convention do not meet the contract: initials do not establish authenticated approval, and editable files do not preserve the exact approved version.
+
+You need compliant releases before this week’s delivery; I recommend keeping the working folder and configuring a protected release archive in your existing system that binds each frozen version to an authenticated reviewer’s identity and approval time, blocks self-approval, and prevents alteration or deletion of the version and approval record for seven years.
+
+Before shipping, we need evidence that the existing system can enforce each control; that capability is currently unknown.

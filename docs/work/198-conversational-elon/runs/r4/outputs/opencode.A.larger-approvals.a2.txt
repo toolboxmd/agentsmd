@@ -1,0 +1,19 @@
+Don't ship that — it won't meet the contract and will fail an audit.
+
+The APPROVED column with typed initials + naming convention gives you none of what was signed for:
+
+1. **Exact approved version not retained:** anyone of the 12 authors can edit/overwrite the shared folder after release, so the released file is lost.
+2. **No provable identity:** initials can be typed by anyone, including the author approving their own document.
+3. **No approval time:** no trusted, tamper-proof timestamp.
+4. **No 7-year retention:** an editable column is deletable/editable, not immutable storage.
+5. **No segregation of duties:** "agree not to self-approve" isn't enforced.
+
+Minimum you need before this week's delivery:
+
+Keep the current folder as *working draft only*. Add a separate `RELEASED` location where authors have read-only, only the 3 reviewers (or automation) can write, and delete/overwrite is blocked.
+
+For each release, store an immutable copy — e.g. PDF + SHA256 — plus a system-logged record, not typed text: filename/version, hash, authenticated approver (login, not initials), timestamp, and a check that approver != author. Never update that copy in place; later edits go in as a new version.
+
+Retain that copy + record for 7 years with backup and no-delete.
+
+If you want, I can help you set up that split and approval log with what you have today — but don't deliver on initials + naming convention.

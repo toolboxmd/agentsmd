@@ -1,0 +1,219 @@
+main start Fri Oct  2 09:03:06 CEST 2026
+claude-opus-5-5.C.target-invoice-count.a1               valid                                 9s
+claude-opus-5-5.C.target-home-network.a1                valid                                11s
+claude-opus-5-5.C.target-bakery-pickups.a1              valid                                11s
+claude-opus-5-5.C.target-night-export.a1                valid                                14s
+claude-opus-5-5.C.target-board-report.a1                valid                                16s
+codex-sol.C.target-home-network.a1                      valid                                17s
+claude-opus-5-5.C.target-invoice-count.a2               valid                                10s
+claude-opus-5-5.C.target-renewal-admin.a1               valid                                19s
+claude-opus-5-5.C.target-bakery-pickups.a2              valid                                 9s
+claude-opus-5-5.C.target-home-network.a2                valid                                12s
+opencode.C.target-renewal-admin.a1                      valid                                27s
+claude-opus-5-5.C.target-renewal-admin.a2               valid                                 8s
+claude-opus-5-5.C.target-night-export.a2                valid                                14s
+claude-opus-5-5.C.target-invoice-count.a3               valid                                10s
+claude-opus-5-5.C.target-board-report.a2                valid                                12s
+codex-sol.C.target-renewal-admin.a1                     valid                                30s
+codex-sol.C.target-invoice-count.a1                     valid                                31s
+claude-opus-5-5.C.target-home-network.a3                valid                                10s
+codex-sol.C.target-board-report.a1                      valid                                33s
+codex-sol.C.target-night-export.a1                      valid                                34s
+claude-opus-5-5.C.target-renewal-admin.a3               valid                                 9s
+codex-sol.C.target-bakery-pickups.a1                    valid                                38s
+opencode.C.target-invoice-count.a1                      valid                                38s
+codex-sol.C.target-home-network.a2                      valid                                22s
+claude-opus-5-5.C.target-invoice-count.a4               valid                                11s
+claude-opus-5-5.C.target-board-report.a3                valid                                11s
+claude-opus-5-5.C.target-bakery-pickups.a3              valid                                21s
+claude-opus-5-5.C.target-night-export.a3                valid                                14s
+claude-opus-5-5.C.target-home-network.a4                valid                                11s
+claude-opus-5-5.C.target-renewal-admin.a4               valid                                 9s
+opencode.C.target-board-report.a1                       valid                                45s
+opencode.C.target-night-export.a1                       valid                                47s
+claude-opus-5-5.C.target-invoice-count.a5               valid                                 9s
+opencode.C.target-bakery-pickups.a1                     valid                                49s
+claude-opus-5-5.C.target-bakery-pickups.a4              valid                                 9s
+opencode.C.target-home-network.a1                       valid                                51s
+claude-opus-5-5.C.target-board-report.a4                valid                                12s
+claude-opus-5-5.C.target-home-network.a5                valid                                 9s
+claude-opus-5-5.C.target-night-export.a4                valid                                11s
+codex-sol.C.target-renewal-admin.a2                     valid                                25s
+codex-sol.C.target-night-export.a2                      valid                                21s
+claude-opus-5-5.C.target-renewal-admin.a5               valid                                10s
+codex-sol.C.target-invoice-count.a2                     valid                                28s
+opencode.C.target-renewal-admin.a2                      valid                                33s
+claude-opus-5-5.C.target-review-flow.a1                 valid                                 8s
+claude-opus-5-5.C.target-board-report.a5                valid                                12s
+claude-opus-5-5.C.target-night-export.a5                valid                                11s
+opencode.C.target-invoice-count.a2                      valid                                26s
+codex-sol.C.target-board-report.a2                      valid                                33s
+claude-opus-5-5.C.target-bakery-pickups.a5              valid                                15s
+claude-opus-5-5.C.control-subtraction.a1                valid                                 3s
+claude-opus-5-5.C.larger-approvals.a1                   valid                                19s
+codex-sol.C.target-home-network.a3                      valid                                31s
+claude-opus-5-5.C.target-review-flow.a2                 valid                                 9s
+claude-opus-5-5.C.control-weekday.a1                    valid                                 4s
+claude-opus-5-5.C.control-subtraction.a2                valid                                 4s
+claude-opus-5-5.C.control-weekday.a2                    valid                                 3s
+claude-opus-5-5.C.control-subtraction.a3                valid                                 3s
+opencode.C.target-bakery-pickups.a2                     valid                                25s
+claude-opus-5-5.C.larger-reservations.a1                valid                                19s
+claude-opus-5-5.C.target-studio-delivery.a1             valid                                11s
+claude-opus-5-5.C.control-weekday.a3                    valid                                 3s
+claude-opus-5-5.C.control-subtraction.a4                valid                                 3s
+opencode.C.target-night-export.a2                       valid                                30s
+claude-opus-5-5.C.target-review-flow.a3                 valid                                10s
+codex-sol.C.target-bakery-pickups.a2                    valid                                42s
+claude-opus-5-5.C.control-weekday.a4                    valid                                 3s
+claude-opus-5-5.C.control-subtraction.a5                valid                                 3s
+codex-sol.C.target-renewal-admin.a3                     valid                                26s
+opencode.C.target-board-report.a2                       valid                                35s
+claude-opus-5-5.C.larger-approvals.a2                   valid                                15s
+claude-opus-5-5.C.control-weekday.a5                    valid                                 3s
+claude-opus-5-5.C.target-studio-delivery.a2             valid                                12s
+codex-sol.C.target-invoice-count.a3                     valid                                28s
+opencode.C.target-home-network.a2                       valid                                36s
+claude-opus-5-5.C.target-review-flow.a4                 valid                                10s
+claude-opus-5-5.C.larger-reservations.a2                valid                                15s
+codex-sol.C.target-night-export.a3                      valid                                37s
+codex-sol.C.target-home-network.a4                      valid                                26s
+opencode.C.target-renewal-admin.a3                      valid                                35s
+claude-opus-5-5.C.target-review-flow.a5                 valid                                 8s
+claude-opus-5-5.C.larger-approvals.a3                   valid                                15s
+opencode.C.target-board-report.a3                       valid                                18s
+codex-sol.C.target-board-report.a3                      valid                                34s
+claude-opus-5-5.C.target-studio-delivery.a3             valid                                13s
+claude-opus-5-5.C.larger-reservations.a3                valid                                16s
+opencode.C.target-bakery-pickups.a3                     valid                                34s
+claude-opus-5-5.C.target-studio-delivery.a4             valid                                10s
+codex-sol.C.target-renewal-admin.a4                     valid                                29s
+opencode.C.target-home-network.a3                       valid                                22s
+opencode.C.target-night-export.a3                       valid                                34s
+claude-opus-5-5.C.larger-approvals.a4                   valid                                15s
+codex-sol.C.target-bakery-pickups.a3                    valid                                33s
+codex-sol.C.target-invoice-count.a4                     valid                                27s
+codex-sol.C.target-night-export.a4                      valid                                27s
+opencode.C.target-renewal-admin.a4                      valid                                23s
+opencode.C.target-invoice-count.a3                      valid                                54s
+claude-opus-5-5.C.target-studio-delivery.a5             valid                                12s
+codex-sol.C.target-board-report.a4                      valid                                24s
+claude-opus-5-5.C.larger-reservations.a4                valid                                21s
+claude-opus-5-5.C.larger-approvals.a5                   valid                                15s
+opencode.C.target-board-report.a4                       valid                                28s
+codex-sol.C.target-home-network.a5                      valid                                33s
+cell codex-sol.C.target-home-network: 5 valid, 0 invalid
+codex-sol.C.target-renewal-admin.a5                     valid                                22s
+codex-sol.C.control-subtraction.a1                      valid                                 6s
+codex-sol.C.target-bakery-pickups.a4                    valid                                26s
+opencode.C.target-home-network.a4                       valid                                30s
+codex-sol.C.control-subtraction.a2                      valid                                 7s
+codex-sol.C.target-invoice-count.a5                     valid                                27s
+claude-opus-5-5.C.larger-reservations.a5                valid                                16s
+codex-sol.C.target-night-export.a5                      valid                                26s
+codex-sol.C.control-weekday.a1                          valid                                 6s
+codex-sol.C.control-subtraction.a3                      valid                                 9s
+opencode.C.target-invoice-count.a4                      valid                                29s
+codex-sol.C.target-board-report.a5                      valid                                26s
+opencode.C.target-night-export.a4                       valid                                39s
+opencode.C.target-bakery-pickups.a4                     valid                                46s
+codex-sol.C.control-weekday.a2                          valid                                 8s
+codex-sol.C.control-subtraction.a4                      valid                                 8s
+codex-sol.C.control-weekday.a3                          valid                                 6s
+codex-sol.C.target-review-flow.a1                       valid                                32s
+opencode.C.target-renewal-admin.a5                      valid                                44s
+opencode.C.target-board-report.a5                       valid                                37s
+codex-sol.C.control-subtraction.a5                      valid                                10s
+codex-sol.C.control-weekday.a4                          valid                                 9s
+codex-sol.C.target-studio-delivery.a1                   valid                                27s
+opencode.C.target-home-network.a5                       valid                                32s
+codex-sol.C.control-weekday.a5                          valid                                 6s
+codex-sol.C.target-bakery-pickups.a5                    valid                                42s
+cell codex-sol.C.target-bakery-pickups: 5 valid, 0 invalid
+cell codex-sol.C.target-invoice-count: 5 valid, 0 invalid
+cell codex-sol.C.target-board-report: 5 valid, 0 invalid
+cell codex-sol.C.target-night-export: 5 valid, 0 invalid
+cell codex-sol.C.target-renewal-admin: 5 valid, 0 invalid
+opencode.C.target-night-export.a5                       valid                                31s
+codex-sol.C.larger-reservations.a1                      valid                                38s
+codex-sol.C.target-review-flow.a2                       valid                                29s
+opencode.C.larger-reservations.a1                       valid                                23s
+opencode.C.target-review-flow.a1                        valid                                33s
+codex-sol.C.larger-approvals.a1                         valid                                32s
+codex-sol.C.target-studio-delivery.a2                   valid                                30s
+opencode.C.target-studio-delivery.a1                    valid                                36s
+opencode.C.target-invoice-count.a5                      valid                                52s
+opencode.C.control-subtraction.a1                       valid                                 6s
+opencode.C.target-bakery-pickups.a5                     valid                                59s
+opencode.C.control-subtraction.a2                       valid                                 9s
+opencode.C.larger-reservations.a2                       valid                                23s
+opencode.C.control-weekday.a1                           valid                                 6s
+codex-sol.C.larger-reservations.a2                      valid                                34s
+codex-sol.C.target-review-flow.a3                       valid                                32s
+opencode.C.control-subtraction.a3                       valid                                 8s
+codex-sol.C.target-studio-delivery.a3                   valid                                25s
+opencode.C.control-weekday.a2                           valid                                 7s
+codex-sol.C.larger-approvals.a2                         valid                                31s
+opencode.C.target-review-flow.a2                        valid                                35s
+opencode.C.control-subtraction.a4                       valid                                 6s
+opencode.C.control-weekday.a3                           valid                                10s
+opencode.C.control-subtraction.a5                       valid                                 7s
+opencode.C.target-studio-delivery.a2                    valid                                39s
+opencode.C.larger-reservations.a3                       valid                                26s
+codex-sol.C.larger-reservations.a3                      valid                                24s
+opencode.C.larger-approvals.a1                          valid                                63s
+opencode.C.control-weekday.a4                           valid                                 8s
+codex-sol.C.target-review-flow.a4                       valid                                31s
+codex-sol.C.target-studio-delivery.a4                   valid                                33s
+codex-sol.C.larger-reservations.a4                      valid                                15s
+codex-sol.C.larger-approvals.a3                         valid                                36s
+opencode.C.target-review-flow.a3                        valid                                35s
+opencode.C.control-weekday.a5                           valid                                22s
+opencode.C.target-studio-delivery.a3                    valid                                28s
+opencode.C.larger-reservations.a4                       valid                                41s
+opencode.C.target-review-flow.a4                        valid                                19s
+opencode.C.larger-approvals.a2                          valid                                42s
+codex-sol.C.target-review-flow.a5                       valid                                36s
+cell codex-sol.C.target-review-flow: 5 valid, 0 invalid
+codex-sol.C.target-studio-delivery.a5                   valid                                36s
+cell codex-sol.C.target-studio-delivery: 5 valid, 0 invalid
+codex-sol.C.larger-approvals.a4                         valid                                31s
+codex-sol.C.larger-reservations.a5                      valid                                37s
+cell codex-sol.C.larger-reservations: 5 valid, 0 invalid
+opencode.C.target-studio-delivery.a4                    valid                                36s
+opencode.C.larger-reservations.a5                       valid                                25s
+opencode.C.target-review-flow.a5                        valid                                29s
+codex-sol.C.larger-approvals.a5                         valid                                30s
+cell codex-sol.C.larger-approvals: 5 valid, 0 invalid
+cell codex-sol.C.control-weekday: 5 valid, 0 invalid
+cell codex-sol.C.control-subtraction: 5 valid, 0 invalid
+cell opencode.C.target-home-network: 5 valid, 0 invalid
+cell opencode.C.target-bakery-pickups: 5 valid, 0 invalid
+cell opencode.C.target-invoice-count: 5 valid, 0 invalid
+cell opencode.C.target-board-report: 5 valid, 0 invalid
+cell opencode.C.target-night-export: 5 valid, 0 invalid
+cell opencode.C.target-renewal-admin: 5 valid, 0 invalid
+cell opencode.C.target-review-flow: 5 valid, 0 invalid
+opencode.C.larger-approvals.a3                          valid                                43s
+opencode.C.target-studio-delivery.a5                    valid                                41s
+cell opencode.C.target-studio-delivery: 5 valid, 0 invalid
+cell opencode.C.larger-reservations: 5 valid, 0 invalid
+opencode.C.larger-approvals.a4                          valid                                60s
+opencode.C.larger-approvals.a5                          INVALID exit 1                       78s
+opencode.C.larger-approvals.a6                          valid                                27s
+cell opencode.C.larger-approvals: 5 valid, 1 invalid
+cell opencode.C.control-weekday: 5 valid, 0 invalid
+cell opencode.C.control-subtraction: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-home-network: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-bakery-pickups: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-invoice-count: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-board-report: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-night-export: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-renewal-admin: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-review-flow: 5 valid, 0 invalid
+cell claude-opus-5-5.C.target-studio-delivery: 5 valid, 0 invalid
+cell claude-opus-5-5.C.larger-reservations: 5 valid, 0 invalid
+cell claude-opus-5-5.C.larger-approvals: 5 valid, 0 invalid
+cell claude-opus-5-5.C.control-weekday: 5 valid, 0 invalid
+cell claude-opus-5-5.C.control-subtraction: 5 valid, 0 invalid
+exit C 0

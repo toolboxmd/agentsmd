@@ -1,0 +1,19 @@
+Hold off on the UniFi + Grafana build for this issue — it won't fix what you're describing.
+
+What you have points away from the gateway:
+- 2 other devices on the same router stay connected during the dropout
+- only the desk PC over Ethernet drops
+- that cable is years old and goes through a tight grommet
+- you haven't tried a different cable yet
+
+That's a localized desk link fault, not a gateway/switch/dashboard problem. A new gateway and managed switches will just carry the same bad physical connection, and Grafana will only graph the drops.
+
+Do the cheap isolation test first:
+
+1. Get any known-good Cat5e/Cat6 cable and run it temporarily from the desk PC to the router — *not* through the grommet, no tight bends.
+2. Use it for your next calls. If drops stop, you've found it.
+3. Then replace it permanently with the right length and re-route to avoid the pinch.
+
+If the temporary cable still drops, check PC link speed / port errors and try a different router port before spending the budget.
+
+Once that desk is stable, then we can talk about future-proof layout if you still want it.

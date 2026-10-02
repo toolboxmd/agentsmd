@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup.
+**Deleted:** A sales, inventory and manufacturing rollout as the fix for today’s preparation problem.
+**Bottleneck:** Preparation is happening out of pickup-date order; payments, stock and access to orders already work.
+**Checked myself:** Your account only: today’s cakes remain unmade while next month’s orders have been prepared.
+
+To get today’s cakes ready, use the existing counter list: put today’s unfinished orders first, order them by pickup time, assign each to a preparer and mark it ready only when finished.
+
+I would pause the Odoo rollout and ask the booked partner to establish what the current list cannot support before committing to modules; the evidence you’ve given points to preparation priority, not a need for three synced systems.

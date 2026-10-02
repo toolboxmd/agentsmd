@@ -1,0 +1,8 @@
+Requirements and who asked: decide 2 weeks before each notice deadline or you miss the window (you); dates fixed for year from one statement (you); use phone calendar daily with no auto cancel or pay (you); n8n plus Gmail agent plus vector DB plus Telegram bot as possible means (you).
+Deleted: n8n workflow, Gmail agent, vector database, Telegram bot - no shifting dates to track, no mail to parse, no similarity to search, no second channel to watch.
+Bottleneck: copying the yearly statement into reminders once, not reminding all year.
+Checked myself: you told me dates stay fixed, you check phone calendar daily, you want a decision nudge only.
+
+You want a reliable nudge 14 days before each fixed notice deadline with no automatic action.
+I recommend one 15 minute yearly session where you create one phone calendar event per contract on notice date minus 14 days with the renewal date in notes and a morning alert, because you already look there daily and dates do not change.
+I do not recommend the larger automation stack because it adds budget, upkeep and failure points without changing the result.

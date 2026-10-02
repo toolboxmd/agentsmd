@@ -1,0 +1,6 @@
+Requirements and who asked: Dependable calls at desk per user; UniFi gateway plus switches plus Grafana per user following home-network group.
+Deleted: UniFi gateway, managed switches, Grafana dashboard as fix for drops.
+Bottleneck: Desk specific Ethernet run with old cable through tight grommet while router and two other devices stay connected.
+Checked myself: Told only: desk on Ethernet drops, two others stay up, cable is old through grommet, no swap tried yet.
+
+That pattern points to the desk cable, not your router. That UniFi and Grafana rollout will not fix a physical cable fault. Run a known-good cable outside the grommet for test calls at that desk before you spend anything.

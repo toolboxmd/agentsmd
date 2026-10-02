@@ -1,0 +1,12 @@
+**Requirements and who asked:** The client wants images delivered in their supplied product-code order (client), plus a contact-sheet PDF (your current deliverable). Removing the hour of manual dragging is your goal.
+**Deleted:** DAM, AI tagging, semantic search, cloud review portal. Nobody asked for them, and none of them sorts files by a code list you already have.
+**Bottleneck:** Manually reordering thumbnails and building the PDF, about an hour per delivery.
+**Checked myself:** Only what you told me: exact codes come from the client, each filename starts with its code, and the finals sit in one folder per job.
+
+You're trying to deliver each job in the client's order without the manual hour.
+
+My recommendation is one small local script, which I can write today. You give it the job folder and the client's code list. It copies the JPEGs into a delivery folder renamed `001_CODE...jpg`, `002_CODE...jpg` in client order. It then generates the contact-sheet PDF in that same order. Before writing anything, it stops and lists any code with no image, more than one image, or images not on the list.
+
+A DAM would cost more and add something to maintain, and it still wouldn't do this ordering for you, so I'd keep that budget.
+
+To build it I need two things: what format the client's code list arrives in (CSV, Excel, pasted text, PDF), and one sample filename so I can see what follows the code.

@@ -1,0 +1,5 @@
+You are trying to get one 3 minute report reliably by 08:00 this week.
+
+I recommend against Airflow on Kubernetes here: you have one independent job with no downstream work, reruns are safe, and the misses are explained by the laptop sleeping. Move the existing command as is to your always-on Linux machine on a systemd timer with logging and a simple morning freshness check.
+
+That ships this week with no worker/scheduler split to operate. If you want, share the command and distro and I will draft the timer and check.

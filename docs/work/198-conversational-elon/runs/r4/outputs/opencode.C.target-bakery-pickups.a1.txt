@@ -1,0 +1,8 @@
+Requirements and who asked: Owner needs all cakes due today prepared before pickup, you asked for Odoo sales plus inventory plus manufacturing synced to the counter next week to stop misses.
+Deleted: Full three module sync next week as the fix for today, because you report payments and stock already reconcile correctly.
+Bottleneck: Preparation order at the counter, where due today waits while orders due next month get prepared.
+Checked myself: You reported cakes due today unmade while later orders were prepared, the list is readable at the counter, payments and stock are correct.
+
+You are trying to get every cake due today made before pickup with no misses.
+
+I recommend one option: fix the counter queue today with what you have, then phase Odoo after. Today sort the shared list by pickup date, pull only due today into a short bake list in pickup time order, assign one owner to mark prepared, and hold all next month work until today is clear. I do not recommend the full synced rollout next week to save today because it adds change at the bottleneck without changing order. Keep the partner booking for discovery only and start with sales orders mirroring that same due date queue once today is stable.

@@ -1,0 +1,11 @@
+Don't put this on Airflow in Kubernetes — it's the wrong tool for this job.
+
+You have a single 3-minute command, no downstream jobs, safe to re-run, and only requirement is done by 08:00. You don't need workers / scheduler / deployment split. That split is what is causing your peers' complexity, and you won't ship it reliably this week.
+
+Your missing runs are because the laptop sleeps overnight. Fix that by moving off the laptop:
+
+1. Move the existing Python command as-is to your always-on Linux machine. Keep it in git with its requirements/venv.
+2. Schedule it there with a systemd timer or cron, e.g. 02:00 with a retry at 05:00. Exact start time doesn't matter, so leave buffer before 08:00.
+3. Log to a file and add a trivial check: if tonight's report file is missing/stale by 07:00, alert you.
+
+That's shippable this week, easy to debug, and future-proof enough — if you ever actually get multiple dependent jobs, you can lift that same command into Airflow later without rework.

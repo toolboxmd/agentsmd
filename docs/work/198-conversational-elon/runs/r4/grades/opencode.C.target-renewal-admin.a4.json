@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply says to copy each notice deadline minus 14 days from the January statement into the phone calendar as an event with an alert, and to run nothing else. It offers no optional additions. It does not say to check that notifications work, and it does not mention refreshing the events from next year's statement.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for a decision prompt 2 weeks before each fixed notice deadline, seen in your daily phone calendar, with no auto cancel or pay.",
+  "Deleted": "n8n, Gmail agent, vector database, Telegram bot.",
+  "Bottleneck": "Decision dates are not yet in the calendar you already check daily.",
+  "Checked myself": "Yearly statement with fixed dates, 2 week lead time, daily phone calendar use, and no auto actions, all from your brief."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply lists all four record lines before its single calendar-only recommendation, names the whole proposed stack as deleted, and checks only facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-renewal-admin.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

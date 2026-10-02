@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need a correct report by 08:00 and something shippable this week; exact start time is flexible.
+**Deleted:** Airflow, Kubernetes, and separate workers, scheduler, and deployment.
+**Bottleneck:** The laptop is often asleep when the export should run.
+**Checked myself:** You’ve told me successful runs are correct, take three minutes, have no downstream jobs, and are safe to rerun; I haven’t inspected the setup.
+
+You’re trying to make one nightly export reliable. I recommend running the existing Python command on your always-on Linux machine as a systemd service, triggered at 06:00 by a timer with `Persistent=true` to catch missed triggers.
+
+Ship the command and those two unit files together, then verify a report arrives before 08:00. Keeping the command independent preserves future options; Airflow in Kubernetes adds infrastructure without addressing a requirement this export currently has.

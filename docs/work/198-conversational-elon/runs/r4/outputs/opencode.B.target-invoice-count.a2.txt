@@ -1,0 +1,5 @@
+What you are trying to achieve is a sub-second unpaid-invoice count that reflects committed invoices at request time.
+
+I recommend shipping no Kafka services, topics, CQRS projection, or Redis, and fixing this with a filtered COUNT(*) in Postgres plus a supporting index, because the bottleneck is fetching full rows and hydrating objects just to count in memory while an async projection would make the count stale and break your correctness requirement.
+
+Share the current SQL and invoice table definition and I will draft the exact query and index.

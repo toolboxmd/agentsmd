@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Launch one rule this week: every change lists the lead plus the two qualified engineers as reviewers in the existing tracker, and any one approval is enough to merge. No new tool, no reorg, and no planning workshops. Success check: the next few changes should wait hours instead of days. No optional additions; the stated need is fully addressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need changes to stop waiting for approval when the lead is absent; nobody has named a need that squads, chapters, Jira Align, or planning workshops would meet.",
+  "Deleted": "Spotify squads and chapters, Jira Align, new tooling spend, and quarterly planning workshops.",
+  "Bottleneck": "Approval. Each of the last six changes was coded in under a day and then waited three days, because the lead was the only reviewer and was away.",
+  "Checked myself": "Nothing observed directly. You told me the six wait times, that the lead was the sole reviewer and was away, and that two other engineers are qualified and authorized to approve."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded reviewer-group fix, preceded by a complete and grounded record that explicitly rejects the framed stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-review-flow.a3",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

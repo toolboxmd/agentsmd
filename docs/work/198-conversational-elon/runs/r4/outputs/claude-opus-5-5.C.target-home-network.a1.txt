@@ -1,0 +1,8 @@
+**Requirements and who asked:** Dependable video calls at one Ethernet desk (you). "Future-proof like the group" is a preference, not something this fault needs.
+**Deleted:** UniFi gateway, managed switches, Grafana dashboard. Other devices on the same router stay connected during drops, so the router and internet line are not the problem, and this gear would not fix it.
+**Bottleneck:** The desk's own link: a years-old cable squeezed through a tight grommet, the router port it uses, or the computer's Ethernet port.
+**Checked myself:** Nothing observed directly. You told me the desk uses Ethernet, two other devices keep their calls during dropouts, the cable is old and tightly routed, and it hasn't been swapped yet.
+
+You want calls at that desk to stop dropping. Replace that cable with a new Cat6 patch cable routed so it isn't pinched or sharply bent at the grommet. If drops continue, plug it into a different router port, and if they still continue, the computer's Ethernet port or adapter is the next suspect.
+
+I'd hold the budget until the cable swap has had a few days of calls to prove itself. Spending it now would add equipment to run and maintain without touching the likely fault.

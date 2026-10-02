@@ -1,0 +1,14 @@
+**Requirements and who asked:** The owner requires that a conflicting reservation be rejected at save time, even when two agents submit at the same moment. You want something shippable this week.
+**Deleted:** Relying on agents noticing red cells and remembering to check them, since that is the human process that already failed last week.
+**Bottleneck:** Nothing stops a save. Six agents in two offices can each check, see no conflict, and both save.
+**Checked myself:** Only what you told me: one identifier per item, six concurrent agents, last week's double booking, and the owner's save-time rule. I haven't seen the spreadsheet or which product it runs on.
+
+Goal: make it impossible to save a second booking for the same item over overlapping dates.
+
+Conditional formatting won't meet the owner's requirement. It colours a conflict after both bookings are saved, and with two agents submitting together, both still go through. Treat it as a warning at most, not the fix.
+
+I recommend keeping the spreadsheet as the booking record, but routing every new booking through one small save step. That step locks, checks the item's dates for overlap, and then either appends the row or rejects it with a message. The agents' direct edit access to the booking rows gets removed so nobody can bypass it.
+
+In Google Sheets this is an Apps Script web form using `LockService`, and it's realistic for this week. In Excel there's no equally simple locking mechanism, and I'd need to look at your setup before promising a date.
+
+Which spreadsheet product are you on?

@@ -1,0 +1,15 @@
+You don't need a DAM for this — it won't solve the actual problem.
+
+Your client wants exact code order, not AI tagging / semantic search. Fuzzy search makes that worse, and a cloud portal adds a week of setup for a job you can fix in minutes.
+
+Keep it boring and deterministic this week:
+
+1. Keep `finals/` immutable as your source of truth.
+2. Read the client's ordered list as-is (csv/txt) — that order is the spec.
+3. Match by `filename starts with product-code` — no AI, just exact prefix match.
+4. Auto-build a `delivery/` folder with `01_CODE_...jpg, 02_CODE_...jpg` in client order + a contact-sheet PDF in that same order.
+5. Fail loudly on missing / duplicate / extra codes before you send.
+
+That turns 1 hour of dragging thumbnails into a 2-minute check.
+
+If you want, tell me what the order list looks like (csv? txt? excel?) and 2-3 real filenames, and I'll build you that sort + PDF script — no new infrastructure needed.

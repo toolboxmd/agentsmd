@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need a reminder two weeks before each notice deadline, use your phone calendar daily, and want to keep cancellation and payments manual.
+**Deleted:** n8n, the Gmail agent, the vector database, the Telegram bot, and AI agents.
+**Bottleneck:** Getting the dates from the annual statement into reminders you will see.
+**Checked myself:** You told me the dates stay fixed for the year and you check your calendar daily.
+
+You want timely renewal decisions. I recommend your existing phone calendar: create one “Decide whether to renew [contract]” event per contract, dated **14 days before its notice deadline**, with a notification that day. Put the notice deadline and renewal date in the event notes, and update the events from each new annual statement.
+
+This needs no agent workflows or additional budget; you make each decision and handle any cancellation or payment yourself.

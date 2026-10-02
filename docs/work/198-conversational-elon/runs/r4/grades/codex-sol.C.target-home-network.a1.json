@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "For now, replace the desk's Ethernet cable with a known-good one routed away from the tight grommet, then test calls. If drops continue, try another router port, then look at the computer's Ethernet adapter. The reply drops the UniFi/managed-switch/Grafana stack from the current fix and offers no optional extras now. Nothing the user needs is left unaddressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want dependable calls at this desk; you proposed UniFi, managed switches, and Grafana for future-proofing.",
+  "Deleted": "Those additions from the immediate fix; no observed evidence yet connects the drops to a need for them.",
+  "Bottleneck": "The desk\u2019s Ethernet connection is untested; the old cable through a tight grommet is a plausible fault.",
+  "Checked myself": "Only your reported observations: the desk drops while two devices on the same router stay connected; no replacement cable has been tried."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded cable swap; the stack is clearly dropped and the reply says the cable is suspected, not proven.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-home-network.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

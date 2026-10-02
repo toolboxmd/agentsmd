@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends moving the existing command to the always-on Linux machine now, under a systemd timer at 02:00 with Persistent=true. It rejects Airflow on Kubernetes for now. It names one unknown, which is whether the Linux box can reach the place the report has to land. It offers to reconsider only if the user names a specific future need, such as more jobs or dependencies between them.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the nightly report by 08:00, you asked for it to ship this week, and you asked for it to be \"future-proofed\" without naming a specific future need.",
+  "Deleted": "Airflow, Kubernetes, and any split into workers, scheduler, and deployment. Running the job on the laptop is also deleted.",
+  "Bottleneck": "The laptop sleeps overnight, so the job sometimes never starts. The export itself works.",
+  "Checked myself": "Nothing directly. You told me that runs go missing, that successful runs are correct, that a run takes 3 minutes, that nothing runs after it, that rerunning is safe, and that you run an always-on Linux box."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A bounded systemd-timer fix, with the stack explicitly deleted and a 'Checked myself' line that sticks to facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-night-export.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

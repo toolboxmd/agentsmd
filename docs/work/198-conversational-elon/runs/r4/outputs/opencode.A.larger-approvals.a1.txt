@@ -1,0 +1,15 @@
+Don't ship that — it doesn't meet the contract, and would fail an audit.
+
+For your setup — 12 remote authors who can edit the current folder, 3 reviewers, weekly releases — a shared editable folder with typed initials and a naming convention provides none of the required controls:
+
+1. Exact approved version retained for 7 years: anyone with edit access can overwrite, delete, or rename it. A convention doesn't prevent this.
+2. Approver identity and approval time: typed initials are not authentication, and there's no trusted timestamp. Anyone can type anyone else's initials and edit them later.
+3. Authors must not approve their own documents: no enforcement — an author can approve their own row.
+4. Later edits must not change the retained version: there is no separation between draft and released copy.
+
+To ship this week you need at minimum:
+- Keep the current folder for drafts only.
+- Add a separate release store where authors have read-only, only reviewers can write, versions are immutable / no overwrite-delete, with 7-year retention.
+- Record on release: file hash + version, authenticated approver ID (not typed initials), trusted timestamp, and enforce approver != author, with audit log.
+
+I can help you set that up — do not deliver on the APPROVED-column proposal.

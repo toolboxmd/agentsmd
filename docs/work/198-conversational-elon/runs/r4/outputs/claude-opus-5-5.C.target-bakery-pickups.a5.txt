@@ -1,0 +1,11 @@
+**Requirements and who asked:** The owner needs every cake due today prepared before pickup. Staff already enter every order, with pickup date and status, in one shared list they can all read at the counter.
+**Deleted:** The Odoo rollout (sales, inventory, manufacturing, counter sync). Payments and stock already reconcile, and the list already holds what the counter needs, so none of it addresses what went wrong.
+**Bottleneck:** Cakes are being prepared in the order they were entered, not by pickup date, so today's cakes waited behind next month's.
+**Checked myself:** Only what you've told me. I haven't seen the list or how staff choose the next cake.
+
+You want no cake due today left unmade at pickup time. I'd recommend keeping your current list and changing how it's used:
+- **Sort by pickup date and hide prepared orders**, so the top line is always the most urgent unmade cake.
+- **Set one rule:** always take the top unprepared order.
+- **Do a 30-second opening check:** anything due today that isn't in progress gets started first.
+
+If you tell me what the list lives in (paper, a spreadsheet, an app), I'll give you the exact steps to set up the sorting. Cancelling or repurposing next week's Odoo booking is your call. Nothing in this fix depends on it.

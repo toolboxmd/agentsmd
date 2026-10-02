@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Now: keep the current folder for drafting and add a Released folder on the same platform. Only the three reviewers can add files to it; authors can read it but cannot edit or delete. A reviewer approves by copying the exact file into Released, and the platform's activity log records who added it and when. A seven-year retention or deletion lock protects the approved copies. Optional: keep a naming convention for readability only, not as the control. Unmet: the reply doesn't know the platform yet, and it asks because audit-log retention and locking vary, so seven-year log retention may need an adjustment.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires each released document to keep its exact approved version, the approver's identity and the approval time for seven years. Authors must not approve their own work, and later edits must not change the approved version. You need this before this week's delivery.",
+  "Deleted": "The APPROVED initials column and relying on a naming convention to protect approved versions.",
+  "Bottleneck": "Approval records and approved files currently sit where any author can edit them.",
+  "Checked myself": "Only what you told me. You have 12 authors and 3 reviewers, all remote, releasing weekly, and authors can edit the shared folder. I don't know which platform hosts the folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The setup is an enforceable configuration of existing tools that ties non-author identity and time to a locked exact copy; the reply openly flags that seven-year log retention depends on the platform.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-approvals.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

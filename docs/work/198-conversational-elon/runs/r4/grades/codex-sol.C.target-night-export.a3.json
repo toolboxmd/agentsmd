@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Run the existing Python command now on the always-on Linux machine the user already administers, using one systemd service and one timer set for 07:00 with Persistent=true. Deployment means copying the script and its dependencies to that machine. Ship once a scheduled run produces the correct report. No optional additions are offered. Unmet needs: the interpreter, paths and data access on the server are unverified, and the reply only says to check them through the first scheduled run.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want delivery by 08:00, room to grow, and shipping this week; exact start time is flexible.",
+  "Deleted": "Airflow, Kubernetes, separate workers, and a separate scheduler deployment; this single three-minute export has no dependencies requiring them.",
+  "Bottleneck": "Reliable overnight execution while the laptop is asleep.",
+  "Checked myself": "Only the facts you supplied: the command works, reruns safely replace output, and you already administer an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts all four record lines before a bounded systemd recommendation, explicitly rejects the Airflow/Kubernetes stack, and grounds its checks only in facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-night-export.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

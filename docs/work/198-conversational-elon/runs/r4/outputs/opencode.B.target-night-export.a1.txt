@@ -1,0 +1,3 @@
+What you're trying to achieve is a reliable export by 08:00 you can ship this week.
+I recommend against Airflow on Kubernetes for this: one 3 minute idempotent job with no downstream dependencies does not need distributed workers and a scheduler, and the missing runs are explained by the laptop sleeping.
+Move the existing command unchanged to a systemd timer or cron on your always-on Linux machine with logging plus a retry, and save Airflow/K8s until you actually have multiple dependent jobs to orchestrate.

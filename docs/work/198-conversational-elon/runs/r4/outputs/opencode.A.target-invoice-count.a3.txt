@@ -1,0 +1,15 @@
+Don't ship Kafka/CQRS/Redis for this.
+
+It would break your actual requirements:
+
+1. Must reflect committed invoices at request time — a Kafka projection to Redis is eventually consistent. You'd get stale counts, out-of-order events, and dual-write gaps.
+2. You return only the count with no other reader — there's nothing to project for.
+3. Your slowness is from fetching rows and constructing objects in app memory to count them. Adding services won't fix that, it adds network hops and ops load.
+
+Do this instead, this week:
+
+1. Replace the endpoint logic with `SELECT COUNT(*) FROM invoices WHERE ... unpaid ...` in Postgres so no rows come back to the app.
+2. Add a partial index for that predicate, e.g. on `(customer_id) WHERE status = 'unpaid'` — adjust to your actual filter.
+3. Verify with `EXPLAIN ANALYZE` and a production-like volume that p95 < 1s.
+
+Postgres read-committed already gives you committed-data-at-request-time. Keep the approved Kafka budget unspent.

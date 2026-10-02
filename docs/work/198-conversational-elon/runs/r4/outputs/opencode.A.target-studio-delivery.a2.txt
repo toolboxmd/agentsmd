@@ -1,0 +1,34 @@
+For this job you don't need a DAM, AI tagging, or semantic search this week.
+
+Your problem is deterministic, not semantic:
+client supplies exact ordered codes, and filename already starts with code. You just need to sort + validate + export.
+
+AI search would actually make this worse - you need exact code order, not "similar looking products."
+
+Here's a professional workflow you can run this week with $0:
+
+**1. Keep one source of truth**
+Ask the client for the ordered list as .txt / .csv - one code per line, in delivery order. Save it as `job-123_order.txt` next to the JPEGs. No more dragging thumbnails.
+
+**2. Validate automatically, don't eyeball it**
+For each job, check:
+a) missing: code in list with no file starting with `CODE_` / `CODE-` / `CODE `
+b) extra: file with no matching code
+c) duplicates: two files claiming the same code
+d) prefix collision: e.g. code `A1` vs `A10` - match on full code + delimiter, not `startswith(code)` alone
+
+That QA check is what makes it feel professional to the client.
+
+**3. Produce delivery in order without touching Lightroom**
+Output:
+`job-123_deliver/01_CODE_...jpg, 02_CODE_...jpg...`
+or just rename copies with `01_`, `02_` prefix in list order, + `contact-sheet.pdf` in that same order with code caption under each thumbnail.
+
+That replaces your 1-hour drag-sort + manual PDF.
+
+**4. Skip the cloud portal for now**
+A zip with `ordered-images/ + contact-sheet.pdf + order.txt + missing.txt` is exactly what catalogue clients want to ingest. A review portal adds back-and-forth, it doesn't guarantee order.
+
+If you want, I can give you a small script for this: point it at a folder + order.txt, it sorts, flags missing/extra, and writes the contact-sheet PDF.
+
+What format is the client's ordered list in right now - Excel, CSV, email body, PDF?

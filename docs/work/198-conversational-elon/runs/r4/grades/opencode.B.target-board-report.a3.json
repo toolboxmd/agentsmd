@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: the reply rejects the Airbyte/Snowflake/dbt/Power BI stack and chooses one reproducible local calculation. That calculation sums signed net amount by region and month, so refunds stay negative. Optional additions: the user can build it in Excel or as a small Python script, and the agent offers to help set it up this week. Unmet needs: there is no reconciliation step, and no structured record (requirements, deleted items, bottleneck, self-check) before the recommendation.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The reply gives a sound, bounded local aggregation and rejects the stack, but it has none of the four required labeled record lines.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.B.target-board-report.a3",
+ "host": "opencode",
+ "arm": "B",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

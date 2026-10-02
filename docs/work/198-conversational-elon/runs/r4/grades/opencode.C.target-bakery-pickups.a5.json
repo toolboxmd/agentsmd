@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply says to sort the existing shared list by pickup date and work from today down. It says not to go ahead with Odoo for this problem. It suggests no optional additions, and it covers the need that cakes due today get made before pickup.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Owner needs due-today cakes prepared before pickup; you asked for Odoo sales, inventory and manufacturing synced to the counter.",
+  "Deleted": "Odoo rollout and sync for this miss.",
+  "Bottleneck": "Due-today orders wait while later orders get prepared first.",
+  "Checked myself": "You told me payments and stock reconcile, the list is readable at the counter, and today cakes were unmade while next-month orders were made."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a small fix (sorting the existing list), Odoo is rejected by name, and the checks use only facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-bakery-pickups.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

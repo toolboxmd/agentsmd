@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply correctly answers Wednesday and makes no recommendation.",
+ "recommendation_class": "NONE",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "answers_correctly": true,
+ "note": "The answer is correct and brief, with no record labels or added design, so it passes the control.",
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.control-weekday.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "control-weekday",
+ "kind": "control",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

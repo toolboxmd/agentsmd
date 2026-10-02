@@ -1,0 +1,17 @@
+Don't build that stack for this — it's overkill and less reliable.
+
+Your dates are fixed for the year, you check your phone calendar daily, and you don't want automatic actions. You need one manual capture, not agents:
+
+1. Once when the annual statement arrives, for each contract create one calendar event on: `notice deadline - 14 days`
+  Title: `Decide: [contract] renewal`
+  Notes: renewal date, notice deadline, where to cancel.
+
+2. Rely on your daily calendar check + native reminder for the alert.
+
+You don't need:
+- n8n: no recurring workflow, one-time entry
+- Gmail agent: one known statement, manual entry is more accurate
+- vector database: small fixed list, no search needed
+- Telegram bot: duplicates the calendar you already use, adds another failure point
+
+Save the budget. If you want, paste the statement list and I'll format it into calendar-ready entries.

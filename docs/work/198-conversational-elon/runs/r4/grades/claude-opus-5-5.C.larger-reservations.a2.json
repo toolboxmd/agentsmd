@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply's present action, assuming the sheet is Google Sheets, is to keep the sheet as the record. New bookings would go through an Apps Script form that takes a lock so simultaneous submits run one at a time. The script checks the item ID for overlapping dates and either adds the row or rejects it, showing the conflicting booking. The sheet would be protected so agents cannot type bookings in directly. The optional addition is to keep red highlighting as a visual aid only. The unmet need is that the platform is unconfirmed: the reply asks whether it is Google Sheets or Excel and says the approach would change for Excel.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "the owner requires that a conflicting reservation be rejected at save time, even when two agents submit at once. Six agents work in two offices, and each item has one identifier. Your constraint is shipping something this week.",
+  "Deleted": "the reminder to check colours, and any new database or booking product.",
+  "Bottleneck": "the spreadsheet saves every row without checking it, so two agents can both save the same item for overlapping dates.",
+  "Checked myself": "only what you told me. I haven't seen the sheet, so I don't know whether it is Google Sheets or Excel."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The chosen Apps Script form enforces the overlap rejection on the server at save time, using a lock so that only one of two simultaneous conflicting submits succeeds, and the red colours stay only as a visual aid.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

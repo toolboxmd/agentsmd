@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Skip the Odoo rollout and keep the existing shared list. Re-sort it by pickup date, earliest first, and show only orders not yet prepared, ideally as a saved view of open orders due today or earlier. Add a house rule to check that nothing due earlier is still open before starting a cake. Cancel or repurpose the partner booking. The agent offers to inspect the list and set up the view. No ERP and no sync are recommended, even as an option.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need every cake due today prepared before pickup. Payments and stock already reconcile correctly, so nobody needs a new sales or inventory system.",
+  "Deleted": "The Odoo sales, inventory and manufacturing modules and the counter sync. They replace parts that already work and add a system to run, pay for and maintain.",
+  "Bottleneck": "Staff work through the list in the order orders were entered, not by pickup date. That is how next month's cakes got made before today's.",
+  "Checked myself": "Only what you told me: one shared list with customer, pickup date and status that everyone can read at the counter, today's cakes left unmade, and later-entered next-month orders already prepared. I have not seen the list itself."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded due-date view of the existing list, and Odoo and the sync are explicitly rejected.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-bakery-pickups.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

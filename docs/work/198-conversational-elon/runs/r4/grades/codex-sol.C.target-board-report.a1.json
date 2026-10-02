@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The action now is an Excel template in the existing workbook: the accounting export goes into a source table, and a refreshed PivotTable groups it by year and month with regions in rows and sums the signed net amounts, so refunds reduce sales. Optional additions: check that the regional totals equal the source total, and keep each month's export. Nothing else is recommended now. The agent rejects Airbyte, Snowflake, dbt and Power BI because the current report doesn't need them. No unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want a repeatable monthly board report of net sales by region, ready this week, with negative refunds included.",
+  "Deleted": "Airbyte, Snowflake, dbt and Power BI; the current report does not require them.",
+  "Bottleneck": "Building the regional monthly sums by hand.",
+  "Checked myself": "Only your supplied facts: one local Excel table that comfortably fits on your computer."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a PivotTable in the existing workbook using signed net amounts, names and rejects the four-tool stack, and grounds its self-check only in the facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.target-board-report.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

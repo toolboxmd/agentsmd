@@ -1,0 +1,8 @@
+Requirements and who asked: client wants JPEGs in supplied code order plus contact-sheet PDF, you asked for professional delivery this week
+Deleted: DAM with AI tagging, semantic search and cloud review portal
+Bottleneck: manual dragging of thumbnails into client order for an hour per delivery
+Checked myself: you told me filenames start with product code, finals are in one folder, client supplies ordered code list
+
+What you are trying to achieve is deliver the folder sorted to the client code order with a matching contact sheet, with no manual sorting.
+
+I recommend a small local script that reads the code list and renames or copies JPEGs into order and builds the PDF, because it meets both requirements with nothing new to run or maintain. Do not build the DAM this week because it adds cost and upkeep without fixing the ordering bottleneck.

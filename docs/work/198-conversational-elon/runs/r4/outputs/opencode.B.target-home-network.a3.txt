@@ -1,0 +1,1 @@
+What you want is dependable calls at that desk. I recommend pausing the UniFi gateway and Grafana plan for now and testing with a different known-good cable routed outside that tight grommet, since your two other devices stay connected when the desk drops. Can you try that for a day of calls and report if the drops stop?

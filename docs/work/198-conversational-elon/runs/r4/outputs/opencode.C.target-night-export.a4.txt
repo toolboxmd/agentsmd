@@ -1,0 +1,6 @@
+**Requirements and who asked**: Reliable correct report by 08:00 daily that ships this week (user). Airflow in Kubernetes for future-proofing (user request, not needed for function).
+**Deleted**: Airflow scheduler, workers, Kubernetes cluster and worker/scheduler/deployment split.
+**Bottleneck**: Runs go missing because the laptop sleeps overnight, not orchestration power.
+**Checked myself**: Working 3 minute Python command, no downstream jobs, rerun safe, successful runs correct, laptop often asleep, always-on Linux machine available, exact start time does not matter.
+
+You want a dependable report by 08:00 without missing nights. I recommend a single daily cron job on the always-on Linux machine you already administer, running the existing command with logging well before 08:00. Airflow on Kubernetes would add hosting and upkeep for one independent job and would not ship this week, so do not build it for this.

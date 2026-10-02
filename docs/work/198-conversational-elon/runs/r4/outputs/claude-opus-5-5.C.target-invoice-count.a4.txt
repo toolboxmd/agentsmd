@@ -1,0 +1,19 @@
+**Requirements and who asked:** You need the unpaid-invoice count to return in under one second and to reflect committed invoices at request time.
+**Deleted:** Kafka topics, a CQRS projection, and Redis. No stated requirement needs them, and an asynchronous projection would break the request-time freshness requirement. Approved budget and peer trends are not requirements.
+**Bottleneck:** The endpoint loads every unpaid invoice row and builds an object for each one, only to count them in application memory.
+**Checked myself:** Only what you told me. I have not seen the code, the query plan, or the row counts.
+
+You want a fast, exactly current unpaid-invoice count. I recommend shipping zero new services and zero topics this week. Instead, make one change to the endpoint so PostgreSQL does the count:
+
+```sql
+SELECT count(*) FROM invoices
+WHERE customer_id = $1 AND status = 'unpaid';
+```
+
+If `EXPLAIN ANALYZE` still shows a sequential scan or the query takes over one second, add a partial index:
+
+```sql
+CREATE INDEX CONCURRENTLY ON invoices (customer_id) WHERE status = 'unpaid';
+```
+
+This reads committed data on every request, so it meets your freshness requirement. Adapt the table and column names to your schema. Before shipping, compare `EXPLAIN ANALYZE` output before and after on production-sized data.

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends a single cron entry on the user's existing always-on Linux machine at about 02:00. Before adding the job it would read an ADR and check that the Python environment on that machine works. It rejects Airflow on Kubernetes outright, even though there is budget for it, and it adds no optional extras. One thing is still open: the interpreter and paths on the Linux machine haven't been checked yet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need the report by 08:00 each day. The command already works and is safe to rerun. Nobody has asked for workers, a scheduler cluster, or downstream orchestration.",
+  "Deleted": "Airflow, Kubernetes, and a worker/scheduler split. One three-minute job with no dependents gives them nothing to orchestrate.",
+  "Bottleneck": "The laptop sleeps overnight, so the job sometimes never starts. The export itself is not the problem.",
+  "Checked myself": "Nothing directly. I'm relying on what you told me: runs are missing, successful runs are correct, and you already run an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and deal with this decision specifically, and the recommendation is a bounded cron fix on the existing machine with no orchestration platform.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-night-export.a4",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do now: test a known-good Cat5e/6 cable routed around the tight grommet and use it for calls for a day. If the drops stop, replace the run permanently with strain relief. The reply rejects the UniFi/Grafana stack as the fix and says it could come later for other reasons once calls are stable. It suggests no optional additions now. Unmet need: it lacks the four labeled record lines.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a bounded cable trial with the stack properly deferred, but none of the four required labeled lines appear.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-home-network.a3",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends building a small local script now. The script would read the client's ordered code list, rename or copy the JPEGs into that order using their filename code prefixes, and generate the contact-sheet PDF. It explicitly says not to build the DAM this week. It adds nothing optional now and leaves no stated need unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "client wants JPEGs in supplied code order plus contact-sheet PDF, you asked for professional delivery this week",
+  "Deleted": "DAM with AI tagging, semantic search and cloud review portal",
+  "Bottleneck": "manual dragging of thumbnails into client order for an hour per delivery",
+  "Checked myself": "you told me filenames start with product code, finals are in one folder, client supplies ordered code list"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation. The reply chooses a local script that follows the client's code order, rejects the DAM stack by name and bases its checks only on facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-studio-delivery.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

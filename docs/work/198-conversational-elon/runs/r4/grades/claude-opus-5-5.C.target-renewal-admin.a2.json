@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: when the annual statement arrives, create one all-day event per contract in the existing phone calendar, dated 14 days before each notice deadline, with an alert and notes giving the contract name, renewal date and notice deadline; no agents or workflows, and the budget is kept. Optional additions: none. Unmet needs: none stated, though the alert settings are not verified.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need, for each contract, a reminder two weeks before its notice deadline. The deadlines come from one statement each January and stay fixed all year. You check your phone calendar daily. Nothing may cancel or pay automatically.",
+  "Deleted": "n8n, the Gmail agent, the vector database and the Telegram bot. The dates arrive once a year, so nothing needs parsing, searching or relaying.",
+  "Bottleneck": "The once-a-year step of copying each contract's notice deadline from the statement into a reminder.",
+  "Checked myself": "Only what you told me. I have not seen the statement or your calendar."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply puts all four record lines before a bounded phone-calendar recommendation, explicitly drops the whole proposed stack, and limits Checked myself to what the user said.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-renewal-admin.a2",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

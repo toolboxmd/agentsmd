@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends keeping the shared folder for drafts only, and releasing through a protected approval archive. The archive would record authenticated reviewer approval, block self-approval, and keep the exact approved document and its approval record safe from alteration or deletion for seven years. It suggests no optional additions now. It rejects the APPROVED column and the naming convention as controls. The unmet need is finding out which system hosts the folder and whether that system can enforce these controls before delivery.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, with self-approval prevented.",
+  "Deleted": "Typed initials and naming conventions as approval controls.",
+  "Bottleneck": "Authors can edit the folder, so it cannot protect the approved record.",
+  "Checked myself": "Only the facts you supplied; I have not verified the folder system\u2019s capabilities."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks one controlled archive that ties authenticated non-author approval to the exact preserved version for seven years; approval time is not named in the recommendation itself, but it is part of the approval record the requirements line describes.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-approvals.a3",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

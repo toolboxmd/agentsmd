@@ -1,0 +1,7 @@
+Requirements and who asked: You asked to ship faster this week and to stop changes waiting when the lead is absent.
+Deleted: Squad and chapter reorg, new align tool, and quarterly workshops because no observed failure needs them to fix approvals.
+Bottleneck: Six changes coded in under a day then waited three days on one absent reviewer while two qualified approvers were available.
+Checked myself: Only what you told me here about team size, waits, reviewer assignment, and qualifications.
+
+What you are trying to achieve is merged changes with no 3 day wait when the lead is out.
+I recommend you reject the reorg and tool buy for now and this week allow any one of your three qualified reviewers to approve with assignment to whoever is present. Confirm you want that rule and I will lay out the exact tracker change.

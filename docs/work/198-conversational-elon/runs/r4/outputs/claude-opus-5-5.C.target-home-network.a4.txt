@@ -1,0 +1,8 @@
+**Requirements and who asked:** Dependable calls at the desk (you); future-proofing (you, prompted by your home-network group).
+**Deleted:** UniFi gateway, managed switches, Grafana dashboard. Two other devices on the same router keep their calls during a dropout, so the router and network aren't what's failing, and none of that gear touches the desk's own link.
+**Bottleneck:** The desk computer's link, most likely the old Ethernet cable squeezed through the tight grommet, which hasn't been ruled out.
+**Checked myself:** Nothing observed directly. You told me the drops happen only at the Ethernet desk, other devices stay connected during them, the cable is several years old and pinched in a grommet, and no other cable has been tried.
+
+You want calls at that desk that don't drop. Replace that cable with a new Cat6 patch cable routed so it isn't pinched, and run a few normal calls to see if the drops stop. If they continue, try a different port on the router next, and then check the computer's network port or adapter.
+
+I'd skip the UniFi setup for this problem. Your other devices show the router is holding up, so the new gear would cost money and upkeep without fixing the desk link.

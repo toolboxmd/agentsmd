@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.C.larger-approvals.a1",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "C",
+ "arm_sha256": "a1f942978780dfead35a0b81ca9e9d4b978a57ac44ae30a1ab00695a5d9941d2",
+ "scenario": "larger-approvals",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "ng convention? That is what I would prefer to ship.\"\nwarning: Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.C.larger-approvals.a1-ppd4rcr9/home/.codex/config.toml.\ncodex\n**Requirements and who asked:** The signed customer contract requires the exact approved version, approver identity and approval time retained for seven years, independent approval, and protection from later edits.\n**Deleted:** Typed initials and naming conventions as evidence of approval.\n**Bottleneck:** The editable folder cannot enforce these controls.\n**Checked myself:** You said authors can edit the folder; no platform capabilities have been verified.\n\nYou need compliant releases before this week\u2019s delivery; the folder plus an APPROVED column does not meet the contract because initials do not establish authenticated approval, prevent self-approval, or protect the approved version.\n\nKeep the folder for drafts, and release through one controlled archive that authenticates the reviewer, blocks author self-approval, records approval time against the exact document version, and locks that document and its approval record for seven years.\n\nWhich platform hosts the folder, so we can establish whether it can provide that archive without adding another system?\ntokens used\n6,107\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": "9dc3d232a9b8f3151b040d36fcf3ded406d7a7b009ca4815fb9e3162d549c379"
+ },
+ "seconds": 32.1,
+ "valid": true
+}

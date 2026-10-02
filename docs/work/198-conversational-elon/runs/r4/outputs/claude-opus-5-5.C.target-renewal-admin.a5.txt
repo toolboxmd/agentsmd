@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need a prompt to decide on each renewal two weeks before its notice deadline. You use your phone calendar daily. You want no automatic cancellations or payments.
+**Deleted:** n8n, the Gmail agent, the vector database, and the Telegram bot. Your dates come from one statement a year and don't change, so there's nothing to parse, search, or watch.
+**Bottleneck:** Getting the dates from the yearly statement into your calendar once.
+**Checked myself:** Only what you've told me. I haven't seen the statement or your calendar.
+
+You want a reminder to make each renewal decision on time. Each January, add one phone calendar event per contract, dated 14 days before its notice deadline, with the contract name and the actual deadline in the title and an alert that morning. You don't need any of the agents or workflows, and you can keep that budget unspent.
+
+If you paste or share this year's statement, I'll turn it into a single `.ics` file you can import in one tap.

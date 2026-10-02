@@ -1,0 +1,10 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup. Payments and stock already reconcile correctly, so nobody needs a new sales or inventory system.
+**Deleted:** The Odoo sales, inventory and manufacturing modules and the counter sync. They replace parts that already work and add a system to run, pay for and maintain.
+**Bottleneck:** Staff work through the list in the order orders were entered, not by pickup date. That is how next month's cakes got made before today's.
+**Checked myself:** Only what you told me: one shared list with customer, pickup date and status that everyone can read at the counter, today's cakes left unmade, and later-entered next-month orders already prepared. I have not seen the list itself.
+
+What you're trying to achieve: no cake due today is left unmade at pickup time.
+
+My recommendation is to skip the Odoo rollout and change how the existing list is read. Sort it by pickup date, earliest first, and show only orders that are not yet prepared, so the top of the counter view is always today's open cakes. Add one house rule: before starting any cake, check that nothing due earlier is still open. If your list tool can filter, a saved "due today or earlier, not prepared" view does this, and the next step is for me to look at the list and set it up.
+
+I'd cancel or repurpose next week's partner booking, since it won't fix the ordering problem. That call is yours.

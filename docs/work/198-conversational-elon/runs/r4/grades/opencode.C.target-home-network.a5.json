@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Now: swap in a known-good cable routed clear of the tight grommet, then test calls before buying anything. Optional additions: none. Future: the UniFi/Grafana stack is rejected for this problem and is not offered now or as a conditional later step. Unmet needs: none beyond confirming the trial result.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable calls at desk (user). UniFi gateway, managed switches, Grafana future-proofing (user, from home-network group).",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard as a fix for these drops.",
+  "Bottleneck": "Only the desk Ethernet drops while two other devices on the same router stay connected, pointing to that desk cable and path.",
+  "Checked myself": "Told only: desk uses Ethernet, cable is years old through a tight grommet, no different cable tried yet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded cable swap before any purchase, rejects the stack by name, and bases its record only on the facts it was given.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-home-network.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

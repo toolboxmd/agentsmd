@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends building one small local Python/Pillow script now. It reads the client's ordered code list, matches each code to its JPEG with a separator guard, copies the files into a delivery folder with order prefixes and writes the contact-sheet PDF in that order. It stops and flags missing, duplicate or unlisted images. It adds no DAM, AI tagging, semantic search or cloud portal. Still needed from the user: a real code list and sample filenames.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client wants the delivered images in their supplied product-code order. You want the contact-sheet PDF, and you want to stop losing an hour per delivery.",
+  "Deleted": "DAM, AI tagging, semantic search, and cloud review portal. The client asked for none of these, and none of them sorts files by a list you already have.",
+  "Bottleneck": "The hour you spend dragging thumbnails into the client's order by hand, plus building the contact sheet.",
+  "Checked myself": "Only what you told me. Each job has one folder of final JPEGs, each filename starts with its exact product code, and the client supplies an ordered code list. I haven't seen the files or the list format yet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A bounded local script that follows the client's list order, with a grounded record that names and deletes the DAM stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-studio-delivery.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

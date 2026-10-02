@@ -1,0 +1,13 @@
+Don't build that stack for this report — it's overkill.
+
+You have one small local Excel file with region, date, and signed net amount. Monthly regional sums are just a group-by sum, refunds already handled by the sign. That fits in a script, not Airbyte + Snowflake + dbt + Power BI.
+
+That pipeline would add cost, auth, infra, and maintenance for zero benefit this week, and make a simple hand-check harder.
+
+Future-proof version for this week:
+
+1. Keep the export as-is in an `input/` folder, never edit it.
+2. One small Python/pandas script that reads it, parses dates, groups by month x region summing net amount, and writes `board_report.csv/xlsx`.
+3. Add a couple checks: totals reconcile to source total, negatives included, no missing regions/dates.
+
+That's versionable, re-runnable in seconds, and easy to move later if volume or sources actually grow.

@@ -1,0 +1,10 @@
+Requirements and who asked: Owner requires conflicting reservation rejected at save time under concurrent submit; team wants a shippable fix this week
+Deleted: spreadsheet plus red conditional formatting plus manual check as enforcement
+Bottleneck: two agents saving the same item ID for overlapping dates at the same time with no atomic block
+Checked myself: six agents, two offices, one ID per physical item, same item double promised last week as you reported
+
+What you are trying to achieve is no double promise even when two agents submit together.
+
+I recommend against shipping colours only. It still saves both bookings and only flags harm after it happens, so last week will repeat. The smallest that meets the owner rule is one central write path that checks overlap for that item ID and rejects inside the same atomic save, with the spreadsheet no longer used for saves. A larger new hire platform is rejected as unneeded for this fix.
+
+Please confirm you will route all saves through that guarded write path.

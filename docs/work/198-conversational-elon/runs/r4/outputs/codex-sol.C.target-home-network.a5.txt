@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want dependable calls at the desk; the approved budget does not make new infrastructure necessary.
+**Deleted:** UniFi gateway, managed switches, and Grafana from the proposed fix.
+**Bottleneck:** Isolating the desk’s Ethernet failure before redesigning the network.
+**Checked myself:** Only your report: two other devices stay connected, and the desk’s old, tightly routed cable has not been swapped.
+
+For dependable calls at that desk, start with a known-good Ethernet cable routed without pinching it, then test calls under the conditions that usually cause dropouts. The evidence points toward the desk’s connection, but it does not yet prove which component is faulty.

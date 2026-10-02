@@ -1,0 +1,12 @@
+**Requirements and who asked:** You want changes to ship faster and stop waiting when the lead is absent.
+**Deleted:** Squads, chapters, Jira Align, and quarterly planning workshops add no mechanism needed to resolve the observed delay.
+**Bottleneck:** Approval waited three days on all six changes because the sole assigned reviewer was away; coding took less than a day.
+**Checked myself:** Your supplied facts establish that two other engineers are qualified and authorized to approve; I have not independently inspected the tracker.
+
+You want reliable approvals during the lead’s absence. I recommend launching a simple reviewer coverage rule this week using your existing tracker:
+
+- Assign each PR an available, authorized reviewer, with one of the other qualified engineers named as backup.
+- When the primary reviewer is absent, transfer the review to the backup immediately; the lead’s return is not a prerequisite for approval.
+- Keep existing review standards and approval requirements. Use the tracker’s timestamps to compare approval waiting time for the next six completed changes against the current three-day wait.
+
+For this four-engineer team, reviewer coverage directly addresses the demonstrated bottleneck; a new organizational structure or planning platform does not.

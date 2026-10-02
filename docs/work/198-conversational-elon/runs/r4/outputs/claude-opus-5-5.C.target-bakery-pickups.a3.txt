@@ -1,0 +1,12 @@
+**Requirements and who asked:** You and the owner need every cake due today prepared before pickup. Nobody has asked for new sales, inventory or manufacturing handling, and payments and stock already reconcile correctly.
+**Deleted:** The Odoo rollout, including its sales, inventory and manufacturing modules and the counter sync.
+**Bottleneck:** Bakers pick the next cake in the order it was entered rather than by pickup date, so next month's orders got made before today's.
+**Checked myself:** I only have what you told me. The shared list already has customer, pickup date and status, everyone can read it at the counter, and today's cakes were unmade while next month's were done. I have not seen the list itself.
+
+You are trying to get today's cakes made first. The shared list you already have can do that if it's sorted by pickup date. Here is what I recommend:
+
+1. **Sort the list by pickup date, earliest first.** Prepared orders go to the bottom or are hidden, so the counter view always starts with what is due soonest.
+2. **Set one rule for bakers.** Always take the top unprepared order, and don't start anything due more than a few days out until today's and tomorrow's orders are done.
+3. **Check it once each morning.** Before pickups start, one person confirms that "due today, not prepared" is empty or already being made.
+
+The order data you need is already in the list, so Odoo would add a large system to run without fixing the step that failed. I'd postpone the implementation partner. That booking and its cost are your call. If pickups still get missed after a couple of weeks on the sorted list, that is new evidence, and we should look at what actually broke.

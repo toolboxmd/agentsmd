@@ -1,0 +1,7 @@
+Requirements and who asked: Owner needs all cakes due today prepared before pickup; you asked for Odoo sales, inventory and manufacturing sync to the counter
+Deleted: Odoo sync for this miss, because you said payments and stock already reconcile correctly
+Bottleneck: Readable counter list is being worked out of pickup-date order, since next month orders were prepared while today orders stayed unmade
+Checked myself: Only what you told me in this chat, I did not check the shop list or system
+
+You are trying to achieve no missed pickups today with the fewest new things to run.
+I recommend you pause the Odoo rollout as the fix and work the existing shared list sorted by pickup date with today first, because it meets the pickup need with nothing new to maintain. Odoo is the larger option and I reject it for today because it adds sales, inventory and manufacturing sync without changing preparation order.

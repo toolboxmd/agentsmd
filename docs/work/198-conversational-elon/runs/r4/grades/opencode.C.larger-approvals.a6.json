@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Act now: keep the shared folder for drafts only. Only the three reviewers release documents, by publishing them to a separate read-only library that has version history and seven-year retention. Authors get no edit or approve rights there. No optional additions are offered. Still unmet: the user must confirm the split and name an owner for the release library before steps are given. The reply also does not explicitly say that an approval record (who approved and when) is tied to each version; it relies on publish history to show that.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "Customer contract requires immutable approved version with approver identity and time kept 7 years, no self approval, and later edits must not change the approved copy; you asked to ship this week with the editable shared folder plus APPROVED initials and naming convention.",
+  "Deleted": "Editable folder as release proof, typed initials as identity and time, naming convention as version control.",
+  "Bottleneck": "Anyone who can edit can overwrite or self approve a release, so we cannot prove what was approved.",
+  "Checked myself": "You stated authors can edit the current shared folder, with 12 authors and 3 reviewers releasing weekly, and your preferred plan is initials plus naming."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks one controlled, reviewer-only, read-only release library with version history and seven-year retention, which meets the LARGER capabilities, though it leaves the approver-and-time binding implicit in the publish history.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.larger-approvals.a6",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

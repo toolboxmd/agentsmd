@@ -1,0 +1,5 @@
+You need all cakes due today prepared before pickup.
+
+Syncing Odoo sales, inventory and manufacturing next week will not fix that because the counter list is being worked in entry order instead of pickup date order.
+
+Sort the shared list by pickup date today and work today first, then revisit Odoo once pickups are safe.

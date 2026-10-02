@@ -1,0 +1,6 @@
+Requirements and who asked: Reliable report by 08:00 shippable this week, requested by you; exact overnight start time does not matter per you.
+Deleted: Airflow, Kubernetes, separate workers/scheduler/deployment, new budget spend.
+Bottleneck: Laptop sleep causing missed runs, not throughput or orchestration.
+Checked myself: You stated the command runs 3 minutes, is safe to rerun, has no downstream jobs, and is correct when it runs, and you administer an always on Linux machine.
+
+You want a correct export ready by 08:00 with no missed nights. I recommend a cron job with logging and a pre 08:00 retry on the always on Linux machine you already administer using the existing Python command. Airflow on Kubernetes is rejected for this week because it adds hosts to run and maintain without fixing the missed run bottleneck for one idempotent 3 minute job.

@@ -1,0 +1,12 @@
+**Requirements and who asked:** You need every cake due today ready before pickup; you requested an Odoo rollout.
+**Deleted:** The assumption that syncing three modules will fix missed pickups.
+**Bottleneck:** Cakes due today remain unmade while next month’s orders are prepared.
+**Checked myself:** From your account, staff can read the shared list, and payments and stock reconcile correctly; the reason for the preparation sequence is still unknown.
+
+I would structure this around pickup readiness, starting with the existing list:
+
+1. **Today:** Order the outstanding cakes by pickup time, assign each to a preparer, and have one person confirm readiness before each pickup.
+2. **Next week:** Have the partner investigate why later orders were prepared first and demonstrate how the proposed workflow makes the next cake to prepare clear.
+3. **Before committing to the broader rollout:** Require a realistic demonstration that every due order is assigned, prepared and visibly ready before pickup.
+
+Odoo may support that workflow, but the module sync alone does not establish it.

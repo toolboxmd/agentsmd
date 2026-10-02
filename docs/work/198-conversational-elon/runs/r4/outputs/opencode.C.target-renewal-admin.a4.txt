@@ -1,0 +1,7 @@
+Requirements and who asked: You asked for a decision prompt 2 weeks before each fixed notice deadline, seen in your daily phone calendar, with no auto cancel or pay.
+Deleted: n8n, Gmail agent, vector database, Telegram bot.
+Bottleneck: Decision dates are not yet in the calendar you already check daily.
+Checked myself: Yearly statement with fixed dates, 2 week lead time, daily phone calendar use, and no auto actions, all from your brief.
+
+You want reliable decision reminders for a small fixed yearly list.
+I recommend one option: copy each deadline minus 14 days from the January statement into your phone calendar as an event with an alert, and nothing else to run or watch.

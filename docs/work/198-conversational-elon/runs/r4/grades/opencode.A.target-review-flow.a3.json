@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: replace the lead-only reviewer assignment with a pool of the lead plus the two qualified engineers, require one approval from that pool, round-robin auto-assign, reassign when the assignee is OOO or after 24h, and set a one-business-day review limit with a ping after 4h. It rejects squads/chapters, Jira Align and the quarterly workshops, and proposes tracking PR wait time next week. Optional additions: none. Unmet needs: none significant, though the reply has none of the required labeled record lines.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The fix is a bounded reviewer-coverage change, but none of the four labeled record lines appear, so all label-based predicates fail.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-review-flow.a3",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

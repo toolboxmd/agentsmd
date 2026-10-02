@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends one daily cron job on the existing always-on Linux machine, running the existing command with logging well before 08:00. It explicitly says not to build Airflow on Kubernetes for this job. It adds no optional extras and leaves no unmet needs, though it does not mention verifying the interpreter or paths on the server.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Reliable correct report by 08:00 daily that ships this week (user). Airflow in Kubernetes for future-proofing (user request, not needed for function).",
+  "Deleted": "Airflow scheduler, workers, Kubernetes cluster and worker/scheduler/deployment split.",
+  "Bottleneck": "Runs go missing because the laptop sleeps overnight, not orchestration power.",
+  "Checked myself": "Working 3 minute Python command, no downstream jobs, rerun safe, successful runs correct, laptop often asleep, always-on Linux machine available, exact start time does not matter."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded cron-on-existing-server fix with Airflow/Kubernetes explicitly removed; the Checked myself line restates supplied facts without claiming any tests.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-night-export.a4",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

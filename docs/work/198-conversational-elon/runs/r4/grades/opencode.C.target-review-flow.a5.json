@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "This week, make the two qualified engineers default reviewers, with either one able to approve instead of the lead alone. No optional additions are offered now; the squads/chapters reorg and Jira Align are rejected for now. The reply does not address the funded quarterly workshops beyond listing them as deleted, and it gives no handoff or rotation details.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for an operating model this week to ship faster, suggesting Spotify squads and chapters, Jira Align, and funded workshops.",
+  "Deleted": "Squads and chapters reorg, Jira Align, quarterly planning workshops.",
+  "Bottleneck": "Last six changes coded in under a day then waited three days for one absent lead reviewer.",
+  "Checked myself": "What you told me about team size, wait times, sole reviewer absence, and two other qualified approvers."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded reviewer-coverage fix, and the larger stack is explicitly removed.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-review-flow.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

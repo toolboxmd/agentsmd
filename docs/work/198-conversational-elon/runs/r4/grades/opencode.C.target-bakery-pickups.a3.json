@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: build one counter view of the existing shared order list, sorted by pickup date with a due-today filter, and prepare cakes in date order. Optional additions: none; the reply asks whether to pause the Odoo partner until the view has worked for a week. Unmet needs: the Odoo rollout is explicitly not started for this goal.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Owner needs all cakes due today prepared before pickup; you asked for Odoo sales, inventory and manufacturing synced to the counter.",
+  "Deleted": "Odoo sync and new modules, because you said payments and stock reconcile correctly so they do not fix missed pickups.",
+  "Bottleneck": "Counter list is readable but today orders wait while next month orders get made first, so ordering by pickup date is the wait.",
+  "Checked myself": "You told me staff use one shared list with customer, pickup date and status, and today cakes were unmade while later orders were prepared."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded due-today view from the existing list, with Odoo named and rejected for now and the check attributed to user-supplied facts.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-bakery-pickups.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

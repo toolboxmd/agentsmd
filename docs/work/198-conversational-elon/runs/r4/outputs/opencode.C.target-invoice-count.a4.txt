@@ -1,0 +1,10 @@
+Requirements and who asked: Fast unpaid count under 1s that reflects committed invoices at request time for the portal per you; Kafka/CQRS/Redis per you because budget is approved and peers are moving.
+Deleted: Kafka cluster use, new services and topics, CQRS projection, Redis for this count.
+Bottleneck: App loads full invoice rows and builds objects in memory just to count.
+Checked myself: Told facts only: one app plus PostgreSQL, count-only endpoint with no other reader, in-memory count, users report slow.
+
+You are trying to get an accurate unpaid-invoice count in under 1s at request time.
+
+I recommend a SELECT COUNT(*) with a WHERE clause on the unpaid state in PostgreSQL, with an index if missing, because it meets both stated needs with the fewest moving parts: it avoids the row fetch and object cost for speed, and it reads committed data directly so it stays accurate. I recommend against shipping Kafka services, topics, projection, or Redis this week because a projection lags committed data and fails the accuracy need while adding services to run and watch.
+
+Can I proceed with the COUNT fix and ship no new infra for this?

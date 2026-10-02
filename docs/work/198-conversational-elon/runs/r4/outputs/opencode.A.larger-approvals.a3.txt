@@ -1,0 +1,12 @@
+That folder + initials + naming approach won't meet the contract — don't ship it for this delivery.
+
+It fails every control you listed:
+
+1. Exact approved version for 7 years: anyone with edit access to the shared folder can overwrite, rename, or delete the file after release. No retention.
+2. Approver identity and approval time: typed initials are not identity — any of the 12 authors / 3 reviewers can type anyone's initials, with no trustworthy timestamp.
+3. Authors must not approve their own: no enforcement. An author can approve their own document.
+4. Later edits must not change the retained version: with one editable folder there is no frozen released copy.
+
+To meet it this week you need, at minimum, separate from the working folder: a release store that is read-only after approval, where only reviewers can approve, the system records who + when, authors cannot approve their own work, and the released file is version-frozen and retained.
+
+Keeping the current editable folder as the system of record will breach on all four on first audit.

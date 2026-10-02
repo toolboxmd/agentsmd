@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends building one Excel PivotTable in the existing workbook now, with regions as rows, months as columns and the sum of the signed net amount as the values. It rejects the four-tool Airbyte/Snowflake/dbt/Power BI pipeline for this report. It offers no optional additions. One gap: it never says outright that refunds stay negative, though summing the signed net amount keeps them negative anyway.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "User asked for accurate monthly regional net sales for the board; without it the board misstates results; peer stack and budget cited by user as means, not as board need.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI weekly build.",
+  "Bottleneck": "Manual summing of one local Excel export.",
+  "Checked myself": "You told me one local table with region, date, signed net amount including refunds, and it fits on your computer."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation and match this decision. The recommendation is a single pivot table in the existing workbook, with the full stack named and rejected and the check based only on facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-board-report.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

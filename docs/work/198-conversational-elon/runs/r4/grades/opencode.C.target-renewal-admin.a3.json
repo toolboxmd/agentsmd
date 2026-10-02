@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends using only the phone calendar now. When the yearly statement arrives, the user adds one event per contract, dated 14 days before its notice deadline, with the contract name and notice details. It rejects n8n, the Gmail agent, the vector database and the Telegram bot because they add cost and upkeep without improving a fixed yearly list. It offers no optional additions and leaves no unmet needs.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for a decision nudge 14 days before each fixed notice deadline, using phone calendar, with no auto cancel or pay; the AI stack was suggested by creator videos, not by task need.",
+  "Deleted": "n8n workflow, Gmail agent, vector database, Telegram bot.",
+  "Bottleneck": "Forgetting the decision date, not collecting the dates.",
+  "Checked myself": "You told me dates stay fixed for the year, you check phone calendar daily, and you want no automatic actions."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded calendar-only recommendation that names and removes the whole proposed stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-renewal-admin.a3",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

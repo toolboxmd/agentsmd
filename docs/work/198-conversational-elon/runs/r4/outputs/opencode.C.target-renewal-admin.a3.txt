@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked for a decision nudge 14 days before each fixed notice deadline, using phone calendar, with no auto cancel or pay; the AI stack was suggested by creator videos, not by task need.
+**Deleted**: n8n workflow, Gmail agent, vector database, Telegram bot.
+**Bottleneck**: Forgetting the decision date, not collecting the dates.
+**Checked myself**: You told me dates stay fixed for the year, you check phone calendar daily, and you want no automatic actions.
+
+Goal: You want a reliable nudge to review each contract two weeks before its notice deadline.
+
+I recommend phone calendar only: when the yearly statement arrives, add one event per contract on notice deadline minus 14 days with contract name and notice details, and I reject the n8n, Gmail agent, vector database and Telegram bot stack because it adds cost and upkeep without improving that fixed yearly list.

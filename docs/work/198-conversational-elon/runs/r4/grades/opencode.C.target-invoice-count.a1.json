@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends replacing in-memory counting with COUNT(*) in Postgres, using an unpaid-invoice filter and a supporting index. It says this keeps request-time committed freshness and adds no new services. It explicitly rejects Kafka, the CQRS projection and Redis, and asks the user to confirm that no streaming work ships this week. It adds nothing optional and leaves no stated need unmet.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "subsecond unpaid invoice count reflecting committed data at request time, asked by user; Kafka plus CQRS projection plus Redis proposed by user as means.",
+  "Deleted": "Kafka cluster, CQRS projection, Redis for this count.",
+  "Bottleneck": "endpoint loads invoice rows and builds objects to count in app memory instead of counting in Postgres.",
+  "Checked myself": "you reported one app plus Postgres, endpoint returns only the count, no other reader, and slow counts."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded aggregate-query fix; the 'Checked myself' line uses only facts the user supplied and claims no tests.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-invoice-count.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

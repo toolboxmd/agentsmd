@@ -1,0 +1,15 @@
+{
+ "run_id": "grok.C.canary.a3",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "C",
+ "arm_sha256": "a1f942978780dfead35a0b81ca9e9d4b978a57ac44ae30a1ab00695a5d9941d2",
+ "scenario": "canary",
+ "attempt": 3,
+ "exit": 1,
+ "stderr_tail": "Internal error: {\n  \"message\": \"API error (status 402 Payment Required): Grok Build usage balance exhausted\",\n  \"http_status\": 402\n}\nError: Internal error: {\n  \"message\": \"API error (status 402 Payment Required): Grok Build usage balance exhausted\",\n  \"http_status\": 402\n}\n",
+ "invalid": "exit 1",
+ "seconds": 4.0,
+ "valid": false
+}

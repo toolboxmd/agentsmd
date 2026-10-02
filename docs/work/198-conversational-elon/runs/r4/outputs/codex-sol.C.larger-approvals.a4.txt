@@ -1,0 +1,8 @@
+**Requirements and who asked:** The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, independent approval, and protection from later edits.
+**Deleted:** Typed initials and naming conventions as evidence that these controls are satisfied.
+**Bottleneck:** Authors can edit the shared folder; the proposed column does not protect approval evidence or enforce independent review.
+**Checked myself:** You supplied the contract requirements and folder permissions; I have not verified the platform’s capabilities.
+
+You need compliant controls before this week’s delivery, and the proposed column and naming convention are insufficient. I recommend keeping the folder for drafting and using its platform’s existing controls, if supported, to enforce independent authenticated approval and retain a protected snapshot with approver identity and approval time for seven years.
+
+Which platform hosts the folder?

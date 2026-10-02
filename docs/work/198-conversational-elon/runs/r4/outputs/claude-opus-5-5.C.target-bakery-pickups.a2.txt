@@ -1,0 +1,15 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup.
+
+**Deleted:** Odoo sales, inventory and manufacturing modules, plus counter sync. Payments and stock already reconcile correctly, and staff can already read the list at the counter.
+
+**Bottleneck:** Staff work the list in the order orders were entered, not by pickup date. That is why next month's cakes were made while today's were not.
+
+**Checked myself:** Only what you told me. I haven't seen the list itself or which tool it lives in.
+
+I'd skip the Odoo rollout. It wouldn't fix this problem, and it adds a system you'd have to run and pay for. Instead, change how the existing list is read:
+
+1. **Sort by pickup date, earliest first.** If the tool supports it, also filter to unprepared orders due today or tomorrow, and make that the default view at the counter.
+2. **Start each day from that view.** Prep works top-down, and nothing gets marked done until it's actually made.
+3. **Check before opening.** Someone confirms that nothing due today is still unprepared.
+
+This takes minutes and costs nothing. Before next week, you may want to cancel or postpone the partner booking. If you tell me what the list is kept in (paper, spreadsheet, app), I can give you the exact sort and filter steps.

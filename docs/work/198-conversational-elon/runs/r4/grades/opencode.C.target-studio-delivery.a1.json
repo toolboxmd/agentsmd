@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends a local sort-and-PDF step that reads the client's code list, orders the JPEGs in the folder by code prefix in that sequence, and produces the contact sheet. It rejects the DAM, AI tagging, semantic search and cloud portal, and adds nothing optional. To build the step it asks for an example code list and confirmation of the filename pattern.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Deliver images in exact client code order (client); include contact sheet PDF per job (you)",
+  "Deleted": "DAM purchase with AI tagging, semantic search, cloud review portal (your suggestion)",
+  "Bottleneck": "Manual thumbnail sorting costs one hour per delivery (you reported)",
+  "Checked myself": "Final JPEGs are in one folder, filenames start with product code, client supplies ordered code list (you reported)"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply picks a bounded local step that follows the client's code order, names and rejects the DAM stack, and bases its checks only on facts the user reported.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-studio-delivery.a1",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

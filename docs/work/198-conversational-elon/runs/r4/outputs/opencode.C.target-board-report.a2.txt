@@ -1,0 +1,8 @@
+Requirements and who asked: Monthly board net sales by region from accounting export, asked by you. No requester for continuous sync, warehouse, or BI layer beyond peer comparison.
+Deleted: Airbyte, Snowflake, dbt, Power BI ingestion and serving for one local file.
+Bottleneck: Hand built monthly sums where negative refunds must stay signed.
+Checked myself: You told me only one local Excel with region, date, signed net amount that fits comfortably on your computer.
+
+What you are trying to achieve is a correct monthly regional total for the board from that Excel.
+
+I recommend one saved PivotTable in the same workbook with rows region, columns grouped by month from date, values sum of net amount. I recommend against building the Airbyte, Snowflake, dbt and Power BI pipeline this week because it adds cost and upkeep without changing that number.

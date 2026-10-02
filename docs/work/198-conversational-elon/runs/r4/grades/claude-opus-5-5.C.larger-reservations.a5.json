@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends adding a booking form now, backed by a script, while keeping the spreadsheet as the record and view. The script takes a lock (Google Apps Script LockService), checks the item's existing dates for overlap, and either saves the booking or rejects it. The booking range is protected so agents cannot type bookings in directly, and only one of two simultaneous submissions can succeed. No optional additions are offered now. Unmet need: the reply does not know whether the sheet is Google Sheets or Excel, and says the approach would need checking if it is Excel.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "the owner requires a conflicting reservation to be rejected at save time, even when two agents submit at the same moment. You want to keep the spreadsheet and ship this week.",
+  "Deleted": "red conditional formatting with a reminder to check it. It only marks a clash after both bookings are saved, so last week's double promise could still happen.",
+  "Bottleneck": "six agents in two offices write straight into the same rows, and nothing checks or serialises those writes.",
+  "Checked myself": "only what you've told me. I haven't seen the sheet, so I don't know whether it's Google Sheets or Excel."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "A server-side script that locks, checks for overlap and rejects conflicting saves means only one of two simultaneous submissions succeeds; the spreadsheet stays only as the store and view.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.larger-reservations.a5",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,7 @@
+**Requirements and who asked**: stop 3-day approval wait when lead is absent, asked by you; no work requirement asks for a new framework
+**Deleted**: Spotify squads and chapters, Jira Align, new tooling, quarterly planning workshops
+**Bottleneck**: approvals queued on one absent sole reviewer while coding took <1 day
+**Checked myself**: your report of last 6 changes with lead as sole reviewer while away, 2 others qualified and authorized
+
+You are trying to get changes approved without waiting on one absent lead.
+I recommend you keep your current tracker and this week replace sole-lead assignment with any-available approver from the 3 qualified engineers. I am rejecting squads, Jira Align, and workshops because they add cost and process without fixing the queue.

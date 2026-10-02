@@ -1,0 +1,4 @@
+You are trying to make this week's delivery with approval controls that satisfy the seven year contract.
+I recommend against the folder plus initials plan because it fails all three contract tests: anyone can type initials including an author approving their own work, there is no reliable approver identity and time, and later edits can change the released version with no retained copy.
+The smallest workable option is to keep the shared folder for drafting only and have reviewers copy each exact approved file to a reviewer-write-only release location with a log of version hash, approver identity and approval time that authors cannot change.
+Should I draft that minimal release step for your three reviewers to use this week?

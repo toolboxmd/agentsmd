@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "The reply recommends acting now: keep the shared folder for drafting, and use the platform's existing controls to enforce independent, authenticated approval and to keep a protected snapshot of each approved version with approver identity and approval time for seven years. It suggests no optional additions. The unmet need is confirming that the platform supports these controls, so it asks which platform hosts the folder.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, independent approval, and protection from later edits.",
+  "Deleted": "Typed initials and naming conventions as evidence that these controls are satisfied.",
+  "Bottleneck": "Authors can edit the shared folder; the proposed column does not protect approval evidence or enforce independent review.",
+  "Checked myself": "You supplied the contract requirements and folder permissions; I have not verified the platform\u2019s capabilities."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply rejects the initials column and picks enforced existing-platform controls that cover every required capability, though it depends on the platform supporting them.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-approvals.a4",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply rejects the DAM, AI tagging, semantic search and cloud portal. For now it recommends a local, deterministic script. The script reads the client's ordered code list, matches files by exact filename prefix, and builds a numbered delivery folder plus a contact-sheet PDF in the client's order. It also fails loudly if codes are missing, duplicated or extra. The only optional addition is an offer to write the script once the user shares the list format and sample filenames. The reply has none of the four required record labels.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "note": "The recommendation is a bounded fix that follows the client's code order, but none of the four labelled lines appear, so every record predicate fails.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.target-studio-delivery.a1",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

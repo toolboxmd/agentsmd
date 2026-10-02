@@ -1,0 +1,8 @@
+**Requirements and who asked:** You want this shipped this week, ready by 08:00, and easy to extend later.
+**Deleted:** Airflow, Kubernetes, and separate workers for this single export.
+**Bottleneck:** The laptop is often asleep when the export needs to run.
+**Checked myself:** From your description: three minutes per run, correct successful output, safe reruns, no downstream jobs, and an existing always-on Linux machine.
+
+Your goal is reliable nightly delivery with minimal maintenance; I recommend a systemd service and timer on that Linux machine.
+
+The service runs your existing Python command; the timer starts it at 07:00 with `Persistent=true` to catch missed starts after downtime; deployment consists of the script, its Python dependencies, and those two unit files. Validate one manual run and one scheduled run, with failures visible in the journal. Keeping the command independently runnable preserves room for future orchestration when actual dependencies require it.

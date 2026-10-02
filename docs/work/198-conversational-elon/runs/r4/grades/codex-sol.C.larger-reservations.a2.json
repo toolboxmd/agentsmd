@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Right now the reply recommends one controlled save path that checks availability and commits the reservation atomically, so that when two conflicting submissions arrive only one succeeds. The spreadsheet stays only as a read-only view with direct edits turned off. It rejects conditional formatting as the fix. It adds no optional extras. One need is left open: there is no evidence yet that this enforceable change can ship this week.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires overlapping reservations for the same item to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colours and reminders as the conflict safeguard.",
+  "Bottleneck": "Preventing two agents from both saving a conflicting booking.",
+  "Checked myself": "Only the facts you supplied; I have not inspected the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply puts all four record lines before the recommendation, chooses an atomic save-time conflict check that handles simultaneous submissions, and keeps the spreadsheet only as a view.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a2",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

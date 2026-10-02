@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends building one small local script now that takes the job folder and the client's code list and produces the contact-sheet PDF in the client's order. It flags missing codes, extra images and duplicate matches. It explicitly skips the DAM and keeps the budget. There are no optional additions. Before building, it asks for a sample code list, sample filenames, and whether the JPEGs also need sequence-number renaming.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client wants the images in their supplied product-code order; you want to stop spending an hour per delivery dragging thumbnails and building the contact sheet by hand.",
+  "Deleted": "DAM, AI tagging, semantic search, and the cloud review portal. Nobody asked for them, and none of them sorts files by a list you already have.",
+  "Bottleneck": "Manually ordering images and building the contact-sheet PDF.",
+  "Checked myself": "Only what you've told me: filenames start with the exact product code, each job's final JPEGs sit in one folder, and the client supplies the ordered code list."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "A bounded local script follows the client's code list, the full DAM stack is rejected by name, and all four record lines come before the recommendation and rest only on facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "claude-opus-5-5.C.target-studio-delivery.a1",
+ "host": "claude-opus-5-5",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

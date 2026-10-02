@@ -1,0 +1,8 @@
+Requirements and who asked: Reliable report by 08:00, ship this week, from 3-min idempotent export with no downstream jobs
+Deleted: Airflow, Kubernetes, separate scheduler/workers/deployment split
+Bottleneck: Overnight misses because laptop sleeps, not scheduling power
+Checked myself: You told me the run is 3 min, safe to rerun, no downstream, time flexible, and you have an always-on Linux machine
+
+You want a correct export ready by 08:00 that ships this week.
+I recommend one cron/systemd timer on your existing always-on Linux box at e.g. 05:00 with logging, not Airflow on Kubernetes because that blocks a this-week ship and adds upkeep for one independent job.
+If you confirm that Linux box I will give you the timer and rerun command.

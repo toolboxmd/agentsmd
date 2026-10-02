@@ -1,0 +1,10 @@
+Requirements and who asked: Deliver images in exact client code order (client); include contact sheet PDF per job (you)
+Deleted: DAM purchase with AI tagging, semantic search, cloud review portal (your suggestion)
+Bottleneck: Manual thumbnail sorting costs one hour per delivery (you reported)
+Checked myself: Final JPEGs are in one folder, filenames start with product code, client supplies ordered code list (you reported)
+
+What you are trying to achieve is correct order delivery of JPEGs plus contact sheet PDF this week without the manual sort.
+
+I recommend one local sort and PDF step that reads the code list and orders the folder JPEGs by code prefix into the contact sheet. I do not recommend a DAM because it adds cost, hosting and maintenance without fixing the bottleneck, which is order matching.
+
+If you paste one example code list and confirm the filename pattern, I will build that sort step.

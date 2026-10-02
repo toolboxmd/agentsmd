@@ -1,0 +1,8 @@
+**Requirements and who asked:** You require conflicting reservations for the same item to be rejected at save time, including simultaneous submissions.
+**Deleted:** Colours and reminders as the conflict prevention mechanism.
+**Bottleneck:** Checking availability and saving the reservation must be one atomic operation across all six agents.
+**Checked myself:** You reported a double booking last week; I have not inspected your spreadsheet or booking system.
+
+You want to prevent double bookings while keeping this week’s change small. I recommend keeping the spreadsheet for viewing bookings and adding one shared reservation save path that atomically rejects overlaps for an item’s identifier.
+
+Red formatting can flag conflicts, but it cannot meet your requirement: two agents can both see availability and submit together. Whether the save path can ship this week depends on your spreadsheet platform; which one do you use?

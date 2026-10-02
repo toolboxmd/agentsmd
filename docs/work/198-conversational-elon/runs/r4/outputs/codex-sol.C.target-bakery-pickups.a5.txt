@@ -1,0 +1,12 @@
+**Requirements and who asked:** You need every cake due today prepared before pickup; you proposed Odoo to prevent missed pickups.
+**Deleted:** Module syncing as a prerequisite for getting today’s cakes ready.
+**Bottleneck:** Preparation is reaching next month’s orders while today’s orders remain unmade.
+**Checked myself:** Your account establishes that the shared list is accessible and payments and stock reconcile correctly; the reason staff chose later orders is still unverified.
+
+You’re trying to get prepaid cakes ready in pickup order. I recommend fixing preparation priority in the existing list first and pausing the Odoo rollout.
+
+1. **Today:** Identify every unmade cake due today, put them in pickup-time order, assign each to a preparer, and check that the remaining work fits before pickup. If it cannot, you need to decide which customers to contact immediately.
+2. **Before next week:** Make that priority order the counter’s working queue and verify cakes are actually ready before marking them ready. Establish why staff prepared later orders first.
+3. **With the partner:** Review that observed failure before agreeing implementation scope. Require a demonstration that today’s unmade orders remain visible and take priority over future orders.
+
+Correct payment and stock reconciliation give us no current reason to replace those workflows to solve this preparation failure.

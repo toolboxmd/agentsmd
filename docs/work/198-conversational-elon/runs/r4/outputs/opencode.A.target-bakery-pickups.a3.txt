@@ -1,0 +1,23 @@
+For next week, keep the goal tight: no pickup missed from the counter.
+
+I’d structure it like this with your partner:
+
+**1. Fix today first, don't wait for Odoo**
+Sort the current shared list by pickup date ascending, filter `pickup_date = today AND status != ready`, and work that queue top-down. Everything for next month goes on hold.
+
+**2. Discovery - 1 day**
+Map your current list to Odoo: customer, pickup date/time, cake SKU/custom spec, prepaid status, prep status. Define the status flow: Confirmed -> In Production -> Ready for Pickup -> Picked up. Pickup date must be required.
+
+**3. Build - sales + inventory + manufacturing**
+- Sales: Sales Order with Customer + Commitment/Pickup Date. Prepaid = confirmed, nothing moves without it.
+- Inventory: Ingredients + finished cakes, Make-To-Order route for cakes.
+- Manufacturing: Auto-create Manufacturing Order from Sales Order. MO due date = pickup date.
+- Counter: One shared view everyone uses — filtered to `Due Today`, sorted by pickup time, with big status. Use Odoo Shopfloor / Kanban or a TV dashboard at the counter. This replaces the paper/shared list.
+
+**4. Migration + test**
+Clean open orders, import only open + today’s, archive history. Test end-to-end: enter prepaid order -> MO appears -> mark ready -> disappears from Due Today. Test a late entry for next month doesn’t jump ahead of today.
+
+**5. Go-live**
+Keep the old list read-only as backup for 1 week. Train on just: enter order, find Due Today, mark ready. Owner checks one dashboard: all `due today` = ready before pickup.
+
+Ask the partner to demo that counter view on day 1 — if today’s cakes aren’t on top in due-date order, stop and fix that before syncing anything else.

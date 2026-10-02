@@ -1,0 +1,8 @@
+**Requirements and who asked:** The signed customer contract requires exact approved versions, approver identity and approval time retained for seven years, independent approval, and protection from later edits; you prefer keeping the folder.
+**Deleted:** Typed initials and naming conventions as approval controls.
+**Bottleneck:** Authors can edit the folder, so it cannot reliably preserve the approved release and its approval evidence.
+**Checked myself:** Only the facts you provided; the folder system’s capabilities remain unverified.
+
+You need compliant releases before this week’s delivery. I recommend keeping the folder for drafts and adding a protected release archive that captures each exact approved document, records the reviewer’s authenticated identity and approval time, blocks self-approval, and locks the document and evidence for seven years. I would not ship the proposed APPROVED column as satisfying the contract.
+
+Which system hosts the folder? That determines whether these controls can be added within your existing setup.

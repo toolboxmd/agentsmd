@@ -1,0 +1,20 @@
+**Requirements and who asked:** The customer contract requires that each released document keep its exact approved version, approver identity and approval time for seven years. Authors must not approve their own documents, and later edits must not change the approved version. You need this before this week's delivery.
+**Deleted:** A typed-initials APPROVED column and a naming convention as the control. Anyone with edit access can type anyone's initials, nothing records the time, and an author can still edit the file afterward.
+**Bottleneck:** Authors can write to the same place where approved versions live.
+**Checked myself:** Only what you told me. I have not seen the folder or the platform it runs on.
+
+I don't think the initials column would pass the contract. It records a claim rather than an approval, and it stops neither self-approval nor later edits.
+
+You need approvals that can't be forged or overwritten. I recommend keeping your folder for drafting and adding one "Released" folder:
+
+- Only the three reviewers can write to it. Authors can read it but not change it.
+- A reviewer releases a document by saving a frozen copy there, such as a PDF.
+- The platform's own audit log then records who released it and when.
+- A seven-year retention lock on that folder keeps the approved copy from being changed or deleted.
+
+That is one new folder and one permission change, which you can set up this week.
+
+Two things I need from you:
+
+1. Which platform hosts the folder (SharePoint, Google Drive, something else)? I need to confirm that its audit log and retention lock actually meet the seven-year requirement.
+2. Do any reviewers also write documents? If so, we need a rule that another reviewer releases those.

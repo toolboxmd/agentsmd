@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply recommends one bounded test: run a known-good cable outside the grommet for the next workday before spending anything. The UniFi gateway, managed switches and Grafana dashboard are put on hold until that test result is known. It offers no optional additions now and leaves no stated need unaddressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "dependable calls at desk (you); UniFi gateway, managed switches and Grafana dashboard for future-proofing (home-network group trend, budget approval)",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard as treatment for these drops",
+  "Bottleneck": "single desk wired path, not whole-home routing or observability",
+  "Checked myself": "desk computer on Ethernet drops, two other devices on same router stay connected, cable is years old through tight grommet, no different cable tried yet"
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded cable test, and the stack is only a conditional later step, though the closing line calls the cable damaged when that is only suspected.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-home-network.a2",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need the report by 08:00 every day, and the start time does not matter. "Future-proofed" has no named failure behind it.
+**Deleted:** Airflow, Kubernetes, and any worker/scheduler split. The job is one three-minute command with no downstream jobs, so there is nothing for them to orchestrate.
+**Bottleneck:** The laptop is asleep overnight. The command itself works; runs go missing only when the laptop is asleep.
+**Checked myself:** Nothing yet. All of this comes from what you've told me: the job is safe to rerun, it produces the correct report when it runs, and you already run an always-on Linux machine.
+
+You're trying to get the report reliably by 08:00. I'd skip Airflow on Kubernetes, because it would add a cluster, a scheduler, a metadata database, and upgrades to watch, and none of that fixes the sleeping laptop. Instead, move the existing command to your always-on Linux machine and run it with one systemd timer, say at 03:00. That ships today, and since a rerun is safe, any failure can be fixed by running it again by hand.
+
+Should I set up the timer on that machine? I'll need its hostname and where the report should land.

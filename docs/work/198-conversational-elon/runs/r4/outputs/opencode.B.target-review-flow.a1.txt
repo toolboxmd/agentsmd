@@ -1,0 +1,5 @@
+You are trying to get changes shipped this week without waiting when the lead is absent.
+
+I recommend against squads and chapters, Jira Align, and quarterly planning workshops. They add cost and coordination and do not fix your bottleneck. Your last six changes coded in under a day then waited three days for the same absent lead while two other qualified and authorized engineers were available.
+
+Launch this instead: no sole reviewer, any one of the three qualified engineers can approve on first-available basis.

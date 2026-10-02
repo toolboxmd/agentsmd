@@ -1,0 +1,8 @@
+**Requirements and who asked**: signed customer contract via you: retain exact approved version with approver identity and time for seven years, block self approval, block later edits changing the approved copy
+**Deleted**: editable shared folder with typed initials APPROVED column and naming convention and no lock
+**Bottleneck**: anyone with edit access can overwrite or forge the approval in the current folder before audit
+**Checked myself**: you said authors can edit the shared folder, 12 authors and 3 reviewers release weekly remotely, and you prefer to ship initials plus naming
+
+You are trying to make this week's delivery pass the customer controls with minimal change.
+I disagree with shipping the initials plan because it fails every contract check and risks rejection and audit failure.
+I recommend one fix: keep the working folder editable and add a reviewer-only locked release area where a reviewer saves an immutable copy with version, author, reviewer identity and time, kept seven years, with author not equal to approver. This keeps exact version, proves identity without typed initials, records time, keeps seven year retention, blocks self approval, and later work edits cannot change the locked copy.

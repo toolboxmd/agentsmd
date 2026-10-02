@@ -1,0 +1,10 @@
+Requirements and who asked: Customer contract per your note requires exact approved version plus approver identity and time retained 7 years, no self-approval, later edits must not alter retained version.
+Deleted: Editable shared folder with typed-initials APPROVED column and naming convention.
+Bottleneck: No trustworthy approval proof, which blocks this week's delivery.
+Checked myself: Your description only; no immutable store, system identity, or timestamp described.
+
+What you are trying to achieve is a delivery this week that will still prove what was approved in 7 years.
+
+Do not ship the initials column. Anyone can type anyone's initials, there is no reliable time, authors can edit or delete it, it allows self-approval, and it does not retain the exact approved file.
+
+I recommend one change: keep the current folder for editing only, and add a separate release store where only the 3 reviewers can save the final file, each saved file is locked against edit and delete for 7 years with system-recorded approver name and time, and the author cannot be the approver. That covers version, identity, time, retention, no self-approval, and later edits.

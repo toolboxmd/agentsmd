@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends now that every reservation save go through one shared operation that atomically checks and reserves the item, so only one of two simultaneous conflicting submissions succeeds. The spreadsheet may stay only behind that operation. It rejects red formatting and reminders because they detect conflicts after the fact. No optional additions are offered. Unmet need: no specific platform is named, and it says this week's feasibility depends on the spreadsheet platform.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires conflicting reservations to be rejected at save time, including simultaneous submissions.",
+  "Deleted": "Colour-only prevention and reminders as the proposed fix.",
+  "Bottleneck": "Two agents can save conflicting promises unless saving enforces availability.",
+  "Checked myself": "Your account of six agents, two offices, and last week\u2019s double booking; no implementation inspected."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Borderline because the spreadsheet is kept, but the chosen control is a shared atomic check-and-reserve on save that lets only one simultaneous conflicting submission succeed, which meets the LARGER enforcement requirement.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-reservations.a1",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

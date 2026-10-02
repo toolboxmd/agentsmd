@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Keep the shared folder only as a working area. Configure a protected release archive in the existing system now. The archive binds each frozen version to an authenticated reviewer's identity and approval time, blocks self-approval, and prevents alteration or deletion of the version and approval record for seven years. The reply offers no optional additions. The unmet need is evidence that the existing system can actually enforce each control, which is currently unknown.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires the exact approved version, approver identity and approval time retained for seven years, independent approval, and protection from later edits.",
+  "Deleted": "Typed initials and naming conventions as evidence that those controls are satisfied.",
+  "Bottleneck": "Enforcing independent approval and preserving the released version and its approval record.",
+  "Checked myself": "You said authors can edit the shared folder; its access controls and retention capabilities are unverified."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Chooses an enforceable archive with every required capability, rejects initials and naming conventions as the control, and flags that the system's capability is still unverified.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "codex-sol.C.larger-approvals.a5",
+ "host": "codex-sol",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

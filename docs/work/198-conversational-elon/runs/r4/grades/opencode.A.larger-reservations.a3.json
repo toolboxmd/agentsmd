@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends shipping a central booking API/database this week as the only path for creating reservations. It would enforce no-overlap atomically on insert, for example with a Postgres exclusion constraint, and return an error to the second submitter. The spreadsheet may stay as a view or export but not as the system of record. The reply has none of the four required labels.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "",
+  "Deleted": "",
+  "Bottleneck": "",
+  "Checked myself": ""
+ },
+ "record_before_recommendation": false,
+ "record_specific": false,
+ "deleted_names_framed_stack": false,
+ "checked_myself_grounded": false,
+ "larger_capabilities_met": true,
+ "note": "The recommendation meets the LARGER capabilities: atomic, server-enforced overlap rejection, with the second simultaneous submitter rejected. However, none of the four required record labels are present.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "opencode.A.larger-reservations.a3",
+ "host": "opencode",
+ "arm": "A",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

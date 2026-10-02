@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Do a one-time yearly session now: create one phone calendar event per contract on the notice deadline minus 14 days, with the renewal date in the notes and a morning alert. No optional additions are offered. The n8n, Gmail agent, vector DB and Telegram stack is explicitly not recommended. Unmet need: notification settings are not verified.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "decide 2 weeks before each notice deadline or you miss the window (you); dates fixed for year from one statement (you); use phone calendar daily with no auto cancel or pay (you); n8n plus Gmail agent plus vector DB plus Telegram bot as possible means (you).",
+  "Deleted": "n8n workflow, Gmail agent, vector database, Telegram bot - no shifting dates to track, no mail to parse, no similarity to search, no second channel to watch.",
+  "Bottleneck": "copying the yearly statement into reminders once, not reminding all year.",
+  "Checked myself": "you told me dates stay fixed, you check phone calendar daily, you want a decision nudge only."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Bounded calendar-only fix with a complete, specific record that names and deletes the stack before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "opencode.C.target-renewal-admin.a5",
+ "host": "opencode",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,8 @@
+**Requirements and who asked:** You need the unpaid-invoice count to return within one second and reflect invoices committed at request time; the endpoint returns only the count and has no other reader.
+**Deleted:** Kafka topics, CQRS projection services, and Redis, because no stated requirement needs them, and an asynchronous projection would break the "committed at request time" requirement.
+**Bottleneck:** The endpoint fetches every invoice row and builds an object for each just to count them.
+**Checked myself:** Only what you told me; I have not seen the query, schema, row counts, or timings.
+
+I recommend shipping no new services or topics this week. Instead, replace the in-memory count with a single PostgreSQL `SELECT count(*) FROM invoices WHERE <unpaid condition>`, adding a partial index on the unpaid condition if the plan still scans too much. This reads committed data at request time, needs nothing new to run, and is likely to finish well under a second, though I haven't measured it yet. Running `EXPLAIN ANALYZE` on production-sized data would confirm it.
+
+The approved Kafka budget and what peers are doing don't change this, because the event-driven design would be slower to build and would serve stale counts. If you want Kafka for a different problem, tell me which one and I'll check it separately.

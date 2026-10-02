@@ -1,0 +1,16 @@
+**Requirements and who asked:** The owner requires that a conflicting reservation for the same item and overlapping dates be rejected at save time, even when two agents submit at once. You want something you can ship this week.
+**Deleted:** The manual reminder to check colours, and any "check first, then save" step in a form or script. Both still let two simultaneous saves through.
+**Bottleneck:** The guarantee has to come from whatever accepts the save. Six agents share one booking record, and nothing currently refuses a clash.
+**Checked myself:** I only have what you told me: six agents in two offices, one identifier per item, last week's double booking, and the owner's rule. I have not seen your spreadsheet.
+
+You're trying to make a double booking impossible to save. Red conditional formatting can't do that, because it only colours a clash after both bookings are already saved, and that is exactly how last week happened.
+
+I recommend one small Postgres database holding one bookings table, with this rule:
+
+```sql
+EXCLUDE USING gist (item_id WITH =, booked_during WITH &&)
+```
+
+The database itself refuses any overlapping booking for the same item, even when two agents press save at the same moment. Agents enter bookings through a simple form, so there's no custom booking app to build.
+
+Building the table and form fits in this week. You can add the red formatting now as a stopgap, as long as everyone knows it doesn't meet the owner's rule. The one decision I need from you is where to host the database, since that involves an account and possibly a monthly cost.

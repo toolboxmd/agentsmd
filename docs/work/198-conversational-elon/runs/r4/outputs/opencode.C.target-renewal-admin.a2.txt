@@ -1,0 +1,8 @@
+Requirements and who asked: User asked for review 2 weeks before each fixed notice deadline, seen in daily phone calendar, with no auto cancel or pay.
+Deleted: n8n, Gmail agent, vector database, Telegram bot and their setup and upkeep.
+Bottleneck: One time entry of this year fixed dates where a missed review waits.
+Checked myself: You reported one statement per year with fixed dates, daily phone calendar use, and no auto actions wanted.
+
+You are trying to get a dependable review prompt 14 days before each notice deadline without adding tools or automation.
+I recommend manual phone calendar events only: one event per contract at notice date minus 14 days with renewal and notice dates in the notes, entered once from the yearly statement. It gives the 14 day lead, lives where you already look daily, covers fixed yearly dates with one entry, and takes no auto action.
+That setup adds cost and failure points for no gain, so do not build it: there is nothing to parse or retrieve during the year, a second app adds a place to miss, and you ruled out auto actions.

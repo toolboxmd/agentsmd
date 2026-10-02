@@ -1,0 +1,8 @@
+**Requirements and who asked:** you need the unpaid-invoice count under one second, reflecting invoices committed at request time; nothing else reads this endpoint or uses its output.
+**Deleted:** Kafka, the CQRS projection, and Redis. Nothing in the requirement needs them, and an async projection would break the "committed at request time" rule.
+**Bottleneck:** the endpoint loads every invoice row and builds objects just to count them in application memory.
+**Checked myself:** only your description; I have not seen the query, schema, or a query plan.
+
+You want a fast, current unpaid-invoice count, so I recommend replacing the in-memory count with a single `SELECT count(*) ... WHERE <unpaid condition>` in PostgreSQL. If that query still runs over a second, add a partial index on the unpaid condition. This ships this week with no new services or topics. It also reads committed data directly, which is the only way to meet the freshness requirement. The Kafka budget being approved is not a reason to spend it here; save it for a problem that needs it.
+
+Send me the current query and the invoices table definition, and I'll write the change and check it with `EXPLAIN ANALYZE`.

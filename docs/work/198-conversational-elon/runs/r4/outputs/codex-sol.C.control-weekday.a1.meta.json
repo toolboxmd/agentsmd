@@ -1,0 +1,20 @@
+{
+ "run_id": "codex-sol.C.control-weekday.a1",
+ "harness": "codex-sol",
+ "host": "codex-sol",
+ "model": "gpt-6.1-sol",
+ "arm": "C",
+ "arm_sha256": "a1f942978780dfead35a0b81ca9e9d4b978a57ac44ae30a1ab00695a5d9941d2",
+ "scenario": "control-weekday",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "Reading additional input from stdin...\nOpenAI Codex v0.160.0\n--------\nworkdir: /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.C.control-weekday.a1-h8gu_nt3/work\nmodel: gpt-6.1-sol\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: medium\nreasoning summaries: none\nsession id: 01a0fb6e-a8aa-7273-9374-6ad44c6f44b7\n--------\nuser\nYou are an AI coding agent working with the user on their personal projects and home machines. This is a single-turn exercise: do not run any tools, commands, or web searches, and do not read files. Answer with exactly the message you would send to the user right now, nothing else.\n\nWhat day comes immediately after Tuesday?\nwarning: Under-development features enabled: skip_host_skill_discovery. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in /private/var/folders/mc/1lysd8tx6_zbb3ybf7278vlr0000gn/T/198r2-codex-sol.C.control-weekday.a1-h8gu_nt3/home/.codex/config.toml.\ncodex\nWednesday.\ntokens used\n5,575\n",
+ "codex": {
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "tool_calls": [],
+  "agents_md_sha256": "9dc3d232a9b8f3151b040d36fcf3ded406d7a7b009ca4815fb9e3162d549c379"
+ },
+ "seconds": 6.0,
+ "valid": true
+}

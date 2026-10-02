@@ -1,0 +1,18 @@
+**Requirements and who asked:** The client wants the delivered images in their supplied product-code order. You want the contact-sheet PDF, and you want to stop losing an hour per delivery.
+**Deleted:** DAM, AI tagging, semantic search, and cloud review portal. The client asked for none of these, and none of them sorts files by a list you already have.
+**Bottleneck:** The hour you spend dragging thumbnails into the client's order by hand, plus building the contact sheet.
+**Checked myself:** Only what you told me. Each job has one folder of final JPEGs, each filename starts with its exact product code, and the client supplies an ordered code list. I haven't seen the files or the list format yet.
+
+You're trying to deliver each job in the client's order with a contact sheet, without the manual hour. I recommend one small local script you run per job:
+
+1. It reads the client's code list.
+2. It matches each code to its JPEG. It requires a separator after the code so `A12` can't grab `A123`.
+3. It copies the files into a delivery folder with an order prefix, like `001_A12.jpg`.
+4. It writes the contact-sheet PDF in that same order.
+5. It stops and lists any codes with no image, more than one image, or images that aren't on the list.
+
+That should cut the hour to under a minute. I can build it this week using only Python and Pillow on your Mac.
+
+To build it, send me:
+- One real client code list, exactly as it arrives (CSV, spreadsheet, email text, or PDF).
+- A few sample filenames from one job folder.

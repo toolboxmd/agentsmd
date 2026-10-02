@@ -1,0 +1,10 @@
+**Requirements and who asked:** the report exists by 08:00 every day (you); "future-proofed" (you, not yet tied to a specific need); Airflow on Kubernetes (peers' practice, not a requirement of this job).
+**Deleted:** Airflow, Kubernetes, and any worker/scheduler/deployment split. One 3-minute job with no downstream jobs needs none of them.
+**Bottleneck:** the job runs on a laptop that is often asleep overnight, so runs are skipped. The command itself works.
+**Checked myself:** nothing observed directly. You told me the command works, takes three minutes, has no downstream jobs, is safe to rerun, and that you administer an always-on Linux machine.
+
+You're trying to get a correct report every morning by 08:00 without missed nights.
+
+I recommend moving the command to your always-on Linux machine and running it with a systemd timer at around 02:00, with `Persistent=true` so a run missed during a reboot happens at boot. That fixes the actual cause (the laptop sleeping), adds nothing new for you to maintain, and can ship today, not this week. I'd reject Airflow on Kubernetes here. It would mean running a cluster, a scheduler, a metadata database, and workers to launch one short script, and it doesn't fix anything the timer doesn't.
+
+If "future-proofed" means something concrete, like more jobs with dependencies or several people needing a UI, tell me and I'll reassess against that. Otherwise, give me the go-ahead to install the timer on that machine, since that's a host change I won't make without your approval.

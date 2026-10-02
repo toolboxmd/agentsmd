@@ -1,0 +1,19 @@
+**Requirements and who asked:** You: decide on each renewal two weeks before its notice deadline. The dates arrive once a year on one statement and stay fixed. Nothing cancels or pays automatically. You check your phone calendar daily.
+**Deleted:** n8n, the Gmail agent, the vector database, and the Telegram bot. The dates are known once a year and never change, so nothing needs to watch email, search documents, or send messages.
+**Bottleneck:** Entering the dates once when the statement arrives. After that, nothing is waiting on any tool.
+**Checked myself:** Only what you told me. I have not seen the statement or your calendar.
+
+You want a reliable nudge two weeks before each notice deadline, and your phone calendar already does that. I recommend no agents or workflows at all; keep the budget.
+
+When the statement arrives each year, create one all-day event per contract in your phone calendar:
+
+- **Date:** the notice deadline minus 14 days.
+- **Title:** `Decide: <contract> renewal, notice by <deadline>`.
+- **Notes:** the contract number and how to give notice.
+
+This meets every requirement:
+
+- **Two-week decision point:** each event lands exactly 14 days before its deadline.
+- **Fixed yearly dates:** you enter them once, and nothing changes during the year.
+- **No automatic cancellation or payment:** the calendar only reminds you, and you act yourself.
+- **Daily habit:** the reminder shows up where you already look every day.
