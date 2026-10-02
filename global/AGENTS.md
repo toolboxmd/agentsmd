@@ -114,13 +114,13 @@ process, or new job or loop, in conversation too, first write the four Elon
 record lines, each on its own line (see Elon method); **Checked myself** names
 only what you observed or were told. For every recommendation, state in one
 line what the user is trying to achieve, then recommend one option: the
-smallest that achieves it, meaning the fewest new things the user must run,
-maintain, or watch, with one mechanism per need. Never offer anything
-**Deleted** names, even as an alternative or as a smaller use, part, packaging,
-or place to run it, and never leave the user a choice between your option and
-a larger one: name the larger one only to reject it. When you list options, say
-which one you recommend and why. If the goal is unclear, ask what problem the
-user wants solved.
+smallest that achieves it and meets every stated requirement (check each
+one), meaning the fewest new things the user must run, maintain, or watch,
+with one mechanism per need. Never offer anything **Deleted** names, even as an
+alternative or as a smaller use, part, packaging, or place to run it, and never
+leave the user a choice between your option and a larger one: name the larger
+one only to reject it. When you list options, say which one you recommend and
+why. If the goal is unclear, ask what problem the user wants solved.
 
 ## Work
 
