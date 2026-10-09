@@ -89,7 +89,7 @@ and reconsideration boundaries documented in the distillation.
 | `teach` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/teach` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Its broad knowledge-document role is outside the active glossary contract. |
 | `grill-me` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/grill-me` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | The retained `grilling` procedure owns exhaustive decision discovery. |
 | `wait-what` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/wait-what` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | The compact Re-pitch behavior lives in `global/AGENTS.md`. |
-| `use-grok` | ToolboxMD / AgentsMD | ToolboxMD-native `toolboxmd/use-grok` (archived), `skills/use-grok` | Retired | Apache-2.0, no longer bundled | Removed: it prescribed the local `grok` CLI, which conflicts with delegating through the routing tool. Grok consults go through the routing tool. |
+| `use-grok` | ToolboxMD / AgentsMD | ToolboxMD-native `toolboxmd/use-grok` at `a8ae6ab3c862de836ca576276a221610e3fe274c`, `skills/use-grok` | Retired | Apache-2.0, no longer bundled | Removed: it prescribed the local `grok` CLI, which conflicts with delegating through the routing tool. Grok consults go through the routing tool. |
 
 ## Upstream references
 

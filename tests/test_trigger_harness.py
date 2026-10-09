@@ -294,7 +294,7 @@ class SweepMomentTests(unittest.TestCase):
     def test_every_sweep_row_links_an_existing_procedure(self):
         skill = ROOT / "skills/operations"
         files = [str(p.relative_to(skill)) for p in skill.rglob("*.md")]
-        self.assertTrue(self.t.SWEEP_FILES)
+        self.assertEqual(len(self.t.SWEEP_FILES), 20)
         for suffix in self.t.SWEEP_FILES:
             self.assertEqual(sum(f.endswith(suffix) for f in files), 1, suffix)
             self.assertIn(suffix, (skill / "SKILL.md").read_text())
