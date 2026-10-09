@@ -59,7 +59,6 @@ TESTS = re.compile(r"\b(pytest|python3?\s+-m\s+(pytest|unittest)|(npm|pnpm|bun|y
                    r"|vitest|jest|go\s+test|cargo\s+test|make\s+(test|check)|swift\s+test)\b")
 VERSIONCTL_BUMP = re.compile(r"\bversionctl\s+bump\b")
 DELIVERY_JSON = re.compile(r"\.toolboxmd/delivery\.json")
-GROK_CLI = re.compile(r"(^|[;&|(\s])grok\s+(-p|--prompt|--print|exec|run)\b")
 SPAWN_CMD = re.compile(r"\bopencode\s+run\b|\bcodex\s+exec\b|\bclaude\s+(-p|--print)\b")
 
 P_GRILL = re.compile(r"\bgrill", re.I)
@@ -295,8 +294,6 @@ ROWS = [
      [R + "finalization.md"]),
     ("repo-setup", "Repository setup (settings mutation)", lambda s: first(s, lambda a: is_cmd(a, REPO_SETUP)),
      [R + "repository-setup.md"]),
-    ("grok", "Use Grok (grok CLI run)", lambda s: first(s, lambda a: is_cmd(a, GROK_CLI)),
-     [W + "use-grok/index.md"]),
 ]
 
 

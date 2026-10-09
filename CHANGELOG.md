@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [15.0.0] - 2026-10-09
+
+### Changed
+
+- Retire the use-grok procedure; Grok consults go through the routing tool (#202)
+
 ## [14.6.0] - 2026-10-01
 
 ### Added

@@ -60,7 +60,6 @@ not completing it. A clear microfix stays direct.
 | Close a terminal outcome or retire task resources | [Finalization](references/finalization.md) |
 | Resolve repository capability or settings drift | [Repository setup](references/repository-setup.md) |
 | Reconcile legacy or drifted repository resources | [Reconciliation](references/reconciliation.md) |
-| User explicitly asks to consult Grok | [Use Grok](workflows/use-grok/index.md) |
 
 The old `algorithm` name selects Elon method's Algorithm reference. Planning
 procedures retain their concrete human decision and approval gates; selecting
