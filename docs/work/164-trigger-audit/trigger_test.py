@@ -201,8 +201,6 @@ MIDTASK = [
 # Stands in for the GitHub CLI: prints a fake URL and never touches the network.
 GH_STUB = "#!/bin/sh\ncase \"$1 $2\" in 'pr create'|'issue create') echo https://github.com/example/greeter/pull/1;; esac\nexit 0\n"
 
-# Stands in for the Grok CLI when another host is tested: answers without a model call.
-GROK_STUB = "#!/bin/sh\necho 'Grok (stub): accept a list, but keep greet(name) working.'\nexit 0\n"
 BRANCHES = "::branches"
 
 # Routing-row sweep (#182): one naive prompt per operations row not measured before,
@@ -276,9 +274,6 @@ SWEEP = [
      ("edit", "bash:git rm|\\brm "),
      {"TODO.md": "# TODO\n\n- Add subtract()\n- Translate greetings\n",
       "STATUS.md": "# Status\n\nWorking on 1.0.\n"}),
-    ("use-grok", "positive", ["use-grok/index.md"],
-     "Consult Grok on whether greet() in {repo}/src/app.py should accept a list of names.",
-     (r"bash:\bgrok\s+(\\\s*)?(-p\b|--prompt)", "end")),
 ]
 SWEEP_FILES = [case[2][0] for case in SWEEP]
 # Shared negatives: prompts that match none of the rows above, scored against every
@@ -624,9 +619,6 @@ def make_home(host, arm):
         (home / "bin").mkdir()
         (home / "bin/gh").write_text(GH_STUB)
         (home / "bin/gh").chmod(0o755)
-        if host != "grok":  # the Grok host needs the real CLI; elsewhere a stub spends no credits
-            (home / "bin/grok").write_text(GROK_STUB)
-            (home / "bin/grok").chmod(0o755)
         env["PATH"] = f"{home / 'bin'}{os.pathsep}{env['PATH']}"
         SETUP[host](home, plugin, env)
         return home, plugin, env

@@ -16,15 +16,6 @@ Modified procedure files identify ToolboxMD ownership, the upstream origin, and 
 source revision in their frontmatter. Their behavioral changes are summarized
 in [SKILL_CATALOGUE.md](SKILL_CATALOGUE.md).
 
-## ToolboxMD use-grok
-
-The bundled `use-grok` procedure comes from `toolboxmd/use-grok` commit
-`a8ae6ab3c862de836ca576276a221610e3fe274c` under Apache-2.0.
-
-Copyright and licence terms are preserved in
-[LICENSES/use-grok-Apache-2.0.txt](LICENSES/use-grok-Apache-2.0.txt). The
-procedure preserves the source contract with adapted invocation and file paths.
-
 ## Lauren Tan's pstack
 
 The `software-design`, `diagnosis`, `code-review`, `project-verification`,
@@ -40,6 +31,3 @@ source-to-destination decisions are in [provenance/pstack.lock.json](provenance/
 [The distillation](docs/work/119-pstack-integration/analysis.md) explains local
 adaptations, corrected assumptions, and excluded vendor runtime code. No pstack
 runtime or external automation pack is bundled.
-
-The use-grok procedure is relocated under Operations; invocation and local path
-guidance are adapted. Its explicit-request and Grok CLI behavior are retained.

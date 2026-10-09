@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 import re
@@ -51,13 +50,6 @@ MATT_SKILLS = {
     for names in MATT_LOCK["categories"].values()
     for name in names
 }
-
-USE_GROK_SHA256 = {
-    "SKILL.md": "a07708fabb34d92b1c3f5f3efeaa03d383bc0f1cb4aa09f7f838c3c570f41a8c",
-    "agents/openai.yaml": "4a754f952f42112b48a02a007805e56e1c05a11104d08eba6df3d339469ff0d5",
-    "references/grok-cli.md": "9c63d9467c9f1c09caee145f8c927f5e0ae101e4f1cd431286fab7efb6018010",
-}
-
 
 def read_text(relative: str) -> str:
     return (ROOT / relative).read_text(encoding="utf-8")
@@ -408,7 +400,6 @@ class PluginPackagingTests(unittest.TestCase):
             "skills/operations/workflows/prototype/UI.md",
             "skills/operations/workflows/domain-modeling/ADR-FORMAT.md",
             "skills/operations/workflows/domain-modeling/GLOSSARY-FORMAT.md",
-            "skills/operations/workflows/use-grok/references/grok-cli.md",
             "skills/operations/workflows/version-control/references/bump-rules.md",
             "skills/operations/workflows/version-control/references/project-policy.md",
             "skills/operations/workflows/writing-for-agents/SKILL-MECHANICS.md",
@@ -492,23 +483,9 @@ class PluginPackagingTests(unittest.TestCase):
                     metadata,
                 )
 
-    def test_use_grok_preserves_origin_and_cli_reference(self) -> None:
-        body = read_text("skills/operations/workflows/use-grok/index.md")
-        self.assertIn("a8ae6ab3c862de836ca576276a221610e3fe274c", body)
-        self.assertIn("Apache-2.0", body)
-        self.assertIn("Do not run unless the user asked to consult Grok", body)
-        reference = read_text("skills/operations/workflows/use-grok/references/grok-cli.md")
-        # Only its pointer to the relocated entry changes; the CLI contract stays pinned.
-        normalized = reference.replace("in `index.md`", "in `SKILL.md`").encode()
-        self.assertEqual(hashlib.sha256(normalized).hexdigest(),
-                         USE_GROK_SHA256["references/grok-cli.md"])
-
     def test_third_party_licences_are_packaged(self) -> None:
         matt = read_text("LICENSES/mattpocock-skills-MIT.txt")
-        grok = read_text("LICENSES/use-grok-Apache-2.0.txt")
         self.assertIn("Copyright (c) 2026 Matt Pocock", matt)
-        self.assertIn("Apache License", grok)
-        self.assertIn("Copyright 2026 lukaszmaj", grok)
 
     def test_catalogue_covers_every_lifecycle(self) -> None:
         catalogue = read_text("SKILL_CATALOGUE.md")
@@ -518,7 +495,6 @@ class PluginPackagingTests(unittest.TestCase):
         for lifecycle in ("Active", "Deferred", "Retired", "Upstream reference"):
             self.assertIn(lifecycle, catalogue)
         self.assertIn("6654f6b60cd9d5be8b54c6fafe44346dabeb3b76", catalogue)
-        self.assertIn("a8ae6ab3c862de836ca576276a221610e3fe274c", catalogue)
 
     def test_catalogue_owns_project_direction_as_native_active_skill(self) -> None:
         catalogue = read_text("SKILL_CATALOGUE.md")
@@ -575,8 +551,6 @@ class PluginPackagingTests(unittest.TestCase):
                     "version-control",
                 }:
                     self.assertIn("this release commit", row)
-                elif name == "use-grok":
-                    self.assertIn("use-grok pin", row)
                 elif name in {"software-design", "diagnosis", "code-review",
                               "project-verification", "reflection", "technical-writing"}:
                     self.assertIn("pstack pin", row)

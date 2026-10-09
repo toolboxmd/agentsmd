@@ -9,9 +9,6 @@ only `operations`. Retained procedures live beneath it and load on demand.
 - **Matt pin**: [`mattpocock/skills`](https://github.com/mattpocock/skills) at
   `6654f6b60cd9d5be8b54c6fafe44346dabeb3b76`, MIT. The historical installation
   lock is preserved in `provenance/mattpocock-skills.lock.json`.
-- **use-grok pin**: [`toolboxmd/use-grok`](https://github.com/toolboxmd/use-grok)
-  at `a8ae6ab3c862de836ca576276a221610e3fe274c`, Apache-2.0. Its procedure retains the CLI and explicit-request contract. AgentsMD relocates
-  the body and adjusts invocation/path guidance; it is no longer byte-identical.
 - **AgentsMD-native source**: versioned directly with this repository and its
   release commit.
 - **pstack pin**: Lauren Tan's [`cursor/plugins/pstack`](https://github.com/cursor/plugins/tree/b42effe0aa50f59c693d7e2924714e015e00bf7c/pstack)
@@ -52,7 +49,6 @@ can be used in natural requests, but only Operations remains a host command.
 | `operations` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Active | [MIT](LICENSE) | The single automatic task/phase selector; loads only applicable engineering, planning and operating procedures. |
 | `project-direction` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Procedure | [MIT](LICENSE) | Establishes and maintains confirmed Vision, Mission, and Objective with milestone-level scope; deterministic hooks reload the complete triad and expose locally known upstream currentness. |
 | `version-control` | ToolboxMD / AgentsMD | AgentsMD-native; this release commit | Procedure | [MIT](LICENSE) | Canonical SemVer, mirror, changelog, commit, tag, and release contract. |
-| `use-grok` | ToolboxMD / AgentsMD | ToolboxMD-native `toolboxmd/use-grok`, use-grok pin, `skills/use-grok` | Procedure | [Apache-2.0](LICENSES/use-grok-Apache-2.0.txt) | Relocated as an ordinary procedure; invocation and relative-path guidance adapted. Explicit user invocation and real Grok Build behavior remain intact. |
 | `grilling` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/productivity/grilling` | Procedure | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Package ownership and provenance metadata only. Exhaustive frontier behavior is unchanged. |
 | `grill-with-docs` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/engineering/grill-with-docs` | Procedure | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Uses `grilling` with lazy `GLOSSARY.md` and ADR writes through `domain-modeling`. |
 | `domain-modeling` | ToolboxMD / AgentsMD | Matt Pocock, Matt pin, `skills/engineering/domain-modeling` | Procedure | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Owns `GLOSSARY.md` and `GLOSSARY-MAP.md`; legacy names are read-only migration fallbacks. ADR threshold is unchanged. |
@@ -93,6 +89,7 @@ and reconsideration boundaries documented in the distillation.
 | `teach` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/teach` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | Its broad knowledge-document role is outside the active glossary contract. |
 | `grill-me` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/grill-me` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | The retained `grilling` procedure owns exhaustive decision discovery. |
 | `wait-what` | ToolboxMD / AgentsMD classification | Matt Pocock, Matt pin, `skills/productivity/wait-what` | Retired | [MIT](LICENSES/mattpocock-skills-MIT.txt) | The compact Re-pitch behavior lives in `global/AGENTS.md`. |
+| `use-grok` | ToolboxMD / AgentsMD | ToolboxMD-native `toolboxmd/use-grok` at `a8ae6ab3c862de836ca576276a221610e3fe274c`, `skills/use-grok` | Retired | Apache-2.0, no longer bundled | Removed: it prescribed the local `grok` CLI, which conflicts with delegating through the routing tool. Grok consults go through the routing tool. |
 
 ## Upstream references
 
