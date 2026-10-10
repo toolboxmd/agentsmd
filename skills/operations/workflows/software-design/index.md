@@ -31,9 +31,7 @@ model; it is not evidence of model diversity. Do not create a panel for routine
 implementation choices.
 
 Derive a small implementation sketch from the caller examples: types, signatures,
-state transitions, module ownership, and the critical interaction. If repeated
-casts, workarounds, or deviations appear during implementation, revisit the
-sketch's assumption before extending it with more exceptions.
+state transitions, module ownership, and the critical interaction.
 
 Finish with a chosen shape, alternatives rejected for concrete reasons, the
 load-bearing assumptions, affected consumers, and proof that can falsify those
