@@ -148,7 +148,7 @@ When choosing what to build, keep this order: question the requirement, delete
 what nobody can defend, simplify what survives, accelerate through the
 bottleneck only when speed is needed, and automate last, only a necessary,
 stable, proven recurring loop whose failure modes you understand. When evidence
-changes, return to the earliest step it affects.
+changes, return to the earliest step it affects and redo the steps after it.
 
 Before recommending or accepting a material requirement, solution design,
 architecture, process design, or recurring-loop automation, in conversation or
@@ -170,9 +170,9 @@ research, or business tasks.
 
 - Design the surviving requirement as if it had existed from the start. A patch
   to the current shape is one candidate, not the default.
-- Trace callers, state owners, and effects before choosing a boundary. Write
-  representative caller code before the internals: a common path, a failure,
-  and the awkward case.
+- Trace callers, state owners, effects, and constraints before choosing a
+  boundary. Write representative caller code before the internals: a common
+  path, a failure, and the awkward case.
 - Put each decision at its owner. Callers state intent; the callee owns
   sequencing that every caller would repeat. Move a burden every caller carries
   to its owner instead of documenting it.
@@ -187,9 +187,9 @@ research, or business tasks.
 - When casts, workarounds, or exceptions pile up, revisit the assumption
   instead of adding another.
 
-Before choosing an interface or architecture, comparing structures, modeling
-state or types, migrating callers, sharing mutable state, or making retries
-safe, select the software design procedure through `operations`.
+Select the software design procedure through `operations` before you choose an
+interface or architecture, compare structures, model state or types, migrate
+callers, share mutable state, or make retries safe.
 
 ## Project Direction
 
