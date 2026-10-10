@@ -13,7 +13,8 @@ Start after Project Direction and the applicable [elon-method](../elon-method/in
 The global contract's Software design rules always apply here: design from the
 start, write caller code first, and put each decision at its owner. Design the
 surviving requirement around the experience it must enable. This procedure adds
-the deeper work below.
+the deeper work below. Its references expand those core rules; where their
+wording differs, the core wins.
 
 ## Choose the design work
 

@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [16.1.1] - 2026-10-10
+
+### Changed
+
+- Restore two always-on wording losses, align the software design trigger with its routing row word for word, and state that the core wins over the procedure's references (#206)
+
 ## [16.1.0] - 2026-10-10
 
 ### Added

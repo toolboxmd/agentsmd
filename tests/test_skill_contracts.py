@@ -813,7 +813,8 @@ class SkillContractTests(unittest.TestCase):
         order = agents.index("When choosing what to build, keep this order:")
         positions = [agents.index(step, order) for step in steps]
         self.assertEqual(positions, sorted(positions))
-        self.assertIn("When evidence changes, return to the earliest step it affects.", agents)
+        self.assertIn("When evidence changes, return to the earliest step it affects and redo "
+                      "the steps after it.", agents)
         self.assertNotIn("Complete when", agents)
 
     def test_global_contract_carries_a_small_conditional_software_design_core(self) -> None:
@@ -825,22 +826,26 @@ class SkillContractTests(unittest.TestCase):
         for required in (
             "Apply these rules when you write or change code, interfaces, data schemas, or system structure.",
             "Skip them for work with no software shape",
+            "Trace callers, state owners, effects, and constraints before choosing a boundary.",
             "Write representative caller code before the internals",
             "Put each decision at its owner.",
             "named variants instead of flags when only some combinations are valid",
-            "Before choosing an interface or architecture,",
-            "select the software design procedure through `operations`.",
         ):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
         # One owner: the procedure points at the core instead of restating its rules.
         procedure = " ".join(read_text("skills/operations/workflows/software-design/index.md").split())
         self.assertIn("The global contract's Software design rules always apply here", procedure)
+        self.assertIn("Its references expand those core rules; where their wording differs, "
+                      "the core wins.", procedure)
         self.assertNotIn("Write representative caller code", procedure)
         self.assertNotIn("workarounds", procedure)
-        # The routing row and the core name the same deeper triggers.
-        self.assertIn("Choose an interface or architecture, compare structures, model state or types, "
-                      "migrate callers, share mutable state, or make retries safe",
+        # The routing row and the core name the same deeper triggers, word for word.
+        triggers = ("choose an interface or architecture, compare structures, model state or types, "
+                    "migrate callers, share mutable state, or make retries safe")
+        self.assertIn("Select the software design procedure through `operations` before you "
+                      f"{triggers}.", normalized)
+        self.assertIn(f"| {triggers[0].upper()}{triggers[1:]} (",
                       read_text("skills/operations/SKILL.md"))
 
     def test_algorithm_skill_preserves_order_and_completion_contract(self) -> None:
