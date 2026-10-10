@@ -38,7 +38,6 @@ TECH_DOC = re.compile(r"(^|/)(README|CHANGELOG|CONTRIBUTING)\.md$|/docs/(?!work/
 TRIAD = re.compile(r"(^|/)(VISION|MISSION|OBJECTIVE)\.md$")
 GLOSSARY = re.compile(r"(^|/)(GLOSSARY(-MAP)?|CONTEXT(-MAP)?)\.md$")
 ADR = re.compile(r"/docs/adr/[^/]+\.md$")
-ARTIFACT = re.compile(r"/docs/work/|/(research|reviews|prototypes?|reflections?)/")
 TEST_FILE = re.compile(r"(^|/)(tests?|__tests__)/|(_test|\.test|\.spec)\.[a-z]+$|/test_[^/]+\.py$")
 VERSION_FILE = re.compile(r"(^|/)VERSION$")
 PROJ_VERIF = re.compile(r"verif[^/]*/SKILL\.md$|(^|/)VERIFY(ING)?\.md$|/docs/verification/")
@@ -266,8 +265,6 @@ ROWS = [
      [W + "code-review/references/review-method.md"]),
     ("proj-verif", "Project verification", lambda s: first(s, lambda a: is_edit(a, PROJ_VERIF)),
      [W + "project-verification/index.md"]),
-    ("artifacts", "Artifact placement", lambda s: first(s, lambda a: a.name in ("Write", "write", "create_file", "write_file") and is_edit(a, ARTIFACT)),
-     [R + "artifacts.md"]),
     ("wfa", "Writing for agents", lambda s: first(s, lambda a: is_edit(a, AGENT_INSTR) and not is_edit(a, MEMORY_DIR)),
      [W + "writing-for-agents/index.md"]),
     ("wfa>mechanics", "Writing for agents -> SKILL-MECHANICS.md (SKILL.md edited)", lambda s: first(s, lambda a: is_edit(a, SKILL_MD)),

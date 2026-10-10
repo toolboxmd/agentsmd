@@ -2159,7 +2159,6 @@ class SkillContractTests(unittest.TestCase):
             "without asking the human to select it",
             "primary sources",
             "facts from inference",
-            "artifact placement",
             "owning GitHub Issue",
             "background agent",
         ):

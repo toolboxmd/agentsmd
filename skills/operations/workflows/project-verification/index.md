@@ -23,8 +23,8 @@ Keep setup, runtime identity, feature recipes, and teardown under one project-lo
 owner. Reuse an existing verification procedure. Otherwise use
 `.toolboxmd/verification/index.md` with conditional driver/feature references in
 that directory. Add one short pointer to project `AGENTS.md`; do not register a
-new globally advertised skill. Follow [artifact placement](../../references/artifacts.md)
-for each run's evidence, separate from reusable recipes.
+new globally advertised skill. Record each run's evidence on the owning Issue or
+PR, separate from reusable recipes.
 
 Before product-driving verification, Operations reads that project pointer or
 the default path directly. Model Router's isolated kits disable project skill

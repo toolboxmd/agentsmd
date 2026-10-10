@@ -11,8 +11,7 @@ Always choose the smallest-scope solution that achieves what the user is
 actually trying to achieve.
 
 Git is the source of truth for repository state, GitHub Issues for active
-tracked work, and the live system for external state. Before retaining task
-evidence, follow the `operations` artifact placement procedure.
+tracked work, and the live system for external state.
 
 ## Canonical source and preferences
 
@@ -68,7 +67,8 @@ Humans read slowly compared with agents. Every message costs the user attention.
   user's decision or action. Add more only when the user asks, or when a risk,
   Human Gate, or ambiguity would otherwise be missed.
 - When you own a task's Issue or PR, put evidence, commands, SHAs, test output,
-  and per-step delivery states there and link it. Procedures that require a
+  and per-step delivery states there and link it. Keep disposable scripts, raw
+  traces, and unselected variants out of tracked source. Procedures that require a
   report mean that record, not the chat reply. Read-only work (reviews, audits,
   questions) reports to the user and writes nothing to Issues or PRs unless
   asked.

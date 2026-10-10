@@ -16,9 +16,7 @@ Wayfinder **Prototype Decision Issue**, invoke this procedure without another hu
 selection. Build the artifact and obtain the owning Issue's required decision.
 For direct requests, the user's question owns the work. Record question, artifact
 location, and decision on the owning GitHub Issue when one exists; otherwise
-report them in the direct task. Use [artifact placement](../../references/artifacts.md)
-for retained evidence. Reuse the task's evidence folder rather than creating a
-second prototype report.
+report them in the direct task.
 
 ## Select the branch
 

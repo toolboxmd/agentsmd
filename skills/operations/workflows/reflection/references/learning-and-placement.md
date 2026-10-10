@@ -45,15 +45,15 @@ Do not automatically append a backlog after a read-only reflection.
 | Costly architectural decision | ADR under the existing eligibility rule |
 | Reusable workflow | Its owning procedure, external Skill, or canonical operating reference |
 | Current implementation/delivery state | Owning Issue and exact proof |
-| Temporary observation | Task evidence with an explicit limit, not global policy |
+| Temporary observation | Owning Issue, with an explicit limit; not global policy |
 
 Reflection does not alter confirmed Project Direction or expand authority. Read
 and preserve the complete current owner before editing. Improve the selection
 mechanism rather than pasting the same procedure into every caller.
 
-Apply [artifact placement](../../../references/artifacts.md) if supporting evidence
-must be retained. Correct the existing owner instead of appending a reflection
-diary, memory database, or new backlog. No durable finding means no new file.
+Record supporting evidence on the owning Issue when it must be retained.
+Correct the existing owner instead of appending a reflection diary, memory
+database, or new backlog. No durable finding means no new file.
 
 ## Capture personal preferences privately
 
