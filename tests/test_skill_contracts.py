@@ -802,6 +802,38 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("Question every requirement.", agents)
         self.assertNotIn("Run the Algorithm inside a closed evidence loop.", agents)
 
+    def test_global_contract_carries_algorithm_order_without_its_details(self) -> None:
+        # Issue #206: the order is always loaded; completion conditions stay in algorithm.md.
+        agents = " ".join(read_text("global/AGENTS.md").split())
+        steps = ("question the requirement", "delete what nobody can defend",
+                 "simplify what survives", "accelerate through the bottleneck",
+                 "automate last, only a proven recurring loop")
+        order = agents.index("When choosing what to build, keep this order:")
+        positions = [agents.index(step, order) for step in steps]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("When evidence changes, return to the earliest step it affects.", agents)
+        self.assertNotIn("Complete when", agents)
+
+    def test_global_contract_carries_a_small_conditional_software_design_core(self) -> None:
+        # Issue #206: always loaded, so it stays small and says when business work skips it.
+        agents = read_text("global/AGENTS.md")
+        section = agents.split("### Software design\n", 1)[1].split("\n## ", 1)[0]
+        self.assertLessEqual(len(section), 2500)
+        normalized = " ".join(section.split())
+        for required in (
+            "Apply these rules when you write or change code, interfaces, data, or system structure.",
+            "Skip them for work with no software shape",
+            "Write representative caller code before the internals",
+            "Put each decision at its owner.",
+            "select the software design procedure through `operations`.",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, normalized)
+        # One owner: the procedure points at the core instead of restating its rules.
+        procedure = " ".join(read_text("skills/operations/workflows/software-design/index.md").split())
+        self.assertIn("The global contract's Software design rules always apply here", procedure)
+        self.assertNotIn("Write representative caller code", procedure)
+
     def test_algorithm_skill_preserves_order_and_completion_contract(self) -> None:
         skill = read_text("skills/operations/workflows/elon-method/references/algorithm.md")
         normalized = " ".join(skill.split())

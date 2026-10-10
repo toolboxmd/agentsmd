@@ -144,6 +144,11 @@ Three tests, whenever you decide what to build or accept a claim:
   check, or a worker's "done" is a claim until you look. Example: a worker
   reports passing tests, but its transcript shows no test run.
 
+When choosing what to build, keep this order: question the requirement, delete
+what nobody can defend, simplify what survives, accelerate through the
+bottleneck only when speed is needed, and automate last, only a proven
+recurring loop. When evidence changes, return to the earliest step it affects.
+
 Before recommending or accepting a material requirement, solution design,
 architecture, process design, or recurring-loop automation, in conversation or
 an artifact, select the Elon method procedure through `operations`. Project
@@ -155,6 +160,34 @@ record, one line per field: **Requirements and who asked**, **Deleted**,
 Every Issue and PR carries it; the Project Direction hook blocks `gh issue
 create` and `gh pr create` when a field is missing or empty. Reuse that decision until evidence changes. A small direct
 microfix whose requirement and solution are clear stays direct.
+
+### Software design
+
+Apply these rules when you write or change code, interfaces, data, or system
+structure. Skip them for work with no software shape, such as writing,
+research, or business tasks.
+
+- Design the surviving requirement as if it had existed from the start. A patch
+  to the current shape is one candidate, not the default.
+- Trace callers, state owners, and effects before choosing a boundary. Write
+  representative caller code before the internals: a common path, a failure,
+  and the awkward case.
+- Put each decision at its owner. Callers state intent; the callee owns
+  sequencing that every caller would repeat. Move a burden every caller carries
+  to its owner instead of documenting it.
+- Make contradictions unrepresentable: named variants instead of flag
+  combinations, and one authoritative fact with derived views.
+- Parse untrusted input at the boundary into a validated value or a specific
+  error. Never hide failures behind a broad fallback that reports success.
+- Before changing a system, map its consumers and define what must stay
+  equivalent. Migrate to one target and remove the old path when compatibility
+  allows.
+- When casts, workarounds, or exceptions pile up, revisit the assumption
+  instead of adding another.
+
+Before comparing competing structures, modeling state or types, migrating
+callers, sharing mutable state, or making retries safe, select the software
+design procedure through `operations`.
 
 ## Project Direction
 
