@@ -87,8 +87,7 @@ the host offers no visible child. Close finished, errored, or idle children so e
 working state. Never delete shared temporary directories by wildcard. Keep writers few, exclusive, and bounded; no unbounded children.
 Do not copy worker transcripts into the coordinator.
 
-For retained supporting files, follow [artifact placement](artifacts.md). Routing
-tool reports stay in its own state directory; link their identities.
+Routing tool reports stay in its own state directory; link their identities.
 Keep one canonical durable handoff on the owning Issue, linked from PR/consumers:
 branch, workspace, exact base/HEAD, proof commands/results/links, review identity/
 verdict, version, authority, dependencies, delivery, cleanup, finalization, blockers,
@@ -106,9 +105,8 @@ Tasks, threads, and worktrees are host-neutral adapter choices. Do not create a
 persistent orchestration service without later evidence and authority.
 
 For long or uncertain work whose consequential choices would otherwise disappear,
-keep a material-decision trail in the existing task evidence notes, linked from
-the canonical handoff under [artifact placement](artifacts.md). Record the
-decision, reason, evidence, and observed result at meaningful pivots. A routine
+keep a material-decision trail on the owning Issue next to the canonical
+handoff. Record the decision, reason, evidence, and observed result at meaningful pivots. A routine
 task needs no extra journal. The trail owns history, never current acceptance,
 delivery state, or decisions that belong in an ADR. Keep private material local;
 publish only sanitized evidence within authority. Correct or supersede earlier

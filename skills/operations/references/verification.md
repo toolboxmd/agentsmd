@@ -33,7 +33,7 @@ skills. If missing support prevents a reliable observation, select
 [Project verification](../workflows/project-verification/index.md). Ordinary
 repository checks need no new verification procedure.
 
-For retained observations, use [artifact placement](artifacts.md). CI results
+Record retained observations on the owning Issue or PR. CI results
 and runner-owned reports keep their existing durable owners.
 
 ## Live Verification

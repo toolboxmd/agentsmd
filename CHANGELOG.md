@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [16.0.0] - 2026-10-10
+
+### Changed
+
+- Delete the artifact placement procedure; evidence goes to the owning Issue or PR (#204)
+
 ## [15.0.0] - 2026-10-09
 
 ### Changed

@@ -61,8 +61,7 @@ limits, and evidence that would change it. Cite consequential factual and
 historical claims beside the claims. Preserve confidence distinctions and
 material coverage gaps in the delivered answer. For an authorized Research
 Decision Issue, record the cited resolution or remaining blocker on that Issue
-before closing or handing off. A substantial reusable investigation
-may earn retained notes under [artifact placement](../../references/artifacts.md),
-linked from its owning GitHub Issue within granted authority. A short direct
-answer needs neither a repository mutation nor an external post. Close a Research
+before closing or handing off. When a substantial reusable investigation has an
+owning GitHub Issue and writing to it is authorized, record it there. A short
+direct answer needs neither a repository mutation nor an external post. Close a Research
 Decision Issue only when its completion condition is met and closure is authorized.

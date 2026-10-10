@@ -242,9 +242,6 @@ SWEEP = [
     ("project-verification", "positive", ["project-verification/index.md"],
      "Create product-driving verification instructions for Greeter ({repo}): how an agent should run and check "
      "the product end to end.", EDIT),
-    ("artifacts", "positive", ["references/artifacts.md"],
-     "Time greet() in {repo}/src/app.py over 100000 calls and retain the result as task evidence in the "
-     "repository.", EDIT),
     ("reflection", "positive", ["reflection/index.md"],
      "You keep committing to {repo} without running the tests first, and I have corrected you three times. "
      "Reflect on that and fix it where it belongs.", ANSWER),
