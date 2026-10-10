@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [16.1.0] - 2026-10-10
+
+### Added
+
+- Always load the Elon method's order and a small software design core in the global contract (#206)
+
 ## [16.0.0] - 2026-10-10
 
 ### Changed

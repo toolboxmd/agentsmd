@@ -5,7 +5,9 @@ Claude Code, Grok Build and OpenCode the same working rules, the same workflow
 Skill, and the same view of what each project is for:
 
 - `global/AGENTS.md`: the global contract every session loads as its native
-  global instructions.
+  global instructions. It includes the Elon method's step order and a short
+  software design core, so both are always in context; their detailed
+  procedures still load on demand.
 - The `operations` Skill: one model-invocable Skill that routes each action
   (research, diagnosis, design, a first edit, a commit, an Issue, a PR) to the
   procedure for it.

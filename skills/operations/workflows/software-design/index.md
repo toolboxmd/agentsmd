@@ -9,15 +9,11 @@ metadata:
 
 # Software design
 
-Start after Project Direction and the applicable [elon-method](../elon-method/index.md) reasoning. Design
-the surviving requirement around the experience it must enable. Ask what the
-system would look like had this requirement existed from the beginning. A patch
-to the current shape is one candidate, not the assumed answer.
-
-Trace current callers, state owners, effects, and constraints before proposing a
-boundary. Write representative caller code first: a common path, a failure, and
-the awkward case. If every caller needs orchestration or defensive knowledge,
-move that responsibility to its actual owner instead of documenting the burden.
+Start after Project Direction and the applicable [elon-method](../elon-method/index.md) reasoning.
+The global contract's Software design rules always apply here: design from the
+start, write caller code first, and put each decision at its owner. Design the
+surviving requirement around the experience it must enable. This procedure adds
+the deeper work below.
 
 ## Choose the design work
 
@@ -35,9 +31,7 @@ model; it is not evidence of model diversity. Do not create a panel for routine
 implementation choices.
 
 Derive a small implementation sketch from the caller examples: types, signatures,
-state transitions, module ownership, and the critical interaction. If repeated
-casts, workarounds, or deviations appear during implementation, revisit the
-sketch's assumption before extending it with more exceptions.
+state transitions, module ownership, and the critical interaction.
 
 Finish with a chosen shape, alternatives rejected for concrete reasons, the
 load-bearing assumptions, affected consumers, and proof that can falsify those

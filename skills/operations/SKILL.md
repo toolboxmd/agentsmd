@@ -37,7 +37,7 @@ not completing it. A clear microfix stays direct.
 | Initialize or reload Project Direction | [Context](workflows/project-direction/references/context.md) |
 | Repair or change Project Direction | [Project Direction](workflows/project-direction/index.md) |
 | Before researching facts, mechanics, history, or prior work, or explaining how a system works (not for a direct answer from the code at hand) | [Research](workflows/research/index.md) |
-| Choose interfaces, state, architecture, migration, or concurrent behavior | [Software design](workflows/software-design/index.md) |
+| Choose an interface or architecture, compare structures, model state or types, migrate callers, share mutable state, or make retries safe (the core's Software design rules are always loaded) | [Software design](workflows/software-design/index.md) |
 | Before running a disposable experiment or building a UI/logic demo to resolve a question | [Prototype](workflows/prototype/index.md) |
 | Before running, reproducing, or testing anything for a defect, a fix, or runtime behavior or performance | [Diagnosis](workflows/diagnosis/index.md) |
 | Resolve unresolved human-owned choices, or the user asks to be grilled or stress-test their thinking | [Grilling](workflows/grilling/index.md); [grill with docs](workflows/grill-with-docs/index.md) when terminology or ADR work is needed |
