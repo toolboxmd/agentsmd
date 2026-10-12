@@ -598,7 +598,6 @@ class PluginPackagingTests(unittest.TestCase):
             "ContextMD",
             "Model Router",
             "Planner",
-            "Routing tool",
             "World Model",
         ):
             with self.subTest(term=term):

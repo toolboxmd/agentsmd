@@ -718,7 +718,8 @@ class SkillContractTests(unittest.TestCase):
         for required in (
             "When the project's `AGENTS.md` lists connected projects",
             "check the system glossary and theirs",
-            "record a term two or more projects use in the system glossary",
+            "record a term two or more projects use in the system glossary "
+            "through that repository's own Issue and PR",
             "never add a conflicting synonym",
         ):
             with self.subTest(required=required):

@@ -28,7 +28,7 @@ system glossary owns every term two or more of those projects use; each
 project's glossary keeps only its local terms and opens with a pointer to the
 system glossary. Before recording a term, check the system glossary and the
 connected glossaries: reuse an existing term, record a newly shared term in the
-system glossary, and never add a synonym that conflicts with one defined there.
+system glossary through that repository's own Issue and PR, and never add a synonym that conflicts with one defined there.
 When a project joins a system, add that list to its `AGENTS.md` in the same change.
 
 Legacy `CONTEXT.md`/`CONTEXT-MAP.md` are read-only fallbacks only when new names

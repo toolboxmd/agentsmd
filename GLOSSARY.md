@@ -5,6 +5,11 @@ such as AgentsMD, ContextMD, harness, machine, planner, Prism, task and worker,
 are defined once in Chromeria's system glossary,
 [`toolboxmd/chromeria` `GLOSSARY.md`](https://github.com/toolboxmd/chromeria/blob/main/GLOSSARY.md).
 
+**Routing tool**:
+The harness-provided means of delegating work with routed model and role
+selection; in Chromeria it is Prism.
+_Avoid_: model-routing Skill
+
 **Project Direction**:
 The coherent repository-root triad of `VISION.md`, `MISSION.md`, and
 `OBJECTIVE.md` that owns the project's confirmed long-range destination,
