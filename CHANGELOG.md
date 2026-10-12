@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [16.2.0] - 2026-10-12
+
+### Added
+
+- Hold implementation of a new component until its Spec Issue records the design review and the user's decisions (#209)
+
 ## [16.1.1] - 2026-10-10
 
 ### Changed

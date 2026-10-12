@@ -57,16 +57,23 @@ can correct it afterward.
 
 ## 5. Continue at the implementation boundary
 
-Identify the first unblocked implementation Issue. Evaluate authority from the
-full current request. When already authorized, begin under the core's
-direct/delegated boundary without another prompt; follow Authority and continuation
-in `global/AGENTS.md`. For delegation, read Operations orchestration and use its minimal
-durable context packet, not the prior conversation.
+Identify the first unblocked implementation Issue. When it builds a new
+component or system, do not start it until the parent Spec Issue's Design review
+names the reviewer, the verdict, and the user's decisions. Until then, dispatch
+an independent review of the parent Spec, record the reviewer, the verdict, and
+how each finding was resolved in its Design review, and ask the user only the
+decisions the review leaves open.
+
+Evaluate authority from the full current request. When already authorized, begin
+under the core's direct/delegated boundary without another prompt; follow
+Authority and continuation in `global/AGENTS.md`. For delegation, read
+Operations orchestration and use its minimal durable context packet, not the
+prior conversation.
 
 For planning-only work or otherwise missing authority, ask exactly once, naming
 that Issue, and await authority before implementation edits. This step ends when
-implementation begins within authority or that one named-Issue request awaits
-response.
+implementation begins within authority, the Design review awaits the user's
+decisions, or that one named-Issue request awaits response.
 
 ## Issue template
 
