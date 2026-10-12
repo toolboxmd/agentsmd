@@ -15,8 +15,6 @@ Skill, and the same view of what each project is for:
   `OBJECTIVE.md`, loaded into the session by a hook.
 - The Elon gate: a hook that blocks `gh issue create` and `gh pr create` when
   the body lacks an Elon record.
-- The Spec gate: a hook that blocks an implementation dispatch whose brief
-  has no `Spec:` line.
 - `versionctl`: deterministic repository versioning and release checks.
 
 Project instructions, such as a repository's own `AGENTS.md`, sit closer to the
@@ -244,8 +242,8 @@ healthy and carries your private preferences.
 
 | Host | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
 | --- | --- | --- | --- | --- |
-| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon and Spec gates | Plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
-| Claude Code | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon and Spec gates | Plugin hook (`hooks/hooks.json`), plus the `operations` pointer from `hooks/claude.json` at `SessionStart` | Explicit reading when the hook reports a problem; `UserPromptSubmit` and `SubagentStart` delivery was not separately exercised live |
+| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
+| Claude Code | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook (`hooks/hooks.json`), plus the `operations` pointer from `hooks/claude.json` at `SessionStart` | Explicit reading when the hook reports a problem; `UserPromptSubmit` and `SubagentStart` delivery was not separately exercised live |
 | Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart`, `UserPromptSubmit`, `SubagentStart`: Grok discards their output | Owned global hook file from `bin/agentsmd-grok-hook` | Explicit reading for the first response, before the first tool call |
 | OpenCode | Every session, appended to the system prompt | OpenCode has no such lifecycle events | Plugin `experimental.chat.system.transform`, which also appends the `operations` pointer; `tool.execute.before` runs the Elon gate | Explicit reading when the plugin reports a problem |
 
@@ -292,13 +290,6 @@ reads bodies passed with `--body`, a heredoc with `--body-file -`, or
 `--body-file` naming a file that exists or that the same command first writes
 with `cat > FILE <<'EOF'` or `tee FILE <<'EOF'`. Issues and PRs created through
 the GitHub API or MCP tools are not checked.
-
-**The Spec gate.** A T3 `delegate_task` call with `role: implementation` is
-blocked (exit 2) unless its `task` carries a `Spec:` line naming an Issue
-(`owner/repo#N`, `#N`, or the Issue URL) or declaring `Spec: none (<reason>)`.
-The Spec Issue holds the design, its independent review, and the user's
-decisions; the hook checks only that the brief names it. Dispatches with other
-roles, with no role, and through other delegation tools are not checked.
 
 **Explicit reading fallback.** The hook verifies the canonical
 `global/AGENTS.md` and reports the result in `instructions.action`. Read the

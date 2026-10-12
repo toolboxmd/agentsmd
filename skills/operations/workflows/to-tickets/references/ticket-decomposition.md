@@ -57,7 +57,9 @@ can correct it afterward.
 
 ## 5. Continue at the implementation boundary
 
-Identify the first unblocked implementation Issue. Evaluate authority from the
+Identify the first unblocked implementation Issue. When it builds a new
+component or system, do not start it while the parent Spec's Design review is
+still a placeholder. Evaluate authority from the
 full current request. When already authorized, begin under the core's
 direct/delegated boundary without another prompt; follow Authority and continuation
 in `global/AGENTS.md`. For delegation, read Operations orchestration and use its minimal

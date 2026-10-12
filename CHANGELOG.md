@@ -7,7 +7,7 @@ SemVer and identify one user-consumable repository state.
 
 ### Added
 
-- Block implementation dispatch of a new component until its brief names a Spec Issue with a reviewed design (#209)
+- Hold implementation of a new component until its Spec Issue records the design review and the user's decisions (#209)
 
 ## [16.1.1] - 2026-10-10
 

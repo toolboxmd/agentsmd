@@ -248,6 +248,23 @@ class OperationsContractTests(unittest.TestCase):
             with self.subTest(clause=clause):
                 self.assertIn(clause, orchestration)
 
+    def test_new_component_waits_for_a_reviewed_spec(self):
+        # Regression from 2026-10-12 (#209): a planner dispatched two new
+        # components because acceptance criteria satisfied the dispatch check.
+        orchestration = words(SKILL.parent / "references/orchestration.md")
+        for clause in (
+            "Do not dispatch implementation of a new component or system until the brief cites a Spec Issue",
+            "whose Design review names the reviewer, the verdict, and the user's decisions",
+            "microfix or a change inside an existing component says so in the brief and needs no Spec",
+            "Review, research, and test dispatches are outside this rule",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, orchestration)
+        tickets = words(SKILL.parent / "workflows/to-tickets/references/ticket-decomposition.md")
+        self.assertIn("while the parent Spec's Design review is still a placeholder", tickets)
+        spec = (SKILL.parent / "workflows/to-spec/index.md").read_text(encoding="utf-8")
+        self.assertIn("## Design review", spec)
+
     def test_review_verdict_is_a_commit_status_on_the_exact_head(self):
         verification = words(SKILL.parent / "references/verification.md")
         for clause in (
