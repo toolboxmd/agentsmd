@@ -2282,10 +2282,10 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, readme)
         # On both packaged-hook hosts the loader answers PreToolUse only with the
-        # Elon gate; the hosts themselves do deliver PreToolUse output (#176).
+        # Elon and Spec gates; the hosts themselves deliver PreToolUse output (#176).
         self.assertEqual(
             readme.count(
-                "The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook"
+                "The loader emits nothing on `PreToolUse`; it runs only the Elon and Spec gates | Plugin hook"
             ),
             2,
         )

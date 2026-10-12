@@ -66,7 +66,13 @@ when sufficient.
 
 Include the unit's outcome, allowed and forbidden writes, shared-resource limits,
 acceptance, proof seam, known gotchas, report shape, and bounded escalation
-condition. Do not dispatch unresolved ownership or acceptance. A child, a
+condition. Do not dispatch unresolved ownership or acceptance. Before
+dispatching implementation of a new component or system, publish its Spec
+Issue through [to-spec](../workflows/to-spec/index.md) with the design, an
+independent review, and the user's decisions; acceptance criteria in a brief
+are not a design. Every implementation brief carries `Spec: owner/repo#N`, or
+`Spec: none (<reason>)` for a microfix or a change inside an existing
+component, and the delegation hook blocks a brief without one. A child, a
 reviewer included, may start in the coordinator's checkout, which can be a live
 install such as the canonical AgentsMD clone. Name its worktree or temporary
 clone in every packet and forbid `gh pr checkout`, `git checkout`, switch,

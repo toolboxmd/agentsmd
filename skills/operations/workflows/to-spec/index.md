@@ -139,6 +139,11 @@ The proposed solution from the user's perspective.
 - Approved modules and interfaces, technical clarifications, architectural
   decisions, schema or API contracts, and specific interactions.
 
+## Design review
+
+- **Independent review:** <reviewer, link, verdict, and how each finding was resolved>
+- **User decisions:** <each decision and where the user made it>
+
 ## Testing decisions
 
 - The external behavior to prove, modules exercised at the chosen public seam,

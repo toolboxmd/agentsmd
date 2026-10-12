@@ -973,6 +973,38 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
                 )
     return None
 
+
+# Spec gate: an implementation dispatch names the Spec Issue holding its
+# reviewed design, or declares why it needs none. The hook cannot tell a new
+# component from a small fix, so the brief states which one it is.
+ISSUE_REFERENCE = re.compile(
+    r"(?:^|[\s(])(?:[\w.-]+/[\w.-]+)?#\d+\b|https://github\.com/[^/\s]+/[^/\s]+/issues/\d+"
+)
+SPEC_EXEMPTION = re.compile(r"^none\b[\s:,(\-]*\w", re.IGNORECASE)
+
+
+def spec_gate(event_input: dict[str, object]) -> str | None:
+    """Return a block message when an implementation dispatch lacks a Spec line."""
+    tool_name = event_input.get("tool_name")
+    tool_input = event_input.get("tool_input")
+    if not (isinstance(tool_name, str) and tool_name.endswith("__delegate_task")
+            and isinstance(tool_input, dict) and tool_input.get("role") == "implementation"):
+        return None
+    task = tool_input.get("task")
+    spec = field_value(task if isinstance(task, str) else "", "Spec")
+    if ISSUE_REFERENCE.search(spec) or SPEC_EXEMPTION.match(spec):
+        return None
+    return (
+        "AgentsMD blocked this implementation dispatch: its brief has no Spec line. "
+        "Before building a new component or system, publish its Spec Issue "
+        "through to-spec with the design, an independent review, and the user's "
+        "decisions, then add `Spec: owner/repo#N` (or the Issue URL) to the "
+        "brief. Work under an existing approved Spec links that Spec. A "
+        "microfix or a change inside an existing component declares "
+        "`Spec: none (<reason>)`; a new component or system never qualifies."
+    )
+
+
 def report_input_error(detail: str) -> int:
     json.dump(
         {
@@ -1005,7 +1037,7 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
         )
     event = event_value
     if event == "PreToolUse":
-        blocked = elon_gate(event_input, cwd_value)
+        blocked = elon_gate(event_input, cwd_value) or spec_gate(event_input)
         if blocked is not None:
             sys.stderr.write(blocked + "\n")
             return 2
