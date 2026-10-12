@@ -712,6 +712,41 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("Natural requests and", agents)
         self.assertNotIn("human-controlled planning Skills", agents)
 
+    def test_connected_projects_share_one_system_glossary(self) -> None:
+        agents = " ".join(read_text("global/AGENTS.md").split())
+        language = agents.split("## Project language", 1)[1].split("## ", 1)[0]
+        for required in (
+            "When the project's `AGENTS.md` lists connected projects",
+            "check the system glossary and theirs",
+            "record a term two or more projects use in the system glossary",
+            "never add a conflicting synonym",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, language)
+
+        procedure = " ".join(
+            read_text("skills/operations/workflows/domain-modeling/index.md").split()
+        )
+        for required in (
+            "lists its connected projects, the system glossary, and where each "
+            "connected glossary is in its `AGENTS.md`",
+            "The system glossary owns every term two or more of those projects use",
+            "opens with a pointer to the system glossary",
+            "never add a synonym that conflicts with one defined there",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, procedure)
+
+        repo_agents = read_text("AGENTS.md")
+        self.assertIn("## Connected projects", repo_agents)
+        for repository in (
+            "toolboxmd/chromeria",
+            "toolboxmd/agent-observer",
+            "toolboxmd/contextmd",
+        ):
+            with self.subTest(repository=repository):
+                self.assertIn(f"https://github.com/{repository}/blob/main/GLOSSARY.md", repo_agents)
+
     def test_global_contract_leaves_measurement_to_agent_observer(self) -> None:
         # Agent Observer attributes work from host state; agents run no capture.
         self.assertNotIn("Agent Observer", read_text("global/AGENTS.md"))
