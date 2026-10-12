@@ -261,7 +261,13 @@ class OperationsContractTests(unittest.TestCase):
             with self.subTest(clause=clause):
                 self.assertIn(clause, orchestration)
         tickets = words(SKILL.parent / "workflows/to-tickets/references/ticket-decomposition.md")
-        self.assertIn("while the parent Spec's Design review is still a placeholder", tickets)
+        for clause in (
+            "do not start it until the parent Spec Issue's Design review names the reviewer, the verdict, and the user's decisions",
+            "dispatch an independent review of the parent Spec",
+            "the Design review awaits the user's decisions",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, tickets)
         spec = (SKILL.parent / "workflows/to-spec/index.md").read_text(encoding="utf-8")
         self.assertIn("## Design review", spec)
 

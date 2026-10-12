@@ -72,8 +72,8 @@ implementation of a new component or system until the brief cites a Spec Issue
 reviewer, the verdict, and the user's decisions; acceptance criteria in a brief
 are not a design. A microfix or a change inside an existing component says so in
 the brief and needs no Spec. Review, research, and test dispatches are outside
-this rule. A child, a
-reviewer included, may start in the coordinator's checkout, which can be a live
+this rule. A child, a reviewer included, may start in the coordinator's
+checkout, which can be a live
 install such as the canonical AgentsMD clone. Name its worktree or temporary
 clone in every packet and forbid `gh pr checkout`, `git checkout`, switch,
 reset, pull, and every other write in any main checkout; reviewers read with `gh pr diff`,
