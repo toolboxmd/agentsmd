@@ -22,6 +22,15 @@ own glossary and ADR directory. Root `docs/adr/` owns system-wide decisions;
 domain directories own domain-specific decisions. No extra glossary is needed
 in the map.
 
+A project that belongs to a larger system lists its connected projects, the
+system glossary, and where each connected glossary is in its `AGENTS.md`. The
+system glossary owns every term two or more of those projects use; each
+project's glossary keeps only its local terms and opens with a pointer to the
+system glossary. Before recording a term, check the system glossary and the
+connected glossaries: reuse an existing term, record a newly shared term in the
+system glossary through that repository's own Issue and PR, and never add a synonym that conflicts with one defined there.
+When a project joins a system, add that list to its `AGENTS.md` in the same change.
+
 Legacy `CONTEXT.md`/`CONTEXT-MAP.md` are read-only fallbacks only when new names
 are absent. Identify migration explicitly and write only new filenames.
 

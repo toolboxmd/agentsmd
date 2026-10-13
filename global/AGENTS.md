@@ -213,6 +213,10 @@ Every proposed Spec and Issue states that contribution to the Objective.
 Before naming or changing project concepts, read root `GLOSSARY.md`, and
 `GLOSSARY-MAP.md` plus the relevant domain glossary when present. Record agreed
 terms in the right glossary in the same change, creating it for the first term.
+When the project's `AGENTS.md` lists connected projects, also check the system
+glossary and theirs: reuse an existing term, record a term two or more projects
+use in the system glossary through that repository's own Issue and PR, and
+never add a conflicting synonym.
 Glossaries hold only canonical terms, short definitions, and avoided synonyms.
 Legacy `CONTEXT.md` and `CONTEXT-MAP.md` are read-only fallbacks; write only the
 new names. Read relevant ADRs before changing locked decisions.

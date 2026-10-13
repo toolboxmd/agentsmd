@@ -1,24 +1,13 @@
 # AgentsMD Glossary
 
-**AgentsMD**:
-The ToolboxMD project that owns the portable agent operating contract and its
-installable workflow plugin.
-_Avoid_: Matt Skill pack, global prompt repository
-
-**Model Router**:
-The separate ToolboxMD router, labelled Prism in the interface, that accepts
-delegated work and selects its models, effort, and roles. AgentsMD owns
-workflow, authority, proof, and review.
-_Avoid_: AgentsMD model policy, routing matrix
-
-**Planner**:
-The top-level agent the user works with. It owns judgment, specs, and
-acceptance, and delegates the rest.
-_Avoid_: main agent
+Terms AgentsMD's procedures define. Terms shared across the user's system,
+such as AgentsMD, ContextMD, harness, machine, planner, Prism, task and worker,
+are defined once in Chromeria's system glossary,
+[`toolboxmd/chromeria` `GLOSSARY.md`](https://github.com/toolboxmd/chromeria/blob/main/GLOSSARY.md).
 
 **Routing tool**:
-The host-provided means of delegating work with routed model and role
-selection, such as Model Router.
+The harness-provided means of delegating work with routed model and role
+selection; in Chromeria it is Prism.
 _Avoid_: model-routing Skill
 
 **Project Direction**:
@@ -109,7 +98,7 @@ _Avoid_: archive, permanent task workspace
 A child start seeded with the minimal durable packet and no prior transcript.
 Do not fork the parent transcript. Outside the routing tool, the default is a
 host child that honors the requested model and effort and is visible to the
-user, else a nested child in the coordinator session. A separate host task is
+user, else a nested child in the parent session. A separate host task is
 the exception when the slice must outlive the parent or continue after it
 stops, or when the host offers no visible child.
 _Avoid_: new sidebar session, new chat as the default, forked parent context
@@ -181,15 +170,6 @@ _Avoid_: Skill Catalogue, Plugin Registry
 The `toolboxmd/marketplace` distribution surface for installable ToolboxMD
 plugins.
 _Avoid_: Product Registry, Skill Catalogue
-
-**ContextMD**:
-The future ToolboxMD Agent Knowledge and Learning System.
-_Avoid_: glossary, context file
-
-**World Model**:
-ContextMD's structured representation of entities, relationships,
-observations, provenance, and learned experience.
-_Avoid_: glossary, project documentation
 
 **Persistent Host Automation**:
 Agent-created or agent-maintained host services, scheduled jobs, checks, and

@@ -19,3 +19,17 @@ baseline.
   release gates unless the user explicitly requests them. Report behavioral
   verification as pending until user evidence exists, then turn observed
   failures into GitHub Issues and deterministic regressions where practical.
+
+## Connected projects
+
+AgentsMD is one system with Chromeria, Agent Observer and ContextMD.
+Chromeria's `GLOSSARY.md` is the system glossary; this repository's
+`GLOSSARY.md` keeps only terms AgentsMD's procedures define.
+
+| Project | Repository | Glossary |
+| --- | --- | --- |
+| Chromeria (system glossary) | `toolboxmd/chromeria` | [`GLOSSARY.md`](https://github.com/toolboxmd/chromeria/blob/main/GLOSSARY.md) |
+| Agent Observer | `toolboxmd/agent-observer` | [`GLOSSARY.md`](https://github.com/toolboxmd/agent-observer/blob/main/GLOSSARY.md) |
+| ContextMD | `toolboxmd/contextmd` | [`GLOSSARY.md`](https://github.com/toolboxmd/contextmd/blob/main/GLOSSARY.md) |
+
+Model Router (`toolboxmd/model-router`) is retired; Chromeria's Prism absorbed it.

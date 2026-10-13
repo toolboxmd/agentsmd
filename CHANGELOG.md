@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [16.3.0] - 2026-10-12
+
+### Added
+
+- Point shared terms to Chromeria's system glossary and check new terms against connected projects' glossaries (#211)
+
 ## [16.2.0] - 2026-10-12
 
 ### Added

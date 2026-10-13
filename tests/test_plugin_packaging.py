@@ -571,9 +571,6 @@ class PluginPackagingTests(unittest.TestCase):
     def test_root_glossary_owns_agentsmd_language(self) -> None:
         glossary = read_text("GLOSSARY.md")
         for term in (
-            "AgentsMD",
-            "ContextMD",
-            "World Model",
             "Parent Spec only",
             "Skill Catalogue",
             "Product Registry",
@@ -589,6 +586,22 @@ class PluginPackagingTests(unittest.TestCase):
         ):
             with self.subTest(term=term):
                 self.assertIn(f"**{term}**", glossary)
+
+    def test_root_glossary_points_shared_terms_to_the_system_glossary(self) -> None:
+        glossary = read_text("GLOSSARY.md")
+        self.assertIn(
+            "https://github.com/toolboxmd/chromeria/blob/main/GLOSSARY.md",
+            glossary.split("\n\n**", 1)[0],
+        )
+        for term in (
+            "AgentsMD",
+            "ContextMD",
+            "Model Router",
+            "Planner",
+            "World Model",
+        ):
+            with self.subTest(term=term):
+                self.assertNotIn(f"**{term}**:", glossary)
 
 
 if __name__ == "__main__":
