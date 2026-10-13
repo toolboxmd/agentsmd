@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.1.0] - 2026-10-13
+
+### Added
+
+- Ship ContextMD Cue entries for the nine judgment procedures, pinned to the texts the deployed Cue adapter was trained on (#220)
+
 ## [17.0.0] - 2026-10-13
 
 ### Changed
