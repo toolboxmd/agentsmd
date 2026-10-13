@@ -125,7 +125,11 @@ the user wants solved.
   asks for implementation.
 - Treat dirty, untracked, and unrecognized changes as user-owned: never modify
   or stage them. Stop on unsafe overlap or a moving base.
-- Keep the diff to the task. Adjacent cleanup gets its own Issue.
+- Keep the diff to the task. When you find a problem outside it, at once
+  comment on its open Issue in the owner's repository, or file one if a search
+  finds none, then continue your task. File problems only the user can fix
+  (hardware, accounts, billing, credentials, app settings) in the private
+  tracker that preferences name.
 - Persistent Host Automation: before creating or changing a host service,
   scheduled job, or health or recovery automation meant to outlive the task,
   read `docs/adr/0001-persistent-host-automation.md`.
