@@ -10,7 +10,7 @@ metadata:
 # Code review
 
 Establish intended behavior, exact base/head, acceptance, scope, and relevant
-project rules. Read the complete diff and surrounding consumers needed to judge
+project rules. Read the diff in full and the surrounding consumers needed to judge
 it. Treat the author's explanation and test report as claims to check. Preserve
 `operations`' required independent exact-candidate review; this procedure supplies
 the method and does not waive that gate or grant merge authority.

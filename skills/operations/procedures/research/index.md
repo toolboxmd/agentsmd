@@ -12,7 +12,7 @@ metadata:
 # Research
 
 On claiming a Wayfinder **Research Decision Issue**, invoke this procedure without
-asking the human to select it. Read the owning GitHub Issue when one exists.
+asking the human to select it. Read the owning GitHub Issue in full when one exists.
 For a direct request, the user's question owns the work; no Issue is required.
 State the question, decision it informs, scope, and completion condition.
 
@@ -42,7 +42,7 @@ prototype, and a known bug regression remains diagnosis/test work.
 
 Start with the smallest search capable of answering the question. Widen when
 evidence is missing, contradictory, or insufficient for the decision's impact.
-Read complete relevant records, not only search previews. Preserve exact source
+Read relevant records in full, not only search previews. Preserve exact source
 identity, dates, relevant queries, contradictions, and unavailable coverage.
 
 Separate verified facts from inference, speculation, and unknowns. Ask what

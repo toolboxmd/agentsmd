@@ -26,7 +26,7 @@ it for source-relative paths, never the link directory or the project. Read
 
 Read the private `PREFERENCES.md` at the canonical clone root in full when it
 exists, including outside Git repositories. Hooks may supply it; otherwise read
-it yourself, and report it if unreadable. Never substitute a project-local copy
+it in full yourself, and report it if unreadable. Never substitute a project-local copy
 or the public example.
 Preferences are personal defaults. Explicit task instructions, project
 constraints, proof, authority, Human Gates, dirty user work, and Project

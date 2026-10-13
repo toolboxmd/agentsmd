@@ -24,7 +24,7 @@ with unclear history may justify a wider incident search.
 
 ## Gather evidence before constructing a story
 
-Search variants of the technical and business terms. Open full relevant records,
+Search variants of the technical and business terms. Open relevant records in full,
 including replies and linked alternatives. Capture author, date, version, status,
 exact location, and short quotes when wording matters. Preserve search queries
 and failed searches that bound a material unknown. Respect available access and

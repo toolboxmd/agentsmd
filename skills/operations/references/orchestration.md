@@ -60,7 +60,7 @@ Seed a fresh child with repository, complete Issue, exact base/dependencies,
 applicable instructions, durable decisions, authority, and exclusive workspace.
 Pass references (Issue, paths, exact commands), not restated Project Direction or
 instruction hashes; the child's hook supplies both, and the child rereads current
-instructions only when its hook reports a problem or did not run. Never publish
+instructions in full only when its hook reports a problem or did not run. Never publish
 private preferences. Use repository/GitHub evidence instead of prior transcripts
 when sufficient.
 

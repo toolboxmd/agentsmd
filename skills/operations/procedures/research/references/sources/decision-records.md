@@ -8,7 +8,7 @@ to its participants.
 ## Tracker evidence
 
 Begin with linked IDs, then search technical and business descriptions of the
-same problem. Read comments and history as well as the current body. Follow
+same problem. Read comments and history in full as well as the current body. Follow
 parents, duplicates, incident links, milestones, and project context. A deadline
 or customer requirement may explain a compromise absent from the code review.
 
@@ -19,7 +19,7 @@ solution, an accepted commitment, and an observed outcome.
 
 ## Design and meeting records
 
-Read complete promising documents, linked alternatives, relevant child pages,
+Read in full promising documents, linked alternatives, relevant child pages,
 and decision comments. Identify author, date, approved versus draft status, and
 the revision contemporaneous with the code. The newest document may describe a
 later redesign. Compare intended architecture with the artifact actually shipped.
@@ -31,7 +31,7 @@ unrelated personal material is not a reason to inspect it.
 ## Discussion evidence
 
 Search exact symbols, errors, PR URLs, feature names, likely channels, authors,
-and time windows. Read the whole relevant thread, including the reply that may
+and time windows. Read the relevant thread in full, including the reply that may
 reverse the initial claim. Preserve attribution, date, and permalink. Casual
 speculation, jokes, and forwarded claims are weaker than an explicit decision
 from its owner.

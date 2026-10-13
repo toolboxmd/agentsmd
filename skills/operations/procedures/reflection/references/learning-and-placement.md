@@ -2,7 +2,7 @@
 
 ## Diagnose why guidance failed
 
-Read the current proposed owner before accepting a lesson. Distinguish:
+Read the current proposed owner in full before accepting a lesson. Distinguish:
 
 | Failure | Useful correction |
 | --- | --- |
@@ -48,7 +48,7 @@ Do not automatically append a backlog after a read-only reflection.
 | Temporary observation | Owning Issue, with an explicit limit; not global policy |
 
 Reflection does not alter confirmed Project Direction or expand authority. Read
-and preserve the complete current owner before editing. Improve the selection
+in full and preserve the current owner before editing. Improve the selection
 mechanism rather than pasting the same procedure into every caller.
 
 Record supporting evidence on the owning Issue when it must be retained.

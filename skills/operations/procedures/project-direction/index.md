@@ -37,7 +37,7 @@ alignment and drift handling.
    contents suffices. Silence, general plan approval, or inspection permission never
    counts as a decision or a confirmation.
 6. Write only decided or confirmed content, preserving unchanged files byte-for-byte.
-   Reread all three, verify size limits, and report coherence and currentness. After
+   Reread all three in full, verify size limits, and report coherence and currentness. After
    writing a decided change, also report the exact diff and how to correct or revert
    it. Never claim current direction after writing without this reread.
 
