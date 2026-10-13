@@ -27,7 +27,7 @@ new globally advertised skill. Record each run's evidence on the owning Issue or
 PR, separate from reusable recipes.
 
 Before product-driving verification, Operations reads that project pointer or
-the default path directly. Model Router's isolated kits disable project skill
+the default path directly and in full. Model Router's isolated kits disable project skill
 discovery, so worker packets carry the procedure's exact path. Verify direct
 file access in the assigned workspace; never assume a host discovered it.
 Shared instructions can link host-specific driver details where necessary.

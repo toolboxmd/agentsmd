@@ -229,7 +229,7 @@ def uninitialized_payload(
         "required_procedure": "procedures/project-direction/index.md",
         "errors": errors,
         "action": (
-            "Invoke operations and read procedures/project-direction/index.md to establish the complete triad "
+            "Invoke operations and read procedures/project-direction/index.md in full to establish the complete triad "
             "before other project work, unless local instructions make Project "
             "Direction optional."
         ),
@@ -442,7 +442,7 @@ def direction_payload(root: Path) -> dict[str, object]:
             "action": (
                 "Resolve and reconcile the intended base while preserving "
                 "user work, then reread VISION.md, MISSION.md, and "
-                "OBJECTIVE.md before editing them."
+                "OBJECTIVE.md in full before editing them."
             ),
         }
     return payload
