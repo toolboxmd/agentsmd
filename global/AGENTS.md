@@ -71,7 +71,7 @@ Humans read slowly compared with agents. Every message costs the user attention.
   traces, and unselected variants out of tracked source. Procedures that require a
   report mean that record, not the chat reply. Read-only work (reviews, audits,
   questions) reports to the user and writes nothing to Issues or PRs unless
-  asked, except filing found problems under Work.
+  asked. Filing found problems under Work is the exception.
 - Start every Issue and PR you write with a Human summary of three lines:
   **What** (the result, one plain sentence), **Why** (the problem or its root
   cause, one sentence), **So what** (what happens next and who does it; name
