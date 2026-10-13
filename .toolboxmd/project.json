@@ -20,7 +20,7 @@
       "docs/adr/0001-persistent-host-automation.md",
       "docs/opencode.md",
       "skills/operations/references/scoped-proof.md",
-      "skills/operations/workflows/project-direction/references/context.md"
+      "skills/operations/procedures/project-direction/references/context.md"
     ],
     "requirements": [
       "global/AGENTS.md",

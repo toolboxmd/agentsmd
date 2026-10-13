@@ -176,7 +176,7 @@ class DeliveryProfileTests(unittest.TestCase):
                 self.assertIn(expected, json.loads(result.stdout)["errors"])
 
     def test_default_profile_is_discovered_from_a_nested_directory(self) -> None:
-        nested = ROOT / "skills/operations/workflows/delivery-profile"
+        nested = ROOT / "skills/operations/procedures/delivery-profile"
         self.assertTrue(nested.is_dir())
         result = subprocess.run(
             [str(LOADER), "load", "--root", str(nested), "--json"],

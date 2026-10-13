@@ -288,7 +288,7 @@ class OpenCodeTests(unittest.TestCase):
             self.assertFalse(os.path.lexists(self.skills / name))
         entry = self.skills / "operations"
         self.assertEqual(list(entry.rglob("SKILL.md")), [entry / "SKILL.md"])
-        self.assertTrue((entry / "workflows/project-direction/index.md").is_file())
+        self.assertTrue((entry / "procedures/project-direction/index.md").is_file())
         self.assertEqual(self.call("skills", "update", "--source", source)[0], 0)
 
     def test_bundle_upgrade_keeps_old_links_when_replacement_is_blocked(self):

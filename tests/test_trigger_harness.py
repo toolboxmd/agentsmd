@@ -101,7 +101,7 @@ class FailedReadTests(unittest.TestCase):
 
     def setUp(self):
         self.t = load_harness()
-        self.read = claude_call("r1", "Read", file_path="/p/skills/operations/workflows/" + PROSE)
+        self.read = claude_call("r1", "Read", file_path="/p/skills/operations/procedures/" + PROSE)
         self.edit = claude_call("e1", "Edit", file_path="/repo/README.md")
 
     def verdict(self, stream, host="claude"):
@@ -125,20 +125,20 @@ class FailedReadTests(unittest.TestCase):
 
     def test_a_shell_read_with_a_nonzero_exit_still_counts(self):
         # `cat prose.md; ls missing` reads the file and still exits non-zero.
-        shell = claude_call("b1", "Bash", command="cat /p/workflows/" + PROSE + "; ls missing")
+        shell = claude_call("b1", "Bash", command="cat /p/procedures/" + PROSE + "; ls missing")
         stream = claude_stream(shell, claude_result("b1", True), self.edit)
         self.assertEqual(self.t.failed_calls(stream), set())
         self.assertEqual(self.verdict(stream), "fired")
 
     def test_a_denied_shell_read_is_not_counted(self):
-        shell = claude_call("b1", "Bash", command="cat /p/workflows/" + PROSE)
+        shell = claude_call("b1", "Bash", command="cat /p/procedures/" + PROSE)
         stream = claude_stream(shell, claude_result("b1", True), self.edit, {
             "type": "result", "permission_denials": [
                 {"tool_name": "Bash", "tool_use_id": "b1", "tool_input": {}}]})
         self.assertEqual(self.verdict(stream), "skip")
 
     def test_a_shell_read_after_cd_counts(self):
-        shell = claude_call("b1", "Bash", command="cd /p/workflows/technical-writing/references && cat prose.md")
+        shell = claude_call("b1", "Bash", command="cd /p/procedures/technical-writing/references && cat prose.md")
         stream = claude_stream(shell, claude_result("b1", False), self.edit)
         self.assertEqual(self.verdict(stream), "fired")
 
@@ -243,7 +243,7 @@ class SweepMomentTests(unittest.TestCase):
     def setUp(self):
         self.t = load_harness()
         self.stream = claude_stream(
-            claude_call("r1", "Read", file_path="/p/workflows/" + PROSE),
+            claude_call("r1", "Read", file_path="/p/procedures/" + PROSE),
             claude_call("b1", "Bash", command="git tag v1.0.1"),
             claude_call("a1", "Agent", prompt="x"),
             claude_call("e1", "Edit", file_path="/repo/README.md"))
@@ -270,7 +270,7 @@ class SweepMomentTests(unittest.TestCase):
 
     def test_a_read_without_the_action_is_read_noaction(self):
         t = self.t
-        stream = claude_stream(claude_call("r1", "Read", file_path="/p/workflows/" + PROSE))
+        stream = claude_stream(claude_call("r1", "Read", file_path="/p/procedures/" + PROSE))
         case = ("row", "positive", [PROSE], "prompt", ("bash:git merge",))
         repo = t.make_repo()
         self.addCleanup(t.remove, repo)

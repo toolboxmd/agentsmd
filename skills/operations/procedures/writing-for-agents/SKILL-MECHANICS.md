@@ -27,7 +27,7 @@ selection. Keep Codex `allow_implicit_invocation: true`; do not hide procedures
 with explicit-only flags and then bypass their invocation policy.
 
 Add a method as an ordinary conditional reference within Operations, normally
-`workflows/<name>/index.md`. Do not name it `SKILL.md`: recursive hosts would
+`procedures/<name>/index.md`. Do not name it `SKILL.md`: recursive hosts would
 advertise it. Give its caller a concrete loading trigger. Preserve human gates
 inside the owning procedure. Selection grants no new authority.
 

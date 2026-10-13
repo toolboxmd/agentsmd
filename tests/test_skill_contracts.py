@@ -528,7 +528,7 @@ def repository_reconciliation_decision(case: dict[str, object]) -> str:
 
 class SkillContractTests(unittest.TestCase):
     def test_project_direction_procedure_owns_repair_triggers(self) -> None:
-        context = read_text("skills/operations/workflows/project-direction/references/context.md")
+        context = read_text("skills/operations/procedures/project-direction/references/context.md")
         for required in ("absent", "blank", "unreadable", "oversized", "unresolved placeholders",
                          "material contradictions", "stale", "achieved", "invalidated",
                          "abandoned", "reprioritized", "define, review, or update"):
@@ -536,7 +536,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("../index.md", context)
 
     def test_project_direction_skill_preserves_user_owned_strategy(self) -> None:
-        skill = read_text("skills/operations/workflows/project-direction/index.md")
+        skill = read_text("skills/operations/procedures/project-direction/index.md")
         normalized = " ".join((skill + read_text("global/AGENTS.md")).split())
         for required in (
             'triad together',
@@ -554,16 +554,16 @@ class SkillContractTests(unittest.TestCase):
 
     def test_objective_is_milestone_level_across_public_contract(self) -> None:
         for relative in (
-            "skills/operations/workflows/project-direction/references/context.md",
+            "skills/operations/procedures/project-direction/references/context.md",
             "GLOSSARY.md",
             "README.md",
-            "skills/operations/workflows/project-direction/index.md",
-            "skills/operations/workflows/project-direction/references/file-contracts.md",
+            "skills/operations/procedures/project-direction/index.md",
+            "skills/operations/procedures/project-direction/references/file-contracts.md",
         ):
             text = read_text(relative)
-            if relative == "skills/operations/workflows/project-direction/index.md":
+            if relative == "skills/operations/procedures/project-direction/index.md":
                 self.assertIn("(references/file-contracts.md)", text)
-                text += read_text("skills/operations/workflows/project-direction/references/file-contracts.md")
+                text += read_text("skills/operations/procedures/project-direction/references/file-contracts.md")
             normalized = " ".join(text.split())
             with self.subTest(relative=relative):
                 self.assertIn("milestone-level", normalized)
@@ -574,14 +574,14 @@ class SkillContractTests(unittest.TestCase):
                 )
 
         template = " ".join(
-            read_text("skills/operations/workflows/project-direction/templates/OBJECTIVE.md").split()
+            read_text("skills/operations/procedures/project-direction/templates/OBJECTIVE.md").split()
         )
         self.assertIn("milestone-level outcome", template)
         self.assertIn("not one task's delivery state", template)
 
     def test_project_direction_evals_cover_task_to_objective_regression(self) -> None:
         payload = json.loads(
-            read_text("skills/operations/workflows/project-direction/evals/evals.json")
+            read_text("skills/operations/procedures/project-direction/evals/evals.json")
         )
         cases = " ".join(
             f"{case['prompt']} {case['expected_output']}"
@@ -599,16 +599,16 @@ class SkillContractTests(unittest.TestCase):
 
     def test_vision_and_mission_have_distinct_directional_roles(self) -> None:
         for relative in (
-            "skills/operations/workflows/project-direction/references/context.md",
+            "skills/operations/procedures/project-direction/references/context.md",
             "GLOSSARY.md",
             "README.md",
-            "skills/operations/workflows/project-direction/index.md",
-            "skills/operations/workflows/project-direction/references/file-contracts.md",
+            "skills/operations/procedures/project-direction/index.md",
+            "skills/operations/procedures/project-direction/references/file-contracts.md",
         ):
             text = read_text(relative)
-            if relative == "skills/operations/workflows/project-direction/index.md":
+            if relative == "skills/operations/procedures/project-direction/index.md":
                 self.assertIn("(references/file-contracts.md)", text)
-                text += read_text("skills/operations/workflows/project-direction/references/file-contracts.md")
+                text += read_text("skills/operations/procedures/project-direction/references/file-contracts.md")
             normalized = " ".join(text.split())
             with self.subTest(relative=relative):
                 self.assertIn("grand and visionary", normalized)
@@ -616,10 +616,10 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn("grounded in what the project does now", normalized)
 
         vision_template = " ".join(
-            read_text("skills/operations/workflows/project-direction/templates/VISION.md").split()
+            read_text("skills/operations/procedures/project-direction/templates/VISION.md").split()
         )
         mission_template = " ".join(
-            read_text("skills/operations/workflows/project-direction/templates/MISSION.md").split()
+            read_text("skills/operations/procedures/project-direction/templates/MISSION.md").split()
         )
         self.assertIn("grand and visionary future", vision_template)
         self.assertIn("strategic present purpose", mission_template)
@@ -629,7 +629,7 @@ class SkillContractTests(unittest.TestCase):
         self,
     ) -> None:
         payload = json.loads(
-            read_text("skills/operations/workflows/project-direction/evals/evals.json")
+            read_text("skills/operations/procedures/project-direction/evals/evals.json")
         )
         cases = " ".join(
             f"{case['prompt']} {case['expected_output']}"
@@ -640,7 +640,7 @@ class SkillContractTests(unittest.TestCase):
 
     def test_global_contract_requires_complete_current_project_direction(self) -> None:
         agents = read_text("global/AGENTS.md")
-        context = read_text("skills/operations/workflows/project-direction/references/context.md")
+        context = read_text("skills/operations/procedures/project-direction/references/context.md")
         normalized = " ".join((agents + context).split())
         for required in (
             "Project Direction",
@@ -659,8 +659,8 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, normalized)
 
     def test_project_direction_currentness_contract_is_consistent(self) -> None:
-        agents = " ".join(read_text("skills/operations/workflows/project-direction/references/context.md").split())
-        skill = " ".join(read_text("skills/operations/workflows/project-direction/index.md").split())
+        agents = " ".join(read_text("skills/operations/procedures/project-direction/references/context.md").split())
+        skill = " ".join(read_text("skills/operations/procedures/project-direction/index.md").split())
         loader = read_text("bin/project-direction")
 
         self.assertIn('[context](references/context.md)', skill)
@@ -726,7 +726,7 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, language)
 
         procedure = " ".join(
-            read_text("skills/operations/workflows/domain-modeling/index.md").split()
+            read_text("skills/operations/procedures/domain-modeling/index.md").split()
         )
         for required in (
             "lists its connected projects, the system glossary, and where each "
@@ -798,8 +798,8 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, agents)
         summary = "**What:** <the result, one plain sentence>"
         for path, first_section in (
-            ("skills/operations/workflows/to-spec/index.md", "## Outcome"),
-            ("skills/operations/workflows/to-tickets/references/ticket-decomposition.md", "## Parent"),
+            ("skills/operations/procedures/to-spec/index.md", "## Outcome"),
+            ("skills/operations/procedures/to-tickets/references/ticket-decomposition.md", "## Parent"),
         ):
             with self.subTest(template=path):
                 text = read_text(path)
@@ -870,7 +870,7 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
         # One owner: the procedure points at the core instead of restating its rules.
-        procedure = " ".join(read_text("skills/operations/workflows/software-design/index.md").split())
+        procedure = " ".join(read_text("skills/operations/procedures/software-design/index.md").split())
         self.assertIn("The global contract's Software design rules always apply here", procedure)
         self.assertIn("Its references expand those core rules; where their wording differs, "
                       "the core wins.", procedure)
@@ -885,7 +885,7 @@ class SkillContractTests(unittest.TestCase):
                       read_text("skills/operations/SKILL.md"))
 
     def test_algorithm_skill_preserves_order_and_completion_contract(self) -> None:
-        skill = read_text("skills/operations/workflows/elon-method/references/algorithm.md")
+        skill = read_text("skills/operations/procedures/elon-method/references/algorithm.md")
         normalized = " ".join(skill.split())
         stages = (
             "Question every requirement.",
@@ -908,18 +908,18 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("marketplace-project-record-regression.md", skill)
 
     def test_elon_procedure_routes_methods_without_duplicate_entrypoint(self) -> None:
-        skill = read_text("skills/operations/workflows/elon-method/index.md")
+        skill = read_text("skills/operations/procedures/elon-method/index.md")
         self.assertIn("multiple references can apply", skill)
         for reference in ("first-principles", "idiot-index", "current-constraint", "algorithm"):
             self.assertIn(f"(references/{reference}.md)", skill)
         router = read_text("skills/operations/SKILL.md")
-        self.assertIn("workflows/elon-method/index.md", router)
+        self.assertIn("procedures/elon-method/index.md", router)
         self.assertIn("old `algorithm` name", router)
-        self.assertFalse((ROOT / "skills/operations/workflows/algorithm").exists())
+        self.assertFalse((ROOT / "skills/operations/procedures/algorithm").exists())
 
     def test_current_constraint_requires_falsifiable_outcome_progress(self) -> None:
         constraint = " ".join(read_text(
-            "skills/operations/workflows/elon-method/references/current-constraint.md").split())
+            "skills/operations/procedures/elon-method/references/current-constraint.md").split())
         for required in (
             'material selection/reassessment',
             'confirmed direction and authorized outcome',
@@ -948,7 +948,7 @@ class SkillContractTests(unittest.TestCase):
 
     def test_idiot_index_requires_comparable_costs_and_hypothesis(self) -> None:
         reference = " ".join(read_text(
-            "skills/operations/workflows/elon-method/references/idiot-index.md").split())
+            "skills/operations/procedures/elon-method/references/idiot-index.md").split())
         for required in (
             "same outcome, scope, and comparable units",
             "required integration, reliability, support, proof, compliance, and risk costs",
@@ -963,8 +963,8 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, reference)
 
     def test_retained_procedure_fixtures_identify_their_selection_boundary(self) -> None:
-        workflows = ROOT / "skills/operations/workflows"
-        fixtures = sorted(workflows.glob("*/evals/*.json"))
+        procedures = ROOT / "skills/operations/procedures"
+        fixtures = sorted(procedures.glob("*/evals/*.json"))
         self.assertEqual(len(fixtures), 5)
         for path in fixtures:
             with self.subTest(path=path):
@@ -985,7 +985,7 @@ class SkillContractTests(unittest.TestCase):
                     self.assertTrue(payload["evals"])
 
     def test_elon_method_selection_fixture_covers_reference_combinations(self) -> None:
-        payload = json.loads(read_text("skills/operations/workflows/elon-method/evals/procedure-selection.json"))
+        payload = json.loads(read_text("skills/operations/procedures/elon-method/evals/procedure-selection.json"))
         self.assertEqual(payload["fixture_kind"], "procedure-selection")
         self.assertEqual(payload["procedure_name"], "elon-method")
         cases = {case["branch"]: case for case in payload["queries"]}
@@ -1016,7 +1016,7 @@ class SkillContractTests(unittest.TestCase):
                 self.assertEqual(case["should_select"], bool(references))
                 self.assertEqual(case["references"], references)
                 for reference in references:
-                    self.assertTrue((ROOT / "skills/operations/workflows/elon-method/references" /
+                    self.assertTrue((ROOT / "skills/operations/procedures/elon-method/references" /
                                      f"{reference}.md").is_file())
 
 
@@ -1026,7 +1026,7 @@ class SkillContractTests(unittest.TestCase):
     def test_algorithm_records_real_marketplace_regression(self) -> None:
         evidence = " ".join(
             read_text(
-                "skills/operations/workflows/elon-method/references/marketplace-project-record-regression.md"
+                "skills/operations/procedures/elon-method/references/marketplace-project-record-regression.md"
             ).split()
         )
         for required in (
@@ -1047,7 +1047,7 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(required, evidence)
 
     def test_domain_modeling_owns_lazy_glossary_behavior(self) -> None:
-        skill = read_text("skills/operations/workflows/domain-modeling/index.md")
+        skill = read_text("skills/operations/procedures/domain-modeling/index.md")
         for required in (
             "`GLOSSARY.md`",
             "`GLOSSARY-MAP.md`",
@@ -1060,17 +1060,17 @@ class SkillContractTests(unittest.TestCase):
         ):
             self.assertIn(required, skill)
         self.assertNotIn("[CONTEXT-FORMAT.md]", skill)
-        self.assertFalse((ROOT / "skills/operations/workflows/domain-modeling/CONTEXT-FORMAT.md").exists())
+        self.assertFalse((ROOT / "skills/operations/procedures/domain-modeling/CONTEXT-FORMAT.md").exists())
 
     def test_grill_with_docs_does_not_precreate_documents(self) -> None:
-        skill = read_text("skills/operations/workflows/grill-with-docs/index.md")
+        skill = read_text("skills/operations/procedures/grill-with-docs/index.md")
         self.assertIn("grilling", skill)
         self.assertIn("domain-modeling", skill)
         self.assertIn("lazily", skill)
         self.assertNotIn("setup-matt-pocock-skills", skill)
 
     def test_to_spec_publishes_a_ready_github_parent_issue(self) -> None:
-        skill = read_text("skills/operations/workflows/to-spec/index.md")
+        skill = read_text("skills/operations/procedures/to-spec/index.md")
         normalized = " ".join(skill.split())
         for required in (
             "GitHub parent Issue",
@@ -1095,7 +1095,7 @@ class SkillContractTests(unittest.TestCase):
             self.assertIn(required, normalized)
         decomposition = " ".join(
             read_text(
-                "skills/operations/workflows/to-tickets/references/ticket-decomposition.md"
+                "skills/operations/procedures/to-tickets/references/ticket-decomposition.md"
             ).split()
         )
         self.assertIn("do not stop for graph approval", decomposition)
@@ -1105,7 +1105,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("Obtain approval", decomposition)
         self.assertNotIn("Retain approval", normalized)
         router = read_text("skills/operations/SKILL.md")
-        tickets_entry = read_text("skills/operations/workflows/to-tickets/index.md")
+        tickets_entry = read_text("skills/operations/procedures/to-tickets/index.md")
         self.assertIn("decompose a plan", router)
         self.assertNotIn("approved plan", router + tickets_entry)
         for forbidden in (
@@ -1120,8 +1120,8 @@ class SkillContractTests(unittest.TestCase):
         contract = json.loads(
             read_text("tests/fixtures/specify_workflow_cases.json")
         )["contract"]
-        spec = frontmatter_metadata("skills/operations/workflows/to-spec/index.md")
-        tickets = frontmatter_metadata("skills/operations/workflows/to-tickets/index.md")
+        spec = frontmatter_metadata("skills/operations/procedures/to-spec/index.md")
+        tickets = frontmatter_metadata("skills/operations/procedures/to-tickets/index.md")
 
         self.assertEqual(contract["entry_selection"], "operations")
         self.assertEqual(contract["continuation_owner"], "to-spec")
@@ -1191,7 +1191,7 @@ class SkillContractTests(unittest.TestCase):
 
         router = read_text("skills/operations/SKILL.md")
         for procedure in (contract["entry_procedure"], contract["ticket_procedure"]):
-            self.assertIn(f"workflows/{procedure}/index.md", router)
+            self.assertIn(f"procedures/{procedure}/index.md", router)
             self.assertFalse((ROOT / "skills" / procedure / "SKILL.md").exists())
 
     def test_all_skills_are_model_invocable(self) -> None:
@@ -1317,7 +1317,7 @@ class SkillContractTests(unittest.TestCase):
         self.assertEqual(rejected_tickets["implementation_authority_prompts"], 0)
 
     def test_to_tickets_publishes_github_issues_and_native_edges(self) -> None:
-        skill = read_text("skills/operations/workflows/to-tickets/index.md") + read_text("skills/operations/workflows/to-tickets/references/ticket-decomposition.md")
+        skill = read_text("skills/operations/procedures/to-tickets/index.md") + read_text("skills/operations/procedures/to-tickets/references/ticket-decomposition.md")
         for required in (
             "GitHub Issues",
             "native sub-Issue",
@@ -2165,9 +2165,9 @@ class SkillContractTests(unittest.TestCase):
                 )
 
     def test_wayfinder_maps_only_the_visible_github_frontier(self) -> None:
-        skill = read_text("skills/operations/workflows/wayfinder/index.md")
+        skill = read_text("skills/operations/procedures/wayfinder/index.md")
         normalized = " ".join(skill.split())
-        wayfinder = frontmatter_metadata("skills/operations/workflows/wayfinder/index.md")
+        wayfinder = frontmatter_metadata("skills/operations/procedures/wayfinder/index.md")
         self.assertNotIn("handoff-skill", wayfinder)
         self.assertEqual(
             wayfinder["completion"], "resolved-decisions-and-workflow-continuation"
@@ -2219,7 +2219,7 @@ class SkillContractTests(unittest.TestCase):
         )
 
     def test_prototype_answers_a_typed_decision_issue(self) -> None:
-        skill = " ".join(read_text("skills/operations/workflows/prototype/index.md").split())
+        skill = " ".join(read_text("skills/operations/procedures/prototype/index.md").split())
         for required in (
             "Prototype Decision Issue",
             "without another human selection",
@@ -2235,7 +2235,7 @@ class SkillContractTests(unittest.TestCase):
             self.assertIn(required, skill)
 
     def test_research_answers_a_typed_decision_issue(self) -> None:
-        skill = " ".join(read_text("skills/operations/workflows/research/index.md").split())
+        skill = " ".join(read_text("skills/operations/procedures/research/index.md").split())
         for required in (
             "Research Decision Issue",
             "without asking the human to select it",
@@ -2247,7 +2247,7 @@ class SkillContractTests(unittest.TestCase):
             self.assertIn(required, skill)
 
     def test_grilling_keeps_the_exhaustive_frontier(self) -> None:
-        skill = read_text("skills/operations/workflows/grilling/index.md")
+        skill = read_text("skills/operations/procedures/grilling/index.md")
         self.assertIn("Interview the user relentlessly", skill)
         self.assertIn("Ask the whole frontier in one round", skill)
         self.assertIn("frontier is empty", skill)

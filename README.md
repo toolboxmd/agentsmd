@@ -1,7 +1,7 @@
 # agentsmd
 
 AgentsMD is a portable operating contract for coding agents. It gives Codex,
-Claude Code, Grok Build and OpenCode the same working rules, the same workflow
+Claude Code, Grok Build and OpenCode the same working rules, the same operations
 Skill, and the same view of what each project is for:
 
 - `global/AGENTS.md`: the global contract every session loads as its native
@@ -227,7 +227,7 @@ Rerun the inspect commands from [Verify](#4-verify) and start a fresh session.
 `unchanged`. Use `--replace` only after reading the reported status: it also
 replaces a user-owned file.
 
-Older releases registered one Skill per workflow, such as
+Older releases registered one Skill per procedure, such as
 `$agentsmd:research` or `/agentsmd:elon-method`. Those names are gone; ask
 naturally or invoke `operations`. On OpenCode,
 `agentsmd-opencode skills update --source "$AGENTSMD_DIR/skills"` removes the

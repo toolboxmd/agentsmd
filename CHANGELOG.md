@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.0.0] - 2026-10-13
+
+### Changed
+
+- Rename skills/operations/workflows/ to procedures/; consumers holding the old paths must update (#218)
+
 ## [16.5.0] - 2026-10-13
 
 ### Added

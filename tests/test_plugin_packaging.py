@@ -98,7 +98,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "docs/adr/0001-persistent-host-automation.md",
                     "docs/opencode.md",
                     "skills/operations/references/scoped-proof.md",
-                    "skills/operations/workflows/project-direction/references/context.md",
+                    "skills/operations/procedures/project-direction/references/context.md",
                 ],
                 "requirements": [
                     "global/AGENTS.md",
@@ -383,26 +383,26 @@ class PluginPackagingTests(unittest.TestCase):
             "tests/test_repository_reconciliation_contract.py",
             "tests/fixtures/specify_workflow_cases.json",
 
-            "skills/operations/workflows/elon-method/evals/procedure-selection.json",
-            "skills/operations/workflows/elon-method/references/first-principles.md",
-            "skills/operations/workflows/elon-method/references/idiot-index.md",
-            "skills/operations/workflows/elon-method/references/current-constraint.md",
-            "skills/operations/workflows/elon-method/references/algorithm.md",
-            "skills/operations/workflows/elon-method/references/marketplace-project-record-regression.md",
+            "skills/operations/procedures/elon-method/evals/procedure-selection.json",
+            "skills/operations/procedures/elon-method/references/first-principles.md",
+            "skills/operations/procedures/elon-method/references/idiot-index.md",
+            "skills/operations/procedures/elon-method/references/current-constraint.md",
+            "skills/operations/procedures/elon-method/references/algorithm.md",
+            "skills/operations/procedures/elon-method/references/marketplace-project-record-regression.md",
 
             ".toolboxmd/delivery.json",
             "schemas/delivery-v1.schema.json",
-            "skills/operations/workflows/project-direction/references/file-contracts.md",
-            "skills/operations/workflows/project-direction/templates/MISSION.md",
-            "skills/operations/workflows/project-direction/templates/OBJECTIVE.md",
-            "skills/operations/workflows/project-direction/templates/VISION.md",
-            "skills/operations/workflows/prototype/LOGIC.md",
-            "skills/operations/workflows/prototype/UI.md",
-            "skills/operations/workflows/domain-modeling/ADR-FORMAT.md",
-            "skills/operations/workflows/domain-modeling/GLOSSARY-FORMAT.md",
-            "skills/operations/workflows/version-control/references/bump-rules.md",
-            "skills/operations/workflows/version-control/references/project-policy.md",
-            "skills/operations/workflows/writing-for-agents/SKILL-MECHANICS.md",
+            "skills/operations/procedures/project-direction/references/file-contracts.md",
+            "skills/operations/procedures/project-direction/templates/MISSION.md",
+            "skills/operations/procedures/project-direction/templates/OBJECTIVE.md",
+            "skills/operations/procedures/project-direction/templates/VISION.md",
+            "skills/operations/procedures/prototype/LOGIC.md",
+            "skills/operations/procedures/prototype/UI.md",
+            "skills/operations/procedures/domain-modeling/ADR-FORMAT.md",
+            "skills/operations/procedures/domain-modeling/GLOSSARY-FORMAT.md",
+            "skills/operations/procedures/version-control/references/bump-rules.md",
+            "skills/operations/procedures/version-control/references/project-policy.md",
+            "skills/operations/procedures/writing-for-agents/SKILL-MECHANICS.md",
         }
         missing = [relative for relative in expected if not (ROOT / relative).is_file()]
         self.assertEqual(missing, [])
@@ -438,8 +438,8 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_packaged_project_direction_guard_has_matching_contracts(self) -> None:
         loader = read_text("bin/project-direction")
-        agents = read_text("skills/operations/workflows/project-direction/references/context.md")
-        skill = read_text("skills/operations/workflows/project-direction/index.md")
+        agents = read_text("skills/operations/procedures/project-direction/references/context.md")
+        skill = read_text("skills/operations/procedures/project-direction/index.md")
 
         for required in (
             "potentially_stale",
@@ -454,13 +454,13 @@ class PluginPackagingTests(unittest.TestCase):
     def test_ticket_entrypoints_resolve_one_owner_after_install_relocation(self) -> None:
         # Exercise the real published relative links with an unrelated install root.
         # Existing workflow metadata and transition fixtures cover invocation/gates.
-        owner = Path("skills/operations/workflows/to-tickets/references/ticket-decomposition.md")
+        owner = Path("skills/operations/procedures/to-tickets/references/ticket-decomposition.md")
         with tempfile.TemporaryDirectory() as temporary:
             installed = Path(temporary) / "plugins/cache/agentsmd/version"
             shutil.copytree(ROOT / "skills", installed / "skills")
             resolved = []
             for name in ("to-spec", "to-tickets"):
-                entry = installed / "skills/operations/workflows" / name / "index.md"
+                entry = installed / "skills/operations/procedures" / name / "index.md"
                 links = re.findall(r"\[ticket decomposition\]\(([^)]+)\)", entry.read_text())
                 self.assertEqual(len(links), 1, name)
                 target = (entry.parent / links[0]).resolve(strict=True)
@@ -473,7 +473,7 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_matt_adaptations_declare_origin_and_licence(self) -> None:
         for name in MATT_ADAPTATIONS:
-            metadata = frontmatter(f"skills/operations/workflows/{name}/index.md")
+            metadata = frontmatter(f"skills/operations/procedures/{name}/index.md")
             with self.subTest(skill=name):
                 self.assertIn("license: MIT", metadata)
                 self.assertIn("owner: toolboxmd", metadata)

@@ -24,6 +24,23 @@ def links(path):
 
 
 class OperationsContractTests(unittest.TestCase):
+    def test_procedures_live_under_procedures_only(self):
+        # Issue #218: "procedure" is the one word; no shipped file may point at the old folder.
+        self.assertFalse((ROOT / "skills/operations/workflows").exists())
+        stale = re.compile(r"(?<!\.github/)\bworkflows/")
+        shipped = [ROOT / "README.md", ROOT / ".toolboxmd/project.json",
+                   ROOT / "provenance/pstack.lock.json"]
+        for folder in ("skills", "global", "bin", "contextmd", "contextmd-cue"):
+            if (ROOT / folder).is_dir():
+                shipped += [p for p in (ROOT / folder).rglob("*") if p.is_file()]
+        for path in shipped:
+            try:
+                text = path.read_text(encoding="utf-8")
+            except UnicodeDecodeError:
+                continue
+            with self.subTest(path=str(path.relative_to(ROOT))):
+                self.assertIsNone(stale.search(text))
+
     def test_one_model_invoked_entry_routes_every_module(self):
         text = SKILL.read_text()
         self.assertIn("name: operations", text)
@@ -42,13 +59,13 @@ class OperationsContractTests(unittest.TestCase):
         # Issue #164: these files measured 91-97% skipped behind a second hop.
         rows = {
             "Before editing a `SKILL.md`": {
-                "workflows/technical-writing/references/prose.md",
-                "workflows/writing-for-agents/SKILL-MECHANICS.md",
+                "procedures/technical-writing/references/prose.md",
+                "procedures/writing-for-agents/SKILL-MECHANICS.md",
             },
-            "Before editing a README": {"workflows/technical-writing/references/prose.md"},
+            "Before editing a README": {"procedures/technical-writing/references/prose.md"},
             "Before editing or adding a test file": {"references/test-design.md"},
-            "Before editing `GLOSSARY.md`": {"workflows/domain-modeling/GLOSSARY-FORMAT.md"},
-            "Before editing `PREFERENCES.md`": {"workflows/reflection/references/preferences-pruning.md"},
+            "Before editing `GLOSSARY.md`": {"procedures/domain-modeling/GLOSSARY-FORMAT.md"},
+            "Before editing `PREFERENCES.md`": {"procedures/reflection/references/preferences-pruning.md"},
         }
         lines = SKILL.read_text().splitlines()
         for trigger, targets in rows.items():
@@ -58,7 +75,7 @@ class OperationsContractTests(unittest.TestCase):
 
     def test_preferences_pruning_keeps_the_budget_at_every_edit(self):
         # Issue #175: preferences load into every session under a 4,000-character budget.
-        text = words(SKILL.parent / "workflows/reflection/references/preferences-pruning.md")
+        text = words(SKILL.parent / "procedures/reflection/references/preferences-pruning.md")
         for required in ("4,000 characters", "after every edit", "Merge entries",
                          "better owner", "`budgets.preferences`", "the user decides"):
             self.assertIn(required, text)
@@ -210,7 +227,7 @@ class OperationsContractTests(unittest.TestCase):
         core = words(ROOT / "global/AGENTS.md")
         self.assertIn('Honor explicit local Project Direction opt-outs for their stated scope', core)
         self.assertIn("Reuse unchanged full contents on follow-ups; reload after change or context loss", core)
-        context = words(ROOT / "skills/operations/workflows/project-direction/references/context.md")
+        context = words(ROOT / "skills/operations/procedures/project-direction/references/context.md")
         self.assertIn("Reuse unchanged full contents", context)
         self.assertIn("current remote state matters", context)
         proof = words(SKILL.parent / "references/verification.md")
@@ -260,7 +277,7 @@ class OperationsContractTests(unittest.TestCase):
         ):
             with self.subTest(clause=clause):
                 self.assertIn(clause, orchestration)
-        tickets = words(SKILL.parent / "workflows/to-tickets/references/ticket-decomposition.md")
+        tickets = words(SKILL.parent / "procedures/to-tickets/references/ticket-decomposition.md")
         for clause in (
             "do not start it until the parent Spec Issue's Design review names the reviewer, the verdict, and the user's decisions",
             "dispatch an independent review of the parent Spec",
@@ -268,7 +285,7 @@ class OperationsContractTests(unittest.TestCase):
         ):
             with self.subTest(clause=clause):
                 self.assertIn(clause, tickets)
-        spec = (SKILL.parent / "workflows/to-spec/index.md").read_text(encoding="utf-8")
+        spec = (SKILL.parent / "procedures/to-spec/index.md").read_text(encoding="utf-8")
         self.assertIn("## Design review", spec)
 
     def test_review_verdict_is_a_commit_status_on_the_exact_head(self):
@@ -312,7 +329,7 @@ class OperationsContractTests(unittest.TestCase):
         delivery = words(SKILL.parent / "references/delivery.md")
         self.assertIn("Components are unreleased checkpoints", delivery)
         self.assertIn("prepare the single version transition on the final approval PR", delivery)
-        versioning = words(ROOT / "skills/operations/workflows/version-control/index.md")
+        versioning = words(ROOT / "skills/operations/procedures/version-control/index.md")
         self.assertIn("Internal component checkpoint", versioning)
         self.assertIn("defer versioning to the final approval PR", versioning)
 
@@ -349,7 +366,7 @@ class OperationsContractTests(unittest.TestCase):
             core,
         )
         self.assertIn("A small direct microfix whose requirement and solution are clear stays direct.", core)
-        method = SKILL.parent / "workflows/elon-method"
+        method = SKILL.parent / "procedures/elon-method"
         self.assertIn(
             "Use with current Project Direction when loaded; otherwise against the request.",
             words(method / "index.md"),
