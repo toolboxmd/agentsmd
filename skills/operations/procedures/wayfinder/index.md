@@ -108,4 +108,4 @@ Resolve at most one non-research Decision Issue per fresh context.
    graduated fog. Close and classify newly discovered out-of-scope Issues.
 4. Stop when a reliable spec can be stated, without eliminating every imaginable
    decision. Return to Operations and continue the smallest suitable lane under existing
-   authority. Load [to-spec](../to-spec/index.md) when specification is needed.
+   authority. Load [to-spec](../to-spec/index.md) in full when specification is needed.

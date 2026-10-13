@@ -20,12 +20,12 @@ report them in the direct task.
 
 ## Select the branch
 
-- Human-facing logic/state/data decisions: read [LOGIC.md](LOGIC.md). Build one shareable HTML
+- Human-facing logic/state/data decisions: read [LOGIC.md](LOGIC.md) in full. Build one shareable HTML
   file with free-play buttons and tabbed guided scenarios a non-developer can drive.
-- Appearance questions: read [UI.md](UI.md). Build radically different variants
+- Appearance questions: read [UI.md](UI.md) in full. Build radically different variants
   on one route with URL selection and a floating bottom bar.
 - Empirical semantics, integration, ordering, or timing questions: read
-  [EMPIRICAL.md](EMPIRICAL.md). Use the smallest executable script or native harness
+  [EMPIRICAL.md](EMPIRICAL.md) in full. Use the smallest executable script or native harness
   that distinguishes the alternatives, without a presentation shell.
 
 Resolve ambiguity from prompt, code, or the available user. If unreachable, choose

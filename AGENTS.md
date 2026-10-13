@@ -1,6 +1,6 @@
 # agentsmd Repository Instructions
 
-Before work in this repository, read `global/AGENTS.md` and apply it as the global
+Before work in this repository, read `global/AGENTS.md` in full and apply it as the global
 baseline.
 
 - The global contract lives in `global/AGENTS.md` and is edited there.

@@ -27,4 +27,4 @@ fresh context. Preserve the user-decision gate in the shared procedure below.
 Tracer-bullet and expand-contract language guides the decomposition. The
 published artifacts are called GitHub Issues.
 
-When this procedure is selected, read and perform [ticket decomposition](references/ticket-decomposition.md), including source gathering, the user-decision gate, publication verification, and the implementation boundary. This shared procedure owns those steps.
+When this procedure is selected, read in full and perform [ticket decomposition](references/ticket-decomposition.md), including source gathering, the user-decision gate, publication verification, and the implementation boundary. This shared procedure owns those steps.

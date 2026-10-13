@@ -9,7 +9,7 @@ Blame identifies the latest touch, which may be formatting or a move.
 
 Select sources by the explanation they could distinguish:
 
-| Evidence category | Read | Potential contribution |
+| Evidence category | Read in full | Potential contribution |
 | --- | --- | --- |
 | Code and review history | [Code archaeology](sources/code-history.md) | Implementation-time rationale and accepted constraints |
 | Tracker, design records, discussion | [Decision records](sources/decision-records.md) | Business need, alternatives, deliberation, deadlines |
@@ -24,7 +24,7 @@ with unclear history may justify a wider incident search.
 
 ## Gather evidence before constructing a story
 
-Search variants of the technical and business terms. Open full relevant records,
+Search variants of the technical and business terms. Open relevant records in full,
 including replies and linked alternatives. Capture author, date, version, status,
 exact location, and short quotes when wording matters. Preserve search queries
 and failed searches that bound a material unknown. Respect available access and

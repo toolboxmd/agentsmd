@@ -31,7 +31,7 @@ Keep v1 narrow: `commands` names changed-scope, complete, and release proof;
 loader with fixtures for each new valid/invalid boundary. Shared decisions belong
 in the core, procedures in Operations. Add fields only for genuine Project variation.
 
-When declaring or reusing scoped proof, read [its contract](../../references/scoped-proof.md).
+When declaring or reusing scoped proof, read [its contract](../../references/scoped-proof.md) in full.
 Keep the scope map outside v1 and bind command lanes to a trusted Project adapter.
 Finish only when it identifies complete baseline, frozen candidate, separately
 trusted policy, authenticated execution, and current input assumptions, or explains

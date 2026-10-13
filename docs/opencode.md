@@ -32,7 +32,7 @@ The global contract requires the full Project Direction triad before project
 work. OpenCode runs no Codex lifecycle hook, so the AgentsMD plugin below
 delivers the same loader payload in the system prompt instead. Without that
 plugin, a fresh session must read those files and applicable project
-instructions explicitly. The bounded adapter includes this obligation in its
+instructions explicitly and in full. The bounded adapter includes this obligation in its
 handoff prompt. It also requires current canonical instruction identity and
 adjacent private preferences. Use the
 [shared setup walkthrough](../README.md#install-boundary) for initialization,

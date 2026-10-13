@@ -10,7 +10,7 @@ Useful Git probes include `git log --follow -- path` for one file, `git log -S
 commit rather than treating a search hit as the origin. A copied pattern may have
 an older origin in another module. Squashes and shallow history limit resolution.
 
-Read the PR body, complete relevant review threads, linked Issues, ADRs, release
+Read in full the PR body, relevant review threads, linked Issues, ADRs, release
 notes, and later corrective or reverting changes. A review API's top-level
 comments can omit inline conversations; discover the endpoint and pagination
 needed for the actual evidence. Bot-authored dependency updates may encode a real

@@ -727,7 +727,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         )
         self.assertEqual(
             payload["action"],
-            "Invoke operations and read procedures/project-direction/index.md to establish the complete triad "
+            "Invoke operations and read procedures/project-direction/index.md in full to establish the complete triad "
             "before other project work, unless local instructions make Project "
             "Direction optional.",
         )

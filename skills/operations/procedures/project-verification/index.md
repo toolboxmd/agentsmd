@@ -15,7 +15,7 @@ policy first. Reuse a working capability instead of creating another harness.
 This procedure authors verification support; it does not impose a new release gate,
 authorize external effects, or replace the project's required proof.
 
-Read [the verification contract](references/verification-contract.md). Use
+Read [the verification contract](references/verification-contract.md) in full. Use
 [create and maintain](references/create-and-maintain.md) for the selected mode.
 Use [observation recipes](references/observations.md) when designing the checks.
 
@@ -27,7 +27,7 @@ new globally advertised skill. Record each run's evidence on the owning Issue or
 PR, separate from reusable recipes.
 
 Before product-driving verification, Operations reads that project pointer or
-the default path directly. Model Router's isolated kits disable project skill
+the default path directly and in full. Model Router's isolated kits disable project skill
 discovery, so worker packets carry the procedure's exact path. Verify direct
 file access in the assigned workspace; never assume a host discovered it.
 Shared instructions can link host-specific driver details where necessary.

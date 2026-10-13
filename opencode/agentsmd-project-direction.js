@@ -34,7 +34,7 @@ function report(detail) {
   }
   reported = true;
   process.stderr.write(
-    `${LOG_PREFIX} Project Direction was not loaded (${detail}). Read VISION.md, MISSION.md and OBJECTIVE.md explicitly.\n`,
+    `${LOG_PREFIX} Project Direction was not loaded (${detail}). Read VISION.md, MISSION.md and OBJECTIVE.md explicitly and in full.\n`,
   );
 }
 

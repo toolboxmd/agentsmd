@@ -278,7 +278,7 @@ new project can start.
 from its description on their own. Claude Code and OpenCode often do not, so on
 those hosts `bin/operations-routing` adds one short note at session start: use
 `operations` at the start of every task and before each new kind of action, and
-read the procedure it links. [The #174 benchmark](docs/work/174-routing-injection/results.md)
+read the procedure it links in full. [The #174 benchmark](docs/work/174-routing-injection/results.md)
 and [the #182 sweep](docs/work/182-routing-sweep/results.md) record its effect.
 
 **The Elon gate.** On every host, a `gh issue create` or `gh pr create` whose
@@ -294,8 +294,9 @@ the GitHub API or MCP tools are not checked.
 **Explicit reading fallback.** The hook verifies the canonical
 `global/AGENTS.md` and reports the result in `instructions.action`. Read the
 current file only when that action reports a problem or no hook ran, for
-example before Grok's first tool call. When no hook supplied them, read the
-clone-root `PREFERENCES.md` and the three direction files yourself.
+example before Grok's first tool call, and then read it in full. When no hook
+supplied them, read the clone-root `PREFERENCES.md` and the three direction
+files in full yourself.
 
 ## Project Direction
 

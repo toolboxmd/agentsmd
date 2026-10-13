@@ -297,7 +297,7 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
             # A diagnostic with a full-read fallback is safer than host truncation.
             if len(raw) > 8192:
                 preferences.update(status="oversized", bytes=len(raw), limit_bytes=8192,
-                                   action="Read the complete private file explicitly; no contents were injected.")
+                                   action="Read the private file explicitly and in full; no contents were injected.")
             else:
                 try:
                     preferences.update(status="ready", content=raw.decode("utf-8"))

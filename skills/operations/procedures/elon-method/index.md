@@ -8,11 +8,11 @@ Preserve Human Gates, dirty user work, unique regressions, and final required
 Proof. Clear microfixes adding no material design, process, cost claim, or loop
 stay direct.
 
-Load all applicable references; multiple references can apply. Reuse unchanged
+Load all applicable references in full; multiple references can apply. Reuse unchanged
 context. Missing references block only dependent steps. Explain useful reasoning
 or tradeoffs, not ceremonial method narration.
 
-| Signal | Load |
+| Signal | Load in full |
 | --- | --- |
 | Analogy, inherited process, accepted impossibility, novel design | [First principles](references/first-principles.md) |
 | Price, quote, fee, timeline, headcount, tool cost treated as given | [Idiot index](references/idiot-index.md) |

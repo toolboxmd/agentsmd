@@ -10,15 +10,15 @@ metadata:
 # Code review
 
 Establish intended behavior, exact base/head, acceptance, scope, and relevant
-project rules. Read the complete diff and surrounding consumers needed to judge
+project rules. Read the diff in full and the surrounding consumers needed to judge
 it. Treat the author's explanation and test report as claims to check. Preserve
 `operations`' required independent exact-candidate review; this procedure supplies
 the method and does not waive that gate or grant merge authority.
 
-Read [review and adjudication](references/review-method.md). For a risky boundary,
-API change, or safety claim, also read [impact analysis](references/impact-analysis.md).
+Read [review and adjudication](references/review-method.md) in full. For a risky boundary,
+API change, or safety claim, also read [impact analysis](references/impact-analysis.md) in full.
 For structural simplification or comments, read
-[structure and constraints](references/structure-and-constraints.md).
+[structure and constraints](references/structure-and-constraints.md) in full.
 
 Use narrow independent lenses when complexity or a real unresolved disagreement
 justifies them. All reviewers receive the same relevant intent, candidate, rules,

@@ -2,7 +2,7 @@
 
 ## Diagnose why guidance failed
 
-Read the current proposed owner before accepting a lesson. Distinguish:
+Read the current proposed owner in full before accepting a lesson. Distinguish:
 
 | Failure | Useful correction |
 | --- | --- |
@@ -48,7 +48,7 @@ Do not automatically append a backlog after a read-only reflection.
 | Temporary observation | Owning Issue, with an explicit limit; not global policy |
 
 Reflection does not alter confirmed Project Direction or expand authority. Read
-and preserve the complete current owner before editing. Improve the selection
+in full and preserve the current owner before editing. Improve the selection
 mechanism rather than pasting the same procedure into every caller.
 
 Record supporting evidence on the owning Issue when it must be retained.
@@ -58,7 +58,7 @@ database, or new backlog. No durable finding means no new file.
 ## Capture personal preferences privately
 
 Apply only when personal-preference work is requested. Locate and read the real
-private preferences first. Scope history to the relevant user, topic, and time
+private preferences in full first. Scope history to the relevant user, topic, and time
 range, using changes since the last known review when reliable metadata exists.
 Compare repeated patterns with explicit current intent. Resolve contradictions
 by time and context; do not average incompatible instructions into a vague rule.

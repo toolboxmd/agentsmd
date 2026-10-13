@@ -1,6 +1,6 @@
 # Skill mechanics
 
-Before writing a description or instructions, read
+Before writing a description or instructions, read in full
 [prose](../technical-writing/references/prose.md) and the
 [common procedure](index.md); this reference covers packaging and invocation
 choices.

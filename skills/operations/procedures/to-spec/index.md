@@ -49,7 +49,7 @@ open Issues for the same outcome before proposing a new one.
 
 If this conversation has not already established the current state of the
 codebase, explore the relevant implementation and tests before drafting. Read
-the relevant `GLOSSARY.md`, `GLOSSARY-MAP.md`, ADRs, instructions,
+the relevant `GLOSSARY.md`, `GLOSSARY-MAP.md` and ADRs in full, plus instructions,
 implementation seams, and existing proof. Legacy glossary files are read-only
 migration fallbacks when the new names are absent.
 
@@ -92,7 +92,7 @@ this verified publication. Otherwise continue the selected workflow.
 
 ### 6. Continue through ticket publication
 
-Unless the full current request explicitly selects Parent Spec only, read and
+Unless the full current request explicitly selects Parent Spec only, read in full and
 perform [ticket decomposition](../to-tickets/references/ticket-decomposition.md)
 after verified parent publication. Use the verified parent and full current
 request as its source. This is the selected workflow's continuation, not an

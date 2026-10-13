@@ -18,7 +18,7 @@ wording differs, the core wins.
 
 ## Choose the design work
 
-| Question | Read |
+| Question | Read in full |
 | --- | --- |
 | Which structure or API should own the requirement? | [Compare designs](references/compare-designs.md) |
 | Can state, types, boundaries, or ownership eliminate branches? | [Model state and boundaries](references/state-and-boundaries.md) |

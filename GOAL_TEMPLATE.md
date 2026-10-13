@@ -105,7 +105,7 @@ User approval reference: pending
 
 ## Continue
 
-- Read both files and verify the current `GOAL.md` blob SHA before work.
+- Read both files in full and verify the current `GOAL.md` blob SHA before work.
 - Stop on a SHA mismatch and ask the user. Never repair the approved SHA
   automatically.
 - Work only on the current critical-path item.

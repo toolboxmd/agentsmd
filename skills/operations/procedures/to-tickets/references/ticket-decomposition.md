@@ -4,8 +4,8 @@
 ## 1. Gather source
 
 For direct [to-tickets](../index.md) entry, use the conversation already in context. Fetch full
-body and comments for a named Issue. Read relevant instructions, new-name glossary,
-ADRs, open Issues/PRs, and current repository state. Confirm the owning repository;
+body and comments for a named Issue. Read relevant instructions, new-name glossary
+and ADRs in full, plus open Issues/PRs and current repository state. Confirm the owning repository;
 search open and closed Issues for duplicates.
 
 For [to-spec](../../to-spec/index.md) continuation, use its verified parent and full current request;
@@ -67,7 +67,7 @@ decisions the review leaves open.
 Evaluate authority from the full current request. When already authorized, begin
 under the core's direct/delegated boundary without another prompt; follow
 Authority and continuation in `global/AGENTS.md`. For delegation, read
-Operations orchestration and use its minimal durable context packet, not the
+Operations orchestration in full and use its minimal durable context packet, not the
 prior conversation.
 
 For planning-only work or otherwise missing authority, ask exactly once, naming

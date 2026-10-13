@@ -2,7 +2,8 @@
 """Point a new session at the operations Skill (Claude Code, OpenCode).
 
 Emits one SessionStart hook object whose additional context tells the model to
-open `skills/operations/SKILL.md` beside this file before the first edit,
+read `skills/operations/SKILL.md` beside this file and the procedure it links,
+both in full, before the first edit,
 commit, Issue or PR. Issue #174 measured this short pointer against injecting
 the whole routing table: it reached the target procedure as often or more on
 Claude Code and OpenCode at a fraction of the context. Codex and Grok load the
@@ -28,7 +29,7 @@ def context() -> str:
         "AgentsMD: at the start of every task, and again before each new kind of action "
         "(researching, an experiment, reproducing a defect, the first file edit, a commit, a GitHub "
         f"Issue or a pull request), use the `operations` Skill (or read {SKILL}) and read the "
-        "procedure its routing table links for that action. Read it as its own step, before any "
+        "procedure its routing table links for that action, both in full. Read it in full as its own step, before any "
         "command for that action. Do this for small tasks too.\n"
     )
 
