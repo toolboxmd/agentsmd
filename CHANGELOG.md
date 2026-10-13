@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [16.4.0] - 2026-10-13
+
+### Added
+
+- AgentsMD ships ContextMD pointer entries that deny git commit, PR and Issue commands until the agent reads the matching operations procedure (#215).
+
 ## [16.3.0] - 2026-10-12
 
 ### Added
