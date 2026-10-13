@@ -78,9 +78,9 @@ install such as the canonical AgentsMD clone. Name its worktree or temporary
 clone in every packet and forbid `gh pr checkout`, `git checkout`, switch,
 reset, pull, and every other write in any main checkout; reviewers read with `gh pr diff`,
 `git -C <worktree>`, or `git show <sha>:<path>`. Before parallel
-work, read [bounded delegation](bounded-delegation.md) for alternative-versus-
+work, read [bounded delegation](bounded-delegation.md) in full for alternative-versus-
 coverage aggregation, capacity, pilots, and failure recovery. For an authorized
-external intake or automation adapter, also read [external handoffs](external-handoffs.md).
+external intake or automation adapter, also read [external handoffs](external-handoffs.md) in full.
 
 Before choosing, check every delegation tool the host provides, including
 deferred and MCP-supplied tools. Submit that packet through the routing tool for

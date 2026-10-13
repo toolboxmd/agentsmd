@@ -77,6 +77,6 @@ The pre-commit phase defers the bump, and commit-msg verifies the real prefix.
 - Ask only when compatibility or an external publication boundary cannot be
   determined safely.
 
-Read [bump-rules.md](references/bump-rules.md) for classification examples and
+Read in full [bump-rules.md](references/bump-rules.md) for classification examples and
 [project-policy.md](references/project-policy.md) for schema, adoption, hooks,
 and release behavior.

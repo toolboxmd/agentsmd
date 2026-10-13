@@ -36,13 +36,13 @@ are absent. Identify migration explicitly and write only new filenames.
 
 ## Resolve language
 
-1. Read the relevant glossary. If the user's term conflicts, state both meanings
+1. Read the relevant glossary in full. If the user's term conflicts, state both meanings
    and ask which is canonical. For vague or overloaded terms, propose one precise
    name and distinguish adjacent concepts.
 2. Test realistic boundary/edge scenarios for relationships, ownership, and lifecycle.
    Cross-check code, tests, Issues, and decisions; surface contradictions instead
    of silently choosing a source.
-3. Before editing a glossary file, read [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md); write
+3. Before editing a glossary file, read [GLOSSARY-FORMAT.md](GLOSSARY-FORMAT.md) in full; write
    agreed terms immediately.
    Keep only canonical project terms, short definitions, and avoided synonyms.
    Specs, plans, scratch notes, implementation, and decision logs have other owners.

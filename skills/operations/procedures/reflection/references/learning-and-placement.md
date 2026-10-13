@@ -58,7 +58,7 @@ database, or new backlog. No durable finding means no new file.
 ## Capture personal preferences privately
 
 Apply only when personal-preference work is requested. Locate and read the real
-private preferences first. Scope history to the relevant user, topic, and time
+private preferences in full first. Scope history to the relevant user, topic, and time
 range, using changes since the last known review when reliable metadata exists.
 Compare repeated patterns with explicit current intent. Resolve contradictions
 by time and context; do not average incompatible instructions into a vague rule.

@@ -60,4 +60,4 @@ need a durable link. Keep deferred work open; never delete Issues.
 
 Report outcome, review, merge, closure, cleanup, finalization, and behavioral Live
 Verification separately. Before legacy mutation or cleanup recovery without
-immediate-check evidence, read [Reconciliation](reconciliation.md).
+immediate-check evidence, read [Reconciliation](reconciliation.md) in full.

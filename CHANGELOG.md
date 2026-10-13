@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.1.1] - 2026-10-13
+
+### Changed
+
+- Rules that point at a file say "Read <file> in full" (#223)
+
 ## [17.1.0] - 2026-10-13
 
 ### Added

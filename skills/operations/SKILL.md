@@ -21,7 +21,7 @@ revision. A missing required reference blocks only the dependent action; report
 its resolved path. Reuse unchanged reference contents already in context.
 
 At task start, after context loss, and when the action changes, select the
-applicable rows below. Read their linked procedure before the dependent action;
+applicable rows below. Read their linked procedure in full before the dependent action;
 then follow only its relevant conditional links. Do not preload the catalogue or
 all procedures. Recheck selection when evidence changes, for example when a
 review becomes an authorized repair. Explicit procedure names select the same
@@ -32,7 +32,7 @@ accepting requirements or an approach. Record the Elon record (Requirements and 
 asked, Deleted, Bottleneck, Checked myself) in the existing task record. Loading the method is
 not completing it. A clear microfix stays direct.
 
-| Current need | Read |
+| Current need | Read in full |
 | --- | --- |
 | Initialize or reload Project Direction | [Context](procedures/project-direction/references/context.md) |
 | Repair or change Project Direction | [Project Direction](procedures/project-direction/index.md) |

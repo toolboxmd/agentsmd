@@ -5,11 +5,11 @@ Establish a confirmed strategic frame without inventing user intent. Honor expli
 Project Direction opt-outs for their stated scope. Until the required triad is
 usable, inspect only evidence needed to establish it; do not begin other project work.
 
-Before drafting or judging direction, read [file contracts](references/file-contracts.md)
+Before drafting or judging direction, read [file contracts](references/file-contracts.md) in full
 in full. Use the [Vision](templates/VISION.md), [Mission](templates/MISSION.md),
 and [Objective](templates/OBJECTIVE.md) templates only when drafting. They are
 shapes, never unresolved placeholder content.
-When loading or currentness needs resolution, read [context](references/context.md);
+When loading or currentness needs resolution, read [context](references/context.md) in full;
 reuse unchanged complete context. The core's Project Direction section owns
 alignment and drift handling.
 

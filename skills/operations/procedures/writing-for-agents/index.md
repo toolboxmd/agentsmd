@@ -12,7 +12,7 @@ metadata:
 Write for the decisions an agent must make: select the right path, perform it,
 and recognize completion. Keep reasoning and examples that prevent a plausible
 wrong interpretation. Word count alone cannot prove better behavior.
-Before editing a `SKILL.md` or a Skill description, read [SKILL-MECHANICS.md](SKILL-MECHANICS.md).
+Before editing a `SKILL.md` or a Skill description, read [SKILL-MECHANICS.md](SKILL-MECHANICS.md) in full.
 
 ## Behavior and order
 
@@ -21,7 +21,7 @@ Separate required steps from reference material. Order dependencies correctly;
 keep conditions, definitions, and exceptions beside their rules.
 
 Before writing or editing instruction sentences, read the shared
-[prose guidance](../technical-writing/references/prose.md). Replace vague advice
+[prose guidance](../technical-writing/references/prose.md) in full. Replace vague advice
 such as "be thorough" with an action. Keep explicit prohibitions where boundaries
 matter, with an allowed path when needed: "Preserve dirty files; use a separate
 worktree."
@@ -29,7 +29,7 @@ worktree."
 ## Ownership and discoverability
 
 Give each rule one authoritative owner. A context pointer must name its purpose
-and distinct loading triggers: "Before publishing a release, read delivery.md"
+and distinct loading triggers: "Before publishing a release, read delivery.md in full"
 works; "See delivery.md" does not. Collapse synonymous triggers, not distinct
 cases. Sharpen missed triggers before copying procedures into callers.
 

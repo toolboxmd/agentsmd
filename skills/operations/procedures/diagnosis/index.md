@@ -15,7 +15,7 @@ hypothesis while preserving the reported symptom and constraints. Determine
 whether the requested outcome is an explanation, a verified existing fix, or
 an implemented repair. Investigation alone grants no repair authority.
 
-| Work | Read |
+| Work | Read in full |
 | --- | --- |
 | Defect, regression, duplicate report, or existing fix | [Reproduction and cause](references/reproduction-and-cause.md) |
 | Running process, CPU profile, heap, trace, or runtime lifecycle | [Runtime and trace forensics](references/runtime-and-traces.md) |

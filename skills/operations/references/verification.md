@@ -4,7 +4,7 @@
 Proof comes from the Issue/authorized task, project instructions, selected
 procedure or external Skill, and risk. Use TDD for bug reproductions and high-risk behavioral seams; otherwise
 test the highest practical seam. Before editing a test file or designing
-behavioral proof, read [test design](test-design.md); it owns faithful seams, independent oracles, and failing-before
+behavioral proof, read [test design](test-design.md) in full; it owns faithful seams, independent oracles, and failing-before
 evidence. Use [code-review](../procedures/code-review/index.md) for review method and impact analysis. Self-review the complete diff for acceptance, rules,
 scope, secrets, generated files, and unrelated changes. Verify the final artifact
 when lower-level checks cannot prove required behavior.
@@ -21,14 +21,14 @@ observation that distinguishes them. Inspect evidence, not just its existence or
 a worker's summary. The planner accepts delegated work; an unavailable agent or
 tool never waives required proof. [project-verification](../procedures/project-verification/index.md) owns reusable product-driving recipes
 and [observations](../procedures/project-verification/references/observations.md).
-For a visual-preservation contract, read [visual parity](visual-parity.md).
-For an explicitly requested model/workflow evaluation, read [evaluation](evaluation.md).
+For a visual-preservation contract, read [visual parity](visual-parity.md) in full.
+For an explicitly requested model/workflow evaluation, read [evaluation](evaluation.md) in full.
 These methods do not add synthetic behavioral release gates or override a
 Project's declared proof boundary.
 
 Before driving the product, read its existing verification pointer from project
 `AGENTS.md`, or `.toolboxmd/verification/index.md` when present. Pass that exact
-path to workers and read it directly; delegated agents may not discover project
+path to workers and read it directly in full; delegated agents may not discover project
 skills. If missing support prevents a reliable observation, select
 [Project verification](../procedures/project-verification/index.md). Ordinary
 repository checks need no new verification procedure.
@@ -79,7 +79,7 @@ A deterministically generated promotion PR may use generated-scope validation on
 when a trusted generator reproduces its exact diff from reviewed inputs, all changes
 lie within declared generated paths, and exact-candidate validation proves this.
 Authored changes retain review. Before applying review fixes to dependent layers,
-read [orchestration](orchestration.md) for the stack-fix procedure.
+read [orchestration](orchestration.md) in full for the stack-fix procedure.
 
 ## Hosts and complete coverage
 
@@ -91,7 +91,7 @@ never run untrusted PR code there.
 
 The complete merge gate covers the whole merge unit. The complete release gate
 binds coverage and identity to the exact release SHA. Before declaring/reusing
-scoped proof, read [its contract](scoped-proof.md): a trusted explicit
+scoped proof, read [its contract](scoped-proof.md) in full: a trusted explicit
 Project policy may combine unaffected complete-baseline coverage with current
 affected/artifact proof. Ordinary changed-scope checks remain feedback. Unsupported
 scope stops with a reason; explicitly choose complete proof. Report executed,

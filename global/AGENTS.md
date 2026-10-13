@@ -17,11 +17,12 @@ tracked work, and the live system for external state.
 
 The session hook verifies the canonical `global/AGENTS.md` behind this host's
 global instruction link and reports the result. Reread that file only when the
-hook reports a problem or no hook ran (for example, Grok's first response);
+hook reports a problem or no hook ran (for example, Grok's first response),
+and then in full;
 `bin/project-direction inspect --host <codex|grok|opencode|claude>` gives the
 same report on demand. The canonical clone root is the parent of `global/`; use
 it for source-relative paths, never the link directory or the project. Read
-[setup and host limits](../README.md#install-boundary) in that clone.
+[setup and host limits](../README.md#install-boundary) in that clone in full.
 
 Read the private `PREFERENCES.md` at the canonical clone root in full when it
 exists, including outside Git repositories. Hooks may supply it; otherwise read
@@ -133,7 +134,7 @@ the user wants solved.
   tell the user.
 - Persistent Host Automation: before creating or changing a host service,
   scheduled job, or health or recovery automation meant to outlive the task,
-  read `docs/adr/0001-persistent-host-automation.md`.
+  read `docs/adr/0001-persistent-host-automation.md` in full.
 
 ### Elon method
 
@@ -159,7 +160,7 @@ Before recommending or accepting a material requirement, solution design,
 architecture, process design, or recurring-loop automation, in conversation or
 an artifact, select the Elon method procedure through `operations`. Project
 Direction informs it when loaded; it is not a precondition. Also use it for stalled work and for inherited
-assumptions or cost claims. Load its current-constraint reference before
+assumptions or cost claims. Load in full its current-constraint reference before
 acceleration or parallel work. Record the result as an Elon record in the task
 record, one line per field: **Requirements and who asked**, **Deleted**,
 **Bottleneck**, **Checked myself**; loading the procedure alone does not count.
@@ -203,8 +204,8 @@ context; memory or summaries cannot replace them. Honor explicit local Project
 Direction opt-outs for their stated scope. Reuse unchanged full contents on
 follow-ups; reload after change or context loss.
 When direction is missing, stale, or unusable, read
-`procedures/project-direction/references/context.md` relative to the selected
-`operations/SKILL.md`; it owns loading, currentness, and repair.
+`procedures/project-direction/references/context.md` (relative to the selected
+`operations/SKILL.md`) in full; it owns loading, currentness, and repair.
 
 Check every request, Spec, Issue, and change against the triad. Before
 proceeding through material drift, say so and recommend returning to the
@@ -215,7 +216,7 @@ Every proposed Spec and Issue states that contribution to the Objective.
 
 ## Project language
 
-Before naming or changing project concepts, read root `GLOSSARY.md`, and
+Before naming or changing project concepts, read in full root `GLOSSARY.md`, and
 `GLOSSARY-MAP.md` plus the relevant domain glossary when present. Record agreed
 terms in the right glossary in the same change, creating it for the first term.
 When the project's `AGENTS.md` lists connected projects, also check the system
@@ -224,7 +225,7 @@ use in the system glossary through that repository's own Issue and PR, and
 never add a conflicting synonym.
 Glossaries hold only canonical terms, short definitions, and avoided synonyms.
 Legacy `CONTEXT.md` and `CONTEXT-MAP.md` are read-only fallbacks; write only the
-new names. Read relevant ADRs before changing locked decisions.
+new names. Read relevant ADRs in full before changing locked decisions.
 
 ## Delivery
 
@@ -258,7 +259,7 @@ instruction.
 
 At task and worker start, after context loss, and when the work changes phase,
 invoke the `operations` Skill and load only its applicable linked reference
-before the dependent action. Reuse modules already in context. A missing module blocks only its
+in full before the dependent action. Reuse modules already in context. A missing module blocks only its
 dependent action. Prefer `skills/operations/SKILL.md` at the canonical
 clone root to keep core and modules from the same revision; otherwise use the installed Skill
 if it supports these rules. Never silently mix an older incompatible module

@@ -7,7 +7,7 @@ metadata:
   source-revision: 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76
 ---
 
-Load and follow both [grilling](../grilling/index.md) and [domain-modeling](../domain-modeling/index.md).
+Load in full and follow both [grilling](../grilling/index.md) and [domain-modeling](../domain-modeling/index.md).
 
 Use [grilling](../grilling/index.md) to work the complete decision frontier. Use [domain-modeling](../domain-modeling/index.md)
 alongside it to challenge project language, write resolved terms to the

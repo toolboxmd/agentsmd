@@ -40,9 +40,9 @@ Read-only work and explicit WIP checkpoints are exempt. Components defer to
 mirrors, changelog, commits, tags, and release. Missing policy requires separately
 authorized adoption.
 
-Before proof/review, read [verification](verification.md). For delegation,
+Before proof/review, read [verification](verification.md) in full. For delegation,
 dependencies, component PRs, or interrupted recovery, read
-[orchestration](orchestration.md). Apply the core's execution choice without
+[orchestration](orchestration.md) in full. Apply the core's execution choice without
 creating an Issue or worker for ceremony.
 
 ## Workflow routing
@@ -57,7 +57,7 @@ Choose the smallest suitable lane:
 - **Specify:** use [to-spec](../procedures/to-spec/index.md) when a specification is needed or requested. That procedure owns the complete workflow
   through verified parent and ticket publication, Parent Spec only opt-out, and
   continuation to the first unblocked Issue under existing implementation authority.
-  Read it when selected; preserve its unresolved-user-decision gates and its single
+  Read it in full when selected; preserve its unresolved-user-decision gates and its single
   named-Issue authority question when implementation is not authorized.
 - **Wayfind:** use [wayfinder](../procedures/wayfinder/index.md) when dependent unresolved decisions prevent a reliable
   spec, regardless of effort size. When decisions resolve, return to the smallest

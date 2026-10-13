@@ -9,7 +9,7 @@ Blame identifies the latest touch, which may be formatting or a move.
 
 Select sources by the explanation they could distinguish:
 
-| Evidence category | Read | Potential contribution |
+| Evidence category | Read in full | Potential contribution |
 | --- | --- | --- |
 | Code and review history | [Code archaeology](sources/code-history.md) | Implementation-time rationale and accepted constraints |
 | Tracker, design records, discussion | [Decision records](sources/decision-records.md) | Business need, alternatives, deliberation, deadlines |

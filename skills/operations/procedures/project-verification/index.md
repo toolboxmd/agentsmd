@@ -15,7 +15,7 @@ policy first. Reuse a working capability instead of creating another harness.
 This procedure authors verification support; it does not impose a new release gate,
 authorize external effects, or replace the project's required proof.
 
-Read [the verification contract](references/verification-contract.md). Use
+Read [the verification contract](references/verification-contract.md) in full. Use
 [create and maintain](references/create-and-maintain.md) for the selected mode.
 Use [observation recipes](references/observations.md) when designing the checks.
 

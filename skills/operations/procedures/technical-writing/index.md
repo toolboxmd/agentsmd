@@ -27,7 +27,7 @@ interfaces in reference material and generate repetitive facts when practical.
 For an explanation requiring investigation, use [research](../research/index.md) instead of inventing
 historical intent from the present code.
 
-Before writing or editing sentences, read [prose editing](references/prose.md).
+Before writing or editing sentences, read [prose editing](references/prose.md) in full.
 Verify commands, paths, examples, counts, and important claims against the current
 artifact. Preserve repository formatting and product-copy conventions. For PRs,
 lead with the concrete problem and resulting behavior, then give the proof and

@@ -27,7 +27,7 @@ The committed triad on the intended base is the Project Direction. Uncommitted,
 modified, or deleted triad files in a checkout are drafts: propose one through
 [project-direction](../index.md) (user confirmation, then a PR) or discard it.
 Overwriting a stale local copy is safe; Git keeps every committed state. When
-reading explicitly, read the committed version (`git show HEAD:OBJECTIVE.md`).
+reading explicitly, read the committed version in full (`git show HEAD:OBJECTIVE.md`).
 The loader injects `HEAD` versions and lists drafts in `drafts`; a file with no
 committed version is injected with `source` `draft` and is unconfirmed, which
 still lets a new project initialize.
