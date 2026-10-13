@@ -309,8 +309,8 @@ class ElonContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, core)
-        for template in ("skills/operations/workflows/to-spec/index.md",
-                         "skills/operations/workflows/to-tickets/references/ticket-decomposition.md"):
+        for template in ("skills/operations/procedures/to-spec/index.md",
+                         "skills/operations/procedures/to-tickets/references/ticket-decomposition.md"):
             with self.subTest(template=template):
                 self.assertIn("- **Checked myself:** <what you ran or read>",
                               (ROOT / template).read_text(encoding="utf-8"))

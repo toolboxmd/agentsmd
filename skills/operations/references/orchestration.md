@@ -68,7 +68,7 @@ Include the unit's outcome, allowed and forbidden writes, shared-resource limits
 acceptance, proof seam, known gotchas, report shape, and bounded escalation
 condition. Do not dispatch unresolved ownership or acceptance. Do not dispatch
 implementation of a new component or system until the brief cites a Spec Issue
-([to-spec](../workflows/to-spec/index.md)) whose Design review names the
+([to-spec](../procedures/to-spec/index.md)) whose Design review names the
 reviewer, the verdict, and the user's decisions; acceptance criteria in a brief
 are not a design. A microfix or a change inside an existing component says so in
 the brief and needs no Spec. Review, research, and test dispatches are outside

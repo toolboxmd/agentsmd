@@ -221,8 +221,9 @@ _Avoid_: shared policy, project preferences
 
 **Procedure**:
 Instructions for a bounded action, selected through Operations and stored in
-ordinary linked files without a separate host Skill discovery entry.
-_Avoid_: hidden Skill, mode command
+ordinary linked files under `skills/operations/procedures/`, without a separate
+host Skill discovery entry.
+_Avoid_: hidden Skill, mode command, workflow
 
 **Reference**:
 A linked supporting document containing detail, examples, or constraints loaded

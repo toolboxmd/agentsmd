@@ -203,7 +203,7 @@ context; memory or summaries cannot replace them. Honor explicit local Project
 Direction opt-outs for their stated scope. Reuse unchanged full contents on
 follow-ups; reload after change or context loss.
 When direction is missing, stale, or unusable, read
-`workflows/project-direction/references/context.md` relative to the selected
+`procedures/project-direction/references/context.md` relative to the selected
 `operations/SKILL.md`; it owns loading, currentness, and repair.
 
 Check every request, Spec, Issue, and change against the triad. Before

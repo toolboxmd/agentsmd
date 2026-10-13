@@ -102,7 +102,7 @@ class PstackPackagingTests(unittest.TestCase):
         self.assertEqual(set(record["factSources"]["skills"]), discovered)
         catalogue = (ROOT / "SKILL_CATALOGUE.md").read_text()
         for name in NEW_SKILLS:
-            folder = ROOT / "skills/operations/workflows" / name
+            folder = ROOT / "skills/operations/procedures" / name
             metadata = (folder / "index.md").read_text().split("---\n", 2)[1]
             self.assertIn(f"source-revision: {REVISION}", metadata)
             self.assertIn("license: MIT", metadata)

@@ -5,7 +5,7 @@ Proof comes from the Issue/authorized task, project instructions, selected
 procedure or external Skill, and risk. Use TDD for bug reproductions and high-risk behavioral seams; otherwise
 test the highest practical seam. Before editing a test file or designing
 behavioral proof, read [test design](test-design.md); it owns faithful seams, independent oracles, and failing-before
-evidence. Use [code-review](../workflows/code-review/index.md) for review method and impact analysis. Self-review the complete diff for acceptance, rules,
+evidence. Use [code-review](../procedures/code-review/index.md) for review method and impact analysis. Self-review the complete diff for acceptance, rules,
 scope, secrets, generated files, and unrelated changes. Verify the final artifact
 when lower-level checks cannot prove required behavior.
 
@@ -19,8 +19,8 @@ Report which case applied.
 For a claimed reproduction or fix, name the expected state, broken state, and
 observation that distinguishes them. Inspect evidence, not just its existence or
 a worker's summary. The planner accepts delegated work; an unavailable agent or
-tool never waives required proof. [project-verification](../workflows/project-verification/index.md) owns reusable product-driving recipes
-and [observations](../workflows/project-verification/references/observations.md).
+tool never waives required proof. [project-verification](../procedures/project-verification/index.md) owns reusable product-driving recipes
+and [observations](../procedures/project-verification/references/observations.md).
 For a visual-preservation contract, read [visual parity](visual-parity.md).
 For an explicitly requested model/workflow evaluation, read [evaluation](evaluation.md).
 These methods do not add synthetic behavioral release gates or override a
@@ -30,7 +30,7 @@ Before driving the product, read its existing verification pointer from project
 `AGENTS.md`, or `.toolboxmd/verification/index.md` when present. Pass that exact
 path to workers and read it directly; delegated agents may not discover project
 skills. If missing support prevents a reliable observation, select
-[Project verification](../workflows/project-verification/index.md). Ordinary
+[Project verification](../procedures/project-verification/index.md). Ordinary
 repository checks need no new verification procedure.
 
 Record retained observations on the owning Issue or PR. CI results
