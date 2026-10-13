@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [16.5.0] - 2026-10-13
+
+### Added
+
+- File a problem found outside the task as an Issue in its owner's repository at once (#217)
+
 ## [16.4.0] - 2026-10-13
 
 ### Added

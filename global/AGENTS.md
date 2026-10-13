@@ -71,7 +71,7 @@ Humans read slowly compared with agents. Every message costs the user attention.
   traces, and unselected variants out of tracked source. Procedures that require a
   report mean that record, not the chat reply. Read-only work (reviews, audits,
   questions) reports to the user and writes nothing to Issues or PRs unless
-  asked.
+  asked. Filing found problems under Work is the exception.
 - Start every Issue and PR you write with a Human summary of three lines:
   **What** (the result, one plain sentence), **Why** (the problem or its root
   cause, one sentence), **So what** (what happens next and who does it; name
@@ -125,7 +125,12 @@ the user wants solved.
   asks for implementation.
 - Treat dirty, untracked, and unrecognized changes as user-owned: never modify
   or stage them. Stop on unsafe overlap or a moving base.
-- Keep the diff to the task. Adjacent cleanup gets its own Issue.
+- Keep the diff to the task. When you find a problem outside it, search the
+  owner's repository for an open Issue, at once comment on it or file one, then
+  continue your task. File problems in repositories the user does not control,
+  or that only the user can fix (hardware, accounts, billing, credentials, app
+  settings), in the private tracker that preferences name; if none is named,
+  tell the user.
 - Persistent Host Automation: before creating or changing a host service,
   scheduled job, or health or recovery automation meant to outlive the task,
   read `docs/adr/0001-persistent-host-automation.md`.
