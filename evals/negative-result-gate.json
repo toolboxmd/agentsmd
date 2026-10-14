@@ -61,7 +61,7 @@
       "primary_sources": ["docs", "readme", "help", "env", "config"],
       "coordinator_tried": false,
       "challenger_assigned": false,
-      "attempt_failed": false,
+      "attempt_failed": true,
       "reaches_user_or_issue": false
     },
     {

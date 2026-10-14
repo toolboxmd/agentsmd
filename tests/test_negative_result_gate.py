@@ -61,6 +61,7 @@ class NegativeResultGateTests(unittest.TestCase):
             "Accept it only when it lists what was tried and which primary sources were checked: the tool's own docs and bundled README, its `--help`, its environment variables, and its config keys.",
             "Before you relay that result to the user or file anything from it, try the work once yourself or assign one challenger whose only job is to make the work succeed.",
             "Report only a negative result that survives that attempt, and include the attempts.",
+            "An ordinary failed slice, one that does not say the work cannot be done, is still recorded at once.",
             "Validate at safe boundaries and before reporting.",
         ):
             with self.subTest(clause=clause):
@@ -74,6 +75,11 @@ class NegativeResultGateTests(unittest.TestCase):
             "The report shape for a negative result (not possible, cannot remove, blocked, no recipe, or failed) "
             "lists what was tried and which primary sources were checked: the tool's own docs and bundled README, "
             "its `--help`, its environment variables, and its config keys.",
+            text,
+        )
+        self.assertIn(
+            "Before you relay a negative result or file anything from it, read [bounded delegation](bounded-delegation.md) "
+            "in full and apply its negative-result gate.",
             text,
         )
 

@@ -106,7 +106,9 @@ relevant fields in the final response.
 
 The coordinator independently verifies Git/GitHub state and reuses valid
 exact-candidate proof under [verification](verification.md); transcripts and duplicate
-checks are unnecessary. Start the next unblocked substantive Issue with its own
+checks are unnecessary. Before you relay a negative result or file anything from
+it, read [bounded delegation](bounded-delegation.md) in full and apply its
+negative-result gate. Start the next unblocked substantive Issue with its own
 packet. Resume the same Issue when context remains useful; recover current state
 from Git, GitHub, instructions, and handoff. Never recreate completed work or
 request completed approvals again.
