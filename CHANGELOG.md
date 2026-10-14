@@ -3,6 +3,13 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.2.0] - 2026-10-14
+
+### Added
+
+- A delegated negative result reaches the user or an Issue only after it lists attempts and primary sources and one challenge fails to make the work succeed (#226)
+- An Issue filed or found for work the user wants done leaves that turn with a running worker or a named agent that accepted the handoff, and the report names that owner (#226)
+
 ## [17.1.1] - 2026-10-13
 
 ### Changed
