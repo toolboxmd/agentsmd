@@ -1,0 +1,104 @@
+{
+  "fixture_kind": "negative-result-gate",
+  "issue": "https://github.com/toolboxmd/agentsmd/issues/226",
+  "incident_date": "2026-10-14",
+  "primary_sources": ["docs", "readme", "help", "env", "config"],
+  "cases": [
+    {
+      "id": "grok-cannot-strip-relayed",
+      "incident": true,
+      "summary": "A worker said Grok cannot be stripped of global rules and skills. The report listed no attempts and no primary sources. Nobody tried to make removal work. The planner relayed the negative to the user.",
+      "polarity": "negative",
+      "attempts_listed": false,
+      "primary_sources": [],
+      "coordinator_tried": false,
+      "challenger_assigned": false,
+      "attempt_failed": false,
+      "reaches_user_or_issue": false
+    },
+    {
+      "id": "opencode-no-recipe-filed",
+      "incident": true,
+      "summary": "A worker said OpenCode had no verified subscription recipe. The report listed no attempts and no primary sources. Nobody tried to make a recipe work. The planner filed a to-do from that negative.",
+      "polarity": "negative",
+      "attempts_listed": false,
+      "primary_sources": [],
+      "coordinator_tried": false,
+      "challenger_assigned": false,
+      "attempt_failed": false,
+      "reaches_user_or_issue": false
+    },
+    {
+      "id": "grok-disproved-by-own-readme",
+      "incident": true,
+      "summary": "The same Grok negative was checked against the tool's own README and environment. GROK_HOME plus an empty HOME removed the user instructions. The negative did not survive.",
+      "polarity": "negative",
+      "attempts_listed": true,
+      "primary_sources": ["docs", "readme", "help", "env", "config"],
+      "coordinator_tried": true,
+      "challenger_assigned": false,
+      "attempt_failed": false,
+      "reaches_user_or_issue": false
+    },
+    {
+      "id": "opencode-disproved-by-auth-list",
+      "incident": true,
+      "summary": "The same OpenCode negative was checked against the live credential store. OpenCode already held an OpenCode Go credential. The negative did not survive.",
+      "polarity": "negative",
+      "attempts_listed": true,
+      "primary_sources": ["docs", "readme", "help", "env", "config"],
+      "coordinator_tried": true,
+      "challenger_assigned": false,
+      "attempt_failed": false,
+      "reaches_user_or_issue": false
+    },
+    {
+      "id": "listed-sources-without-a-challenge",
+      "incident": false,
+      "summary": "The report lists attempts and every primary source class, and still says the work cannot be done. Neither the coordinator nor a challenger has tried to make it work.",
+      "polarity": "negative",
+      "attempts_listed": true,
+      "primary_sources": ["docs", "readme", "help", "env", "config"],
+      "coordinator_tried": false,
+      "challenger_assigned": false,
+      "attempt_failed": false,
+      "reaches_user_or_issue": false
+    },
+    {
+      "id": "missing-config-keys",
+      "incident": false,
+      "summary": "Attempts are listed and a challenger failed, but config keys were never checked.",
+      "polarity": "negative",
+      "attempts_listed": true,
+      "primary_sources": ["docs", "readme", "help", "env"],
+      "coordinator_tried": false,
+      "challenger_assigned": true,
+      "attempt_failed": true,
+      "reaches_user_or_issue": false
+    },
+    {
+      "id": "survives-coordinator-attempt",
+      "incident": false,
+      "summary": "Attempts and every primary source class are listed. The coordinator tried once to make the work succeed and it still failed.",
+      "polarity": "negative",
+      "attempts_listed": true,
+      "primary_sources": ["docs", "readme", "help", "env", "config"],
+      "coordinator_tried": true,
+      "challenger_assigned": false,
+      "attempt_failed": true,
+      "reaches_user_or_issue": true
+    },
+    {
+      "id": "survives-one-challenger",
+      "incident": false,
+      "summary": "Attempts and every primary source class are listed. One challenger whose only job was to make the work succeed still failed.",
+      "polarity": "negative",
+      "attempts_listed": true,
+      "primary_sources": ["docs", "readme", "help", "env", "config", "man-page"],
+      "coordinator_tried": false,
+      "challenger_assigned": true,
+      "attempt_failed": true,
+      "reaches_user_or_issue": true
+    }
+  ]
+}

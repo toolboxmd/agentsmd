@@ -66,8 +66,12 @@ when sufficient.
 
 Include the unit's outcome, allowed and forbidden writes, shared-resource limits,
 acceptance, proof seam, known gotchas, report shape, and bounded escalation
-condition. Do not dispatch unresolved ownership or acceptance. Do not dispatch
-implementation of a new component or system until the brief cites a Spec Issue
+condition. The report shape for a negative result (not possible, cannot remove,
+blocked, no recipe, or failed) lists what was tried and which primary sources
+were checked: the tool's own docs and bundled README, its `--help`, its
+environment variables, and its config keys. Do not dispatch unresolved
+ownership or acceptance. Do not dispatch implementation of a new component or
+system until the brief cites a Spec Issue
 ([to-spec](../procedures/to-spec/index.md)) whose Design review names the
 reviewer, the verdict, and the user's decisions; acceptance criteria in a brief
 are not a design. A microfix or a change inside an existing component says so in
