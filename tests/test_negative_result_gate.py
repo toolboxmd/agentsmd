@@ -10,10 +10,18 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "evals" / "negative-result-gate.json"
 DELEGATION = ROOT / "skills/operations/references/bounded-delegation.md"
 ORCHESTRATION = ROOT / "skills/operations/references/orchestration.md"
+OWNER_FIXTURE = ROOT / "evals" / "issue-owner.json"
 
 
 def words(path: Path) -> str:
     return " ".join(path.read_text(encoding="utf-8").split())
+
+
+def leaves_with_owner(case: dict) -> bool:
+    """A filed or found Issue leaves the turn with an owner only when one of these holds."""
+    running = case["running_worker_started"] and case["within_authority"]
+    accepted = case["handoff_sent"] and case["handoff_acknowledged"]
+    return (running or accepted) and case["report_names_owner"]
 
 
 def negative_may_reach_user_or_issue(case: dict, primary_sources: set[str]) -> bool:
@@ -82,6 +90,31 @@ class NegativeResultGateTests(unittest.TestCase):
             "in full and apply its negative-result gate.",
             text,
         )
+        self.assertIn(
+            "When you file or find an Issue for work the user wants done, leave that turn with a real owner: "
+            "a running worker you started within your authority, or a named agent that has accepted the handoff, "
+            "message sent and acknowledged.",
+            text,
+        )
+        self.assertIn('"X will pick it up", with no handoff, is not an owner.', text)
+        self.assertIn("Name the owner in the report to the user.", text)
+        self.assertNotIn("Pursue necessary in-scope work", text)
+
+
+class IssueOwnerTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.fixture = json.loads(OWNER_FIXTURE.read_text(encoding="utf-8"))
+
+    def test_incident_fixture_grades_every_case(self) -> None:
+        self.assertEqual(self.fixture["fixture_kind"], "issue-owner")
+        self.assertIn("226", self.fixture["issue"])
+        cases = self.fixture["cases"]
+        self.assertEqual(len(cases), len({case["id"] for case in cases}))
+        incident = [case["id"] for case in cases if case["incident"]]
+        self.assertEqual(incident, ["agent-observer-85-86-unstaffed"])
+        for case in cases:
+            with self.subTest(case=case["id"]):
+                self.assertEqual(leaves_with_owner(case), case["leaves_with_owner"])
 
 
 if __name__ == "__main__":
