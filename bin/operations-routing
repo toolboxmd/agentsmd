@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Point a new session at the operations Skill (Claude Code, OpenCode).
+"""Point a new session at the operations Skill (Claude Code, OpenCode, Muse).
 
 Emits one SessionStart hook object whose additional context tells the model to
 read `skills/operations/SKILL.md` beside this file and the procedure it links,
@@ -8,6 +8,9 @@ commit, Issue or PR. Issue #174 measured this short pointer against injecting
 the whole routing table: it reached the target procedure as often or more on
 Claude Code and OpenCode at a fraction of the context. Codex and Grok load the
 Skill themselves and do not run this command.
+Muse did not discover operations at all before install in planner sessions and
+post-install self-loading is unproven, so it gets the Claude/OpenCode pointer
+until measured otherwise.
 """
 
 from __future__ import annotations

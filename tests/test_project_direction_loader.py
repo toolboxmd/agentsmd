@@ -1139,7 +1139,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
                 f"# {name}\n\n" + "d" * 3400, encoding="utf-8"
             )
 
-        for host in ("codex", "claude", "opencode", "grok"):
+        for host in ("codex", "claude", "opencode", "grok", "muse"):
             with self.subTest(host=host):
                 grok = host == "grok"
                 result = self.invoke(

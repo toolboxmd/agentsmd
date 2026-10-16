@@ -19,7 +19,7 @@ The session hook verifies the canonical `global/AGENTS.md` behind this host's
 global instruction link and reports the result. Reread that file only when the
 hook reports a problem or no hook ran (for example, Grok's first response),
 and then in full;
-`bin/project-direction inspect --host <codex|grok|opencode|claude>` gives the
+`bin/project-direction inspect --host <codex|grok|opencode|claude|muse>` gives the
 same report on demand. The canonical clone root is the parent of `global/`; use
 it for source-relative paths, never the link directory or the project. Read
 [setup and host limits](../README.md#install-boundary) in that clone in full.

@@ -89,6 +89,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "codex": ".codex-plugin/plugin.json",
                     "claude-code": ".claude-plugin/plugin.json",
                     "grok-build": ".grok-plugin/plugin.json",
+                    "musecode": ".muse-plugin/plugin.json",
                 },
                 "skills": PROJECT_RECORD_SKILLS,
                 "documentation": [
@@ -97,6 +98,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "docs/work/119-pstack-integration/analysis.md",
                     "docs/adr/0001-persistent-host-automation.md",
                     "docs/opencode.md",
+                    "docs/musecode.md",
                     "skills/operations/references/scoped-proof.md",
                     "skills/operations/procedures/project-direction/references/context.md",
                 ],
@@ -140,6 +142,7 @@ class PluginPackagingTests(unittest.TestCase):
                     "tests/test_scoped_proof.py",
                     "tests/test_operations_contract.py",
                     "tests/test_pstack_packaging.py",
+                    "tests/test_muse.py",
                 ],
             },
         )
@@ -197,6 +200,7 @@ class PluginPackagingTests(unittest.TestCase):
         "codex": ("tokens", 2500),
         "grok": ("characters", 10000),
         "opencode": ("characters", 10000),
+        "muse": ("bytes", 16384),
     }
 
     def test_project_direction_output_at_its_caps_leaves_headroom_per_host(self) -> None:
@@ -225,6 +229,7 @@ class PluginPackagingTests(unittest.TestCase):
                 "claude": ("CLAUDE_CONFIG_DIR", "CLAUDE.md"),
                 "grok": ("GROK_HOME", "AGENTS.md"),
                 "opencode": ("OPENCODE_CONFIG_DIR", "AGENTS.md"),
+                "muse": ("XDG_CONFIG_HOME", "muse/AGENTS.md"),
             }
             environment = {
                 key: value for key, value in os.environ.items()
@@ -233,6 +238,7 @@ class PluginPackagingTests(unittest.TestCase):
             for host, (variable, name) in homes.items():
                 home = base / f"{host}-home"
                 home.mkdir()
+                (home / name).parent.mkdir(parents=True, exist_ok=True)
                 (home / name).symlink_to(source)
                 environment[variable] = str(home)
             for host, (unit, limit) in self.HOOK_LIMITS.items():
@@ -266,12 +272,27 @@ class PluginPackagingTests(unittest.TestCase):
                     size = (
                         -(-len(context.encode("utf-8")) // 4)
                         if unit == "tokens"
-                        else len(context)
+                        else len(result.stdout.encode("utf-8")) if unit == "bytes" else len(context)
                     )
                     # At least 10% of the host limit stays free for other hooks.
                     self.assertLessEqual(size, limit * 0.9, f"{size} {unit}")
 
-    def test_operations_pointer_hook_is_registered_for_claude_code_only(self) -> None:
+            dense = '\"\\\n' * 1160
+            (repository / "VISION.md").write_text("# Vision\n" + dense)
+            (repository / "MISSION.md").write_text("# Mission\nPurpose.\n")
+            (repository / "OBJECTIVE.md").write_text("# Objective\nPurpose.\n")
+            (base / "agentsmd/PREFERENCES.md").write_text("# Preferences\n" + dense)
+            subprocess.run(["git", "-C", str(repository), "add", "."], check=True)
+            subprocess.run(["git", "-C", str(repository), "-c", "user.name=t", "-c", "user.email=t@example.invalid", "commit", "--quiet", "-m", "quoted fixture"], check=True)
+            event = {"cwd": str(repository), "session_id": "quoted", "hook_event_name": "SessionStart"}
+            result = subprocess.run([str(ROOT / "bin/project-direction"), "hook", "--host", "muse"],
+                                    input=json.dumps(event), text=True, capture_output=True,
+                                    env=dict(environment, AGENTSMD_PROJECT_DIRECTION_DATA=str(base / "quoted-cache")), check=True)
+            context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+            self.assertEqual(json.loads(context.splitlines()[1])["status"], "read_required")
+            self.assertLessEqual(len(result.stdout.encode()), self.HOOK_LIMITS["muse"][1] * 0.9)
+
+    def test_operations_pointer_is_registered_for_hosts_that_need_it(self) -> None:
         # Codex and Grok load the operations Skill themselves; Claude Code and
         # OpenCode get the pointer (#174).
         claude = json.loads((ROOT / ".claude-plugin/plugin.json").read_text())
@@ -289,6 +310,11 @@ class PluginPackagingTests(unittest.TestCase):
             [handler["command"] for handler in entry["hooks"]],
             ['"${CLAUDE_PLUGIN_ROOT}/bin/operations-routing"'],
         )
+        muse = json.loads((ROOT / ".muse-plugin/plugin.json").read_text())
+        pointers = [hook for hook in muse["capabilities"]["hooks"]
+                    if hook["id"] == "operations-routing"]
+        self.assertEqual([hook["event"] for hook in pointers], ["SessionStart"])
+        self.assertEqual(pointers[0]["command"], ["python3", "hooks/muse/operations-routing.py"])
         plugin = (ROOT / "opencode/agentsmd-project-direction.js").read_text()
         self.assertIn('const ROUTING = ["bin", "operations-routing"];', plugin)
 
@@ -315,15 +341,16 @@ class PluginPackagingTests(unittest.TestCase):
                 size = (
                     -(-len(context.encode("utf-8")) // 4)
                     if unit == "tokens"
-                    else len(context)
+                    else len(result.stdout.encode("utf-8")) if unit == "bytes" else len(context)
                 )
                 self.assertLessEqual(size, limit * 0.1, f"{size} {unit}")
 
-    def test_three_host_identity(self) -> None:
+    def test_native_plugin_identity(self) -> None:
         manifests = {
             "codex": json.loads((ROOT / ".codex-plugin/plugin.json").read_text()),
             "claude": json.loads((ROOT / ".claude-plugin/plugin.json").read_text()),
             "grok": json.loads((ROOT / ".grok-plugin/plugin.json").read_text()),
+            "muse": json.loads((ROOT / ".muse-plugin/plugin.json").read_text()),
         }
         for label, manifest in manifests.items():
             self.assertEqual(manifest["name"], "agentsmd", label)

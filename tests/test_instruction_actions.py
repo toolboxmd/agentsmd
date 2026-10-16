@@ -55,6 +55,23 @@ class InstructionActionTests(unittest.TestCase):
         payload = instructions.context_payload(host, require_unambiguous)
         return payload["instructions"]
 
+    def test_unselected_host_regular_file_does_not_claim_an_agentsmd_link(self):
+        self.link("codex", self.source)
+        muse = instructions.default_target("muse")
+        muse.parent.mkdir(parents=True)
+        for kind in ("absent", "regular", "divergent", "broken"):
+            with self.subTest(kind=kind):
+                if os.path.lexists(muse):
+                    muse.unlink()
+                if kind == "regular":
+                    muse.write_text("# User-owned Muse rules\n")
+                elif kind in ("divergent", "broken"):
+                    muse.symlink_to(self.other if kind == "divergent" else self.root / "gone/global/AGENTS.md")
+                report = self.action("codex", require_unambiguous=True)
+                self.assertEqual(report["status"], "source-ambiguous" if kind in ("divergent", "broken") else "valid-stable-link")
+                if os.path.lexists(muse):
+                    muse.unlink()
+
     def test_every_state_on_every_host(self):
         for host in instructions.HOSTS:
             with self.subTest(host=host, state="missing"):
@@ -131,7 +148,7 @@ class InstructionActionTests(unittest.TestCase):
                 self.assertEqual(self.hook(host, start, session), UNCHANGED)
                 if host != "grok":
                     self.assertEqual(self.hook(host, later, session), UNCHANGED)
-                if host in ("claude", "codex"):
+                if host in ("claude", "codex", "muse"):
                     # A real SessionStart (resume, clear, compact) reloads and re-records.
                     self.source.write_text(f"# Reloaded for {host}\n")
                     self.assertEqual(self.hook(host, "SessionStart", session), UNCHANGED)
@@ -141,7 +158,7 @@ class InstructionActionTests(unittest.TestCase):
             with self.subTest(host=host, state="no-session-id"):
                 self.assertEqual(self.hook(host, start, None), REREAD)
             with self.subTest(host=host, state="no-start-record"):
-                if host in ("claude", "codex"):
+                if host in ("claude", "codex", "muse"):
                     self.assertEqual(self.hook(host, "UserPromptSubmit", f"{host}-late"), REREAD)
             with self.subTest(host=host, state="cache-unwritable"):
                 blocker = self.root / "not-a-directory"

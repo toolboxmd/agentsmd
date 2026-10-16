@@ -25,6 +25,10 @@
       "pointer": "/version"
     },
     {
+      "path": ".muse-plugin/plugin.json",
+      "pointer": "/version"
+    },
+    {
       "path": "tools/versionctl/pyproject.toml",
       "pointer": "/project/version"
     }

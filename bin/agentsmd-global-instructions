@@ -198,6 +198,13 @@ def parser() -> argparse.ArgumentParser:
 def main() -> int:
     arguments = parser().parse_args()
     try:
+        if (arguments.command == "install" and arguments.host == "muse"
+                and os.environ.get("XDG_CONFIG_HOME")):
+            return emit({
+                "error": "unsupported-muse-xdg-config-home",
+                "message": ("Custom XDG_CONFIG_HOME is unsupported for muse until Muse "
+                            "hook environment propagation is proven; unset it before installing."),
+            }, 2)
         arguments.target = arguments.target or default_target(arguments.host)
         if arguments.command == "inspect":
             if arguments.source:
