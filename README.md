@@ -1,8 +1,8 @@
 # agentsmd
 
 AgentsMD is a portable operating contract for coding agents. It gives Codex,
-Claude Code, Grok Build and OpenCode the same working rules, the same operations
-Skill, and the same view of what each project is for:
+Claude Code, Grok Build, OpenCode and Muse the same working rules, the same
+operations Skill, and the same view of what each project is for:
 
 - `global/AGENTS.md`: the global contract every session loads as its native
   global instructions. It includes the Elon method's step order and a short
@@ -128,10 +128,28 @@ AgentsMD OpenCode plugin into the same directory's `plugins` folder. The plugin
 targets OpenCode **1.18.32**. [OpenCode details](docs/opencode.md) covers its
 status, update and uninstall commands.
 
+**Muse Code 1.4.9:**
+
+Install the plugin from an extracted release artifact or a clean clone checkout.
+`muse plugins install` copies the whole source tree into the local plugin cache,
+including private `PREFERENCES.md` and untracked files in a live clone;
+`muse plugins update` recopies that tree. Check the source before either command.
+
+```sh
+muse plugins install "$AGENTSMD_DIR" --scope user --json
+muse plugins inspect agentsmd --json
+```
+
+Review and approve each of the five hooks with
+`muse plugins approve agentsmd:hook:<hook-id> --json`, then verify every hook
+is `trusted_enabled`. [Muse setup](docs/musecode.md) lists the exact commands.
+The native plugin supplies `operations`; do not add shared-directory Skill links.
+Marketplace listing is pending separate authority.
+
 ### 3. Link the global instructions
 
 Run this for each host you use, with `AGENTSMD_HOST` set to `codex`, `claude`,
-`grok`, or `opencode`:
+`grok`, `opencode`, or `muse`:
 
 ```sh
 export AGENTSMD_HOST=codex
@@ -147,8 +165,10 @@ export AGENTSMD_HOST=codex
 | Claude Code | `~/.claude/CLAUDE.md` | `CLAUDE_CONFIG_DIR` |
 | Grok Build | `~/.grok/AGENTS.md` | `GROK_HOME` |
 | OpenCode | `~/.config/opencode/AGENTS.md` | `OPENCODE_CONFIG_DIR`, otherwise `XDG_CONFIG_HOME/opencode` |
+| Muse | `~/.config/muse/AGENTS.md` | Custom `XDG_CONFIG_HOME` is unsupported for install; [details](docs/musecode.md#instructions-and-skill-discovery) |
 
-Export the same configuration directory to the installer and to the host.
+Export the same configuration directory to the installer and to the host;
+for Muse, unset `XDG_CONFIG_HOME` before installation.
 `install` refuses to replace an existing file or a link it does not own; see
 [Update](#update) for `--replace`. It rejects sources and targets inside a
 plugin cache.
@@ -187,6 +207,14 @@ Then check the host itself:
   `agentsmd` plugin. Run inside a repository, it also shows
   `"projectTrusted": true` and lists the repository's `AGENTS.md`.
 - **OpenCode:** `opencode debug skill` lists `operations`.
+- **Muse:** `muse plugins inspect agentsmd --json` shows every hook’s
+  `runtime_capabilities[].status` as `trusted_enabled`; `muse skills list --json`
+  lists `plugin:agentsmd:operations`. A user-scope `operations` can coexist;
+  remove that separate shared-directory installation yourself. The native global
+  file wins over the Claude fallback. Validation returns `valid: true` with one
+  expected `multiple-manifests` warning; inspection can also report
+  `foreign-plugin-artifact-observed` for the sibling host artifacts. These
+  diagnostics do not replace the hook trust and Skill identity checks.
 
 A healthy link and a loaded hook do not prove the model follows the contract.
 That comes from using it in real work.
@@ -208,6 +236,7 @@ git checkout "$(git describe --tags --abbrev=0 origin/main)"
 | Claude Code | `claude plugin marketplace update toolboxmd`, then `claude plugin update agentsmd@toolboxmd` |
 | Grok Build | `grok plugin marketplace update`, then `grok plugin update agentsmd` |
 | OpenCode | none; the Skill and plugin links point into the clone |
+| Muse | `muse plugins update agentsmd --json`; review and re-approve changed hooks |
 
 The global instruction links, the Grok hook file, and the OpenCode links all
 point into the clone, so they pick up the new release without reinstalling.
@@ -246,8 +275,10 @@ healthy and carries your private preferences.
 | Claude Code | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook (`hooks/hooks.json`), plus the `operations` pointer from `hooks/claude.json` at `SessionStart` | Explicit reading when the hook reports a problem; `UserPromptSubmit` and `SubagentStart` delivery was not separately exercised live |
 | Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart`, `UserPromptSubmit`, `SubagentStart`: Grok discards their output | Owned global hook file from `bin/agentsmd-grok-hook` | Explicit reading for the first response, before the first tool call |
 | OpenCode | Every session, appended to the system prompt | OpenCode has no such lifecycle events | Plugin `experimental.chat.system.transform`, which also appends the `operations` pointer; `tool.execute.before` runs the Elon gate | Explicit reading when the plugin reports a problem |
+| Muse | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` runs only the Elon gate | Native plugin wrappers, plus the operations pointer at `SessionStart` | PostCompact re-delivery unproven; live tool-call blocking pending Live Verification |
 
-`SessionStart` loads at startup, resume, clear, and compact. `UserPromptSubmit`
+`SessionStart` loads at startup, resume, clear, and compact on Codex and Claude
+Code. `UserPromptSubmit`
 reloads only when something in the block changed, and stays silent otherwise. `SubagentStart` gives each new worker the complete triad. The public
 Codex contract does not prove reinjection after a subagent's private
 compaction.
@@ -275,8 +306,9 @@ are reported as drafts; a triad that was never committed loads as drafts, so a
 new project can start.
 
 **The `operations` pointer.** Codex and Grok Build load the `operations` Skill
-from its description on their own. Claude Code and OpenCode often do not, so on
-those hosts `bin/operations-routing` adds one short note at session start: use
+from its description on their own. Claude Code and OpenCode often do not; Muse
+also receives the pointer. On these hosts `bin/operations-routing` adds one
+short note at session start: use
 `operations` at the start of every task and before each new kind of action, and
 read the procedure it links in full. [The #174 benchmark](docs/work/174-routing-injection/results.md)
 and [the #182 sweep](docs/work/182-routing-sweep/results.md) record its effect.
@@ -361,6 +393,7 @@ validates it against `schemas/delivery-v1.schema.json`.
   owner, licence, and source of each retained method.
 - [`docs/opencode.md`](docs/opencode.md): OpenCode setup and the bounded run
   adapter.
+- [`docs/musecode.md`](docs/musecode.md): Muse native plugin setup, trust and parity limits.
 - [`CHANGELOG.md`](CHANGELOG.md): released changes.
 - [Model Router](https://github.com/toolboxmd/model-router): a separate plugin
   that picks models for delegated work.

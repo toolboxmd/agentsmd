@@ -533,10 +533,18 @@ def direction_block(payload: dict[str, object]) -> str:
     return "\n".join(lines)
 
 
-def hook_output(event: str, payload: dict[str, object]) -> dict[str, object]:
+def hook_output(event: str, payload: dict[str, object], *,
+                stdout_limit: int | None = None,
+                system_message: str | None = None) -> dict[str, object]:
     context = direction_block(payload)
     size = len(context.encode("utf-8"))
-    if size > MAX_CONTEXT_BYTES:
+    output = {"hookSpecificOutput": {"hookEventName": event, "additionalContext": context}}
+    if system_message is not None:
+        output["systemMessage"] = system_message
+    # Measure the complete wire output, including escaping and cache warnings.
+    encoded_size = len(json.dumps(output, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
+    stdout_exceeded = stdout_limit is not None and encoded_size > stdout_limit
+    if size > MAX_CONTEXT_BYTES or stdout_exceeded:
         # Emit metadata and a full-read requirement, never partial private text or triad.
         payload = json.loads(json.dumps(payload))
         payload["loaded_status"] = payload["status"]
@@ -548,20 +556,20 @@ def hook_output(event: str, payload: dict[str, object]) -> dict[str, object]:
             preferences.pop("content", None)
             preferences["status"] = "read_required"
         payload["context"] = {"bytes": size, "limit_bytes": MAX_CONTEXT_BYTES}
+        reason = (f"The full context has {size:,} UTF-8 bytes, over the "
+                  f"{MAX_CONTEXT_BYTES:,}-byte host limit")
+        if stdout_exceeded:
+            payload["context"].update(stdout_bytes=encoded_size, stdout_limit_bytes=stdout_limit)
+            reason = (f"The encoded hook output has {encoded_size:,} UTF-8 bytes, over the "
+                      f"{stdout_limit:,}-byte stdout limit")
         payload["action"] = (
-            f"The full context has {size:,} UTF-8 bytes, over the "
-            f"{MAX_CONTEXT_BYTES:,}-byte host limit, so no file "
+            reason + ", so no file "
             "contents were injected. Read every listed Project Direction file "
             "and the private preferences file when present in full before work. "
             "Follow instructions.action for the global instructions."
         )
-        context = direction_block(payload)
-    return {
-        "hookSpecificOutput": {
-            "hookEventName": event,
-            "additionalContext": context,
-        }
-    }
+        output["hookSpecificOutput"]["additionalContext"] = direction_block(payload)
+    return output
 
 
 def grok_hook() -> bool:
@@ -1073,9 +1081,8 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
                 "AgentsMD Project Direction loaded, but its cache state was "
                 "not saved. Later prompts may reload the same context."
             )
-    output = hook_output(event, payload)
-    if cache_warning is not None:
-        output["systemMessage"] = cache_warning
+    output = hook_output(event, payload, stdout_limit=16384 if host == "muse" else None,
+                         system_message=cache_warning)
     json.dump(output, sys.stdout, ensure_ascii=False, separators=(",", ":"))
     return 0
 
@@ -1087,7 +1094,7 @@ def main(argv: list[str]) -> int:
     args = parser.parse_args(argv)
     selected_host = args.host or os.environ.get("AGENTSMD_HOST")
     if selected_host is not None and selected_host not in HOSTS:
-        parser.error("AGENTSMD_HOST must be codex, grok, opencode, or claude")
+        parser.error("AGENTSMD_HOST must be codex, grok, opencode, claude, or muse")
     # Explicit selection always wins. Otherwise Grok's own hook variable names
     # the host, so its canonical source and preferences resolve under GROK_HOME
     # instead of the Codex default.

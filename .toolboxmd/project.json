@@ -8,7 +8,8 @@
     "delivery": {
       "codex": ".codex-plugin/plugin.json",
       "claude-code": ".claude-plugin/plugin.json",
-      "grok-build": ".grok-plugin/plugin.json"
+      "grok-build": ".grok-plugin/plugin.json",
+      "musecode": ".muse-plugin/plugin.json"
     },
     "skills": [
       "skills/operations/SKILL.md"
@@ -19,6 +20,7 @@
       "docs/work/119-pstack-integration/analysis.md",
       "docs/adr/0001-persistent-host-automation.md",
       "docs/opencode.md",
+      "docs/musecode.md",
       "skills/operations/references/scoped-proof.md",
       "skills/operations/procedures/project-direction/references/context.md"
     ],
@@ -60,7 +62,8 @@
       "tests/test_skill_contracts.py",
       "tests/test_scoped_proof.py",
       "tests/test_operations_contract.py",
-      "tests/test_pstack_packaging.py"
+      "tests/test_pstack_packaging.py",
+      "tests/test_muse.py"
     ]
   }
 }

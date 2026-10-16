@@ -54,9 +54,9 @@ class SharedPreferencesTests(unittest.TestCase):
             return None
         return parse_block(output['hookSpecificOutput']['additionalContext'])
 
-    def test_four_native_targets_initialize_once_and_preserve_preferences(self):
+    def test_native_targets_initialize_once_and_preserve_preferences(self):
         locations = {'codex': '.codex/AGENTS.md', 'grok': '.grok/AGENTS.md',
-                     'opencode': '.config/opencode/AGENTS.md', 'claude': '.claude/CLAUDE.md'}
+                     'opencode': '.config/opencode/AGENTS.md', 'claude': '.claude/CLAUDE.md', 'muse': '.config/muse/AGENTS.md'}
         for index, (host, relative) in enumerate(locations.items()):
             with self.subTest(host=host):
                 report = self.install(host)
@@ -78,7 +78,8 @@ class SharedPreferencesTests(unittest.TestCase):
         (clone / 'PREFERENCES.md').write_text('preserved private defaults')
         (clone / 'global/PREFERENCES.md').write_text('WRONG NESTED DEFAULTS')
         for host, relative in (('codex', '.codex/AGENTS.md'), ('claude', '.claude/CLAUDE.md'),
-                               ('grok', '.grok/AGENTS.md'), ('opencode', '.config/opencode/AGENTS.md')):
+                               ('grok', '.grok/AGENTS.md'), ('opencode', '.config/opencode/AGENTS.md'),
+                               ('muse', '.config/muse/AGENTS.md')):
             with self.subTest(host=host):
                 target = self.home / relative
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -168,9 +169,9 @@ class SharedPreferencesTests(unittest.TestCase):
                          'opencode.json': '{"instructions":["extra.md"]}', 'extra.md': 'extra project rules'}
         for name, content in project_rules.items():
             (self.project / name).write_text(content)
-        for host in ('claude', 'grok', 'opencode', 'codex'):
+        for host in ('claude', 'grok', 'opencode', 'codex', 'muse'):
             self.install(host)
-        for host in ('claude', 'grok', 'opencode', 'codex'):
+        for host in ('claude', 'grok', 'opencode', 'codex', 'muse'):
             report = self.command('project-direction', 'inspect', '--host', host)
             self.assertEqual(report['instructions']['resolved_target'], str(self.source))
             self.assertEqual(report['preferences']['content'], self.private.read_text())
@@ -187,7 +188,7 @@ class SharedPreferencesTests(unittest.TestCase):
 
     def test_all_hosts_preserve_conflicts_and_backup_authorized_replacement(self):
         for host, relative in (('codex', '.codex/AGENTS.md'), ('grok', '.grok/AGENTS.md'),
-                               ('opencode', '.config/opencode/AGENTS.md'), ('claude', '.claude/CLAUDE.md')):
+                               ('opencode', '.config/opencode/AGENTS.md'), ('claude', '.claude/CLAUDE.md'), ('muse', '.config/muse/AGENTS.md')):
             target = self.home / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text('user-owned original')

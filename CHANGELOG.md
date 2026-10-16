@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.2.0] - 2026-10-16
+
+### Added
+
+- Add Muse as a full AgentsMD host
+
 ## [17.1.1] - 2026-10-13
 
 ### Changed

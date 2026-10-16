@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "name": "agentsmd",
+  "displayName": "AgentsMD",
+  "version": "17.2.0",
+  "description": "Portable agent rules, Project Direction, Delivery System profiles, owned workflow Skills, and deterministic version control.",
+  "compat": {
+    "source": "native",
+    "manifestDir": ".muse-plugin"
+  },
+  "capabilities": {
+    "skills": [
+      {
+        "id": "operations",
+        "path": "skills/operations/SKILL.md",
+        "enabledDefault": true
+      }
+    ],
+    "commands": [],
+    "hooks": [
+      {
+        "id": "session-start",
+        "event": "SessionStart",
+        "command": [
+          "python3",
+          "hooks/muse/session-start.py"
+        ],
+        "timeoutMs": 15000,
+        "statusMessage": "Loading Project Direction"
+      },
+      {
+        "id": "user-prompt-submit",
+        "event": "UserPromptSubmit",
+        "command": [
+          "python3",
+          "hooks/muse/user-prompt-submit.py"
+        ],
+        "timeoutMs": 15000,
+        "statusMessage": "Loading Project Direction"
+      },
+      {
+        "id": "subagent-start",
+        "event": "SubagentStart",
+        "command": [
+          "python3",
+          "hooks/muse/subagent-start.py"
+        ],
+        "timeoutMs": 15000,
+        "statusMessage": "Loading Project Direction"
+      },
+      {
+        "id": "pre-tool-use",
+        "event": "PreToolUse",
+        "command": [
+          "python3",
+          "hooks/muse/pre-tool-use.py"
+        ],
+        "timeoutMs": 15000,
+        "statusMessage": "Loading Project Direction"
+      },
+      {
+        "id": "operations-routing",
+        "event": "SessionStart",
+        "command": [
+          "python3",
+          "hooks/muse/operations-routing.py"
+        ],
+        "timeoutMs": 15000,
+        "statusMessage": "Pointing at the operations Skill"
+      }
+    ],
+    "mcpServers": [],
+    "reminders": []
+  }
+}

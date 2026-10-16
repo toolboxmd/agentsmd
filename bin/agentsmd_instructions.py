@@ -11,7 +11,7 @@ def absolute(path: str | Path) -> Path:
     return Path(os.path.abspath(os.path.expanduser(str(path))))
 
 
-HOSTS = ("codex", "grok", "opencode", "claude")
+HOSTS = ("codex", "grok", "opencode", "claude", "muse")
 
 
 def default_target(host: str = "codex") -> Path:
@@ -28,6 +28,11 @@ def default_target(host: str = "codex") -> Path:
             raise ValueError("XDG_CONFIG_HOME must be absolute")
         return (absolute(custom) if custom else
                 (Path(xdg) if xdg else Path.home() / ".config") / "opencode") / "AGENTS.md"
+    if host == "muse":
+        xdg = os.environ.get("XDG_CONFIG_HOME")
+        if xdg and not Path(xdg).is_absolute():
+            raise ValueError("XDG_CONFIG_HOME must be absolute")
+        return (Path(xdg) if xdg else Path.home() / ".config") / "muse/AGENTS.md"
     raise ValueError("unsupported host")
 
 
@@ -262,7 +267,8 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
                 if other == host:
                     continue
                 other_target = default_target(other)
-                if not os.path.lexists(other_target):
+                # A regular file never claimed to be an AgentsMD link.
+                if not os.path.islink(other_target):
                     continue
                 other_inspection = inspect_target(other_target)
                 if (not other_inspection["healthy"] or
