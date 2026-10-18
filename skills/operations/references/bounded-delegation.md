@@ -37,6 +37,16 @@ at safe boundaries and before reporting. User stops, revoked authority, unsafe
 writes, and shared-state failures interrupt immediately. The host's existing
 message tools usually suffice; do not build a queue service by default.
 
+A negative result says the work cannot be done: not possible, cannot remove,
+blocked, no recipe, or failed. An ordinary failed slice, one that does not say
+the work cannot be done, is still recorded at once. Accept a negative result
+only when it lists what was tried and which primary sources were checked: the
+tool's own docs and bundled README, its `--help`, its environment variables,
+and its config keys. Before you relay that result to the user or file anything
+from it, try the work once yourself or assign one challenger whose only job is
+to make the work succeed. Report only a
+negative result that survives that attempt, and include the attempts.
+
 Integrate reviewed components as they become ready under the one-final-approval-
 PR contract. Preserve accepted outputs promptly in their authorized durable owner.
 A disposable worker's confident transcript is not durable delivery evidence.
