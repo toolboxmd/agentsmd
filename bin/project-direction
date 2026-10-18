@@ -972,22 +972,29 @@ def gh_api_create(words: list[str]) -> str | None:
 
 def api_body(words: list[str], stdin: str | None, directory: Path,
              written: dict[str, str | None]) -> tuple[str | None, str]:
-    """Return the `body` field a `gh api` call sends, if the hook can see it."""
+    """Return the `body` field a `gh api` call sends, if the hook can see it.
+
+    With `--input`, gh sends that file as the request body and moves field
+    flags to the query string, so only its JSON `body` counts."""
+    inputs = [value for index in range(len(words))
+              for value, used in [option_value(words, index, "--input", "")] if used]
+    if inputs:
+        if inputs[-1] is None:
+            return None, ""
+        text, note = body_file(inputs[-1], stdin, directory, written)
+        try:
+            data = json.loads(text or "")
+        except json.JSONDecodeError:
+            data = None
+        field = data.get("body") if isinstance(data, dict) else None
+        return (field if isinstance(field, str) else None), note
     body, note = None, ""
     for index in range(len(words)):
         for long, short in API_FIELDS:
             value, used = option_value(words, index, long, short)
             if not used or value is None:
                 continue
-            if long == "--input":
-                text, note = body_file(value, stdin, directory, written)
-                try:
-                    data = json.loads(text or "")
-                except json.JSONDecodeError:
-                    data = None
-                field = data.get("body") if isinstance(data, dict) else None
-                body = field if isinstance(field, str) else None
-            elif value.startswith("body="):
+            if value.startswith("body="):
                 body = value[len("body="):]
                 if long == "--field" and body.startswith("@"):
                     body, note = body_file(body[1:], stdin, directory, written)

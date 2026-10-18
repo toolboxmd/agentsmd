@@ -301,6 +301,27 @@ class ElonGateTests(unittest.TestCase):
                         self.assertBlocked(result, "Deleted")
         self.assertBlocked(self.hook({"command": "gh -R o/r api -XPOST repos/o/r/issues -f title=x"}))
 
+    def test_gh_api_input_is_the_only_body(self) -> None:
+        # Regression from the Grok roast of PR #233: with --input, gh sends the
+        # file as the request body and field flags go to the query string.
+        (self.cwd / "empty.json").write_text(json.dumps({"body": "nope"}), encoding="utf-8")
+        (self.cwd / "good.json").write_text(json.dumps({"body": RECORD}), encoding="utf-8")
+        (self.cwd / "rec.md").write_text(RECORD, encoding="utf-8")
+        api = "gh api repos/o/r/issues "
+        for args in ("--input empty.json -f body=" + shlex.quote(RECORD),
+                     "-f body=" + shlex.quote(RECORD) + " --input empty.json",
+                     "--input empty.json -F body=@rec.md",
+                     "--input - -f body=" + shlex.quote(RECORD),
+                     "--input - <<'EOF'\n" + json.dumps({"body": "nope"}) + "\nEOF"):
+            with self.subTest(args=args):
+                self.assertBlocked(self.hook({"command": api + args}, tool_name="Bash"), "Deleted")
+        for args in ("--input good.json -f body=hi", "-f body=hi --input good.json",
+                     "--input - <<'EOF'\n" + json.dumps({"body": RECORD}) + "\nEOF",
+                     "-f body=hi --input - <<'EOF'\n" + json.dumps({"body": RECORD}) + "\nEOF"):
+            with self.subTest(args=args):
+                result = self.hook({"command": api + args}, tool_name="Bash")
+                self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_read_only_gh_api_and_status_posts_pass(self) -> None:
         for command in ("gh api repos/o/r/issues",
                         "gh api repos/o/r/pulls?state=open --jq '.[].title'",
