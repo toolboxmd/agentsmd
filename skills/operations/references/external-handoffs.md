@@ -1,7 +1,7 @@
 # External intake and automation handoffs
 
 Use only when an external intake or automation adapter is part of the authorized
-task. Persistent scheduling also requires the existing host-automation ADR.
+task. Persistent scheduling also requires the existing machine-automation ADR.
 This reference grants no messaging, credential, installation, or service authority.
 
 Bind a run to immutable source identity, owning Issue, and authorized target
@@ -18,7 +18,7 @@ turn free text or a button payload into arbitrary commands. Verify the harmless
 end-to-end route on its exact authorized target before enabling broader effects.
 
 Give workers only the capabilities their unit needs. If they must not publish,
-exclude credentials and write tools where the host can enforce that boundary.
+exclude credentials and write tools where the harness can enforce that boundary.
 A prompt prohibition alone is not capability isolation. Retain write-capable
 operations in the coordinator when the required boundary cannot be established.
 

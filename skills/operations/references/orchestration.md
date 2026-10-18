@@ -86,14 +86,14 @@ work, read [bounded delegation](bounded-delegation.md) in full for alternative-v
 coverage aggregation, capacity, pilots, and failure recovery. For an authorized
 external intake or automation adapter, also read [external handoffs](external-handoffs.md) in full.
 
-Before choosing, check every delegation tool the host provides, including
+Before choosing, check every delegation tool the harness provides, including
 deferred and MCP-supplied tools. Submit that packet through the routing tool for
-work it accepts. When the host has no routing tool, or the routing tool cannot
-honor a model or effort the user named, report that, then use a host child
+work it accepts. When the harness has no routing tool, or the routing tool cannot
+honor a model or effort the user named, report that, then use a harness child
 mechanism that honors them and shows the child to the user, else a nested child
-with the packet and no prior transcript; do not fork the parent transcript. Direct work needs no worker. A separate host task is
+with the packet and no prior transcript; do not fork the parent transcript. Direct work needs no worker. A separate harness task is
 only for work that must outlive the parent or continue after it stops, or when
-the host offers no visible child. Close finished, errored, or idle children so each leaves the
+the harness offers no visible child. Close finished, errored, or idle children so each leaves the
 working state. Never delete shared temporary directories by wildcard. Keep writers few, exclusive, and bounded; no unbounded children.
 Do not copy worker transcripts into the coordinator.
 
@@ -117,7 +117,7 @@ Issue with its own packet. Resume the same Issue when context remains useful; re
 from Git, GitHub, instructions, and handoff. Never recreate completed work or
 request completed approvals again.
 
-Tasks, threads, and worktrees are host-neutral adapter choices. Do not create a
+Tasks, threads, and worktrees are harness-neutral adapter choices. Do not create a
 persistent orchestration service without later evidence and authority.
 
 For long or uncertain work whose consequential choices would otherwise disappear,

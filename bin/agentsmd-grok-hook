@@ -32,7 +32,7 @@ SAFE_SOURCE_PATTERN = re.compile(r"^[A-Za-z0-9/._+@~ -]+$")
 
 
 def grok_home() -> Path:
-    # Reuse the host path contract, so GROK_HOME governs both files.
+    # Reuse the harness path contract, so GROK_HOME governs both files.
     return default_target("grok").parent
 
 
@@ -63,7 +63,7 @@ def source_root(value: str | Path) -> Path:
 def hook_document(source: Path) -> dict[str, Any]:
     return {
         # Grok ignores unknown top-level keys, so the marker names the source
-        # without changing what the host loads.
+        # without changing what the harness loads.
         "agentsmd": {"installer": "agentsmd-grok-hook", "source": str(source)},
         "hooks": {
             "PreToolUse": [

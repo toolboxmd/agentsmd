@@ -6,8 +6,8 @@ state under `operations`; do not mine transcripts when that record is sufficient
 For cross-task recall, establish topic, workspace, and time range. Preserve an
 explicit request for all history rather than silently reducing it to a week.
 
-Start with supplied references and the owning tracker. Use host task/history
-APIs when sufficient. Transcript filesystem layouts are host-specific adapters,
+Start with supplied references and the owning tracker. Use harness task/history
+APIs when sufficient. Transcript filesystem layouts are harness-specific adapters,
 not portable assumptions. Select relevant records using real timestamps and
 content, not UUID ordering. Exclude unrelated projects and conversations outside
 the authorized scope.

@@ -1,9 +1,9 @@
-# OpenCode host
+# OpenCode harness
 
-AgentsMD supports the OpenCode **1.18.32** CLI interface on POSIX hosts. The
+AgentsMD supports the OpenCode **1.18.32** CLI interface on POSIX machines. The
 adapter checks that exact version and its required flags before a model run.
 Other versions need compatibility proof before this support claim expands.
-Provider availability is independent of host support; select an exact
+Provider availability is independent of harness support; select an exact
 `provider/model` for each run. No model becomes a global default.
 
 ## Instructions and Skills
@@ -20,13 +20,13 @@ OpenCode loads Skills on demand from `$OPENCODE_CONFIG_DIR/skills/<name>/SKILL.m
 defaulting to `~/.config/opencode/skills`, and also from the shared
 `~/.agents/skills` and `~/.claude/skills` directories. Link AgentsMD Skills only
 into the OpenCode directory. Codex and Grok Build scan `~/.agents/skills`, and
-Grok scans `~/.claude/skills`, so shared links duplicate every Skill on a host
+Grok scans `~/.claude/skills`, so shared links duplicate every Skill on a harness
 that already uses the plugin. The `skills` command group below creates and
 removes those owned links. Verify available
 names with `opencode debug skill` in the intended repository. See official
-[Skill discovery](https://opencode.ai/docs/skills/). Host-native frontmatter
+[Skill discovery](https://opencode.ai/docs/skills/). Harness-native frontmatter
 differs. OpenCode ignores unrecognized fields. AgentsMD Skills are
-model-invocable on every host, with approval gates inside each Skill body.
+model-invocable on every harness, with approval gates inside each Skill body.
 
 The global contract requires the full Project Direction triad before project
 work. OpenCode runs no Codex lifecycle hook, so the AgentsMD plugin below
@@ -74,7 +74,7 @@ identify the previous canonical release explicitly:
 Update refuses any target that is not the exact previous owned link. Uninstall
 removes only the exact supplied owned link, including a broken owned link.
 There is no force replacement option in this adapter. For an authorized
-migration, the common `agentsmd-global-instructions install --host opencode
+migration, the common `agentsmd-global-instructions install --harness opencode
 --source "$AGENTSMD_DIR/global/AGENTS.md" --replace` preserves a recoverable backup. Source files, shared Skills, `opencode.json`,
 `opencode.jsonc`, preferences and credentials remain in place. Start a fresh
 OpenCode session after a supported install or update.
@@ -123,7 +123,7 @@ that resolves into a plugin cache; that entry is refused before any link is
 created. A target is rejected when the Skill directory resolves under `~/.agents/skills`, `~/.claude/skills`,
 `~/.grok/skills` or a `plugins/cache` path. Codex and Grok Build scan
 `~/.agents/skills`, and Grok scans `~/.claude/skills`, so links there would list
-every Skill twice on a host that already uses the plugin. Skill links do not
+every Skill twice on a harness that already uses the plugin. Skill links do not
 expand the bounded run contract, which stays pinned to **1.18.32**. Run
 `opencode debug skill` in a fresh session in the intended repository and confirm
 each AgentsMD Skill appears exactly once.
@@ -154,7 +154,7 @@ after install; a running session keeps its loaded plugins.
 
 The plugin uses `experimental.chat.system.transform`, which is experimental in
 OpenCode **1.18.32**, the version the bounded run adapter pins. The plugin
-context exposes no host version, so the pin is documented, not enforced at
+context exposes no harness version, so the pin is documented, not enforced at
 runtime. Treat a different OpenCode version as unproved until the seam is
 rechecked.
 
@@ -195,7 +195,7 @@ available commit. The output directory must not exist.
 `auto` adds `--auto` only when that tool mode has been granted; explicit OpenCode
 denials remain effective. Neither mode is a sandbox or a grant of production,
 credential, merge, release or installation authority. Use an exclusive task
-workspace and scoped host permissions. The adapter inherits the host environment
+workspace and scoped machine permissions. The adapter inherits the machine environment
 and lets OpenCode use its existing authentication; it never reads credential
 files or writes configuration. See the official [CLI contract](https://opencode.ai/docs/cli/).
 
@@ -206,12 +206,12 @@ Issue, working directory, exact base and before/after HEAD, requested model and
 permission mode, prompt hashes, version, timestamps, process exit status,
 session IDs, result, working-tree status and evidence hashes. It does not dump
 the environment. Timeout terminates the process group and records failure.
-Malformed events, host errors, missing session/text evidence and nonzero exit
+Malformed events, harness errors, missing session/text evidence and nonzero exit
 status cannot produce a candidate. A candidate is an unreviewed implementer
 result. The coordinator verifies scope, model/session evidence, exact-SHA proof,
 review and external authority independently.
 
-## Proof and remaining host differences
+## Proof and remaining harness differences
 
 `python3 -m unittest tests.test_opencode -v` tests isolated HOME/XDG ownership,
 config and credential preservation, lifecycle transitions, Skill and plugin link
@@ -236,6 +236,6 @@ exists, as defined by root `AGENTS.md`.
 OpenCode does not reproduce Codex app-native task coordination, memory,
 connectors, computer/browser UI tools or lifecycle hooks. The plugin covers
 system-prompt delivery only; it reproduces no `UserPromptSubmit` or subagent
-refresh semantics. Host-native tools and
+refresh semantics. Harness-native tools and
 permissions remain OpenCode's responsibility; AgentsMD supplies the shared
 operating contract and the narrow CLI handoff.

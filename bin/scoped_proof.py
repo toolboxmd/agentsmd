@@ -298,7 +298,7 @@ def validate(root, baseline, candidate, policy, baseline_raw, current_raw, *, au
 def validate_complete(root, candidate, policy, raw, *, authenticate: Callable, observe: Callable, now=None):
     """Reuse direct complete execution on this exact candidate, without running tests.
 
-    Records may partition hosts. All current input/environment assumptions, including
+    Records may partition machines. All current input/environment assumptions, including
     the artifact digest, must still hold. External-state admission remains separate.
     """
     now = time.time() if now is None else now

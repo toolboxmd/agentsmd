@@ -749,7 +749,7 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(f"https://github.com/{repository}/blob/main/GLOSSARY.md", repo_agents)
 
     def test_global_contract_leaves_measurement_to_agent_observer(self) -> None:
-        # Agent Observer attributes work from host state; agents run no capture.
+        # Agent Observer attributes work from harness state; agents run no capture.
         self.assertNotIn("Agent Observer", read_text("global/AGENTS.md"))
         self.assertNotIn("Agent Observer", read_text("GLOSSARY.md"))
 
@@ -2302,13 +2302,13 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
 
-    def test_readme_records_per_host_lifecycle_delivery(self) -> None:
+    def test_readme_records_per_harness_lifecycle_delivery(self) -> None:
         readme = read_text("README.md")
         normalized = " ".join(readme.split())
         self.assertNotIn("Claude lifecycle-hook acceptance is not claimed", readme)
         self.assertNotIn("OpenCode uses shared Skills", readme)
         for required in (
-            "| Host | Delivering events | Ignored or inert events"
+            "| Delivering events | Ignored or inert events"
             " | Delivery mechanism | Fallback that still applies |",
             "| Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` |",
             "| Claude Code | `SessionStart`, `UserPromptSubmit`, `SubagentStart` |",
@@ -2317,8 +2317,8 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, readme)
-        # On both packaged-hook hosts the loader answers PreToolUse only with the
-        # Elon gate; the hosts themselves do deliver PreToolUse output (#176).
+        # On both packaged-hook harnesses the loader answers PreToolUse only with the
+        # Elon gate; the harnesses themselves do deliver PreToolUse output (#176).
         self.assertEqual(
             readme.count(
                 "The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook"
@@ -2332,6 +2332,25 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(required=required):
                 self.assertIn(required, normalized)
+
+    def test_instructions_say_harness_for_the_program_and_machine_for_the_computer(self) -> None:
+        # Chromeria's system glossary avoids "host" for both meanings (#213).
+        # Only the ADR's unchanged file path and the UI prototype's host page,
+        # the existing page that hosts variants, may keep the word.
+        allowed = {
+            "global/AGENTS.md": ("0001-persistent-host-automation.md",),
+            "skills/operations/procedures/prototype/UI.md": ("Choose the host", "sensible host",
+                                                             "possible host", "existing\n   host"),
+        }
+        paths = ["global/AGENTS.md", "GLOSSARY.md", "AGENTS.md"] + sorted(
+            str(path.relative_to(ROOT)) for path in (ROOT / "skills/operations").rglob("*")
+            if path.is_file() and path.suffix in {".md", ".json"})
+        for relative in paths:
+            text = read_text(relative)
+            for phrase in allowed.get(relative, ()):
+                text = re.sub(phrase, "", text)
+            with self.subTest(path=relative):
+                self.assertEqual(re.findall(r"\bhosts?\b", text, flags=re.IGNORECASE), [])
 
 
 if __name__ == "__main__":

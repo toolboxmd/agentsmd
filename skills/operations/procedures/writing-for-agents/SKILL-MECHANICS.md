@@ -12,22 +12,22 @@ name and an economical description stating what it does and when it applies,
 including exclusions that prevent plausible wrong selections. Keep procedural
 detail in the body and conditionally linked references.
 
-Validate required frontmatter fields, value types, host-supported invocation
-settings, loading triggers, and relative references against the target host
+Validate required frontmatter fields, value types, harness-supported invocation
+settings, loading triggers, and relative references against the target harness
 and package contract. Check the installed or copied layout as well as source;
 a description or fixture alone does not prove correct model selection.
 
 ## AgentsMD packaging and progressive disclosure
 
 The following single-entry policy applies to the AgentsMD package. Other
-projects may expose their own discoverable Skills under their host contracts.
+projects may expose their own discoverable Skills under their harness contracts.
 
 AgentsMD exposes only `operations`. Its concise description supports automatic
 selection. Keep Codex `allow_implicit_invocation: true`; do not hide procedures
 with explicit-only flags and then bypass their invocation policy.
 
 Add a method as an ordinary conditional reference within Operations, normally
-`procedures/<name>/index.md`. Do not name it `SKILL.md`: recursive hosts would
+`procedures/<name>/index.md`. Do not name it `SKILL.md`: recursive harnesses would
 advertise it. Give its caller a concrete loading trigger. Preserve human gates
 inside the owning procedure. Selection grants no new authority.
 
@@ -37,5 +37,5 @@ instructions remain supported installation components; copied role kits must
 resolve those through the canonical source instead of inventing relative roots.
 
 A separate discoverable skill requires a concrete capability that cannot work
-through the existing entry point. Check current host behavior before relying on
+through the existing entry point. Check current harness behavior before relying on
 an invocation flag. A larger catalogue is not evidence of better selection.

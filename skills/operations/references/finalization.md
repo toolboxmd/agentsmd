@@ -18,7 +18,7 @@ The rules below decide eligibility and exceptions.
 
 Before removing a workspace whose writer is another agent or thread, confirm
 that writer is idle with no queued or pending work, for example through the
-host's thread or task status, or hand retirement to that owner. A process-cwd
+harness's thread or task status, or hand retirement to that owner. A process-cwd
 check alone does not establish that a workspace is inactive. Name in the
 handoff the agent that will retire the workspace. For an active writer, a
 handoff naming the workspace and received by that owner in the same step
