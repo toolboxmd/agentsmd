@@ -1,0 +1,7 @@
+**Requirements and who asked**: You asked for an operating model you can launch this week so changes keep shipping when you are away.
+**Deleted**: Spotify squads and chapters, Jira Align, quarterly planning workshops, new tooling, and a new org design.
+**Bottleneck**: On the last six changes, coding took less than a day and approval then waited three days because you were the only assigned reviewer and you were away. Two other engineers are already qualified and authorized to approve that work.
+**Checked myself**: Your account of four engineers in one time zone, statuses in the existing tracker, those six changes, your absence on the review days, and the two authorized approvers.
+
+You are trying to stop changes waiting for approval while you are absent.
+This week, write one rule in the tracker you already use: while you are out, approval from either of those two engineers is enough, and assign both of them on the open pull requests today.

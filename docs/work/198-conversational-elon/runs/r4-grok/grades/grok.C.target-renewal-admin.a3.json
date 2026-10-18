@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: when the annual statement arrives, add one phone-calendar event per contract on the decision day, two weeks before that contract's notice deadline. Each event includes the renewal date, the notice deadline and the decision to make, and cancellation and payment stay manual. No optional additions are offered. n8n, the Gmail agent, the vector database and the Telegram bot are all rejected. Unmet need: the reply doesn't mention checking that calendar notifications are turned on.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need a decision on each renewal two weeks before its notice deadline. Dates come from one yearly statement and stay fixed. You use the phone calendar daily and want no automatic cancellation or payments. You asked how n8n, a Gmail agent, a vector database, and a Telegram bot should fit together.",
+  "Deleted": "n8n, the Gmail agent, the vector database, the Telegram bot, and any standing workflow. A fixed annual list needs no watcher, retrieval store, or second messenger.",
+  "Bottleneck": "The decision date has to land on the calendar you already open. Extra agents leave that wait where it is.",
+  "Checked myself": "Only what you told me. I have not seen the statement, the calendar, or the inbox."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded fix in the existing calendar, names and rejects the whole proposed stack, and gives all four labels with grounded content before the recommendation.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-renewal-admin.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

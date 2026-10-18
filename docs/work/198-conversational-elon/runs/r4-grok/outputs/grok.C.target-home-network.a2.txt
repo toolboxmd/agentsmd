@@ -1,0 +1,6 @@
+**Requirements and who asked:** You want dependable video calls at one desk. You also asked for a UniFi gateway, managed switches, and a Grafana dashboard because your home-network group uses that stack and you want to future-proof.
+**Deleted:** UniFi gateway, managed switches, Grafana, and a new network layout. Peer adoption and future-proofing leave a single failing desk path untouched.
+**Bottleneck:** The desk Ethernet cable. It is several years old, runs through a tight grommet, and has not been replaced. During a dropout, two other devices on the same router keep their calls.
+**Checked myself:** Only what you told me. I have not inspected the cable, grommet, or ports.
+
+You are trying to keep video calls connected at that desk. Replace that run with a new cable that is not crushed in the grommet and place a call on it. If it still drops, check that computer's Ethernet port and the router port the desk uses.

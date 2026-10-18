@@ -1,0 +1,11 @@
+**Requirements and who asked**: A decision on each contract two weeks before its notice deadline, using dates from one yearly statement that stay fixed (you). Daily phone calendar, and no automatic cancellation or payments (you). n8n, a Gmail agent, a vector database, and a Telegram bot (you, after seeing productivity creators build assistants).
+
+**Deleted**: n8n, a Gmail agent, a vector database, a Telegram bot, and any workflow joining them. One statement a year already lists fixed dates, and the phone calendar is already open every day.
+
+**Bottleneck**: Putting each decision on that calendar. After the event exists, the only wait is until its date.
+
+**Checked myself**: Only what you wrote in this request. No statement, calendar, or tool was opened.
+
+You want a prompt to decide on each renewal two weeks before the last day you can give notice.
+
+When the yearly statement arrives, add one phone-calendar event per contract on the date two weeks before its notice deadline, and put the contract name and renewal date in the event.

@@ -1,0 +1,11 @@
+**Requirements and who asked**: You asked for a this-week pipeline for the monthly board report: net sales by region from one local Excel export with region, date, and signed net amount, refunds included. You named Airbyte, Snowflake, dbt, and Power BI because peers use them and the budget exists. No one named a second source, a refresh deadline, or a file the machine cannot hold.
+
+**Deleted**: Airbyte, Snowflake, dbt, Power BI, and any ingestion, warehouse, or orchestration pipeline. The report does not need them.
+
+**Bottleneck**: Adding the monthly regional totals by hand on the sheet you already have.
+
+**Checked myself**: Only your description. One local workbook, three columns, signed amounts, comfortable on your computer, totals built by hand. I have not opened the file.
+
+You want the same monthly net-sales-by-region totals, repeatable from that export.
+
+Add a PivotTable on the existing table this week: Region on rows, month from the date on columns, Sum of the signed amount as values. Negative refunds stay in the sum, so the total is already net. Refresh it when the next export arrives.

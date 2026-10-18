@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: sort the existing shared list by pickup date and finish every unmade cake due today before starting any later order. Also cancel next week's Odoo partner booking. The reply offers no optional additions such as an ERP or sync, even as a later step. No requirement is left unmet, though the reply says plainly that it has not looked at the list itself.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The owner needs every cake due today prepared before pickup. You asked for an Odoo sales, inventory, and manufacturing rollout synced to the counter, with a partner already booked for next week.",
+  "Deleted": "Odoo, the partner engagement, and syncing those modules. Payments and stock already reconcile, and everyone preparing cakes can already read the one shared list.",
+  "Bottleneck": "Cakes are made in the order they were entered. Orders for next month were prepared this morning while cakes due today were still unmade.",
+  "Checked myself": "What you told me about the list, reconciliation, counter access, and this morning. I have not looked at the list."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes a bounded due-date sort of the existing list and names Odoo and the module sync as deleted; the Bottleneck claim that cakes are made in entry order is an inference, but it still matches the date-priority problem.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-bakery-pickups.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

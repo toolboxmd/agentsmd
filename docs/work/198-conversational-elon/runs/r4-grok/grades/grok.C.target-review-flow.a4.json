@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: keep the existing tracker and adopt a coverage rule. When the lead is out, the author assigns one of the two authorized engineers, who approves the same day; one approval is enough. Tell the team today and move every open review waiting on the lead to one of those two. No optional additions are offered. Unmet needs: none relative to the stated goal, and the squads/chapters, Jira Align and workshop proposals are explicitly dropped.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for an operating model you can launch this week so changes stop waiting when you are away.",
+  "Deleted": "Spotify squads and chapters, Jira Align, and quarterly planning workshops. Nothing in the last six changes breaks without them.",
+  "Bottleneck": "Coding finished in under a day on all six, then each waited three days because you were the only assigned reviewer and you were away. Two other engineers were already authorized to approve.",
+  "Checked myself": "What you told me: four engineers in one time zone, current statuses in your existing tracker, that six-change pattern, your absence, and two qualified approvers."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply gives a bounded backup-reviewer rule after all four record lines, drops the whole proposed stack by name, and bases its check only on facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-review-flow.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

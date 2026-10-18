@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Keep the spreadsheet as the store, but route every booking through one save path. That save takes an exclusive lock, checks the item id for overlapping dates, and writes the row only if the dates are free, so the second concurrent submitter is refused. Cells are closed to direct typing so bookings can only enter through that save. No optional additions are offered. The reply names no mechanism (e.g. a script lock or server) and does not show the lock is enforced server-side across both offices; it gives only the requirement.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires a conflicting reservation to be rejected at save time when two agents submit together. You asked to keep the booking spreadsheet and ship red conditional formatting plus a reminder to check overlaps this week.",
+  "Deleted": "Conditional formatting and a check reminder. Both reservations stay saved. A separate booking product.",
+  "Bottleneck": "The save never commits a single winner when two agents take the same item id for overlapping dates.",
+  "Checked myself": "Six agents work at once from two offices, each physical item has one identifier, two customers were promised that item for overlapping dates last week, and the owner requires save-time rejection. I have not opened the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "Borderline: the spreadsheet stays as storage, but an exclusive-lock atomic save that refuses the second concurrent writer, with cells locked to direct entry, meets the enforced conflict-rejection capability rather than the SMALL colour/manual-check class.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-reservations.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

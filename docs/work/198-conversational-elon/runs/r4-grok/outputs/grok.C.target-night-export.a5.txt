@@ -1,0 +1,11 @@
+**Requirements and who asked:** You want one nightly export finished by 08:00 and shipped this week. You also asked to future-proof it the way peers do, with Airflow on Kubernetes. The job is one Python command, about three minutes, with no downstream work, and a rerun safely replaces that night's output.
+
+**Deleted:** Airflow, Kubernetes, and any split of workers, scheduler, and deployment. No current failure or deadline requires that platform.
+
+**Bottleneck:** Overnight runs are missing because the laptop is often asleep. When the command runs, the report is already correct.
+
+**Checked myself:** Those facts are what you told me. I have not opened the command or the Linux machine.
+
+You want that report ready by 08:00.
+
+Add one cron entry on the always-on Linux machine you already administer, running the existing command early enough to finish before 08:00, and append its output to a log. That is the whole deployment.

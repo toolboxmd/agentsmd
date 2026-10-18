@@ -1,0 +1,11 @@
+**Requirements and who asked:** You need to decide on each household insurance or membership renewal two weeks before its notice deadline. You asked for n8n, a Gmail agent, a vector database, and a Telegram bot because assistant products are being built. You also said the dates arrive on one yearly statement, stay fixed, you use the phone calendar daily, and cancellation and payment stay manual.
+
+**Deleted:** n8n, the Gmail agent, the vector database, and the Telegram bot. The statement already lists every date, those dates do not change during the year, and your phone calendar is already part of the day. Each of those four becomes another thing to run, pay for, and watch, while you still make the decision and the payment yourself.
+
+**Bottleneck:** Remembering the decision date. The reminder belongs on the phone calendar you already open, set two weeks before each notice deadline.
+
+**Checked myself:** Only what you wrote in this request. I have not seen this year's statement or your calendar.
+
+You want each renewal decision to surface two weeks before its notice deadline, with cancellation and payment left to you.
+
+Add one phone-calendar event per contract on that decision date. Put the contract name, the notice deadline, and the renewal date in the event, copied from the yearly statement, and decide when the event appears.

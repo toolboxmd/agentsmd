@@ -1,0 +1,7 @@
+**Requirements and who asked:** You want an operating model this week so changes ship faster and stop waiting when the lead is absent. Squads, chapters, Jira Align, and workshops are means you offered.
+**Deleted:** Spotify squads and chapters, Jira Align, new tooling, and quarterly planning workshops. Four engineers in one time zone already have a tracker, and those leave the approval wait as it is.
+**Bottleneck:** Approval. The last six changes were coded in under a day, then each waited three days because the lead was the only assigned reviewer and was away.
+**Checked myself:** Told those six timings, the sole-reviewer assignment, the lead's absence, and that two other engineers are already qualified and authorized to approve. I have not opened the tracker.
+
+You are trying to get finished changes approved and shipped while the lead is away.
+This week, make approval from either of those two engineers enough, and assign one of them to every open pull request today.

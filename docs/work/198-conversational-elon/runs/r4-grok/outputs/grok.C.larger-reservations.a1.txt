@@ -1,0 +1,11 @@
+**Requirements and who asked:** The owner requires a conflicting reservation to be rejected at save time, including when two agents save together. You asked to ship this week by keeping the booking spreadsheet and adding red overlap formatting plus a reminder to check it.
+
+**Deleted:** Red conditional formatting and a reminder. Both leave the conflicting booking saved.
+
+**Bottleneck:** The save. Last week's double promise was already stored before anyone could look at a colour.
+
+**Checked myself:** What you told me: six agents in two offices, one identifier per physical item, two customers promised that item on overlapping dates, and the owner's reject-on-save rule. I have not opened the spreadsheet.
+
+You want one physical item promised to only one customer on a given date, including when two agents book together.
+
+Use one shared save for all six agents: it stores the booking only when that item identifier has no overlapping dates, and it refuses the other save when two submissions arrive together. That is the change to ship this week. Say if you want that save built as the only way a booking is confirmed.

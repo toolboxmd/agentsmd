@@ -1,0 +1,8 @@
+**Requirements and who asked**: Unpaid-invoice count under one second, matching invoices committed at request time (you). An approved Kafka budget and peers moving to events are not requirements for this count.
+**Deleted**: Kafka, a CQRS projection, Redis, and any new service or topic. A projection lags commit time and adds systems this count does not need.
+**Bottleneck**: The endpoint loads invoice rows, builds objects, and counts them in application memory.
+**Checked myself**: You said the endpoint returns only that count, has no other reader, and users report it is slow. The query and schema were not inspected.
+
+You are trying to return the unpaid-invoice count in under one second from invoices committed at request time.
+
+Change the existing endpoint to one SQL `COUNT` in the current application and PostgreSQL, and add an index on the unpaid condition only if that query is still slow. Ship no new service or topic this week.

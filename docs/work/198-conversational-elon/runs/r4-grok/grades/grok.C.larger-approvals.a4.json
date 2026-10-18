@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Action now: keep the shared folder for drafts only. Once a non-author reviewer approves a document, copy that exact file into an archive that only the three reviewers can add to, lock the copy against changes, and keep the reviewer's account and the approval time with it for seven years. Any later edit is treated as a new draft that needs its own approval and archive copy. If the team uses one shared login, give each person their own account before this week's delivery. No optional extras are proposed. Remaining gap: the reply does not say which tool or setting will do the locking, so that still has to be confirmed.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires every released document to retain its exact approved version, the approver's identity, and the approval time for seven years, and authors must not approve their own documents. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.",
+  "Deleted": "Typed initials and a naming convention as the approval record.",
+  "Bottleneck": "Authors can edit the shared folder, so a file can still change after someone marks it approved.",
+  "Checked myself": "Your description of the contract, twelve remote authors, three reviewers, weekly releases, and author edit access on the current folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply rejects initials and naming conventions and chooses a reviewer-controlled, locked archive that ties a named non-author approver and approval time to the exact file for seven years.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-approvals.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

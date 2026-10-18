@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: run a new Ethernet cable that the grommet doesn't crush, then test with a call from the desk computer. If calls still drop, try another computer port or a USB Ethernet adapter with the new cable. It adds nothing optional now and defers the UniFi gateway, managed switches and Grafana dashboard. No unmet needs, though it doesn't say when the stack might come back.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable video calls at that desk (you). A UniFi gateway, managed switches, and a Grafana dashboard (you, to match the home-network group and future-proof).",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard, and a new layout. They sit off the path that fails while two other devices on the same router stay in their calls.",
+  "Bottleneck": "The years-old desk Ethernet cable through a tight grommet. Nothing else on that unique path has been swapped.",
+  "Checked myself": "Your account only: the desk computer uses Ethernet, a dropout leaves two other devices on the same router connected, the cable is several years old and passes through a tight grommet, and you have not tried another cable. I did not run a link test."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded cable swap, names and drops the stack, and grounds its checks only in facts the user gave, stating that no link test was run.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-home-network.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

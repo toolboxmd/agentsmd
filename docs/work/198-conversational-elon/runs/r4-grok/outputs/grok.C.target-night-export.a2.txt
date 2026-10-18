@@ -1,0 +1,6 @@
+**Requirements and who asked:** You asked for an Airflow-on-Kubernetes split of workers, scheduler, and deployment so this export is future-proofed and can ship this week. The job only has to produce one report by 08:00.
+**Deleted:** Airflow, Kubernetes, separate workers, a scheduler service, and a new deployment.
+**Bottleneck:** Overnight runs are missing because the laptop is asleep, so the command never starts.
+**Checked myself:** You told me the command already succeeds in about three minutes, a rerun safely replaces that night's file, nothing downstream waits on it, and you already administer an always-on Linux machine.
+
+You are trying to have the same nightly report finished by 08:00 from a machine that stays on. Put that Python command in cron on the Linux machine you already administer, with a start time that leaves the three-minute run done before 08:00. That ships this week as one crontab entry.

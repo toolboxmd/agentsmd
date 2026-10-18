@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now the reply keeps the existing application and PostgreSQL. It replaces the in-memory object counting with a single SQL count of unpaid invoices. Adding an index on the unpaid filter is a conditional follow-up, only if the count is still slow. Kafka, CQRS, Redis and any new service or topic are explicitly ruled out for this week. The reply doesn't add a step to check end-to-end latency or that the new count matches the old one, and the rubric doesn't require one.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The unpaid-invoice count must finish within one second and match invoices committed at request time. You asked for that. Kafka, CQRS, and Redis came from peer practice and an approved cluster budget. The count still works without them.",
+  "Deleted": "Kafka work, a CQRS projection, Redis, and any new service or topic. A projection can lag committed writes, so it misses the request-time requirement, and nothing else reads this count.",
+  "Bottleneck": "The endpoint loads invoice rows, builds invoice objects, and counts them in memory. That is the slow part.",
+  "Checked myself": "You described one application, PostgreSQL, a count-only endpoint, and a slow count. I have not seen the schema, indexes, or query plan."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines are present, specific and come before the recommendation, which is a bounded SQL aggregate that keeps request-time committed-data semantics.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

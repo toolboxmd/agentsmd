@@ -1,0 +1,86 @@
+{
+ "started": "2026-10-18T23:29:40.745766+02:00",
+ "repo_head": "31eedcc55cd117641d9a99c0fb2e11f823853ce6",
+ "wide_sha256": "7f41c21d6d5c78a760193ab231eb5893db29f7e16dbc50a948dfe3e200dbff8b",
+ "arms": {
+  "A": {
+   "source": "",
+   "sha256": null
+  },
+  "B": {
+   "source": "git:8cad98f68a8ce46dc8bb05954775dd63172a9f26",
+   "sha256": "57470662266ca15a7587ccf9486a5132e09f428f87e80e69e127ace27d91590a"
+  },
+  "C": {
+   "source": "git:8f7cafe",
+   "sha256": "a1f942978780dfead35a0b81ca9e9d4b978a57ac44ae30a1ab00695a5d9941d2"
+  }
+ },
+ "harness": {
+  "host": "grok",
+  "model": "grok-4.7",
+  "effort": "medium",
+  "version": "grok 1.0.62 (1474f9cbdd91) [stable]"
+ },
+ "baseline_reuse": "../wide: Grok A/B, 3 valid runs per non-control scenario; no new A/B scenario calls",
+ "protocol": "r2.attempt/setup, fresh temporary HOME and cwd per call; auth copied rather than symlinked to protect real HOME; explicit medium CLI flag; calls stop immediately on 402/rate limit; canaries first",
+ "cells": [
+  "C:target-home-network:5",
+  "C:target-bakery-pickups:5",
+  "C:target-invoice-count:5",
+  "C:target-board-report:5",
+  "C:target-night-export:5",
+  "C:target-renewal-admin:5",
+  "C:target-review-flow:5",
+  "C:target-studio-delivery:5",
+  "C:larger-reservations:5",
+  "C:larger-approvals:5",
+  "C:control-weekday:5",
+  "C:control-subtraction:5"
+ ],
+ "harness_sha256": {
+  "r2.py": "28cc50423166bd3ee0210556ad6868c2ce3b3427aaf7c98222337c8db882b106",
+  "wide.json": "7f41c21d6d5c78a760193ab231eb5893db29f7e16dbc50a948dfe3e200dbff8b",
+  "grade_wide.py": "f5f833756bdbc9874fa54b3493832c26913d011682fc97f56560a0d06d75c1ba",
+  "grade.py": "a9884a9a38bc6f0f5e2abded4eb6ac4b44a00bdfc6d4d786903ba8585ec20c52"
+ },
+ "elon_record": {
+  "Requirements and who asked": "User: complete only round 4 Grok cells for frozen candidate 8f7cafe, scenarios and pass condition; reuse recorded A/B, retain outputs and blind grades, push WIP and report on #198.",
+  "Deleted": "New wording, scenarios, rubric, grader, thresholds, reruns of recorded Grok baselines, top-ups, merges, releases and live installation.",
+  "Bottleneck": "Missing Grok C data following the October 2 usage-balance block; fresh canaries now pass.",
+  "Checked myself": "Issue last six comments, byte-for-byte frozen scenario JSON, candidate/arm hashes, all 60 baseline metadata and grades, Grok CLI help/version and real-loading canaries."
+ },
+ "concurrency": 4,
+ "execution_checkpoint": "After home-network and bakery completed sequentially, the unchanged runner reuse guard was used to stop before invoice-count (a temporary empty directory at its first output path, removed before continuation). Completed attempts and grades retained; remaining cells use original four-call concurrency. No API call interrupted or repeated.",
+ "finished": "2026-10-18T23:48:36.074168+02:00",
+ "grading": {
+  "command": "python harness/grade_wide.py runs/r4-grok grade runs/wide:grok",
+  "model": "claude-opus-5-5",
+  "grader_unchanged": true,
+  "isolation": "Fresh temporary grader HOME and CLAUDE_CONFIG_DIR, copied OAuth credentials, no instructions; /home/luke/.local/bin before the inactive mise shim on PATH. Each output graded once; batches only pick ungraded outputs.",
+  "cli_version": "2.1.300 (Claude Code)"
+ },
+ "result": {
+  "valid": 60,
+  "invalid": 0,
+  "judge_errors": 0,
+  "per_scenario_pass": {
+   "target-home-network": 2,
+   "target-bakery-pickups": 5,
+   "target-invoice-count": 5,
+   "target-board-report": 5,
+   "target-night-export": 5,
+   "target-renewal-admin": 5,
+   "target-review-flow": 5,
+   "target-studio-delivery": 5,
+   "larger-reservations": 5,
+   "larger-approvals": 5,
+   "control-weekday": 5,
+   "control-subtraction": 5
+  },
+  "grok_cells_pass": 11,
+  "grok_cells_total": 12,
+  "combined_summary": "combined-summary.txt",
+  "frozen_inputs_unchanged": true
+ }
+}

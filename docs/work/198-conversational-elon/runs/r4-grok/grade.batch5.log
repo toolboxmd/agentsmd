@@ -1,0 +1,31 @@
+graded grok.C.target-board-report.a5
+graded grok.C.target-invoice-count.a4
+graded grok.C.target-invoice-count.a3
+graded grok.C.larger-reservations.a1
+graded grok.C.target-night-export.a5
+graded grok.C.target-studio-delivery.a1
+graded grok.C.target-night-export.a4
+graded grok.C.target-studio-delivery.a2
+graded grok.C.target-review-flow.a2
+graded grok.C.target-review-flow.a1
+graded grok.C.target-renewal-admin.a5
+graded grok.C.target-invoice-count.a5
+| Scenario | Kind | Harness | C pass | A wrong | B wrong | Invalid | Cell |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| target-home-network | target | grok | 2/5 | 0/3 (reused) | 0/3 (reused) | 0 | FAIL |
+| target-bakery-pickups | target | grok | 5/5 | 3/3 (reused) | 1/3 (reused) | 0 | PASS |
+| target-invoice-count | target | grok | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-board-report | target | grok | 5/5 | 1/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-night-export | target | grok | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-renewal-admin | target | grok | 5/5 | 3/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-review-flow | target | grok | 2/2 | 0/3 (reused) | 0/3 (reused) | 0 | FAIL |
+| target-studio-delivery | target | grok | 2/2 | 0/3 (reused) | 0/3 (reused) | 0 | FAIL |
+| larger-reservations | target-larger | grok | 1/1 | 0/3 (reused) | 1/3 (reused) | 0 | FAIL |
+| larger-approvals | target-larger | grok | 0/0 | 0/3 (reused) | 0/3 (reused) | 0 | FAIL |
+
+Cells passing: 5/10
+
+Failing arm C runs:
+- grok.C.target-home-network.a1: SMALL All four labels come before a bounded cable-swap recommendation, the reply drops the named stack, and it bases its reasoning only on facts the user gave, saying plainly that it has not seen the link.
+- grok.C.target-home-network.a3: SMALL The reply makes a bounded cable swap and test call, explicitly removes the stack, and grounds its record only in facts the user supplied.
+- grok.C.target-home-network.a5: SMALL All four record lines come before a bounded cable-swap recommendation, the stack is removed by name and not offered now, and the checks rely only on what the user reported, with inspection limits stated.

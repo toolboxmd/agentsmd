@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now, the reply says to change the existing endpoint to a single PostgreSQL COUNT of unpaid invoices and to ship no new services or topics. It suggests timing that query on a production-sized table. It offers no optional additions. It notes that the query and table have not been inspected.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "An unpaid-invoice count that finishes within one second and matches invoices committed in PostgreSQL at request time. You asked for that result, and you also asked for a CQRS projection, Kafka, and Redis because the Kafka budget is approved and peers are moving to event-driven systems.",
+  "Deleted": "Kafka, CQRS, Redis, new services, and new topics. A projection can lag invoices already committed, so it fails the request-time requirement, and this count has one reader and one output.",
+  "Bottleneck": "The endpoint loads invoice rows, builds invoice objects, and counts them in application memory.",
+  "Checked myself": "One application and PostgreSQL already serve this endpoint, and the handler returns only the count. I have not seen the query or the table."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Before recommending, the reply drops Kafka, CQRS and Redis. Its fix is a bounded PostgreSQL COUNT, and it stays within the supplied facts and admits what it has not seen.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

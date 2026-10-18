@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: replace in-memory counting with a single PostgreSQL COUNT that applies the unpaid rule in SQL, preserving request-time committed-data semantics, and ship only that change this week. No optional additions. Kafka, CQRS, Redis and new topics or services are explicitly rejected. Unmet need: no latency or equivalence verification step is proposed, which is allowed but absent.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You require the unpaid-invoice count to finish within one second and to match invoices committed at request time. You asked for Kafka, CQRS, and Redis because the cluster budget is approved and peers are moving to event-driven systems.",
+  "Deleted": "Kafka, a CQRS projection, Redis, and any new topics or services. The approved budget and peer architectures defend none of them: this is one request with one reader, and the existing PostgreSQL commit already defines what the count must include.",
+  "Bottleneck": "The endpoint loads invoice rows, constructs invoice objects, and counts them in application memory.",
+  "Checked myself": "What you described: one application, PostgreSQL, an endpoint that returns only that count, and user reports that it is slow."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labeled lines come before a bounded single-COUNT recommendation, and the reply explicitly rejects the Kafka/CQRS/Redis stack.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: put the existing Python command in cron on the always-on Linux machine the user already runs, timed so the three-minute run finishes before 08:00. No optional additions are offered, and Airflow/Kubernetes is dropped completely. One thing is left unaddressed: the reply never says to confirm the interpreter, paths and data access on that machine first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for an Airflow-on-Kubernetes split of workers, scheduler, and deployment so this export is future-proofed and can ship this week. The job only has to produce one report by 08:00.",
+  "Deleted": "Airflow, Kubernetes, separate workers, a scheduler service, and a new deployment.",
+  "Bottleneck": "Overnight runs are missing because the laptop is asleep, so the command never starts.",
+  "Checked myself": "You told me the command already succeeds in about three minutes, a rerun safely replaces that night's file, nothing downstream waits on it, and you already administer an always-on Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation; the reply removes the Airflow/Kubernetes stack by name and recommends one cron entry, backed only by facts the user gave.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-night-export.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

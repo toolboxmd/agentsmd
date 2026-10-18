@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked to be prompted to decide each renewal two weeks before its notice deadline. You said one yearly statement fixes those dates, you use your phone calendar daily, and you do not want automatic cancellation or payments. The n8n, Gmail agent, vector database, and Telegram budget is a build you proposed.
+**Deleted**: n8n, a Gmail agent, a vector database, and a Telegram bot.
+**Bottleneck**: Getting each decision date onto the calendar you already open. The dates are known for the whole year after one statement.
+**Checked myself**: Only your description in this message. I have not seen the statement or the calendar.
+
+You are trying to be prompted to decide each renewal two weeks before its notice deadline.
+When the yearly statement arrives, add one phone calendar event per contract on the day two weeks before its notice deadline, with the contract name, notice deadline, and renewal date in the event.
+You make the renew-or-give-notice decision from that event.

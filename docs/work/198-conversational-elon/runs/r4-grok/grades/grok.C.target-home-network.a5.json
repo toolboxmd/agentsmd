@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: replace the old desk Ethernet cable with a new one, leaving slack through the grommet so the jacket stays round, then place a video call from that computer to see whether it holds. No optional additions. The UniFi gateway, managed switches and Grafana are removed as current requirements, with no conditional later step. Unmet needs: no fallback if the new cable doesn't fix the drops.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable video calls at that desk: you. A UniFi gateway, managed switches, and a Grafana dashboard: you, because a home-network group is adopting them and you want to future-proof.",
+  "Deleted": "UniFi gateway, managed switches, Grafana, and any new layout of that gear. The drops stay on one desk while two other devices on the same router keep their calls, and that cable has not been replaced.",
+  "Bottleneck": "The several-year-old desk Ethernet cable in a tight grommet.",
+  "Checked myself": "Your report only: one Ethernet desk loses calls, two other devices on the same router stay connected, the cable is years old and passes through a tight grommet, and no other cable has been tried. I have not seen the cable or the network."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded cable-swap recommendation, the stack is removed by name and not offered now, and the checks rely only on what the user reported, with inspection limits stated.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.C.target-home-network.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

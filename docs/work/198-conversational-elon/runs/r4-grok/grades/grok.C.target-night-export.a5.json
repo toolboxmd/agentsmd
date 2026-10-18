@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: add one cron entry on the existing always-on Linux machine to run the unchanged command early enough to finish before 08:00, appending output to a log. No optional additions; Airflow/Kubernetes explicitly dropped. Unmet: the command and the machine's interpreter and paths have not been verified (the reply acknowledges it has not opened either).",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You want one nightly export finished by 08:00 and shipped this week. You also asked to future-proof it the way peers do, with Airflow on Kubernetes. The job is one Python command, about three minutes, with no downstream work, and a rerun safely replaces that night's output.",
+  "Deleted": "Airflow, Kubernetes, and any split of workers, scheduler, and deployment. No current failure or deadline requires that platform.",
+  "Bottleneck": "Overnight runs are missing because the laptop is often asleep. When the command runs, the report is already correct.",
+  "Checked myself": "Those facts are what you told me. I have not opened the command or the Linux machine."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a bounded cron-on-existing-server recommendation that rejects the Airflow/Kubernetes stack by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-night-export.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

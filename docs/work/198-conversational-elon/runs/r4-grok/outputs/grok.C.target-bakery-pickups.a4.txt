@@ -1,0 +1,9 @@
+Requirements and who asked: You asked for an Odoo sales, inventory, and manufacturing rollout, synced to the counter, so no pickup is missed. The rule that matters is yours: every cake due today is prepared before pickup. Nothing in this morning's miss shows that those modules are required for that rule.
+
+Deleted: Odoo, the implementation partner's module sync, and a second system at the counter. Payments and stock already reconcile, and another database still needs someone to make today's cakes first.
+
+Bottleneck: Preparers are working one shared list with no "due today" gate, so next month's cakes get made while today's sit unmade.
+
+Checked myself: You described one counter list with customer, pickup date, and preparation status; payments and stock already match; everyone preparing cakes can read that list; cakes due today were unmade while later orders for next month were already prepared.
+
+You want every cake due today finished before pickup. Sort that same list by pickup date and prepare today's cakes to done before anyone starts a later order. Tell the partner next week is off for this problem.

@@ -1,0 +1,16 @@
+{
+ "run_id": "grok.C.target-home-network.a2",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "C",
+ "arm_sha256": "a1f942978780dfead35a0b81ca9e9d4b978a57ac44ae30a1ab00695a5d9941d2",
+ "scenario": "target-home-network",
+ "attempt": 2,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 29.6,
+ "valid": true,
+ "effort": "medium",
+ "reasoning_effort_cli": "--reasoning-effort medium"
+}

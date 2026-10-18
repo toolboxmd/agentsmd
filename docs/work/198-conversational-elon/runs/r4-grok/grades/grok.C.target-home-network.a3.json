@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: replace the old desk Ethernet cable with one that is not pinched in the grommet, then place a test call from that computer. No optional additions: the UniFi gateway, managed switches and Grafana are rejected as current requirements. Unmet needs: no port check and no fallback if the new cable doesn't fix it, but neither is required.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable video calls at the desk that drops. You asked for that. The UniFi gateway, managed switches, and Grafana dashboard are the setup your home-network group is adopting, and the budget already names them.",
+  "Deleted": "UniFi gateway, managed switches, Grafana, and a new layout. Two other devices on the same router stay in their calls, so this is not a router-wide failure.",
+  "Bottleneck": "The several-year-old desk cable through the tight grommet. That path is unique to the failing desk, and a different cable has not been tried.",
+  "Checked myself": "You said the desk computer uses Ethernet, only that desk drops, the other two devices keep their calls, the cable is years old and passes through a tight grommet, and you have not replaced it."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply makes a bounded cable swap and test call, explicitly removes the stack, and grounds its record only in facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.C.target-home-network.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

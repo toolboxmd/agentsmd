@@ -1,0 +1,8 @@
+**Requirements and who asked:** The client requires the final JPEGs in the supplied product-code order, and you already make a contact-sheet PDF. You asked for a DAM with AI tagging, semantic search, and a cloud review portal because other studios buy them and you have budget.
+**Deleted:** Adobe-style DAM, AI tagging, semantic search, and a cloud review portal.
+**Bottleneck:** The hour per delivery spent dragging thumbnails into the client's code order.
+**Checked myself:** Your description only: one folder of final JPEGs per job, each filename starts with the exact product code, the client supplies the ordered code list, and you then make a contact-sheet PDF. I did not inspect a job folder.
+
+You are trying to deliver the JPEGs and contact sheet in the client's code order this week.
+Build one local script that reads that code list, matches each code to the JPEG whose name starts with it, writes numbered copies (001_, 002_, ...) into a delivery folder, and generates the contact-sheet PDF from that sequence.
+On the next job, run it against the real folder and list, and have it stop and print any code that is missing or matches more than one file.

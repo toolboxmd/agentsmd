@@ -1,0 +1,13 @@
+**Requirements and who asked**
+Dependable video calls at the desk that drops. You asked for that. The UniFi gateway, managed switches, and Grafana dashboard are the setup your home-network group is adopting, and the budget already names them.
+
+**Deleted**
+UniFi gateway, managed switches, Grafana, and a new layout. Two other devices on the same router stay in their calls, so this is not a router-wide failure.
+
+**Bottleneck**
+The several-year-old desk cable through the tight grommet. That path is unique to the failing desk, and a different cable has not been tried.
+
+**Checked myself**
+You said the desk computer uses Ethernet, only that desk drops, the other two devices keep their calls, the cable is years old and passes through a tight grommet, and you have not replaced it.
+
+You want dependable calls at that desk. Replace that cable with one that is not pinched in the grommet, then place a call from that computer.

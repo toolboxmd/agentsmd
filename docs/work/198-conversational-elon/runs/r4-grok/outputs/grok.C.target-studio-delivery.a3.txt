@@ -1,0 +1,7 @@
+**Requirements and who asked**: The client asked for each job's images and contact-sheet PDF in the product-code order they supply. You asked to finish that delivery this week without the hour of dragging thumbnails. A DAM, AI tagging, semantic search, and a cloud review portal came from other studios' spending and from available budget; nothing in this delivery breaks without them, because each filename already starts with the exact code and the order is already the client's list.
+**Deleted**: DAM, AI tagging, semantic search, cloud review portal.
+**Bottleneck**: Hand-ordering thumbnails to match the client's code list.
+**Checked myself**: What you described: one folder of final JPEGs per job, filenames starting with the product code, the client list already ordered, about an hour of dragging per delivery.
+
+You want each delivery's images and contact-sheet PDF in the client's code order this week.
+Use one local script: it reads the ordered codes, matches each code to the JPEG whose name starts with that code, and writes the contact-sheet PDF in that order.

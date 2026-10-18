@@ -1,0 +1,11 @@
+**Requirements and who asked**: The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years; authors must not approve their own documents, and later edits must leave that retained version unchanged. You want those controls in place before this week's delivery, and you would prefer to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention.
+
+**Deleted**: The initials column and naming convention as the release control, and any new approval system. All twelve authors can edit the shared folder, so an initial is typed text, a renamed file can still be overwritten, and an author can mark their own document.
+
+**Bottleneck**: The approved file and the approval record still live where authors write. That is what fails the contract for this week's delivery.
+
+**Checked myself**: Your account of the contract, the twelve authors, the three reviewers, weekly releases, and author edit access. I have not seen the contract, the folder, or its permissions.
+
+You want this week's documents released under those rules while authors keep drafting in the current folder.
+
+Keep that folder for drafts. A reviewer who did not author the document copies the exact file into a retention folder that only the three reviewers can write, named with the document and the UTC approval time, and writes their account and that time beside the copy. Keep each copy and record for seven years; a later edit gets its own approval and a new copy. Confirm that folder and remove author write access before the first release this week.

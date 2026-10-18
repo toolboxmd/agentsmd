@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: add a refreshable PivotTable to the existing export sheet with region as rows, month (from the date) as columns, and the sum of the signed net amount as values, then refresh it each month when accounting sends the file. No optional additions are offered. Airbyte, Snowflake, dbt and Power BI are explicitly skipped this week. No unmet needs: refunds stay negative because the signed amount is summed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need a monthly board figure for net sales by region. You named Airbyte, Snowflake, dbt, and Power BI because peers use them and the budget exists.",
+  "Deleted": "Airbyte, Snowflake, dbt, and Power BI. The export is already one local Excel table with region, date, and signed net amount, and it fits on your computer. A connector, warehouse, transform project, and BI server would have nothing to do.",
+  "Bottleneck": "The monthly regional sums you still build by hand.",
+  "Checked myself": "Your description of the export (one local Excel table: region, date, signed net amount, refunds negative), that the workbook fits on your computer, and that you total it by hand."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply recommends a bounded in-workbook PivotTable on signed amounts, removes the named stack, and grounds 'Checked myself' only in the user's own description.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-board-report.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

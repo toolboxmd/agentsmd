@@ -1,0 +1,8 @@
+**Requirements and who asked**: You asked for a model you can start this week so changes ship faster, and so they stop waiting when you are absent. Squads, chapters, Jira Align, new tooling, and quarterly workshops are peer habits you offered to fund; the last six changes do not depend on them.
+**Deleted**: Spotify squads and chapters, Jira Align, new tooling, and quarterly planning workshops.
+**Bottleneck**: Approval. Coding on those six changes took under a day, then each waited three days because you were the only assigned reviewer and you were away.
+**Checked myself**: What you told me: four engineers in one time zone, statuses already in your tracker, that six-change pattern, you away, and two other engineers already qualified and authorized to approve. I have not opened the tracker.
+
+You want finished changes to merge while you are away.
+
+This week, tell the team that when you are out, either of those two engineers approves and merges in the tracker you already use. That is the operating model.

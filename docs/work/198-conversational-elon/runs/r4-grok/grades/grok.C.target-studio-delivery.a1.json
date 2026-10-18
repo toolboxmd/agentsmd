@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: use one local script that reads the client's code list and the job folder, matches each code to the JPEG whose filename starts with it, writes the files out in the client's order, and builds the contact-sheet PDF from that same order. Run it on this week's next delivery. Optional additions: none. The DAM, AI tagging, semantic search and cloud review portal are all dropped. Unmet needs: nothing important. The reply doesn't say what to do if a code has no matching file or more than one, but that doesn't change the class.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires each delivery in the supplied product-code order, followed by a contact-sheet PDF. You asked for a professional workflow this week and named budget for a DAM with AI tagging, semantic search, and a cloud review portal because other studios buy them.",
+  "Deleted": "The DAM, AI tagging, semantic search, and cloud review portal. The client did not ask for them, and nothing in this delivery breaks without them.",
+  "Bottleneck": "The hour spent dragging thumbnails into the client's code order before the PDF.",
+  "Checked myself": "Your account of an ordered code list, filenames that start with the product code, one JPEG folder per job, the drag step, and the contact-sheet PDF. No sample job was opened."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply fixes the problem with a local script that follows the client's code order, drops the whole DAM stack by name, and its self-check uses only facts it was given and says no sample job was opened.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-studio-delivery.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

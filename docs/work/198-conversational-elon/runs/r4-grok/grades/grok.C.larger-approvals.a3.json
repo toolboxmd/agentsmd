@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Action now: keep the shared folder for drafts only. On approval, a reviewer who is not the author saves the exact approved file into a separate archive that blocks changes and deletion for seven years, and that version carries the reviewer's authenticated identity and the system approval time. No optional additions are offered. Unmet need: the user still has to confirm which archive or existing store can lock files for seven years before the agent sets up the release path.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years; the approver must be someone other than the author; later edits must leave that approved version unchanged. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.",
+  "Deleted": "The initials column, the naming convention, and the author-editable folder as the approved record. Authors can change the file, the initials, and any time written there, so those three cannot hold the contract's proof.",
+  "Bottleneck": "A copy that stays fixed for seven years and is bound to an authenticated approver and a system timestamp, before this week's delivery.",
+  "Checked myself": "Your account of the contract, twelve remote authors, three reviewers, weekly releases, and author edit access to the current shared folder. I have not inspected the folder or the contract."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The reply picks an archive that blocks changes, records a non-author approver with an authenticated identity and a system timestamp, and keeps the exact version for seven years; it also rejects the initials and naming-convention approach by name.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-approvals.a3",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-approvals",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Recommends adding one phone-calendar event per contract, dated two weeks before its notice deadline, when the yearly statement arrives, with the contract name and renewal date in each event. It offers no optional additions and drops n8n, the Gmail agent, the vector DB and the Telegram bot entirely. One gap: it never says to check that calendar alerts are turned on.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "A decision on each contract two weeks before its notice deadline, using dates from one yearly statement that stay fixed (you). Daily phone calendar, and no automatic cancellation or payments (you). n8n, a Gmail agent, a vector database, and a Telegram bot (you, after seeing productivity creators build assistants).",
+  "Deleted": "n8n, a Gmail agent, a vector database, a Telegram bot, and any workflow joining them. One statement a year already lists fixed dates, and the phone calendar is already open every day.",
+  "Bottleneck": "Putting each decision on that calendar. After the event exists, the only wait is until its date.",
+  "Checked myself": "Only what you wrote in this request. No statement, calendar, or tool was opened."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "Clear, bounded calendar fix with all four record lines placed before the recommendation; the proposed stack is removed by name and the reply states what it did not check.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-renewal-admin.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-renewal-admin",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

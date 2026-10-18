@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: sort the existing shared counter list by pickup date and finish today's unmade cakes before any later order. Defer the Odoo implementation partner. No optional additions; no unmet needs are flagged beyond the agent not having seen the list.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You require every cake due today to be prepared before pickup. You also asked for an Odoo sales, inventory, and manufacturing rollout next week with an implementation partner, because other shops are moving.",
+  "Deleted": "Odoo sales, inventory, and manufacturing, and any counter sync around them. Payments and stock already reconcile, and everyone preparing cakes can already read the one shared list.",
+  "Bottleneck": "Preparation sequence. Cakes due today were still unmade while orders for next month had already been prepared.",
+  "Checked myself": "Your account of this morning. I have not seen the order list."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before the recommendation, and the fix is a bounded date sort that defers Odoo, though the reply does not name the morning baker explicitly.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-bakery-pickups.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

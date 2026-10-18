@@ -1,0 +1,9 @@
+**Requirements and who asked**: The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years, and it forbids authors approving their own documents or later edits changing that retained version. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.
+
+**Deleted**: Typed initials and a naming convention as the release control. They do not freeze the approved bytes, record a trustworthy approver or time, or stop self-approval.
+
+**Bottleneck**: Authors can still edit the shared folder after a document is marked approved, so the released file is not a retained approved version.
+
+**Checked myself**: Your statement of the contract, the twelve remote authors, the three reviewers, weekly releases, and author edit access on the current shared folder.
+
+The initials column and naming convention would miss the contract on version, identity, time, self-approval, and later edits. Keep the shared folder for drafts, and for each release have a reviewer who did not author the document put an unchanged copy in storage authors cannot change or delete for seven years, with that reviewer's account and the approval time stored with the copy. Confirm if you want this in place before the delivery.

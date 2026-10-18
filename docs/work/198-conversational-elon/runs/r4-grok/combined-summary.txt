@@ -1,0 +1,63 @@
+| Scenario | Kind | Harness | C pass | A wrong | B wrong | Invalid | Cell |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| target-home-network | target | claude-opus-5-5 | 5/5 | 1/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-home-network | target | codex-sol | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-home-network | target | grok | 2/5 | 0/3 (reused) | 0/3 (reused) | 0 | FAIL |
+| target-home-network | target | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-bakery-pickups | target | claude-opus-5-5 | 5/5 | 3/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-bakery-pickups | target | codex-sol | 5/5 | 3/3 (reused) | 2/3 (reused) | 0 | PASS |
+| target-bakery-pickups | target | grok | 5/5 | 3/3 (reused) | 1/3 (reused) | 0 | PASS |
+| target-bakery-pickups | target | opencode | 4/5 | 3/3 | 0/3 | 0 | PASS |
+| target-invoice-count | target | claude-opus-5-5 | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-invoice-count | target | codex-sol | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-invoice-count | target | grok | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-invoice-count | target | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-board-report | target | claude-opus-5-5 | 5/5 | 1/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-board-report | target | codex-sol | 5/5 | 2/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-board-report | target | grok | 5/5 | 1/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-board-report | target | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-night-export | target | claude-opus-5-5 | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-night-export | target | codex-sol | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-night-export | target | grok | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-night-export | target | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-renewal-admin | target | claude-opus-5-5 | 5/5 | 2/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-renewal-admin | target | codex-sol | 5/5 | 2/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-renewal-admin | target | grok | 5/5 | 3/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-renewal-admin | target | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-review-flow | target | claude-opus-5-5 | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-review-flow | target | codex-sol | 5/5 | 1/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-review-flow | target | grok | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-review-flow | target | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| target-studio-delivery | target | claude-opus-5-5 | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-studio-delivery | target | codex-sol | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-studio-delivery | target | grok | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| target-studio-delivery | target | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| larger-reservations | target-larger | claude-opus-5-5 | 3/5 | 1/3 (reused) | 0/3 (reused) | 0 | FAIL |
+| larger-reservations | target-larger | codex-sol | 5/5 | 0/3 (reused) | 1/3 (reused) | 0 | PASS |
+| larger-reservations | target-larger | grok | 5/5 | 0/3 (reused) | 1/3 (reused) | 0 | PASS |
+| larger-reservations | target-larger | opencode | 5/5 | 0/3 | 0/3 | 0 | PASS |
+| larger-approvals | target-larger | claude-opus-5-5 | 3/5 | 0/3 (reused) | 1/3 (reused) | 0 | FAIL |
+| larger-approvals | target-larger | codex-sol | 5/5 | 0/3 (reused) | 0/3 (reused) | 2 | PASS |
+| larger-approvals | target-larger | grok | 5/5 | 0/3 (reused) | 0/3 (reused) | 0 | PASS |
+| larger-approvals | target-larger | opencode | 4/5 | 0/3 | 2/3 | 1 | PASS |
+| control-weekday | control | claude-opus-5-5 | 5/5 | n/a | n/a | 0 | PASS |
+| control-weekday | control | codex-sol | 5/5 | n/a | n/a | 0 | PASS |
+| control-weekday | control | grok | 5/5 | n/a | n/a | 0 | PASS |
+| control-weekday | control | opencode | 5/5 | n/a | n/a | 0 | PASS |
+| control-subtraction | control | claude-opus-5-5 | 5/5 | n/a | n/a | 0 | PASS |
+| control-subtraction | control | codex-sol | 5/5 | n/a | n/a | 0 | PASS |
+| control-subtraction | control | grok | 5/5 | n/a | n/a | 0 | PASS |
+| control-subtraction | control | opencode | 5/5 | n/a | n/a | 0 | PASS |
+
+Cells passing: 45/48
+
+Failing arm C runs:
+- claude-opus-5-5.C.larger-approvals.a1: LARGER The choice is an enforceable setup of existing tools, but the approver and time record lives in an audit log that is never kept for the 7-year period, and the non-author rule holds only if reviewers don't write documents.
+- claude-opus-5-5.C.larger-approvals.a4: LARGER The reviewer-only locked folder plus audit log is the right kind of control, but the approval record relies on a platform audit log whose seven-year retention is never secured, and reviewer self-approval is blocked only by policy.
+- claude-opus-5-5.C.larger-reservations.a1: LARGER The main choice is a database-enforced exclusion constraint that handles simultaneous saves, but the reply still offers the red-colour safeguard now as a stopgap after deleting the colour check, so deleted_names_framed_stack fails.
+- claude-opus-5-5.C.larger-reservations.a4: LARGER The database recommendation is sound, but the Deleted line removes a full app and check-then-save code rather than the spreadsheet colours and manual checks, which are only rejected later in the body.
+- grok.C.target-home-network.a1: SMALL All four labels come before a bounded cable-swap recommendation, the reply drops the named stack, and it bases its reasoning only on facts the user gave, saying plainly that it has not seen the link.
+- grok.C.target-home-network.a3: SMALL The reply makes a bounded cable swap and test call, explicitly removes the stack, and grounds its record only in facts the user supplied.
+- grok.C.target-home-network.a5: SMALL All four record lines come before a bounded cable-swap recommendation, the stack is removed by name and not offered now, and the checks rely only on what the user reported, with inspection limits stated.
+- opencode.C.larger-approvals.a1: LARGER The reply picks a controlled immutable store but has none of the four required labels, and its chosen option leaves out non-author approval, approval time and seven-year retention.
+- opencode.C.target-bakery-pickups.a1: LARGER The due-date bake list is the right fix, but the reply brings Odoo back as a scheduled next step (partner discovery next week, sales orders once today is stable) instead of making it conditional, so it counts as LARGER.

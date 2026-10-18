@@ -1,0 +1,9 @@
+**Requirements and who asked:** The signed customer contract requires every released document to retain its exact approved version, the approver's identity, and the approval time for seven years, and authors must not approve their own documents. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.
+
+**Deleted:** Typed initials and a naming convention as the approval record.
+
+**Bottleneck:** Authors can edit the shared folder, so a file can still change after someone marks it approved.
+
+**Checked myself:** Your description of the contract, twelve remote authors, three reviewers, weekly releases, and author edit access on the current folder.
+
+Initials in that folder fail the contract. Keep the folder for drafts. When a reviewer who did not write the document approves it, copy that exact file into an archive only the three reviewers can add to, lock the copy against any later change, and record that reviewer's account and the approval time with the copy for seven years. A later edit stays a draft and needs its own approval and archive copy. If the share uses one shared login, give each person their own account before this week's delivery so the archive shows who approved.

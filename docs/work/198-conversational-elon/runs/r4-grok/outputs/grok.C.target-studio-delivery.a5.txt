@@ -1,0 +1,11 @@
+**Requirements and who asked**: You asked for a professional delivery workflow this week. The client requires the final JPEGs in the exact product-code order they supply, plus the contact-sheet PDF you already send. The DAM, AI tagging, semantic search, and cloud review portal are spending you are considering because other studios buy them.
+
+**Deleted**: Adobe-style DAM, AI tagging, semantic search, cloud review portal.
+
+**Bottleneck**: An hour per job dragging thumbnails into the client's code order. Each filename already starts with its product code, and the client already supplies that order.
+
+**Checked myself**: Only what you wrote here. I have not opened a job folder, a code list, or the machine.
+
+You want each delivery's JPEGs and contact sheet to follow the client's code list.
+
+This week, add one local script beside the job folder: it reads the code list, copies each JPEG whose name starts with that code into a new folder (client order, then filename order within a code), and writes the contact-sheet PDF from that same sequence. Run it on the next list and folder and send that output.

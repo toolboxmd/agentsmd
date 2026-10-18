@@ -1,0 +1,9 @@
+**Requirements and who asked:** You need to decide on each renewal two weeks before its notice deadline. You asked how n8n, a Gmail agent, a vector database, and a Telegram bot should fit together after budgeting for them because productivity creators are building AI assistants.
+
+**Deleted:** n8n, the Gmail agent, the vector database, the Telegram bot, and any agent workflow. The dates stay fixed all year, you already open the phone calendar every day, and you do not want automatic cancellation or payments.
+
+**Bottleneck:** Entering each notice deadline into the calendar you already check, once, when the yearly statement arrives.
+
+**Checked myself:** Only what you said here: one annual statement, fixed renewal and notice dates, a decision two weeks before each notice deadline, daily phone-calendar use, and no automatic cancellation or payments. I have not seen your statement or calendar.
+
+You want a prompt to decide on each renewal two weeks before its notice deadline. When the statement arrives, add one phone-calendar event per contract on the day 14 days before its notice deadline, and put the contract name, renewal date, and notice deadline in the event. Those events are the whole system for the year, and you still make every payment and cancellation yourself.

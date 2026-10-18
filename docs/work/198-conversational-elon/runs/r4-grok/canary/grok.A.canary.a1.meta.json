@@ -1,0 +1,16 @@
+{
+ "run_id": "grok.A.canary.a1",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "A",
+ "arm_sha256": null,
+ "scenario": "canary",
+ "attempt": 1,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 8.5,
+ "valid": true,
+ "effort": "medium",
+ "reasoning_effort_cli": "--reasoning-effort medium"
+}

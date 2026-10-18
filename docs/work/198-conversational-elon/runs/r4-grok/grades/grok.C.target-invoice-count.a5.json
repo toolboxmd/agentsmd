@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: replace the endpoint's row loading and in-memory counting with one SQL COUNT in the existing application and PostgreSQL. Optional addition: an index on the unpaid condition, only if the query is still slow. No new service or topic this week, and Kafka, CQRS and Redis are rejected. Unmet needs: no latency was measured, and the query and schema were not inspected.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Unpaid-invoice count under one second, matching invoices committed at request time (you). An approved Kafka budget and peers moving to events are not requirements for this count.",
+  "Deleted": "Kafka, a CQRS projection, Redis, and any new service or topic. A projection lags commit time and adds systems this count does not need.",
+  "Bottleneck": "The endpoint loads invoice rows, builds objects, and counts them in application memory.",
+  "Checked myself": "You said the endpoint returns only that count, has no other reader, and users report it is slow. The query and schema were not inspected."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The four record lines come before a bounded SQL COUNT fix that keeps request-time freshness, and the index is only a conditional next step.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-invoice-count.a5",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-invoice-count",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

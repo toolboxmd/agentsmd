@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "This week, tell the team that when the lead is out, either of the two qualified, authorized engineers approves and merges in the existing tracker. Nothing else is added now: squads, chapters, Jira Align, new tooling and the workshops are all dropped. No needs are left unmet beyond confirming the rule against the tracker.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for a model you can start this week so changes ship faster, and so they stop waiting when you are absent. Squads, chapters, Jira Align, new tooling, and quarterly workshops are peer habits you offered to fund; the last six changes do not depend on them.",
+  "Deleted": "Spotify squads and chapters, Jira Align, new tooling, and quarterly planning workshops.",
+  "Bottleneck": "Approval. Coding on those six changes took under a day, then each waited three days because you were the only assigned reviewer and you were away.",
+  "Checked myself": "What you told me: four engineers in one time zone, statuses already in your tracker, that six-change pattern, you away, and two other engineers already qualified and authorized to approve. I have not opened the tracker."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines come before the recommendation, which is a simple backup-reviewer rule. The reply drops the larger proposals by name and says plainly that it did not open the tracker.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-review-flow.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-review-flow",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

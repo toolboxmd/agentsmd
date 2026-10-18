@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Action now: run a new cable to the desk computer, leave slack through the grommet so it isn't pinched, then place a test call. If the call holds, leave the network as it is. The reply adds no optional extras: the UniFi gateway, switches and Grafana dashboard are removed as current requirements. It does not cover what to do if the new cable doesn't fix the drops, and it doesn't address the future-proofing goal.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "Dependable video calls at that desk (you). A UniFi gateway, managed switches, and a Grafana dashboard (you, to match a home-network group and future-proof).",
+  "Deleted": "UniFi gateway, managed switches, Grafana dashboard. The shared router already keeps two other calls up during a dropout, so new gear and a dashboard do not touch the failure.",
+  "Bottleneck": "The years-old desk Ethernet cable through a tight grommet. It has not been replaced.",
+  "Checked myself": "What you told me: one Ethernet desk drops calls, two other devices on the same router stay connected, the cable is old and passes a tight grommet, and no other cable has been tried. I have not seen the link."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labels come before a bounded cable-swap recommendation, the reply drops the named stack, and it bases its reasoning only on facts the user gave, saying plainly that it has not seen the link.",
+ "wrong_decision": false,
+ "candidate_pass": false,
+ "run_id": "grok.C.target-home-network.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-home-network",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": false,
+  "Deleted": false,
+  "Bottleneck": false,
+  "Checked myself": false
+ },
+ "judge_model": "claude-opus-5-5"
+}

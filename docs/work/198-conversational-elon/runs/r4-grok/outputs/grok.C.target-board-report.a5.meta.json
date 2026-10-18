@@ -1,0 +1,16 @@
+{
+ "run_id": "grok.C.target-board-report.a5",
+ "harness": "grok",
+ "host": "grok",
+ "model": "grok-4.7",
+ "arm": "C",
+ "arm_sha256": "a1f942978780dfead35a0b81ca9e9d4b978a57ac44ae30a1ab00695a5d9941d2",
+ "scenario": "target-board-report",
+ "attempt": 5,
+ "exit": 0,
+ "stderr_tail": "",
+ "seconds": 42.1,
+ "valid": true,
+ "effort": "medium",
+ "reasoning_effort_cli": "--reasoning-effort medium"
+}

@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Do now: keep the shared spreadsheet but lock the grid so agents can't type into it directly, and route every booking through one save action. That action takes an exclusive lock covering both offices, checks the item identifier for overlapping dates and rejects a conflicting save straight away. Red formatting, a reminder to check, and a new booking application are all dropped. No optional extras are offered. Unmet need: the reply hasn't seen the spreadsheet, so whether the lock and the protection can really be enforced is not confirmed.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires that a second reservation for the same item identifier be rejected at save time when the dates overlap, including when two agents submit together. You asked whether red conditional formatting and a reminder to check overlaps can ship this week.",
+  "Deleted": "Red conditional formatting and a reminder to check overlaps, because both agents can save before either sees the colour. A new booking application, because the shared spreadsheet can enforce the rule once it is the only write path.",
+  "Bottleneck": "The save accepts two overlapping bookings for one physical item.",
+  "Checked myself": "Six agents, two offices, one identifier per item, the same item promised to two customers for overlapping dates last week, and the owner's save-time rejection rule. I have not seen the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The spreadsheet stays as the store, but the control is an atomic save that checks for overlaps under a lock and rejects the second of two simultaneous submissions, so it meets the LARGER capabilities rather than being a colour-coding patch.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-reservations.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

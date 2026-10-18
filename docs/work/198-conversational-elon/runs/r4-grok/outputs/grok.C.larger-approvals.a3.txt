@@ -1,0 +1,13 @@
+**Requirements and who asked**: The signed customer contract requires every released document to keep its exact approved version, the approver's identity, and the approval time for seven years; the approver must be someone other than the author; later edits must leave that approved version unchanged. You asked to keep the shared folder, add an APPROVED column of typed initials, and agree a naming convention for this week's delivery.
+
+**Deleted**: The initials column, the naming convention, and the author-editable folder as the approved record. Authors can change the file, the initials, and any time written there, so those three cannot hold the contract's proof.
+
+**Bottleneck**: A copy that stays fixed for seven years and is bound to an authenticated approver and a system timestamp, before this week's delivery.
+
+**Checked myself**: Your account of the contract, twelve remote authors, three reviewers, weekly releases, and author edit access to the current shared folder. I have not inspected the folder or the contract.
+
+You are trying to meet the customer's release controls before this week's delivery.
+
+Keep the shared folder for drafts. On approval, a reviewer who is a different person from the author saves that exact file into a separate archive that rejects changes and deletion for seven years, with that reviewer's authenticated identity and the system approval time stored on that version.
+
+Confirm the archive and which existing store can lock a file for seven years, and I will set that release path up.

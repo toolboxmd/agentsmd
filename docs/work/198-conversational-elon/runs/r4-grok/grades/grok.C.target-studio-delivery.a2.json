@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: use one local script that reads the client's ordered code list, matches each code to the JPEG whose filename starts with it, and copies the matches into a delivery folder as numbered files (001_CODE.jpg and so on). It then builds the contact-sheet PDF from that numbered sequence, and stops to print any missing or duplicate code before writing the PDF. No optional additions are offered. The DAM, AI tagging, semantic search and cloud review portal are rejected as current requirements. No unmet needs are left open.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires each delivery\u2019s JPEGs and contact-sheet PDF in the supplied product-code order. You asked for a professional delivery workflow this week. A DAM, AI tagging, semantic search, and a cloud review portal came from comparing other studios; the client\u2019s delivery does not depend on them.",
+  "Deleted": "Adobe-style DAM, AI tagging, semantic search, cloud review portal.",
+  "Bottleneck": "About an hour per job dragging thumbnails into an order the filenames already contain.",
+  "Checked myself": "You said each JPEG name starts with its product code, the client supplies the ordered code list, the finals for a job sit in one folder, and you write the contact sheet after ordering by hand."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes a bounded local script that follows the client's code order, rejects the full DAM stack by name, and grounds its check only in facts the user supplied.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-studio-delivery.a2",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

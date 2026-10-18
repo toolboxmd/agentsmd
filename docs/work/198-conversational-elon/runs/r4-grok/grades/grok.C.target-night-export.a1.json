@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Run the existing command from cron at 02:00 on the always-on Linux machine the user already administers, and add any later exports as more cron lines on that host. It drops Airflow, Kubernetes and any worker/scheduler split, and offers no optional platform additions. It does not mention checking the interpreter, paths or data access on that host first.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "One correct report before 08:00, safe to replace by rerunning, shipped this week (you). An Airflow-on-Kubernetes split of workers, scheduler, and deployment because peers run that (you).",
+  "Deleted": "Airflow, Kubernetes, and any worker, scheduler, or deployment split. One three-minute command with no downstream jobs gives them nothing to coordinate.",
+  "Bottleneck": "Missed nights happen because the laptop is asleep. The always-on Linux machine you already administer is the whole fix.",
+  "Checked myself": "Your account of the working command, its three-minute runtime, no downstream jobs, safe reruns, correct successful output, laptop sleep, the 08:00 need, and that existing host."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines come before a small cron fix, and Checked myself cites only the user's own account without claiming any inspection.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-night-export.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-night-export",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

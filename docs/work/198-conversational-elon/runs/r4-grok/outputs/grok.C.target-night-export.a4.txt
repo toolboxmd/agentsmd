@@ -1,0 +1,6 @@
+**Requirements and who asked:** A report ready by 08:00 from the existing three-minute Python command; you asked. An Airflow-on-Kubernetes worker, scheduler, and deployment split, plus future-proofing, came from peer practice and available budget.
+**Deleted:** Airflow, Kubernetes, separate workers, a scheduler service, and a deployment platform for this export.
+**Bottleneck:** The laptop is asleep overnight, so the command never starts. Successful runs are already correct, and running the command again safely replaces that night's output.
+**Checked myself:** Only your description: a three-minute command, no downstream jobs, safe rerun, missing runs when the laptop sleeps, an always-on Linux machine you already administer, a deadline of 08:00, and a flexible start time. I did not inspect that machine.
+
+You want each night's report finished before 08:00 even when the laptop is asleep. Run the existing command from cron on the always-on Linux machine once a night, early enough to finish before 08:00, and append stdout and stderr to a log. When a morning report is missing, run that same command again by hand.

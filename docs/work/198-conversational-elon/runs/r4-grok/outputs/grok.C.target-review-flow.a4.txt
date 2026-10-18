@@ -1,0 +1,10 @@
+**Requirements and who asked:** You asked for an operating model you can launch this week so changes stop waiting when you are away.
+**Deleted:** Spotify squads and chapters, Jira Align, and quarterly planning workshops. Nothing in the last six changes breaks without them.
+**Bottleneck:** Coding finished in under a day on all six, then each waited three days because you were the only assigned reviewer and you were away. Two other engineers were already authorized to approve.
+**Checked myself:** What you told me: four engineers in one time zone, current statuses in your existing tracker, that six-change pattern, your absence, and two qualified approvers.
+
+You want a change to ship on the day it is coded while you are out.
+
+This week, keep your current tracker and use one rule: when you are out, the author assigns one of the two authorized engineers, and that engineer approves the same day the change is ready. One approval is enough.
+
+Tell the team today, and move every open review that is waiting on you to one of those two.

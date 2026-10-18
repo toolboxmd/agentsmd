@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Right now: add a PivotTable in the existing workbook with Region on rows, Date grouped by month on columns and Sum of net amount as values, then refresh it when each new export arrives. The reply suggests no optional additions and recommends no stack. It doesn't explicitly say that refunds stay negative, but summing the signed net amount keeps them negative. Nothing the user needs is left unaddressed.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You need a monthly board report of net sales by region from one local Excel table (region, date, signed net amount, refunds already negative) that fits on your computer. You also asked for Airbyte, Snowflake, dbt, and Power BI because peers use them and the budget exists. The report does not depend on that stack.",
+  "Deleted": "Airbyte, Snowflake, dbt, Power BI, and a warehouse pipeline. One file on your machine has no ingestion, storage, or modeling job.",
+  "Bottleneck": "The monthly regional sums are still done by hand.",
+  "Checked myself": "Only your description of the export and the manual totals. I have not opened the workbook."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four labelled lines are filled in and come before the recommendation, which is a bounded PivotTable fix with the named stack rejected.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-board-report.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-board-report",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

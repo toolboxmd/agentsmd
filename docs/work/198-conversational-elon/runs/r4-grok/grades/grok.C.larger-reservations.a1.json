@@ -1,0 +1,30 @@
+{
+ "recommendation_summary": "Recommends one shared save path for all six agents right now. It stores a booking only when the item identifier has no overlapping dates, and when two submissions arrive together it refuses one of them. The reply offers to make that save the only way to confirm a booking. It rejects red formatting and reminders because the conflicting booking would already be saved. It offers no optional additions. It does not say what storage or platform would run the save, or whether the spreadsheet stays, and it says nothing about the 'ship this week' deadline beyond calling this the change to ship.",
+ "recommendation_class": "LARGER",
+ "labels": {
+  "Requirements and who asked": "The owner requires a conflicting reservation to be rejected at save time, including when two agents save together. You asked to ship this week by keeping the booking spreadsheet and adding red overlap formatting plus a reminder to check it.",
+  "Deleted": "Red conditional formatting and a reminder. Both leave the conflicting booking saved.",
+  "Bottleneck": "The save. Last week's double promise was already stored before anyone could look at a colour.",
+  "Checked myself": "What you told me: six agents in two offices, one identifier per physical item, two customers promised that item on overlapping dates, and the owner's reject-on-save rule. I have not opened the spreadsheet."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "larger_capabilities_met": true,
+ "note": "The chosen shared save checks for item/date conflicts when a booking is saved and lets only one of two simultaneous submissions through, though it doesn't name the storage behind it, and making it the only booking path is offered rather than required.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.larger-reservations.a1",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "larger-reservations",
+ "kind": "target-larger",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

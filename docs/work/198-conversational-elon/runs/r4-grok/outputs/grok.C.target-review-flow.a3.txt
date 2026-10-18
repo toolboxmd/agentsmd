@@ -1,0 +1,8 @@
+**Requirements and who asked:** You asked to ship faster so changes stop waiting when the lead is absent. You also raised Spotify squads and chapters, Jira Align, funded tooling, and quarterly planning workshops; the last six changes do not depend on any of those.
+**Deleted:** Spotify squads and chapters, Jira Align, new tooling, and quarterly planning workshops. Coding on those six changes already finished in under a day without them.
+**Bottleneck:** Approval. Each change then waited three days because you were the sole assigned reviewer and you were away. Two other engineers are already qualified and authorized to approve those changes.
+**Checked myself:** Told directly: four engineers, one time zone, statuses in the existing tracker, and those six changes. I have not opened the tracker.
+
+You are trying to get finished changes approved and merged while the lead is absent.
+
+This week, in the tracker you already use, make either of those two engineers a sufficient approver on the changes they are authorized to approve, and when you are away assign one of them as the required reviewer so one approval from them merges the pull request. Tell them they own that review while you are out.

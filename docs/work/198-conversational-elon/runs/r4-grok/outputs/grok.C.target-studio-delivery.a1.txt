@@ -1,0 +1,6 @@
+**Requirements and who asked:** The client requires each delivery in the supplied product-code order, followed by a contact-sheet PDF. You asked for a professional workflow this week and named budget for a DAM with AI tagging, semantic search, and a cloud review portal because other studios buy them.
+**Deleted:** The DAM, AI tagging, semantic search, and cloud review portal. The client did not ask for them, and nothing in this delivery breaks without them.
+**Bottleneck:** The hour spent dragging thumbnails into the client's code order before the PDF.
+**Checked myself:** Your account of an ordered code list, filenames that start with the product code, one JPEG folder per job, the drag step, and the contact-sheet PDF. No sample job was opened.
+
+You want each job's JPEGs and contact-sheet PDF in the client's code order, with that hour gone. Use one local script that reads the code list and the job folder, matches each code to the JPEG whose name starts with it, writes the files out in that sequence, and builds the contact-sheet PDF from the same sequence. Run it on the next delivery this week, using the existing finals folder as the input.

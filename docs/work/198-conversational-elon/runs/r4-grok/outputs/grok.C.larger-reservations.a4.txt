@@ -1,0 +1,8 @@
+**Requirements and who asked**: The owner requires that a second reservation for the same item identifier be rejected at save time when the dates overlap, including when two agents submit together. You asked whether red conditional formatting and a reminder to check overlaps can ship this week.
+**Deleted**: Red conditional formatting and a reminder to check overlaps, because both agents can save before either sees the colour. A new booking application, because the shared spreadsheet can enforce the rule once it is the only write path.
+**Bottleneck**: The save accepts two overlapping bookings for one physical item.
+**Checked myself**: Six agents, two offices, one identifier per item, the same item promised to two customers for overlapping dates last week, and the owner's save-time rejection rule. I have not seen the spreadsheet.
+
+You are trying to make a double booking impossible to store.
+
+Keep the one live shared spreadsheet both offices already use, protect it so agents cannot type bookings straight into the grid, and add a single save action that takes an exclusive lock covering both offices, checks that item identifier for overlapping dates, and refuses the save when they overlap so the second agent gets the rejection at once.

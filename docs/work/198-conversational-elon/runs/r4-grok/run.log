@@ -1,0 +1,19 @@
+grok.A.canary.a1                                        valid                                 8s
+CANARY A PASS 'no\nNONE'
+grok.B.canary.a1                                        valid                                 6s
+CANARY B PASS 'yes\n# Global Agent Rules'
+grok.C.canary.a1                                        valid                                12s
+CANARY C PASS 'yes\n# Global Agent Rules'
+grok.C.target-home-network.a1                           valid                                25s
+grok.C.target-home-network.a2                           valid                                30s
+grok.C.target-home-network.a3                           valid                                33s
+grok.C.target-home-network.a4                           valid                                39s
+grok.C.target-home-network.a5                           valid                                38s
+CELL target-home-network 5 valid 0 invalid
+grok.C.target-bakery-pickups.a1                         valid                                50s
+grok.C.target-bakery-pickups.a2                         valid                                49s
+grok.C.target-bakery-pickups.a3                         valid                                62s
+grok.C.target-bakery-pickups.a4                         valid                                38s
+grok.C.target-bakery-pickups.a5                         valid                                38s
+CELL target-bakery-pickups 5 valid 0 invalid
+refusing to reuse grok.C.target-invoice-count.a1

@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "The reply recommends building one local script now. The script reads the client's ordered code list, matches each code to the JPEG whose filename starts with it, writes numbered copies into a delivery folder and generates the contact-sheet PDF in that sequence. On the next job it should stop and report any code that is missing or matches more than one file. It offers no optional additions and leaves no needs unmet. The DAM stack is deleted.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "The client requires the final JPEGs in the supplied product-code order, and you already make a contact-sheet PDF. You asked for a DAM with AI tagging, semantic search, and a cloud review portal because other studios buy them and you have budget.",
+  "Deleted": "Adobe-style DAM, AI tagging, semantic search, and a cloud review portal.",
+  "Bottleneck": "The hour per delivery spent dragging thumbnails into the client's code order.",
+  "Checked myself": "Your description only: one folder of final JPEGs per job, each filename starts with the exact product code, the client supplies the ordered code list, and you then make a contact-sheet PDF. I did not inspect a job folder."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "The reply proposes a local script that follows the client's code order, rejects the whole DAM stack by name and grounds its checks only in the user's description, saying it did not inspect a job folder.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-studio-delivery.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-studio-delivery",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

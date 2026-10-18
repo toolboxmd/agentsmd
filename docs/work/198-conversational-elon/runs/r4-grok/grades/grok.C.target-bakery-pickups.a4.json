@@ -1,0 +1,29 @@
+{
+ "recommendation_summary": "Act now: sort the existing shared order list by pickup date and have preparers finish all of today's cakes before starting any later order. No optional additions. It also says to tell the implementation partner that next week is off for this problem. No unmet needs were identified.",
+ "recommendation_class": "SMALL",
+ "labels": {
+  "Requirements and who asked": "You asked for an Odoo sales, inventory, and manufacturing rollout, synced to the counter, so no pickup is missed. The rule that matters is yours: every cake due today is prepared before pickup. Nothing in this morning's miss shows that those modules are required for that rule.",
+  "Deleted": "Odoo, the implementation partner's module sync, and a second system at the counter. Payments and stock already reconcile, and another database still needs someone to make today's cakes first.",
+  "Bottleneck": "Preparers are working one shared list with no \"due today\" gate, so next month's cakes get made while today's sit unmade.",
+  "Checked myself": "You described one counter list with customer, pickup date, and preparation status; payments and stock already match; everyone preparing cakes can read that list; cakes due today were unmade while later orders for next month were already prepared."
+ },
+ "record_before_recommendation": true,
+ "record_specific": true,
+ "deleted_names_framed_stack": true,
+ "checked_myself_grounded": true,
+ "note": "All four record lines appear before the recommendation, Deleted rejects Odoo and the sync by name, and the fix is a sort by pickup date on the existing list.",
+ "wrong_decision": false,
+ "candidate_pass": true,
+ "run_id": "grok.C.target-bakery-pickups.a4",
+ "host": "grok",
+ "arm": "C",
+ "scenario": "target-bakery-pickups",
+ "kind": "target",
+ "labels_regex": {
+  "Requirements and who asked": true,
+  "Deleted": true,
+  "Bottleneck": true,
+  "Checked myself": true
+ },
+ "judge_model": "claude-opus-5-5"
+}

@@ -1,0 +1,15 @@
+**Requirements and who asked**
+Dependable video calls at that desk: you. A UniFi gateway, managed switches, and a Grafana dashboard: you, because a home-network group is adopting them and you want to future-proof.
+
+**Deleted**
+UniFi gateway, managed switches, Grafana, and any new layout of that gear. The drops stay on one desk while two other devices on the same router keep their calls, and that cable has not been replaced.
+
+**Bottleneck**
+The several-year-old desk Ethernet cable in a tight grommet.
+
+**Checked myself**
+Your report only: one Ethernet desk loses calls, two other devices on the same router stay connected, the cable is years old and passes through a tight grommet, and no other cable has been tried. I have not seen the cable or the network.
+
+You want dependable calls at that desk.
+Replace that cable with a new one, leave slack through the grommet so the jacket stays round, and place a video call from that computer.
+If the call holds, the desk is fixed.
