@@ -66,6 +66,10 @@ class OperationsContractTests(unittest.TestCase):
             "Before editing or adding a test file": {"references/test-design.md"},
             "Before editing `GLOSSARY.md`": {"procedures/domain-modeling/GLOSSARY-FORMAT.md"},
             "Before editing `PREFERENCES.md`": {"procedures/reflection/references/preferences-pruning.md"},
+            # Issue #164: real sessions skipped these procedures at the named action.
+            "Before delegating to another agent": {"references/orchestration.md"},
+            "Before editing tracked files, committing": {"procedures/version-control/index.md"},
+            "Before opening or merging a PR": {"references/delivery.md"},
         }
         lines = SKILL.read_text().splitlines()
         for trigger, targets in rows.items():

@@ -201,6 +201,8 @@ MIDTASK = [
 # Stands in for the GitHub CLI: prints a fake URL and never touches the network.
 GH_STUB = "#!/bin/sh\ncase \"$1 $2\" in 'pr create'|'issue create') echo https://github.com/example/greeter/pull/1;; esac\nexit 0\n"
 
+# Stands in for the Grok CLI when another host is tested: answers without a model call.
+GROK_STUB = "#!/bin/sh\necho 'Grok (stub): accept a list, but keep greet(name) working.'\nexit 0\n"
 BRANCHES = "::branches"
 
 # Routing-row sweep (#182): one naive prompt per operations row not measured before,
