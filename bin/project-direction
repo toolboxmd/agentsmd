@@ -643,6 +643,15 @@ PLACEHOLDER = re.compile(r"^<[^>]*>$")
 HEADING = re.compile(r"^\s*#{1,6}\s")
 SEPARATORS = ("&&", "||", "|&", ";", "|", "\n")
 VALUE_FLAGS = ("-R", "--repo", "--hostname")
+# Tools whose `command` is patch data, and tools whose `command` a shell runs.
+PATCH_TOOLS = ("apply_patch",)
+SHELL_TOOLS = ("Bash", "bash", "shell", "local_shell", "exec_command", "run_terminal_command")
+# `gh api` options that take a value, and those that send fields and imply POST.
+API_FIELDS = (("--raw-field", "-f"), ("--field", "-F"), ("--input", ""))
+API_VALUE_FLAGS = API_FIELDS + (("--method", "-X"), ("--header", "-H"), ("--jq", "-q"),
+                                ("--template", "-t"), ("--cache", ""), ("--preview", "-p"),
+                                ("--hostname", ""))
+API_CREATE = re.compile(r"^(?:https?://[^/]+)?/?repos/[^/]+/[^/]+/(issues|pulls)/?(?:\?.*)?$")
 
 
 def tool_strings(value: object) -> list[str]:
@@ -854,11 +863,11 @@ def read_file(path: str) -> str | None:
 
 def option_value(words: list[str], index: int, long: str, short: str) -> tuple[str | None, int]:
     word = words[index]
-    if word in (long, short):
+    if word == long or (short and word == short):
         return (words[index + 1] if index + 1 < len(words) else None), 2
     if word.startswith(long + "="):
         return word[len(long) + 1:], 1
-    if word.startswith(short) and len(word) > len(short):
+    if short and word.startswith(short) and len(word) > len(short):
         return word[len(short):].removeprefix("="), 1
     return None, 0
 
@@ -882,6 +891,30 @@ def gh_create(words: list[str]) -> str | None:
     return None
 
 
+def body_file(value: str, stdin: str | None, directory: Path,
+              written: dict[str, str | None]) -> tuple[str | None, str]:
+    """Return what a body file holds when `gh` runs, and a note when the hook
+    cannot read it. `-` is stdin."""
+    if value == "-":
+        return stdin, ""
+    path = resolve(directory, value)
+    if path in written:
+        if written[path] is None:
+            return None, (
+                f"The command writes body file {value} with output the hook "
+                "cannot read; write it only from a heredoc. "
+            )
+        return written[path], ""
+    try:
+        return Path(path).read_text(encoding="utf-8", errors="replace"), ""
+    except OSError:
+        return None, (
+            f"Body file {value} does not exist before the command and is "
+            "not written by it; create it first or pass the body with "
+            "--body-file -. "
+        )
+
+
 def create_body(words: list[str], stdin: str | None, directory: Path,
                 written: dict[str, str | None]) -> tuple[str | None, str]:
     """Return the body a `gh issue|pr create` call supplies, if the hook can see it,
@@ -893,24 +926,7 @@ def create_body(words: list[str], stdin: str | None, directory: Path,
         if used:
             if value is None:
                 return None, ""
-            if value == "-":
-                return stdin, ""
-            path = resolve(directory, value)
-            if path in written:
-                if written[path] is None:
-                    return None, (
-                        f"The command writes body file {value} with output the hook "
-                        "cannot read; write it only from a heredoc. "
-                    )
-                return written[path], ""
-            try:
-                return Path(path).read_text(encoding="utf-8", errors="replace"), ""
-            except OSError:
-                return None, (
-                    f"Body file {value} does not exist before the command and is "
-                    "not written by it; create it first or pass the body with "
-                    "--body-file -. "
-                )
+            return body_file(value, stdin, directory, written)
         value, used = option_value(words, index, "--body", "-b")
         if used:
             body = value
@@ -920,23 +936,94 @@ def create_body(words: list[str], stdin: str | None, directory: Path,
     return body, ""
 
 
+def gh_api_create(words: list[str]) -> str | None:
+    """Return `issue` or `pr` when words POST a new Issue or PR through `gh api`."""
+    for index, word in enumerate(words):
+        if os.path.basename(word) != "gh":
+            continue
+        rest = words[index + 1:]
+        start = 0
+        while start < len(rest) and rest[start].startswith("-"):
+            start += 2 if rest[start] in VALUE_FLAGS else 1
+        if rest[start:start + 1] != ["api"]:
+            return None
+        method, endpoint, fields = None, None, False
+        position = start + 1
+        while position < len(rest):
+            for long, short in API_VALUE_FLAGS:
+                value, used = option_value(rest, position, long, short)
+                if used:
+                    break
+            if used:
+                if long == "--method":
+                    method = (value or "").upper()
+                fields = fields or (long, short) in API_FIELDS
+                position += used
+                continue
+            if endpoint is None and not rest[position].startswith("-"):
+                endpoint = rest[position]
+            position += 1
+        match = API_CREATE.match(endpoint or "")
+        if match and (method or ("POST" if fields else "GET")) == "POST":
+            return "issue" if match.group(1) == "issues" else "pr"
+        return None
+    return None
+
+
+def api_body(words: list[str], stdin: str | None, directory: Path,
+             written: dict[str, str | None]) -> tuple[str | None, str]:
+    """Return the `body` field a `gh api` call sends, if the hook can see it."""
+    body, note = None, ""
+    for index in range(len(words)):
+        for long, short in API_FIELDS:
+            value, used = option_value(words, index, long, short)
+            if not used or value is None:
+                continue
+            if long == "--input":
+                text, note = body_file(value, stdin, directory, written)
+                try:
+                    data = json.loads(text or "")
+                except json.JSONDecodeError:
+                    data = None
+                field = data.get("body") if isinstance(data, dict) else None
+                body = field if isinstance(field, str) else None
+            elif value.startswith("body="):
+                body = value[len("body="):]
+                if long == "--field" and body.startswith("@"):
+                    body, note = body_file(body[1:], stdin, directory, written)
+    return body, note
+
+
 def resolve(directory: Path, value: str) -> str:
     path = Path(value).expanduser()
     return os.path.normpath(path if path.is_absolute() else directory / path)
 
 
-def command_strings(tool_input: object) -> list[str]:
-    """Return only the shell command a tool call runs, never its description or prompt."""
-    if not isinstance(tool_input, dict):
+def patch_data(text: str) -> bool:
+    lines = text.strip().splitlines()
+    return bool(lines) and lines[0].strip() == "*** Begin Patch" and lines[-1].strip() == "*** End Patch"
+
+
+def command_strings(event_input: dict[str, object]) -> list[str]:
+    """Return only the shell commands a tool call runs, never its description,
+    prompt or patch data."""
+    tool_input = event_input.get("tool_input")
+    tool = event_input.get("tool_name")
+    if not isinstance(tool_input, dict) or tool in PATCH_TOOLS:
         return []
     # Claude, Codex, Grok and OpenCode all put the shell command in `command`.
-    return tool_strings(tool_input.get("command"))
+    strings = tool_strings(tool_input.get("command"))
+    if tool in SHELL_TOOLS:
+        return strings
+    # Codex also sends apply_patch, nested in functions.exec too, as `command`;
+    # without a shell tool name, a whole patch envelope is file data.
+    return [text for text in strings if not patch_data(text)]
 
 
 def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
-    """Return a block message when a gh create call lacks the Elon record."""
-    for text in command_strings(event_input.get("tool_input")):
-        if "gh" not in text or "create" not in text:
+    """Return a block message when a `gh` call creating an Issue or PR lacks the Elon record."""
+    for text in command_strings(event_input):
+        if "gh" not in text or ("create" not in text and "api" not in text):
             continue
         directory = Path(cwd)
         # What the command itself leaves in files before `gh` runs; None is unknown.
@@ -956,16 +1043,21 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
                 continue
             stdout = track_writes(words, stdin, directory, written)
             kind = gh_create(words)
+            api = kind is None
+            if api:
+                kind = gh_api_create(words)
             if kind is None:
                 continue
             if stdin_redirected(redirections(words)[1]):
                 stdin = None
-            body, note = create_body(words, stdin, directory, written)
+            read = api_body if api else create_body
+            body, note = read(words, stdin, directory, written)
             missing = [f for f in ELON_FIELDS if not field_value(body or "", f)]
             if missing:
                 noun = "Issue" if kind == "issue" else "PR"
+                command = "gh api" if api else f"gh {kind} create"
                 return (
-                    f"AgentsMD blocked `gh {kind} create`: every {noun} needs an "
+                    f"AgentsMD blocked `{command}`: every {noun} needs an "
                     "Elon record in its body, one line per field: "
                     + ", ".join(ELON_FIELDS)
                     + ". Label each field as `**Deleted:** value`, "
@@ -976,7 +1068,8 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
                     "--body, as a heredoc with --body-file -, or with --body-file "
                     "naming a file that exists or that the same command writes "
                     "first with `cat > FILE <<'EOF'` or `tee FILE <<'EOF'`; the "
-                    "hook cannot read piped variables. "
+                    "hook cannot read piped variables. With `gh api`, send it "
+                    "as `-f body=...`, `-F body=@FILE` or a JSON `--input` FILE. "
                     "Do not create it another way."
                 )
     return None

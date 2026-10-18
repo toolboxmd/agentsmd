@@ -118,7 +118,7 @@ function loadContext(directory, sessionID) {
 }
 
 // A coarse filter; the loader parses the shell command and decides.
-const MAY_CREATE = /\bgh\b[\s\S]*\bcreate\b/;
+const MAY_CREATE = /\bgh\b[\s\S]*\b(?:create|api)\b/;
 
 // The loader owns the Elon gate; the plugin only forwards possible gh create
 // calls to it and turns its exit status 2 into a thrown error, which blocks the
