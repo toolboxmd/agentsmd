@@ -66,8 +66,12 @@ when sufficient.
 
 Include the unit's outcome, allowed and forbidden writes, shared-resource limits,
 acceptance, proof seam, known gotchas, report shape, and bounded escalation
-condition. Do not dispatch unresolved ownership or acceptance. Do not dispatch
-implementation of a new component or system until the brief cites a Spec Issue
+condition. The report shape for a negative result (not possible, cannot remove,
+blocked, no recipe, or failed) lists what was tried and which primary sources
+were checked: the tool's own docs and bundled README, its `--help`, its
+environment variables, and its config keys. Do not dispatch unresolved
+ownership or acceptance. Do not dispatch implementation of a new component or
+system until the brief cites a Spec Issue
 ([to-spec](../procedures/to-spec/index.md)) whose Design review names the
 reviewer, the verdict, and the user's decisions; acceptance criteria in a brief
 are not a design. A microfix or a change inside an existing component says so in
@@ -102,8 +106,14 @@ relevant fields in the final response.
 
 The coordinator independently verifies Git/GitHub state and reuses valid
 exact-candidate proof under [verification](verification.md); transcripts and duplicate
-checks are unnecessary. Start the next unblocked substantive Issue with its own
-packet. Resume the same Issue when context remains useful; recover current state
+checks are unnecessary. Before you relay a negative result or file anything from
+it, read [bounded delegation](bounded-delegation.md) in full and apply its
+negative-result gate. When you file or find an Issue for work the user wants
+done, leave that turn with a real owner: a running worker you started within
+your authority, or a named agent that has accepted the handoff, message sent
+and acknowledged. "X will pick it up", with no handoff, is not an owner. Name
+the owner in the report to the user. Start the next unblocked substantive
+Issue with its own packet. Resume the same Issue when context remains useful; recover current state
 from Git, GitHub, instructions, and handoff. Never recreate completed work or
 request completed approvals again.
 
