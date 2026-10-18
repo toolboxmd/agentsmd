@@ -1,0 +1,15 @@
+{"host": "claude", "model": "claude-opus-5-5", "arm": "main", "reply": "# Global Agent Rules\nyes\nyes", "want": ["# Global Agent Rules", "yes", "yes"], "pass": true}
+{"host": "claude", "model": "claude-opus-5-5", "arm": "branch", "reply": "# Global Agent Rules\nyes\nyes", "want": ["# Global Agent Rules", "yes", "yes"], "pass": true}
+{"host": "claude", "model": "claude-opus-5-5", "arm": "none", "reply": "NONE\nno\nno", "want": ["NONE", "no", "no"], "pass": true}
+{"host": "codex", "model": "gpt-6.1-sol", "arm": "main", "reply": "\"# Global Agent Rules\"\nyes\nno", "want": ["# Global Agent Rules", "yes", null], "pass": true}
+{"host": "codex", "model": "gpt-6.1-sol", "arm": "branch", "reply": "\"# Global Agent Rules\"\nyes\nno", "want": ["# Global Agent Rules", "yes", null], "pass": true}
+{"host": "codex", "model": "gpt-6.1-sol", "arm": "none", "reply": "NONE\nno\nno", "want": ["NONE", "no", "no"], "pass": true}
+{"host": "grok", "model": "grok-4.7", "arm": "main", "reply": "", "want": ["# Global Agent Rules", "yes", null], "pass": false}
+{"host": "grok", "model": "grok-4.7", "arm": "branch", "reply": "", "want": ["# Global Agent Rules", "yes", null], "pass": false}
+{"host": "grok", "model": "grok-4.7", "arm": "none", "reply": "", "want": ["NONE", "no", "no"], "pass": false}
+{"host": "opencode", "model": "opencode/muse-spark-1.3-contributor-free", "arm": "main", "reply": "# Global Agent Rules\nyes\nyes", "want": ["# Global Agent Rules", "yes", "yes"], "pass": true}
+{"host": "opencode", "model": "opencode/muse-spark-1.3-contributor-free", "arm": "branch", "reply": "# Global Agent Rules\nyes\nyes", "want": ["# Global Agent Rules", "yes", "yes"], "pass": true}
+{"host": "opencode", "model": "opencode/muse-spark-1.3-contributor-free", "arm": "none", "reply": "NONE\nno\nno", "want": ["NONE", "no", "no"], "pass": true}
+{"host": "grok", "model": "grok-4.7", "arm": "main", "reply": "# Global Agent Rules\nyes\nno", "want": ["# Global Agent Rules", "yes", null], "pass": true}
+{"host": "grok", "model": "grok-4.7", "arm": "branch", "reply": "# Global Agent Rules\nyes\nno", "want": ["# Global Agent Rules", "yes", null], "pass": true}
+{"host": "grok", "model": "grok-4.7", "arm": "none", "reply": "NONE\nno\nno", "want": ["NONE", "no", "no"], "pass": true}
