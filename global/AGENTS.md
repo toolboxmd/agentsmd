@@ -15,14 +15,14 @@ tracked work, and the live system for external state.
 
 ## Canonical source and preferences
 
-The session hook verifies the canonical `global/AGENTS.md` behind this host's
+The session hook verifies the canonical `global/AGENTS.md` behind this harness's
 global instruction link and reports the result. Reread that file only when the
 hook reports a problem or no hook ran (for example, Grok's first response),
 and then in full;
-`bin/project-direction inspect --host <codex|grok|opencode|claude|muse>` gives the
+`bin/project-direction inspect --harness <codex|grok|opencode|claude|muse>` gives the
 same report on demand. The canonical clone root is the parent of `global/`; use
 it for source-relative paths, never the link directory or the project. Read
-[setup and host limits](../README.md#install-boundary) in that clone in full.
+[setup and harness limits](../README.md#install-boundary) in that clone in full.
 
 Read the private `PREFERENCES.md` at the canonical clone root in full when it
 exists, including outside Git repositories. Hooks may supply it; otherwise read
@@ -132,7 +132,7 @@ the user wants solved.
   or that only the user can fix (hardware, accounts, billing, credentials, app
   settings), in the private tracker that preferences name; if none is named,
   tell the user.
-- Persistent Host Automation: before creating or changing a host service,
+- Persistent Machine Automation: before creating or changing a machine service,
   scheduled job, or health or recovery automation meant to outlive the task,
   read `docs/adr/0001-persistent-host-automation.md` in full.
 

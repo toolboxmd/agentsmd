@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Host-neutral validator for Delivery Authority and continuation fixtures."""
+"""Harness-neutral validator for Delivery Authority and continuation fixtures."""
 
 from __future__ import annotations
 

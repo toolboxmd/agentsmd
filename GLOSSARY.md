@@ -97,10 +97,10 @@ _Avoid_: archive, permanent task workspace
 **Fresh context**:
 A child start seeded with the minimal durable packet and no prior transcript.
 Do not fork the parent transcript. Outside the routing tool, the default is a
-host child that honors the requested model and effort and is visible to the
-user, else a nested child in the parent session. A separate host task is
+harness child that honors the requested model and effort and is visible to the
+user, else a nested child in the parent session. A separate harness task is
 the exception when the slice must outlive the parent or continue after it
-stops, or when the host offers no visible child.
+stops, or when the harness offers no visible child.
 _Avoid_: new sidebar session, new chat as the default, forked parent context
 
 **Repository Reconciliation**:
@@ -171,8 +171,8 @@ The `toolboxmd/marketplace` distribution surface for installable ToolboxMD
 plugins.
 _Avoid_: Product Registry, Skill Catalogue
 
-**Persistent Host Automation**:
-Agent-created or agent-maintained host services, scheduled jobs, checks, and
+**Persistent Machine Automation**:
+Agent-created or agent-maintained machine services, scheduled jobs, checks, and
 recovery automation that operate beyond the current task. It excludes
 project-local build tooling and one-off diagnostics.
 _Avoid_: machine runbook, persistent script
@@ -211,7 +211,7 @@ scope, used as a diagnostic hypothesis about possible overhead.
 _Avoid_: guaranteed savings, delivery estimate
 
 **Canonical instruction source**:
-The stable `global/AGENTS.md` shared through each configured host's native global link.
+The stable `global/AGENTS.md` shared through each configured harness's native global link.
 _Avoid_: plugin-cache instructions, project instructions
 
 **Private preferences**:
@@ -222,7 +222,7 @@ _Avoid_: shared policy, project preferences
 **Procedure**:
 Instructions for a bounded action, selected through Operations and stored in
 ordinary linked files under `skills/operations/procedures/`, without a separate
-host Skill discovery entry.
+harness Skill discovery entry.
 _Avoid_: hidden Skill, mode command, workflow
 
 **Reference**:

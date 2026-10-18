@@ -83,7 +83,7 @@ candidate; they do not enter the frozen release.
   issuer=..., checks=None)` executes argv arrays without a shell and returns
   exact JSON bytes. `complete` mode requires baseline equal to candidate;
   `scoped` mode selects cumulative affected checks plus all artifact checks.
-  Optional `checks` partitions that selection between appropriate hosts.
+  Optional `checks` partitions that selection between appropriate machines.
 - `validate_complete(root, candidate, policy, raw, authenticate=..., observe=...,
   now=None)` validates direct complete execution on the exact candidate. One
   record or a disjoint list must cover every check, with current observations
@@ -93,7 +93,7 @@ candidate; they do not enter the frozen release.
 - `validate(root, baseline, candidate, policy, baseline_raw, current_raw,
   authenticate=..., observe=..., now=None)` authenticates and validates all
   records. Each raw argument accepts one byte string or a list from multiple
-  hosts. Coverage must be complete and disjoint: all declared baseline checks,
+  machines. Coverage must be complete and disjoint: all declared baseline checks,
   and all selected candidate checks. Reuse directly references that complete
   baseline. Missing, failed, altered, expired, mismatched or duplicate evidence
   raises `ProofError`. There is no fallback execution.
@@ -101,7 +101,7 @@ candidate; they do not enter the frozen release.
 A record contains schema, repository, policy digest, baseline, candidate, mode,
 issuer, start/finish times and executed results. Each result binds the exact
 argv, source input digest, observed environment, exit code and stdout/stderr
-SHA-256. Complete records may partition execution across hosts, but only their
+SHA-256. Complete records may partition execution across machines, but only their
 complete union qualifies a baseline. `validate` reports `executed`, `reused`
 and `unverified` separately. `validate_complete` reports `coverage: complete`;
 its `executed` checks describe the authenticated candidate execution, not work
@@ -121,7 +121,7 @@ cannot validate. Environment movement or a changed checkout aborts recording.
 
 A Project can run behavioral checks locally and artifact checks on GitHub,
 or run everything on GitHub. Baseline assumptions are compared only for reused
-checks; current checks must match their current observed environment. Host
+checks; current checks must match their current observed environment. Machine
 identity is a relevant input only when results depend on it. Builds and artifact
 checks can remain separate: build once, record the artifact digest in the check
 environment, and promote those unchanged bytes.

@@ -332,6 +332,26 @@ class SharedPreferencesTests(unittest.TestCase):
                          ['preferences']['content'], self.private.read_text())
         self.assertEqual(self.hook('SessionStart')['preferences']['status'], 'source-unavailable')
 
+    def test_harness_flag_and_permanent_host_alias_select_the_same_harness(self):
+        # Claude is not the default, so an ignored flag would resolve the absent Codex link.
+        target = self.home / '.claude/CLAUDE.md'
+        for flag in ('--harness', '--host'):
+            with self.subTest(flag=flag):
+                report = self.command('agentsmd-global-instructions', 'install', flag, 'claude',
+                                      '--source', self.source)
+                self.assertEqual(Path(report['target']), target)
+                inspected = self.command('agentsmd-global-instructions', 'inspect', flag, 'claude')
+                self.assertEqual(Path(inspected['target']), target)
+                self.assertTrue(inspected['healthy'])
+                payload = self.command('project-direction', 'inspect', flag, 'claude')
+                self.assertEqual(payload['preferences']['status'], 'ready')
+                output = self.command('project-direction', 'hook', flag, 'claude', input={
+                    'session_id': f'alias{flag}', 'cwd': str(self.project),
+                    'hook_event_name': 'SessionStart'})
+                block = parse_block(output['hookSpecificOutput']['additionalContext'])
+                self.assertTrue(block['instructions']['healthy'])
+        self.command('project-direction', 'inspect', '--harness', 'codex', expected=2)
+
     def test_unhealthy_source_asks_for_full_reread(self):
         self.install()
         self.source.unlink()

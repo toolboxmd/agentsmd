@@ -37,7 +37,7 @@ AgentsMD adaptation automatically.
 Procedure below is an ordinary linked reference, selected automatically for the
 current task or phase. Human decision and approval gates stay inside their
 owning procedures. Selection grants no new authority. Old explicit skill names
-can be used in natural requests, but only Operations remains a host command.
+can be used in natural requests, but only Operations remains a harness command.
 
 ## Active entry and retained procedures
 

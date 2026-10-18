@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic contract proof for Persistent Host Automation."""
+"""Deterministic contract proof for Persistent Machine Automation."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-class PersistentHostAutomationContractTests(unittest.TestCase):
+class PersistentMachineAutomationContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.agents = read_text(ROOT / "global/AGENTS.md")
@@ -35,13 +35,13 @@ class PersistentHostAutomationContractTests(unittest.TestCase):
         cls.cases = {case["id"]: case["plan"] for case in load_cases(FIXTURES)}
 
     def test_global_pointer_is_compact_and_routes_each_trigger_branch(self) -> None:
-        marker = "- Persistent Host Automation:"
+        marker = "- Persistent Machine Automation:"
         self.assertEqual(self.agents.count(marker), 1)
         pointer = self.agents.split(marker, 1)[1].split("\n\n", 1)[0]
         pointer = " ".join(f"{marker}{pointer}".split())
         self.assertLessEqual(len(pointer), 280)
         for trigger in (
-            "host service",
+            "machine service",
             "scheduled job",
             "health or recovery automation",
             "`docs/adr/0001-persistent-host-automation.md`",
@@ -49,7 +49,7 @@ class PersistentHostAutomationContractTests(unittest.TestCase):
             self.assertIn(trigger, pointer)
 
     def test_glossary_defines_the_boundary_without_becoming_a_spec(self) -> None:
-        marker = "**Persistent Host Automation**:"
+        marker = "**Persistent Machine Automation**:"
         self.assertIn(marker, self.glossary)
         entry = self.glossary.split(marker, 1)[1].split("\n\n**", 1)[0]
         for required in (

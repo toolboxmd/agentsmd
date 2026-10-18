@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Host-neutral validator for the Persistent Host Automation contract."""
+"""Harness-neutral validator for the Persistent Machine Automation contract."""
 
 from __future__ import annotations
 
@@ -97,7 +97,7 @@ def validate_plan(plan: dict[str, Any]) -> list[str]:
             errors.append("outside-boundary plan changes its owning architecture")
         return errors
     if scope != "persistent-host-automation":
-        return ["scope must identify Persistent Host Automation or an exclusion"]
+        return ["scope must identify Persistent Machine Automation or an exclusion"]
 
     ownership = plan.get("ownership")
     if not isinstance(ownership, dict):

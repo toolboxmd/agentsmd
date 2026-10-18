@@ -2,19 +2,19 @@
 status: accepted
 ---
 
-# Persistent host automation uses canonical sources and controlled deployed copies
+# Persistent machine automation uses canonical sources and controlled deployed copies
 
 Issue #31 approved this architecture decision.
 
-Persistent Host Automation needs stable ownership across source control and
-live-host state. AgentsMD separates canonical source from controlled deployed
+Persistent Machine Automation needs stable ownership across source control and
+live-machine state. AgentsMD separates canonical source from controlled deployed
 copies so a working-tree change cannot alter a running service before
 validation and a privileged entrypoint cannot resolve through a user-writable
 checkout.
 
 ## Boundary
 
-This contract applies to agent-created or agent-maintained host services,
+This contract applies to agent-created or agent-maintained machine services,
 scheduled jobs, and their health or recovery automation when they persist
 beyond the current task. It does not absorb normal application code,
 project-local build tooling, one-off diagnostics, or vendor-owned services
@@ -88,7 +88,7 @@ after restoration.
 
 The canonical repository records each secret name, purpose, required
 permissions, non-secret template references, and protected runtime location,
-but never its value. Deployment obtains values through the approved host secret
+but never its value. Deployment obtains values through the approved machine secret
 mechanism or existing protected files. Logs and recorded deployment state
 contain identities and outcomes, not secret material.
 

@@ -26,7 +26,7 @@ pattern from one explicit preference or an exceptional event. A single clear
 user instruction can establish a preference without repetition. A lone accidental
 success does not establish a universal best practice.
 
-Prefer durable guidance, but retain useful version-specific host quirks with their
+Prefer durable guidance, but retain useful version-specific harness quirks with their
 scope and recheck trigger. Do not turn today's tool limit into permanent policy.
 Do not restrict learning to previously invoked skills when the evidence reveals
 a missing capability; justify the new trigger and owner instead.

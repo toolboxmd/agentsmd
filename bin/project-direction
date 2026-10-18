@@ -14,7 +14,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from agentsmd_instructions import HOSTS, context_payload, default_target, session_action
+from agentsmd_instructions import HARNESSES, context_payload, default_target, session_action
 
 REQUIRED_FILES = ("VISION.md", "MISSION.md", "OBJECTIVE.md")
 MAX_FILE_BYTES = 8192
@@ -36,7 +36,7 @@ PREFERENCES_SECTION = "PREFERENCES.md"
 # Claude Code and Grok cap hook context at 10,000 characters; past it Claude
 # silently gets a file path and a 2,000-character preview. Codex caps a hook
 # message at about 2,500 tokens, counted as UTF-8 bytes / 4. OpenCode documents
-# no cap. 10,000 UTF-8 bytes fits every host.
+# no cap. 10,000 UTF-8 bytes fits every harness.
 MAX_CONTEXT_BYTES = 10000
 # Context budgets in characters (#175): the triad together, and preferences.
 DIRECTION_CAP_CHARACTERS = 1500
@@ -557,7 +557,7 @@ def hook_output(event: str, payload: dict[str, object], *,
             preferences["status"] = "read_required"
         payload["context"] = {"bytes": size, "limit_bytes": MAX_CONTEXT_BYTES}
         reason = (f"The full context has {size:,} UTF-8 bytes, over the "
-                  f"{MAX_CONTEXT_BYTES:,}-byte host limit")
+                  f"{MAX_CONTEXT_BYTES:,}-byte harness limit")
         if stdout_exceeded:
             payload["context"].update(stdout_bytes=encoded_size, stdout_limit_bytes=stdout_limit)
             reason = (f"The encoded hook output has {encoded_size:,} UTF-8 bytes, over the "
@@ -576,7 +576,7 @@ def grok_hook() -> bool:
     """Grok sets this for its own hook process, and only Grok sets it.
 
     The CLAUDE_PLUGIN_ROOT and CLAUDE_PLUGIN_DATA aliases Grok also sets cannot
-    identify a host, so they are never consulted.
+    identify a harness, so they are never consulted.
     """
     return bool(os.environ.get("GROK_HOOK_NAME"))
 
@@ -631,7 +631,7 @@ def write_cached(session_key: str, key: str, value: str) -> None:
 
 
 # Elon gate: every Issue and PR an agent creates through `gh` carries the Elon
-# record. The check runs on PreToolUse for every host and blocks with exit 2,
+# record. The check runs on PreToolUse for every harness and blocks with exit 2,
 # which Claude Code, Codex, Grok and the OpenCode plugin all honour.
 ELON_FIELDS = (
     "Requirements and who asked",
@@ -1095,7 +1095,7 @@ def report_input_error(detail: str) -> int:
     return 0
 
 
-def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
+def run_hook(harness: str = "codex", require_unambiguous: bool = False) -> int:
     try:
         event_input = json.load(sys.stdin)
     except (json.JSONDecodeError, UnicodeDecodeError):
@@ -1118,10 +1118,10 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
             sys.stderr.write(blocked + "\n")
             return 2
     # Only Grok reads hook output on a tool call, so PreToolUse stays inert on
-    # every other host. An explicit --host or AGENTSMD_HOST selection stays
+    # every other harness. An explicit --harness or AGENTSMD_HOST selection stays
     # above the marker: a Codex or Claude run keeps its own delivery events
     # even inside a Grok process.
-    grok = host == "grok" and grok_hook()
+    grok = harness == "grok" and grok_hook()
     if event == "PreToolUse" and not grok:
         return 0
     cwd = cwd_value
@@ -1131,26 +1131,26 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
         if root is not None
         else not_in_repository_payload(cwd)
     )
-    payload.update(context_payload(host, require_unambiguous))
+    payload.update(context_payload(harness, require_unambiguous))
     compact_instructions(payload["instructions"])
     add_budgets(payload)
     session_id = event_input.get("session_id")
-    # Hosts and repositories share the fallback cache directory and may reuse
+    # Harnesses and repositories share the fallback cache directory and may reuse
     # session ids, so the record belongs to all three.
     session_key = (
-        json.dumps([host, str(root or cwd), session_id])
+        json.dumps([harness, str(root or cwd), session_id])
         if isinstance(session_id, str)
         else None
     )
     instructions = payload["instructions"]
     if instructions.get("healthy") and session_key is not None:
-        # The host loads the global rules when a session starts. Grok discards
+        # The harness loads the global rules when a session starts. Grok discards
         # SessionStart and the OpenCode plugin sends a synthetic SessionStart on
         # every request, so both record only their first delivering event.
         current_sha = instructions["sha256"]
         start_sha = cached_value(session_key, "global_sha256")
         start_event = "PreToolUse" if grok else "SessionStart"
-        first_only = grok or host == "opencode"
+        first_only = grok or harness == "opencode"
         if event == start_event and (start_sha is None or not first_only):
             try:
                 write_cached(session_key, "global_sha256", current_sha)
@@ -1161,7 +1161,7 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
     current_fingerprint = fingerprint(payload)
     # Grok discards SessionStart, UserPromptSubmit and SubagentStart output, so
     # its session fingerprint belongs to the first PreToolUse that reaches the
-    # model. Every other host keeps the prompt-boundary fingerprint.
+    # model. Every other harness keeps the prompt-boundary fingerprint.
     delivering_event = "PreToolUse" if grok else "UserPromptSubmit"
     recording_events = (
         {"PreToolUse"} if grok else {"SessionStart", "UserPromptSubmit"}
@@ -1181,7 +1181,7 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
                 "AgentsMD Project Direction loaded, but its cache state was "
                 "not saved. Later prompts may reload the same context."
             )
-    output = hook_output(event, payload, stdout_limit=16384 if host == "muse" else None,
+    output = hook_output(event, payload, stdout_limit=16384 if harness == "muse" else None,
                          system_message=cache_warning)
     json.dump(output, sys.stdout, ensure_ascii=False, separators=(",", ":"))
     return 0
@@ -1190,23 +1190,24 @@ def run_hook(host: str = "codex", require_unambiguous: bool = False) -> int:
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("command", choices=("hook", "inspect"))
-    parser.add_argument("--host", choices=HOSTS)
+    parser.add_argument("--harness", "--host", choices=HARNESSES,
+                        help="Agent harness; --host is a permanent alias that installed hooks pass.")
     args = parser.parse_args(argv)
-    selected_host = args.host or os.environ.get("AGENTSMD_HOST")
-    if selected_host is not None and selected_host not in HOSTS:
+    selected_harness = args.harness or os.environ.get("AGENTSMD_HOST")
+    if selected_harness is not None and selected_harness not in HARNESSES:
         parser.error("AGENTSMD_HOST must be codex, grok, opencode, claude, or muse")
     # Explicit selection always wins. Otherwise Grok's own hook variable names
-    # the host, so its canonical source and preferences resolve under GROK_HOME
+    # the harness, so its canonical source and preferences resolve under GROK_HOME
     # instead of the Codex default.
-    resolved_host = selected_host or ("grok" if grok_hook() else None)
-    host = resolved_host or "codex"
-    # Only an unidentified host needs the other configured sources to agree.
-    require_unambiguous = resolved_host is None
+    resolved_harness = selected_harness or ("grok" if grok_hook() else None)
+    harness = resolved_harness or "codex"
+    # Only an unidentified harness needs the other configured sources to agree.
+    require_unambiguous = resolved_harness is None
     if args.command == "inspect":
-        payload = context_payload(host, require_unambiguous)
+        payload = context_payload(harness, require_unambiguous)
         print(json.dumps(payload, ensure_ascii=False, indent=2))
         return 0 if payload["preferences"]["status"] in {"ready", "absent"} else 2
-    return run_hook(host, require_unambiguous)
+    return run_hook(harness, require_unambiguous)
 
 
 if __name__ == "__main__":
