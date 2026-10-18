@@ -363,6 +363,11 @@ class OperationsContractTests(unittest.TestCase):
             "owner retirement alternative": r"or hand.*retirement to (?:that|the) owner",
             "cwd alone is insufficient": r"process.cwd check alone.*(?:not|never|insufficient).*inactive",
             "named retiring agent in handoff": r"[Nn]ame.*handoff.*agent.*(?:will retire|responsible for retiring).*workspace",
+            "received workspace handoff satisfies same-step obligation": (
+                r"active writer.*handoff.*nam\w+ the workspace.*received by.*owner"
+                r".*same step.*satisf\w+.*merger.*same-step obligation"
+            ),
+            "owner retires after its work ends": r"owner retires.*workspace when its work ends",
         }
         for requirement, pattern in requirements.items():
             with self.subTest(requirement=requirement):
