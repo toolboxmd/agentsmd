@@ -756,7 +756,10 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
             index += 1
             continue
         if char == "\\" and index + 1 < length:
-            current.append(command[index:index + 2])
+            # Bash removes an unquoted backslash-LF before recognizing words
+            # and comments. CRLF is not a continuation.
+            if command[index + 1] != "\n":
+                current.append(command[index:index + 2])
             index += 2
             continue
         if char == "#" and (not current or current[-1].isspace()):
@@ -915,7 +918,8 @@ def gh_create(words: list[str]) -> str | None:
                 break
             elif word in CREATE_VALUE_FLAGS:
                 skip = True
-            elif word in ("--help", "-h", "--help=true"):
+            elif word in ("--help", "-h", "--help=true", "--help=TRUE", "--help=True",
+                          "--help=1", "--help=t", "--help=T"):
                 return None
             elif not word.startswith("-"):
                 rest.append(word)

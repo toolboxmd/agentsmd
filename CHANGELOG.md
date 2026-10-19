@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.2] - 2026-10-19
+
+### Changed
+
+- Fix Elon gate false positives for gh create help while preserving shell comment boundaries (#247)
+
 ## [17.4.1] - 2026-10-19
 
 ### Changed

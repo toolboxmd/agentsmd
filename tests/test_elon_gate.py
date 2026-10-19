@@ -97,7 +97,7 @@ class ElonGateTests(unittest.TestCase):
 
     def test_create_help_passes_without_a_record(self) -> None:
         for kind in ("issue", "pr"):
-            for help_flag in ("--help", "-h", "--help=true"):
+            for help_flag in ("--help", "-h", "--help=true", "--help=TRUE", "--help=True", "--help=1", "--help=t", "--help=T"):
                 for args in (f"{kind} create {help_flag}",
                              f"-R toolboxmd/agentsmd {kind} create {help_flag}",
                              f"{kind} {help_flag} create"):
@@ -145,8 +145,36 @@ class ElonGateTests(unittest.TestCase):
                     command = f"gh {kind} create --title {title}"
                     self.assertBlocked(self.hook({"command": command + " --body hello"}))
                     self.assertEqual(self.hook({"command": command + " --help"}).returncode, 0)
-            for value in ("false", "0"):
+            for value in ("false", "FALSE", "False", "0", "f", "F"):
                 self.assertBlocked(self.hook({"command": f"gh {kind} create --help={value}"}))
+
+    def test_line_continuations_before_help_and_comments(self) -> None:
+        continuation = "\\\n"
+        for kind in ("issue", "pr"):
+            create = f"gh {kind} create --title x --body hello "
+            cases = (
+                (create + continuation + "# --help", False),
+                (create + continuation + "# -h", False),
+                (create + continuation + "--help", True),
+                # Removing the continuation joins a word; x# is still data.
+                (f"gh {kind} create --title x" + continuation + "# --help", True),
+                # An escaped hash remains data after a continuation.
+                (create + continuation + r"\# --help", True),
+                # A comment's trailing backslash does not continue the comment.
+                (create + "--help # ignored " + continuation + "gh issue list", True),
+                ("gh issue list # ignored " + continuation + create, False),
+                # Backslash-CRLF escapes CR, not LF; the next line is separate.
+                (create + "\\\r\n# --help", False),
+            )
+            for command, allowed in cases:
+                with self.subTest(command=command):
+                    result = self.hook({"command": command})
+                    if allowed:
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                    else:
+                        self.assertBlocked(result)
+        self.assertBlocked(self.hook({"command": "gh api repos/o/r/issues -f body=hello " + continuation
+                                     + "# -f body=" + shlex.quote(RECORD)}))
 
     def test_comment_ends_at_newline_not_a_commented_separator(self) -> None:
         command = "gh issue create --help # ignored ; gh pr create --body hello"
