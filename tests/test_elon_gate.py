@@ -144,7 +144,8 @@ class ElonGateTests(unittest.TestCase):
                 with self.subTest(kind=kind, title=title):
                     command = f"gh {kind} create --title {title}"
                     self.assertBlocked(self.hook({"command": command + " --body hello"}))
-                    self.assertEqual(self.hook({"command": command + " --help"}).returncode, 0)
+                    self.assertBlocked(self.hook({"command": command + " --help"}))
+                    self.assertEqual(self.hook({"command": command + " --body " + shlex.quote(RECORD)}).returncode, 0)
             for value in ("false", "FALSE", "False", "0", "f", "F"):
                 self.assertBlocked(self.hook({"command": f"gh {kind} create --help={value}"}))
 
@@ -155,13 +156,13 @@ class ElonGateTests(unittest.TestCase):
             cases = (
                 (create + continuation + "# --help", False),
                 (create + continuation + "# -h", False),
-                (create + continuation + "--help", True),
+                (create + continuation + "--help", False),
                 # Removing the continuation joins a word; x# is still data.
-                (f"gh {kind} create --title x" + continuation + "# --help", True),
+                (f"gh {kind} create --title x" + continuation + "# --help", False),
                 # An escaped hash remains data after a continuation.
-                (create + continuation + r"\# --help", True),
+                (create + continuation + r"\# --help", False),
                 # A comment's trailing backslash does not continue the comment.
-                (create + "--help # ignored " + continuation + "gh issue list", True),
+                (create + "--help # ignored " + continuation + "gh issue list", False),
                 ("gh issue list # ignored " + continuation + create, False),
                 # Backslash-CRLF escapes CR, not LF; the next line is separate.
                 (create + "\\\r\n# --help", False),
@@ -177,9 +178,37 @@ class ElonGateTests(unittest.TestCase):
                                      + "# -f body=" + shlex.quote(RECORD)}))
 
     def test_comment_ends_at_newline_not_a_commented_separator(self) -> None:
-        command = "gh issue create --help # ignored ; gh pr create --body hello"
+        command = "gh issue list # ignored ; gh pr create --body hello"
         self.assertEqual(self.hook({"command": command}).returncode, 0)
         self.assertBlocked(self.hook({"command": command + "\ngh pr create --body hello"}))
+
+    def test_help_exemption_rejects_shell_syntax_in_the_raw_command(self) -> None:
+        for kind in ("issue", "pr"):
+            help_call = f"gh {kind} create --help"
+            for suffix in ("\n", "\r", ";", " && true", " || true", " | cat", " |& cat", " &",
+                           " <<EOF\nEOF", " <<< foo", " >out", " <in", " # comment",
+                           " $(true)", " <(true)", " >(true)", " `true`",
+                           " --title 'a; b'", " --title 'a # b'"):
+                with self.subTest(kind=kind, suffix=suffix):
+                    self.assertBlocked(self.hook({"command": help_call + suffix}))
+            # Even a later create with a valid record cannot exempt compound help.
+            command = help_call + "; gh pr create --body " + shlex.quote(RECORD)
+            self.assertBlocked(self.hook({"command": command}))
+            self.assertBlocked(self.hook({"command": "env " + help_call}))
+        self.assertBlocked(self.hook({"command": ["gh issue create --help",
+                                                   "gh pr create --body " + shlex.quote(RECORD)]}))
+
+    def test_here_string_does_not_swallow_a_later_create(self) -> None:
+        for prefix in ("cat <<< foo", "gh issue create --help <<< foo"):
+            for create in ("gh pr create --title x --body hello",
+                           "gh api repos/o/r/issues -f body="):
+                with self.subTest(prefix=prefix, create=create):
+                    self.assertBlocked(self.hook({"command": prefix + "\n" + create}))
+
+    def test_malformed_command_cannot_get_the_help_exemption(self) -> None:
+        for suffix in (" '", ' "', " \\"):
+            with self.subTest(suffix=suffix):
+                self.assertBlocked(self.hook({"command": "gh issue create --help" + suffix}))
 
     def test_text_that_only_mentions_creation_passes(self) -> None:
         # Regression from 2026-10-01: a research spawn was blocked because its
