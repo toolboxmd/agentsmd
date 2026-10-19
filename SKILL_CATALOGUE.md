@@ -118,6 +118,6 @@ them outside active plugin discovery.
   Plugin Registry and distribution channel.
 - This catalogue owns only the AgentsMD Skill inventory.
 
-Karpathy Wiki, ContextMD, Building Agent Skills, GitPix, OpenBot, and other
+ContextMD, Building Agent Skills, GitPix, OpenBot, and other
 independent ToolboxMD products keep their own product and release lifecycles.
 They are not AgentsMD leaf Skills.
