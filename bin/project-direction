@@ -658,6 +658,13 @@ PLACEHOLDER = re.compile(r"^<[^>]*>$")
 HEADING = re.compile(r"^\s*#{1,6}\s")
 SEPARATORS = ("&&", "||", "|&", ";", "|", "\n")
 VALUE_FLAGS = ("-R", "--repo", "--hostname")
+# Values may themselves be `--help` or `-h`; only a help flag is read-only.
+CREATE_VALUE_FLAGS = VALUE_FLAGS + (
+    "-a", "--assignee", "--attach", "--blocked-by", "--blocking", "-B", "--base",
+    "-b", "--body", "-F", "--body-file", "-H", "--head", "-l", "--label",
+    "-m", "--milestone", "--parent", "-p", "--project", "--recover",
+    "-r", "--reviewer", "-T", "--template", "-t", "--title", "--type",
+)
 # Tools whose `command` is patch data, and tools whose `command` a shell runs.
 PATCH_TOOLS = ("apply_patch",)
 SHELL_TOOLS = ("Bash", "bash", "shell", "local_shell", "exec_command", "run_terminal_command")
@@ -894,11 +901,16 @@ def gh_create(words: list[str]) -> str | None:
             continue
         rest: list[str] = []
         skip = False
-        for word in words[index + 1:]:
+        operands, _ = redirections(words[index:])
+        for word in operands:
             if skip:
                 skip = False
-            elif word in VALUE_FLAGS:
+            elif word == "--":
+                break
+            elif word in CREATE_VALUE_FLAGS:
                 skip = True
+            elif word in ("--help", "-h"):
+                return None
             elif not word.startswith("-"):
                 rest.append(word)
         if len(rest) >= 2 and rest[0] in ("issue", "pr") and rest[1] == "create":

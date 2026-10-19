@@ -90,6 +90,37 @@ class ElonGateTests(unittest.TestCase):
                 result = self.hook(tool_input)
                 self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
 
+    def test_create_help_passes_without_a_record(self) -> None:
+        for kind in ("issue", "pr"):
+            for help_flag in ("--help", "-h"):
+                for args in (f"{kind} create {help_flag}",
+                             f"-R toolboxmd/agentsmd {kind} create {help_flag}",
+                             f"{kind} {help_flag} create"):
+                    with self.subTest(args=args):
+                        result = self.hook({"command": "gh " + args})
+                        self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
+
+    def test_help_does_not_exempt_another_create_in_the_command(self) -> None:
+        for operator in (";", "&&", "||", "|", "&", "\n"):
+            for first, second in (("issue", "pr"), ("pr", "issue")):
+                for help_first in (True, False):
+                    help_call = f"gh {first} create --help"
+                    create = f"gh {second} create --title x --body hello"
+                    calls = (help_call, create) if help_first else (create, help_call)
+                    command = f" {operator} ".join(calls)
+                    with self.subTest(command=command):
+                        self.assertBlocked(self.hook({"command": command}))
+
+    def test_help_text_used_as_a_value_does_not_exempt_a_create(self) -> None:
+        for kind in ("issue", "pr"):
+            for flag in ("--title", "-t", "--body", "-b", "--body-file", "-F", "--label", "--repo"):
+                for value in ("--help", "-h"):
+                    with self.subTest(kind=kind, flag=flag, value=value):
+                        self.assertBlocked(self.hook({"command": f"gh {kind} create {flag} '{value}'"}))
+            self.assertBlocked(self.hook({"command": f"gh {kind} create -- --help"}))
+            for redirect in (">", "<", "2>"):
+                self.assertBlocked(self.hook({"command": f"gh {kind} create --body hello {redirect} --help"}))
+
     def test_text_that_only_mentions_creation_passes(self) -> None:
         # Regression from 2026-10-01: a research spawn was blocked because its
         # task text quoted the command under investigation.
