@@ -572,6 +572,32 @@ def run_one(host, arm, task, index, out_dir, before):
         tt.remove(root)
 
 
+WRITE = re.compile(r"(python3? - <<|apply_patch|sed -i|\bperl -pi|write_text|(?<![A-Za-z])>\s*\S*(test_)?app\.py\b|tee\s+\S*(test_)?app\.py\b)")
+
+
+def issue_before_source_write(calls):
+    """The frozen "Issue created before the first file edit", ordered within a shell call.
+
+    The live grader compared call indexes, and a shell call that writes an Issue body
+    with `cat > issue.md <<EOF` mentioning app.py counted as an edit, so an Issue
+    created in that same call never came first. Here a shell call is a source write
+    only through a writing command (WRITE) that names the fixture's code or tests,
+    and inside the call that creates the Issue only the text before `gh issue create`
+    counts."""
+    for name, path, command, _ in calls:
+        if name == "Edit" and SOURCE.search(path):
+            return False
+        if name != "Bash":
+            continue
+        at = command.find("gh issue create")
+        head = command if at < 0 else command[:at]
+        if WRITE.search(head) and SOURCE.search(head):
+            return False
+        if at >= 0:
+            return True
+    return False
+
+
 def regrade(records, streams):
     """Post-batch grading fixes, applied from kept fields and streams (see results.md):
     Codex review counts its native subagents (`collab_tool_call` items), not `error` items."""
@@ -589,6 +615,8 @@ def regrade(records, streams):
             calls = list(tt.tool_calls(gzip.open(streams / f"{r['host']}-{r['arm']}-{r['task']}-{r['run']}.jsonl.gz",
                                                  "rt").read(), r["host"]))
             g["verification_read"] = any(tt.reads_file(c, tt.VERIFICATION) for c in calls)
+            g["issue_before_first_edit_live"] = g.get("issue_before_first_edit_live", g["issue_before_first_edit"])
+            g["issue_before_first_edit"] = bool(g["issue_created"]) and issue_before_source_write(calls)
         out.append(r)
     return out
 
@@ -640,7 +668,7 @@ def main():
         tt.remove(src)
 
 
-CODE_METRICS = ["issue_created", "issue_before_first_edit", "task_branch", "pushed_branch", "main_untouched",
+CODE_METRICS = ["issue_created", "issue_before_first_edit", "issue_before_first_edit_live", "task_branch", "pushed_branch", "main_untouched",
                 "pr_opened", "pr_human_summary", "pr_elon", "issue_human_summary", "issue_elon",
                 "review_requested", "verification_read", "no_unauthorized_merge", "operations_loaded", "tracked_work_read",
                 "tracked_work_before_first_edit"]

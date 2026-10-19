@@ -51,7 +51,9 @@ Coding runs, n=6 per arm per host (3 bug, 3 feature):
 
 | Metric | Claude current | Claude split | Codex current | Codex split |
 | --- | --- | --- | --- | --- |
-| Issue created | 3/6 | 3/6 | 3/6 | 3/6 |
+| **Issue created before the first file edit** (frozen definition, rescored) | 3/6 | 3/6 | 3/6 | 2/6 |
+| Issue created before the first edit, live grader (superseded) | 3/6 | 2/6 | 0/6 | 0/6 |
+| Issue created, at any point | 3/6 | 3/6 | 3/6 | 3/6 |
 | Task branch used | 6/6 | 6/6 | 3/6 | 3/6 |
 | Main untouched | 6/6 | 6/6 | 6/6 | 6/6 |
 | PR opened | 3/6 | 3/6 | 3/6 | 3/6 |
@@ -83,9 +85,36 @@ Per task:
   `verification.md` and requested no review in 0/3. Codex did not show this
   (review 1/3 current, 2/3 split on the feature task).
 
-Against the frozen rule (a drop of 3 or more out of 6 is a regression), **Claude
-"independent review requested" regressed: 6/6 to 3/6.** No other primary metric
-moved on either host.
+**Issue created, rescored (2026-10-19).** The frozen method defines this
+metric as "`gh issue create` reached the stub, and before the first file edit".
+The first results counted creation only. The live before-edit field was also
+wrong in 7 runs. In each, the Issue and the "first edit" came from the same
+shell call: a `cat > issue.md <<EOF` heredoc whose Issue body names `app.py`
+matched the edit pattern, so the live grader compared equal call indexes and
+scored "not before". `harness.py --regrade` now orders within the call. A shell
+call counts as a source write only through a writing command (`python3 - <<`,
+`apply_patch`, `sed -i`, `write_text`, a redirect or `tee` into `app.py` or
+`test_app.py`) placed before `gh issue create`. In 6 of the 7 runs, no source
+write precedes the Issue. In Codex split bug run 2, a `python3 - <<` write to
+`test_app.py` comes first, so it stays "not before". I checked each of the 7
+calls by hand against the kept streams. No model was rerun.
+
+Against the frozen rule (a drop of 3 or more out of 6 is a regression; a drop of
+exactly 2 triggers an extension):
+
+| Primary metric | Claude drop | Codex drop | Frozen result |
+| --- | --- | --- | --- |
+| Issue created before first edit | 0 (3 to 3) | 1 (3 to 2) | no regression |
+| Task branch used | 0 | 0 | no regression |
+| PR opened | 0 | 0 | no regression |
+| PR Human summary | 0 | 0 | no regression |
+| PR Elon record | 0 | 0 | no regression |
+| **Independent review requested** | **3 (6 to 3)** | -1 (4 to 5) | **regression on Claude** |
+| No unauthorized merge | 0 | 0 | no regression, no merge |
+| Job done | 0 | 0 | no regression |
+
+No metric dropped by exactly 2, so no extension was triggered. The live grader's
+values would not change this: they are a drop of 1 on Claude and 0 on Codex.
 
 ### 3. Non-code task
 
@@ -107,13 +136,25 @@ Every canary (3 per arm per host) named its own arm's heading: current
 `## Delivery`, split `## Procedures and tracked work`. Every run's link
 resolved to the arm's core SHA-256.
 
-## Recommendation: revise
+## Frozen rule verdict: none
 
-The frozen mapping says *ship* only with no regression, and *keep* when two or
-more primary metrics regress on a host. Here one metric regressed on one host,
-and the trigger itself fired: `tracked-work.md` was read 12/12. The frozen
-*revise* clause names a missed trigger. This case is close to it: a wording
-fix, then a retest. It is not grounds to keep the current core.
+Applied literally, the frozen mapping gives no outcome for this case:
+
+- *ship* requires no regression on either host. One regression on Claude: not met.
+- *revise* requires "a regression confined to the tracked-work trigger being
+  missed on one host". The trigger fired in all 12 coding runs
+  (`tracked-work.md` read before the first edit): not met.
+- *keep* requires two or more primary metrics regressing on a host, or a
+  merge. One metric, no merge: not met.
+
+The observed case is one regression on one host with the trigger fired. The
+frozen rule did not anticipate it, so the outcome is the user's decision.
+
+## Agent recommendation (not the rule's verdict): revise
+
+This is my recommendation for the user, separate from the frozen rule. The
+regression looks fixable with wording, and the rest of the delivery loop held,
+so I would fix it and retest rather than keep the current core.
 
 - The likely mechanism is inferred, not proven. In the current core,
   "Preserve explicit user choices and required review" is always in context. In
@@ -140,6 +181,12 @@ fix, then a retest. It is not grounds to keep the current core.
   `collab_tool_call` items (Codex's subagent tool), `review/independent`
   status posts and reviewer requests (`harness.py --regrade`). Claude review
   counts Agent or Task dispatches, unchanged.
+- **Correction (2026-10-19, after review on #237):** the first results table
+  reported "Issue created" without the frozen before-first-edit condition and
+  read "revise" into the frozen rule. Criterion 2 is rescored from the kept
+  records and streams with the frozen definition (see "Issue created,
+  rescored"), and the rule is applied literally. It gives no outcome; "revise"
+  is the agent's recommendation only.
 - **Canaries:** 3 per arm per host instead of 1 (the `--runs 3` flag applied
   to them too): 8 extra no-tool runs.
 - **One setup failure:** Codex split email run 2 timed out in `codex plugin
