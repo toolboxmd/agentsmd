@@ -5,22 +5,17 @@ from __future__ import annotations
 
 import json
 import os
-import runpy
 import shlex
 import shutil
 import subprocess
-import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 LOADER = ROOT / "bin/project-direction"
 PLUGIN = ROOT / "opencode/agentsmd-project-direction.js"
 NODE = shutil.which("node")
-with patch("sys.path", [str(LOADER.parent), *sys.path]):
-    CREATE_VALUE_FLAGS = runpy.run_path(str(LOADER))["CREATE_VALUE_FLAGS"]
 
 RECORD = (
     "- **Requirements and who asked:** the user asked for enforcement\n"
@@ -99,8 +94,12 @@ class ElonGateTests(unittest.TestCase):
         for kind in ("issue", "pr"):
             for help_flag in ("--help", "-h", "--help=true", "--help=TRUE", "--help=True", "--help=1", "--help=t", "--help=T"):
                 for args in (f"{kind} create {help_flag}",
-                             f"-R toolboxmd/agentsmd {kind} create {help_flag}",
-                             f"{kind} {help_flag} create"):
+                             f"{kind} create -R o/r {help_flag}",
+                             f"{kind} create {help_flag} -R o/r",
+                             f"{kind} create --repo o/r {help_flag}",
+                             f"{kind} create {help_flag} --repo o/r",
+                             f"{kind} create --repo=o/r {help_flag}",
+                             f"{kind} create {help_flag} --repo=o/r"):
                     with self.subTest(args=args):
                         result = self.hook({"command": "gh " + args})
                         self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
@@ -118,7 +117,11 @@ class ElonGateTests(unittest.TestCase):
 
     def test_help_text_used_as_a_value_does_not_exempt_a_create(self) -> None:
         for kind in ("issue", "pr"):
-            for flag in CREATE_VALUE_FLAGS:
+            for flag in ("-R", "--repo", "--hostname", "-a", "--assignee", "--attach",
+                         "--blocked-by", "--blocking", "-B", "--base", "-b", "--body",
+                         "-F", "--body-file", "-H", "--head", "-l", "--label", "-m",
+                         "--milestone", "--parent", "-p", "--project", "--recover",
+                         "-r", "--reviewer", "-T", "--template", "-t", "--title", "--type"):
                 for value in ("--help", "-h"):
                     with self.subTest(kind=kind, flag=flag, value=value):
                         self.assertBlocked(self.hook({"command": f"gh {kind} create {flag} '{value}'"}))
@@ -224,9 +227,25 @@ class ElonGateTests(unittest.TestCase):
             for command in commands:
                 with self.subTest(command=command):
                     self.assertBlocked(self.hook({"command": command}))
-            # Exercise every allowed punctuation character without shell quoting.
+            # Allowed raw characters alone do not make a non-bare help call exempt.
             command = f"gh {kind} create --title Az09-_./=:,@+ --help"
-            self.assertEqual(self.hook({"command": command}).returncode, 0)
+            self.assertBlocked(self.hook({"command": command}))
+
+    def test_only_bare_help_with_at_most_one_repo_selector_is_exempt(self) -> None:
+        for command in ("gh pr create -dt --help -b x", "gh pr create -fb --help"):
+            with self.subTest(command=command):
+                self.assertBlocked(self.hook({"command": command}))
+        for kind in ("issue", "pr"):
+            for args in ("--title x --help", "--help --title x", "--help x", "x --help",
+                         "--help --help", "-R o/r --help --repo o/r", "--help -R o/r -R o/r",
+                         "--repo= --help", "--repo=--help --help", "-R --help --help",
+                         "--repo host/o/r --help", "--repo o/ --help", "--repo /r --help",
+                         "--help --fill", "--draft --help", "--help --body x"):
+                with self.subTest(kind=kind, args=args):
+                    self.assertBlocked(self.hook({"command": f"gh {kind} create {args}"}))
+            for command in (f"gh -R o/r {kind} create --help", f"gh {kind} --help create"):
+                with self.subTest(command=command):
+                    self.assertBlocked(self.hook({"command": command}))
 
     def test_text_that_only_mentions_creation_passes(self) -> None:
         # Regression from 2026-10-01: a research spawn was blocked because its

@@ -658,13 +658,6 @@ PLACEHOLDER = re.compile(r"^<[^>]*>$")
 HEADING = re.compile(r"^\s*#{1,6}\s")
 SEPARATORS = ("&&", "||", "|&", ";", "|", "\n")
 VALUE_FLAGS = ("-R", "--repo", "--hostname")
-# Values may themselves be `--help` or `-h`; only a help flag is read-only.
-CREATE_VALUE_FLAGS = VALUE_FLAGS + (
-    "-a", "--assignee", "--attach", "--blocked-by", "--blocking", "-B", "--base",
-    "-b", "--body", "-F", "--body-file", "-H", "--head", "-l", "--label",
-    "-m", "--milestone", "--parent", "-p", "--project", "--recover",
-    "-r", "--reviewer", "-T", "--template", "-t", "--title", "--type",
-)
 # Tools whose `command` is patch data, and tools whose `command` a shell runs.
 PATCH_TOOLS = ("apply_patch",)
 SHELL_TOOLS = ("Bash", "bash", "shell", "local_shell", "exec_command", "run_terminal_command")
@@ -908,8 +901,33 @@ def option_value(words: list[str], index: int, long: str, short: str) -> tuple[s
     return None, 0
 
 
+def gh_create_help(words: list[str]) -> bool:
+    """Match only bare create help, optionally with one owner/repo selector."""
+    if (len(words) < 4 or os.path.basename(words[0]) != "gh"
+            or words[1] not in ("issue", "pr") or words[2] != "create"):
+        return False
+    args = words[3:]
+    repo = None
+    if len(args) == 3 and args[0] in ("-R", "--repo"):
+        repo, args = args[1], args[2:]
+    elif len(args) == 3 and args[1] in ("-R", "--repo"):
+        repo, args = args[2], args[:1]
+    elif len(args) == 2 and args[0].startswith("--repo="):
+        repo, args = args[0][len("--repo="):], args[1:]
+    elif len(args) == 2 and args[1].startswith("--repo="):
+        repo, args = args[1][len("--repo="):], args[:1]
+    if repo is not None and re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo) is None:
+        return False
+    return len(args) == 1 and args[0] in (
+        "--help", "-h", "--help=true", "--help=TRUE", "--help=True",
+        "--help=1", "--help=t", "--help=T",
+    )
+
+
 def gh_create(words: list[str], *, allow_help: bool = False) -> str | None:
     """Return `issue` or `pr` when words run `gh issue|pr create`."""
+    if allow_help and gh_create_help(words):
+        return None
     for index, word in enumerate(words):
         if os.path.basename(word) != "gh":
             continue
@@ -921,13 +939,8 @@ def gh_create(words: list[str], *, allow_help: bool = False) -> str | None:
                 skip = False
             elif word == "--":
                 break
-            elif word in CREATE_VALUE_FLAGS:
+            elif word in VALUE_FLAGS:
                 skip = True
-            elif allow_help and index == 0 and word in (
-                "--help", "-h", "--help=true", "--help=TRUE", "--help=True",
-                "--help=1", "--help=t", "--help=T",
-            ):
-                return None
             elif not word.startswith("-"):
                 rest.append(word)
         if len(rest) >= 2 and rest[0] in ("issue", "pr") and rest[1] == "create":
