@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.0] - 2026-10-19
+
+### Added
+
+- Remind the agent of the reply rules every turn on Claude Code, Codex, Muse and OpenCode (#201)
+
 ## [17.3.1] - 2026-10-19
 
 ### Changed

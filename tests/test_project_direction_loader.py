@@ -17,7 +17,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 
-from tests.direction_block import block_end, parse_block
+from tests.direction_block import REMINDER, block_end, parse_block
 
 ROOT = Path(__file__).resolve().parents[1]
 LOADER = ROOT / "bin/project-direction"
@@ -921,17 +921,58 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         self.assertEqual(parsed["files"][0]["content"], content)
         self.assertEqual(parsed["preferences"]["content"], "Private defaults.\n")
 
-    def test_unchanged_user_prompt_emits_nothing_after_session_load(self) -> None:
+    def reminder_only(self, result: subprocess.CompletedProcess[str]) -> dict:
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return json.loads(result.stdout)
+
+    def test_unchanged_user_prompt_emits_only_the_reminder(self) -> None:
         self.write_triad()
         first = self.invoke("SessionStart", source="startup")
-        self.context_payload(first)
+        self.assertFalse(
+            json.loads(first.stdout)["hookSpecificOutput"]["additionalContext"].endswith(REMINDER)
+        )
 
         repeated = self.invoke(
             "UserPromptSubmit", turn_id="turn-2", prompt="Continue."
         )
 
-        self.assertEqual(repeated.returncode, 0, repeated.stderr)
-        self.assertEqual(repeated.stdout, "")
+        self.assertEqual(self.reminder_only(repeated), {"hookSpecificOutput": {
+            "hookEventName": "UserPromptSubmit", "additionalContext": REMINDER}})
+
+    def test_changed_user_prompt_appends_the_reminder_after_the_block(self) -> None:
+        self.write_triad()
+        self.context_payload(self.invoke("SessionStart", source="startup"))
+        (self.repository / "VISION.md").write_text("# Vision\n\nChanged.\n", encoding="utf-8")
+
+        result = self.invoke("UserPromptSubmit", turn_id="turn-2", prompt="Continue.")
+
+        context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+        block, separator, reminder = context.rpartition("\n\n")
+        self.assertEqual((separator, reminder), ("\n\n", REMINDER))
+        self.assertEqual(parse_block(block)["files"][0]["content"], "# Vision\n\nChanged.\n")
+
+    def test_opencode_session_start_carries_the_reminder_on_every_request(self) -> None:
+        self.write_triad()
+
+        for _ in range(2):
+            result = self.invoke("SessionStart", host="opencode")
+            context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+            self.assertTrue(context.endswith("\n\n" + REMINDER))
+            self.assertEqual(context.count(REMINDER), 1)
+
+    def test_grok_emits_no_reminder_on_any_event(self) -> None:
+        self.write_triad()
+
+        for event, extra in (("SessionStart", {"source": "startup"}),
+                             ("UserPromptSubmit", {"turn_id": "turn-2"}),
+                             ("SubagentStart", {"agent_id": "agent-1"}),
+                             ("PreToolUse", {"tool_name": "read_file"}),
+                             ("PreToolUse", {"tool_name": "read_file"}),
+                             ("UserPromptSubmit", {"turn_id": "turn-3"})):
+            with self.subTest(event=event):
+                result = self.invoke(event, grok=True, **extra)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertNotIn("Reply rules", result.stdout)
 
     def test_cache_failure_warns_but_does_not_drop_direction_context(self) -> None:
         self.write_triad()
@@ -1031,8 +1072,9 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         # A selected Codex run keeps Codex delivery inside a Grok process.
         self.assertEqual(self.context_payload(session)["status"], "ready")
         self.assertEqual(len(self.cached_sessions()), 1)
-        self.assertEqual(prompt.returncode, 0, prompt.stderr)
-        self.assertEqual(prompt.stdout, "")
+        self.assertEqual(
+            self.reminder_only(prompt)["hookSpecificOutput"]["additionalContext"], REMINDER
+        )
         self.assertEqual(tool.returncode, 0, tool.stderr)
         self.assertEqual(tool.stdout, "")
 

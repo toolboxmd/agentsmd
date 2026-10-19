@@ -41,6 +41,14 @@ MAX_CONTEXT_BYTES = 10000
 # Context budgets in characters (#175): the triad together, and preferences.
 DIRECTION_CAP_CHARACTERS = 1500
 PREFERENCES_CAP_CHARACTERS = 4000
+# The conversation rules most often missed (#201), repeated every turn after the
+# block, or alone when the block is unchanged. Grok discards per-prompt hook
+# output, and delivering it on PreToolUse would repeat it on every tool call.
+CONVERSATION_REMINDER = (
+    "Reply rules: result first, at most three sentences unless asked or a risk "
+    "needs more. Give the Elon record (Requirements, Deleted, Bottleneck, "
+    "Checked) before any design recommendation."
+)
 
 
 def git_root(cwd: str) -> Path | None:
@@ -533,10 +541,15 @@ def direction_block(payload: dict[str, object]) -> str:
     return "\n".join(lines)
 
 
+def with_reminder(context: str, reminder: str | None) -> str:
+    return context if reminder is None else f"{context}\n\n{reminder}"
+
+
 def hook_output(event: str, payload: dict[str, object], *,
                 stdout_limit: int | None = None,
-                system_message: str | None = None) -> dict[str, object]:
-    context = direction_block(payload)
+                system_message: str | None = None,
+                reminder: str | None = None) -> dict[str, object]:
+    context = with_reminder(direction_block(payload), reminder)
     size = len(context.encode("utf-8"))
     output = {"hookSpecificOutput": {"hookEventName": event, "additionalContext": context}}
     if system_message is not None:
@@ -568,7 +581,9 @@ def hook_output(event: str, payload: dict[str, object], *,
             "and the private preferences file when present in full before work. "
             "Follow instructions.action for the global instructions."
         )
-        output["hookSpecificOutput"]["additionalContext"] = direction_block(payload)
+        output["hookSpecificOutput"]["additionalContext"] = with_reminder(
+            direction_block(payload), reminder
+        )
     return output
 
 
@@ -1158,6 +1173,10 @@ def run_hook(harness: str = "codex", require_unambiguous: bool = False) -> int:
             except OSError:
                 start_sha = None
         instructions["action"] = session_action(start_sha, current_sha)
+    # OpenCode's plugin sends SessionStart on every request; Grok has no
+    # per-prompt route that reaches the model.
+    reminder_event = {"grok": None, "opencode": "SessionStart"}.get(harness, "UserPromptSubmit")
+    reminder = CONVERSATION_REMINDER if event == reminder_event else None
     current_fingerprint = fingerprint(payload)
     # Grok discards SessionStart, UserPromptSubmit and SubagentStart output, so
     # its session fingerprint belongs to the first PreToolUse that reaches the
@@ -1171,6 +1190,9 @@ def run_hook(harness: str = "codex", require_unambiguous: bool = False) -> int:
         and session_key is not None
         and cached_value(session_key, "fingerprint") == current_fingerprint
     ):
+        if reminder is not None:
+            json.dump({"hookSpecificOutput": {"hookEventName": event, "additionalContext": reminder}},
+                      sys.stdout, ensure_ascii=False, separators=(",", ":"))
         return 0
     cache_warning = None
     if event in recording_events and session_key is not None:
@@ -1182,7 +1204,7 @@ def run_hook(harness: str = "codex", require_unambiguous: bool = False) -> int:
                 "not saved. Later prompts may reload the same context."
             )
     output = hook_output(event, payload, stdout_limit=16384 if harness == "muse" else None,
-                         system_message=cache_warning)
+                         system_message=cache_warning, reminder=reminder)
     json.dump(output, sys.stdout, ensure_ascii=False, separators=(",", ":"))
     return 0
 

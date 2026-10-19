@@ -281,9 +281,29 @@ healthy and carries your private preferences.
 
 `SessionStart` loads at startup, resume, clear, and compact on Codex and Claude
 Code. `UserPromptSubmit`
-reloads only when something in the block changed, and stays silent otherwise. `SubagentStart` gives each new worker the complete triad. The public
+reloads the block only when something in it changed; otherwise it carries only
+the conversation reminder below. `SubagentStart` gives each new worker the complete triad. The public
 Codex contract does not prove reinjection after a subagent's private
 compaction.
+
+**The conversation reminder.** Every turn, the loader adds one line after the
+block, or alone when the block is unchanged:
+
+> Reply rules: result first, at most three sentences unless asked or a risk
+> needs more. Give the Elon record (Requirements, Deleted, Bottleneck,
+> Checked) before any design recommendation.
+
+The text lives once, in `bin/project-direction`, and reaches each harness
+through the hook that already runs there:
+
+| Harness | Route |
+| --- | --- |
+| Claude Code, Codex | `UserPromptSubmit` from `hooks/hooks.json` |
+| Muse | The `UserPromptSubmit` wrapper |
+| OpenCode | `experimental.chat.system.transform`, as the last line of the loader context on every request |
+| Grok Build | Not supported. Grok discards the output of an allowing `UserPromptSubmit` hook, and `PreToolUse` fires on every tool call, which would repeat the reminder many times per turn |
+
+No hook checks the reply itself (#201).
 
 **The block.** A JSON header line comes first, then each file as a plain
 section. Every section marker and the end marker carry a nonce that appears in
