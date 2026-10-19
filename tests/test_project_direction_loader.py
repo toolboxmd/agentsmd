@@ -1158,7 +1158,7 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
                     self.assertIn("sha256", item)
                 self.assertEqual(payload["context"]["limit_bytes"], 10000)
                 self.assertGreater(payload["context"]["bytes"], 10000)
-                self.assertIn("10,000-byte host limit", payload["action"])
+                self.assertIn("10,000-byte", payload["action"])
                 delivered = json.loads(result.stdout)["hookSpecificOutput"][
                     "additionalContext"
                 ]

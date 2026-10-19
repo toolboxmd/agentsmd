@@ -11,29 +11,29 @@ def absolute(path: str | Path) -> Path:
     return Path(os.path.abspath(os.path.expanduser(str(path))))
 
 
-HOSTS = ("codex", "grok", "opencode", "claude", "muse")
+HARNESSES = ("codex", "grok", "opencode", "claude", "muse")
 
 
-def default_target(host: str = "codex") -> Path:
-    if host == "codex":
+def default_target(harness: str = "codex") -> Path:
+    if harness == "codex":
         return absolute(os.environ.get("CODEX_HOME") or Path.home() / ".codex") / "AGENTS.md"
-    if host == "grok":
+    if harness == "grok":
         return absolute(os.environ.get("GROK_HOME") or Path.home() / ".grok") / "AGENTS.md"
-    if host == "claude":
+    if harness == "claude":
         return absolute(os.environ.get("CLAUDE_CONFIG_DIR") or Path.home() / ".claude") / "CLAUDE.md"
-    if host == "opencode":
+    if harness == "opencode":
         custom = os.environ.get("OPENCODE_CONFIG_DIR")
         xdg = os.environ.get("XDG_CONFIG_HOME")
         if xdg and not Path(xdg).is_absolute():
             raise ValueError("XDG_CONFIG_HOME must be absolute")
         return (absolute(custom) if custom else
                 (Path(xdg) if xdg else Path.home() / ".config") / "opencode") / "AGENTS.md"
-    if host == "muse":
+    if harness == "muse":
         xdg = os.environ.get("XDG_CONFIG_HOME")
         if xdg and not Path(xdg).is_absolute():
             raise ValueError("XDG_CONFIG_HOME must be absolute")
         return (Path(xdg) if xdg else Path.home() / ".config") / "muse/AGENTS.md"
-    raise ValueError("unsupported host")
+    raise ValueError("unsupported harness")
 
 
 def is_cache_path(path: Path) -> bool:
@@ -157,7 +157,7 @@ def guard_checkout(report: dict[str, Any]) -> dict[str, Any]:
                                (head.stdout.strip() if head else "unknown")),
                 action=(
                     f"The canonical AgentsMD clone {root} is not on main or a release "
-                    "tag, so every host reads another revision. Do not work in it. "
+                    "tag, so every harness reads another revision. Do not work in it. "
                     f"Restore it with `{git} switch main` (a clone that tracks main) or "
                     f"`{git} checkout \"$({git} describe --tags --abbrev=0 origin/main)\"` "
                     "(a release-tag install), then rerun inspect. " + REREAD_ACTION))
@@ -245,7 +245,7 @@ def session_action(start_sha256: str | None, current_sha256: str) -> str:
     return UNCHANGED_ACTION if start_sha256 == current_sha256 else CHANGED_ACTION
 
 
-def context_payload(host: str = "codex", require_unambiguous: bool = False) -> dict[str, Any]:
+def context_payload(harness: str = "codex", require_unambiguous: bool = False) -> dict[str, Any]:
     """Resolve only the selected native global link, never cwd or plugin cache."""
     boundary = (
         "Preferences supply personal defaults. Explicit task instructions, required "
@@ -253,7 +253,7 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
         "Machine roles do not authorize deployment. Do not publish private contents."
     )
     try:
-        target = default_target(host)
+        target = default_target(harness)
         inspection = inspect_target(target)
         if not inspection["healthy"]:
             inspection["action"] = REREAD_ACTION
@@ -261,10 +261,10 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
                 "status": "source-unavailable", "boundary": boundary,
                 "action": "Inspect the native global link; suspend previously loaded preferences until resolved. Do not substitute project-local preferences or the example."}}
         if require_unambiguous:
-            # Legacy hooks select Codex only when other configured hosts cannot
-            # imply a different source. Never infer host identity from inherited env.
-            for other in HOSTS:
-                if other == host:
+            # Legacy hooks select Codex only when other configured harnesses cannot
+            # imply a different source. Never infer harness identity from inherited env.
+            for other in HARNESSES:
+                if other == harness:
                     continue
                 other_target = default_target(other)
                 # A regular file never claimed to be an AgentsMD link.
@@ -275,9 +275,9 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
                         other_inspection["resolved_target"] != inspection["resolved_target"]):
                     return {"instructions": {
                         "status": "source-ambiguous", "healthy": False,
-                        "action": "Set AGENTSMD_HOST or pass --host for this process; configured native sources differ or cannot be verified. " + REREAD_ACTION},
+                        "action": "Set AGENTSMD_HOST or pass --harness for this process; configured native sources differ or cannot be verified. " + REREAD_ACTION},
                         "preferences": {"status": "source-unavailable", "boundary": boundary,
-                                        "action": "Suspend previously loaded preferences until the host source is selected."}}
+                                        "action": "Suspend previously loaded preferences until the harness source is selected."}}
         guard_checkout(inspection)
         if not inspection["healthy"]:
             return {"instructions": inspection, "preferences": {
@@ -300,7 +300,7 @@ def context_payload(host: str = "codex", require_unambiguous: bool = False) -> d
             preferences.update(status="unreadable", detail="read failed")
         else:
             preferences["sha256"] = hashlib.sha256(raw).hexdigest()
-            # A diagnostic with a full-read fallback is safer than host truncation.
+            # A diagnostic with a full-read fallback is safer than harness truncation.
             if len(raw) > 8192:
                 preferences.update(status="oversized", bytes=len(raw), limit_bytes=8192,
                                    action="Read the private file explicitly and in full; no contents were injected.")

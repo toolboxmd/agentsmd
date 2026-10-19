@@ -254,6 +254,85 @@ class ElonGateTests(unittest.TestCase):
         self.assertIn("**Deleted**: value", result.stderr)
         self.assertIn("Deleted: value", result.stderr)
 
+    # Regressions for #225: patch data is an edit, not a command the tool runs.
+    def test_patch_payload_with_a_create_example_is_an_edit(self) -> None:
+        patch = ("*** Begin Patch\n*** Update File: README.md\n@@\n-old\n"
+                 "+    gh pr create --title x --body-file body.md\n"
+                 " gh issue create --title y --body hi\n*** End Patch\n")
+        # Codex sends apply_patch, including one nested in functions.exec, as
+        # tool_input.command; an untagged envelope is still patch data.
+        for tool_name in ("apply_patch", None):
+            with self.subTest(tool_name=tool_name):
+                extra = {"tool_name": tool_name} if tool_name else {}
+                result = self.hook({"command": patch}, host="codex", **extra)
+                self.assertEqual((result.returncode, result.stderr), (0, ""))
+        self.assertEqual(self.hook({"command": ["apply_patch", patch]}, host="codex").returncode, 0)
+        heredoc = "apply_patch <<'EOF'\n" + patch + "EOF"
+        self.assertEqual(self.hook({"command": heredoc}, tool_name="Bash").returncode, 0)
+
+    def test_shell_tool_still_runs_a_patch_shaped_command(self) -> None:
+        # The tool boundary, not the text shape, decides: a shell runs every line.
+        command = "*** Begin Patch\ngh pr create --title x --body hi\n*** End Patch"
+        self.assertBlocked(self.hook({"command": command}, tool_name="Bash"))
+        after_edit = "apply_patch <<'EOF'\n*** Begin Patch\n*** End Patch\nEOF\ngh issue create --body hi"
+        self.assertBlocked(self.hook({"command": after_edit}, tool_name="Bash"))
+        self.assertEqual(self.hook({"command": after_edit.replace("--body hi", "--body " + shlex.quote(RECORD))},
+                                   tool_name="Bash").returncode, 0)
+
+    # Regressions for #226: `gh api` creation faces the same record requirement.
+    def test_gh_api_creation_needs_the_record(self) -> None:
+        (self.cwd / "issue.json").write_text(json.dumps({"title": "x", "body": RECORD}), encoding="utf-8")
+        (self.cwd / "body.md").write_text(RECORD, encoding="utf-8")
+        for endpoint in ("repos/o/r/issues", "/repos/{owner}/{repo}/pulls"):
+            for args, ok in ((f"-X POST {endpoint} -f title=x -f body=hi", False),
+                             (f"--method POST {endpoint} -f title=x", False),
+                             (f"{endpoint} -f title=x -f body=hi", False),
+                             (f"{endpoint} --raw-field title=x -F body=@absent.md", False),
+                             (f"{endpoint} -f title=x -f body={shlex.quote(RECORD)}", True),
+                             (f"{endpoint} -F title=x -F body=@body.md", True),
+                             (f"{endpoint} --input issue.json", True),
+                             (f"--method=POST {endpoint} --field body=@- <<'EOF'\n{RECORD}EOF", True)):
+                command = "gh api " + args
+                with self.subTest(command=command):
+                    result = self.hook({"command": command}, tool_name="Bash")
+                    if ok:
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                    else:
+                        self.assertBlocked(result, "Deleted")
+        self.assertBlocked(self.hook({"command": "gh -R o/r api -XPOST repos/o/r/issues -f title=x"}))
+
+    def test_gh_api_input_is_the_only_body(self) -> None:
+        # Regression from the Grok roast of PR #233: with --input, gh sends the
+        # file as the request body and field flags go to the query string.
+        (self.cwd / "empty.json").write_text(json.dumps({"body": "nope"}), encoding="utf-8")
+        (self.cwd / "good.json").write_text(json.dumps({"body": RECORD}), encoding="utf-8")
+        (self.cwd / "rec.md").write_text(RECORD, encoding="utf-8")
+        api = "gh api repos/o/r/issues "
+        for args in ("--input empty.json -f body=" + shlex.quote(RECORD),
+                     "-f body=" + shlex.quote(RECORD) + " --input empty.json",
+                     "--input empty.json -F body=@rec.md",
+                     "--input - -f body=" + shlex.quote(RECORD),
+                     "--input - <<'EOF'\n" + json.dumps({"body": "nope"}) + "\nEOF"):
+            with self.subTest(args=args):
+                self.assertBlocked(self.hook({"command": api + args}, tool_name="Bash"), "Deleted")
+        for args in ("--input good.json -f body=hi", "-f body=hi --input good.json",
+                     "--input - <<'EOF'\n" + json.dumps({"body": RECORD}) + "\nEOF",
+                     "-f body=hi --input - <<'EOF'\n" + json.dumps({"body": RECORD}) + "\nEOF"):
+            with self.subTest(args=args):
+                result = self.hook({"command": api + args}, tool_name="Bash")
+                self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_read_only_gh_api_and_status_posts_pass(self) -> None:
+        for command in ("gh api repos/o/r/issues",
+                        "gh api repos/o/r/pulls?state=open --jq '.[].title'",
+                        "gh api -X GET repos/o/r/issues -f state=open",
+                        "gh api repos/o/r/issues/5/comments -f body=hi",
+                        "gh api -X PATCH repos/o/r/issues/5 -f body=hi",
+                        "gh api repos/{owner}/{repo}/statuses/abc123 -f state=success "
+                        "-f context=review/independent -f description='create ok'"):
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}, tool_name="Bash").returncode, 0)
+
     @unittest.skipIf(NODE is None, "node is not on PATH")
     def test_opencode_plugin_fails_closed_without_loader(self) -> None:
         plugin_dir = self.cwd / "orphan/opencode"
@@ -293,6 +372,7 @@ class ElonGateTests(unittest.TestCase):
         self.assertTrue(run("gh issue create --body hi").startswith("blocked:AgentsMD blocked"))
         self.assertEqual(run("gh issue create --body " + shlex.quote(RECORD)), "allowed")
         self.assertEqual(run("ls"), "allowed")
+        self.assertTrue(run("gh api repos/o/r/issues -f title=x").startswith("blocked:AgentsMD blocked"))
 
 
 

@@ -3,6 +3,24 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.3.0] - 2026-10-19
+
+### Added
+
+- `bin/project-direction` and `bin/agentsmd-global-instructions` accept `--harness`; `--host` stays a permanent alias (#213)
+
+### Changed
+
+- Instructions say "harness" for the agent program and "machine" for the computer; Persistent Host Automation is now Persistent Machine Automation (#213)
+- A delegated "not possible" result reaches the user only after listed attempts and one failed challenge, and filed work leaves the turn with a named owner (#226)
+- Before removing a workspace another agent writes, confirm that writer is idle or hand retirement to it (#230)
+- The delivery, orchestration and version-control routing rows name the action they guard (#164)
+
+### Fixed
+
+- The Elon gate no longer treats command examples inside patch data as executed commands (#225)
+- The Elon gate requires the Elon record on Issues and PRs created through `gh api`, reading the body from `--input` when present (#226)
+
 ## [17.2.0] - 2026-10-16
 
 ### Added

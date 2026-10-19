@@ -9,7 +9,7 @@ baseline.
 - Final PR merges stay with the user. After the user merges, Delivery
   Authority for this repository includes, without another prompt: the
   resulting GitHub release through the release workflow, and installing that
-  released version on the maintainer's local hosts (every agent harness that
+  released version on the maintainer's local machines (every agent harness that
   carries AgentsMD) with post-install verification. Third-party marketplace
   submission and publication still need explicit authority.
 - For AgentsMD releases, agent-owned proof is deterministic repository,

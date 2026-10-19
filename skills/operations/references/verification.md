@@ -81,11 +81,11 @@ lie within declared generated paths, and exact-candidate validation proves this.
 Authored changes retain review. Before applying review fixes to dependent layers,
 read [orchestration](orchestration.md) in full for the stack-fix procedure.
 
-## Hosts and complete coverage
+## Machines and complete coverage
 
 Use GitHub-hosted runners for ordinary CI/release builds; Project proof adapters
-may choose hosts for reusable affected tests. Development hosts serve agent work
-and platform proof, human workstations acceptance. Production-connected hosts
+may choose machines for reusable affected tests. Development machines serve agent work
+and platform proof, human workstations acceptance. Production-connected machines
 serve only authorized trusted-artifact activation, health checks, and rollback;
 never run untrusted PR code there.
 

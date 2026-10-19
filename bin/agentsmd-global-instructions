@@ -15,7 +15,7 @@ from typing import Any
 
 
 from agentsmd_instructions import (
-    HOSTS, absolute, default_target, digest, initialize_preferences,
+    HARNESSES, absolute, default_target, digest, initialize_preferences,
     guard_checkout, inspect_target, target_is_in_cache, target_location, validate_source,
 )
 
@@ -170,7 +170,8 @@ def parser() -> argparse.ArgumentParser:
         "inspect", help="Report whether a global instruction target is healthy."
     )
     inspect_command.add_argument("--target", type=absolute)
-    inspect_command.add_argument("--host", choices=HOSTS, default="codex")
+    inspect_command.add_argument("--harness", "--host", choices=HARNESSES, default="codex",
+                                 help="Agent harness; --host is a permanent alias that installed hooks pass.")
     inspect_command.add_argument("--source", type=absolute)
 
     install_command = subcommands.add_parser(
@@ -181,7 +182,8 @@ def parser() -> argparse.ArgumentParser:
         help="Canonical clone global/AGENTS.md; use --replace to migrate an old root link.",
     )
     install_command.add_argument("--target", type=absolute)
-    install_command.add_argument("--host", choices=HOSTS, default="codex")
+    install_command.add_argument("--harness", "--host", choices=HARNESSES, default="codex",
+                                 help="Agent harness; --host is a permanent alias that installed hooks pass.")
     install_command.add_argument(
         "--replace",
         action="store_true",
@@ -198,14 +200,14 @@ def parser() -> argparse.ArgumentParser:
 def main() -> int:
     arguments = parser().parse_args()
     try:
-        if (arguments.command == "install" and arguments.host == "muse"
+        if (arguments.command == "install" and arguments.harness == "muse"
                 and os.environ.get("XDG_CONFIG_HOME")):
             return emit({
                 "error": "unsupported-muse-xdg-config-home",
                 "message": ("Custom XDG_CONFIG_HOME is unsupported for muse until Muse "
                             "hook environment propagation is proven; unset it before installing."),
             }, 2)
-        arguments.target = arguments.target or default_target(arguments.host)
+        arguments.target = arguments.target or default_target(arguments.harness)
         if arguments.command == "inspect":
             if arguments.source:
                 source, error = validate_source(arguments.source)

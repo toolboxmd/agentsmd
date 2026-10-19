@@ -46,16 +46,16 @@ not completing it. A clear microfix stays direct.
 | Produce a specification or decompose a plan | [Specify](procedures/to-spec/index.md), or [tickets](procedures/to-tickets/index.md) for an existing plan or parent Issue |
 | Edit tracked files or select a workspace | [Implementation](references/implementation.md) |
 | Before editing or adding a test file | [Test design](references/test-design.md) |
-| Delegate or coordinate dependencies, recover a handoff | [Orchestration](references/orchestration.md) |
+| Before delegating to another agent (a subagent, spawned thread, or worker CLI), coordinating dependencies, or recovering a handoff | [Orchestration](references/orchestration.md) |
 | Before opening or updating a PR, claiming readiness, or choosing or running proof or review | [Verification](references/verification.md); [code review](procedures/code-review/index.md) for review findings |
 | Create or repair product-driving verification instructions | [Project verification](procedures/project-verification/index.md) |
 | Before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions | [Writing for agents](procedures/writing-for-agents/index.md); [prose](procedures/technical-writing/references/prose.md) before editing a `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, or other agent instructions; [SKILL-MECHANICS.md](procedures/writing-for-agents/SKILL-MECHANICS.md) before editing a `SKILL.md` or a Skill description |
 | Before editing a README, CHANGELOG, `docs/` page, or other human-facing documentation | [Technical writing](procedures/technical-writing/index.md) and [prose](procedures/technical-writing/references/prose.md) |
 | Learn from corrections, repeated friction, or requested reflection | [Reflection](procedures/reflection/index.md) |
 | Before editing `PREFERENCES.md` | [Preferences pruning](procedures/reflection/references/preferences-pruning.md) |
-| Change tracked files or make an explicit WIP checkpoint | [Version control](procedures/version-control/index.md) |
+| Before editing tracked files, committing, bumping a version, or making an explicit WIP checkpoint | [Version control](procedures/version-control/index.md) |
 | Use `.toolboxmd/delivery.json` or decide delivery configuration | [Delivery profile](procedures/delivery-profile/index.md) |
-| Deliver a PR, merge, release, promote an artifact, classify website impact | [Delivery](references/delivery.md) |
+| Before opening or merging a PR, releasing, promoting an artifact, or classifying website impact | [Delivery](references/delivery.md) |
 | Close a terminal outcome or retire task resources | [Finalization](references/finalization.md) |
 | Resolve repository capability or settings drift | [Repository setup](references/repository-setup.md) |
 | Reconcile legacy or drifted repository resources | [Reconciliation](references/reconciliation.md) |

@@ -26,7 +26,7 @@ separate pilot without a question it can falsify. Missing merge authority limits
 the pilot's tested boundary rather than granting permission.
 
 Bound in-flight work by the coordinator's capacity to validate and integrate,
-not the host's maximum worker count. Use a rolling window when independent work
+not the harness's maximum worker count. Use a rolling window when independent work
 remains. Add a sub-coordinator only for observed coordination load that the extra
 orientation and reporting actually reduces. Reserve effort for proof, integration,
 and durable recovery instead of spending it all on fresh dispatches.
@@ -34,8 +34,18 @@ and durable recovery instead of spending it all on fresh dispatches.
 Treat ordinary completion messages as pending evidence. Finish a brief, topology
 change, conflict decision, or durable-state update before draining them. Validate
 at safe boundaries and before reporting. User stops, revoked authority, unsafe
-writes, and shared-state failures interrupt immediately. The host's existing
+writes, and shared-state failures interrupt immediately. The harness's existing
 message tools usually suffice; do not build a queue service by default.
+
+A negative result says the work cannot be done: not possible, cannot remove,
+blocked, no recipe, or failed. An ordinary failed slice, one that does not say
+the work cannot be done, is still recorded at once. Accept a negative result
+only when it lists what was tried and which primary sources were checked: the
+tool's own docs and bundled README, its `--help`, its environment variables,
+and its config keys. Before you relay that result to the user or file anything
+from it, try the work once yourself or assign one challenger whose only job is
+to make the work succeed. Report only a
+negative result that survives that attempt, and include the attempts.
 
 Integrate reviewed components as they become ready under the one-final-approval-
 PR contract. Preserve accepted outputs promptly in their authorized durable owner.
@@ -43,7 +53,7 @@ A disposable worker's confident transcript is not durable delivery evidence.
 
 ## Recover by failure mode
 
-Observe progress through host status, artifact changes, running checks, and task-
+Observe progress through harness status, artifact changes, running checks, and task-
 appropriate evidence. Silence alone does not prove a stall, especially during a
 legitimate long check. Do not restart an idle worker merely to ask for status.
 

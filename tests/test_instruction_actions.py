@@ -73,7 +73,7 @@ class InstructionActionTests(unittest.TestCase):
                     muse.unlink()
 
     def test_every_state_on_every_host(self):
-        for host in instructions.HOSTS:
+        for host in instructions.HARNESSES:
             with self.subTest(host=host, state="missing"):
                 report = self.action(host)
                 self.assertEqual(report["status"], "missing")
@@ -87,7 +87,7 @@ class InstructionActionTests(unittest.TestCase):
 
             with self.subTest(host=host, state="ambiguous"):
                 others = [self.link(other, self.other)
-                          for other in instructions.HOSTS if other != host]
+                          for other in instructions.HARNESSES if other != host]
                 report = self.action(host, require_unambiguous=True)
                 self.assertEqual(report["status"], "source-ambiguous")
                 self.assertTrue(report["action"].endswith(REREAD))
@@ -136,7 +136,7 @@ class InstructionActionTests(unittest.TestCase):
         return json.loads(context.splitlines()[1])["instructions"]["action"]
 
     def test_session_start_sha_decides_the_action_on_every_host(self):
-        for host in instructions.HOSTS:
+        for host in instructions.HARNESSES:
             self.link(host, self.source)
             # Grok discards SessionStart; its first PreToolUse records the start.
             # OpenCode's plugin repeats SessionStart; only the first records.

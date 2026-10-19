@@ -39,21 +39,20 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("fresh child", contract)
         self.assertIn("nested child", contract)
         self.assertIn("do not fork the parent transcript", contract)
-        self.assertIn("separate host task", contract)
-        self.assertIn(
-            "Before choosing, check every delegation tool the host provides, including deferred and "
-            "MCP-supplied tools. Submit that packet through the routing tool for work it accepts. "
-            "When the host has no routing tool, or the routing tool cannot honor a model or effort "
-            "the user named, report that, then use a host child mechanism that honors them and shows "
-            "the child to the user, else a nested child with the packet and no prior transcript; do "
-            "not fork the parent transcript.",
-            contract,
-        )
-        self.assertIn(
-            "A separate host task is only for work that must outlive the parent or continue after "
-            "it stops, or when the host offers no visible child.",
-            contract,
-        )
+        # Delegation order: every tool checked, routing tool first, then a visible
+        # child honoring the named model and effort, then a nested child.
+        for requirement in (
+            "check every delegation tool",
+            "including deferred and MCP-supplied tools",
+            "Submit that packet through the routing tool for work it accepts",
+            "cannot honor a model or effort the user named, report that",
+            "child mechanism that honors them and shows the child to the user",
+            "else a nested child with the packet and no prior transcript",
+            "only for work that must outlive the parent or continue after it stops",
+            "offers no visible child",
+        ):
+            with self.subTest(requirement=requirement):
+                self.assertIn(requirement, contract)
         self.assertIn("leaves the working state", contract)
         self.assertIn("unbounded children", contract)
         self.assertIn("durable handoff", contract)
@@ -74,8 +73,8 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         fresh = glossary.split("**Fresh context**:", 1)[1].split("\n\n**", 1)[0]
         self.assertIn("nested child", fresh)
         self.assertIn("Do not fork the parent transcript", fresh)
-        self.assertIn("separate host task", fresh)
-        self.assertIn("host child that honors the requested model and effort and is visible to the user", " ".join(fresh.split()))
+        self.assertIn("child that honors the requested model and effort and is visible to the user", " ".join(fresh.split()))
+        self.assertIn("must outlive the parent", " ".join(fresh.split()))
         self.assertIn("no prior transcript", fresh)
         marker = "**Delivery Authority**:"
         self.assertEqual(glossary.count(marker), 1)
@@ -91,13 +90,13 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         self.assertIn("minimal durable context packet", " ".join(boundary.split()))
         self.assertNotIn("full current request into that handoff", boundary)
 
-    def test_contract_is_host_neutral_and_does_not_create_an_orchestrator(
+    def test_contract_is_harness_neutral_and_does_not_create_an_orchestrator(
         self,
     ) -> None:
         agents = (ROOT / "global/AGENTS.md").read_text(encoding="utf-8")
         contract = " ".join((ROOT / "skills/operations/references/orchestration.md").read_text().split())
-        for host_control in ("codex_app", "create_thread", "Claude", "Codex"):
-            self.assertNotIn(host_control, contract)
+        for harness_control in ("codex_app", "create_thread", "Claude", "Codex"):
+            self.assertNotIn(harness_control, contract)
         self.assertIn("adapter choices", contract)
         self.assertIn("persistent orchestration service", contract)
 
@@ -125,7 +124,7 @@ class DeliveryContinuationContractTests(unittest.TestCase):
         for grant in (
             "Final PR merges stay with the user.",
             "GitHub release through the release workflow",
-            "installing that released version on the maintainer's local hosts",
+            "installing that released version on the maintainer's local machines",
             "Third-party marketplace submission and publication still need explicit authority",
         ):
             self.assertIn(grant, project)

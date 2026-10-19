@@ -16,6 +16,15 @@ same step, removes its eligible worktree and local and remote branch, stops the
 processes running in that worktree, and verifies each is gone.
 The rules below decide eligibility and exceptions.
 
+Before removing a workspace whose writer is another agent or thread, confirm
+that writer is idle with no queued or pending work, for example through the
+harness's thread or task status, or hand retirement to that owner. A process-cwd
+check alone does not establish that a workspace is inactive. Name in the
+handoff the agent that will retire the workspace. For an active writer, a
+handoff naming the workspace and received by that owner in the same step
+satisfies the merger's same-step obligation; the owner retires the workspace
+when its work ends.
+
 Remove only clean, exact, task-owned transient resources no stack layer still needs:
 local/remote branches, worktrees/checkouts, temporary files, processes, containers,
 images, sockets, ports, locks, PIDs, and explicitly disposable credentials, test

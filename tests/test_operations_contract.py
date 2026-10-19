@@ -66,6 +66,10 @@ class OperationsContractTests(unittest.TestCase):
             "Before editing or adding a test file": {"references/test-design.md"},
             "Before editing `GLOSSARY.md`": {"procedures/domain-modeling/GLOSSARY-FORMAT.md"},
             "Before editing `PREFERENCES.md`": {"procedures/reflection/references/preferences-pruning.md"},
+            # Issue #164: real sessions skipped these procedures at the named action.
+            "Before delegating to another agent": {"references/orchestration.md"},
+            "Before editing tracked files, committing": {"procedures/version-control/index.md"},
+            "Before opening or merging a PR": {"references/delivery.md"},
         }
         lines = SKILL.read_text().splitlines()
         for trigger, targets in rows.items():
@@ -351,6 +355,27 @@ class OperationsContractTests(unittest.TestCase):
                 self.assertIn(clause, words(references / "implementation.md"))
         documents = [ROOT / "global/AGENTS.md", *references.glob("*.md")]
         self.assertEqual([d for d in documents if sweep in words(d)], [references / "implementation.md"])
+
+    def test_workspace_retirement_checks_other_writer_or_hands_off_to_owner(self):
+        resources = words(SKILL.parent / "references/finalization.md").split(
+            "## Resources", 1
+        )[1].split("## Tracker", 1)[0]
+        requirements = {
+            "other agent's workspace": r"[Bb]efore remov\w+ a workspace.*writer is another (?:agent|thread)",
+            "idle with no queued or pending work": r"confirm.*writer is idle.*no queued or pending work",
+            "status evidence": r"(?:thread|task).*status",
+            "owner retirement alternative": r"or hand.*retirement to (?:that|the) owner",
+            "cwd alone is insufficient": r"process.cwd check alone.*(?:not|never|insufficient).*inactive",
+            "named retiring agent in handoff": r"[Nn]ame.*handoff.*agent.*(?:will retire|responsible for retiring).*workspace",
+            "received workspace handoff satisfies same-step obligation": (
+                r"active writer.*handoff.*nam\w+ the workspace.*received by.*owner"
+                r".*same step.*satisf\w+.*merger.*same-step obligation"
+            ),
+            "owner retires after its work ends": r"owner retires.*workspace when its work ends",
+        }
+        for requirement, pattern in requirements.items():
+            with self.subTest(requirement=requirement):
+                self.assertRegex(resources, pattern)
 
     def test_elon_method_triggers_on_decisions_without_direction_gate(self):
         core = words(ROOT / "global/AGENTS.md")

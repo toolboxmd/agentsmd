@@ -1,4 +1,4 @@
-# Muse host
+# Muse harness
 
 AgentsMD supports the native plugin interface in **Muse Code 1.4.9**. Other
 versions need compatibility proof before this support claim expands. The plugin
@@ -11,13 +11,13 @@ Muse's native global target is `$XDG_CONFIG_HOME/muse/AGENTS.md`, defaulting to
 is unsupported for Muse installation until hook environment propagation is
 proven: Muse 1.4.9 hook tests omit it from child processes. Unset it before
 installing and use the default root. The install command rejects any non-empty
-value before writing; `inspect --host muse` still reports the computed native
+value before writing; `inspect --harness muse` still reports the computed native
 target, including a custom absolute XDG root.
 
 Project `AGENTS.md` composes with the global file. The native global file wins
 over the compatibility fallback `~/.claude/CLAUDE.md`. A lone Claude file can
-supply Muse rules through that fallback, but it is not the Muse host target:
-`inspect --host muse` reports the native path and can report it missing even
+supply Muse rules through that fallback, but it is not the Muse harness target:
+`inspect --harness muse` reports the native path and can report it missing even
 when the Claude fallback loads. Do not rely on the fallback for AgentsMD.
 A project `AGENTS.md` also wins over a sibling `CLAUDE.md`.
 
@@ -49,11 +49,11 @@ muse plugins approve agentsmd:hook:subagent-start --json
 muse plugins approve agentsmd:hook:pre-tool-use --json
 muse plugins approve agentsmd:hook:operations-routing --json
 muse plugins inspect agentsmd --json
-"$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --host muse \
+"$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --harness muse \
   --source "$AGENTSMD_DIR/global/AGENTS.md"
-"$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host muse \
+"$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --harness muse \
   --source "$AGENTSMD_DIR/global/AGENTS.md"
-"$AGENTSMD_DIR/bin/project-direction" inspect --host muse
+"$AGENTSMD_DIR/bin/project-direction" inspect --harness muse
 muse skills list --json
 ```
 
@@ -75,7 +75,7 @@ and targets inside plugin caches, and initializes clone-root `PREFERENCES.md`
 only when absent. `inspect` is the link's status command and exits zero only
 for a healthy link to the supplied source. It never replaces an existing file
 just because its contents match. These are the same ownership rules as the
-other hosts; the plugin cache supplies executables and the stable clone supplies
+other harnesses; the plugin cache supplies executables and the stable clone supplies
 the global contract and private preferences.
 
 ## Update and uninstall
@@ -102,7 +102,7 @@ exact link path returned by that inspection when it is `valid-stable-link`.
 This command refuses to remove missing, foreign, divergent or unhealthy entries:
 
 ```sh
-if MUSE_LINK_TARGET="$("$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host muse \
+if MUSE_LINK_TARGET="$("$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --harness muse \
   --source "$AGENTSMD_DIR/global/AGENTS.md" | python3 -c '
 import json, sys
 report = json.load(sys.stdin)
@@ -128,7 +128,7 @@ installer's `--replace` option, which preserves a recoverable backup.
 | `PreToolUse` | Run only the Elon gate; exit 2 with a stderr reason blocks a non-compliant `gh issue create` or `gh pr create` |
 
 Every event uses a distinct Python wrapper because Muse rejects shared hook
-source paths. The wrappers select `--host muse` explicitly. Muse's hook-test
+source paths. The wrappers select the `--host muse` alias explicitly. Muse's hook-test
 fixtures use `tool_input.command` for bash. The adapter parses JSON-string
 tool_input objects, joins string-list commands with shell quoting, then maps a
 string `tool_input.cmd` when command is not already a string. Unparseable inputs
@@ -147,7 +147,7 @@ budgets and the initial session hash retain their existing semantics. Oversized 
 
 `muse skills validate skills/operations --json` and
 `muse plugins validate "$AGENTSMD_DIR" --json` validate the bundle without model
-calls. In this multi-host repository, `muse plugins validate` returns
+calls. In this multi-harness repository, `muse plugins validate` returns
 `valid: true` with one expected `multiple-manifests` warning because it selects
 the native manifest over the sibling Claude/Codex manifests.
 Maintained tests in `tests/test_muse.py` exercise the real wrappers without

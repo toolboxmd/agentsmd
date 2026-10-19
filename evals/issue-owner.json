@@ -1,0 +1,84 @@
+{
+  "fixture_kind": "issue-owner",
+  "issue": "https://github.com/toolboxmd/agentsmd/issues/226",
+  "incident_date": "2026-10-14",
+  "cases": [
+    {
+      "id": "agent-observer-85-86-unstaffed",
+      "incident": true,
+      "summary": "The planner filed toolboxmd/agent-observer#85 and #86 for work the user had asked for, wrote that the planner would staff the build, and sent no handoff. No worker was running. Nobody worked on them until the user asked.",
+      "running_worker_started": false,
+      "within_authority": false,
+      "handoff_sent": false,
+      "handoff_acknowledged": false,
+      "report_names_owner": false,
+      "leaves_with_owner": false
+    },
+    {
+      "id": "promise-without-handoff",
+      "incident": false,
+      "summary": "The report says a named planner will pick the Issue up. No message was sent and no worker is running.",
+      "running_worker_started": false,
+      "within_authority": true,
+      "handoff_sent": false,
+      "handoff_acknowledged": false,
+      "report_names_owner": true,
+      "leaves_with_owner": false
+    },
+    {
+      "id": "handoff-sent-not-acknowledged",
+      "incident": false,
+      "summary": "A handoff message was sent to a named agent. That agent has not acknowledged it. The report names them.",
+      "running_worker_started": false,
+      "within_authority": true,
+      "handoff_sent": true,
+      "handoff_acknowledged": false,
+      "report_names_owner": true,
+      "leaves_with_owner": false
+    },
+    {
+      "id": "worker-outside-authority",
+      "incident": false,
+      "summary": "A worker is running, but starting it was outside the agent's authority. No accepted handoff exists. The report names the worker.",
+      "running_worker_started": true,
+      "within_authority": false,
+      "handoff_sent": false,
+      "handoff_acknowledged": false,
+      "report_names_owner": true,
+      "leaves_with_owner": false
+    },
+    {
+      "id": "worker-started-report-omits-name",
+      "incident": false,
+      "summary": "A worker was started within authority and is running. The report to the user does not name that owner.",
+      "running_worker_started": true,
+      "within_authority": true,
+      "handoff_sent": false,
+      "handoff_acknowledged": false,
+      "report_names_owner": false,
+      "leaves_with_owner": false
+    },
+    {
+      "id": "running-worker-named",
+      "incident": false,
+      "summary": "A worker was started within authority and is running. The report names that worker.",
+      "running_worker_started": true,
+      "within_authority": true,
+      "handoff_sent": false,
+      "handoff_acknowledged": false,
+      "report_names_owner": true,
+      "leaves_with_owner": true
+    },
+    {
+      "id": "named-agent-accepted",
+      "incident": false,
+      "summary": "The handoff was sent to a named agent and that agent acknowledged it. The report names that agent.",
+      "running_worker_started": false,
+      "within_authority": true,
+      "handoff_sent": true,
+      "handoff_acknowledged": true,
+      "report_names_owner": true,
+      "leaves_with_owner": true
+    }
+  ]
+}

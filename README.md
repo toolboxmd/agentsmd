@@ -24,11 +24,11 @@ code and take precedence over the global contract for operational details.
 
 ## Install
 
-AgentsMD has three parts, and each host needs all three:
+AgentsMD has three parts, and each harness needs all three:
 
 1. A stable clone of this repository, which holds the global contract and your
    private preferences.
-2. The host's plugin (or, on OpenCode, owned Skill and plugin links).
+2. The harness's plugin (or, on OpenCode, owned Skill and plugin links).
 3. A native global instruction link that points at the clone's
    `global/AGENTS.md`.
 
@@ -38,7 +38,7 @@ Skills; the installers preserve what they do not own and report it.
 
 ### 1. Clone
 
-You need Git, Python 3.11 or newer, and the host CLI. Keep one clone outside
+You need Git, Python 3.11 or newer, and the harness CLI. Keep one clone outside
 plugin caches and temporary worktrees, and check out a release tag:
 
 ```sh
@@ -122,7 +122,7 @@ configuration directory: `OPENCODE_CONFIG_DIR`, otherwise
 `$XDG_CONFIG_HOME/opencode`, otherwise `~/.config/opencode`. It never replaces an
 existing entry: it reports each foreign entry, installs the rest, and exits 2.
 Do not link the Skills into `~/.agents/skills` or `~/.claude/skills`; Codex and
-Grok Build scan those directories too, so a host that already has the plugin
+Grok Build scan those directories too, so a harness that already has the plugin
 would list every Skill twice as a duplicate. The second command links the
 AgentsMD OpenCode plugin into the same directory's `plugins` folder. The plugin
 targets OpenCode **1.18.32**. [OpenCode details](docs/opencode.md) covers its
@@ -148,18 +148,19 @@ Marketplace listing is pending separate authority.
 
 ### 3. Link the global instructions
 
-Run this for each host you use, with `AGENTSMD_HOST` set to `codex`, `claude`,
-`grok`, `opencode`, or `muse`:
+Run this for each harness you use, with `AGENTSMD_HOST` set to `codex`, `claude`,
+`grok`, `opencode`, or `muse`. `--host` remains a permanent alias for
+`--harness`, because installed hooks pass it:
 
 ```sh
 export AGENTSMD_HOST=codex
-"$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
+"$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --harness "$AGENTSMD_HOST" \
   --source "$AGENTSMD_DIR/global/AGENTS.md"
-"$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --host "$AGENTSMD_HOST" \
+"$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --harness "$AGENTSMD_HOST" \
   --source "$AGENTSMD_DIR/global/AGENTS.md"
 ```
 
-| Host | Default link | Configuration directory it respects |
+| Harness | Default link | Configuration directory it respects |
 | --- | --- | --- |
 | Codex | `~/.codex/AGENTS.md` | `CODEX_HOME` |
 | Claude Code | `~/.claude/CLAUDE.md` | `CLAUDE_CONFIG_DIR` |
@@ -167,7 +168,7 @@ export AGENTSMD_HOST=codex
 | OpenCode | `~/.config/opencode/AGENTS.md` | `OPENCODE_CONFIG_DIR`, otherwise `XDG_CONFIG_HOME/opencode` |
 | Muse | `~/.config/muse/AGENTS.md` | Custom `XDG_CONFIG_HOME` is unsupported for install; [details](docs/musecode.md#instructions-and-skill-discovery) |
 
-Export the same configuration directory to the installer and to the host;
+Export the same configuration directory to the installer and to the harness;
 for Muse, unset `XDG_CONFIG_HOME` before installation.
 `install` refuses to replace an existing file or a link it does not own; see
 [Update](#update) for `--replace`. It rejects sources and targets inside a
@@ -184,9 +185,9 @@ Start a fresh session; a running session keeps the instructions and Skills it
 started with. Then check the link and the loader:
 
 ```sh
-"$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --host "$AGENTSMD_HOST" \
+"$AGENTSMD_DIR/bin/agentsmd-global-instructions" inspect --harness "$AGENTSMD_HOST" \
   --source "$AGENTSMD_DIR/global/AGENTS.md"
-"$AGENTSMD_DIR/bin/project-direction" inspect --host "$AGENTSMD_HOST"
+"$AGENTSMD_DIR/bin/project-direction" inspect --harness "$AGENTSMD_HOST"
 ```
 
 The first command exits zero only for a healthy link to that source
@@ -196,7 +197,7 @@ The second prints the instruction status and your preferences; its output
 contains your private preferences, so do not publish it. `preferences.status` is
 `ready`, `absent`, or a named failure.
 
-Then check the host itself:
+Then check the harness itself:
 
 - **Codex:** `/hooks` shows the AgentsMD hooks as trusted; `/skills` lists
   `$agentsmd:operations`.
@@ -213,7 +214,7 @@ Then check the host itself:
   remove that separate shared-directory installation yourself. The native global
   file wins over the Claude fallback. Validation returns `valid: true` with one
   expected `multiple-manifests` warning; inspection can also report
-  `foreign-plugin-artifact-observed` for the sibling host artifacts. These
+  `foreign-plugin-artifact-observed` for the sibling harness artifacts. These
   diagnostics do not replace the hook trust and Skill identity checks.
 
 A healthy link and a loaded hook do not prove the model follows the contract.
@@ -222,7 +223,7 @@ That comes from using it in real work.
 ## Update
 
 Update the clone to the new release tag, then update the plugin through the
-host's plugin manager:
+harness's plugin manager:
 
 ```sh
 cd "$AGENTSMD_DIR"
@@ -230,7 +231,7 @@ git fetch --tags
 git checkout "$(git describe --tags --abbrev=0 origin/main)"
 ```
 
-| Host | Plugin update |
+| Harness | Plugin update |
 | --- | --- |
 | Codex | `codex plugin marketplace upgrade`, then `codex plugin add agentsmd@toolboxmd`; trust changed hooks in `/hooks` |
 | Claude Code | `claude plugin marketplace update toolboxmd`, then `claude plugin update agentsmd@toolboxmd` |
@@ -244,10 +245,10 @@ Rerun the inspect commands from [Verify](#4-verify) and start a fresh session.
 
 **From a release before 14.0.0:** the global contract moved from the clone-root
 `AGENTS.md` to `global/AGENTS.md`, and `inspect` reports old links as
-`stale-source-layout`. Replace each host's link:
+`stale-source-layout`. Replace each harness's link:
 
 ```sh
-"$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --host "$AGENTSMD_HOST" \
+"$AGENTSMD_DIR/bin/agentsmd-global-instructions" install --harness "$AGENTSMD_HOST" \
   --source "$AGENTSMD_DIR/global/AGENTS.md" --replace
 ```
 
@@ -269,7 +270,7 @@ reads `VISION.md`, `MISSION.md`, and `OBJECTIVE.md` and injects one block into
 the model's context. The block also reports whether the global contract link is
 healthy and carries your private preferences.
 
-| Host | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
+| Harness | Delivering events | Ignored or inert events | Delivery mechanism | Fallback that still applies |
 | --- | --- | --- | --- | --- |
 | Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
 | Claude Code | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook (`hooks/hooks.json`), plus the `operations` pointer from `hooks/claude.json` at `SessionStart` | Explicit reading when the hook reports a problem; `UserPromptSubmit` and `SubagentStart` delivery was not separately exercised live |
@@ -288,7 +289,7 @@ section. Every section marker and the end marker carry a nonce that appears in
 no file, so file text cannot end the block early. Direction files are
 repository data, not instructions, and grant no authority.
 
-**Size limits.** Each host caps hook context (Claude Code and Grok at 10,000
+**Size limits.** Each harness caps hook context (Claude Code and Grok at 10,000
 characters, Codex at about 2,500 tokens), so the loader keeps the block within
 10,000 UTF-8 bytes. A larger block becomes `read_required`: it lists file names
 and hashes and asks the model to read the files in full, and never injects a
@@ -307,13 +308,13 @@ new project can start.
 
 **The `operations` pointer.** Codex and Grok Build load the `operations` Skill
 from its description on their own. Claude Code and OpenCode often do not; Muse
-also receives the pointer. On these hosts `bin/operations-routing` adds one
+also receives the pointer. On these harnesses `bin/operations-routing` adds one
 short note at session start: use
 `operations` at the start of every task and before each new kind of action, and
 read the procedure it links in full. [The #174 benchmark](docs/work/174-routing-injection/results.md)
 and [the #182 sweep](docs/work/182-routing-sweep/results.md) record its effect.
 
-**The Elon gate.** On every host, a `gh issue create` or `gh pr create` whose
+**The Elon gate.** On every harness, a `gh issue create` or `gh pr create` whose
 body lacks a non-empty field for **Requirements and who asked**, **Deleted**,
 **Bottleneck**, or **Checked myself** is blocked (exit 2), and the missing
 fields are named. Each field line reads `**Deleted:** value`,
