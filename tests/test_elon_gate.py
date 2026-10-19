@@ -90,6 +90,163 @@ class ElonGateTests(unittest.TestCase):
                 result = self.hook(tool_input)
                 self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
 
+    def test_create_help_passes_without_a_record(self) -> None:
+        for kind in ("issue", "pr"):
+            for help_flag in ("--help", "-h", "--help=true", "--help=TRUE", "--help=True", "--help=1", "--help=t", "--help=T"):
+                for args in (f"{kind} create {help_flag}",
+                             f"{kind} create -R o/r {help_flag}",
+                             f"{kind} create {help_flag} -R o/r",
+                             f"{kind} create --repo o/r {help_flag}",
+                             f"{kind} create {help_flag} --repo o/r",
+                             f"{kind} create --repo=o/r {help_flag}",
+                             f"{kind} create {help_flag} --repo=o/r"):
+                    with self.subTest(args=args):
+                        result = self.hook({"command": "gh " + args})
+                        self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
+
+    def test_help_does_not_exempt_another_create_in_the_command(self) -> None:
+        for operator in (";", "&&", "||", "|", "|&", "&", "\n"):
+            for first, second in (("issue", "pr"), ("pr", "issue")):
+                for help_first in (True, False):
+                    help_call = f"gh {first} create --help"
+                    create = f"gh {second} create --title x --body hello"
+                    calls = (help_call, create) if help_first else (create, help_call)
+                    command = f" {operator} ".join(calls)
+                    with self.subTest(command=command):
+                        self.assertBlocked(self.hook({"command": command}))
+
+    def test_help_text_used_as_a_value_does_not_exempt_a_create(self) -> None:
+        for kind in ("issue", "pr"):
+            for flag in ("-R", "--repo", "--hostname", "-a", "--assignee", "--attach",
+                         "--blocked-by", "--blocking", "-B", "--base", "-b", "--body",
+                         "-F", "--body-file", "-H", "--head", "-l", "--label", "-m",
+                         "--milestone", "--parent", "-p", "--project", "--recover",
+                         "-r", "--reviewer", "-T", "--template", "-t", "--title", "--type"):
+                for value in ("--help", "-h"):
+                    with self.subTest(kind=kind, flag=flag, value=value):
+                        self.assertBlocked(self.hook({"command": f"gh {kind} create {flag} '{value}'"}))
+            self.assertBlocked(self.hook({"command": f"gh {kind} create -- --help"}))
+            for redirect in (">", "<", "2>"):
+                self.assertBlocked(self.hook({"command": f"gh {kind} create --body hello {redirect} --help"}))
+
+    def test_comments_cannot_supply_help_or_a_body(self) -> None:
+        for kind in ("issue", "pr"):
+            for comment in ("# --help", "# -h", "#comment --help"):
+                for args in (f"--title x --body hello {comment}",
+                             f"{comment} --title x --body hello"):
+                    with self.subTest(kind=kind, args=args):
+                        self.assertBlocked(self.hook({"command": f"gh {kind} create {args}"}))
+            with self.subTest(kind=kind, comment="body"):
+                self.assertBlocked(self.hook({"command": f"gh {kind} create # --body " + shlex.quote(RECORD)}))
+        self.assertBlocked(self.hook({"command": "gh api repos/o/r/issues -f body=hello # -f body="
+                                     + shlex.quote(RECORD)}))
+
+    def test_hashes_in_values_are_not_comments(self) -> None:
+        for kind in ("issue", "pr"):
+            for title in ("x#", '"a # b"', '"#"', r"\#", r"a\ #"):
+                with self.subTest(kind=kind, title=title):
+                    command = f"gh {kind} create --title {title}"
+                    self.assertBlocked(self.hook({"command": command + " --body hello"}))
+                    self.assertBlocked(self.hook({"command": command + " --help"}))
+                    self.assertEqual(self.hook({"command": command + " --body " + shlex.quote(RECORD)}).returncode, 0)
+            for value in ("false", "FALSE", "False", "0", "f", "F"):
+                self.assertBlocked(self.hook({"command": f"gh {kind} create --help={value}"}))
+
+    def test_line_continuations_before_help_and_comments(self) -> None:
+        continuation = "\\\n"
+        for kind in ("issue", "pr"):
+            create = f"gh {kind} create --title x --body hello "
+            cases = (
+                (create + continuation + "# --help", False),
+                (create + continuation + "# -h", False),
+                (create + continuation + "--help", False),
+                # Removing the continuation joins a word; x# is still data.
+                (f"gh {kind} create --title x" + continuation + "# --help", False),
+                # An escaped hash remains data after a continuation.
+                (create + continuation + r"\# --help", False),
+                # A comment's trailing backslash does not continue the comment.
+                (create + "--help # ignored " + continuation + "gh issue list", False),
+                ("gh issue list # ignored " + continuation + create, False),
+                # Backslash-CRLF escapes CR, not LF; the next line is separate.
+                (create + "\\\r\n# --help", False),
+            )
+            for command, allowed in cases:
+                with self.subTest(command=command):
+                    result = self.hook({"command": command})
+                    if allowed:
+                        self.assertEqual(result.returncode, 0, result.stderr)
+                    else:
+                        self.assertBlocked(result)
+        self.assertBlocked(self.hook({"command": "gh api repos/o/r/issues -f body=hello " + continuation
+                                     + "# -f body=" + shlex.quote(RECORD)}))
+
+    def test_comment_ends_at_newline_not_a_commented_separator(self) -> None:
+        command = "gh issue list # ignored ; gh pr create --body hello"
+        self.assertEqual(self.hook({"command": command}).returncode, 0)
+        self.assertBlocked(self.hook({"command": command + "\ngh pr create --body hello"}))
+
+    def test_help_exemption_rejects_shell_syntax_in_the_raw_command(self) -> None:
+        for kind in ("issue", "pr"):
+            help_call = f"gh {kind} create --help"
+            for suffix in ("\n", "\r", ";", " && true", " || true", " | cat", " |& cat", " &",
+                           " <<EOF\nEOF", " <<< foo", " >out", " <in", " # comment",
+                           " $(true)", " <(true)", " >(true)", " `true`",
+                           " --title 'a; b'", " --title 'a # b'"):
+                with self.subTest(kind=kind, suffix=suffix):
+                    self.assertBlocked(self.hook({"command": help_call + suffix}))
+            # Even a later create with a valid record cannot exempt compound help.
+            command = help_call + "; gh pr create --body " + shlex.quote(RECORD)
+            self.assertBlocked(self.hook({"command": command}))
+            self.assertBlocked(self.hook({"command": "env " + help_call}))
+        self.assertBlocked(self.hook({"command": ["gh issue create --help",
+                                                   "gh pr create --body " + shlex.quote(RECORD)]}))
+
+    def test_here_string_does_not_swallow_a_later_create(self) -> None:
+        for prefix in ("cat <<< foo", "gh issue create --help <<< foo"):
+            for create in ("gh pr create --title x --body hello",
+                           "gh api repos/o/r/issues -f body="):
+                with self.subTest(prefix=prefix, create=create):
+                    self.assertBlocked(self.hook({"command": prefix + "\n" + create}))
+
+    def test_malformed_command_cannot_get_the_help_exemption(self) -> None:
+        for suffix in (" '", ' "', " \\"):
+            with self.subTest(suffix=suffix):
+                self.assertBlocked(self.hook({"command": "gh issue create --help" + suffix}))
+
+    def test_help_exemption_requires_the_raw_character_allow_list(self) -> None:
+        for kind in ("issue", "pr"):
+            commands = (
+                f"gh {kind} create --title x --body hello\x00 --help",
+                f"gh\t{kind}\tcreate\t--help",
+                f'gh {kind} create --title "a b" --help',
+                f"gh {kind} create --title 'a b' --help",
+                f"gh {kind} create --title café --help",
+                f"gh {kind} create --title {{x,y}} --help",
+                f"gh {kind} create --title a\\ b --help",
+            )
+            for command in commands:
+                with self.subTest(command=command):
+                    self.assertBlocked(self.hook({"command": command}))
+            # Allowed raw characters alone do not make a non-bare help call exempt.
+            command = f"gh {kind} create --title Az09-_./=:,@+ --help"
+            self.assertBlocked(self.hook({"command": command}))
+
+    def test_only_bare_help_with_at_most_one_repo_selector_is_exempt(self) -> None:
+        for command in ("gh pr create -dt --help -b x", "gh pr create -fb --help"):
+            with self.subTest(command=command):
+                self.assertBlocked(self.hook({"command": command}))
+        for kind in ("issue", "pr"):
+            for args in ("--title x --help", "--help --title x", "--help x", "x --help",
+                         "--help --help", "-R o/r --help --repo o/r", "--help -R o/r -R o/r",
+                         "--repo= --help", "--repo=--help --help", "-R --help --help",
+                         "--repo host/o/r --help", "--repo o/ --help", "--repo /r --help",
+                         "--help --fill", "--draft --help", "--help --body x"):
+                with self.subTest(kind=kind, args=args):
+                    self.assertBlocked(self.hook({"command": f"gh {kind} create {args}"}))
+            for command in (f"gh -R o/r {kind} create --help", f"gh {kind} --help create"):
+                with self.subTest(command=command):
+                    self.assertBlocked(self.hook({"command": command}))
+
     def test_text_that_only_mentions_creation_passes(self) -> None:
         # Regression from 2026-10-01: a research spawn was blocked because its
         # task text quoted the command under investigation.

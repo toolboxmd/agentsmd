@@ -713,7 +713,7 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
     """Split a shell command into simple commands, each with its heredoc text
     and whether a pipe feeds it from the previous one.
 
-    Quotes, escapes and heredocs are respected; `&&`, `||`, `;`, `|` and
+    Quotes, escapes, comments and heredocs are respected; `&&`, `||`, `;`, `|` and
     unquoted newlines end a segment. A heredoc belongs to the segment that
     declares it, even when later segments share its line. As in the shell, only
     the last heredoc on stdin reaches the command; `3<<EOF` feeds another fd.
@@ -749,10 +749,24 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
             index += 1
             continue
         if char == "\\" and index + 1 < length:
-            current.append(command[index:index + 2])
+            # Bash removes an unquoted backslash-LF before recognizing words
+            # and comments. CRLF is not a continuation.
+            if command[index + 1] != "\n":
+                current.append(command[index:index + 2])
             index += 2
             continue
-        if command.startswith("<<", index) and not command.startswith("<<<", index):
+        if char == "#" and (not current or current[-1].isspace()):
+            # Only an unquoted word starting with # opens a shell comment.
+            # Leave its newline for segment and pending-heredoc handling.
+            newline = command.find("\n", index)
+            index = length if newline < 0 else newline
+            continue
+        if command.startswith("<<<", index):
+            # Consume the whole here-string operator, not a heredoc at its tail.
+            current.append("<<<")
+            index += 3
+            continue
+        if command.startswith("<<", index):
             match = re.match(r"<<(-?)\s*(['\"]?)([A-Za-z0-9_]+)\2", command[index:])
             if match:
                 # Digits that start a word before `<<` name the fd it feeds.
@@ -887,16 +901,44 @@ def option_value(words: list[str], index: int, long: str, short: str) -> tuple[s
     return None, 0
 
 
-def gh_create(words: list[str]) -> str | None:
+def gh_create_help(words: list[str]) -> bool:
+    """Match only bare create help, optionally with one owner/repo selector."""
+    if (len(words) < 4 or os.path.basename(words[0]) != "gh"
+            or words[1] not in ("issue", "pr") or words[2] != "create"):
+        return False
+    args = words[3:]
+    repo = None
+    if len(args) == 3 and args[0] in ("-R", "--repo"):
+        repo, args = args[1], args[2:]
+    elif len(args) == 3 and args[1] in ("-R", "--repo"):
+        repo, args = args[2], args[:1]
+    elif len(args) == 2 and args[0].startswith("--repo="):
+        repo, args = args[0][len("--repo="):], args[1:]
+    elif len(args) == 2 and args[1].startswith("--repo="):
+        repo, args = args[1][len("--repo="):], args[:1]
+    if repo is not None and re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo) is None:
+        return False
+    return len(args) == 1 and args[0] in (
+        "--help", "-h", "--help=true", "--help=TRUE", "--help=True",
+        "--help=1", "--help=t", "--help=T",
+    )
+
+
+def gh_create(words: list[str], *, allow_help: bool = False) -> str | None:
     """Return `issue` or `pr` when words run `gh issue|pr create`."""
+    if allow_help and gh_create_help(words):
+        return None
     for index, word in enumerate(words):
         if os.path.basename(word) != "gh":
             continue
         rest: list[str] = []
         skip = False
-        for word in words[index + 1:]:
+        operands, _ = redirections(words[index:])
+        for word in operands:
             if skip:
                 skip = False
+            elif word == "--":
+                break
             elif word in VALUE_FLAGS:
                 skip = True
             elif not word.startswith("-"):
@@ -1044,18 +1086,25 @@ def command_strings(event_input: dict[str, object]) -> list[str]:
 
 def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
     """Return a block message when a `gh` call creating an Issue or PR lacks the Elon record."""
-    for text in command_strings(event_input):
+    commands = command_strings(event_input)
+    for text in commands:
         if "gh" not in text or ("create" not in text and "api" not in text):
             continue
         directory = Path(cwd)
         # What the command itself leaves in files before `gh` runs; None is unknown.
         written: dict[str, str | None] = {}
         stdout: str | None = None
-        for segment, heredoc, piped in shell_segments(text):
+        segments = shell_segments(text)
+        # Help is exempt only for one plain invocation whose raw characters
+        # are all explicitly allowed. Unknown characters never authorize help.
+        allow_help = (len(commands) == 1 and len(segments) == 1
+                      and re.fullmatch(r"[-A-Za-z0-9 _./=:,@+]+", text) is not None)
+        for segment, heredoc, piped in segments:
             try:
                 words = shlex.split(segment, posix=True)
             except ValueError:
                 words = segment.split()
+                allow_help = False
             # A heredoc is stdin; otherwise a pipe from a `cat <<'EOF'` may be.
             stdin = heredoc if heredoc is not None else (stdout if piped else None)
             if len(words) >= 2 and words[0] == "cd":
@@ -1064,7 +1113,7 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
                 stdout = None
                 continue
             stdout = track_writes(words, stdin, directory, written)
-            kind = gh_create(words)
+            kind = gh_create(words, allow_help=allow_help)
             api = kind is None
             if api:
                 kind = gh_api_create(words)
