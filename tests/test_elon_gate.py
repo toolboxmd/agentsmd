@@ -5,17 +5,22 @@ from __future__ import annotations
 
 import json
 import os
+import runpy
 import shlex
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 LOADER = ROOT / "bin/project-direction"
 PLUGIN = ROOT / "opencode/agentsmd-project-direction.js"
 NODE = shutil.which("node")
+with patch("sys.path", [str(LOADER.parent), *sys.path]):
+    CREATE_VALUE_FLAGS = runpy.run_path(str(LOADER))["CREATE_VALUE_FLAGS"]
 
 RECORD = (
     "- **Requirements and who asked:** the user asked for enforcement\n"
@@ -92,7 +97,7 @@ class ElonGateTests(unittest.TestCase):
 
     def test_create_help_passes_without_a_record(self) -> None:
         for kind in ("issue", "pr"):
-            for help_flag in ("--help", "-h"):
+            for help_flag in ("--help", "-h", "--help=true"):
                 for args in (f"{kind} create {help_flag}",
                              f"-R toolboxmd/agentsmd {kind} create {help_flag}",
                              f"{kind} {help_flag} create"):
@@ -101,7 +106,7 @@ class ElonGateTests(unittest.TestCase):
                         self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
 
     def test_help_does_not_exempt_another_create_in_the_command(self) -> None:
-        for operator in (";", "&&", "||", "|", "&", "\n"):
+        for operator in (";", "&&", "||", "|", "|&", "&", "\n"):
             for first, second in (("issue", "pr"), ("pr", "issue")):
                 for help_first in (True, False):
                     help_call = f"gh {first} create --help"
@@ -113,13 +118,40 @@ class ElonGateTests(unittest.TestCase):
 
     def test_help_text_used_as_a_value_does_not_exempt_a_create(self) -> None:
         for kind in ("issue", "pr"):
-            for flag in ("--title", "-t", "--body", "-b", "--body-file", "-F", "--label", "--repo"):
+            for flag in CREATE_VALUE_FLAGS:
                 for value in ("--help", "-h"):
                     with self.subTest(kind=kind, flag=flag, value=value):
                         self.assertBlocked(self.hook({"command": f"gh {kind} create {flag} '{value}'"}))
             self.assertBlocked(self.hook({"command": f"gh {kind} create -- --help"}))
             for redirect in (">", "<", "2>"):
                 self.assertBlocked(self.hook({"command": f"gh {kind} create --body hello {redirect} --help"}))
+
+    def test_comments_cannot_supply_help_or_a_body(self) -> None:
+        for kind in ("issue", "pr"):
+            for comment in ("# --help", "# -h", "#comment --help"):
+                for args in (f"--title x --body hello {comment}",
+                             f"{comment} --title x --body hello"):
+                    with self.subTest(kind=kind, args=args):
+                        self.assertBlocked(self.hook({"command": f"gh {kind} create {args}"}))
+            with self.subTest(kind=kind, comment="body"):
+                self.assertBlocked(self.hook({"command": f"gh {kind} create # --body " + shlex.quote(RECORD)}))
+        self.assertBlocked(self.hook({"command": "gh api repos/o/r/issues -f body=hello # -f body="
+                                     + shlex.quote(RECORD)}))
+
+    def test_hashes_in_values_are_not_comments(self) -> None:
+        for kind in ("issue", "pr"):
+            for title in ("x#", '"a # b"', '"#"', r"\#", r"a\ #"):
+                with self.subTest(kind=kind, title=title):
+                    command = f"gh {kind} create --title {title}"
+                    self.assertBlocked(self.hook({"command": command + " --body hello"}))
+                    self.assertEqual(self.hook({"command": command + " --help"}).returncode, 0)
+            for value in ("false", "0"):
+                self.assertBlocked(self.hook({"command": f"gh {kind} create --help={value}"}))
+
+    def test_comment_ends_at_newline_not_a_commented_separator(self) -> None:
+        command = "gh issue create --help # ignored ; gh pr create --body hello"
+        self.assertEqual(self.hook({"command": command}).returncode, 0)
+        self.assertBlocked(self.hook({"command": command + "\ngh pr create --body hello"}))
 
     def test_text_that_only_mentions_creation_passes(self) -> None:
         # Regression from 2026-10-01: a research spawn was blocked because its

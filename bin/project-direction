@@ -720,7 +720,7 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
     """Split a shell command into simple commands, each with its heredoc text
     and whether a pipe feeds it from the previous one.
 
-    Quotes, escapes and heredocs are respected; `&&`, `||`, `;`, `|` and
+    Quotes, escapes, comments and heredocs are respected; `&&`, `||`, `;`, `|` and
     unquoted newlines end a segment. A heredoc belongs to the segment that
     declares it, even when later segments share its line. As in the shell, only
     the last heredoc on stdin reaches the command; `3<<EOF` feeds another fd.
@@ -758,6 +758,12 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
         if char == "\\" and index + 1 < length:
             current.append(command[index:index + 2])
             index += 2
+            continue
+        if char == "#" and (not current or current[-1].isspace()):
+            # Only an unquoted word starting with # opens a shell comment.
+            # Leave its newline for segment and pending-heredoc handling.
+            newline = command.find("\n", index)
+            index = length if newline < 0 else newline
             continue
         if command.startswith("<<", index) and not command.startswith("<<<", index):
             match = re.match(r"<<(-?)\s*(['\"]?)([A-Za-z0-9_]+)\2", command[index:])
@@ -909,7 +915,7 @@ def gh_create(words: list[str]) -> str | None:
                 break
             elif word in CREATE_VALUE_FLAGS:
                 skip = True
-            elif word in ("--help", "-h"):
+            elif word in ("--help", "-h", "--help=true"):
                 return None
             elif not word.startswith("-"):
                 rest.append(word)
