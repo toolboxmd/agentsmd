@@ -658,6 +658,14 @@ PLACEHOLDER = re.compile(r"^<[^>]*>$")
 HEADING = re.compile(r"^\s*#{1,6}\s")
 SEPARATORS = ("&&", "||", "|&", ";", "|", "\n")
 VALUE_FLAGS = ("-R", "--repo", "--hostname")
+# Create flags may precede the verb. Share global flag-value knowledge while
+# keeping API parsing independent of Issue/PR-specific options.
+CREATE_VALUE_FLAGS = VALUE_FLAGS + (
+    "-a", "--assignee", "--attach", "--blocked-by", "--blocking", "-B", "--base",
+    "-b", "--body", "-F", "--body-file", "-H", "--head", "-l", "--label",
+    "-m", "--milestone", "--parent", "-p", "--project", "--recover",
+    "-r", "--reviewer", "-T", "--template", "-t", "--title", "--type",
+)
 # Tools whose `command` is patch data, and tools whose `command` a shell runs.
 PATCH_TOOLS = ("apply_patch",)
 SHELL_TOOLS = ("Bash", "bash", "shell", "local_shell", "exec_command", "run_terminal_command")
@@ -709,7 +717,55 @@ def field_value(body: str, field: str) -> str:
     return ""
 
 
-def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
+class ShellCommand:
+    def __init__(self, text: str, *, children: list[list["ShellCommand"]]):
+        self.text = text
+        self.stdin: str | None = None
+        self.stdin_visible: str | None = None
+        self.heredoc_text: list[str] = []
+        self.piped = False
+        self.children = children
+        self.literals: dict[str, str] = {}
+
+
+SUBSTITUTION = "__agentsmd_unknown_substitution__"
+
+
+def shell_segments(command: str) -> list[ShellCommand]:
+    return shell_region(command, 0, None)[0]
+
+
+def heredoc_word(command: str, start: int) -> tuple[str, bool, int] | None:
+    """Read one shell delimiter word, then remove its quotes without expansion."""
+    index = start
+    while index < len(command) and command[index] in " \t":
+        index += 1
+    begin, quote, quoted = index, "", False
+    while index < len(command):
+        char = command[index]
+        if char == "\\" and quote != "'":
+            quoted = True
+            index += 2
+            continue
+        if quote:
+            if char == quote:
+                quote = ""
+        elif char in "'\"":
+            quote, quoted = char, True
+        elif char.isspace() or char in ";&|<>()":
+            break
+        index += 1
+    if quote or index == begin:
+        return None
+    try:
+        words = shlex.split(command[begin:index], posix=True)
+    except ValueError:
+        return None
+    return (words[0], quoted, index) if len(words) == 1 else None
+
+
+def shell_region(command: str, start: int,
+                 closing: str | None, *, data_quote: bool = False) -> tuple[list[ShellCommand], int]:
     """Split a shell command into simple commands, each with its heredoc text
     and whether a pipe feeds it from the previous one.
 
@@ -718,28 +774,77 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
     declares it, even when later segments share its line. As in the shell, only
     the last heredoc on stdin reaches the command; `3<<EOF` feeds another fd.
     """
-    segments: list[str] = []
+    segments: list[ShellCommand] = []
+    children: list[list[ShellCommand]] = []
+    literals: dict[str, str] = {}
     piped: set[int] = set()
     heredocs: dict[int, str] = {}
+    dynamic_heredocs: set[int] = set()
     current: list[str] = []
-    pending: list[tuple[str, bool, int, bool]] = []
-    quote = ""
-    index = 0
+    pending: list[tuple[str, bool, int, bool, bool]] = []
+    quote = '"' if data_quote else ""
+    index = start
+    arithmetic_depth = 0
     length = len(command)
 
     def close() -> None:
-        segments.append("".join(current))
+        segment = ShellCommand("".join(current), children=children.copy())
+        segment.literals = literals.copy()
+        segments.append(segment)
+        literals.clear()
         current.clear()
+        children.clear()
+
+    def finish(end: int) -> tuple[list[ShellCommand], int]:
+        close()
+        for i, segment in enumerate(segments):
+            segment.stdin_visible = heredocs.get(i)
+            segment.stdin = None if i in dynamic_heredocs else segment.stdin_visible
+            segment.piped = i in piped
+        return segments, end
 
     while index < length:
         char = command[index]
+        if quote == "'":
+            current.append(char)
+            if char == quote:
+                quote = ""
+            index += 1
+            continue
+        if char == "\\" and index + 1 < length:
+            if command[index + 1] != "\n":
+                current.append(command[index:index + 2])
+            index += 2
+            continue
+        if data_quote and closing == "))":
+            if char == "(":
+                arithmetic_depth += 1
+            elif char == ")":
+                if arithmetic_depth:
+                    arithmetic_depth -= 1
+                elif command.startswith("))", index):
+                    return finish(index + 2)
+        if closing and char == closing and not quote:
+            return finish(index + 1)
+        if command.startswith("$((", index):
+            arithmetic, index = shell_region(command, index + 3, "))", data_quote=True)
+            # Arithmetic text is data. Only its actual substitutions execute.
+            children.extend(child for entry in arithmetic for child in entry.children)
+            current.append(SUBSTITUTION)
+            continue
+        if command.startswith("$(", index) or char == "`":
+            offset, end = (2, ")") if char == "$" else (1, "`")
+            child, index = shell_region(command, index + offset, end)
+            children.append(child)
+            marker = SUBSTITUTION + str(index)
+            literal = literal_cat(child) if offset == 2 and quote == '"' else None
+            if literal is not None:
+                literals[marker] = literal
+            current.append(marker)
+            continue
         if quote:
             current.append(char)
-            if char == "\\" and quote == '"' and index + 1 < length:
-                current.append(command[index + 1])
-                index += 2
-                continue
-            if char == quote:
+            if char == quote and not data_quote:
                 quote = ""
             index += 1
             continue
@@ -748,12 +853,28 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
             current.append(char)
             index += 1
             continue
-        if char == "\\" and index + 1 < length:
-            # Bash removes an unquoted backslash-LF before recognizing words
-            # and comments. CRLF is not a continuation.
-            if command[index + 1] != "\n":
-                current.append(command[index:index + 2])
-            index += 2
+        # Scan visible function bodies conservatively, just like subshells;
+        # resolving calls and parameters remains outside this parser.
+        if not "".join(current).strip():
+            function = re.match(r"(?:function +)?[A-Za-z_][A-Za-z0-9_]* *\( *\) *\{", command[index:])
+            if function:
+                child, index = shell_region(command, index + function.end(), "}")
+                children.append(child)
+                current.append(SUBSTITUTION)
+                continue
+        if char == "(":
+            child, index = shell_region(command, index + 1, ")")
+            if re.search(r"(?:^|\s)[A-Za-z_][A-Za-z0-9_]*=$", "".join(current)):
+                # Array entries are data, but substitutions in them execute.
+                children.extend(grandchild for entry in child for grandchild in entry.children)
+            else:
+                children.append(child)
+            current.append(SUBSTITUTION)
+            continue
+        if char == ")":
+            # Outside a substitution/subshell this terminates a case pattern.
+            current.append(" ")
+            index += 1
             continue
         if char == "#" and (not current or current[-1].isspace()):
             # Only an unquoted word starting with # opens a shell comment.
@@ -767,8 +888,9 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
             index += 3
             continue
         if command.startswith("<<", index):
-            match = re.match(r"<<(-?)\s*(['\"]?)([A-Za-z0-9_]+)\2", command[index:])
-            if match:
+            strip_tabs = command.startswith("<<-", index)
+            delimiter = heredoc_word(command, index + (3 if strip_tabs else 2))
+            if delimiter:
                 # Digits that start a word before `<<` name the fd it feeds.
                 digits = 0
                 while digits < len(current) and current[-1 - digits].isdigit():
@@ -778,14 +900,14 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
                 if digits and (digits == len(current) or current[-1 - digits].isspace()):
                     stdin = fd == "0"
                     del current[len(current) - digits:]
-                pending.append((match.group(3), match.group(1) == "-", len(segments), stdin))
-                index += match.end()
+                word, quoted, index = delimiter
+                pending.append((word, strip_tabs, len(segments), stdin, quoted))
                 continue
         if char == "\n" and pending:
             # Heredoc bodies start on the next line.
             close()
             index += 1
-            for word, strip_tabs, owner, stdin in pending:
+            for word, strip_tabs, owner, stdin, quoted in pending:
                 body: list[str] = []
                 while index < length:
                     newline = command.find("\n", index)
@@ -793,9 +915,24 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
                     index = length if newline < 0 else newline + 1
                     if (line.lstrip("\t") if strip_tabs else line) == word:
                         break
-                    body.append(line)
+                    body.append(line.lstrip("\t") if strip_tabs else line)
+                content = "".join(line + "\n" for line in body)
+                dynamic = False
+                visible = content
+                if not quoted:
+                    # Quotes in the body are literal. Only substitutions run,
+                    # with the same backslash rules as double-quoted text.
+                    data, _ = shell_region(content, 0, None, data_quote=True)
+                    segments[owner].children.extend(child for entry in data for child in entry.children)
+                    dynamic = any(entry.children for entry in data)
+                    visible = "".join(entry.text for entry in data)
+                segments[owner].heredoc_text.append(visible)
                 if stdin:
-                    heredocs[owner] = "".join(line + "\n" for line in body)
+                    heredocs[owner] = content
+                    if dynamic:
+                        dynamic_heredocs.add(owner)
+                    else:
+                        dynamic_heredocs.discard(owner)
             pending.clear()
             continue
         separator = next((s for s in SEPARATORS if command.startswith(s, index)), None)
@@ -813,8 +950,22 @@ def shell_segments(command: str) -> list[tuple[str, str | None, bool]]:
             continue
         current.append(char)
         index += 1
-    close()
-    return [(text, heredocs.get(i), i in piped) for i, text in enumerate(segments)]
+    return finish(index)
+
+
+def literal_cat(segments: list[ShellCommand]) -> str | None:
+    """Resolve only an exact cat + stdin heredoc substitution, never execute it."""
+    commands = [segment for segment in segments if segment.text.strip()]
+    if len(commands) != 1:
+        return None
+    command = commands[0]
+    if command.children or command.stdin is None or command.piped:
+        return None
+    try:
+        words = shlex.split(command.text)
+    except ValueError:
+        return None
+    return command.stdin.rstrip("\n") if words == ["cat"] else None
 
 
 OUTPUTS = (">>", ">|", ">&", ">")
@@ -841,11 +992,6 @@ def redirections(words: list[str]) -> tuple[list[str], list[tuple[str, str, str]
     return operands, redirects
 
 
-def stdin_redirected(redirects: list[tuple[str, str, str]]) -> bool:
-    """Return whether `< FILE`, `<<< WORD` or a dup replaces a heredoc on stdin."""
-    return any(fd in ("", "0") and op not in OUTPUTS for fd, op, _ in redirects)
-
-
 def track_writes(words: list[str], stdin: str | None, directory: Path,
                  written: dict[str, str | None]) -> str | None:
     """Record what one simple command leaves in the files it redirects to, and
@@ -859,7 +1005,15 @@ def track_writes(words: list[str], stdin: str | None, directory: Path,
     operands, redirects = redirections(words)
     name = os.path.basename(words[0]) if words else ""
     copies = name == "tee" or (name == "cat" and not operands)
-    content = stdin if copies and not stdin_redirected(redirects) else None
+    content = stdin if copies else None
+    if (name == "echo" and len(operands) == 1
+            and not operands[0].startswith("-") and "\\" not in operands[0]):
+        content = " ".join(operands) + "\n"
+    elif name == "printf" and operands:
+        if operands[0] in ("%s", "%s\\n"):
+            content = ("\n" if operands[0].endswith("n") else "").join(operands[1:])
+            if operands[0].endswith("n"):
+                content += "\n"
     files = [(fd, op, target) for fd, op, target in redirects
              if op in OUTPUTS and not (op == ">&" and (target.isdigit() or target == "-"))]
     stdout_files = [target for fd, _, target in files if fd in ("", "1", "&")]
@@ -904,7 +1058,7 @@ def option_value(words: list[str], index: int, long: str, short: str) -> tuple[s
 def gh_create_help(words: list[str]) -> bool:
     """Match only bare create help, optionally with one owner/repo selector."""
     if (len(words) < 4 or os.path.basename(words[0]) != "gh"
-            or words[1] not in ("issue", "pr") or words[2] != "create"):
+            or words[1] not in ("issue", "pr") or words[2] not in ("create", "new")):
         return False
     args = words[3:]
     repo = None
@@ -924,26 +1078,51 @@ def gh_create_help(words: list[str]) -> bool:
     )
 
 
+def executable_index(words: list[str]) -> int | None:
+    """Locate a literal executable after ordinary assignment/exec prefixes."""
+    index = 0
+    while index < len(words):
+        word = words[index]
+        if re.match(r"[A-Za-z_][A-Za-z0-9_]*=", word):
+            index += 1
+            continue
+        name = os.path.basename(word)
+        if name not in ("env", "command", "exec"):
+            return index
+        index += 1
+        while index < len(words) and words[index].startswith("-"):
+            flag = words[index]
+            if (name == "command" and flag in ("-v", "-V")) or flag in ("-S", "--split-string"):
+                return None
+            index += 2 if flag in ("-u", "--unset", "-C", "--chdir", "-a") else 1
+    return None
+
+
+def gh_positionals(words: list[str]) -> list[str]:
+    """Read gh positional words without mistaking option values for verbs."""
+    rest: list[str] = []
+    skip = False
+    operands, _ = redirections(words)
+    for word in operands:
+        if skip:
+            skip = False
+        elif word == "--":
+            break
+        elif word in CREATE_VALUE_FLAGS:
+            skip = True
+        elif not word.startswith("-"):
+            rest.append(word)
+    return rest
+
+
 def gh_create(words: list[str], *, allow_help: bool = False) -> str | None:
-    """Return `issue` or `pr` when words run `gh issue|pr create`."""
+    """Return `issue` or `pr` when words run `gh issue|pr create|new`."""
     if allow_help and gh_create_help(words):
         return None
-    for index, word in enumerate(words):
-        if os.path.basename(word) != "gh":
-            continue
-        rest: list[str] = []
-        skip = False
-        operands, _ = redirections(words[index:])
-        for word in operands:
-            if skip:
-                skip = False
-            elif word == "--":
-                break
-            elif word in VALUE_FLAGS:
-                skip = True
-            elif not word.startswith("-"):
-                rest.append(word)
-        if len(rest) >= 2 and rest[0] in ("issue", "pr") and rest[1] == "create":
+    index = executable_index(words)
+    if index is not None and os.path.basename(words[index]) == "gh":
+        rest = gh_positionals(words[index:])
+        if len(rest) >= 2 and rest[0] in ("issue", "pr") and rest[1] in ("create", "new"):
             return rest[0]
     return None
 
@@ -976,28 +1155,29 @@ def create_body(words: list[str], stdin: str | None, directory: Path,
                 written: dict[str, str | None]) -> tuple[str | None, str]:
     """Return the body a `gh issue|pr create` call supplies, if the hook can see it,
     and a note when a `--body-file` cannot be read."""
-    body = None
+    sources: list[tuple[bool, str | None]] = []
     index = 0
     while index < len(words):
         value, used = option_value(words, index, "--body-file", "-F")
         if used:
-            if value is None:
-                return None, ""
-            return body_file(value, stdin, directory, written)
-        value, used = option_value(words, index, "--body", "-b")
-        if used:
-            body = value
-            index += used
-            continue
-        index += 1
-    return body, ""
+            sources.append((True, value))
+        else:
+            value, used = option_value(words, index, "--body", "-b")
+            if used:
+                sources.append((False, value))
+        index += used or 1
+    if len(sources) > 1:
+        return None, "Repeated --body/--body-file options are not supported; pass one body source. "
+    if not sources or sources[0][1] is None or SUBSTITUTION in sources[0][1]:
+        return None, ""
+    file, value = sources[0]
+    return body_file(value, stdin, directory, written) if file else (value, "")
 
 
 def gh_api_create(words: list[str]) -> str | None:
     """Return `issue` or `pr` when words POST a new Issue or PR through `gh api`."""
-    for index, word in enumerate(words):
-        if os.path.basename(word) != "gh":
-            continue
+    index = executable_index(words)
+    if index is not None and os.path.basename(words[index]) == "gh":
         rest = words[index + 1:]
         start = 0
         while start < len(rest) and rest[start].startswith("-"):
@@ -1084,43 +1264,179 @@ def command_strings(event_input: dict[str, object]) -> list[str]:
     return [text for text in strings if not patch_data(text)]
 
 
-def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
-    """Return a block message when a `gh` call creating an Issue or PR lacks the Elon record."""
-    commands = command_strings(event_input)
-    for text in commands:
-        if "gh" not in text or ("create" not in text and "api" not in text):
+SHELLS = {"sh", "bash", "zsh", "dash", "ksh"}
+
+
+def resolved_stdin(words: list[str], stdin: str | None) -> str | None:
+    for fd, op, target in redirections(["__redirects__", *words])[1]:
+        if fd in ("", "0") and op not in OUTPUTS:
+            stdin = target + "\n" if op == "<<<" and SUBSTITUTION not in target else None
+    return stdin
+
+
+def command_positions(words: list[str]) -> list[tuple[int, list[str]]]:
+    """One conservative word-position scan for commands and their producers.
+
+    Whole quoted examples stay one word. Only known read-only consumers
+    exempt their argument data; arbitrary prefixes never hide a command.
+    """
+    executable = executable_index(words)
+    if executable is not None:
+        name = os.path.basename(words[executable])
+        args = gh_positionals(words[executable:]) if name == "gh" else []
+        if name in ("rg", "grep") or (len(args) >= 2
+                and args[0] in ("issue", "pr")
+                and args[1] in ("list", "view", "search")):
+            return []
+    return [(index, words[index:]) for index in range(len(words))]
+
+
+def shell_script(args: list[str], stdin: str | None) -> str | None:
+    """Find a literal -c script or stdin after consuming shell option values."""
+    index = 0
+    use_stdin = False
+    while index < len(args):
+        arg = args[index]
+        if arg in ("-o", "-O", "+o", "+O", "--init-file", "--rcfile"):
+            index += 2
             continue
-        directory = Path(cwd)
-        # What the command itself leaves in files before `gh` runs; None is unknown.
-        written: dict[str, str | None] = {}
-        stdout: str | None = None
-        segments = shell_segments(text)
-        # Help is exempt only for one plain invocation whose raw characters
-        # are all explicitly allowed. Unknown characters never authorize help.
-        allow_help = (len(commands) == 1 and len(segments) == 1
-                      and re.fullmatch(r"[-A-Za-z0-9 _./=:,@+]+", text) is not None)
-        for segment, heredoc, piped in segments:
-            try:
-                words = shlex.split(segment, posix=True)
-            except ValueError:
-                words = segment.split()
-                allow_help = False
-            # A heredoc is stdin; otherwise a pipe from a `cat <<'EOF'` may be.
-            stdin = heredoc if heredoc is not None else (stdout if piped else None)
-            if len(words) >= 2 and words[0] == "cd":
-                target = Path(words[1]).expanduser()
-                directory = target if target.is_absolute() else directory / target
-                stdout = None
+        if arg == "--":
+            index += 1
+            break
+        if not arg.startswith(("-", "+")):
+            break
+        # Bundled short flags such as -euo still give -o a separate value.
+        if not arg.startswith("--") and any(flag in arg[1:] for flag in "oO"):
+            index += 1
+        if arg.startswith("-") and not arg.startswith("--") and "c" in arg:
+            index += 1
+            if index < len(args) and args[index] == "--":
+                index += 1
+            return args[index] if index < len(args) else None
+        if arg.startswith("-") and not arg.startswith("--") and "s" in arg:
+            use_stdin = True
+        index += 1
+    if use_stdin or index >= len(args) or args[index] == "/dev/stdin":
+        return stdin
+    return None
+
+
+def shell_words(text: str) -> list[str]:
+    """Use one word splitter for commands and visible unknown script input."""
+    try:
+        return shlex.split(text, posix=True)
+    except ValueError:
+        return text.split()
+
+
+class ShellInspection:
+    """Whole-command evidence left after checking each executable create."""
+    def __init__(self) -> None:
+        self.shell_input = False
+        self.unchecked: list[str] = []
+
+
+def visible_script_create(text: str) -> bool:
+    """Classify visible gh words with the same option arities as bare creates."""
+    text = text.replace("\\\n", "")
+    # Unknown producers may turn an escape into a word boundary (zsh echo's
+    # \n is a required case). Do not decode output; conservatively check both
+    # the literal words and possible boundaries with the same gh classifier.
+    quoted = text.translate(str.maketrans({"'": " ", '"': " "}))
+    for visible in (text, quoted, re.sub(r"\\.", " ", quoted)):
+        words = shell_words(visible)
+        if any(os.path.basename(word) == "gh" and gh_create(words[index:]) is not None
+               for index, word in enumerate(words)):
+            return True
+    return False
+
+
+def check_shell_script(segments: list[ShellCommand], directory: Path,
+                       written: dict[str, str | None], inspection: ShellInspection,
+                       *, allow_help: bool = False) -> str | None:
+    stdout: str | None = None
+    for segment in segments:
+        literal_data: list[tuple[int, int]] = []
+        for child in segment.children:
+            begin = len(inspection.unchecked)
+            blocked = check_shell_script(child, directory, written, inspection)
+            if blocked:
+                return blocked
+            if literal_cat(child) is not None:
+                literal_data.append((begin, len(inspection.unchecked)))
+        words = shell_words(segment.text)
+        if not words:
+            stdout = None
+            continue
+        words = [segment.literals.get(word, word) for word in words]
+        words = ["--body=" + segment.literals[word[7:]]
+                 if word.startswith("--body=") and word[7:] in segment.literals else word
+                 for word in words]
+        own_stdin = segment.stdin_visible is not None
+        stdin = segment.stdin if own_stdin else (stdout if segment.piped else None)
+        stdin = resolved_stdin(words, stdin)
+        if words[0] == "cd" and len(words) >= 2:
+            target = Path(words[1]).expanduser()
+            directory = target if target.is_absolute() else directory / target
+            stdout = None
+            inspection.unchecked.extend([" ".join(words), *segment.heredoc_text])
+            continue
+        positions = command_positions(words)
+        executable = executable_index(words)
+        # Unclassified wrappers still make redirected file contents unknown.
+        producer = words[executable:] if executable is not None else words
+        stdout = track_writes(producer, stdin, directory, written)
+        residual = words.copy()
+        data = segment.heredoc_text.copy()
+        found = []
+        for index, candidate in positions:
+            name = os.path.basename(candidate[0])
+            if name in SHELLS:
+                args = redirections(candidate)[0]
+                literal = shell_script(args, None)
+                literal_c = literal is not None and SUBSTITUTION not in literal
+                if not literal_c:
+                    inspection.shell_input = True
+                # Script pipes and compound stdin are deliberately unmodeled.
+                # Only the actual executable may consume known direct input.
+                direct = resolved_stdin(words, segment.stdin if own_stdin else None)
+                script = literal if literal_c else (shell_script(args, direct)
+                                                    if index == executable else None)
+                if script is not None and SUBSTITUTION not in script:
+                    blocked = check_shell_script(shell_segments(script), directory, written, inspection)
+                    if blocked:
+                        return blocked
+                    # The parsed script contributes its own unchecked words;
+                    # do not count the original quoted copy a second time.
+                    target = script if literal_c else script.removesuffix("\n")
+                    for position, word in enumerate(residual):
+                        prefix = word[:-len(target)] if target and word.endswith(target) else ""
+                        if word == target or (not literal_c and re.fullmatch(r"\d*<<<", prefix)):
+                            residual[position] = ""
+                            break
+                    if not literal_c:
+                        for position, content in enumerate(data):
+                            if content.replace("\\\n", "") == script.replace("\\\n", ""):
+                                del data[position]
+                                break
+            if name != "gh":
                 continue
-            stdout = track_writes(words, stdin, directory, written)
-            kind = gh_create(words, allow_help=allow_help)
+            kind = gh_create(candidate, allow_help=allow_help and index == 0)
             api = kind is None
             if api:
-                kind = gh_api_create(words)
-            if kind is None:
-                continue
-            if stdin_redirected(redirections(words)[1]):
-                stdin = None
+                kind = gh_api_create(candidate)
+            if kind is not None:
+                found.append((index, candidate, kind, api))
+        if not found:
+            inspection.unchecked.extend([" ".join(residual), *data])
+            continue
+        # Every found suffix below is checked independently. Preserve prefix
+        # data (e.g. awk's program) instead of authorizing an entire segment.
+        for begin, end in reversed(literal_data):
+            del inspection.unchecked[begin:end]
+        first_create = min(entry[0] for entry in found)
+        inspection.unchecked.append(" ".join(residual[:first_create]))
+        for _, words, kind, api in found:
             read = api_body if api else create_body
             body, note = read(words, stdin, directory, written)
             missing = [f for f in ELON_FIELDS if not field_value(body or "", f)]
@@ -1144,6 +1460,28 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
                     "Do not create it another way."
                 )
     return None
+
+
+def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
+    """Record-check each visible create; literals and heredoc bodies stay data."""
+    commands = command_strings(event_input)
+    for text in commands:
+        segments = shell_segments(text)
+        allow_help = (len(commands) == 1 and len(segments) == 1
+                      and not segments[0].children
+                      and re.fullmatch(r"[-A-Za-z0-9 _./=:,@+]+", text) is not None)
+        inspection = ShellInspection()
+        blocked = check_shell_script(segments, Path(cwd), {}, inspection, allow_help=allow_help)
+        if blocked:
+            return blocked
+        if inspection.shell_input and visible_script_create("\n".join(inspection.unchecked)):
+            return ("AgentsMD blocked shell-fed gh create: a shell executes input "
+                    "outside a fully parsed literal -c script, and the whole command "
+                    "contains a visible gh issue|pr create|new that has not received "
+                    "its own record check. Use a literal -c script or direct literal "
+                    "heredoc/here-string with a verifiable record.")
+    return None
+
 
 def report_input_error(detail: str) -> int:
     json.dump(
