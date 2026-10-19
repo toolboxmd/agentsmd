@@ -149,6 +149,9 @@ Three tests, whenever you decide what to build or accept a claim:
 - **Go and see.** Run it, open it, read the real output. A summary, a green
   check, or a worker's "done" is a claim until you look. Example: a worker
   reports passing tests, but its transcript shows no test run.
+  Before handing back a fix or asking the user to retry, run their step yourself
+  or say plainly you could not. When stating a cause or number, name the command
+  or log line that showed it.
 
 When choosing what to build, keep this order: question the requirement, delete
 what nobody can defend, simplify what survives, accelerate through the
