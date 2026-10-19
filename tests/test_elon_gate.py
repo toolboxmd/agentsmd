@@ -210,6 +210,24 @@ class ElonGateTests(unittest.TestCase):
             with self.subTest(suffix=suffix):
                 self.assertBlocked(self.hook({"command": "gh issue create --help" + suffix}))
 
+    def test_help_exemption_requires_the_raw_character_allow_list(self) -> None:
+        for kind in ("issue", "pr"):
+            commands = (
+                f"gh {kind} create --title x --body hello\x00 --help",
+                f"gh\t{kind}\tcreate\t--help",
+                f'gh {kind} create --title "a b" --help',
+                f"gh {kind} create --title 'a b' --help",
+                f"gh {kind} create --title café --help",
+                f"gh {kind} create --title {{x,y}} --help",
+                f"gh {kind} create --title a\\ b --help",
+            )
+            for command in commands:
+                with self.subTest(command=command):
+                    self.assertBlocked(self.hook({"command": command}))
+            # Exercise every allowed punctuation character without shell quoting.
+            command = f"gh {kind} create --title Az09-_./=:,@+ --help"
+            self.assertEqual(self.hook({"command": command}).returncode, 0)
+
     def test_text_that_only_mentions_creation_passes(self) -> None:
         # Regression from 2026-10-01: a research spawn was blocked because its
         # task text quoted the command under investigation.

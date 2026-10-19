@@ -1082,11 +1082,10 @@ def elon_gate(event_input: dict[str, object], cwd: str) -> str | None:
         written: dict[str, str | None] = {}
         stdout: str | None = None
         segments = shell_segments(text)
-        # Help is exempt only for one plain invocation. Check raw syntax so a
-        # shell-parser disagreement can never grant the help exemption. Even
-        # quoted occurrences of these characters conservatively disable it.
+        # Help is exempt only for one plain invocation whose raw characters
+        # are all explicitly allowed. Unknown characters never authorize help.
         allow_help = (len(commands) == 1 and len(segments) == 1
-                      and not re.search(r"[\r\n;&|<>`#$()]", text))
+                      and re.fullmatch(r"[-A-Za-z0-9 _./=:,@+]+", text) is not None)
         for segment, heredoc, piped in segments:
             try:
                 words = shlex.split(segment, posix=True)
