@@ -67,18 +67,8 @@ Humans read slowly compared with agents. Every message costs the user attention.
 - Default to at most three sentences: the result, then only what needs the
   user's decision or action. Add more only when the user asks, or when a risk,
   Human Gate, or ambiguity would otherwise be missed.
-- When you own a task's Issue or PR, put evidence, commands, SHAs, test output,
-  and per-step delivery states there and link it. Keep disposable scripts, raw
-  traces, and unselected variants out of tracked source. Procedures that require a
-  report mean that record, not the chat reply. Read-only work (reviews, audits,
-  questions) reports to the user and writes nothing to Issues or PRs unless
-  asked. Filing found problems under Work is the exception.
-- Start every Issue and PR you write with a Human summary of three lines:
-  **What** (the result, one plain sentence), **Why** (the problem or its root
-  cause, one sentence), **So what** (what happens next and who does it; name
-  the user only for a Human Gate or a user-owned decision). A reader must be
-  able to stop there. Agent detail follows.
-  Update the summary when the state changes, such as a new blocker or decision.
+- The final chat reply gives the result, anything unfinished, and what needs
+  the user. Claim a state only when its evidence exists.
 - Do not narrate process. Skip worker, reviewer, retry, and dispatcher
   play-by-play and routine steps. Send an update only when something finishes,
   fails in a way the user must know, needs the user, or changes the plan. When
@@ -126,12 +116,6 @@ the user wants solved.
   asks for implementation.
 - Treat dirty, untracked, and unrecognized changes as user-owned: never modify
   or stage them. Stop on unsafe overlap or a moving base.
-- Keep the diff to the task. When you find a problem outside it, search the
-  owner's repository for an open Issue, at once comment on it or file one, then
-  continue your task. File problems in repositories the user does not control,
-  or that only the user can fix (hardware, accounts, billing, credentials, app
-  settings), in the private tracker that preferences name; if none is named,
-  tell the user.
 - Persistent Host Automation: before creating or changing a host service,
   scheduled job, or health or recovery automation meant to outlive the task,
   read `docs/adr/0001-persistent-host-automation.md` in full.
@@ -227,35 +211,7 @@ Glossaries hold only canonical terms, short definitions, and avoided synonyms.
 Legacy `CONTEXT.md` and `CONTEXT-MAP.md` are read-only fallbacks; write only the
 new names. Read relevant ADRs in full before changing locked decisions.
 
-## Delivery
-
-Before mutating, check status, branch, HEAD, remotes, intended base, and
-divergence, and apply Authority and continuation. For tracked substantive work,
-find or create the GitHub Issue in the owning repository and use a task branch.
-An Issue needs outcome, acceptance criteria, non-goals, blockers, proof, and an
-Elon record. Create and edit Issues and PRs with `gh issue` and `gh pr` in the
-shell, not the raw API or another GitHub tool, so the Elon gate sees them. Use one final approval PR per outcome; decompose through reviewed
-component PRs. Read-only work, spikes, WIP checkpoints, and explicitly local
-microfixes skip the Issue-to-PR lane. Natural requests and phase changes
-select `operations` procedures without a mode command. Planning procedures
-retain their concrete human decision and approval gates.
-
-Direct work: inspect, edit, run relevant checks, bump the version, then commit
-and push within authority. Create no Issue or worker purely for ceremony.
-
-## Execution and module routing
-
-The planner is the top-level agent the user works with. It owns reasoning, specs,
-integration, acceptance, and the outcome. Delegate when it reduces total work
-or provides required independence. Count briefing and checking costs.
-Preserve explicit user choices and required review.
-
-Delegate through the routing tool when one is available; it owns model, effort,
-roles, execution, and recovery for the work it accepts. If it cannot run the
-work, stop only the affected dispatch and report it; never substitute another
-route silently. A delegated failure returns to the planner as a decision with
-evidence. The planner decides; it implements that work only on explicit user
-instruction.
+## Procedures and tracked work
 
 At task and worker start, after context loss, and when the work changes phase,
 invoke the `operations` Skill and load only its applicable linked reference
@@ -268,6 +224,13 @@ Resolve reference paths relative to that Skill file, never the project cwd.
 The AgentsMD clone holds only AgentsMD's own files; always resolve project paths
 from the project working directory, and never write project work into the clone.
 
+Before you change code or other tracked files, create a branch or commit, or
+create, edit, or comment on a GitHub Issue or PR, invoke the `operations` Skill
+and read its [tracked work](../skills/operations/references/tracked-work.md)
+reference in full, as its own step. Its rules bind as if written here. Work
+with none of these actions, such as writing, research, or business tasks, does
+not need it.
+
 ## Authority and continuation
 
 Delivery Authority is authorization, from the request or repository policy, to
@@ -275,16 +238,6 @@ deliver a named outcome in named Issues and
 repositories. Repository policy is the project's own `AGENTS.md`. Carry Delivery
 Authority through routine in-scope steps without asking again.
 
-- A requested GitHub implementation includes Issue updates, an exclusive branch
-  and workspace, implementation, proof, versioning, commits, push, and PRs.
-  Final PR merges require human approval for the task and intended base.
-  Approval to merge or ship carries through routine fixes, retries, and
-  follow-up or replacement PRs needed to complete that same task. Changed
-  commits, versions, or PR numbers alone do not require another approval.
-  Required review and proof still apply to each current candidate. Human Gates
-  still apply.
-  Before an external mutation, verify the live target and authority. After the
-  mutation, verify the resulting live state before reporting success.
 - Ask again only after a material change to outcome, scope, risk, target, or an
   explicit approval limit. Honor a stated restriction to one PR, commit or
   artifact; do not infer that restriction merely because approval followed a
@@ -294,12 +247,6 @@ Authority through routine in-scope steps without asking again.
 - Routine reversible architecture is yours. Route product taste, hard-to-reverse
   architecture, Project Direction, credentials, customer data, money,
   destructive production changes, and ungranted authority to the human.
-- One writer per branch, workspace, and file set. Concurrent writers need
-  separate workspaces and disjoint scopes. Ownership also covers shared
-  services, databases, ports and deployment targets. Reuse your own task
-  workspace to continue.
-- Do not claim affected-only checks as a complete gate unless the trusted
-  scoped-proof policy allows it.
 
 ## Human gates
 
@@ -311,28 +258,3 @@ Authority through routine in-scope steps without asking again.
   target.
 - Keep secrets, private data, and unrelated personal information out of commits,
   Issues, PRs, logs, and screenshots.
-
-## Project truth
-
-| Owner | Content |
-| --- | --- |
-| Root direction triad | Current confirmed direction; Git owns prior states. |
-| Project `AGENTS.md` | Operational deltas and pointers: checkouts, critical seams, build and proof commands, release ownership, proof limits. |
-| GitHub Issues | Active intent, acceptance criteria, blockers, proof. |
-| Code, tests, configuration | Implementation truth. |
-| `README.md` | User documentation. |
-| `GLOSSARY.md` | Project language. |
-| ADRs | Costly, surprising, hard-to-reverse decisions. |
-| `CHANGELOG.md` | Released outcomes. |
-
-Root `TODO.md`, `ISSUES.md`, `IDEAS.md`, and `STATUS.md` are legacy input ledgers,
-never trackers: move unique entries to the owners above before any authorized
-deletion. Use `GOAL_TEMPLATE.md` only when Issue state lacks needed continuation.
-
-## Handoff
-
-Worker handoffs and interrupted-work recovery use the durable handoff in the
-operations orchestration module. Record the full state (commit, checks,
-delivery states, unchecked areas) in the Issue or PR. The final chat reply
-gives the result, anything unfinished, and what needs the user, per
-Communication. Claim a delivery state only when its evidence exists.

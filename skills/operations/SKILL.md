@@ -34,6 +34,7 @@ not completing it. A clear microfix stays direct.
 
 | Current need | Read in full |
 | --- | --- |
+| Before changing code or other tracked files, creating a branch or commit, or creating, editing, or commenting on a GitHub Issue or PR (the core's moved delivery rules) | [Tracked work](references/tracked-work.md) |
 | Initialize or reload Project Direction | [Context](procedures/project-direction/references/context.md) |
 | Repair or change Project Direction | [Project Direction](procedures/project-direction/index.md) |
 | Before researching facts, mechanics, history, or prior work, or explaining how a system works (not for a direct answer from the code at hand) | [Research](procedures/research/index.md) |
