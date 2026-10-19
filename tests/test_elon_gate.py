@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,6 +91,732 @@ class ElonGateTests(unittest.TestCase):
                 result = self.hook(tool_input)
                 self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
 
+    def bash_argv(self, command: str, *, succeeds: bool = True, capture_stdin: bool = False) -> list[list[str]]:
+        """Run real Bash with only gh replaced at the external-effect boundary."""
+        binary = self.cwd / "fake-bin"
+        binary.mkdir(exist_ok=True)
+        gh = binary / "gh"
+        gh.write_text(
+            "#!/usr/bin/env python3\n"
+            "import json, os, sys\n"
+            "with open(os.environ['GH_ARGV_LOG'], 'a') as log:\n"
+            "    log.write(json.dumps(sys.argv[1:]) + '\\n')\n"
+            "if os.environ.get('GH_STDIN_LOG'):\n"
+            "    with open(os.environ['GH_STDIN_LOG'], 'w') as log:\n"
+            "        log.write(sys.stdin.read())\n",
+            encoding="utf-8",
+        )
+        gh.chmod(0o755)
+        log = self.cwd / "argv.jsonl"
+        log.write_text("", encoding="utf-8")
+        pinned_path = str(binary) + os.pathsep + self.env["PATH"]
+        guard = ("export PATH=" + shlex.quote(pinned_path) + "; "
+                 "[ \"$(command -v gh)\" = " + shlex.quote(str(gh)) + " ] || exit 97; ")
+        if command.startswith("zsh "):
+            args = shlex.split(command)
+            args[-1] = guard + args[-1]
+            command = shlex.join(args)
+        command = guard + command
+        result = subprocess.run(
+            ["bash", "--noprofile", "--norc", "-c", command], cwd=self.cwd,
+            env={**self.env, "PATH": str(binary) + os.pathsep + self.env["PATH"],
+                 "GH_ARGV_LOG": str(log),
+                 "GH_STDIN_LOG": str(self.cwd / "stdin.log") if capture_stdin else ""}, capture_output=True, text=True, timeout=10,
+        )
+        if succeeds:
+            self.assertEqual(result.returncode, 0, result.stderr)
+        else:
+            self.assertNotEqual(result.returncode, 0, result.stderr)
+        return [json.loads(line) for line in log.read_text().splitlines()]
+
+    def test_new_aliases_are_gated_and_accept_a_record(self) -> None:
+        for kind in ("issue", "pr"):
+            command = f"gh {kind} new --title x --body hello"
+            with self.subTest(kind=kind):
+                self.assertEqual(self.bash_argv(command),
+                                 [[kind, "new", "--title", "x", "--body", "hello"]])
+                self.assertBlocked(self.hook({"command": command}))
+                self.assertEqual(self.hook({"command": f"gh {kind} new --body "
+                                           + shlex.quote(RECORD)}).returncode, 0)
+
+    @staticmethod
+    def wrappers(call: str) -> tuple[str, ...]:
+        return (f"URL=$({call})", f'URL="$({call})"', f"URL=`{call}`",
+                f"({call})", "sh -c " + shlex.quote(call),
+                "bash -c " + shlex.quote(call), "zsh -f -c " + shlex.quote(call))
+
+    def test_confident_wrappers_check_their_own_body(self) -> None:
+        for kind in ("issue", "pr"):
+            for verb in ("create", "new"):
+                for complete in (True, False):
+                    record = RECORD if complete else "hello\n"
+                    (self.cwd / "f.md").write_text(record, encoding="utf-8")
+                    for args in ("--body-file f.md", "-F f.md",
+                                 "--body " + shlex.quote(record),
+                                 "--body-file - <<'EOF'\n" + record + "EOF\n"):
+                        call = f"gh {kind} {verb} --title t " + args
+                        for command in self.wrappers(call):
+                            with self.subTest(command=command, complete=complete):
+                                if not command.startswith("zsh") or shutil.which("zsh"):
+                                    argv = self.bash_argv(command)
+                                    self.assertEqual(argv[0][:4], [kind, verb, "--title", "t"])
+                                result = self.hook({"command": command})
+                                if complete:
+                                    self.assertEqual(result.returncode, 0, result.stderr)
+                                else:
+                                    self.assertBlocked(result)
+
+    def test_plain_commit_echo_and_printf_mentions_are_data(self) -> None:
+        for command in (r'printf %s "gh issue create"',
+                        r'printf "%s\n" "gh issue create"',
+                        r'git commit -m "mention \"gh issue create\""',
+                        r'echo "\$(gh issue create --body hello)"',
+                        r'printf "%s" "\`gh issue create --body hello\`"'):
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}).returncode, 0)
+                if command.startswith(("echo ", "printf ")):
+                    self.assertEqual(self.bash_argv(command), [])
+        for data in ("mention gh issue create", "mention gh pr new",
+                     "$(gh issue create --body hello)", "`gh pr create --body hello`",
+                     "sh -c 'gh issue create'", "{gh,} issue create", "gh $'issue' create"):
+            commands = ("git commit -m " + shlex.quote(data),
+                        "echo " + shlex.quote(data), "printf '%s' " + shlex.quote(data))
+            if "$" not in data and "`" not in data and '"' not in data:
+                commands += ('git commit -m "' + data + '"', 'echo "' + data + '"',
+                             'printf "%s" "' + data + '"')
+            for command in commands:
+                with self.subTest(command=command):
+                    self.assertEqual(self.hook({"command": command}).returncode, 0)
+                if command.startswith(("echo ", "printf ")):
+                    self.assertEqual(self.bash_argv(command), [])
+            if data.startswith("mention"):
+                for command in (f'git commit -m "{data}"', f'echo "{data}"',
+                                f'printf "%s" "{data}"'):
+                    self.assertEqual(self.hook({"command": command}).returncode, 0)
+                if command.startswith(("echo ", "printf ")):
+                    self.assertEqual(self.bash_argv(command), [])
+
+    def test_nested_commands_check_each_visible_create(self) -> None:
+        (self.cwd / "f.md").write_text(RECORD, encoding="utf-8")
+        for call in ('echo $(gh pr create --body-file f.md)',
+                     '(gh pr create --body-file f.md)'):
+            for command in self.wrappers(call):
+                self.assertEqual(self.hook({"command": command}).returncode, 0)
+        for command in ('git commit -m "$(gh issue create --body hello)"',
+                        'echo "$(gh issue create --body hello)"',
+                        'gh pr create --body-file f.md --title $(gh issue create --body hello)'):
+            self.assertBlocked(self.hook({"command": command}))
+
+    def test_outer_blank_lines_preserve_wrappers_and_literal_data(self) -> None:
+        for command in ('git commit -m "gh issue create"',
+                        'echo "gh issue create"', 'printf "%s\\n" "gh issue create"'):
+            self.assertEqual(self.hook({"command": "\n\t" + command + "\n"}).returncode, 0)
+        for complete in (True, False):
+            (self.cwd / "f.md").write_text(RECORD if complete else "hello", encoding="utf-8")
+            command = "\nURL=$(gh pr create --title t --body-file f.md)\n"
+            self.assertEqual(self.bash_argv(command), [["pr", "create", "--title", "t", "--body-file", "f.md"]])
+            result = self.hook({"command": command})
+            if complete:
+                self.assertEqual(result.returncode, 0, result.stderr)
+            else:
+                self.assertBlocked(result)
+
+    def test_data_and_compound_wrappers_pass(self) -> None:
+        (self.cwd / "f.md").write_text(RECORD, encoding="utf-8")
+        for command in ('echo "$HOME gh issue create"',
+                        "echo 'gh issue create' > log",
+                        "echo 'gh issue create'; echo done",
+                        "git -C repo commit -m 'gh issue create'",
+                        "bash -lc 'gh pr create --body-file f.md'",
+                        "URL=$(gh\tpr create --body-file f.md)",
+                        "URL=$(gh pr create --body-file - <<EOF\n" + RECORD + "EOF\n)"):
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}).returncode, 0)
+        command = ("URL=$(gh pr create --body-file - <<'EOF'\nhello\nEOF\n"
+                   "gh issue create --body " + shlex.quote(RECORD) + "\n)")
+        argv = self.bash_argv(command)
+        self.assertEqual(argv[0], ["pr", "create", "--body-file", "-"])
+        self.assertEqual(argv[1], ["issue", "create", "--body", RECORD])
+        self.assertBlocked(self.hook({"command": command}))
+
+    def test_visible_wrapped_creates_require_records(self) -> None:
+        for kind in ("issue", "pr"):
+            for verb in ("create", "new"):
+                call = f"gh {kind} {verb} --title x --body hello"
+                forms = (
+                    f"({call})", f"( ( {call} ) )", f"echo $({call})",
+                    f'echo "$({call})"', f"echo `{call}`", f'echo "`{call}`"',
+                    f"echo $(echo $({call}))", f"(echo $({call}))",
+                    f"echo $( ({call}) )", f"sh -c '{call}'",
+                    f"bash -c '{call}'",
+                    f"s'h' -c '{call}'",
+                    f"g'h' '{kind}' '{verb}' --title x --body hello",
+                    f'gh "{kind}" "{verb}" --title x --body hello',
+                    f'gh "{kind[:1]}\\\n{kind[1:]}" {verb} --title x --body hello',
+                    f'gh {kind} "{verb[:1]}\\\n{verb[1:]}" --title x --body hello',
+                )
+                for command in forms:
+                    with self.subTest(command=command):
+                        self.assertIn([kind, verb, "--title", "x", "--body", "hello"],
+                                      self.bash_argv(command))
+                        self.assertBlocked(self.hook({"command": command}))
+
+    def test_zsh_c_is_gated(self) -> None:
+        command = "zsh -f -c 'gh issue create --body hello'"
+        self.assertBlocked(self.hook({"command": command}))
+        if shutil.which("zsh"):
+            self.assertEqual(self.bash_argv(command), [["issue", "create", "--body", "hello"]])
+
+    def test_250_bypasses_still_block_with_bash_argv_proof(self) -> None:
+        for kind in ("issue", "pr"):
+            for verb in ("create", "new"):
+                call = f"gh {kind} {verb} --title x --body hello"
+                cases = (
+                    (call + " # --help", [kind, verb, "--title", "x", "--body", "hello"]),
+                    (call + " \\\n# --help", [kind, verb, "--title", "x", "--body", "hello"]),
+                    (f"gh {kind} {verb} --help <<< foo\n{call}",
+                     [kind, verb, "--title", "x", "--body", "hello"]),
+                    (f"gh {kind} {verb} -dt --help -b x", [kind, verb, "-dt", "--help", "-b", "x"]),
+                    (f"gh {kind} {verb} -fb --help", [kind, verb, "-fb", "--help"]),
+                    (f"gh {kind} {verb} --title '--help'", [kind, verb, "--title", "--help"]),
+                )
+                for command, argv in cases:
+                    with self.subTest(command=command):
+                        self.assertIn(argv, self.bash_argv(command))
+                        self.assertBlocked(self.hook({"command": command}))
+        # Bash's exec interface rejects NUL before execution. It must still be
+        # blocked by the hook, rather than receiving the bare-help exemption.
+        self.assertBlocked(self.hook({"command": "gh issue create --body hello\x00 --help"}))
+
+    def test_each_visible_create_needs_its_own_record(self) -> None:
+        for call in ("(gh issue create --body hello)",
+                     "$(gh issue new --body hello)",
+                     "`gh pr create --body hello`",
+                     "sh -c 'gh pr new --body hello'"):
+            with self.subTest(call=call):
+                command = "gh issue create --body " + shlex.quote(RECORD) + "; " + call
+                self.assertBlocked(self.hook({"command": command}))
+        command = "(gh pr create --body " + shlex.quote(RECORD) + ")"
+        self.assertEqual(self.hook({"command": command}).returncode, 0)
+
+    def test_literal_create_mentions_remain_data_in_plain_commands(self) -> None:
+        for data in ("gh issue create", "gh pr new"):
+            for command in ("cat <<'EOF'\n" + data + "\nEOF",
+                            "gh issue create --body " + shlex.quote(RECORD + data)):
+                with self.subTest(command=command):
+                    self.assertEqual(self.hook({"command": command}).returncode, 0)
+            self.assertEqual(self.hook({"command": "printf '%s' " + shlex.quote(data)}).returncode, 0)
+
+    def test_separate_body_file_avoids_dynamic_data_false_positive(self) -> None:
+        data = RECORD + "\nExample: $(gh issue create) and sh -c 'gh pr new'\n"
+        (self.cwd / "record.md").write_text(data, encoding="utf-8")
+        self.assertEqual(self.hook({"command": "gh issue create --body-file record.md"}).returncode, 0)
+        self.assertEqual(self.hook({"command": "gh pr new --body-file record.md"}).returncode, 0)
+
+    def test_wrapped_help_never_uses_the_bare_help_exemption(self) -> None:
+        for kind in ("issue", "pr"):
+            for verb in ("create", "new"):
+                call = f"gh {kind} {verb} --help"
+                for command in (f"({call})", f"echo $({call})", f"echo `{call}`",
+                                f"sh -c '{call}'"):
+                    with self.subTest(command=command):
+                        self.assertIn([kind, verb, "--help"], self.bash_argv(command))
+                        self.assertBlocked(self.hook({"command": command}))
+
+    def test_dynamic_looking_data_stays_literal(self) -> None:
+        for data in ("$(gh issue create)", "`gh pr new`", "{gh,} issue create",
+                     "gh $'issue' create", "sh -c 'gh issue create'"):
+            for command in ("printf '%s' " + shlex.quote(data),
+                            "cat <<'EOF'\n" + data + "\nEOF",
+                            "gh issue create --body " + shlex.quote(RECORD + data)):
+                with self.subTest(command=command):
+                    result = self.hook({"command": command})
+                    self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_shell_fed_scripts_record_check_and_real_argv(self) -> None:
+        for complete in (False, True):
+            body = RECORD if complete else "hello"
+            for kind, verb in (("issue", "create"), ("pr", "new")):
+                call = f"gh {kind} {verb} --body " + shlex.quote(body)
+                commands = []
+                for shell in ("sh", "bash"):
+                    for flags in ("", " -s"):
+                        for operator in ("<<EOF", "<<'EOF'", '<<"EOF"', "<<-EOF", "0<<EOF"):
+                            commands.append(f"{shell}{flags} {operator}\n{call}\nEOF\n")
+                    commands.append(f"cat <<'EOF' | {shell}\n{call}\nEOF\n")
+                commands.append("bash <<< " + shlex.quote(call))
+                for command in commands:
+                    with self.subTest(command=command, complete=complete):
+                        self.assertEqual(self.bash_argv(command), [[kind, verb, "--body", body]])
+                        result = self.hook({"command": command})
+                        if complete and not command.startswith("cat "):
+                            self.assertEqual(result.returncode, 0, result.stderr)
+                        else:
+                            self.assertBlocked(result)
+
+    def test_create_heredoc_is_opaque_data(self) -> None:
+        body = RECORD + "Examples: `gh issue create` $HOME $(gh pr new) (parentheses)\n"
+        for command in ("gh pr create --body-file - <<'EOF'\n" + body + "EOF\n",
+                        "URL=$(gh pr create --body-file - <<'EOF'\n" + body + "EOF\n) && echo \"$URL\""):
+            self.assertEqual(self.bash_argv(command), [["pr", "create", "--body-file", "-"]])
+            self.assertEqual(self.hook({"command": command}).returncode, 0)
+
+    def test_compound_url_capture_checks_record(self) -> None:
+        for complete in (False, True):
+            (self.cwd / "f.md").write_text(RECORD if complete else "hello")
+            command = 'URL=$(gh pr create --title t --body-file f.md) && echo "$URL"'
+            self.assertEqual(self.bash_argv(command), [["pr", "create", "--title", "t", "--body-file", "f.md"]])
+            self.assertEqual(self.hook({"command": command}).returncode, 0 if complete else 2)
+
+    def test_read_only_searches_are_data(self) -> None:
+        for command in ("rg gh issue create", "grep 'gh issue create' README.md",
+                        "gh issue list --search 'gh issue create'",
+                        "gh pr list --search 'gh pr create'",
+                        "gh issue view 1 --json body", "gh pr search 'gh issue create'"):
+            self.assertEqual(self.hook({"command": command}).returncode, 0, command)
+
+    def test_repeated_body_options_block(self) -> None:
+        (self.cwd / "good.md").write_text(RECORD)
+        (self.cwd / "bad.md").write_text("hello")
+        for options in ("--body-file good.md --body-file bad.md",
+                        "--body-file bad.md --body-file good.md",
+                        "--body " + shlex.quote(RECORD) + " --body hello",
+                        "--body-file good.md --body hello"):
+            command = "gh pr create " + options
+            self.assertEqual(self.bash_argv(command), [["pr", "create"] + shlex.split(options)])
+            self.assertBlocked(self.hook({"command": command}))
+
+    def test_dynamic_shell_limits_are_not_inferred_from_raw_words(self) -> None:
+        (self.cwd / "earlier.sh").write_text("gh issue create\n")
+        for command in ("{gh,} issue create", "gh${IFS}issue${IFS}create",
+                        "cmd=gh; $cmd issue create", "gh issue ${verb:-create}",
+                        "eval '$SCRIPT'",
+                        "alias c='gh issue create'; c",
+                        "echo 'issue create --body hello' | xargs gh",
+                        "sh earlier.sh"):
+            self.assertEqual(self.hook({"command": command}).returncode, 0, command)
+        self.assertBlocked(self.hook({"command": "cat > later.sh <<'EOF'\ngh issue create\nEOF\nsh later.sh"}))
+
+    def test_literal_scripts_for_all_named_shells(self) -> None:
+        for shell in ("sh", "bash", "zsh", "dash", "ksh"):
+            for complete in (False, True):
+                call = "gh pr new --body " + shlex.quote(RECORD if complete else "hello")
+                command = shell + " -c " + shlex.quote(call)
+                self.assertEqual(self.hook({"command": command}).returncode, 0 if complete else 2)
+
+    @staticmethod
+    def prefixed_creates(call: str) -> tuple[str, ...]:
+        return tuple(prefix + call for prefix in
+                     ("time ", "nohup ", "nice ", "timeout 2 ", "sudo ",
+                      "echo x | xargs ", "find . -maxdepth 0 -exec ", "! ", "{ ", "then ", "do ", "else ",
+                      "if ", "while ", "until ", "case x in x) ", "unknown-prefix "))
+
+    def test_prefix_positions_cannot_hide_creates(self) -> None:
+        for kind in ("issue", "pr"):
+            for verb in ("create", "new"):
+                for command in self.prefixed_creates(f"gh {kind} {verb} --body hello"):
+                    with self.subTest(command=command):
+                        self.assertBlocked(self.hook({"command": command}))
+                for command in self.prefixed_creates(f"gh {kind} {verb} --body " + shlex.quote(RECORD)):
+                    self.assertEqual(self.hook({"command": command}).returncode, 0)
+        for command in ("time gh issue create --body hello",
+                        "nohup gh issue create --body hello",
+                        "nice gh issue create --body hello",
+                        "timeout 2 gh issue create --body hello",
+                        "{ gh issue create --body hello; }",
+                        "if true; then gh issue create --body hello; fi",
+                        "for x in a; do gh issue create --body hello; done",
+                        "case x in x) gh issue create --body hello;; esac",
+                        "case x in x)gh issue create --body hello;; esac",
+                        "echo x | xargs gh issue create --body hello",
+                        "i=0; while test $i = 0; do i=1; gh issue create --body hello; done",
+                        "i=0; until test $i = 1; do i=1; gh issue create --body hello; done",
+                        "while gh issue create --body hello; do break; done",
+                        "until gh issue create --body hello; do break; done",
+                        "find . -maxdepth 0 -exec gh issue create --body hello \\;"):
+            prefix = shlex.split(command)[0]
+            if prefix in ("{", "if", "for", "case", "while", "until") or "=" in prefix or shutil.which(prefix):
+                self.assertEqual(self.bash_argv(command)[0][:2], ["issue", "create"])
+            self.assertBlocked(self.hook({"command": command}))
+
+    def test_prefix_oracle_keeps_hooks_when_timeout_is_unavailable(self) -> None:
+        real_which, real_oracle = shutil.which, self.bash_argv
+        observed = []
+        def oracle(command: str) -> list[list[str]]:
+            self.assertFalse(command.startswith("timeout "))
+            observed.append(command)
+            return real_oracle(command)
+        with mock.patch("shutil.which", side_effect=lambda name: None if name == "timeout" else real_which(name)):
+            with mock.patch.object(self, "bash_argv", side_effect=oracle):
+                self.test_prefix_positions_cannot_hide_creates()
+        self.assertTrue(observed)
+
+    def test_literal_cat_heredoc_substitution_is_a_body(self) -> None:
+        for complete in (False, True):
+            body = RECORD if complete else "hello\n"
+            for delimiter in ("EOF", "'EOF'", '\"EOF\"'):
+                for quotes in ('"', ''):
+                    command = ('gh pr create --title x --body ' + quotes
+                               + '$(cat <<' + delimiter + '\n' + body + 'EOF\n)' + quotes)
+                    with self.subTest(command=command):
+                        self.assertEqual(self.hook({"command": command}).returncode,
+                                         0 if complete and quotes else 2)
+                        if quotes:
+                            self.assertEqual(self.bash_argv(command),
+                                             [["pr", "create", "--title", "x", "--body", body.rstrip('\n')]])
+
+    def test_shell_script_arguments_and_literal_pipes(self) -> None:
+        for complete in (False, True):
+            body = RECORD if complete else "hello"
+            call = "gh issue create --body " + shlex.quote(body)
+            commands = [prefix + " <<'EOF'\n" + call + "\nEOF\n"
+                        for prefix in ("bash -s foo", "bash -s -- foo", "bash /dev/stdin")]
+            commands += ["bash -c -- " + shlex.quote(call)]
+            for shell in ("sh", "bash"):
+                commands += ["echo " + shlex.quote(call) + " | " + shell,
+                             "printf '%s' " + shlex.quote(call) + " | " + shell,
+                             "printf '%s\\n' " + shlex.quote(call) + " | " + shell]
+            for command in commands:
+                with self.subTest(command=command):
+                    self.assertEqual(self.bash_argv(command), [["issue", "create", "--body", body]])
+                    expected = 0 if complete and not command.startswith(("echo ", "printf ")) else 2
+                    self.assertEqual(self.hook({"command": command}).returncode, expected)
+
+    def test_array_literals_are_data_but_substitutions_execute(self) -> None:
+        command = 'arr=(gh issue create); echo "${arr[@]}"'
+        self.assertEqual(self.bash_argv(command), [])
+        self.assertEqual(self.hook({"command": command}).returncode, 0)
+        self.assertBlocked(self.hook({"command": 'arr=($(gh issue create --body hello))'}))
+
+    @staticmethod
+    def prefixed_shell_scripts(call: str) -> tuple[str, ...]:
+        script = shlex.quote(call)
+        return ("if true; then bash -c " + script + "; fi",
+                "time bash -c " + script, "nohup bash -c " + script,
+                "nice bash -c " + script, "sudo -n bash -c " + script,
+                "{ bash -c " + script + "; }", "! bash -c " + script + "; true",
+                ">/dev/null bash -c " + script,
+                "<<< " + script + " bash",
+                "find . -maxdepth 0 -exec sh -c " + script + " \\;",
+                "nice sh <<'EOF'\n" + call + "\nEOF\n",
+                "if true; then echo " + script + " | sh; fi")
+
+    def test_prefixed_shells_use_the_same_positions_as_gh(self) -> None:
+        for complete in (False, True):
+            (self.cwd / "f.md").write_text(RECORD if complete else "hello")
+            call = "gh issue create --body-file f.md"
+            for command in self.prefixed_shell_scripts(call):
+                with self.subTest(command=command, complete=complete):
+                    prefix = shlex.split(command)[0]
+                    if prefix != "sudo" and (prefix in ("if", "{", "!", ">/dev/null", "<<<") or shutil.which(prefix)):
+                        self.assertEqual(self.bash_argv(command), [["issue", "create", "--body-file", "f.md"]])
+                    conservative = command.startswith(("nice sh ", "<<< ")) or " | sh" in command
+                    self.assertEqual(self.hook({"command": command}).returncode,
+                                     0 if complete and not conservative else 2)
+
+    def test_function_bodies_are_scanned_like_subshells(self) -> None:
+        for complete in (False, True):
+            (self.cwd / "f.md").write_text(RECORD if complete else "hello")
+            command = "f() { gh issue create --body-file f.md; }; f"
+            self.assertEqual(self.bash_argv(command), [["issue", "create", "--body-file", "f.md"]])
+            self.assertEqual(self.hook({"command": command}).returncode, 0 if complete else 2)
+        self.assertBlocked(self.hook({"command": "f() { gh issue create; }; f"}))
+
+    def test_unquoted_heredoc_substitutions_execute_but_quoted_are_data(self) -> None:
+        for complete in (False, True):
+            (self.cwd / "f.md").write_text(RECORD if complete else "hello")
+            call = "gh pr new --body-file f.md"
+            for delimiter in ("EOF", "'EOF'", '\"EOF\"'):
+                for body in ("$(" + call + ")", "`" + call + "`", "'$(" + call + ")'",
+                             '\"$(' + call + ')\"'):
+                    command = "cat <<" + delimiter + "\n" + body + "\nEOF\n"
+                    with self.subTest(command=command, complete=complete):
+                        unquoted = delimiter == "EOF"
+                        self.assertEqual(self.bash_argv(command),
+                                         [["pr", "new", "--body-file", "f.md"]] if unquoted else [])
+                        self.assertEqual(self.hook({"command": command}).returncode,
+                                         2 if unquoted and not complete else 0)
+        for body in ("gh issue create", r"\$(gh issue create)", r"\`gh issue create\`"):
+            command = "cat <<EOF\n" + body + "\nEOF\n"
+            self.assertEqual(self.bash_argv(command), [])
+            self.assertEqual(self.hook({"command": command}).returncode, 0)
+
+    @staticmethod
+    def shell_option_scripts(call: str) -> tuple[str, ...]:
+        return tuple("bash " + flags + " <<EOF\n" + call + "\nEOF\n"
+                     for flags in ("-o pipefail", "-O extglob", "+o pipefail",
+                                   "--init-file foo", "--rcfile foo", "-euo pipefail", "+euo pipefail"))
+
+    def test_shell_option_values_do_not_become_script_files(self) -> None:
+        for complete in (False, True):
+            (self.cwd / "f.md").write_text(RECORD if complete else "hello")
+            commands = list(self.shell_option_scripts("gh issue create --body-file f.md"))
+            commands.append("bash -eco pipefail 'gh issue create --body-file f.md'")
+            for command in commands:
+                with self.subTest(command=command, complete=complete):
+                    self.assertEqual(self.bash_argv(command), [["issue", "create", "--body-file", "f.md"]])
+                    self.assertEqual(self.hook({"command": command}).returncode, 0 if complete else 2)
+
+    def test_arithmetic_is_data_but_nested_substitutions_execute(self) -> None:
+        for command in ("echo $((gh issue create))", "echo $(( gh issue create ))"):
+            with self.subTest(command=command):
+                self.assertEqual(self.bash_argv(command, succeeds=False), [])
+                self.assertEqual(self.hook({"command": command}).returncode, 0)
+        command = "echo $(( (1+2) * (4+5) ))"
+        self.assertEqual(self.bash_argv(command), [])
+        self.assertEqual(self.hook({"command": command}).returncode, 0)
+        for complete in (False, True):
+            (self.cwd / "f.md").write_text(RECORD if complete else "hello")
+            command = "echo $((0$(gh issue create --body-file f.md)))"
+            self.assertEqual(self.bash_argv(command), [["issue", "create", "--body-file", "f.md"]])
+            self.assertEqual(self.hook({"command": command}).returncode, 0 if complete else 2)
+
+    @staticmethod
+    def round_four_commands() -> list[str]:
+        return [
+            "echo " + shlex.quote("x\\c\n" + RECORD) + " | gh issue create -t x -F -",
+            "gh issue --title T create -b y",
+            "gh pr -B main new -t x -b y",
+            "cat <<BODY-X\nbody\nBODY-X\ngh issue create -b y",
+            "cat <<EOF.\nbody\nEOF.\ngh pr new -b y",
+            "gh pr create --body-file - <<'PR-BODY'\n" + RECORD + "PR-BODY\n",
+        ]
+
+    def test_echo_backslashes_and_options_are_unknown_body_sources(self) -> None:
+        for flag in ("", "-n ", "-e ", "-E "):
+            body = "x\\c\n" + RECORD if not flag else RECORD
+            command = "echo " + flag + shlex.quote(body) + " | gh issue create -t x -F -"
+            with self.subTest(command=command):
+                self.assertBlocked(self.hook({"command": command}))
+                self.assertEqual(self.bash_argv(command), [["issue", "create", "-t", "x", "-F", "-"]])
+        if shutil.which("zsh"):
+            command = "zsh -f -c " + shlex.quote(self.round_four_commands()[0])
+            self.assertBlocked(self.hook({"command": command}))
+            self.assertEqual(self.bash_argv(command, capture_stdin=True), [["issue", "create", "-t", "x", "-F", "-"]])
+            self.assertEqual((self.cwd / "stdin.log").read_text(), "x")
+
+    def test_create_flags_before_verb_do_not_hide_creates(self) -> None:
+        for prefix in ("gh issue --title T", "gh pr -B main", "gh issue --title create"):
+            for verb in ("create", "new"):
+                for body, expected in (("hello", 2), (RECORD, 0)):
+                    command = prefix + " " + verb + " -b " + shlex.quote(body)
+                    with self.subTest(command=command):
+                        self.assertEqual(self.bash_argv(command), [shlex.split(command)[1:]])
+                        self.assertEqual(self.hook({"command": command}).returncode, expected)
+
+    def test_full_heredoc_delimiter_words(self) -> None:
+        for raw, delimiter in (("BODY-X", "BODY-X"), ("EOF.", "EOF."),
+                               ("'PR-BODY'", "PR-BODY"), ('E"OF"', "EOF"),
+                               (r"E\OF", "EOF"), ('"PR-BODY"', "PR-BODY")):
+            for body, expected in (("hello\n", 2), (RECORD, 0)):
+                for prefix in ("gh pr create --body-file -", "bash"):
+                    content = body if prefix != "bash" else "gh pr new -b " + shlex.quote(body) + "\n"
+                    command = prefix + " <<" + raw + "\n" + content + delimiter + "\n"
+                    with self.subTest(command=command):
+                        argv = (["pr", "create", "--body-file", "-"] if prefix != "bash"
+                                else ["pr", "new", "-b", body])
+                        self.assertEqual(self.bash_argv(command), [argv])
+                        self.assertEqual(self.hook({"command": command}).returncode, expected)
+            command = "cat <<" + raw + "\ndata\n" + delimiter + "\ngh issue create -b y"
+            with self.subTest(command=command):
+                self.assertEqual(self.bash_argv(command), [["issue", "create", "-b", "y"]])
+                self.assertBlocked(self.hook({"command": command}))
+
+    @staticmethod
+    def unknown_producer_scripts(body: str) -> list[str]:
+        call = "gh issue create --body " + shlex.quote(body)
+        quoted = shlex.quote(call)
+        rows = ["echo " + flag + " " + quoted + " | sh"
+                for flag in ("-n", "-e", "-E", "-ne")]
+        rows += ["echo 'gh issue' " + shlex.quote("create --body " + shlex.quote(body)) + " | bash",
+                 "echo " + shlex.quote("true\\n" + call) + " | bash",
+                 "printf -- '%s\\n' " + quoted + " | sh",
+                 "printf " + quoted + " | sh",
+                 "printf " + shlex.quote(call + "\\n") + " | sh"]
+        rows += [prefix + " <<'EOF' | " + shell + "\n" + call + "\nEOF\n"
+                 for prefix in ("cat -", "cat --", "cat -u", "cat -s", "grep issue", "head -1")
+                 for shell in ("sh", "bash")]
+        rows += ["echo -n " + quoted + " | head -1 | sh",
+                 "if true; then echo -n " + quoted + " | sh; fi",
+                 "echo -n " + quoted + " | nice sh"]
+        return rows
+
+    def test_unmodeled_producers_with_visible_creates_fail_closed(self) -> None:
+        for body in ("hello", RECORD):
+            for command in self.unknown_producer_scripts(body):
+                with self.subTest(command=command):
+                    self.assertBlocked(self.hook({"command": command}))
+                    # Backslash echo is shell-dependent; zsh covers it below.
+                    if "true\\n" not in command:
+                        truncated = body == RECORD and ("grep issue" in command or "head -1" in command)
+                        if truncated:
+                            self.assertEqual(self.bash_argv(command, succeeds=False), [])
+                        else:
+                            self.assertEqual(self.bash_argv(command), [["issue", "create", "--body", body]])
+        for command in ("echo -n hello | sh", "grep foo file | sh"):
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}).returncode, 0)
+        if shutil.which("zsh"):
+            command = "zsh -f -c " + shlex.quote("echo " + shlex.quote("true\\ngh issue create --body hello") + " | bash")
+            self.assertBlocked(self.hook({"command": command}))
+            self.assertEqual(self.bash_argv(command), [["issue", "create", "--body", "hello"]])
+
+    @staticmethod
+    def unreadable_shell_scripts(body: str) -> list[tuple[str, list[str]]]:
+        call = "gh issue create -b " + shlex.quote(body)
+        return [
+            ("echo -n " + shlex.quote("gh issue --title T create -b " + shlex.quote(body)) + " | sh",
+             ["issue", "--title", "T", "create", "-b", body]),
+            ("echo -n " + shlex.quote("gh -R o/r issue create -b " + shlex.quote(body)) + " | sh",
+             ["-R", "o/r", "issue", "create", "-b", body]),
+            ("cat -s <<'EOF' | sh\ngh issue \\\ncreate -b " + shlex.quote(body) + "\nEOF\n",
+             ["issue", "create", "-b", body]),
+            ('bash <<< "$(echo -n ' + shlex.quote(call) + ')"', ["issue", "create", "-b", body]),
+            ("bash <<EOF\n$(echo -n " + shlex.quote(call) + ")\nEOF\n", ["issue", "create", "-b", body]),
+            ("sh <<EOF\n`echo -n " + shlex.quote(call) + "`\nEOF\n", ["issue", "create", "-b", body]),
+        ]
+
+    def test_unreadable_shell_scripts_use_normal_create_classification(self) -> None:
+        for body in ("hello", RECORD):
+            for command, argv in self.unreadable_shell_scripts(body):
+                with self.subTest(command=command):
+                    self.assertEqual(self.bash_argv(command), [argv])
+                    self.assertBlocked(self.hook({"command": command}))
+
+    def test_unreadable_shell_scripts_without_visible_creates_are_allowed(self) -> None:
+        for command in ('bash <<< "$(echo hello)"', "bash <<EOF\necho $(date)\nEOF\n"):
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}).returncode, 0)
+        command = "bash <<EOF\necho $(date)\nEOF\n"
+        self.assertEqual(self.bash_argv(command), [])
+
+    @staticmethod
+    def whole_command_shell_feeds() -> list[str]:
+        call = "gh issue create -b hello"
+        awk = "awk " + shlex.quote('BEGIN{print "' + call + '"}')
+        pipe = "printf '%s\\n' " + shlex.quote(call)
+        return [awk + " echo hi | sh", "echo hi | " + awk + " cat | sh",
+                pipe + " | (sh)", pipe + " | if true; then sh; fi",
+                "{ bash; } <<'EOF'\n" + call + "\nEOF\n",
+                "(bash) <<'EOF'\n" + call + "\nEOF\n",
+                "bash /dev/fd/3 3<<'EOF'\n" + call + "\nEOF\n"]
+
+    def test_producer_arguments_cannot_authorize_a_body(self) -> None:
+        command = "awk 'BEGIN{print \"hello\"}' echo " + shlex.quote("Title\n" + RECORD) + " | gh issue create -F -"
+        self.assertEqual(self.bash_argv(command, capture_stdin=True), [["issue", "create", "-F", "-"]])
+        self.assertEqual((self.cwd / "stdin.log").read_text(), "hello\n")
+        self.assertBlocked(self.hook({"command": command}))
+        (self.cwd / "f.md").write_text(RECORD)
+        command = "command -v cat > f.md; gh issue create -F f.md"
+        self.assertBlocked(self.hook({"command": command}))
+        self.assertEqual(self.bash_argv(command), [["issue", "create", "-F", "f.md"]])
+
+    def test_shell_feeding_checks_the_whole_command(self) -> None:
+        for command in self.whole_command_shell_feeds():
+            with self.subTest(command=command):
+                self.assertEqual(self.bash_argv(command), [["issue", "create", "-b", "hello"]])
+                self.assertBlocked(self.hook({"command": command}))
+
+    def test_shell_feeding_without_unchecked_creates_stays_allowed(self) -> None:
+        (self.cwd / "f.md").write_text(RECORD)
+        commands = ["curl -fsSL https://x/install.sh | sh", "bash <<'EOF'\necho setup\nEOF\n",
+                    "rg foo | sh -c 'wc -l'", 'bash <<EOF\ngh issue list "$(date)"\nEOF\n',
+                    "gh pr create --body " + shlex.quote(RECORD + "Example: gh issue create") + "; bash </dev/null",
+                    "bash <<'SCRIPT'\ngh pr create --body-file - <<'BODY'\n" + RECORD
+                    + "Data: gh issue create `example` $(example)\nBODY\nSCRIPT\n"]
+        commands += ["bash <<SCRIPT\ngh pr " + "\\" + "\ncreate --body-file f.md\nSCRIPT\n"]
+        commands += ['gh pr create --body "$(cat <<\'BODY\'\n' + RECORD
+                     + 'Example: gh issue create\nBODY\n)"; bash </dev/null']
+        for command in commands:
+            with self.subTest(command=command):
+                self.assertEqual(self.hook({"command": command}).returncode, 0)
+        for command in commands[1:2] + commands[3:]:
+            self.bash_argv(command)
+
+    @staticmethod
+    def competing_shell_redirects() -> list[str]:
+        call = "gh issue create -b hello"
+        return ["sh <<< 'hi' <<'EOF'\n" + call + "\nEOF\n",
+                "cat <<< 'hi' <<'EOF' | sh\n" + call + "\nEOF\n",
+                "cat <<'A' <<'B' | sh\n" + call + "\nA\ntrue\nB\n",
+                "bash <(echo " + shlex.quote(call) + ")"]
+
+    def test_whole_command_keeps_all_redirected_script_text(self) -> None:
+        for index, command in enumerate(self.competing_shell_redirects()):
+            with self.subTest(command=command):
+                expected = [] if index == 2 else [["issue", "create", "-b", "hello"]]
+                self.assertEqual(self.bash_argv(command), expected)
+                self.assertBlocked(self.hook({"command": command}))
+                zsh = "zsh -f -c " + shlex.quote(command)
+                self.assertBlocked(self.hook({"command": zsh}))
+                if shutil.which("zsh"):
+                    self.assertEqual(self.bash_argv(zsh), [["issue", "create", "-b", "hello"]])
+
+    def test_main_differential_has_no_unintended_allowances(self) -> None:
+        # The exact shipped classifier is an independent safety baseline.
+        baseline = self.cwd / "baseline"
+        baseline.mkdir()
+        for name in ("project-direction", "agentsmd_instructions.py"):
+            path = baseline / name
+            path.write_bytes(subprocess.check_output(
+                ["git", "show", "15b1dd5:bin/" + name], cwd=ROOT))
+            path.chmod(0o755)
+        corpus = self.round_four_commands() + self.unknown_producer_scripts("hello") + list(self.prefixed_creates("gh issue create --body hello"))
+        corpus += ["gh issue create --body hello", "gh issue create --help",
+                   "gh issue create --title --help", "gh issue create # --help",
+                   "gh pr create --body-file missing.md",
+                   "gh -R view issue create --body hello",
+                   "gh --repo search pr create --body hello",
+                   "gh view gh issue create --body hello",
+                   "case x in x)gh issue create --body hello;; esac",
+                   "i=0; while test $i = 0; do i=1; gh issue create --body hello; done",
+                   "i=0; until test $i = 1; do i=1; gh issue create --body hello; done",
+                   "while gh issue create --body hello; do break; done",
+                   "until gh issue create --body hello; do break; done",
+                   "find . -maxdepth 0 -exec gh issue create --body hello \\;",
+                   "nice gh api -X POST repos/o/r/issues -f body=hello",
+                   "gh pr create --body " + shlex.quote(RECORD)]
+        corpus += self.competing_shell_redirects()
+        corpus += ["zsh -f -c " + shlex.quote(command) for command in self.competing_shell_redirects()]
+        corpus += self.whole_command_shell_feeds()
+        corpus += ["cat > f.md <<'BODY'\n" + RECORD + "BODY\ncommand -v cat > f.md; gh issue create -F f.md"]
+        corpus += [command for command, _ in self.unreadable_shell_scripts("hello")]
+        corpus += ['bash <<< "$(echo hello)"', "bash <<EOF\necho $(date)\nEOF\n"]
+        corpus += list(self.prefixed_shell_scripts("gh issue create --body hello"))
+        corpus += ["f() { gh issue create; }; f",
+                   "cat <<EOF\n$(gh issue create --body hello)\nEOF\n",
+                   "cat <<EOF\n`gh pr new --body hello`\nEOF\n",
+                   "cat <<'EOF'\n$(gh issue create --body hello)\nEOF\n",
+                   'cat <<"EOF"\n`gh pr new --body hello`\nEOF\n']
+        corpus += list(self.shell_option_scripts("gh issue create --body hello"))
+        corpus += ["echo $((gh issue create))", "echo $((0$(gh issue create --body hello)))",
+                   "echo -n hello | sh", "grep foo file | sh"]
+        # Only these exact data/corrected-record rows may stop blocking vs main.
+        intended = {
+            # Main truncates PR-BODY and rejects this required complete record.
+            "gh pr create --body-file - <<'PR-BODY'\n" + RECORD + "PR-BODY\n",
+            "echo $(( gh issue create ))",
+            "echo 'gh issue create'", 'git commit -m "gh issue create"',
+            "printf '%s' 'gh issue create'", "rg gh issue create",
+            "grep 'gh issue create' README.md",
+            "gh issue list --search 'gh issue create'",
+            "gh pr list --search 'gh pr create'",
+            "gh -R o/r issue list --search gh issue create",
+        }
+        corpus += ['gh pr create --body $(cat <<EOF\n' + RECORD + 'EOF\n)']
+        corpus += ['gh pr create --body "$(cat <<EOF\nRequirements and who asked: $VAR\nDeleted: $VAR\nBottleneck: $VAR\nChecked myself: $VAR\nEOF\n)"']
+        corpus += sorted(intended)
+        for command in corpus:
+            event = {"hook_event_name": "PreToolUse", "cwd": str(self.cwd),
+                     "tool_input": {"command": command}}
+            before = subprocess.run([str(baseline / "project-direction"), "hook", "--host", "claude"],
+                                    input=json.dumps(event), capture_output=True, text=True, env=self.env)
+            after = self.hook({"command": command})
+            with self.subTest(command=command):
+                self.assertIn(before.returncode, (0, 2), before.stderr)
+                if before.returncode == 2 and command not in intended:
+                    self.assertBlocked(after)
+
     def test_create_help_passes_without_a_record(self) -> None:
         for kind in ("issue", "pr"):
             for help_flag in ("--help", "-h", "--help=true", "--help=TRUE", "--help=True", "--help=1", "--help=t", "--help=T"):
@@ -100,9 +827,13 @@ class ElonGateTests(unittest.TestCase):
                              f"{kind} create {help_flag} --repo o/r",
                              f"{kind} create --repo=o/r {help_flag}",
                              f"{kind} create {help_flag} --repo=o/r"):
-                    with self.subTest(args=args):
-                        result = self.hook({"command": "gh " + args})
-                        self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
+                    for verb in ("create", "new"):
+                        command = "gh " + args.replace(" create ", " " + verb + " ")
+                        with self.subTest(command=command):
+                            self.assertEqual(self.bash_argv(command),
+                                             [shlex.split(command)[1:]])
+                            result = self.hook({"command": command})
+                            self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
 
     def test_help_does_not_exempt_another_create_in_the_command(self) -> None:
         for operator in (";", "&&", "||", "|", "|&", "&", "\n"):

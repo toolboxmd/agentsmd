@@ -336,7 +336,7 @@ read the procedure it links in full. [The #174 benchmark](docs/work/174-routing-
 and [the #182 sweep](docs/work/182-routing-sweep/results.md) record its effect.
 
 **The Elon gate.** On every harness, Issue and PR creation through
-`gh issue create`, `gh pr create`, or REST `gh api` POST requests to
+`gh issue create|new`, `gh pr create|new`, or REST `gh api` POST requests to
 `repos/OWNER/REPO/issues` or `repos/OWNER/REPO/pulls` whose body lacks a
 non-empty field for **Requirements and who asked**, **Deleted**,
 **Bottleneck**, or **Checked myself** is blocked (exit 2), and the missing
@@ -348,6 +348,78 @@ with `cat > FILE <<'EOF'` or `tee FILE <<'EOF'`. For `gh api`, the hook reads
 `-f body=...`, `-F body=@FILE`, or the JSON `body` in `--input FILE` (including
 `--input -`); when `--input` is present, only its JSON body counts. GraphQL,
 MCP tools, and API clients other than `gh api` are not checked.
+
+The `new` aliases use the same body checks and bare-help exemption as `create`.
+Only a single plain invocation with one help flag and optionally one repo
+selector is exempt; mixed flags and shell syntax remain gated.
+The parser checks each visible create separately, including commands inside
+`$(…)`, backticks and `(…)`, compound commands, literal scripts passed to
+`sh|bash|zsh|dash|ksh -c`, and scripts fed to those shells by heredocs or
+here-strings, including shell positional arguments and `/dev/stdin`. Shell
+options with separate values (`-o`, `-O`, `+o`, `--init-file`, `--rcfile`) are
+consumed before deciding whether a script file was supplied.
+A shell consuming anything other than a fully parsed literal `-c` script
+activates a conservative whole-command check. It joins backslash-newline
+continuations, removes quoting and uses the same gh flag-value classification
+as bare commands. Every visible create not already checked as its own create
+blocks, regardless of pipes, compounds, keywords or redirection descriptors.
+Direct literal heredocs and here-strings can receive normal record checks.
+Script input through producer pipes, compounds, prefixes or `/dev/fd/N` may
+block even with a record; their data flow is deliberately not modeled.
+
+Producer modeling remains only for body sources and file writes: plain `cat`
+without operands, `tee`, flag-free single-operand `echo` without backslashes,
+and `printf '%s'` / `printf '%s\n'`. Only the word at `executable_index` is the
+producer; a producer name among another program's arguments cannot authorize
+its output. Unknown body-source content blocks. Unknown escape pairs are
+possible word boundaries in the conservative script check, preserving zsh echo
+coverage without interpreting producer output. Harmless shell input with no
+visible create stays allowed.
+An exact double-quoted `"$(cat <<'EOF' … EOF)"` body is read as its heredoc content, with
+quoted or unquoted delimiters; other substituted bodies remain unreadable.
+Each create uses its own inline body, body file or stdin heredoc; a record on
+another invocation cannot authorize it. Repeated body options block instead of
+risking checking a different body from the one gh submits. Wrapped help gets no
+bare-help exemption.
+
+Quoted arguments to `git commit`, `echo`, `printf`, read-only searches and
+quoted-delimiter heredoc bodies are data. Unquoted heredoc bodies execute
+`$(…)` and backticks: only those substitutions are scanned, using double-quote
+expansion rules. Literal body text is not scanned as a script unless fed to a
+shell. Array and arithmetic expressions stay data while their actual command
+substitutions are checked. Visible function bodies are scanned like subshells,
+including definitions that are never called.
+One shared routine scans every command-word position for gh and shells, so
+keywords, prefixes and leading redirections cannot hide them. Producers use
+only the actual executable position. Unquoted data may conservatively match a
+create. Whole quoted examples remain data during normal classification; the
+whole-command guard can block even unrelated quoted examples when the same
+command also invokes a shell outside a fully parsed literal `-c` script.
+A record-checked create's own body remains data.
+
+Limits: this is an accidental-create guard, not a shell interpreter or sandbox.
+It does not resolve `eval` or non-visible script generators,
+split variables or `$IFS`, parameter expansion that constructs commands, brace
+expansion, ANSI-C/locale word expansion, function call/argument resolution,
+aliases, unseen input to process substitution such as `>(sh)`, variable-supplied script text
+such as `echo "$s" | sh`, scripts written in earlier commands and run later
+(including `cat s.txt | sh`), or
+commands assembled from xargs input such as `echo 'issue create …' | xargs gh`.
+Other limits are `env -S`, zsh `=gh`, `. /dev/stdin` or `source /dev/stdin`,
+`tcsh -c`, format-assembled scripts, the separated `$((gh ...) )` form, and
+ANSI-C `$'...'` quoting that desynchronizes the scanner. `printf --` and
+unmodeled formats are unknown producers: visible create signatures feeding a
+shell block, while generated signatures absent from the input remain a limit.
+Visible process-substitution signatures such as `bash <(echo 'gh issue create …')`
+block under the whole-command check; only non-visible generators remain a limit.
+A visible `xargs gh issue create …` or `find … -exec gh issue create …` is checked.
+Unquoted `cat <<EOF` record values containing `$VAR` are read literally: they
+can validate even if expansion makes the value empty. Use a quoted delimiter
+such as `<<'EOF'` or a pre-existing body file for reliable values.
+Use literal commands and body-file paths for reliable checking. A visible
+create with an unreadable or dynamically constructed body blocks.
+`bash -c 'echo gh issue create'` conservatively blocks as unquoted command-like
+data inside an executed script. Repeated body options and wrapped help may also block otherwise valid invocations.
 
 **Explicit reading fallback.** The hook verifies the canonical
 `global/AGENTS.md` and reports the result in `instructions.action`. Read the

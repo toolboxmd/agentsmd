@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.3] - 2026-10-19
+
+### Changed
+
+- Gate gh new aliases and visible creates inside shell wrappers and shell-fed scripts
+
 ## [17.4.2] - 2026-10-19
 
 ### Changed
