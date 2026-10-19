@@ -9,7 +9,7 @@ import tarfile
 import tempfile
 import unittest
 
-from tests.direction_block import parse_block
+from tests.direction_block import REMINDER, parse_block
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -52,7 +52,9 @@ class SharedPreferencesTests(unittest.TestCase):
             'hook_event_name': event, **kwargs})
         if output is None:
             return None
-        return parse_block(output['hookSpecificOutput']['additionalContext'])
+        context = output['hookSpecificOutput']['additionalContext']
+        # An unchanged prompt carries only the conversation reminder (#201).
+        return None if context == REMINDER else parse_block(context)
 
     def test_native_targets_initialize_once_and_preserve_preferences(self):
         locations = {'codex': '.codex/AGENTS.md', 'grok': '.grok/AGENTS.md',

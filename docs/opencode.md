@@ -236,6 +236,7 @@ exists, as defined by root `AGENTS.md`.
 OpenCode does not reproduce Codex app-native task coordination, memory,
 connectors, computer/browser UI tools or lifecycle hooks. The plugin covers
 system-prompt delivery only; it reproduces no `UserPromptSubmit` or subagent
-refresh semantics. Harness-native tools and
+refresh semantics. The loader context it appends ends with the per-turn
+conversation reminder, so the reminder rides every request. Harness-native tools and
 permissions remain OpenCode's responsibility; AgentsMD supplies the shared
 operating contract and the narrow CLI handoff.

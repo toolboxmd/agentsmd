@@ -12,7 +12,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from tests.direction_block import parse_block
+from tests.direction_block import REMINDER, parse_block
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "bin"))
@@ -61,6 +61,11 @@ class MuseTests(unittest.TestCase):
     def context(self, result):
         self.assertEqual(result.returncode, 0, result.stderr)
         return parse_block(json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"])
+
+    def assert_reminder_only(self, result):
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout), {"hookSpecificOutput": {
+            "hookEventName": "UserPromptSubmit", "additionalContext": REMINDER}})
 
     def test_manifest_exposes_one_skill_and_distinct_event_sources(self):
         manifest = json.loads((ROOT / ".muse-plugin/plugin.json").read_text())
@@ -191,12 +196,12 @@ class MuseTests(unittest.TestCase):
         first = self.context(self.call("session-start"))
         self.assertEqual(first["status"], "ready")
         self.assertIn("unchanged", first["instructions"]["action"])
-        self.assertEqual(self.call("user-prompt-submit").stdout, "")
+        self.assert_reminder_only(self.call("user-prompt-submit"))
         self.assertEqual(self.context(self.call("subagent-start"))["status"], "ready")
         self.source.write_text("# Changed contract\n")
         changed = self.context(self.call("user-prompt-submit"))
         self.assertIn("changed since", changed["instructions"]["action"])
-        self.assertEqual(self.call("user-prompt-submit").stdout, "")
+        self.assert_reminder_only(self.call("user-prompt-submit"))
         self.assertIn("unchanged", self.context(self.call("session-start"))["instructions"]["action"])
 
     def test_pretooluse_gate_blocks_and_allows_without_direction(self):
@@ -277,7 +282,7 @@ class MuseTests(unittest.TestCase):
         result = subprocess.run([sys.executable, str(ROOT / "bin/project-direction"), "hook", "--host", "codex"],
                                 input=raw, text=True, capture_output=True, env=env)
         self.assertIn("unverified", self.context(result)["instructions"]["action"])
-        self.assertEqual(self.call("user-prompt-submit").stdout, "")
+        self.assert_reminder_only(self.call("user-prompt-submit"))
 
     def test_pointer_runs_actual_sibling(self):
         result = self.call("operations-routing")

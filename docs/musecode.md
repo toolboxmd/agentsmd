@@ -123,7 +123,7 @@ installer's `--replace` option, which preserves a recoverable backup.
 | Event | Behavior |
 | --- | --- |
 | `SessionStart` | Deliver the complete loader block and a separate operations pointer |
-| `UserPromptSubmit` | Deliver changed context; stay silent when unchanged |
+| `UserPromptSubmit` | Deliver changed context; otherwise deliver only the conversation reminder |
 | `SubagentStart` | Deliver the complete block for the new worker |
 | `PreToolUse` | Run only the Elon gate; exit 2 with a stderr reason blocks non-compliant Issue and PR creation through `gh issue create`, `gh pr create`, or REST `gh api` POST requests to `repos/OWNER/REPO/issues` or `repos/OWNER/REPO/pulls` |
 

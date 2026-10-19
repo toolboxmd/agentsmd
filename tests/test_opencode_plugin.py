@@ -11,6 +11,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from tests.direction_block import REMINDER
+
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "opencode/agentsmd-project-direction.js"
 LOADER = ROOT / "bin/project-direction"
@@ -132,6 +134,9 @@ class OpenCodePluginTests(unittest.TestCase):
         self.assertEqual(payload["status"], "ready")
         self.assertEqual(payload["repository_root"], str(self.repository))
         self.assertIn("Make agent work purposeful.", report["system"][0])
+        # The conversation reminder (#201) closes the loader context once.
+        self.assertTrue(report["system"][0].endswith("\n\n" + REMINDER))
+        self.assertEqual(report["system"][0].count(REMINDER), 1)
 
     def test_directory_outside_a_repository_carries_the_loader_verdict(self) -> None:
         report, stderr = self.transform(self.outside)

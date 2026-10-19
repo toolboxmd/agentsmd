@@ -6,6 +6,12 @@ import json
 
 BLOCK_START = "<<<AGENTSMD_PROJECT_DIRECTION_V1>>>"
 BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1>>>"
+# The user's exact wording (#201), so the oracle does not come from the loader.
+REMINDER = (
+    "Reply rules: result first, at most three sentences unless asked or a risk "
+    "needs more. Give the Elon record (Requirements, Deleted, Bottleneck, "
+    "Checked) before any design recommendation."
+)
 
 
 def block_end(nonce: str) -> str:
@@ -13,7 +19,11 @@ def block_end(nonce: str) -> str:
 
 
 def parse_block(context: str) -> dict:
-    """Return the JSON header with each section restored as a content field."""
+    """Return the JSON header with each section restored as a content field.
+
+    A trailing conversation reminder is not part of the block and is dropped.
+    """
+    context = context.removesuffix("\n\n" + REMINDER)
     if not context.startswith(BLOCK_START + "\n"):
         raise ValueError("missing block start")
     header_line, _, rest = context[len(BLOCK_START) + 1 :].partition("\n")
