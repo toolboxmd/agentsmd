@@ -13,8 +13,9 @@ operations Skill, and the same view of what each project is for:
   procedure for it.
 - Project Direction: each repository's `VISION.md`, `MISSION.md`, and
   `OBJECTIVE.md`, loaded into the session by a hook.
-- The Elon gate: a hook that blocks `gh issue create` and `gh pr create` when
-  the body lacks an Elon record.
+- The Elon gate: a hook that blocks Issue and PR creation through
+  `gh issue create`, `gh pr create`, and REST `gh api` requests when the body
+  lacks an Elon record.
 - `versionctl`: deterministic repository versioning and release checks.
 
 Project instructions, such as a repository's own `AGENTS.md`, sit closer to the
@@ -314,15 +315,19 @@ short note at session start: use
 read the procedure it links in full. [The #174 benchmark](docs/work/174-routing-injection/results.md)
 and [the #182 sweep](docs/work/182-routing-sweep/results.md) record its effect.
 
-**The Elon gate.** On every harness, a `gh issue create` or `gh pr create` whose
-body lacks a non-empty field for **Requirements and who asked**, **Deleted**,
+**The Elon gate.** On every harness, Issue and PR creation through
+`gh issue create`, `gh pr create`, or REST `gh api` POST requests to
+`repos/OWNER/REPO/issues` or `repos/OWNER/REPO/pulls` whose body lacks a
+non-empty field for **Requirements and who asked**, **Deleted**,
 **Bottleneck**, or **Checked myself** is blocked (exit 2), and the missing
 fields are named. Each field line reads `**Deleted:** value`,
 `**Deleted**: value`, or `Deleted: value`, optionally as a list item. The hook
 reads bodies passed with `--body`, a heredoc with `--body-file -`, or
 `--body-file` naming a file that exists or that the same command first writes
-with `cat > FILE <<'EOF'` or `tee FILE <<'EOF'`. Issues and PRs created through
-the GitHub API or MCP tools are not checked.
+with `cat > FILE <<'EOF'` or `tee FILE <<'EOF'`. For `gh api`, the hook reads
+`-f body=...`, `-F body=@FILE`, or the JSON `body` in `--input FILE` (including
+`--input -`); when `--input` is present, only its JSON body counts. GraphQL,
+MCP tools, and API clients other than `gh api` are not checked.
 
 **Explicit reading fallback.** The hook verifies the canonical
 `global/AGENTS.md` and reports the result in `instructions.action`. Read the

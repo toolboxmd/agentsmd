@@ -26,9 +26,12 @@ separate pilot without a question it can falsify. Missing merge authority limits
 the pilot's tested boundary rather than granting permission.
 
 Bound in-flight work by the coordinator's capacity to validate and integrate,
-not the harness's maximum worker count. Use a rolling window when independent work
-remains. Add a sub-coordinator only for observed coordination load that the extra
-orientation and reporting actually reduces. Reserve effort for proof, integration,
+not the harness's maximum worker count. When children share one machine, also
+bound concurrency by that machine's free memory and the agents already running
+there, checking before each wave and shrinking after a resource kill. Use a
+rolling window when independent work remains. Add a sub-coordinator only for
+observed coordination load that the extra orientation and reporting actually
+reduces. Reserve effort for proof, integration,
 and durable recovery instead of spending it all on fresh dispatches.
 
 Treat ordinary completion messages as pending evidence. Finish a brief, topology

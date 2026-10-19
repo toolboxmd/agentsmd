@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.3.1] - 2026-10-19
+
+### Changed
+
+- Correct catalogue boundaries, shared-machine delegation sizing, and Elon gate API documentation, and say "compatible harnesses" in `MISSION.md` (#234, #238, #244, #245)
+
 ## [17.3.0] - 2026-10-19
 
 ### Added
