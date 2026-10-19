@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.1] - 2026-10-19
+
+### Changed
+
+- Require direct proof before handing back fixes, retries, causes or numbers (#248)
+
 ## [17.4.0] - 2026-10-19
 
 ### Added
