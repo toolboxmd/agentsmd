@@ -91,7 +91,11 @@ class NegativeResultGateTests(unittest.TestCase):
             text,
         )
         self.assertIn(
-            "When you file or find an Issue for work the user wants done, leave that turn with a real owner: "
+            "When you file or find an Issue for work the user wants done,",
+            text,
+        )
+        self.assertIn(
+            "leave that turn with a real owner: "
             "a running worker you started within your authority, or a named agent that has accepted the handoff, "
             "message sent and acknowledged.",
             text,

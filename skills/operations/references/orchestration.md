@@ -109,8 +109,9 @@ exact-candidate proof under [verification](verification.md); transcripts and dup
 checks are unnecessary. Before you relay a negative result or file anything from
 it, read [bounded delegation](bounded-delegation.md) in full and apply its
 negative-result gate. When you file or find an Issue for work the user wants
-done, leave that turn with a real owner: a running worker you started within
-your authority, or a named agent that has accepted the handoff, message sent
+done, including found defects in user-controlled repositories whose fixes need
+no user-owned decision, leave that turn with a real owner: a running worker you
+started within your authority, or a named agent that has accepted the handoff, message sent
 and acknowledged. "X will pick it up", with no handoff, is not an owner. Name
 the owner in the report to the user. Start the next unblocked substantive
 Issue with its own packet. Resume the same Issue when context remains useful; recover current state
