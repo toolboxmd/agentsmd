@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.4] - 2026-10-20
+
+### Changed
+
+- Reply reminder asks for the Elon method in reasoning, not a pasted record (#258)
+
 ## [17.4.3] - 2026-10-19
 
 ### Changed
