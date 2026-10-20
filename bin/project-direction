@@ -1555,8 +1555,10 @@ def run_hook(harness: str = "codex", require_unambiguous: bool = False) -> int:
         first_only = grok or harness == "opencode"
         if event == start_event and (start_sha is None or not first_only):
             try:
-                write_cached(session_key, "global_sha256", current_sha)
-                start_sha = current_sha
+                # Native instructions loaded before this hook may have been
+                # replaced by checkout restoration. Record those loaded bytes.
+                start_sha = instructions.get("restored_from_sha256", current_sha)
+                write_cached(session_key, "global_sha256", start_sha)
             except OSError:
                 start_sha = None
         instructions["action"] = session_action(start_sha, current_sha)

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "agentsmd",
   "displayName": "AgentsMD",
-  "version": "17.4.4",
+  "version": "17.4.5",
   "description": "Portable agent rules, Project Direction, Delivery System profiles, owned workflow Skills, and deterministic version control.",
   "compat": {
     "source": "native",
