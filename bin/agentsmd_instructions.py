@@ -123,7 +123,7 @@ def _git(root: Path, *arguments: str) -> subprocess.CompletedProcess[str] | None
 
 
 def guard_checkout(report: dict[str, Any]) -> dict[str, Any]:
-    """Mark a healthy report unhealthy when its source clone left main or a release tag.
+    """Restore a clean merged branch, otherwise flag an off-release source clone.
 
     A thread can check out another commit in the live clone; the link still
     resolves, so only the clone's Git state shows the damage.
@@ -135,7 +135,7 @@ def guard_checkout(report: dict[str, Any]) -> dict[str, Any]:
         return report
     quoted = shlex.quote(str(root))
     git = f"git -C {quoted}"
-    branch = _git(root, "symbolic-ref", "-q", "--short", "HEAD")
+    branch = _git(root, "symbolic-ref", "-q", "HEAD")
     deleted = _git(root, "ls-files", "--deleted")
     if (branch is None or branch.returncode > 1 or
             deleted is None or deleted.returncode != 0):
@@ -147,13 +147,66 @@ def guard_checkout(report: dict[str, Any]) -> dict[str, Any]:
                 f"`{git} status` and fix what it reports, then rerun inspect. "
                 + REREAD_ACTION))
         return report
-    if branch.stdout.strip() != "main":
-        tag = _git(root, "describe", "--tags", "--exact-match", "HEAD")
-        if tag is None or tag.returncode != 0:
+    # --short may produce heads/<name> when a tag shares the branch name;
+    # stripping the known namespace preserves a usable git switch argument.
+    branch_name = branch.stdout.strip().removeprefix("refs/heads/")
+    if branch_name != "main":
+        tag = _git(root, "tag", "--points-at", "HEAD")
+        if tag is None or tag.returncode != 0 or not tag.stdout.strip():
+            previous_branch = branch_name
+            # Detached release installs and unreadable tag state stay untouched.
+            if previous_branch and tag is not None and tag.returncode == 0:
+                clean = _git(root, "status", "--porcelain", "--untracked-files=all",
+                             "--ignore-submodules=none")
+                main = _git(root, "rev-parse", "--verify", "refs/heads/main")
+                upstream = _git(root, "rev-parse", "--verify", "refs/remotes/origin/main")
+                if (clean is not None and clean.returncode == 0 and not clean.stdout and
+                        main is not None and main.returncode == 0 and
+                        upstream is not None and upstream.returncode == 0):
+                    contained = _git(root, "merge-base", "--is-ancestor", "HEAD", upstream.stdout.strip())
+                    forward = _git(root, "merge-base", "--is-ancestor", main.stdout.strip(), upstream.stdout.strip())
+                    if (contained is not None and contained.returncode == 0 and
+                            forward is not None and forward.returncode == 0):
+                        restored = False
+                        try:
+                            switched = _git(root, "switch", "main")
+                            if switched is not None and switched.returncode == 0:
+                                merged = _git(root, "merge", "--ff-only", "refs/remotes/origin/main")
+                                if merged is not None and merged.returncode == 0:
+                                    # Switching can change the contract bytes and hashes.
+                                    refreshed = inspect_target(
+                                        Path(report["target"]),
+                                        Path(report["source"]) if "source" in report else None)
+                                    current = _git(root, "symbolic-ref", "-q", "HEAD")
+                                    head = _git(root, "rev-parse", "HEAD")
+                                    missing = _git(root, "ls-files", "--deleted")
+                                    if (refreshed.get("healthy") and current is not None and
+                                            current.returncode == 0 and current.stdout.strip() == "refs/heads/main" and
+                                            head is not None and head.returncode == 0 and
+                                            head.stdout.strip() == upstream.stdout.strip() and
+                                            missing is not None and missing.returncode == 0 and not missing.stdout):
+                                        report.update(refreshed, status="source-checkout-restored",
+                                                      restored_from=previous_branch,
+                                                      restored_from_sha256=report["sha256"])
+                                        restored = True
+                                        return report
+                        except (OSError, ValueError, RuntimeError):
+                            # A failed re-inspection must also undo the switch.
+                            pass
+                        finally:
+                            if not restored:
+                                # A timeout may follow a successful Git mutation. Switch
+                                # back before restoring main's ref. The original tree was
+                                # clean, so discard only changes from our failed merge.
+                                # Compare-and-swap protects refs; never delete a branch.
+                                returned = _git(root, "switch", "--discard-changes", previous_branch)
+                                if returned is not None and returned.returncode == 0:
+                                    _git(root, "update-ref", "refs/heads/main",
+                                         main.stdout.strip(), upstream.stdout.strip())
             head = _git(root, "rev-parse", "--short", "HEAD")
             report.update(
                 healthy=False, status="source-checkout-off-release",
-                checkout_head=(branch.stdout.strip() or
+                checkout_head=(branch_name or
                                (head.stdout.strip() if head else "unknown")),
                 action=(
                     f"The canonical AgentsMD clone {root} is not on main or a release "

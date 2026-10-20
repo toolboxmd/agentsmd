@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.5] - 2026-10-20
+
+### Changed
+
+- Restore clean merged canonical-clone branches to main without fetching (#260)
+
 ## [17.4.4] - 2026-10-20
 
 ### Changed
