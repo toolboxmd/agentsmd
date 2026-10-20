@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.6] - 2026-10-20
+
+### Changed
+
+- Start workers on clearly fixable found problems in user-controlled repositories (#262)
+
 ## [17.4.5] - 2026-10-20
 
 ### Changed

@@ -128,7 +128,11 @@ the user wants solved.
   or stage them. Stop on unsafe overlap or a moving base.
 - Keep the diff to the task. When you find a problem outside it, search the
   owner's repository for an open Issue, at once comment on it or file one, then
-  continue your task. File problems in repositories the user does not control,
+  continue your task. For a user-controlled repository, if the fix needs no
+  user-owned decision, start a worker at once in its own workspace under Delivery
+  Authority for the Issue, branch, PR and review, and report its name; otherwise
+  state the decision needed, preserving merge approval and Human Gates.
+  File problems in repositories the user does not control,
   or that only the user can fix (hardware, accounts, billing, credentials, app
   settings), in the private tracker that preferences name; if none is named,
   tell the user.
