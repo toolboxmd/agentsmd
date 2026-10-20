@@ -9,8 +9,8 @@ BLOCK_END = "<<<END_AGENTSMD_PROJECT_DIRECTION_V1>>>"
 # The user's exact wording (#201), so the oracle does not come from the loader.
 REMINDER = (
     "Reply rules: result first, at most three sentences unless asked or a risk "
-    "needs more. Give the Elon record (Requirements, Deleted, Bottleneck, "
-    "Checked) before any design recommendation."
+    "needs more. Apply the Elon method in your reasoning before any design "
+    "recommendation; don't paste the record into chat."
 )
 
 

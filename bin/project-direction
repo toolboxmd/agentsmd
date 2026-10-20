@@ -46,8 +46,8 @@ PREFERENCES_CAP_CHARACTERS = 4000
 # output, and delivering it on PreToolUse would repeat it on every tool call.
 CONVERSATION_REMINDER = (
     "Reply rules: result first, at most three sentences unless asked or a risk "
-    "needs more. Give the Elon record (Requirements, Deleted, Bottleneck, "
-    "Checked) before any design recommendation."
+    "needs more. Apply the Elon method in your reasoning before any design "
+    "recommendation; don't paste the record into chat."
 )
 
 

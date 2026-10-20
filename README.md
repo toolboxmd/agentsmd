@@ -290,8 +290,8 @@ compaction.
 block, or alone when the block is unchanged:
 
 > Reply rules: result first, at most three sentences unless asked or a risk
-> needs more. Give the Elon record (Requirements, Deleted, Bottleneck,
-> Checked) before any design recommendation.
+> needs more. Apply the Elon method in your reasoning before any design
+> recommendation; don't paste the record into chat.
 
 The text lives once, in `bin/project-direction`, and reaches each harness
 through the hook that already runs there:
