@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.7] - 2026-10-26
+
+### Changed
+
+- Require evidence before rejecting a user-selected approach (#265)
+
 ## [17.4.6] - 2026-10-20
 
 ### Changed

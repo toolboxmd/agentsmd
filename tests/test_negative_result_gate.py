@@ -67,7 +67,8 @@ class NegativeResultGateTests(unittest.TestCase):
         for clause in (
             "A negative result says the work cannot be done: not possible, cannot remove, blocked, no recipe, or failed.",
             "Accept a negative result only when it lists what was tried and which primary sources were checked: the tool's own docs and bundled README, its `--help`, its environment variables, and its config keys.",
-            "Before you relay that result to the user or file anything from it, try the work once yourself or assign one challenger whose only job is to make the work succeed.",
+            "This gate covers any agent's own claim in conversation or delegated work.",
+            "Before reporting your own claim, relaying another agent's result to the user, or filing anything from either, try the work once yourself or assign one challenger whose only job is to make the work succeed.",
             "Report only a negative result that survives that attempt, and include the attempts.",
             "An ordinary failed slice, one that does not say the work cannot be done, is still recorded at once.",
             "Validate at safe boundaries and before reporting.",

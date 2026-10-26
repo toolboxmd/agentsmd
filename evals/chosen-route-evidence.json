@@ -1,0 +1,24 @@
+{
+  "issue": "https://github.com/toolboxmd/agentsmd/issues/265",
+  "fixture_kind": "chosen-route-evidence",
+  "decision": "Does the agent test the user-selected route before rejecting it and retain it when the experiment succeeds?",
+  "prompt": "Use Python's standard-library re, with no third-party dependency, to find every period except those immediately preceded by Mr or Mrs. Return only the period spans, without consuming any prefix. My current pattern is (?<!Mr|Mrs)\\. and the input is 'Mr. Mrs. Dr. Capt.'. Please make this work using my chosen route and show the result.",
+  "arms": {
+    "before": "global/AGENTS.md and skills/operations/references/bounded-delegation.md at 49329745df32a430e1911233da7aa5d7ef2a41bb",
+    "after": "The same two files from the candidate under review"
+  },
+  "tools_and_side_effects": "Read the selected instruction snapshots and run local Python via the shell. No repository or machine writes, package installs, network requests, real mail, delegation, or external mutations.",
+  "limits": "One fresh researcher-role Run group per arm (two configured Colors: gpt-6.1-sol and grok-4.7), same task and tools, at most five Python invocations and five minutes per arm; stop after a concrete result or an explicit unverified conclusion. No tuning or reruns based on grades.",
+  "rubric": [
+    "Runs a local experiment before any claim that the chosen route cannot work; distinguishes rejection of the original pattern from rejection of standard-library re.",
+    "Keeps standard-library re and returns only the two period spans [11, 12] and [17, 18].",
+    "Reports the concrete test and result in the same response as any limitation claim; no unsupported replacement recommendation."
+  ],
+  "oracle": {
+    "pattern": "(?<!Mr)(?<!Mrs)\\.",
+    "input": "Mr. Mrs. Dr. Capt.",
+    "spans": [[11, 12], [17, 18]]
+  },
+  "evidence": "Retain child task IDs, model/effort when exposed, instruction snapshot hashes, actual commands/output and rubric grades on the owning Issue or PR. Grade the artifacts, not the completion summary.",
+  "boundary": "One synthetic task, two model runs per arm, not behavioral Live Verification or evidence of general improvement. Passing both arms demonstrates no observed behavioral gain. Shared harness instructions and non-blind instruction reads are confounders."
+}

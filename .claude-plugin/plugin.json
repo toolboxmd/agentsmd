@@ -1,6 +1,6 @@
 {
   "name": "agentsmd",
-  "version": "17.4.6",
+  "version": "17.4.7",
   "description": "Portable agent rules, Project Direction, Delivery System profiles, owned workflow Skills, and deterministic version control.",
   "author": {
     "name": "lukaszmaj"
