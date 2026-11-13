@@ -348,3 +348,13 @@ operations orchestration module. Record the full state (commit, checks,
 delivery states, unchecked areas) in the Issue or PR. The final chat reply
 gives the result, anything unfinished, and what needs the user, per
 Communication. Claim a delivery state only when its evidence exists.
+
+Before your final handoff, whatever the outcome (merged, review, research,
+proof run, experiment, failed or abandoned), remove the temporary files,
+scratch folders, snapshot copies and dependency installs (such as
+`node_modules`) you created for the task; keep evidence in the Issue, PR or
+other durable record. Create disposable files in the harness's session
+scratchpad when it provides one, otherwise in one clearly named task folder.
+Name anything you keep in the handoff with its reason and next owner. Remove
+only what you created; the operations finalization module's exceptions for
+dirty, shared, user-owned, active and ambiguous resources still apply.

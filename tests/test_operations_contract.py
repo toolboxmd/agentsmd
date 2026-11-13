@@ -182,6 +182,22 @@ class OperationsContractTests(unittest.TestCase):
         self.assertNotIn("Codex", verification)
         self.assertNotIn("maximum reasoning", verification)
 
+    def test_every_handoff_removes_the_agents_own_scratch(self):
+        # Issue #267: reviews, proof runs and abandoned attempts left hundreds of GB of scratch,
+        # because only Delivery Finalization required cleanup, after a terminal outcome.
+        handoff = words(ROOT / "global/AGENTS.md").split("## Handoff", 1)[1]
+        for clause in (
+            "Before your final handoff, whatever the outcome",
+            "remove the temporary files, scratch folders, snapshot copies and dependency installs",
+            "keep evidence in the Issue, PR or other durable record",
+            "in the harness's session scratchpad when it provides one, otherwise in one clearly named task folder",
+            "Name anything you keep in the handoff with its reason and next owner",
+            "Remove only what you created",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, handoff)
+        self.assertIn("finalization", handoff)
+
     def test_planner_delegates_through_routing_tool_without_silent_substitution(self):
         core = words(ROOT / "global/AGENTS.md")
         for clause in (

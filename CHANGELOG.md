@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.8] - 2026-11-13
+
+### Changed
+
+- Agents remove the scratch files, snapshot copies and dependency installs they created before every final handoff, whatever the outcome, using the harness session scratchpad when provided (#267).
+
 ## [17.4.7] - 2026-10-26
 
 ### Changed
