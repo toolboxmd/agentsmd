@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.4.9] - 2026-11-15
+
+### Changed
+
+- Paid delegation briefs name scope, sample count and spend cap (#269)
+
 ## [17.4.8] - 2026-11-13
 
 ### Changed

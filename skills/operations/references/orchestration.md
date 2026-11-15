@@ -66,7 +66,9 @@ when sufficient.
 
 Include the unit's outcome, allowed and forbidden writes, shared-resource limits,
 acceptance, proof seam, known gotchas, report shape, and bounded escalation
-condition. The report shape for a negative result (not possible, cannot remove,
+condition. When the unit makes paid model or API calls, the brief also names
+the exact calls or cases, the sample count, and a spend cap; a worker that
+would exceed the cap stops and reports. The report shape for a negative result (not possible, cannot remove,
 blocked, no recipe, or failed) lists what was tried and which primary sources
 were checked: the tool's own docs and bundled README, its `--help`, its
 environment variables, and its config keys. Do not dispatch unresolved

@@ -308,6 +308,21 @@ class OperationsContractTests(unittest.TestCase):
         spec = (SKILL.parent / "procedures/to-spec/index.md").read_text(encoding="utf-8")
         self.assertIn("## Design review", spec)
 
+    def test_paid_briefs_name_scope_sample_count_and_spend_cap(self):
+        # Issue #269: a worker ran an unrequested full eval suite and drained
+        # paid credits, because the brief named no spend scope and the Human
+        # Gate did not say evals count as credit spending.
+        orchestration = words(SKILL.parent / "references/orchestration.md")
+        for clause in (
+            "When the unit makes paid model or API calls",
+            "the brief also names the exact calls or cases, the sample count, and a spend cap",
+            "a worker that would exceed the cap stops and reports",
+        ):
+            with self.subTest(clause=clause):
+                self.assertIn(clause, orchestration)
+        gates = words(ROOT / "global/AGENTS.md").split("## Human gates", 1)[1].split(" ## ", 1)[0]
+        self.assertIn("credit spending (including paid eval and benchmark runs)", gates)
+
     def test_review_verdict_is_a_commit_status_on_the_exact_head(self):
         verification = words(SKILL.parent / "references/verification.md")
         for clause in (
