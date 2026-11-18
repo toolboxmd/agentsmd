@@ -128,7 +128,7 @@ class Policy:
         if not isinstance(raw_mirrors, list):
             raise VersionCtlError(ExitCode.INVALID_POLICY, "mirrors must be an array")
         mirrors: list[Mirror] = []
-        seen_paths: set[str] = set()
+        seen: set[tuple[str, str]] = set()
         for index, item in enumerate(raw_mirrors):
             if not isinstance(item, dict) or set(item) != {"path", "pointer"}:
                 raise VersionCtlError(
@@ -144,13 +144,13 @@ class Policy:
                     "mirror pointer must be an absolute JSON Pointer",
                     details={"index": index, "pointer": pointer},
                 )
-            if mirror_path == version_source or mirror_path in seen_paths:
+            if mirror_path == version_source or (mirror_path, pointer) in seen:
                 raise VersionCtlError(
                     ExitCode.INVALID_POLICY,
-                    "mirror paths must be unique and cannot equal versionSource",
-                    details={"path": mirror_path},
+                    "mirror path and pointer pairs must be unique and cannot use versionSource",
+                    details={"path": mirror_path, "pointer": pointer},
                 )
-            seen_paths.add(mirror_path)
+            seen.add((mirror_path, pointer))
             mirrors.append(Mirror(mirror_path, pointer))
 
         return cls(

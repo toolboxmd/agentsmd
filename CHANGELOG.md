@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.6.0] - 2026-11-18
+
+### Added
+
+- versionctl lets one file declare several mirror pointers, so prepare, doctor and release-check keep both npm lockfile version fields in step (#273)
+
 ## [17.5.0] - 2026-11-18
 
 ### Added

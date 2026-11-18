@@ -96,13 +96,12 @@ class FixtureRepository:
         return sha
 
     def _write_json_mirror(self, mirror: dict[str, str], version: str) -> None:
-        tokens = mirror["pointer"].strip("/").split("/")
-        document: dict[str, object] = {}
+        tokens = mirror["pointer"][1:].split("/")
+        path = self.root / mirror["path"]
+        document: dict[str, object] = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
         current = document
         for token in tokens[:-1]:
-            child: dict[str, object] = {}
-            current[token] = child
-            current = child
+            current = current.setdefault(token, {})  # type: ignore[assignment]
         current[tokens[-1]] = version
         self.write(mirror["path"], json.dumps(document, indent=2) + "\n")
 
@@ -194,6 +193,56 @@ class VersionCtlIntegrationTests(unittest.TestCase):
         self.assertIn('version = "0.2.0" # keep', repo.read("pyproject.toml"))
         self.assertEqual(json.loads(repo.read("plugins/example/plugin.json"))["version"], "0.2.0")
         self.assertEqual(json.loads(repo.read("packages/nested/package.json"))["version"], "0.2.0")
+
+    def test_npm_lockfile_declares_both_version_fields(self) -> None:
+        mirrors = [
+            {"path": "package.json", "pointer": "/version"},
+            {"path": "package-lock.json", "pointer": "/version"},
+            {"path": "package-lock.json", "pointer": "/packages//version"},
+        ]
+        repo = self.repo(mirrors=mirrors)
+        repo.seed()
+        lockfile = json.loads(repo.read("package-lock.json"))
+        self.assertEqual(lockfile, {"version": "0.1.0", "packages": {"": {"version": "0.1.0"}}})
+
+        doctor = repo.run("doctor", "--json")
+        self.assertEqual(doctor.returncode, 0, doctor.stderr or doctor.stdout)
+
+        repo.write("feature.md", "Fix.\n")
+        result = repo.run("prepare", "patch", "--reason", "Fix lockfile drift", "--json")
+        self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
+        self.assertEqual(json.loads(repo.read("package.json"))["version"], "0.1.1")
+        self.assertEqual(
+            json.loads(repo.read("package-lock.json")),
+            {"version": "0.1.1", "packages": {"": {"version": "0.1.1"}}},
+        )
+        repo.git("add", ".")
+        repo.git("commit", "-m", "fix: lockfile drift")
+        self.assertEqual(repo.run("release-check", "--json").returncode, 0)
+
+        # doctor and release-check each catch a stale nested lockfile field.
+        lockfile = json.loads(repo.read("package-lock.json"))
+        lockfile["packages"][""]["version"] = "0.1.0"
+        repo.write("package-lock.json", json.dumps(lockfile, indent=2) + "\n")
+        repo.git("commit", "-am", "chore: stale lockfile")
+        stale = [
+            item
+            for item in json.loads(repo.run("doctor", "--json").stdout)["mirrors"]
+            if not item["consistent"]
+        ]
+        self.assertEqual([(m["path"], m["pointer"]) for m in stale], [("package-lock.json", "/packages//version")])
+        self.assertEqual(repo.run("release-check", "--json").returncode, 15)
+
+    def test_duplicate_mirror_pointer_is_rejected(self) -> None:
+        mirrors = [
+            {"path": "package.json", "pointer": "/version"},
+            {"path": "package.json", "pointer": "/version"},
+        ]
+        repo = self.repo(mirrors=mirrors)
+        repo.seed()
+        doctor = repo.run("doctor", "--json")
+        self.assertNotEqual(doctor.returncode, 0)
+        self.assertIn("INVALID_POLICY", doctor.stdout + doctor.stderr)
 
     def test_adoption_and_wip_hook_contract(self) -> None:
         repo = self.repo()

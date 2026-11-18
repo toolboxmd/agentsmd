@@ -263,7 +263,9 @@ class VersionService:
         ]
         for mirror in self.policy.mirrors:
             path = self.repo.root / mirror.path
-            updated, normalization = updated_mirror_text(path, mirror.pointer, str(version))
+            updated, normalization = updated_mirror_text(
+                path, mirror.pointer, str(version), changes.get(path)
+            )
             before = version_from_mirror_text(path, mirror.pointer, path.read_text(encoding="utf-8"))
             changes[path] = updated
             fields.append(
@@ -375,7 +377,9 @@ class VersionService:
         ]
         for mirror in self.policy.mirrors:
             path = self.repo.root / mirror.path
-            updated, normalization = updated_mirror_text(path, mirror.pointer, str(target))
+            updated, normalization = updated_mirror_text(
+                path, mirror.pointer, str(target), changes.get(path)
+            )
             before = read_version_file_from_mirror(path, mirror)
             changes[path] = updated
             fields.append(
