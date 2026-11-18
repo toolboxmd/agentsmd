@@ -152,11 +152,26 @@ verdicts. Any loader failure leaves the system prompt unchanged and logs one
 `agentsmd-project-direction:` line to stderr. Start a fresh OpenCode session
 after install; a running session keeps its loaded plugins.
 
-The plugin uses `experimental.chat.system.transform`, which is experimental in
-OpenCode **1.18.32**, the version the bounded run adapter pins. The plugin
-context exposes no harness version, so the pin is documented, not enforced at
-runtime. Treat a different OpenCode version as unproved until the seam is
-rechecked.
+One module serves both OpenCode plugin APIs. Its default export is
+`{id, server, setup}`: OpenCode 1.x calls `server`, and OpenCode 2.x calls
+`setup` and ignores `server`. OpenCode 1.x also calls `setup`, with a context
+that has no session or tool hooks; `setup` then registers nothing.
+
+| Purpose | OpenCode 1.x | OpenCode 2.x |
+| --- | --- | --- |
+| Load the module | default `{id, server}`, `server(context)` returns hooks | default `{id, setup}`, `setup(context)` registers hooks |
+| Working directory | `context.directory`, else `context.worktree` | `context.location.directory` |
+| Append to the system prompt | `experimental.chat.system.transform`: push strings onto `output.system` | `context.session.hook("context", …)`: push `{type: "text", text}` onto `input.system` |
+| Elon gate before a tool runs | `tool.execute.before`: read `input.tool` and `output.args`; throw to block | `context.tool.hook("execute.before", …)`: read `input.tool` and `input.input`; throw to block |
+
+In 2.x a throw from `execute.before` fails the call with that message before the
+tool runs, as in 1.x. The 2.x shell tool is named `shell`, which the loader
+already treats as a shell. The 1.x system transform is experimental.
+
+The plugin was proved on OpenCode **1.18.32**, which the bounded run adapter
+pins, **1.19.6** and **2.3.2**. The plugin context exposes no harness version, so
+this list is documented, not enforced at runtime. Treat another OpenCode version
+as unproved until the seam is rechecked.
 
 The entry reports the Skill links' ownership states: `missing`, `owned-link`,
 `divergent-link`, `regular-file`, `other-path` and `broken-link`. Install
@@ -219,7 +234,8 @@ install, repeat install, preserved user entries, uninstall and rejected shared
 directories, explicit CLI arguments, stale-head refusal, malformed events,
 errors and timeout. It uses a
 fake CLI and spends no model quota. `python3 -m unittest tests.test_opencode_plugin -v`
-runs the plugin module under Node against a fixture repository and asserts that
+runs the plugin module under Node through both the 1.x `server` and the 2.x
+`setup` hooks against a fixture repository and asserts that
 the appended system entry equals the loader payload byte for byte, that an
 installed link resolves the canonical loader, and that an unreachable or failing
 loader leaves the system prompt unchanged. It skips when `node` is absent. The full repository and versionctl suites

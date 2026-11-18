@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.5.0] - 2026-11-18
+
+### Added
+
+- OpenCode plugin supports the OpenCode 2.x plugin API and keeps 1.x working (#271)
+
 ## [17.4.9] - 2026-11-15
 
 ### Changed

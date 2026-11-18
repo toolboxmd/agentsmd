@@ -7,6 +7,10 @@
  * prompt. Any failure leaves the system prompt unchanged and logs one line.
  * It also appends the pointer to the operations Skill from
  * `bin/operations-routing`, because OpenCode does not always load it on its own.
+ *
+ * One default export serves both plugin APIs. OpenCode 1.x loads `{id, server}`
+ * and calls `server`; OpenCode 2.x loads `{id, setup}`, calls `setup` and
+ * ignores `server`.
  */
 
 import { spawnSync } from "node:child_process";
@@ -14,12 +18,11 @@ import { realpathSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// `experimental.chat.system.transform` is experimental in this OpenCode
-// version, which the bounded run adapter pins as well. The plugin context
-// exposes no harness version, so the pin is documentation, not a runtime gate.
-// OpenCode treats every export of a plugin module as a plugin function, so the
-// pin stays a module constant and a property of the exported function.
-const SUPPORTED_OPENCODE_VERSION = "1.18.32";
+// The OpenCode versions this plugin was proved on. The 1.x hooks are
+// experimental and the bounded run adapter pins 1.18.32. The plugin context
+// exposes no harness version, so the list is documentation, not a runtime gate.
+const SUPPORTED_OPENCODE_VERSIONS = Object.freeze(["1.18.32", "1.19.6", "2.3.2"]);
+const PLUGIN_ID = "agentsmd-project-direction";
 
 const LOG_PREFIX = "agentsmd-project-direction:";
 const LOADER = ["bin", "project-direction"];
@@ -70,8 +73,7 @@ function loadRouting() {
   return routing;
 }
 
-function sessionKey(input, directory) {
-  const given = input && input.sessionID;
+function sessionKey(given, directory) {
   return typeof given === "string" && given.trim()
     ? given
     : `agentsmd-opencode:${directory}`;
@@ -153,9 +155,21 @@ function elonGate(directory, sessionID, tool, args) {
   return null;
 }
 
-agentsmdProjectDirection.supportedOpenCodeVersion = SUPPORTED_OPENCODE_VERSION;
+function systemEntries(directory, sessionID) {
+  const entries = [];
+  const loaded = loadContext(directory, sessionID);
+  if (loaded) {
+    entries.push(loaded);
+  }
+  const table = loadRouting();
+  if (table) {
+    entries.push(table);
+  }
+  return entries;
+}
 
-export default async function agentsmdProjectDirection(context) {
+// OpenCode 1.x: hooks returned from `server`.
+async function server(context) {
   const directory =
     (context && (context.directory || context.worktree)) || process.cwd();
   return {
@@ -163,19 +177,14 @@ export default async function agentsmdProjectDirection(context) {
       if (!output || !Array.isArray(output.system)) {
         return;
       }
-      const loaded = loadContext(directory, sessionKey(input, directory));
-      if (loaded) {
-        output.system.push(loaded);
-      }
-      const table = loadRouting();
-      if (table) {
-        output.system.push(table);
-      }
+      output.system.push(
+        ...systemEntries(directory, sessionKey(input && input.sessionID, directory)),
+      );
     },
     "tool.execute.before": async (input, output) => {
       const blocked = elonGate(
         directory,
-        sessionKey(input, directory),
+        sessionKey(input && input.sessionID, directory),
         input && input.tool,
         output && output.args,
       );
@@ -185,3 +194,46 @@ export default async function agentsmdProjectDirection(context) {
     },
   };
 }
+
+// OpenCode 2.x: hooks registered from `setup`. The `context` hook edits each
+// primary model request; a throw in `execute.before` fails the tool call
+// before it runs. OpenCode 1.x also calls `setup`, with a context that has no
+// session or tool hooks; `server` already covers 1.x, so setup does nothing.
+async function setup(context) {
+  const session = context && context.session;
+  const tool = context && context.tool;
+  if (
+    !session || typeof session.hook !== "function" ||
+    !tool || typeof tool.hook !== "function"
+  ) {
+    return;
+  }
+  const location = context.location;
+  const directory = (location && location.directory) || process.cwd();
+  await session.hook("context", (input) => {
+    if (!input || !Array.isArray(input.system)) {
+      return;
+    }
+    for (const text of systemEntries(directory, sessionKey(input.sessionID, directory))) {
+      input.system.push({ type: "text", text });
+    }
+  });
+  await tool.hook("execute.before", (input) => {
+    const blocked = elonGate(
+      directory,
+      sessionKey(input && input.sessionID, directory),
+      input && input.tool,
+      input && input.input,
+    );
+    if (blocked) {
+      throw new Error(blocked);
+    }
+  });
+}
+
+export default {
+  id: PLUGIN_ID,
+  server,
+  setup,
+  supportedOpenCodeVersions: SUPPORTED_OPENCODE_VERSIONS,
+};
