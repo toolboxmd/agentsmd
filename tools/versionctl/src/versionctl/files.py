@@ -174,8 +174,12 @@ def mirror_states(root: Path, mirrors: tuple[Mirror, ...], version: SemVer) -> l
     return states
 
 
-def updated_mirror_text(path: Path, pointer: str, version: str) -> tuple[str, str | None]:
-    text = path.read_text(encoding="utf-8")
+def updated_mirror_text(
+    path: Path, pointer: str, version: str, text: str | None = None
+) -> tuple[str, str | None]:
+    """Return the mirror text with the pointer set; pass ``text`` to chain edits to one file."""
+    if text is None:
+        text = path.read_text(encoding="utf-8")
     tokens = _pointer_tokens(pointer)
     suffix = path.suffix.lower()
     if suffix == ".json":

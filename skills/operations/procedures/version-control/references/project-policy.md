@@ -26,13 +26,16 @@ channels and independently released monorepo components are deferred.
 
 Each mirror has a repository-relative `path` and absolute JSON Pointer. JSON
 and TOML are supported. TOML pointers map section tokens and a final key, such
-as `/project/version` or `/tool/poetry/version`.
+as `/project/version` or `/tool/poetry/version`. One file may declare several
+pointers; each `path` and `pointer` pair must be unique. An npm lockfile carries
+the package version twice, so declare both fields:
 
 ```json
-{
-  "path": "package.json",
-  "pointer": "/version"
-}
+[
+  { "path": "package.json", "pointer": "/version" },
+  { "path": "package-lock.json", "pointer": "/version" },
+  { "path": "package-lock.json", "pointer": "/packages//version" }
+]
 ```
 
 Only `versionctl adopt` or `versionctl prepare` may write the canonical version
