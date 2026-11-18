@@ -1221,47 +1221,56 @@ class ElonGateTests(unittest.TestCase):
             with self.subTest(command=command):
                 self.assertEqual(self.hook({"command": command}, tool_name="Bash").returncode, 0)
 
+    # Calls the plugin's pre-tool hook through OpenCode 1.x `server` or the 2.x
+    # `setup` registration, printing `allowed` or `blocked:<message>`.
+    OPENCODE_GATE_DRIVER = (
+        "import { pathToFileURL } from 'node:url';\n"
+        "const [modulePath, directory, command, api] = process.argv.slice(2);\n"
+        "const plugin = (await import(pathToFileURL(modulePath).href)).default;\n"
+        "let before;\n"
+        "if (api === 'v2') {\n"
+        "  const hooks = {};\n"
+        "  const hook = (domain) => async (name, callback) => {\n"
+        "    hooks[`${domain}.${name}`] = callback;\n"
+        "    return { dispose: async () => {} };\n"
+        "  };\n"
+        "  await plugin.setup({ location: { directory }, session: { hook: hook('session') }, tool: { hook: hook('tool') } });\n"
+        "  before = () => hooks['tool.execute.before']({ tool: 'shell', sessionID: 's', input: { command } });\n"
+        "} else {\n"
+        "  const hooks = await plugin.server({ directory });\n"
+        "  before = () => hooks['tool.execute.before']({ tool: 'bash', sessionID: 's' }, { args: { command } });\n"
+        "}\n"
+        "try { await before(); process.stdout.write('allowed'); }\n"
+        "catch (error) { process.stdout.write('blocked:' + error.message); }\n"
+    )
+
+    def opencode_gate(self, module: Path, command: str, api: str) -> str:
+        driver = self.cwd / "opencode-gate.mjs"
+        driver.write_text(self.OPENCODE_GATE_DRIVER, encoding="utf-8")
+        return subprocess.run([NODE, str(driver), str(module), str(self.cwd), command, api],
+                              capture_output=True, text=True, env=self.env, check=True).stdout
+
     @unittest.skipIf(NODE is None, "node is not on PATH")
     def test_opencode_plugin_fails_closed_without_loader(self) -> None:
         plugin_dir = self.cwd / "orphan/opencode"
         plugin_dir.mkdir(parents=True)
         shutil.copy(PLUGIN, plugin_dir / PLUGIN.name)
-        driver = self.cwd / "orphan.mjs"
-        driver.write_text(
-            "import { pathToFileURL } from 'node:url';\n"
-            "const [modulePath, directory] = process.argv.slice(2);\n"
-            "const hooks = await (await import(pathToFileURL(modulePath).href)).default({ directory });\n"
-            "try { await hooks['tool.execute.before']({ tool: 'bash' }, { args: { command: 'gh issue create --body hi' } });\n"
-            "  process.stdout.write('allowed'); } catch (e) { process.stdout.write('blocked:' + e.message); }\n",
-            encoding="utf-8",
-        )
-        out = subprocess.run([NODE, str(driver), str(plugin_dir / PLUGIN.name), str(self.cwd)],
-                             capture_output=True, text=True, env=self.env, check=True).stdout
-        self.assertTrue(out.startswith("blocked:AgentsMD could not run its Elon check"), out)
+        for api in ("v1", "v2"):
+            with self.subTest(api=api):
+                out = self.opencode_gate(plugin_dir / PLUGIN.name, "gh issue create --body hi", api)
+                self.assertTrue(out.startswith("blocked:AgentsMD could not run its Elon check"), out)
 
     @unittest.skipIf(NODE is None, "node is not on PATH")
     def test_opencode_plugin_throws_on_blocked_call(self) -> None:
-        driver = self.cwd / "driver.mjs"
-        driver.write_text(
-            "import { pathToFileURL } from 'node:url';\n"
-            "const [modulePath, directory, command] = process.argv.slice(2);\n"
-            "const hooks = await (await import(pathToFileURL(modulePath).href)).default({ directory });\n"
-            "try {\n"
-            "  await hooks['tool.execute.before']({ tool: 'bash', sessionID: 's' }, { args: { command } });\n"
-            "  process.stdout.write('allowed');\n"
-            "} catch (error) { process.stdout.write('blocked:' + error.message); }\n",
-            encoding="utf-8",
-        )
+        for api in ("v1", "v2"):
+            with self.subTest(api=api):
+                def run(command: str) -> str:
+                    return self.opencode_gate(PLUGIN, command, api)
 
-        def run(command: str) -> str:
-            return subprocess.run([NODE, str(driver), str(PLUGIN), str(self.cwd), command],
-                                  capture_output=True, text=True, env=self.env, check=True).stdout
-
-        self.assertTrue(run("gh issue create --body hi").startswith("blocked:AgentsMD blocked"))
-        self.assertEqual(run("gh issue create --body " + shlex.quote(RECORD)), "allowed")
-        self.assertEqual(run("ls"), "allowed")
-        self.assertTrue(run("gh api repos/o/r/issues -f title=x").startswith("blocked:AgentsMD blocked"))
-
+                self.assertTrue(run("gh issue create --body hi").startswith("blocked:AgentsMD blocked"))
+                self.assertEqual(run("gh issue create --body " + shlex.quote(RECORD)), "allowed")
+                self.assertEqual(run("ls"), "allowed")
+                self.assertTrue(run("gh api repos/o/r/issues -f title=x").startswith("blocked:AgentsMD blocked"))
 
 
 class ElonContractTests(unittest.TestCase):

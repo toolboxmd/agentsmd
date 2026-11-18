@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Node seam proof that the OpenCode plugin transports the loader payload."""
+"""Node seam proof that the OpenCode plugin transports the loader payload
+on both OpenCode plugin APIs."""
 
 from __future__ import annotations
 
@@ -19,24 +20,61 @@ LOADER = ROOT / "bin/project-direction"
 ROUTING = ROOT / "bin/operations-routing"
 NODE = shutil.which("node")
 LOG_PREFIX = "agentsmd-project-direction:"
+# OpenCode 1.x calls `server`; OpenCode 2.x calls `setup`.
+APIS = ("v1", "v2")
 DRIVER = """
 import { pathToFileURL } from "node:url";
 
-const [modulePath, directory, calls] = process.argv.slice(2);
+const [modulePath, directory, calls, api] = process.argv.slice(2);
 const module = await import(pathToFileURL(modulePath).href);
-const hooks = await module.default({ directory, worktree: directory });
-const output = { system: [] };
-for (let call = 0; call < Number(calls); call += 1) {
-  await hooks["experimental.chat.system.transform"](
-    { sessionID: "ses_fixture", model: { id: "fixture" } },
-    output,
-  );
+const plugin = module.default;
+let system;
+if (api === "v2") {
+  // OpenCode 2.x: setup registers hooks; the context hook edits system parts.
+  const registered = {};
+  const hook = (domain) => async (name, callback) => {
+    registered[`${domain}.${name}`] = callback;
+    return { dispose: async () => {} };
+  };
+  await plugin.setup({
+    location: { directory, project: { directory } },
+    session: { hook: hook("session") },
+    tool: { hook: hook("tool") },
+  });
+  const request = {
+    sessionID: "ses_fixture",
+    system: [{ type: "text", text: "host" }],
+    messages: [],
+  };
+  for (let call = 0; call < Number(calls); call += 1) {
+    await registered["session.context"](request);
+  }
+  const added = request.system.slice(1);
+  if (added.some((part) => part.type !== "text" || Object.keys(part).length !== 2)) {
+    throw new Error("unexpected system part shape: " + JSON.stringify(added));
+  }
+  system = added.map((part) => part.text);
+} else {
+  // OpenCode 1.x: server returns hooks; the transform edits system strings.
+  const hooks = await plugin.server({ directory, worktree: directory });
+  const output = { system: [] };
+  for (let call = 0; call < Number(calls); call += 1) {
+    await hooks["experimental.chat.system.transform"](
+      { sessionID: "ses_fixture", model: { id: "fixture" } },
+      output,
+    );
+  }
+  system = output.system;
 }
 process.stdout.write(JSON.stringify({
-  system: output.system,
-  supported: module.default.supportedOpenCodeVersion,
+  system,
+  id: plugin.id,
+  supported: plugin.supportedOpenCodeVersions,
   exports: Object.fromEntries(
     Object.entries(module).map(([name, value]) => [name, typeof value]),
+  ),
+  members: Object.fromEntries(
+    Object.entries(plugin).map(([name, value]) => [name, typeof value]),
   ),
 }));
 """
@@ -88,10 +126,10 @@ class OpenCodePluginTests(unittest.TestCase):
             text=True,
         )
 
-    def transform(self, directory: Path, module: Path = PLUGIN, calls: int = 1):
+    def transform(self, directory: Path, module: Path = PLUGIN, calls: int = 1, api: str = "v1"):
         result = subprocess.run(
             # Bun runs OpenCode plugins; the flag only silences Node module notices.
-            [NODE, "--no-warnings", str(self.driver), str(module), str(directory), str(calls)],
+            [NODE, "--no-warnings", str(self.driver), str(module), str(directory), str(calls), api],
             capture_output=True,
             text=True,
             env=self.environment,
@@ -123,9 +161,13 @@ class OpenCodePluginTests(unittest.TestCase):
         return json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
 
     def test_triad_repository_payload_reaches_the_system_prompt(self) -> None:
-        report, stderr = self.transform(self.repository)
+        for api in APIS:
+            with self.subTest(api=api):
+                self.check_triad_payload(api)
+
+    def check_triad_payload(self, api: str) -> None:
+        report, stderr = self.transform(self.repository, api=api)
         self.assertNotIn(LOG_PREFIX, stderr)
-        self.assertEqual(report["supported"], "1.18.32")
         self.assertEqual(len(report["system"]), 2)
         self.assertEqual(report["system"][0], self.loaded_context(self.repository))
         self.assertEqual(report["system"][1], self.routing_context())
@@ -139,7 +181,12 @@ class OpenCodePluginTests(unittest.TestCase):
         self.assertEqual(report["system"][0].count(REMINDER), 1)
 
     def test_directory_outside_a_repository_carries_the_loader_verdict(self) -> None:
-        report, stderr = self.transform(self.outside)
+        for api in APIS:
+            with self.subTest(api=api):
+                self.check_outside(api)
+
+    def check_outside(self, api: str) -> None:
+        report, stderr = self.transform(self.outside, api=api)
         self.assertNotIn(LOG_PREFIX, stderr)
         self.assertEqual(len(report["system"]), 2)
         self.assertEqual(report["system"][0], self.loaded_context(self.outside))
@@ -149,37 +196,63 @@ class OpenCodePluginTests(unittest.TestCase):
         self.assertNotIn("files", payload)
         self.assertNotIn("Make agent work purposeful.", report["system"][0])
 
-    def test_every_module_export_is_a_plugin_function(self) -> None:
-        # OpenCode calls every export of a plugin module, so a value export fails to load.
+    def test_default_export_serves_both_plugin_apis(self) -> None:
+        # OpenCode 2.x requires a default object with `id` and `setup`, and
+        # rejects a function default; OpenCode 1.x loads `{id, server}` from the
+        # default export alone. Any other export would be a second 1.x plugin.
         report, stderr = self.transform(self.repository, calls=0)
         self.assertNotIn(LOG_PREFIX, stderr)
         self.assertEqual(report["system"], [])
-        self.assertTrue(report["exports"])
-        self.assertEqual(
-            sorted(set(report["exports"].values())),
-            ["function"],
-            report["exports"],
-        )
+        self.assertEqual(report["exports"], {"default": "object"})
+        self.assertEqual(report["id"], "agentsmd-project-direction")
+        self.assertEqual(report["members"]["server"], "function")
+        self.assertEqual(report["members"]["setup"], "function")
+        self.assertNotIn("tui", report["members"])
+        self.assertIn("1.18.32", report["supported"])
+        self.assertIn("2.3.2", report["supported"])
 
     def test_installed_link_resolves_the_canonical_loader(self) -> None:
         plugins = self.base / "opencode/plugins"
         plugins.mkdir()
         link = plugins / PLUGIN.name
         link.symlink_to(PLUGIN)
-        report, stderr = self.transform(self.repository, module=link)
-        self.assertNotIn(LOG_PREFIX, stderr)
-        self.assertEqual(
-            report["system"],
-            [self.loaded_context(self.repository), self.routing_context()],
+        for api in APIS:
+            with self.subTest(api=api):
+                report, stderr = self.transform(self.repository, module=link, api=api)
+                self.assertNotIn(LOG_PREFIX, stderr)
+                self.assertEqual(
+                    report["system"],
+                    [self.loaded_context(self.repository), self.routing_context()],
+                )
+
+    def test_setup_without_session_and_tool_hooks_registers_nothing(self) -> None:
+        # OpenCode 1.x also calls `setup`, with a context lacking session and
+        # tool hooks; `server` covers 1.x, so setup must be a silent no-op.
+        driver = self.base / "reduced.mjs"
+        driver.write_text(
+            "import { pathToFileURL } from 'node:url';\n"
+            "const plugin = (await import(pathToFileURL(process.argv[2]).href)).default;\n"
+            "const result = await plugin.setup({ options: {}, agent: {}, skill: {} });\n"
+            "process.stdout.write(String(result));\n",
+            encoding="utf-8",
         )
+        result = subprocess.run(
+            [NODE, "--no-warnings", str(driver), str(PLUGIN)],
+            capture_output=True, text=True, env=self.environment, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "undefined")
+        self.assertEqual(result.stderr, "")
 
     def test_unreachable_loader_leaves_the_system_prompt_unchanged(self) -> None:
         detached = self.base / "detached/agentsmd-project-direction.js"
         detached.parent.mkdir()
         shutil.copyfile(PLUGIN, detached)
-        report, stderr = self.transform(self.repository, module=detached)
-        self.assertEqual(report["system"], [])
-        self.assertIn(LOG_PREFIX, stderr)
+        for api in APIS:
+            with self.subTest(api=api):
+                report, stderr = self.transform(self.repository, module=detached, api=api)
+                self.assertEqual(report["system"], [])
+                self.assertIn(LOG_PREFIX, stderr)
 
     def test_failing_loader_leaves_the_system_prompt_unchanged_and_logs_once(self) -> None:
         clone = self.base / "clone"
@@ -190,13 +263,15 @@ class OpenCodePluginTests(unittest.TestCase):
         loader.chmod(0o755)
         module = clone / "opencode/agentsmd-project-direction.js"
         shutil.copyfile(PLUGIN, module)
-        report, stderr = self.transform(self.repository, module=module, calls=2)
-        self.assertEqual(report["system"], [])
-        # One line for Project Direction and one for the missing routing command.
-        lines = stderr.splitlines()
-        self.assertEqual(len(lines), 2, stderr)
-        self.assertIn("status 3", lines[0])
-        self.assertIn("operations pointer was not loaded", lines[1])
+        for api in APIS:
+            with self.subTest(api=api):
+                report, stderr = self.transform(self.repository, module=module, calls=2, api=api)
+                self.assertEqual(report["system"], [])
+                # One line for Project Direction and one for the missing routing command.
+                lines = stderr.splitlines()
+                self.assertEqual(len(lines), 2, stderr)
+                self.assertIn("status 3", lines[0])
+                self.assertIn("operations pointer was not loaded", lines[1])
 
 
 if __name__ == "__main__":

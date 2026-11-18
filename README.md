@@ -126,7 +126,7 @@ Do not link the Skills into `~/.agents/skills` or `~/.claude/skills`; Codex and
 Grok Build scan those directories too, so a harness that already has the plugin
 would list every Skill twice as a duplicate. The second command links the
 AgentsMD OpenCode plugin into the same directory's `plugins` folder. The plugin
-targets OpenCode **1.18.32**. [OpenCode details](docs/opencode.md) covers its
+works on OpenCode **1.18.32**, **1.19.6** and **2.3.2**. [OpenCode details](docs/opencode.md) covers its
 status, update and uninstall commands.
 
 **Muse Code 1.4.9:**
@@ -276,7 +276,7 @@ healthy and carries your private preferences.
 | Codex | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook (`hooks/hooks.json`) | Explicit reading after a subagent's private compaction |
 | Claude Code | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | The loader emits nothing on `PreToolUse`; it runs only the Elon gate | Plugin hook (`hooks/hooks.json`), plus the `operations` pointer from `hooks/claude.json` at `SessionStart` | Explicit reading when the hook reports a problem; `UserPromptSubmit` and `SubagentStart` delivery was not separately exercised live |
 | Grok Build | `PreToolUse`, on the first tool call of a session | `SessionStart`, `UserPromptSubmit`, `SubagentStart`: Grok discards their output | Owned global hook file from `bin/agentsmd-grok-hook` | Explicit reading for the first response, before the first tool call |
-| OpenCode | Every session, appended to the system prompt | OpenCode has no such lifecycle events | Plugin `experimental.chat.system.transform`, which also appends the `operations` pointer; `tool.execute.before` runs the Elon gate | Explicit reading when the plugin reports a problem |
+| OpenCode | Every session, appended to the system prompt | OpenCode has no such lifecycle events | Plugin `experimental.chat.system.transform` (1.x) or `session.hook("context")` (2.x), which also appends the `operations` pointer; `tool.execute.before` (1.x) or `tool.hook("execute.before")` (2.x) runs the Elon gate | Explicit reading when the plugin reports a problem |
 | Muse | `SessionStart`, `UserPromptSubmit`, `SubagentStart` | `PreToolUse` runs only the Elon gate | Native plugin wrappers, plus the operations pointer at `SessionStart` | PostCompact re-delivery unproven; live tool-call blocking pending Live Verification |
 
 `SessionStart` loads at startup, resume, clear, and compact on Codex and Claude
@@ -300,7 +300,7 @@ through the hook that already runs there:
 | --- | --- |
 | Claude Code, Codex | `UserPromptSubmit` from `hooks/hooks.json` |
 | Muse | The `UserPromptSubmit` wrapper |
-| OpenCode | `experimental.chat.system.transform`, as the last line of the loader context on every request |
+| OpenCode | `experimental.chat.system.transform` (1.x) or `session.hook("context")` (2.x), as the last line of the loader context on every request |
 | Grok Build | Not supported. Grok discards the output of an allowing `UserPromptSubmit` hook, and `PreToolUse` fires on every tool call, which would repeat the reminder many times per turn |
 
 No hook checks the reply itself (#201).
