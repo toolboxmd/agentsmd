@@ -140,6 +140,11 @@ class ProjectDirectionLoaderTests(unittest.TestCase):
         environment["CODEX_HOME"] = str(self.base / "codex-home")
         # Never let a real ~/.grok answer for the fixture host.
         environment["GROK_HOME"] = str(self.grok_home)
+        # Nor a real Claude, OpenCode or Muse global link: it pulls in the
+        # machine's preferences and changes the hook's size (#277).
+        environment["CLAUDE_CONFIG_DIR"] = str(self.base / "claude-home")
+        environment["OPENCODE_CONFIG_DIR"] = str(self.base / "opencode-home")
+        environment["XDG_CONFIG_HOME"] = str(self.base / "xdg-config")
         environment.pop("AGENTSMD_HOST", None)
         # A real Grok hook process carries no AGENTSMD_HOST, so the marker
         # resolves the host. Other hosts keep the Codex selection.
