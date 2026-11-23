@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.6.2] - 2026-11-23
+
+### Changed
+
+- Isolate the Project Direction loader test from the machine's Claude, OpenCode and Muse global links so it passes on every machine (#277)
+
 ## [17.6.1] - 2026-11-23
 
 ### Changed
