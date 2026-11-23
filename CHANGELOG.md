@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.6.1] - 2026-11-23
+
+### Changed
+
+- Delegated children accept user authority relayed by their parent (#276)
+
 ## [17.6.0] - 2026-11-18
 
 ### Added
