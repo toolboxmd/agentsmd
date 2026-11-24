@@ -324,6 +324,10 @@ Authority through routine in-scope steps without asking again.
   (including paid eval and benchmark runs), money movement, destructive
   deletion outside the repository, and irreversible migration need explicit
   Delivery Authority for that exact operation and target.
+- A version tag alone does not constitute a release. Push authority covers
+  routine version tags required by repository policy under the version-control
+  procedure. GitHub Releases, registry or marketplace publication, deployment,
+  and installation require explicit Delivery Authority.
 - Keep secrets, private data, and unrelated personal information out of commits,
   Issues, PRs, logs, and screenshots.
 

@@ -47,7 +47,12 @@ Set `VERSIONCTL` to the selected executable for the commands below.
    declared, use [the scoped-proof contract](../../references/scoped-proof.md) to
    record or validate coverage for this final versioned SHA. Pre-version proof
    cannot silently stand in for a changed candidate.
-10. Push only when the task's Git authority permits it. A policy value of
+10. Push only when the task's Git authority permits it. When
+    `.version-policy.json` sets `tagPolicy` to `every-version`, create and push
+    the annotated `v{version}` tag on the clean commit that passed
+    `release-check`. This is routine versioning under push authority and needs
+    no extra approval. When the configured release workflow creates the tag,
+    defer tagging until that workflow runs on the release branch. A policy value of
     `on-version-commit` authorizes the configured release workflow, but does
     not broaden permission for registry publication, deployment, or install.
 
