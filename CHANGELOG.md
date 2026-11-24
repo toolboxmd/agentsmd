@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.6.3] - 2026-11-24
+
+### Changed
+
+- Clarify push authority for required version tags
+
 ## [17.6.2] - 2026-11-23
 
 ### Changed
