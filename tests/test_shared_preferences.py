@@ -249,7 +249,7 @@ class SharedPreferencesTests(unittest.TestCase):
         self.install()
         cache = self.root / 'plugins/cache/agentsmd/1/bin'
         cache.mkdir(parents=True)
-        for name in ('project-direction', 'agentsmd_instructions.py'):
+        for name in ('project-direction', 'agentsmd_instructions.py', 'agentsmd_codex_hooks.py'):
             shutil.copy2(ROOT / 'bin' / name, cache / name)
         (cache.parent / 'PREFERENCES.md').write_text('WRONG CACHE CONTENT')
         result = subprocess.run([str(cache / 'project-direction'), 'inspect'], env=self.env,

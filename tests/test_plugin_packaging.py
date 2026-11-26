@@ -446,6 +446,7 @@ class PluginPackagingTests(unittest.TestCase):
 
     def test_runtime_files_are_packaged_and_executable(self) -> None:
         for relative in (
+            "bin/agentsmd-codex-hooks",
             "bin/agentsmd-global-instructions",
             "bin/agentsmd-opencode",
             "bin/delivery-profile",
@@ -455,6 +456,7 @@ class PluginPackagingTests(unittest.TestCase):
             with self.subTest(relative=relative):
                 self.assertTrue((ROOT / relative).is_file())
         for relative in (
+            "bin/agentsmd-codex-hooks",
             "bin/agentsmd-global-instructions",
             "bin/agentsmd-opencode",
             "bin/delivery-profile",

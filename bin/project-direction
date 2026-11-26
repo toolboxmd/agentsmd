@@ -14,6 +14,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+import agentsmd_codex_hooks as codex_hooks
 from agentsmd_instructions import HARNESSES, context_payload, default_target, session_action
 
 REQUIRED_FILES = ("VISION.md", "MISSION.md", "OBJECTIVE.md")
@@ -1616,8 +1617,16 @@ def main(argv: list[str]) -> int:
     require_unambiguous = resolved_harness is None
     if args.command == "inspect":
         payload = context_payload(harness, require_unambiguous)
+        healthy = payload["preferences"]["status"] in {"ready", "absent"}
+        if harness == "codex":
+            # Codex skips a hook silently once its recorded hashes go stale.
+            payload["codex_hooks"] = codex_hooks.inspect()
+            # Without a codex executable nothing runs the hooks; a plugin that lists
+            # no hooks is a missing install, reported by its own status.
+            healthy = healthy and payload["codex_hooks"]["status"] in {
+                "trusted", "none-listed", "codex-absent"}
         print(json.dumps(payload, ensure_ascii=False, indent=2))
-        return 0 if payload["preferences"]["status"] in {"ready", "absent"} else 2
+        return 0 if healthy else 2
     return run_hook(harness, require_unambiguous)
 
 
