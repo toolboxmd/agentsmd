@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.8.0] - 2026-11-26
+
+### Added
+
+- Record work in the repository that owns the subject (#286)
+
 ## [17.7.0] - 2026-11-26
 
 ### Added

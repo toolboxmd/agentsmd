@@ -89,6 +89,17 @@ class DeliverySystemContractTests(unittest.TestCase):
                 )
                 self.assertIn(phrase, self.modules[owner])
 
+    def test_subject_owner_is_the_record(self) -> None:
+        words = " ".join(self.agents.split())
+        self.assertIn(
+            "owns the subject, not the one whose tool performs the work",
+            words,
+        )
+        self.assertIn(
+            "A side file, such as a brain dump, or a chat thread is never the record.",
+            words,
+        )
+
     def test_legacy_ledgers_have_no_active_tracker_role(self) -> None:
         self.assertIn("legacy input ledgers", self.agents)
         self.assertNotIn("`TODO.md` is immediate local action", self.agents)
