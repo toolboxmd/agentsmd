@@ -767,6 +767,27 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(required=required):
                 self.assertIn(required, agents)
 
+    def test_global_contract_forbids_unmeasured_agent_work_durations(self) -> None:
+        # Issue #282: labelling an estimate did not stop an agent from telling
+        # the user how long unmeasured agent work would take and pricing a
+        # recommendation with that guess. A rule only in Communication, or one
+        # that also bans a quota reset or a dependency, fails this check.
+        judgment = " ".join(
+            read_text("global/AGENTS.md").split("## Judgment", 1)[1].split("## ", 1)[0].split()
+        )
+        for required in (
+            "Do not tell the user how long agent work will take, and do not use "
+            "such a guess as a cost in a recommendation",
+            "when a duration matters to a decision, give a measured rate and its "
+            "source, such as a past run's timestamps or a timed sample, or say "
+            "it is unmeasured",
+            "order of work, a dependency, and a wall-clock fact that is not an "
+            "estimate of agent work (a quota reset, a deadline the user set, or "
+            "seconds per audio minute) may be stated",
+        ):
+            with self.subTest(required=required):
+                self.assertIn(required, judgment)
+
     def test_global_contract_keeps_messages_brief_and_evidence_in_the_record(self) -> None:
         agents = " ".join(read_text("global/AGENTS.md").split())
         for required in (

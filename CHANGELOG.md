@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.6.4] - 2026-11-26
+
+### Changed
+
+- Stop telling the user an unmeasured duration for agent work (#282)
+
 ## [17.6.3] - 2026-11-24
 
 ### Changed
