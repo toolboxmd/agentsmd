@@ -34,7 +34,8 @@ Choose the smallest valid mode under the core's direct/delegated rule:
 | Dependent stacked pull requests | Each predecessor is review-ready at an exact SHA. |
 | Tightly coupled single-writer integration | Contracts, migrations, generated outputs, release identity, or acceptance builds cannot safely separate. |
 
-Different files alone never prove independence. Keep a dependent Issue natively
+Different files alone never prove independence. These dependency rules apply to
+Issues in the user's repositories. Keep a dependent Issue natively
 blocked until its predecessor publishes a complete review-ready PR at an exact
 SHA. Record PR, exact head, proof, and dependency state before clearing only that
 blocker. Use native stacking from that SHA when available; otherwise preserve
@@ -53,6 +54,29 @@ artifact, relevant decisions, proof, and remaining limitations to its consumer.
 Assign one writer to topology changes, including rebases, retargets, and merge
 order. Refresh affected observations after topology changes under the proof
 policy; prior branch names alone do not establish current identity.
+
+## Issue disposition
+
+File Issues for actionable work. Put information-only material in the
+project's docs or Library. If an Issue only holds information, move the
+material there before closing the Issue.
+
+Before leaving an open Issue without a working thread, record what prevents
+work from proceeding:
+
+- When only the user can decide or act, apply `needs-user` and put the exact
+  question or action in the Human summary's **So what**.
+- When a date or a third party's reply or action prevents progress, state the
+  specific cause and the next recheck time in the Human summary before applying
+  `waiting`. Continue any work that can proceed.
+- For a dependency on another Issue in the user's repositories, follow
+  [Execution and dependencies](#execution-and-dependencies). Use neither label
+  for the dependency itself.
+
+Create a missing label in the Issue's repository on first use. Verify the
+Issue's labels and summary before handoff. Remove a label when its condition
+clears, including removing `waiting` when work resumes. Leave Issues that are
+free to start without either label.
 
 ## Workers and recovery
 
@@ -121,8 +145,9 @@ exact-candidate proof under [verification](verification.md); transcripts and dup
 checks are unnecessary. Before you relay a negative result or file anything from
 it, read [bounded delegation](bounded-delegation.md) in full and apply its
 negative-result gate. When you file or find an Issue for work the user wants
-done, including found defects in user-controlled repositories whose fixes need
-no user-owned decision, leave that turn with a real owner: a running worker you
+done, continue any work that can proceed. If no work can proceed, record the
+blocker under [Issue disposition](#issue-disposition) before ending the turn.
+Otherwise, leave that turn with a real owner: a running worker you
 started within your authority, or a named agent that has accepted the handoff, message sent
 and acknowledged. "X will pick it up", with no handoff, is not an owner. Name
 the owner in the report to the user. Start the next unblocked substantive
