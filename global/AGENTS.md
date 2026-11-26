@@ -250,6 +250,9 @@ new names. Read relevant ADRs in full before changing locked decisions.
 
 ## Delivery
 
+Before filing an Issue, handing one off, or stopping work on an open Issue, read
+[Issue disposition](../skills/operations/references/orchestration.md#issue-disposition).
+
 Before mutating, check status, branch, HEAD, remotes, intended base, and
 divergence, and apply Authority and continuation. For tracked substantive work,
 find or create the GitHub Issue in the owning repository and use a task branch.
