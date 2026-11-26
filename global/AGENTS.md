@@ -353,6 +353,13 @@ Authority through routine in-scope steps without asking again.
 | ADRs | Costly, surprising, hard-to-reverse decisions. |
 | `CHANGELOG.md` | Released outcomes. |
 
+The owning repository is the one that owns the subject, not the one whose
+tool performs the work. Work on a brand is recorded in the brand's repository
+even when an ads or automation project executes it. Issues, pull requests,
+commits and their comments there are the record and the channel between
+agents. A side file, such as a brain dump, or a chat thread is never the
+record.
+
 Root `TODO.md`, `ISSUES.md`, `IDEAS.md`, and `STATUS.md` are legacy input ledgers,
 never trackers: move unique entries to the owners above before any authorized
 deletion. Use `GOAL_TEMPLATE.md` only when Issue state lacks needed continuation.
