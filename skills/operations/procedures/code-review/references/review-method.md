@@ -50,8 +50,8 @@ When an accepted finding is one case of a boundary contract (a parser, a
 mapping from an input to a published value, a state or verdict table), do not
 request a fix for that case alone. State the contract as a table of every input
 class and its required result; the fix implements it in one place with a
-table-driven test at that boundary, and the next review brief asks for the code
-to be checked against the table. A fix request states requirements, not mechanisms: a
+table-driven test at that boundary that checks every row, and the next review
+brief asks for the code to be checked against the table. A fix request states requirements, not mechanisms: a
 mechanism you name, such as when a value is read, is a claim to verify in the
 code first.
 
