@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.9.0] - 2026-11-27
+
+### Added
+
+- Record Codex hook trust after install or update and fail inspect on untrusted AgentsMD hooks (#288)
+
 ## [17.8.2] - 2026-11-27
 
 ### Changed

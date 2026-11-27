@@ -60,9 +60,24 @@ codex plugin marketplace add toolboxmd/marketplace
 codex plugin add agentsmd@toolboxmd
 ```
 
-Codex runs a plugin hook only after you trust its hash. In a fresh session,
-open `/hooks` and review and trust the AgentsMD hook commands. Do it again
-after each update that changes a hook.
+Codex runs a plugin hook only while two hashes it records in
+`~/.codex/config.toml` under `[hooks.state."<hook key>"]` still match:
+`trusted_hash` for the hook definition and `trusted_content_hash` for the
+plugin's content. Every plugin update changes the content hash, and Codex then
+skips the AgentsMD hooks without an error. After you install or update the
+plugin, review and trust its hooks: read the release's `hooks/hooks.json`, then
+record both hashes for every AgentsMD hook. The command trusts whatever plugin
+version is installed:
+
+```sh
+"$AGENTSMD_DIR/bin/agentsmd-codex-hooks" trust
+```
+
+The command asks `codex app-server` for each hook's current hashes, writes them
+through Codex's own config API, touches no other plugin's hooks, and exits 0
+only when every AgentsMD hook is `trusted` (or `managed` by an administrator's
+requirements). Approving the hooks in `/hooks`
+records the same two fields.
 
 **Claude Code:**
 
@@ -200,7 +215,12 @@ contains your private preferences, so do not publish it. `preferences.status` is
 
 Then check the harness itself:
 
-- **Codex:** `/hooks` shows the AgentsMD hooks as trusted; `/skills` lists
+- **Codex:** `project-direction inspect` also reports `codex_hooks`. It exits
+  2 with `"status": "untrusted"` and lists under `untrusted` each AgentsMD hook
+  that Codex would skip; `trusted` is healthy. It also exits 2 with
+  `codex-unavailable` when Codex is installed but `codex app-server` fails,
+  times out or answers in an unexpected shape. `codex-absent` (no `codex` on
+  `PATH`) and `none-listed` (the plugin lists no hooks) do not fail. `/skills` lists
   `$agentsmd:operations`.
 - **Claude Code:** `/context` lists the global `CLAUDE.md`, and
   `/agentsmd:operations` is available.
@@ -234,7 +254,7 @@ git checkout "$(git describe --tags --abbrev=0 origin/main)"
 
 | Harness | Plugin update |
 | --- | --- |
-| Codex | `codex plugin marketplace upgrade`, then `codex plugin add agentsmd@toolboxmd`; trust changed hooks in `/hooks` |
+| Codex | `codex plugin marketplace upgrade`, then `codex plugin add agentsmd@toolboxmd`, then `"$AGENTSMD_DIR/bin/agentsmd-codex-hooks" trust` |
 | Claude Code | `claude plugin marketplace update toolboxmd`, then `claude plugin update agentsmd@toolboxmd` |
 | Grok Build | `grok plugin marketplace update`, then `grok plugin update agentsmd` |
 | OpenCode | none; the Skill and plugin links point into the clone |

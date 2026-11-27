@@ -338,7 +338,7 @@ class GrokHookDeliveryTests(GrokHookFixture):
     def make_canonical_clone(self) -> Path:
         source = self.base / "grok-clone"
         (source / "bin").mkdir(parents=True)
-        for name in ("project-direction", "agentsmd_instructions.py"):
+        for name in ("project-direction", "agentsmd_instructions.py", "agentsmd_codex_hooks.py"):
             shutil.copy2(ROOT / "bin" / name, source / "bin" / name)
         return source
 
