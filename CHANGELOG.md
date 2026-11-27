@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.10.0] - 2026-11-27
+
+### Added
+
+- Review method: answer one wrong case of a boundary contract with the whole table, state requirements in fix requests, and block only on an input or event that can reach the failure (#293)
+
 ## [17.9.0] - 2026-11-27
 
 ### Added

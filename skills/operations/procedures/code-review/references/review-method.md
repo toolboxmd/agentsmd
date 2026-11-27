@@ -46,6 +46,28 @@ Do not vote, dismiss a third review round by default, or accept a finding becaus
 several reviewers copied the same premise. Carry previously found failure modes
 into the next review brief so fixes are checked for regressions.
 
+The severity rule in "Make a finding reviewable" binds the lead too. When
+writing a blocking bar into a review brief, and again before accepting a
+finding, name an input or event that can reach the failure, with its
+consequence: who can supply the value at the reviewed boundary, an untrusted
+caller included, and what enforces a limit there; or an event such as a restart
+between two writes or two concurrent calls. A case for which no such input or
+event can be named, such as a value only a fake in place of the real producer
+could supply, is a note with a follow-up.
+
+When an accepted finding is one case of a boundary contract (a parser, a mapping
+from an input to a published value, a state or verdict table), do not request a
+fix for that case alone. First check each row's origin: who required it (the
+Spec, the user, or a constraint with evidence) and what fails without it. Code
+that deviates from a row only the implementation or the author's own list
+introduced is not a defect: delete the row or send it back as a question; do not
+complete it. Then state the contract as a table of the input classes it covers
+plus one row for all other input, each with its required result; the fix
+implements it in one place with a table-driven test at that boundary that checks
+every row, and the next review brief asks for the code to be checked against the
+table. A fix request states requirements, not mechanisms: a mechanism you name,
+such as when a value is read, is a claim to verify in the code first.
+
 An external review bot supplies leads. Confirm its candidate, full thread,
 context, and current status before acting. Do not equate an empty truncated API
 page, absent checks, unknown mergeability, or unfulfilled review requirements with
