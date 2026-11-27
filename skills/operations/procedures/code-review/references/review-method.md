@@ -46,6 +46,14 @@ Do not vote, dismiss a third review round by default, or accept a finding becaus
 several reviewers copied the same premise. Carry previously found failure modes
 into the next review brief so fixes are checked for regressions.
 
+The severity rule in "Make a finding reviewable" binds the lead too. A blocking
+bar in a review brief names the real producers of its inputs (the external
+service, the installed tool, ordinary operation and its failures) and blocks
+only on an input they can produce or an event that occurs in operation, with its
+consequence; before accepting a finding, name the real input that reaches it. A
+case that needs a fake in place of a trusted producer, or a magnitude the source
+cannot send, is a note with a follow-up.
+
 When an accepted finding is one case of a boundary contract (a parser, a mapping
 from an input to a published value, a state or verdict table), do not request a
 fix for that case alone. First check each row's origin: who required it (the

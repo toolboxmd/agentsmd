@@ -7,7 +7,7 @@ SemVer and identify one user-consumable repository state.
 
 ### Added
 
-- Review method: answer one wrong case of a boundary contract with the whole table, and state requirements in fix requests (#293)
+- Review method: answer one wrong case of a boundary contract with the whole table, state requirements in fix requests, and block only on input a real producer can send (#293)
 
 ## [17.9.0] - 2026-11-27
 
