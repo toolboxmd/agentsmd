@@ -46,14 +46,14 @@ Do not vote, dismiss a third review round by default, or accept a finding becaus
 several reviewers copied the same premise. Carry previously found failure modes
 into the next review brief so fixes are checked for regressions.
 
-When an accepted finding is one case of a boundary contract (a parser, a
-mapping from an input to a published value, a state or verdict table), do not
-request a fix for that case alone. State the contract as a table of every input
-class and its required result; the fix implements it in one place with a
-table-driven test at that boundary that checks every row, and the next review
-brief asks for the code to be checked against the table. A fix request states requirements, not mechanisms: a
-mechanism you name, such as when a value is read, is a claim to verify in the
-code first.
+When an accepted finding is one case of a boundary contract (a parser, a mapping
+from an input to a published value, a state or verdict table), do not request a
+fix for that case alone. State the contract as a table of the input classes it
+covers plus one row for all other input, each with its required result; the fix
+implements it in one place with a table-driven test at that boundary that checks
+every row, and the next review brief asks for the code to be checked against the
+table. A fix request states requirements, not mechanisms: a mechanism you name,
+such as when a value is read, is a claim to verify in the code first.
 
 An external review bot supplies leads. Confirm its candidate, full thread,
 context, and current status before acting. Do not equate an empty truncated API
