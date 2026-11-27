@@ -259,7 +259,8 @@ class OpenCodePluginTests(unittest.TestCase):
         (clone / "bin").mkdir(parents=True)
         (clone / "opencode").mkdir()
         loader = clone / "bin/project-direction"
-        loader.write_text("#!/bin/sh\nexit 3\n", encoding="utf-8")
+        # Drain spawnSync's JSON input before exiting so the status is observable.
+        loader.write_text("#!/bin/sh\ncat >/dev/null || exit 1\nexit 3\n", encoding="utf-8")
         loader.chmod(0o755)
         module = clone / "opencode/agentsmd-project-direction.js"
         shutil.copyfile(PLUGIN, module)

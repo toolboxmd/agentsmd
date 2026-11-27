@@ -3,6 +3,12 @@
 All completed repository versions are recorded here. Release entries follow
 SemVer and identify one user-consumable repository state.
 
+## [17.8.2] - 2026-11-27
+
+### Changed
+
+- Stabilize the OpenCode failing-loader fixture
+
 ## [17.8.1] - 2026-11-26
 
 ### Changed
