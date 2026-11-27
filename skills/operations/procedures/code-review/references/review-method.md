@@ -51,9 +51,9 @@ writing a blocking bar into a review brief, and again before accepting a
 finding, name an input or event that can reach the failure, with its
 consequence: who can supply the value at the reviewed boundary, an untrusted
 caller included, and what enforces a limit there; or an event such as a restart
-between two writes or two concurrent calls. A case that needs a fake in place of
-a trusted producer, or a value that a check at that boundary is verified to
-reject, is a note with a follow-up.
+between two writes or two concurrent calls. A case for which no such input or
+event can be named, such as a value only a fake in place of the real producer
+could supply, is a note with a follow-up.
 
 When an accepted finding is one case of a boundary contract (a parser, a mapping
 from an input to a published value, a state or verdict table), do not request a
